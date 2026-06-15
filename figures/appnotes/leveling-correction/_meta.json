@@ -1,0 +1,73 @@
+{
+ "slug": "leveling-correction",
+ "pdf": "_docs-pdfs/appnote-automatic-leveling-correction.pdf",
+ "npages": 5,
+ "pages": [
+  {
+   "page": 1,
+   "text": "Automatic Leveling Correction (ALC) in \nBerkeley Nucleonics Signal Generators \nPurpose \nThis application note describes the automatic leveling correction (ALC) system of \nBerkeley Nucleonics (BNC) signal generators. \nIt provides information about different ALC modes and ALC programming commands. \nIntroduction \nBNC signal generators use an automatic leveling correction (ALC) system to provide \nmaximum output power accuracy. The ALC compensates effects of ambient \nconditions like temperature on output power. \nThe ALC continuously monitors output power, compares it to the programmed \nsetting and corrects output power if needed. \nFigure 1: ALC system overview \nThe ALC has an impact on amplitude noise, modulations and on switching speed. \nDifferent applications impose different requirements on the ALC. Selectable ALC \nmodes are available to optimize performance. \n6/19/19\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n1 of 5\n",
+   "images": [
+    {
+     "file": "fig-001.png",
+     "w": 2144,
+     "h": 797,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-002.png",
+     "w": 3147,
+     "h": 1270,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 2,
+   "text": "ALC modes \nThree ALC modes with different limitations and benefits are available: \n\nALC on, hold off\n\nALC on, hold on\n\nALC off\nALC on, hold off is the default mode for CW operation. The ALC continuously \nmonitors and corrects output power. \nThis mode guarantees output power meets specifications. \nThis is the preferred mode for CW operation and for pulsed signals with moderate \nmark-space ratio (> 1:1000) and with long pulse duration (> 1 µs). \nWhen used with short pulses or extreme mark-space rations, output power accuracy \ndegrades and overshoot may occur. \nALC on, hold on stops continuous output power correction. \nEffects of ambient conditions on output power are no longer corrected. \nOutput power typically still meets specifications but this is not guaranteed as \nconditions like internal temperature may vary. \nWhen changing output power or frequency in this mode, the signal generator has to \nreturn to ALC on, hold off to sample the new power correction control signal. Thus \nthis mode increases CW switching time. \nSweeps in ALC on, hold on mode sample the power correction control signal for each \npoint in advance. Thus setting up a sweep takes more time than in hold off mode \n(about 2 ms per point). \nThis is the preferred mode for pulse signals with low mark-space ratio (< 1:1000) or \nwith short pulse duration (< 1 µs). \nALC off disables the complete ALC system. \nOutput power range and resolution degrade. Specified accuracy is not guaranteed. \nThis mode may be used in applications where lowest amplitude noise is important \nand limited power range and accuracy are acceptable. \n6/19/19\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n2 of 5\n",
+   "images": [
+    {
+     "file": "fig-003.png",
+     "w": 3147,
+     "h": 1270,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 3,
+   "text": "ALC bandwidth \nThe bandwidth of the power correction loop is adjustable. \nLow bandwidth provides best amplitude noise performance but also long amplitude \nsettling time. \nLow bandwidth is preferred for CW operation. \nTypical settling time is in the range of 10-1000 ms, depending on device version. \nHigh bandwidth provides low amplitude settling times at the cost of increased \namplitude noise. \nHigh bandwidth is preferred for swept operation or for pulse modulation under ALC \non, hold off. \nTypical settling time is about 10 µs. \nALC settings for pulse modulation and pulsed sweeps \nThe ALC configuration has an effect on pulse modulation and pulsed sweeps. \nThe ALC is designed such that it can level pulsed signals. However, power overshoot \nmay occur when a pulse starts, particularly when playing short pulses or low mark-\nspace ratios. \nPower overshoot can be reduced in time using high ALC bandwidth or eliminated \ncompletely using ALC on, hold mode. \nAutomatic ALC mode and bandwidth selection \nA BNC signal generator can automatically choose ALC mode and bandwidth for any \noperation mode. This automatic mode is active by default: \nOperation mode \nALC mode \nALC bandwidth \nCW \non, active \nlow \nSweep \non, active \nhigh \nPulse >= 1 µs \non, active \nhigh \nPulse < 1 µs \non, hold \n(high)* \nTable 1: Automatic ALC mode and bandwidth selection \n6/19/19\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n3 of 5\n",
+   "images": [
+    {
+     "file": "fig-004.png",
+     "w": 3147,
+     "h": 1270,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 4,
+   "text": "* ALC bandwidth setting has no effect while in hold mode. However, high bandwidth\nis used to sample the power correction control signal when changing frequency or\npower.\nProgramming user specific settings disables automatic mode and bandwidth \nselections. However automatic mode and bandwidth can be enabled again any time \nby sending reset or automatic enable commands. \nALC mode and bandwidth commands and queries \n*RST\nResets the device to factory default settings. This enables the ALC system and\nautomatic ALC mode and bandwidth selection.\n[:SOUR]:POW:ALC? \n[:SOUR]:POW:ALC 0|OFF|1|ON \nEnables or disables the ALC system. \n*RST value: ON\n[:SOUR]:POW:ALC:HOLD? \n[:SOUR]:POW:ALC:HOLD 0|OFF|1|ON \nEnables or disables ALC hold mode. \nThis setting has no effect is the ALC system is disabled (see [:SOUR]:POW:ALC). \nProgramming this setting disables automatic hold mode selection. The device can \nchange this setting automatically. (see [:SOUR]:POW:ALC:HOLD:AUTO) \n*RST value: (automatic)\n[:SOUR]:POW:ALC:HOLD:AUTO? \n[:SOUR]:POW:ALC:HOLD:AUTO 0|OFF|1|ON \nEnables or disables automatic ALC hold mode state selection. \nEnabling automatic mode also changes the hold mode selection according to table 1. \nProgramming the ALC hold mode disables automatic mode. (see \n[:SOUR]:POW:ALC:HOLD) \n*RST value: ON\n6/19/19\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n4 of 5\n",
+   "images": [
+    {
+     "file": "fig-005.png",
+     "w": 3147,
+     "h": 1270,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 5,
+   "text": "[:SOUR]:POW:ALC:BWID? \n[:SOUR]:POW:ALC:BWID LOW|HIGH \nSets the ALC bandwidth. \nThis setting has no effect is the ALC system is disabled (see [:SOUR]:POW:ALC). In \nhold mode (see [:SOUR]:POW:ALC:HOLD), this setting only affects power correction \ncontrol signal sampling upon frequency or power changes. \nProgramming this setting disables automatic bandwidth selection. The device can \nchange this setting automatically. (see [:SOUR]:POW:ALC:BWID:AUTO) \n*RST value: (automatic)\n[:SOUR]:POW:ALC:BWID:AUTO? \n[:SOUR]:POW:ALC:BWID:AUTO 0|OFF|1|ON \nEnables or disables automatic ALC bandwidth selection. \nEnabling automatic mode also changes the bandwidth selection according to table 1. \nProgramming the ALC bandwidth disables automatic mode. (see \n[:SOUR]:POW:ALC:BWID) \n*RST value: ON\n6/19/19\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n5 of 5\n",
+   "images": [
+    {
+     "file": "fig-006.png",
+     "w": 3147,
+     "h": 1270,
+     "type": "embedded"
+    }
+   ]
+  }
+ ]
+}

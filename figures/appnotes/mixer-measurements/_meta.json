@@ -1,0 +1,97 @@
+{
+ "slug": "mixer-measurements",
+ "pdf": "_docs-pdfs/appnote-mixer-measurements.pdf",
+ "npages": 5,
+ "pages": [
+  {
+   "page": 1,
+   "text": "Feburary 2017\nBerkeley Nucleonics and Copper Mountain Team Up \nfor Mixer Measurements\nIntroduction\nRF mixers are nominally 3-port devices, with IF, RF, and LO connections. When using a 2-port VNA to perform \nS-parameter measurements of a mixer, an external signal generator is often used to supply the LO input. \nLegacy systems normally require you to buy their brand for such multi-instrument test systems.\nIn contrast to legacy test systems which lock the customer into a single-vendor platform, modular, \nsoftware-centric instruments can now be easily integrated together to form comprehensive test \nsolutions. Incorporation of these devices provides an accurate, easily-configurable test system at an \nunparalleled price point with a far greater range of hardware options to the user, with a lower cost \nof ownership that resists obsolescence during its life. \nThis application note describes a plugin jointly developed by Copper Mountain Technologies and Berkeley \nNucleonics to take advantage of each company’s’ PC-based instruments. The CMT-BNC Mixer Measurement \nplugin allows for adjusting the LO frequency provided to a Mixer Under Test (MUT) from a BNC signal \ngenerator, while a CMT VNA measures this MUT’s conversion loss. \nCopper Mountain Technologies (CMT) is an Indianapolis, Indiana-based manufacturer of USB Vector \nNetwork Analysis modules. Berkeley Nucleonics Corporation (BNC) is a leading manufacturer of precision \nelectronic instrumentation for test, measurement, and nuclear research headquartered in San Rafael, \nCalifornia.\nUnlike traditional test and measurement instrumentation, which typically incorporates burdensome \nindustrial PCs and outdated versions of Microsoft Windows, new modular test offerings from CMT and BNC \nare lightweight, low power, robust, and flexible. One additional benefit of the modular test approach is that \napplications for both vendors’ product families are updated periodically to incorporate new features and to \naddress issues, without the hassle of dealing with outdated, embedded computers. \nFigure 1: Diagram showing the connection diagram of the BNC signal \ngenerator, CMT analyzer, PC, and MUT for the tests described herein.\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n1 of 5\n",
+   "images": [
+    {
+     "file": "fig-001.png",
+     "w": 384,
+     "h": 253,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-002.png",
+     "w": 352,
+     "h": 233,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 2,
+   "text": "Instrument Details\nBNC Signal Generator \nModel 845-20 from Berkeley Nucleonics Corporation is a microwave signal generator with a frequency \nrange of 100 kHz to 20.5 GHz and adjustable power output from -30 dBm to 15 dBm. Across this frequency \nrange, resolution of 0.001 Hz and power output resolution of 0.01 dBm is available to the user. Output \nphase can  also be adjusted from 0° to 360° with a resolution of  0.1°. The accuracy of the BNC signal \ngenerator’s internal oscillator is ±40 ppb initially, which corresponds to an accuracy of ±40 Hz at 1 GHz \ngenerated frequency. The Model 845-20 also exhibits very fast switching between frequency points, 7.2 \nµs for a 2 GHz increase. These parameters could fit a wide range of use cases, without mentioning the \nmodulation capabilities of this source, and will be more than adequate for our mixer measuring application. \nSimilar to CMT VNA offerings, the main UI of Model 845-20 is a program that runs on a connected PC. There \nare several protocols by which users may connect the UI and signal generator including GPIB, USBTMC, and \nEthernet LAN. To utilize the BNC signal generator in CMT’s Mixer Measurement plugin, SCPI commands \nwere sent over a USB connection utilizing the VISA I/O API.\nFigure 2: Photo of the Model 845-20 rack version alongside a screenshot of the Signal Generator GUI from Berkeley Nucleonics \nCorporation\nCMT VNA \nCopper Mountain Technologies’ S5065 compact VNA was chosen for mixer measurements because it \ncontains two test sets, and thus can obtain all four complex S-parameters for a two-port network (RF to IF). \nThe frequency range of the instrument spans 9 kHz to 6.5 GHz, with a maximum of 5 dBm power output to \na minimum of -55 dBm across the entire frequency range. This frequency and power range combined with \nfrequency offset mode makes the S5065 suitable for characterizing the ZX05-1L. A dynamic range of 130 \ndB (typical with 1 Hz IFBW) ensures that users can expect accuracy in their measurements. Up to 200,001 \nfrequency points can be measured in any user selected frequency range with an IFBW selectable range \nbetween 1 Hz and 100 kHz. This wide range of options is complemented by CMT’s VNA software suites, \nwhich replace cumbersome onboard computers. Time domain gating and embedding and de-embedding \nof .s2p characterized devices, among other features, come standard in S5065 VNA. \nCMT VNAs support DCOM/COM, and SCPI over TCP/IP, automation interfaces. Instruments connect to a \nlocal PC running a CMT software suite, while DCOM and SCPI over TCP/IP functionality allows users to \nsend commands over a network to this locally attached PC. The only local PC requirement is to be capable \nof running a Windows OS, otherwise a Linux or Mac OS machine can send automation commands to this \nsmaller, Windows machine. \nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n2 of 5\n",
+   "images": [
+    {
+     "file": "fig-003.png",
+     "w": 448,
+     "h": 341,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-004.png",
+     "w": 460,
+     "h": 343,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 3,
+   "text": "Figure 3: Photo of the S5065 alongside a screenshot of the S2VNA GUI from Copper Mountain Technologies\nTo facilitate user automation of CMT devices many programming examples are made available through the \nCMT website. Some are downloaded as documentation along with software suite installers. These examples \ninclude programs in Python, MATLAB, Excel, C++, VB.NET, and LabVIEW.\nMini-circuits mixer\nThe MUT chosen for testing the Mixer Measurement plugin was a Mini-Circuits ZX05-1L. With input \nfrequency ranges from 2 MHz to 500 MHz this mixer is designed to produce heterodynes up to 500 MHz; \nand as a Level 3 mixer, it’s LO input is intended to be driven at 3 dBm. Packaged in a small cube, this mixer \nwas fabricated with three SMA inputs and typically exhibits 6 dB conversion loss between RF input and IF \noutput. \nMixer Measurement Plugin\nInstalling and configuring the plugin\nThe “CMT-BNC Mixer Meas” plugin is compatible with S2VNA.exe, \nthe Windows app for all 2-port 2-path VNAs from Copper Mountain \nTechnologies. The plugin can be launched from directly inside the \nS2VNA application via the menu sequence System > Plugins. To \ninstall the plugin, simply copy its executable into the /Plugins/ \nsubfolder of your S2VNA installation path (C:\\VNA\\S2VNA\\Plugins by \ndefault).\nIt is also important that the S2VNA application’s COM server interface \nbe registered when it is installed in Windows. Either simply check \nthe box for “Register COM Server” during the installer wizard, or run \n“S2VNA.exe -regserver” at a command prompt after installation.\nUsing the plugin\nUsing the CMT-BNC plugin is very simple. Specify the VISA address of the BNC signal generator and the \nlist of frequencies through which the LO should be stepped. Optionally, you can also specify one or more \nSCPI commands to be sent at the start of measurements, as well as a Pause time to wait after each LO step \ncommand.\nWhen “Run” is clicked in the plugin, it will (optionally) execute the signal generator initialization commands \nyou’ve specified, then command the signal generator to the first frequency, and (optionally) wait the \nspecified time. Then a single trigger will be issued on Channel 1, which starts the VNA sweep. \nAt the end of the sweep, the signal generator is stepped to the second frequency in the list, and so on. \nWhen the end of the frequency list is reached, the signal generator returns to the start frequency and trigger \ncontrol is restored to its original settings.\nFigure 4: The MUT, Mini-Circuits’ ZX05-1L \nwith SMA inputs from left to right, LO, IF, RF\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n3 of 5\n",
+   "images": [
+    {
+     "file": "fig-005.png",
+     "w": 488,
+     "h": 257,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-006.png",
+     "w": 468,
+     "h": 254,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-007.png",
+     "w": 297,
+     "h": 244,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 4,
+   "text": "Test Results\nFigure 5: 16 different LO, RF test points performed simultaneously using the Mixer Measurement plugin developed by CMT for \nuse with BNC signal generators\nIn preparation for the measurement of the conversion loss as a function of input frequencies, a scalar mixer \ncalibration was performed on the S5065. Frequency offset was also turned on under the “Stimulus” menu \nto ensure Port 1 of the VNA was always receiving in the 29-31 MHz band. Port 2 of the instrument was \ndesignated the RF input to the mixer, and the BNC signal generator was designated as the LO input; then \na series of upconversion and downconversion frequencies were selected corresponding to the ZX05-1L \nMUT data sheet. Regardless of whether upconversion or downconversion was occurring, the chosen IF was \na constant 30 MHz. Once given a list of LO frequencies the Mixer Measurement plugin mirrors Channel 1 \nsixteen times; with the exception of frequency offset on Port 2, which was altered based on the LO frequency \nof that index in the list. Each LO, RF frequency combination was repeated and averaged ten times. The IFBW \nwas selected wide enough such that the measurement frequency point closest to the 30 MHz IF of the MUT \nwould detect the power of the 30 MHz IF. An intermodulation product can be seen just below 29.4 MHz in \neach channel. \nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n4 of 5\n",
+   "images": [
+    {
+     "file": "fig-008.png",
+     "w": 975,
+     "h": 529,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 5,
+   "text": "Figure 6: 20 different LO, RF test points performed in batches of 16 and 4 using the Mixer Measurement plugin developed by \nCMT for use with BNC signal generators\nThe above plot was produced using MATLAB. On average, the conversion loss recorded was 0.2 dB higher \nthan specified in the ZX05-1L’s data sheet. \nConclusion\nAlone, both brands provide significant advantages in usability and compatibility over legacy \ninstrumentation. Without the additional hassle of onboard computers, CMT end users can extract data \nimmediately to directories pertinent to additional processing. The Signal Generator GUI reduces the hassle \nof using clunky buttons to switch frequency and power of stimulus signals. BNC’s Signal Generator GUI and \nCMT’s software suites both reduce the time and effort required to update device firmware. By pre-selecting \nfrequencies of interest and automating coordination of the test and stimulus setup, MUT conversion loss \ndata was collected rapidly and accurately; together these USB devices make a powerful combination for \nincreasing measurement throughput. Making the setup ideal for production environments. Refusing to \nlock our customers into a particular brand enables end-users to design custom solutions to their needs \nat unbeatable price points. If you have any questions about automating test setups using CMT products, \nplease contact support@coppermountaintech.com. Likewise, questions about automating BNC products \nmay be directed to rfsupport@ \nBerkeley Nucleonics Corporation\nberkeleynucleonics.com\nUS Office: +1.800.234.7858\nCopper Mountain Technologies\ncoppermountaintech.com\nUS Office: +1.317.222.5400\nSingapore Office: +65.63.23.6546\nBerkeley Nucleonics Corporation  \ninfo@berkeleynucleonics.com | www.berkeleynucleonics.com \n2955 Kerner Blvd, San Rafael, CA 94901 | 800-234-7858\n5 of 5\nberkeleynucleonics.com\n",
+   "images": [
+    {
+     "file": "fig-009.png",
+     "w": 400,
+     "h": 237,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-010.png",
+     "w": 920,
+     "h": 566,
+     "type": "embedded"
+    }
+   ]
+  }
+ ]
+}
