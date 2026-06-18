@@ -49,6 +49,6 @@ Model 685 figures are from the published Berkeley Nucleonics specification. AWG7
 
 ## Next step: see it on your own pulse
 
-Bring the waveform that gives your AWG7000 trouble, the one you have been damping with passives. We will reproduce it on a Model 685 and put both edges on a scope side by side. If the clean one does not sell itself, you have lost nothing but an hour. Ready to retire the workaround?
+Bring us the waveform that gives your AWG7000 trouble, the one you have been damping with passives. We will reproduce it on a Model 685 and put both edges on a scope side by side. Let's look at the results together. Ready to retire the workaround?
 
 [Request a Model 685 demo](../get-quote.html) or explore the [Model 685 data sheet](bnc-awg-685-datasheet.html).
