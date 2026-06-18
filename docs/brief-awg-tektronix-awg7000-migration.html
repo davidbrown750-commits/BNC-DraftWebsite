@@ -1,69 +1,98 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arbitrary Waveform Generator Documentation | Berkeley Nucleonics</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retire the Tektronix AWG7000 Series &middot; AWG Application Brief &middot; Berkeley Nucleonics</title>
 <style>
-:root{--blue:#0655a3;--cyan:#37b6f0;--cyan-bright:#5fd0ff;--teal:#3fd0c4;--teal-soft:#7fe6db;--violet:#9b8cff;--violet-soft:#bcb0ff;
---ink:#0a1626;--ink-2:#0e2038;--ink-card:#122a47;--line:rgba(120,170,225,.18);--soft:#d3e1f4;--soft-2:#93afd0;
---font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;--font-cond:'Myriad Pro Condensed','Arial Narrow',sans-serif;--font-b:Arial,'Segoe UI',Helvetica,sans-serif;--r-lg:14px;}
-*{box-sizing:border-box;}body{font-family:var(--font-b);background:var(--ink);color:var(--soft);margin:0;line-height:1.65;}
-a{text-decoration:none;color:inherit;}.wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
-.hero{position:relative;background:radial-gradient(80% 90% at 80% 20%,rgba(55,182,240,.18),transparent 55%),radial-gradient(60% 60% at 12% 90%,rgba(155,140,255,.16),transparent 60%),linear-gradient(120deg,#0a1626,#0e2240 60%,#0a1c38);border-bottom:1px solid var(--line);}
-.hero .wrap{padding:54px 28px 46px;}
-.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;font-weight:700;color:var(--cyan-bright);margin-bottom:14px;}
-h1{font-family:var(--font-h);color:#fff;font-size:2.5rem;margin:0 0 12px;letter-spacing:-.01em;}
-.hero p{color:var(--soft);font-size:1.08rem;max-width:64ch;margin:0;}
-.reqpdf{position:absolute;top:22px;right:28px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-family:var(--font-h);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;padding:.6em 1.05em;border-radius:6px;text-decoration:none;}
-.reqpdf:hover{filter:brightness(1.09);}
-.sec{padding:40px 0 4px;}h2{font-family:var(--font-h);color:#fff;font-size:1.4rem;margin:0 0 6px;}
-.sec .sub{color:var(--soft-2);font-size:.9rem;margin:0 0 16px;}
-.list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.02);}
-.row{display:flex;align-items:center;gap:18px;padding:14px 20px;border-top:1px solid var(--line);transition:background .14s ease;}
-.row:first-child{border-top:none;}
-.row:hover{background:rgba(55,182,240,.07);}
-.row .type{flex:0 0 160px;font-family:var(--font-h);font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#5fa8ff;}
-.row.p .type{color:#c3b6ff;}.row.g .type{color:#56e0a8;}
-.row .ctext{flex:1;min-width:0;}
-.row h3{font-family:var(--font-h);color:#fff;font-size:1.02rem;margin:0 0 2px;font-weight:600;}
-.row p{margin:0;color:var(--soft-2);font-size:.84rem;}
-.row .open{flex:0 0 auto;font-family:var(--font-h);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:#5fa8ff;}.row.p .open{color:#c3b6ff;}.row.g .open{color:#56e0a8;}
-.note{margin:38px 0 0;background:rgba(55,182,240,.08);border:1px solid rgba(55,182,240,.25);border-radius:10px;padding:14px 18px;font-size:.82rem;color:var(--soft);}
-@media(max-width:640px){.row{flex-wrap:wrap;gap:5px;}.row .type{flex-basis:100%;}.reqpdf{position:static;display:inline-block;margin-bottom:16px;}h1{font-size:2rem;}}
-.sitenav{position:sticky;top:0;z-index:200;background:rgba(10,22,38,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(120,170,225,.18);font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;}
-.sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;gap:24px;}
+:root{
+ --blue:#0655a3;--blue-dark:#113163;--blue-600:#054a8c;
+ --ink:#1b2330;--muted:#5b6677;--line:#e3e7ee;--bg:#f4f7fb;--bg-2:#eaf0f7;--bg-3:#e1e9f2;
+ --font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
+ --font-b:Arial,'Segoe UI',Helvetica,sans-serif;--font-mono:'Courier New',monospace;
+ --r:5px;--wrap:1180px;
+}
+*{box-sizing:border-box;}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:var(--font-b);color:var(--ink);background:var(--bg);margin:0;line-height:1.62;font-size:15px;}
+a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
+h1,h2,h3,h4{font-family:var(--font-h);color:var(--blue-dark);line-height:1.2;margin:0;}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;}
+/* ---- site header (dark) ---- */
+.sitenav{position:sticky;top:0;z-index:200;background:#0a1626;border-bottom:1px solid rgba(120,170,225,.18);font-family:var(--font-h);}
+.sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:22px;}
 .sitenav-logo{display:flex;align-items:center;}.sitenav-logo svg{height:48px;width:auto;}
-.sitenav-menu{margin-left:auto;display:flex;gap:2px;align-items:stretch;height:66px;}
+.sitenav-menu{margin-left:auto;display:flex;gap:2px;align-items:stretch;height:62px;}
 .nav-item{position:relative;display:flex;align-items:center;}
-.nav-item>a{display:flex;align-items:center;height:66px;padding:0 13px;color:#c4d6ee;font-weight:600;font-size:.84rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;}
+.nav-item>a{display:flex;align-items:center;height:62px;padding:0 12px;color:#c4d6ee;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;}
 .nav-item:hover>a{color:#fff;}
-.nav-drop{position:absolute;top:62px;left:0;min-width:250px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s ease,transform .15s ease,visibility .15s;}
+.nav-drop{position:absolute;top:58px;left:0;min-width:248px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.55);padding:8px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s,transform .15s,visibility .15s;}
 .nav-item:hover .nav-drop,.nav-item:focus-within .nav-drop{opacity:1;visibility:visible;transform:translateY(0);}
 .nav-drop a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;text-transform:none;letter-spacing:0;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;}
-.nav-drop a:hover{background:rgba(55,182,240,.14);color:#fff;}
-.sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.86rem;padding:.6em 1.15em;border-radius:6px;text-decoration:none;white-space:nowrap;}
-.sitenav-cta:hover{filter:brightness(1.09);}
+.nav-drop a:hover{background:rgba(55,182,240,.14);color:#fff;text-decoration:none;}
+.sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.84rem;padding:.58em 1.1em;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.sitenav-cta:hover{filter:brightness(1.09);text-decoration:none;}
 @media(max-width:1040px){.sitenav-menu{display:none;}}
-.gfoot{background:#0e2038;color:#9bb0cc;padding:50px 0 26px;font-size:.9rem;font-family:Arial,'Segoe UI',Helvetica,sans-serif;}
-.gfoot .gwrap{max-width:1180px;margin:0 auto;padding:0 28px;}
-.gfoot .gcols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.1fr;gap:30px;margin-bottom:30px;}
-.gfoot .gbrand svg{height:34px;width:auto;display:block;margin-bottom:14px;}
-.gfoot .gbrand p{margin:0;max-width:32ch;color:#9bb0cc;font-size:.85rem;line-height:1.6;}
-.gfoot h5{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;color:#fff;font-size:.9rem;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em;}
-.gfoot ul{list-style:none;padding:0;margin:0;}.gfoot li{margin-bottom:8px;}
-.gfoot a{color:#9bb0cc;text-decoration:none;}.gfoot a:hover{color:#fff;text-decoration:underline;}
-.gfoot .gdisc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:11px 15px;margin-bottom:24px;font-size:.78rem;color:#c4d6ee;}
-.gfoot .gbottom{border-top:1px solid rgba(255,255,255,.12);padding-top:18px;font-size:.8rem;color:#8aa0bd;}
-@media(max-width:820px){.gfoot .gcols{grid-template-columns:1fr 1fr;}}  .navtoggle{display:none;width:42px;height:38px;background:transparent;border:1px solid rgba(120,170,225,.4);border-radius:6px;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:0;}
-  .navtoggle span{display:block;width:20px;height:2px;background:#c4d6ee;border-radius:2px;}
-  @media(max-width:1040px){
-    .navtoggle{display:flex;}
-    .sitenav-cta{margin-left:auto;}
-    .sitenav.open .sitenav-menu{display:flex;flex-direction:column;position:absolute;top:66px;left:0;right:0;background:#0e2038;border-bottom:1px solid rgba(120,170,225,.18);height:auto;max-height:78vh;overflow:auto;padding:6px 0;align-items:stretch;gap:0;margin:0;}
-    .sitenav.open .nav-item{flex-direction:column;align-items:stretch;height:auto;}
-    .sitenav.open .nav-item>a{height:auto;padding:13px 24px;border-top:1px solid rgba(120,170,225,.12);}
-    .sitenav.open .nav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:rgba(255,255,255,.03);padding:4px 0 10px;min-width:0;border-radius:0;}
-    .sitenav.open .nav-drop a{padding:8px 38px;white-space:normal;}
-  }</style>
+.doc-header{display:none;}
+/* ---- light hero ---- */
+.doc-hero{background:var(--bg-2);border-bottom:2px solid var(--blue);}
+.doc-hero .wrap{padding:28px 28px 24px;display:flex;gap:30px;align-items:center;flex-wrap:wrap;}
+.doc-hero .ht{flex:1;min-width:280px;}
+.doc-hero .kicker,.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--blue);margin-bottom:8px;}
+.doc-hero h1{font-size:1.85rem;margin:0 0 8px;}
+.doc-hero p{max-width:72ch;font-size:1rem;color:var(--muted);margin:0;}
+.doc-hero .ver{margin-top:10px;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);}
+.doc-hero .hero-img{flex:0 0 210px;max-width:230px;}
+.doc-hero .hero-img img{width:100%;height:auto;}
+/* ---- layout + toc ---- */
+.layout{display:grid;grid-template-columns:226px 1fr;gap:36px;max-width:var(--wrap);margin:0 auto;padding:32px 28px 64px;}
+.toc{position:sticky;top:80px;align-self:start;border-left:2px solid var(--line);padding-left:16px;font-size:.85rem;max-height:calc(100vh - 104px);overflow:auto;}
+.toc h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--muted);margin:0 0 10px;}
+.toc a{display:block;color:var(--muted);padding:4px 0;border-left:2px solid transparent;margin-left:-18px;padding-left:16px;}
+.toc a:hover{color:var(--blue);border-left-color:var(--blue);text-decoration:none;}
+.content,.article{min-width:0;}
+.article{max-width:840px;margin:0 auto;padding:34px 28px 64px;}
+.content section{padding:4px 0 16px;border-top:1px solid var(--line);margin-top:20px;}
+.content section:first-child,.article section:first-child{border-top:none;margin-top:0;}
+.article section{padding:6px 0 14px;}
+.content h2,.article h2{font-size:1.32rem;margin:.3em 0 .5em;}
+.content h2 .num{color:var(--blue);margin-right:.5em;}
+.content h3,.article h3{font-size:1.06rem;color:var(--blue);margin:1.2em 0 .3em;}
+.content h4,.article h4{font-size:.96rem;color:var(--ink);margin:1em 0 .2em;}
+.content p,.content li,.article p,.article li{font-size:.95rem;color:var(--ink);}
+.content strong,.article strong{color:var(--blue-dark);}
+code{font-family:var(--font-mono);font-size:.85em;background:var(--bg-3);border:1px solid var(--line);padding:.1em .35em;border-radius:3px;color:var(--blue-dark);}
+/* ---- spec tables ---- */
+table.spec,table.matrix{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;border:1px solid var(--line);}
+table.spec th,table.matrix th{background:var(--bg-3);color:var(--blue-dark);font-family:var(--font-h);font-weight:700;text-align:left;padding:8px 11px;border-bottom:2px solid var(--blue);}
+table.spec td,table.matrix td{border-top:1px solid var(--line);padding:7px 11px;color:var(--ink);vertical-align:top;}
+table.spec tr:nth-child(even) td,table.matrix tr:nth-child(even) td{background:var(--bg-2);}
+table.spec td:first-child,table.matrix td:first-child{font-weight:600;color:var(--ink);}
+table.matrix th:first-child{background:var(--bg-3);}
+.modelthumb{display:block;height:44px;width:auto;margin:0 auto 5px;}
+th .modelthumb{filter:none;}
+/* ---- figures ---- */
+.fig{margin:18px 0;}
+.fig-ph{border:1px dashed #b9c4d4;border-radius:var(--r);background:var(--bg-2);padding:18px;display:flex;flex-direction:column;gap:7px;min-height:84px;justify-content:center;}
+.fig-tag{align-self:flex-start;font-family:var(--font-h);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 9px;border-radius:999px;}
+.fig-tag.keep{background:#e6f4f0;color:#0a7d6b;border:1px solid #b8e0d6;}
+.fig-tag.rebrand{background:#eef0ff;color:#5b54c9;border:1px solid #cdd1f5;}
+.fig-desc{color:var(--muted);font-size:.88rem;}
+.fig img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r);display:block;}
+.fig img.plain{border:none;}
+.fig figcaption{margin-top:6px;font-size:.82rem;color:var(--muted);font-style:italic;}
+/* ---- callouts ---- */
+.note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
+.note.warn{border-left-color:#c77e00;background:#fff7e9;}
+.note b{color:var(--blue-dark);}
+/* ---- footer (dark, so white logo shows) ---- */
+.doc-footer{background:#0e2038;border-top:1px solid var(--line);padding:30px 0;color:#9bb0cc;font-size:.82rem;}
+.doc-footer .wrap{max-width:var(--wrap);}
+.doc-footer .disclaimer{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:11px 15px;margin-bottom:16px;color:#c4d6ee;}
+.doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
+.doc-footer a{color:#9bb0cc;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+</style>
+
 
 
 
@@ -112,113 +141,105 @@ h1{font-family:var(--font-h);color:#fff;font-size:2.5rem;margin:0 0 12px;letter-
 @media(max-width:860px){.gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}.gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}.gfoot .gacad{text-align:left;}.gfoot .gsocial{justify-content:center;}.gfoot .gcompany ul{text-align:left;}.gfoot .gbottom{justify-content:center;text-align:center;}.gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}}
 </style>
 <style id="navgrplink">.sitenav .nav-grp-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer;}.sitenav .nav-grp-link:hover{color:#5fd0ff;}</style><!--seo-meta-->
-<meta name="description" content="HomeProducts &amp;#9662;Pulse &amp; Delay Generators&amp;#8250;HomeDigital Delay/Pulse&amp;#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&amp;#8250;Model 588BHigh-Curren">
-<link rel="canonical" href="https://bnc-draft-website.vercel.app/docs/awg-index.html">
-<meta property="og:type" content="website">
+<meta name="description" content="Owners of the discontinued Tektronix AWG7082C and AWG7000 series fight a secondary pulse and ringing that needs an external series resistor or capacitor. The Berkeley Nucleonics Model 685 delivers a clean, DC-coupled, 16-bit output with no conditioning, and generates a true double pulse only on demand.">
+<link rel="canonical" href="https://bnc-draft-website.vercel.app/docs/brief-awg-tektronix-awg7000-migration.html">
+<meta property="og:type" content="article">
 <meta property="og:site_name" content="Berkeley Nucleonics">
-<meta property="og:title" content="Arbitrary Waveform Generator Documentation | Berkeley Nucleonics">
-<meta property="og:description" content="HomeProducts &amp;#9662;Pulse &amp; Delay Generators&amp;#8250;HomeDigital Delay/Pulse&amp;#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&amp;#8250;Model 588BHigh-Curren">
-<meta property="og:url" content="https://bnc-draft-website.vercel.app/docs/awg-index.html">
-<meta property="og:image" content="https://bnc-draft-website.vercel.app/figures/home/hero.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Arbitrary Waveform Generator Documentation | Berkeley Nucleonics">
-<meta name="twitter:description" content="HomeProducts &amp;#9662;Pulse &amp; Delay Generators&amp;#8250;HomeDigital Delay/Pulse&amp;#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&amp;#8250;Model 588BHigh-Curren">
-<meta name="twitter:image" content="https://bnc-draft-website.vercel.app/figures/home/hero.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Arbitrary Waveform Generator Documentation", "description": "HomeProducts &#9662;Pulse & Delay Generators&#8250;HomeDigital Delay/Pulse&#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&#8250;Model 588BHigh-Curren", "url": "https://bnc-draft-website.vercel.app/docs/awg-index.html", "isPartOf": {"@type": "WebSite", "name": "Berkeley Nucleonics", "url": "https://bnc-draft-website.vercel.app"}}</script>
+<meta property="og:title" content="Retire the Tektronix AWG7000 Series | Berkeley Nucleonics">
+<meta property="og:description" content="Owners of the discontinued Tektronix AWG7082C and AWG7000 series fight a secondary pulse and ringing that needs an external series resistor or capacitor. The Berkeley Nucleonics Model 685 delivers a clean, DC-coupled, 16-bit output with no conditioning, and generates a true double pulse only on demand.">
+<meta property="og:url" content="https://bnc-draft-website.vercel.app/docs/brief-awg-tektronix-awg7000-migration.html">
 <!--/seo-meta-->
-<style id="rowthumb-css">
-.row .type.thumb{display:flex;align-items:center;justify-content:center;}
-.rowthumb{max-height:46px;max-width:104px;width:auto;height:auto;object-fit:contain;display:block;opacity:0;will-change:transform;}
-.rowthumb.in{animation:thumbland .62s cubic-bezier(.5,1.55,.5,1) both;}
-@keyframes thumbland{0%{opacity:0;transform:translateY(-16px) scale(.88);}55%{opacity:1;transform:translateY(4px) scale(1.04);}74%{transform:translateY(-2px) scale(.99);}100%{opacity:1;transform:translateY(0) scale(1);}}
-@media(prefers-reduced-motion:reduce){.rowthumb{opacity:1;}.rowthumb.in{animation:none;}}
-</style>
 </head>
 <body>
 <header class="sitenav"><div class="sitenav-inner">
   <a class="sitenav-logo" href="../home.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
   <nav class="sitenav-menu"><div class="nav-item"><a href="../home.html">Home</a></div><div class="nav-item"><a class="nav-trigger">Products &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../pdg-home.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../pdg-home.html" target="_blank" rel="noopener">Home</a><div class="nav-grp3">Digital Delay/Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-525-datasheet.html" target="_blank" rel="noopener">Model 525</a><a href="bnc-model-575-datasheet.html" target="_blank" rel="noopener">Model 575</a><a href="bnc-model-577-datasheet.html" target="_blank" rel="noopener">Model 577</a><a href="bnc-model-588-datasheet.html" target="_blank" rel="noopener">Model 588</a><a href="bnc-model-725-datasheet.html" target="_blank" rel="noopener">Model 725</a></div></div><div class="nav-grp3">High-Density Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-588b-datasheet.html" target="_blank" rel="noopener">Model 588B</a></div></div><div class="nav-grp3">High-Current<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-507-datasheet.html" target="_blank" rel="noopener">Model 507</a><a href="bnc-model-508-datasheet.html" target="_blank" rel="noopener">Model 508</a></div></div><div class="nav-grp3">Femtosecond Delay<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-745t-datasheet.html" target="_blank" rel="noopener">Model 745T</a></div></div><div class="nav-grp3">High-Performance Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-765-datasheet.html" target="_blank" rel="noopener">Model 765</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">Model 765-HV</a></div></div><a href="pdg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rfsg-home.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../rfsg-home.html" target="_blank" rel="noopener">Home</a><div class="nav-grp3">Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-835-datasheet.html" target="_blank" rel="noopener">Model 835</a><a href="bnc-model-845-datasheet.html" target="_blank" rel="noopener">Model 845</a><a href="bnc-model-855b-datasheet.html" target="_blank" rel="noopener">Model 855B</a><a href="bnc-model-865b-datasheet.html" target="_blank" rel="noopener">Model 865B</a><a href="bnc-model-870a-datasheet.html" target="_blank" rel="noopener">Model 870A</a><a href="bnc-model-871-datasheet.html" target="_blank" rel="noopener">Model 871</a><a href="bnc-model-805sg-datasheet.html" target="_blank" rel="noopener">Model 805-SG</a><a href="bnc-model-845oem-datasheet.html" target="_blank" rel="noopener">Model 845-OEM</a><a href="bnc-rfs-1000-datasheet.html" target="_blank" rel="noopener">RFS-1000</a></div></div><div class="nav-grp3">Synthesizers &amp; Sources<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-805m-datasheet.html" target="_blank" rel="noopener">Model 805-M</a><a href="bnc-model-825m-datasheet.html" target="_blank" rel="noopener">Model 825-M</a><a href="bnc-model-845m-datasheet.html" target="_blank" rel="noopener">Model 845-M</a><a href="bnc-model-866m-datasheet.html" target="_blank" rel="noopener">Model 866-M</a><a href="bnc-model-865bm-datasheet.html" target="_blank" rel="noopener">Model 865B-M</a><a href="bnc-model-865bm-40x-datasheet.html" target="_blank" rel="noopener">Model 865B-M-40-X</a></div></div><div class="nav-grp3">Vector Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-875-datasheet.html" target="_blank" rel="noopener">Model 875</a></div></div><div class="nav-grp3">RF USB Power Sensors<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-12100-power-sensor-datasheet.html" target="_blank" rel="noopener">Model 12100 Series Power Sensors</a></div></div><a href="rfsg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../scintiq-home.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../scintiq-home.html" target="_blank" rel="noopener">ScintIQ Home</a><a href="bnc-scintiq-naitl-datasheet.html" target="_blank" rel="noopener">NaI(Tl)</a><a href="bnc-scintiq-csitl-datasheet.html" target="_blank" rel="noopener">CsI(Tl)</a><a href="bnc-scintiq-labr3-datasheet.html" target="_blank" rel="noopener">LaBr3(Ce)</a><a href="bnc-scintiq-cebr3-datasheet.html" target="_blank" rel="noopener">CeBr3</a><a href="bnc-scintiq-lbc-datasheet.html" target="_blank" rel="noopener">LBC</a><a href="bnc-scintiq-sri2eu-datasheet.html" target="_blank" rel="noopener">SrI2(Eu)</a><a href="bnc-scintiq-cllbc-datasheet.html" target="_blank" rel="noopener">CLLBC</a><a href="bnc-scintiq-clyc-datasheet.html" target="_blank" rel="noopener">CLYC:Ce</a><a href="bnc-scintiq-baf2-datasheet.html" target="_blank" rel="noopener">BaF2</a><a href="bnc-scintiq-yapce-datasheet.html" target="_blank" rel="noopener">YAP:Ce</a><a href="bnc-scintiq-yag-datasheet.html" target="_blank" rel="noopener">YAG:Ce</a><a href="bnc-scintiq-gaggce-datasheet.html" target="_blank" rel="noopener">GAGG:Ce</a><a href="bnc-scintiq-lyso-datasheet.html" target="_blank" rel="noopener">LYSO</a><a href="bnc-scintiq-bgo-datasheet.html" target="_blank" rel="noopener">BGO</a><a href="scintiq-material-comparison.html" target="_blank" rel="noopener">Material Comparison Tool</a><a href="scintiq-selector.html" target="_blank" rel="noopener">Detector Selector</a><a href="scintiq-configurator.html" target="_blank" rel="noopener">Detector Configurator</a><a href="scintiq-index.html" target="_blank" rel="noopener">All ScintIQ Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../awg-home.html" target="_blank" rel="noopener">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../awg-home.html" target="_blank" rel="noopener">AWG Home</a><a href="bnc-awg-686-datasheet.html" target="_blank" rel="noopener">Model 686</a><a href="bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685</a><a href="bnc-awg-685c-datasheet.html" target="_blank" rel="noopener">Model 685C</a><a href="bnc-awg-675-datasheet.html" target="_blank" rel="noopener">Model 675</a><a href="bnc-awg-676-datasheet.html" target="_blank" rel="noopener">Model 676</a><a href="bnc-awg-670c-datasheet.html" target="_blank" rel="noopener">Model 670C</a><a href="bnc-awg-645-datasheet.html" target="_blank" rel="noopener">Model 645</a><a href="bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener">Model A2255</a><a href="bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener">Model A2085</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../riid-home.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../riid-home.html" target="_blank" rel="noopener">Isotope ID Home</a><div class="nav-grp3">Handheld<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-sam-940-plus-datasheet.html" target="_blank" rel="noopener">SAM 940+</a><a href="bnc-sam-940-datasheet.html" target="_blank" rel="noopener">SAM 940</a><a href="bnc-sam-950-datasheet.html" target="_blank" rel="noopener">SAM 950</a><a href="bnc-model-907-datasheet.html" target="_blank" rel="noopener">Model 907</a><a href="bnc-model-951-datasheet.html" target="_blank" rel="noopener">Model 951</a><a href="bnc-pm1703gna-datasheet.html" target="_blank" rel="noopener">Model 1703</a><a href="bnc-metrad-1-datasheet.html" target="_blank" rel="noopener">MetRad 1</a></div></div><div class="nav-grp3">Backpack/Vehicle/Lab<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-sampack-120-datasheet.html" target="_blank" rel="noopener">SAMpack 120</a><a href="bnc-sammobile-150-datasheet.html" target="_blank" rel="noopener">SAMmobile 150</a><a href="bnc-model-960-datasheet.html" target="_blank" rel="noopener">Model 960 Monitoring System</a><a href="bnc-model-970-mca-datasheet.html" target="_blank" rel="noopener">Model 970 MCA</a><a href="bnc-model-971-datasheet.html" target="_blank" rel="noopener">Model 971</a></div></div><a href="riid-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../dei-home.html" target="_blank" rel="noopener">High Power/Current Pulsers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../dei-home.html" target="_blank" rel="noopener">DEI Pulsers Home</a><a href="bnc-dei-pvx-4141-datasheet.html" target="_blank" rel="noopener">PVX-4141 Pulse Generator</a><a href="bnc-dei-pvx-4110-datasheet.html" target="_blank" rel="noopener">PVX-4110 (±10 kV)</a><a href="bnc-dei-pvx-4000-datasheet.html" target="_blank" rel="noopener">PVX-4000 Series</a><a href="bnc-dei-pcx-7421-datasheet.html" target="_blank" rel="noopener">PCX-7421 Laser Diode Driver</a><a href="bnc-dei-pco-6131-datasheet.html" target="_blank" rel="noopener">PCO-6131 (125 A OEM)</a><a href="bnc-dei-pcm-7700-datasheet.html" target="_blank" rel="noopener">PCM-7700 (200 A)</a><a href="bnc-dei-ptn-series-datasheet.html" target="_blank" rel="noopener">PTN-Series HC Supplies</a><a href="dei-index.html" target="_blank" rel="noopener">All DEI Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../index-bold.html" target="_blank" rel="noopener">ICX-FieldHawk Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../index-bold.html" target="_blank" rel="noopener">ICX Home</a><a href="bnc-icx-fieldhawk-handheld-manual.html" target="_blank" rel="noopener">ICX-FieldHawk Handheld</a><a href="bnc-icx-fieldhawk-rugged-manual.html" target="_blank" rel="noopener">ICX-FieldHawk-R Rugged</a><a href="bnc-icx-fieldhawk-usb-san-manual.html" target="_blank" rel="noopener">ICX-FieldHawk-U USB</a><a href="bnc-ant-106-directional-antenna-manual.html" target="_blank" rel="noopener">ANT-100G Antenna (accessory)</a><a href="bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener">Product Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../pvp-home.html" target="_blank" rel="noopener">PVP High Voltage Power Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../pvp-home.html" target="_blank" rel="noopener">PVP-Series Home</a><a href="bnc-pvp-hv-power-supply-manual.html" target="_blank" rel="noopener">PVP-Series Summary</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Application Briefs &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-pdg-physics-timing.html" target="_blank" rel="noopener">Physics &amp; Accelerator Timing</a><a href="brief-pdg-laser-qswitch-pockels.html" target="_blank" rel="noopener">Laser Q-Switch &amp; Pockels Cell</a><a href="brief-pdg-lidar-ranging.html" target="_blank" rel="noopener">LiDAR &amp; Time-of-Flight Ranging</a><a href="brief-pdg-quantum-coldatom.html" target="_blank" rel="noopener">Quantum &amp; Cold-Atom Experiments</a><a href="brief-pdg-ate-production.html" target="_blank" rel="noopener">Automated Test &amp; Production</a><a href="brief-pdg-medical-imaging-gating.html" target="_blank" rel="noopener">Medical Imaging &amp; Gating</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rfsg-radar-ew.html" target="_blank" rel="noopener">Radar &amp; Electronic Warfare</a><a href="brief-rfsg-satcom.html" target="_blank" rel="noopener">SATCOM &amp; Ground Station</a><a href="brief-rfsg-quantum-control.html" target="_blank" rel="noopener">Quantum &amp; Qubit Control</a><a href="brief-rfsg-wireless-5g6g.html" target="_blank" rel="noopener">5G / 6G &amp; Wireless Test</a><a href="brief-rfsg-ate-receiver-test.html" target="_blank" rel="noopener">ATE &amp; Receiver Test</a><a href="brief-rfsg-aerospace-defense.html" target="_blank" rel="noopener">Aerospace &amp; Defense</a><a href="brief-rfsg-antenna-emc.html" target="_blank" rel="noopener">Antenna &amp; EMC Test</a><a href="brief-power-sensor-measurement-principles.html" target="_blank" rel="noopener">RF Power Sensor: Measurement Principles</a><a href="brief-power-sensor-essential-tools.html" target="_blank" rel="noopener">RF Power Sensors: Essential Tools</a><a href="brief-power-sensor-meters-vs-sensors.html" target="_blank" rel="noopener">Power Meters and Power Sensors</a><a href="brief-power-sensor-radar-satellite.html" target="_blank" rel="noopener">Power Sensors: Radar & Satellite</a><a href="brief-power-sensor-mri.html" target="_blank" rel="noopener">A Closer Look at MRI</a><a href="brief-power-sensor-temperature.html" target="_blank" rel="noopener">12100 Power Sensor Temperature Sensitivity</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-scint-homeland-security.html" target="_blank" rel="noopener">Homeland Security &amp; Threat Detection</a><a href="brief-scint-medical-imaging.html" target="_blank" rel="noopener">Medical Imaging</a><a href="brief-scint-environmental-monitoring.html" target="_blank" rel="noopener">Environmental Monitoring</a><a href="brief-scint-high-energy-physics.html" target="_blank" rel="noopener">High-Energy &amp; Nuclear Physics</a><a href="brief-scint-neutron-detection.html" target="_blank" rel="noopener">Neutron Detection</a><a href="brief-scint-well-logging-industrial.html" target="_blank" rel="noopener">Well Logging &amp; Industrial</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-hel-icf-timing.html" target="_blank" rel="noopener">HEL / ICF Front-End Timing</a><a href="brief-awg-lidar-testing.html" target="_blank" rel="noopener">LiDAR Testing</a><a href="brief-awg-laser-diode-pulse.html" target="_blank" rel="noopener">Pulsed Laser Diode Test</a><a href="brief-awg-quantum.html" target="_blank" rel="noopener">Quantum: QKD &amp; Sensing</a><a href="brief-awg-radar-ew.html" target="_blank" rel="noopener">Radar &amp; EW Simulation</a><a href="brief-awg-photonics.html" target="_blank" rel="noopener">Optics &amp; Photonics</a><a href="brief-awg-mri.html" target="_blank" rel="noopener">MRI &amp; Medical Imaging</a><a href="brief-awg-radar-fires.html" target="_blank" rel="noopener">Radar &amp; Fire-Control</a><a href="brief-awg-spg.html" target="_blank" rel="noopener">Serial Pattern Generation</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-riid-homeland-security.html" target="_blank" rel="noopener">Homeland Security &amp; Border</a><a href="brief-riid-first-responders-hazmat.html" target="_blank" rel="noopener">First Responders &amp; HazMat</a><a href="brief-riid-nuclear-power.html" target="_blank" rel="noopener">Nuclear Power Facilities</a><a href="brief-riid-scrap-metal.html" target="_blank" rel="noopener">Scrap Metal &amp; Recycling</a><a href="brief-riid-naval-maritime.html" target="_blank" rel="noopener">Naval &amp; Maritime</a><a href="brief-riid-environmental.html" target="_blank" rel="noopener">Environmental Monitoring</a><a href="brief-riid-secondary-screening.html" target="_blank" rel="noopener">Secondary Screening &amp; Reachback</a></div></div><div class="nav-grp2">High Power/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-dei-mass-spectrometry.html" target="_blank" rel="noopener">Time-of-Flight Mass Spectrometry</a><a href="brief-dei-pockels-q-switch.html" target="_blank" rel="noopener">Pockels Cell &amp; Q-Switch Driving</a><a href="brief-dei-laser-diode-arrays.html" target="_blank" rel="noopener">Laser Diode &amp; Array Driving</a><a href="brief-dei-lidar-rangefinding.html" target="_blank" rel="noopener">LiDAR &amp; Rangefinding</a><a href="brief-dei-directed-energy-hel.html" target="_blank" rel="noopener">Directed-Energy &amp; HEL Systems</a><a href="brief-dei-accelerators-kickers.html" target="_blank" rel="noopener">Accelerators &amp; Beam Kickers</a><a href="brief-dei-eo-modulation-gating.html" target="_blank" rel="noopener">Electro-Optic Modulation &amp; Gating</a><a href="brief-dei-hv-test-detector-bias.html" target="_blank" rel="noopener">HV Test &amp; Detector Biasing</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rf-geolocation-mapping.html" target="_blank" rel="noopener">RF Geolocation &amp; Mapping</a><a href="brief-5g-cellular-coverage.html" target="_blank" rel="noopener">5G &amp; Cellular Coverage</a><a href="brief-spectrum-monitoring.html" target="_blank" rel="noopener">Spectrum Monitoring</a><a href="brief-ew-sigint.html" target="_blank" rel="noopener">EW &amp; SIGINT</a><a href="brief-drone-spectrum-monitoring.html" target="_blank" rel="noopener">Drone Spectrum Monitoring</a><a href="brief-rd-university-kits.html" target="_blank" rel="noopener">R&amp;D &amp; University Kits</a><a href="brief-aerospace-defense-radar.html" target="_blank" rel="noopener">Aerospace, Defense &amp; Radar</a><a href="brief-wireless-5g6g-validation.html" target="_blank" rel="noopener">Wireless &amp; 5G/6G Validation</a><a href="brief-emi-emc-precompliance.html" target="_blank" rel="noopener">EMI / EMC Pre-Compliance</a><a href="brief-physics-synthesizer.html" target="_blank" rel="noopener">Physics &amp; Synthesizer Diagnostics</a></div></div><div class="nav-grp2">PVP High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-pvp-semiconductor-hv-test.html" target="_blank" rel="noopener">Semiconductor HV Test</a><a href="brief-pvp-emobility-ev-test.html" target="_blank" rel="noopener">E-Mobility / EV Test</a><a href="brief-pvp-double-pulse.html" target="_blank" rel="noopener">Double-Pulse Test</a><a href="brief-pvp-end-of-line-test.html" target="_blank" rel="noopener">End-of-Line Test</a><a href="brief-pvp-calibration-metrology.html" target="_blank" rel="noopener">Calibration &amp; Metrology</a><a href="brief-pvp-rd-hv-lab.html" target="_blank" rel="noopener">R&amp;D / HV Lab</a><a href="brief-pvp-capacitor-charging.html" target="_blank" rel="noopener">Capacitor Charging / Pulsed Power</a><a href="brief-pvp-mass-spectrometry.html" target="_blank" rel="noopener">Mass Spectrometry</a><a href="brief-pvp-xray-systems.html" target="_blank" rel="noopener">X-Ray Generation Systems</a><a href="brief-pvp-ebeam-ion-beam.html" target="_blank" rel="noopener">Electron-Beam &amp; Ion-Beam</a><a href="brief-pvp-electrostatic-coating.html" target="_blank" rel="noopener">Electrostatic &amp; Coating</a><a href="brief-pvp-detectors-nuclear.html" target="_blank" rel="noopener">Detectors &amp; Nuclear</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Technical Notes &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-pdg-delay-vs-pulse.html" target="_blank" rel="noopener">Delay vs Pulse Generators</a><a href="article-pdg-jitter-timing-accuracy.html" target="_blank" rel="noopener">Jitter, Resolution &amp; Timing Accuracy</a><a href="article-pdg-triggering-sync.html" target="_blank" rel="noopener">Triggering &amp; Synchronization</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-rfsg-phase-noise.html" target="_blank" rel="noopener">Understanding Phase Noise</a><a href="article-rfsg-switching-speed.html" target="_blank" rel="noopener">Frequency Switching Speed</a><a href="article-rfsg-vector-modulation.html" target="_blank" rel="noopener">Vector Modulation &amp; I/Q</a><a href="article-rfsg-choosing-signal-generator.html" target="_blank" rel="noopener">How to Choose a Signal Generator</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-scint-choosing-a-scintillator.html" target="_blank" rel="noopener">How to Choose a Scintillator</a><a href="article-scint-neutron-gamma-discrimination.html" target="_blank" rel="noopener">Neutron / Gamma Discrimination</a><a href="article-scint-sipm-vs-pmt-readout.html" target="_blank" rel="noopener">SiPM vs PMT Readout</a><a href="article-scint-energy-resolution-explained.html" target="_blank" rel="noopener">Understanding Energy Resolution</a><a href="http://www.berkeleynucleonics.com/books/scintillators/index.html" target="_blank" rel="noopener">Nuts &amp; Bolts of Scintillation Detectors</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-awg-685-optics-appnote.html" target="_blank" rel="noopener">685 AWGs in Optics &amp; Photonics</a><a href="article-awg-685-optics-photonics-lasers.html" target="_blank" rel="noopener">685 for Optics, Photonics &amp; Lasers</a><a href="article-awg-digital-option.html" target="_blank" rel="noopener">ArbRider Digital Option</a><a href="http://www.berkeleynucleonics.com/books/arbitrary-waveform/index.html" target="_blank" rel="noopener">Nuts &amp; Bolts of Arbitrary Waveform Generators</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-riid-how-to-choose.html" target="_blank" rel="noopener">How to Choose an Isotope Identifier</a><a href="article-riid-detector-materials.html" target="_blank" rel="noopener">NaI vs LaBr3 vs CeBr3 Detectors</a><a href="article-riid-neutron-detection.html" target="_blank" rel="noopener">Neutron Detection Explained</a><a href="http://www.berkeleynucleonics.com/books/riids-for-hazmat/index.html" target="_blank" rel="noopener">Nuts &amp; Bolts: RIIDs for HazMat</a></div></div><div class="nav-grp2">High Power/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-dei-choosing-pulse-generator.html" target="_blank" rel="noopener">Selecting an HV Pulse Generator</a><a href="article-dei-driving-laser-diodes.html" target="_blank" rel="noopener">Driving Laser Diodes Safely</a><a href="article-dei-capacitive-load-pulsing.html" target="_blank" rel="noopener">Capacitive-Load Pulsing</a><a href="http://www.berkeleynucleonics.com/books/high-power-pulse/index.html" target="_blank" rel="noopener">Nuts &amp; Bolts of High Power</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="bnc-how-to-choose-handheld-analyzer.html" target="_blank" rel="noopener">How to Choose a Handheld Analyzer</a><a href="article-rtsa-practical-guide.html" target="_blank" rel="noopener">RTSA Practical Guide</a><a href="article-ew-rtsa.html" target="_blank" rel="noopener">RTSA for Electronic Warfare</a><a href="http://www.berkeleynucleonics.com/books/realtime-spectrum-analyzers/index.html" target="_blank" rel="noopener">Nuts &amp; Bolts of RTSAs</a></div></div><div class="nav-grp2">PVP High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-pvp-choosing-hv-supply.html" target="_blank" rel="noopener">Choosing an HV Supply</a><a href="article-pvp-polarity-floating.html" target="_blank" rel="noopener">Polarity &amp; Floating Outputs</a><a href="article-pvp-ripple-regulation.html" target="_blank" rel="noopener">Ripple &amp; Regulation</a><a href="http://www.berkeleynucleonics.com/books/high-power-pulse/index.html" target="_blank" rel="noopener">Nuts &amp; Bolts of High Power</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Support &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Product Documentation<span class="nc">&#8250;</span><div class="nav-sub"><a href="index.html" target="_blank" rel="noopener">ICX-FieldHawk Documentation</a><a href="pvp-index.html" target="_blank" rel="noopener">PVP-Series Documentation</a><a href="awg-index.html" target="_blank" rel="noopener">Waveform Generator Documentation</a><a href="dei-index.html" target="_blank" rel="noopener">DEI Pulsers Documentation</a><a href="riid-index.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection Documentation</a><a href="scintiq-index.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ) Documentation</a><a href="pdg-index.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators Documentation</a><a href="rfsg-index.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators Documentation</a></div></div><div class="nav-grp2">Service &amp; Resources<span class="nc">&#8250;</span><div class="nav-sub"><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a><a href="../contact.html" target="_blank" rel="noopener">Contact Regional Representative</a><a href="software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a><a href="../obsolete-products.html">Obsolete Product Support</a></div></div><div class="nav-grp2">Frequently Asked Questions<span class="nc">&#8250;</span><div class="nav-sub"><a href="../faq.html">View all FAQs</a><a href="../faq.html#cat-pdg">Pulse &amp; Delay Generators</a><a href="../faq.html#cat-awg">Waveform Generators</a><a href="../faq.html#cat-rf">RF &amp; Microwave</a><a href="../faq.html#cat-pulsed-power">Pulsed Power</a><a href="../faq.html#cat-radiation">Radiation Detection &amp; Isotope Identification</a><a href="../faq.html#cat-scintillation">Scintillation Detectors</a><a href="../faq.html#cat-scientific">BNC Scientific</a><a href="../faq.html#cat-ordering">Ordering &amp; Contact</a></div></div></div></div></nav>
-  <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search…" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
+  <a class="sitenav-cta" href="../index-bold.html#contact" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search…" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 
-<section class="hero"><div class="wrap">
- <a class="reqpdf" href="../contact.html" target="_blank" rel="noopener" onclick="window.open('../contact.html?notes='+encodeURIComponent('Please send a PDF or print copy of: '+location.href),'_blank');return false;">Request PDF / Print Copy</a>
- <div class="kicker">Documentation</div>
- <h1>Arbitrary Waveform Generator Documentation</h1>
- <p>Data sheets, user manuals, software, application briefs, and technical references for the Berkeley Nucleonics arbitrary waveform generator line, from the 125 MS/s Model 645 to the 20 GS/s Model 686.</p>
+<section class="doc-hero"><div class="wrap">
+  <div class="ht">
+    <div class="kicker">Application Brief &middot; AWG Migration</div>
+    <h1>Still fighting the double pulse on a Tektronix AWG7000?</h1>
+    <p>If you run a Tektronix AWG7082C, you know the workaround: a series resistor or a capacitor tacked onto the output to tame a secondary pulse and the ringing that rides with it. The Berkeley Nucleonics Model 685 puts a clean edge on the bench without the band-aid, and it produces a true double pulse only when you ask for one. The AWG7000 series is also discontinued, so that workaround is now your long-term support plan. It does not have to be.</p>
+    <div class="ver">Berkeley Nucleonics Model 685 ArbRider AWG</div>
+  </div>
+  <div class="hero-img"><img src="../figures/awg-685-photo.png" alt="Berkeley Nucleonics Model 685 arbitrary waveform generator"></div>
 </div></section>
 
-<div class="wrap">
+<main class="article">
 
- <section class="sec">
-  <h2>Product data sheets</h2>
-  <p class="sub">Specifications and overview for every model in the line.</p>
-  <div class="list">
-   <a class="row g" href="bnc-awg-686-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-686.png" alt="Model 686" loading="lazy"></div><div class="ctext"><h3>Model 686</h3><p>2/4 ch &middot; 20 GS/s &middot; 10 GHz &middot; 14-bit. The fastest 14-bit AWG in the line.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-685-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-685.png" alt="Model 685" loading="lazy"></div><div class="ctext"><h3>Model 685</h3><p>2/4/8 ch &middot; 6.16 GS/s &middot; 10 GHz &middot; 16-bit.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-685c-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-685c.png" alt="Model 685C" loading="lazy"></div><div class="ctext"><h3>Model 685C</h3><p>2/4/8 ch &middot; 3 GS/s &middot; 2 GHz &middot; 16-bit.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-675-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-675.png" alt="Model 675" loading="lazy"></div><div class="ctext"><h3>Model 675</h3><p>2/4/8 ch &middot; 1.2 GS/s &middot; 318 MHz &middot; 16-bit, three-mode Rider.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-676-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-676.png" alt="Model 676" loading="lazy"></div><div class="ctext"><h3>Model 676</h3><p>Rider series &middot; 16-bit arbitrary waveform and function generator.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-670c-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-670c.png" alt="Model 670C" loading="lazy"></div><div class="ctext"><h3>Model 670C</h3><p>2/4 ch &middot; 600 MS/s &middot; 318 MHz &middot; 16-bit.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-645-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/awg-645.png" alt="Model 645" loading="lazy"></div><div class="ctext"><h3>Model 645</h3><p>1 ch &middot; 125 MS/s &middot; 20 MHz &middot; 16-bit, WaveCrafter.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener"><div class="type">Product Data Sheet</div><div class="ctext"><h3>Model A2255</h3><p>2 ch &middot; 1.25 GS/s &middot; 250 MHz &middot; 14-bit, compact.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener"><div class="type">Product Data Sheet</div><div class="ctext"><h3>Model A2085</h3><p>2 ch &middot; 1.25 GS/s &middot; 80 MHz &middot; 14-bit, compact.</p></div><div class="open">Open &rarr;</div></a>
-  </div>
- </section>
+<section>
+  <div class="kicker">The problem</div>
+  <h2>The artifact you have learned to live with</h2>
+  <p>You program one clean pulse. The output hands you two. There is the pulse you wanted, then a smaller ghost of it a few nanoseconds later, wrapped in ringing. The fix that gets passed around the lab is always the same: a series resistor at the output, or a capacitor in line, to damp the reflection and swallow the second pulse. It mostly works. It also reshapes your edge, costs you amplitude, and drops one more uncalibrated part between the instrument and the device under test.</p>
+  <p>That is not how a bench should feel in 2026. And on the AWG7082C it is now permanent, because the AWG7000 series has been discontinued. New units are gone. What is left is the used market, the rental fleet, and a soldered-on workaround standing in for a support contract.</p>
+<div class="fig"><svg viewBox="0 0 640 200" width="100%" style="max-width:640px;display:block;margin:6px auto 2px;" role="img" aria-label="Legacy AWG7000 output with a secondary pulse and ringing next to a clean Model 685 pulse">
+<rect x="0" y="0" width="640" height="200" fill="#f4f7fb"/>
+<line x1="20" y1="150" x2="300" y2="150" stroke="#b9c4d4" stroke-width="1"/>
+<line x1="340" y1="150" x2="620" y2="150" stroke="#b9c4d4" stroke-width="1"/>
+<text x="160" y="30" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#5b1414">Legacy AWG7000 output</text>
+<text x="480" y="30" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#0a7d6b">Model 685 output</text>
+<path d="M20 150 L70 150 L70 60 L110 60 L110 150 L150 150 L150 105 L175 105 L175 150 L200 150 Q210 138 220 150 Q228 160 236 150 L300 150" fill="none" stroke="#c0392b" stroke-width="2.4"/>
+<text x="160" y="182" text-anchor="middle" font-family="Arial" font-size="11" fill="#5b6677">Wanted pulse, then a ghost pulse and ringing</text>
+<path d="M340 150 L420 150 L420 60 L470 60 L470 150 L620 150" fill="none" stroke="#0a7d6b" stroke-width="2.4"/>
+<text x="480" y="182" text-anchor="middle" font-family="Arial" font-size="11" fill="#5b6677">One clean edge, flat baseline, no conditioning</text>
+</svg><figcaption style="text-align:center;color:#5b6677;font-size:.82rem;font-style:italic;margin-top:2px;">A single programmed pulse: the artifact teams damp with external passives, next to a clean DC-coupled edge.</figcaption></div>
+</section>
 
- <section class="sec">
-  <h2>User manuals</h2>
-  <p class="sub">Operating manuals. Additional user and programming manuals are on the downloads page.</p>
-  <div class="list">
-   <a class="row g" href="bnc-awg-686-user-manual.html" target="_blank" rel="noopener"><div class="type">User Manual</div><div class="ctext"><h3>Model 686 TrueArb User Manual</h3><p>Full operating manual for the Model 686 in TrueArb mode. Preliminary HTML draft.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="bnc-awg-675-user-manual.html" target="_blank" rel="noopener"><div class="type">User Manual</div><div class="ctext"><h3>Model 675 TrueArb User Manual</h3><p>Full operating manual for the Model 675. Preliminary HTML draft.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="https://www.berkeleynucleonics.com/downloads/" target="_blank" rel="noopener"><div class="type">Reference</div><div class="ctext"><h3>All User &amp; Programming Manuals</h3><p>Every model user manual and programming manual on the Berkeley Nucleonics downloads page.</p></div><div class="open">Open &rarr;</div></a>
-  </div>
- </section>
+<section>
+  <div class="kicker">Root cause</div>
+  <h2>Why the second pulse shows up</h2>
+  <p>The AWG7000 series reaches its top bandwidth through a low-amplitude, AC-coupled direct-DAC path. Two things follow from that design. Fast edges into anything short of a perfect 50 ohm termination reflect, and a reflection arriving back at a fast output reads on your scope as a secondary pulse. An AC-coupled path also carries its own baseline behavior, so droop and overshoot ride along with the edge. Teams running these units in the field land on the same answer over and over: add a series resistor or a blocking capacitor to absorb the reflection and quiet the ringing.</p>
+  <p>The passive band-aid treats the symptom. It cannot give you back a clean, full-amplitude, DC-coupled edge, because the output stage was never built to deliver one.</p>
+</section>
 
- <section class="sec">
-  <h2>Software &amp; SDKs</h2>
-  <p class="sub">Control software and development kits. These links open the Berkeley Nucleonics downloads.</p>
-  <div class="list">
-   <a class="row " href="https://www.berkeleynucleonics.com/download/38602/" target="_blank" rel="noopener"><div class="type">Software</div><div class="ctext"><h3>Model 686 SDK</h3><p>Software development kit for the Model 686.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row " href="https://www.berkeleynucleonics.com/download/30753/" target="_blank" rel="noopener"><div class="type">Software</div><div class="ctext"><h3>Model 685 SDK</h3><p>Software development kit for the Model 685.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row " href="https://www.berkeleynucleonics.com/download/30746/" target="_blank" rel="noopener"><div class="type">Software</div><div class="ctext"><h3>Model 676 Simple Rider SDK</h3><p>Simple Rider control SDK (670C / 675 / 676).</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row " href="https://www.berkeleynucleonics.com/download/30750/" target="_blank" rel="noopener"><div class="type">Software</div><div class="ctext"><h3>Model 676 Expert Rider SDK</h3><p>Expert Rider control SDK.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row " href="https://www.berkeleynucleonics.com/download/30782/" target="_blank" rel="noopener"><div class="type">Software</div><div class="ctext"><h3>Model 645 WaveCrafter</h3><p>WaveCrafter software for the Model 645.</p></div><div class="open">Open &rarr;</div></a>
-  </div>
- </section>
+<section>
+  <div class="kicker">The fix</div>
+  <h2>The Model 685 puts a clean edge on the bench</h2>
+  <p>The Berkeley Nucleonics Model 685 drives a DC-coupled, 50 ohm, 5 Vpp output directly. Rise and fall times come in under 300 ps, jitter under 2 ps, and the baseline sits flat where you set it through a &plusmn;2.5 V offset range. No series resistor. No blocking capacitor. No ghost pulse to chase. The edge you program is the edge that reaches your device.</p>
+  <p>And the double pulse? The 685 makes one on purpose. A clean double pulse is a native waveform, alongside sine, square, ramp, pulse, Gaussian, noise, and fully arbitrary playback, so the shape that used to be a defect becomes a setting you dial in. Underneath it all sits 16-bit vertical resolution, which is where the 685 pulls decisively ahead: more levels, lower quantization noise, and pulse and step shapes the 8 to 10-bit AWG7000 path simply cannot render.</p>
+</section>
 
- <section class="sec">
-  <h2>Application briefs</h2>
-  <p class="sub">Where these generators go to work.</p>
-  <div class="list">
-   <a class="row p" href="brief-awg-tektronix-awg7000-migration.html" target="_blank" rel="noopener"><div class="type">Migration Brief</div><div class="ctext"><h3>Replace a Tektronix AWG7000 / AWG7082C</h3><p>End the double-pulse workaround: clean, DC-coupled, 16-bit output on the Model 685, with no series resistor or capacitor required.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-hel-icf-timing.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>HEL / ICF Front-End Timing</h3><p>Low-jitter master-clock timing and in-firmware pulse pre-compensation for high-energy-laser and fusion front ends.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-lidar-testing.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>LiDAR Testing</h3><p>Long, precisely timed multi-channel scenario emulation with deep memory and picosecond resolution.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-laser-diode-pulse.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Pulsed Laser Diode Test</h3><p>Sub-nanosecond shaped pulses and direct current drive in one instrument.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-quantum.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Quantum (QKD &amp; Sensing)</h3><p>Clean, repeatable pulse and waveform generation for quantum key distribution and sensing.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-radar-ew.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Radar &amp; EW Simulation</h3><p>Wideband, agile waveform synthesis for radar target and electronic-warfare emulation.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-photonics.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Optics &amp; Photonics</h3><p>Arbitrary shapes, fast edges, and tight timing for optics and photonics research.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-mri.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>MRI &amp; Medical Imaging</h3><p>Gradient and RF pulse generation and medical-imaging signal emulation.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-radar-fires.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Radar &amp; Fire-Control (FIRES)</h3><p>Radar target generation and fire-control / threat emulation.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="brief-awg-spg.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Serial Pattern Generation (SPG)</h3><p>Serial data, PRBS, and stress patterns for high-speed serial and digital test.</p></div><div class="open">Open &rarr;</div></a>
-  </div>
- </section>
+<section>
+  <div class="kicker">Side by side</div>
+  <h2>AWG7082C and Model 685</h2>
+  <table class="spec">
+    <tr><th>Specification</th><th>Tektronix AWG7082C</th><th>BNC Model 685</th></tr>
+    <tr><td>Product status</td><td>Discontinued; used and rental only</td><td>Current and supported</td></tr>
+    <tr><td>Vertical resolution</td><td>8 to 10-bit</td><td>16-bit</td></tr>
+    <tr><td>Output stage</td><td>Low-amplitude AC-coupled direct DAC, or amplified path; field workarounds for ringing</td><td>DC-coupled, 5 Vpp into 50 &#937;, &plusmn;2.5 V offset, no conditioning</td></tr>
+    <tr><td>Rise / fall time</td><td>Fast on the direct path, AC-coupled</td><td>&lt; 300 ps, DC-coupled</td></tr>
+    <tr><td>Jitter</td><td>Not specified here</td><td>&lt; 2 ps</td></tr>
+    <tr><td>Sample rate</td><td>8 GS/s (16 GS/s interleaved)</td><td>6.16 GS/s</td></tr>
+    <tr><td>Analog bandwidth</td><td>To ~3.2 GHz (to ~6 GHz with the wide-bandwidth option)</td><td>2 GHz</td></tr>
+    <tr><td>Channels</td><td>2</td><td>2, 4, or 8</td></tr>
+    <tr><td>Memory depth</td><td>32 Mpts</td><td>Up to 4 Gpts/channel</td></tr>
+    <tr><td>Double pulse</td><td>Unintended artifact to suppress</td><td>Native, clean, on demand</td></tr>
+  </table>
+  <p style="font-size:.85rem;color:#5b6677;">Model 685 figures are from the published Berkeley Nucleonics specification. AWG7082C figures are from published Tektronix documentation for the discontinued AWG7000 series. The AWG7082C leads on raw sample rate and direct-path bandwidth. For the pulse, timing, and signal-emulation work most AWG7000 owners actually run, 16-bit fidelity and a clean DC-coupled output matter more, and they end the double-pulse workaround for good. If your application genuinely needs more than 6 GS/s on a single channel, the wider ArbRider line has options worth a conversation.</p>
+</section>
 
- <section class="sec">
-  <h2>Technical notes</h2>
-  <p class="sub">Background reading on arbitrary waveform generation.</p>
-  <div class="list">
-      <a class="row p" href="article-awg-685-optics-appnote.html" target="_blank" rel="noopener"><div class="type">Technical Note</div><div class="ctext"><h3>Model 685 AWGs in Optics &amp; Photonics</h3><p>Application note: driving modulators and pulsed laser diodes with the Model 685.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="article-awg-685-optics-photonics-lasers.html" target="_blank" rel="noopener"><div class="type">Technical Note</div><div class="ctext"><h3>Model 685 Series AWGs for Optics, Photonics &amp; Lasers</h3><p>Optics, photonics, and laser drive techniques with the Model 685 series.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row p" href="article-awg-digital-option.html" target="_blank" rel="noopener"><div class="type">Technical Note</div><div class="ctext"><h3>ArbRider Series Digital Option</h3><p>The digital output option for the ArbRider series: LVDS pattern outputs, AT-DTTL8 / AT-LVDS-SMA8.</p></div><div class="open">Open &rarr;</div></a>
-   <a class="row g" href="http://www.berkeleynucleonics.com/books/arbitrary-waveform/index.html" target="_blank" rel="noopener"><div class="type">Reference</div><div class="ctext"><h3>Nuts &amp; Bolts of Arbitrary Waveform Generators</h3><p>Berkeley Nucleonics reference on arbitrary waveform generation techniques.</p></div><div class="open">Open &rarr;</div></a>
-  </div>
- </section>
+<section>
+  <div class="kicker">What you gain</div>
+  <h2>More than a clean pulse</h2>
+  <ul>
+    <li><strong>Fidelity.</strong> 16-bit resolution resolves pulse shapes, fine steps, and low-level detail that an 8 to 10-bit path quantizes away.</li>
+    <li><strong>A real output.</strong> A DC-coupled 5 Vpp drive into 50 &#937; reaches most devices directly, with no external resistor, capacitor, or amplifier in the path.</li>
+    <li><strong>Support you can count on.</strong> The 685 is a current product, with calibration, warranty, and service behind it, not a discontinued unit kept alive on the used market.</li>
+    <li><strong>Room to grow.</strong> Two, four, or eight channels, memory to 4 Gpts per channel, and advanced sequencing with loops, jumps, and conditional branches.</li>
+    <li><strong>The double pulse on your terms.</strong> Generate it cleanly when the test calls for it, and never when it does not.</li>
+  </ul>
+</section>
 
- <div class="note">Preliminary Berkeley Nucleonics documentation. Specifications are subject to verification against the published data sheets and manuals.</div>
+<section>
+  <div class="kicker">Next step</div>
+  <h2>See it on your own pulse</h2>
+  <p>Bring the waveform that gives your AWG7000 trouble, the one you have been damping with passives. We will reproduce it on a Model 685 and put both edges on a scope side by side. If the clean one does not sell itself, you have lost nothing but an hour. Ready to retire the workaround?</p>
+  <p><a class="sitenav-cta" style="display:inline-block;margin-top:6px;" href="../get-quote.html" target="_blank" rel="noopener">Request a Model 685 demo</a> &nbsp; or explore the <a href="bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685 data sheet</a>.</p>
+</section>
 
-</div>
+</main>
 
 <footer class="gfoot"><div class="gwrap">
   <div class="gcols">
@@ -278,5 +299,5 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
-<script>(function(){var imgs=[].slice.call(document.querySelectorAll(".rowthumb"));if(!imgs.length)return;if(!("IntersectionObserver"in window)){imgs.forEach(function(i){i.classList.add("in");});return;}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var img=e.target;var list=img.closest(".list")||document;var sib=[].slice.call(list.querySelectorAll(".rowthumb"));var k=sib.indexOf(img);img.style.animationDelay=((k%6)*85)+"ms";img.classList.add("in");io.unobserve(img);}});},{threshold:.2,rootMargin:"0px 0px -30px 0px"});imgs.forEach(function(i){io.observe(i);});})();</script>
-</body></html>
+</body>
+</html>
