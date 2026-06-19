@@ -14,11 +14,21 @@
   var INSTANCE = '73885';
   var TOKEN = 'OImm1TCOwhUADtZSU9G37I3DqiQ7hHMmUNlucwls0Gg.2';
 
+  var SCALE = 0.8; // shrink the Nutshell widget a bit
+
   function boot() {
     if (!document.getElementById('nutshell-boot-' + INSTANCE)) {
       var d = document.createElement('div');
       d.id = 'nutshell-boot-' + INSTANCE;
       document.body.appendChild(d);
+    }
+    if (!document.getElementById('bnc-ns-scale')) {
+      var st = document.createElement('style');
+      st.id = 'bnc-ns-scale';
+      st.textContent = '#nutshell-boot-' + INSTANCE +
+        '{position:fixed;right:0;bottom:0;z-index:9000;transform:scale(' + SCALE +
+        ');transform-origin:100% 100%;}';
+      document.head.appendChild(st);
     }
     window.Nutsheller = window.Nutsheller || function () {
       (window.Nutsheller.q = window.Nutsheller.q || []).push(arguments);
