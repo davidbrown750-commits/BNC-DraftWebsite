@@ -240,7 +240,7 @@
             tr.appendChild(el('td', null, escapeHtml(r.description || '')));
             tr.appendChild(el('td', 'price', r.price_usd != null
               ? '$' + Number(r.price_usd).toLocaleString('en-US', { minimumFractionDigits: 2 })
-              : 'Contact us'));
+              : (r.model === '870A-50' ? 'Call for Quote' : '')));
             tb.appendChild(tr);
           });
           t.appendChild(tb); d.appendChild(t); wrap.appendChild(d);
