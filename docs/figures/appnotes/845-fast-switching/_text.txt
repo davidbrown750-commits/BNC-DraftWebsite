@@ -1,0 +1,341 @@
+
+
+========== PAGE 1 ==========
+Berkeley Nucleonics Corp
+HOW TO USE THE MODEL 845 SERIES
+TRIGGER SYSTEM TO PERFORM
+EXTREMELY FAST DIGITAL SWEEPS
+BERKELEY NUCLEONICS CORPORATION
+SAN RAFAEL CA 94901 U.S.A
+WWW.BERKELEYNUCLEONICS.COM
+PHONE: 800.234.7858
+This application note focuses on how to program and run fast frequency (or generalized list) sweeps using 
+the Model 845 Series signal generators with the fast switching option FS.
+The Model 845 Series (or the Model 855 Series multi-channel) signal generators with option FS allow 
+extremely fast sweeps that, in combination with the trigger system, can generate very accurate and fast 
+frequency and power ramps.  In contrast to traditional analog sweeps, fast digital sweeps can be 
+synchronized at any time during the sweep and yield precise frequencies throughout the sweep.
+Berkeley Nucleonics Corp., 2955 Kerner Blvd. San Rafael CA 94901 
+Email RFsales@berkeleynucleonics.com, Call 800-234-7858 or LIVE-Chat  @ www.berkeleynucleonics.com 
+Page 1
+  Berkeley Nucleonics Corp
+
+
+========== PAGE 2 ==========
+INTRODUCTION
+The Model 845 Series and Model 
+855 series of signal generators can 
+be programmed to execute 
+sweeps by either the BNC 
+graphical user interface (GUI) or 
+by directly using the SCPI 
+commands.
+In this application note, we 
+describe the conﬁguration for a 
+frequency sweep with the 
+following parameters:
+- Linear sweep from 1 to 12 GHz in
+   total 10 steps
+- Execute entire sweep once on
+   every external trigger rising
+   edge
+- Frequencies shall be switched
+   every 50 us 
+- An output trigger shall provide a
+   "signal valid" indication by
+   changing to HIGH whenever the
+   transient is completed and the
+   signal becomes valid
+TRIG OUT now remains high 
+until t=50 μs is reached and 
+switching to the next 
+frequency is initiated.  Within 
+τinv the switching transient 
+is completed and TRIG OUT 
+goes high again. The new 
+frequency / power pair 
+remain stable until t=150 μs 
+is reached. TRIG OUT goes 
+low for a second time and the 
+next frequency / power pair is 
+programmed.
+Note that the transient time 
+τinvN and the valid time 
+τvalN can vary from point to 
+point, but the step time τstep 
+(=τinvN+τvalN)between 
+frequencies is always 50 μs. 
+In particular, for the ﬁrst 
+frequency of the sweep, τinv1 
+is zero and the τval1 is 50 μs.
+TRIG OUT can be used to 
+precisely synchronize sweeps 
+to any external equipment.
+Berkeley Nucleonics Corp., 2955 Kerner Blvd. San Rafael CA 94901 
+Email RFsales@berkeleynucleonics.com, Call 800-234-7858 or LIVE-Chat  @ www.berkeleynucleonics.com 
+ 
+ 
+Page 2
+Figure 1: Timing diagram 
+1. Conﬁgure Trigger
+Trigger input
+TRIG:SEQ:TYPE    
+POIN
+TRIG:SEQ:SOUR   
+EXT
+TRIG:SEQ:DEL   
+0
+TRIG:SEQ:SLOP  
+POS
+TRIG:SEQ:ECO   
+1 
+ 
+ 
+Trigger output
+TRIG:OUTP:MODE  
+VAL
+2. Conﬁgure Sweep
+SOUR:SWE:COUN 
+1
+SOUR:SWE:DWEL  
+50e-6
+SOUR:SWE:DEL  
+0
+SOUR:SWE:SPAC 
+LIN
+SOUR:SWE:POIN   
+10
+SOUR:SWE:STAR  
+1e9
+SOUR:SWE:STOP  
+12e9
+SOUR:FREQ:MODE    
+SWE
+3. Arm  trigger
+INIT:CONT  
+ON
+Sweep Conﬁguration
+We conﬁgure this sweep in three steps: 
+KEY SPECIFICATIONS:
+• -90 TO +13 DBM POWER OUTPUT
+   (PE MODEL)
+• -90 TO +23 DBM POWER
+   OUTPUT (HP MODEL)
+• DOWN TO 10 µS FREQUENCY
+   SWITCHING TIME
+• VERY LOW SSB PHASE NOISE
+• POWERFUL TRIGGER AND
+  SWEEPING MODES
+• AVAILABLE ON ALL 845 
+  PLATFORMS (BENCH, RACK,
+  MODULE 12, 20, 26 GHZ)
+
+
+========== PAGE 3 ==========
+In the GUI, the setup is 
+straightforward. First, we conﬁgure 
+the trigger system to wait for rising 
+edge and run the entire sweep 
+upon trigger. 
+We switch to the TRIGGER tab of 
+the GUI as shown in Figure 2. We 
+set trigger mode to "Repeat", 
+Trigger source to "External 
+Trigger", Trigger Edge to "Rising", 
+and Trigger Parameter to "Execute 
+complete List". In the trigger 
+output setting we set "Valid" 
+Berkeley Nucleonics Corp., 2955 Kerner Blvd. San Rafael CA 94901 
+Email RFsales@berkeleynucleonics.com, Call 800-234-7858 or LIVE-Chat  @ www.berkeleynucleonics.com 
+ 
+ 
+Page 3
+GRAPHICAL 
+USER INTERFACE 
+(GUI) SETUP
+Figure 2: GUI trigger settings.
+APPLICATIONS:
+• ATE
+• R&D LOW NOISE SIGNAL
+   SOURCE
+• PRODUCTION TESTING 
+   (INDUSTRY-LEADING 
+   SWITCHING TIMES; HIGH 
+   DYNAMIC RANGE)
+• SERVICE AND MAINTENANCE
+   (BATTERY OPERATION)
+• SIGNAL SIMULATION (RADAR,
+   WIMAX, UWB)
+• AEROSPACE AND DEFENSE 
+  (PULSE MODULATOR, CHIRPS)
+
+
+========== PAGE 4 ==========
+Next, we switch to the SWEEP 
+tab of the GUI as shown in 
+Figure 3. 
+We set the start frequency to 1 
+GHz, and stop frequency to 12 
+GHz. The number of repetitions 
+of the sweep we set to 1, 
+number of points to 10, "Dwell 
+time" to 0.05 ms, disable the 
+"Auto" and set the "Oﬀ time" to 
+0 ms. 
+We can chose for the ALC 
+(automatic level control) to 
+operate in "on" or "hold" mode. 
+We can start the sweep with the 
+"on/oﬀ" button on the left.
+Berkeley Nucleonics Corp., 2955 Kerner Blvd. San Rafael CA 94901 
+Email RFsales@berkeleynucleonics.com, Call 800-234-7858 or LIVE-Chat  @ www.berkeleynucleonics.com 
+ 
+ 
+Page 4
+Figure 3: GUI sweep settings
+GRAPHICAL 
+USER INTERFACE 
+(GUI) SETUP
+CONTINUED...
+
+
+========== PAGE 5 ==========
+Figure 4 shows the time domain 
+measurements of the sweep. 
+TRIG IN is applied approx every 
+990 microseconds from an 
+external source (red trace). 
+Upon the rising edge, the 
+"signal valid" (green trace) goes 
+high almost instantly, indicating 
+that ﬁrst frequency RF (blue 
+trace) is stable. After the ten 
+consecutive frequencies, "signal 
+valid" does low a last time and 
+remains low unit a new sweep 
+starts upon new trigger rising 
+edge.
+Berkeley Nucleonics Corp., 2955 Kerner Blvd. San Rafael CA 94901 
+Email RFsales@berkeleynucleonics.com, Call 800-234-7858 or LIVE-Chat  @ www.berkeleynucleonics.com 
+ 
+ 
+Page 5
+Figure 2: 10 point sweep with 50 μs step time.
+MEASUREMENT
+RESULTS 
+
+
+========== PAGE 6 ==========
+CONCLUSION
+The option FS for the MODEL 
+845 SERIES allows extremely 
+fast and precise digital sweeps 
+that can be well synchronized to 
+external equipment using input 
+and output trigger.
+Berkeley Nucleonics Corp., 2955 Kerner Blvd. San Rafael CA 94901 
+Email RFsales@berkeleynucleonics.com, Call 800-234-7858 or LIVE-Chat  @ www.berkeleynucleonics.com 
+ 
+ 
+Page 6
+INDUSTRY COMPARISON
+RF / MICROWAVE SIGNAL GENERATORS
+3 GHZ, 6 GHZ, 12 GHZ, 20 GHZ & 26.5 GHZ AVAILABLE
+MODEL 84520
+100 KHZ20.5 GHZ
+0.001 HZ
+0.2 MS
+0.03 MS
+30 TO +20 DBM
+190 TO +13 DBM
+20 TO +26 DBM
+0.01 DB
+108 DBC/HZ
+< 0.1 PPM
+117 DBC/HZ
+0.01 PPM
+AM/FM/PM/PULSE
+TRAINS/CHIRPS
+PORTABLE
+INTERNAL BATTERY
+2.5 KG
+< 15 W
+$17,000.00 USD
+EQUIPMENT
+FREQ. RANGE
+RESOLUTION
+SWITCHING SPEED
+OPTION FS
+POWER RANGE
+OPTION PE3
+OPTION HP
+RESOLUTION
+PHASE NOISE 10G
+OCXO
+OPTION LN
+MODULATIONS
+EXTRAS
+WEIGHT, SIZE
+POWER CONSUMP.
+LIST PRICE
+KEYSIGHT MXG
+N5183A
+250 KHZ 20 GHZ
+0.01 HZ
+5 MS 1.15 MS
+OPTION UNZ
+90 TO +7 DBM
+0.01 DB
+98 DBC/HZ
+< 1 PPM
+OPTIONAL
+
+12.8 KGS
+250 W
+$42,000.00 USD
+KEYSIGHT
+E8257D PSG W/
+OPTIONS
+250 KHZ 20 GHZ
+0.01 HZ
+9 MS
+135 TO +15 DBM
+0.01 DB
+115 DBC/HZ
+< 0.05 PPM
+OPTIONAL
+
+22 KGS
+250 W
+$68,000.00 USD
+R&S SMB
+B120L W/
+OPTIONS
+100 KHZ 20 GHZ
+0.001 HZ
+3 MS
+20 TO +22 DBM
+0.01 DB
+108 DBC/HZ
+< 0.1 PPM
+OPTIONAL
+
+6.9 KGS
+>90 W
+$51,000.00 USD
+ALL BENCHTOP MODEL FEATURES:
+• LAN/USB/GPIB REMOTE CONTROL
+   WITH SCPI 1999 COMMAND SET
+• COMPLIMENTARY POWERFUL &
+   EASY TO USE GUI
+• COMPACT, ROBUST, LIGHTWEIGHT,
+   PORTABLE & RUGGED DESIGN
+ 
+• SEALED, FAN-LESS, ENCLOSURE
+   (LOW POWER CONSUMPTION)
+• INTERNAL RECHARGEABLE BATTERY
+   OPTIONS
+• FIELD CARRYING CASE AVAILABLE
+  
+• SINGLE AND DOUBLE RACKMOUNTS
+   AVAILABLE

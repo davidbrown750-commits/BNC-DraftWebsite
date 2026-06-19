@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pricing | Berkeley Nucleonics</title>
+<style>
+  :root{--font-h:'Myriad Pro',Arial,sans-serif;--blue:#0655a3;--dark:#113163;--ink:#1c2c46;--mut:#57534e;--bd:#d6d3d1;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:Arial,sans-serif;color:#1c2c46;background:#f4f6f9;}
+  /* header reuses the site nav classes so the auth account control mounts here */
+  .sitenav{position:sticky;top:0;z-index:200;background:#0a1626;border-bottom:1px solid rgba(120,170,225,.18);font-family:var(--font-h);}
+  .sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:22px;}
+  .sitenav-logo{display:flex;align-items:center;}.sitenav-logo svg{height:46px;width:auto;}
+  .sitenav-spacer{margin-left:auto;}
+  .sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.84rem;padding:.58em 1.1em;border-radius:6px;text-decoration:none;white-space:nowrap;}
+  .sitenav-cta:hover{filter:brightness(1.09);}
+  .hero{background:linear-gradient(120deg,#0a1626,#113163);color:#fff;padding:54px 0 46px;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
+  .hero .kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;color:#7fc5f0;margin-bottom:10px;}
+  .hero h1{font-family:var(--font-h);font-size:2.3rem;margin:0 0 12px;}
+  .hero p{max-width:620px;color:#cfe0f2;line-height:1.6;margin:0;}
+  section.block{padding:40px 0;}
+  h2{font-family:var(--font-h);color:var(--dark);font-size:1.5rem;border-bottom:2px solid var(--blue);padding-bottom:8px;margin:0 0 6px;}
+  .lead{color:var(--mut);margin:0 0 20px;font-size:.96rem;}
+  table.spec{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--bd);border-radius:8px;overflow:hidden;font-size:.94rem;}
+  table.spec th,table.spec td{text-align:left;padding:11px 14px;border-bottom:1px solid #ececec;}
+  table.spec thead th{background:#eef3f9;color:var(--dark);font-family:var(--font-h);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;}
+  table.spec tbody tr:last-child td{border-bottom:none;}
+  .flag{background:#fef3c7;border:1px solid #f0d98a;color:#7a5b00;font-size:.82rem;padding:10px 14px;border-radius:6px;margin:0 0 18px;}
+  .budg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px;margin-top:10px;}
+  .budg-card{background:#fff;border:1px solid var(--bd);border-radius:9px;overflow:hidden;}
+  .budg-card h3{font-family:var(--font-h);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:#fff;background:var(--dark);margin:0;padding:8px 12px;}
+  .budg-card table{width:100%;border-collapse:collapse;font-size:.8rem;}
+  .budg-card td{padding:5px 12px;border-bottom:1px solid #eef0f3;color:var(--ink);}
+  .budg-card tr:last-child td{border-bottom:none;}
+  .budg-card td.r{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--blue);font-weight:700;}
+  footer{background:#0a1626;color:#9fb3cc;font-size:.82rem;text-align:center;padding:26px;margin-top:30px;}
+</style>
+<!--bnc-auth-->
+<link rel="stylesheet" href="_shared/bnc-auth.css">
+<script src="_shared/bnc-auth-config.js"></script>
+<script defer src="_shared/bnc-auth.js"></script>
+<!--/bnc-auth-->
+</head>
+<body>
+<header class="sitenav"><div class="sitenav-inner">
+  <a class="sitenav-logo" href="home.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
+  <span class="sitenav-spacer"></span>
+  <a class="sitenav-cta" href="get-quote.html">Get a Quote/Demo</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="kicker">Pricing</div>
+  <h1>Budgetary and expanded pricing</h1>
+  <p>Budgetary pricing is available to everyone for early planning. Full and volume (expanded) pricing is available to registered users. Sign in with a free account to unlock it.</p>
+</div></section>
+
+<div class="wrap">
+  <section class="block">
+    <h2>Budgetary pricing</h2>
+    <p class="lead">Indicative ranges for early budgeting. Final pricing is configuration dependent. Sign in for the full itemized price list, or contact us for a formal quote.</p>
+    <div class="budg-grid">
+      <div class="budg-card"><h3>Waveform &amp; Pulse</h3><table><tbody>
+        <tr><td>6040 &amp; Modules</td><td class="r">$20&ndash;50K</td></tr>
+        <tr><td>675 AWG</td><td class="r">$20&ndash;75K</td></tr>
+        <tr><td>670 AWG</td><td class="r">$10&ndash;25K</td></tr>
+        <tr><td>685 AWG</td><td class="r">$60&ndash;150K</td></tr>
+        <tr><td>Budget Scopes / Arbs</td><td class="r">$2&ndash;10K</td></tr>
+        <tr><td>Pulse &amp; Delay Generators</td><td class="r">$3&ndash;10K</td></tr>
+        <tr><td>High-Performance Pulser (765)</td><td class="r">$30&ndash;50K</td></tr>
+        <tr><td>High-Current Pulsers</td><td class="r">$7&ndash;20K</td></tr>
+        <tr><td>High-Voltage Pulsers</td><td class="r">$6&ndash;25K</td></tr>
+        <tr><td>PVP Power Supplies</td><td class="r">$8&ndash;18K</td></tr>
+      </tbody></table></div>
+      <div class="budg-card"><h3>RF &amp; Microwave</h3><table><tbody>
+        <tr><td>RFS Budget Signal Generator</td><td class="r">$4&ndash;8K</td></tr>
+        <tr><td>Benchtop RF Signal Generators</td><td class="r">$10&ndash;100K</td></tr>
+        <tr><td>Vector Signal Generators</td><td class="r">$35&ndash;300K</td></tr>
+        <tr><td>Phase Noise Testers</td><td class="r">$60&ndash;140K</td></tr>
+        <tr><td>USB Power Sensors</td><td class="r">$3&ndash;9K</td></tr>
+      </tbody></table></div>
+      <div class="budg-card"><h3>Radiation Detection</h3><table><tbody>
+        <tr><td>Isotope Identifiers</td><td class="r">$15&ndash;35K</td></tr>
+        <tr><td>Backpack Isotope Identifiers</td><td class="r">$20&ndash;40K</td></tr>
+        <tr><td>Vehicle-Based Isotope Identifiers</td><td class="r">$30&ndash;250K</td></tr>
+        <tr><td>MCAs</td><td class="r">$4&ndash;12K</td></tr>
+      </tbody></table></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Expanded pricing</h2>
+    <p class="lead">Full and volume pricing for registered users. These rows are served from the database only after sign-in, so they are not present in the public page.</p>
+    <!-- bnc-auth.js fills this in from Supabase when the visitor is signed in -->
+    <div data-bnc-pricing="expanded"></div>
+  </section>
+</div>
+
+<footer>Berkeley Nucleonics Corporation &middot; Test, Measurement and Nuclear Instrumentation since 1963</footer>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Berkeley Nucleonics — Instruments for Research &amp; Academia (draft)</title>
+<style>
+:root{
+  --blue:#0655a3; --blue-dark:#113163; --blue-bright:#2f7fd1; --blue-tint:#eaf1f9;
+  --ink:#16233a; --body:#3c4a60; --muted:#6b7890; --line:#dde5ef;
+  --bg:#f5f8fc; --surface:#ffffff; --soft:#eef3fa; --gold:#b8860b;
+  --r:4px; --r-lg:8px;
+  --hd:'Myriad Pro','Segoe UI',Arial,Helvetica,sans-serif;
+  --bd:Arial,Helvetica,'Segoe UI',sans-serif;
+  --sh:0 1px 2px rgba(17,49,99,.06),0 8px 24px -16px rgba(17,49,99,.18);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--body);font-family:var(--bd);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4,.hd{font-family:var(--hd);color:var(--ink);font-weight:700;letter-spacing:-.01em;line-height:1.12;margin:0;}
+a{color:var(--blue);text-decoration:none;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+.eyebrow{font-family:var(--hd);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--blue);}
+.btn{display:inline-flex;align-items:center;gap:.5em;font-family:var(--hd);font-weight:700;font-size:.92rem;padding:.74em 1.5em;border-radius:var(--r);border:1.5px solid transparent;cursor:pointer;transition:all .15s ease;}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px -10px rgba(6,85,163,.8);}
+.btn-primary:hover{background:var(--blue-dark);}
+.btn-ghost{background:#fff;color:var(--blue-dark);border-color:var(--line);}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
+.draft-flag{background:var(--blue-dark);color:#cfe0f5;font-family:var(--hd);font-size:.78rem;letter-spacing:.04em;text-align:center;padding:7px 12px;}
+.draft-flag b{color:#fff;}
+
+/* header */
+header.site{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
+.logo svg{height:40px;width:auto;display:block;}
+.nav-links{display:flex;gap:30px;align-items:center;}
+.nav-links a{font-family:var(--hd);font-weight:600;font-size:.92rem;color:var(--ink);}
+.nav-links a:hover{color:var(--blue);}
+.nav-cta{display:flex;gap:12px;align-items:center;}
+@media(max-width:880px){.nav-links{display:none;}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:
+  radial-gradient(60% 80% at 88% 0%,rgba(47,127,209,.12),transparent 60%),
+  linear-gradient(180deg,#fff 0%,var(--bg) 100%);
+  border-bottom:1px solid var(--line);}
+.hero .grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:46px 46px;opacity:.5;mask-image:radial-gradient(120% 90% at 80% 10%,#000 30%,transparent 75%);}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:64px 28px 60px;}
+.hero h1{font-size:clamp(2.4rem,5vw,3.7rem);margin:18px 0 0;}
+.hero h1 .accent{color:var(--blue);}
+.hero .lead{font-size:1.18rem;color:var(--body);max-width:46ch;margin:20px 0 30px;}
+.hero .cta-row{display:flex;gap:14px;flex-wrap:wrap;}
+.hero .trust{margin-top:34px;display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px;}
+.hero .trust div .n{font-family:var(--hd);font-weight:700;font-size:1.35rem;color:var(--blue-dark);}
+.hero .trust div .l{font-size:.82rem;color:var(--muted);}
+.hero-visual{position:relative;background:linear-gradient(160deg,#fff,var(--soft));border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh);padding:26px;min-height:300px;display:flex;flex-direction:column;justify-content:center;}
+.hero-visual .tag{font-family:var(--hd);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.hero-visual img{width:100%;height:auto;display:block;margin:10px 0;filter:drop-shadow(0 16px 30px rgba(17,49,99,.18));}
+.hero-visual .cap{font-size:.86rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;}
+.hero-visual .cap b{color:var(--ink);font-family:var(--hd);}
+@media(max-width:880px){.hero .wrap{grid-template-columns:1fr;gap:30px;}.hero-visual{order:-1;}}
+
+/* section scaffold */
+section{padding:64px 0;}
+.sec-head{max-width:60ch;margin-bottom:34px;}
+.sec-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem);margin:10px 0 0;}
+.sec-head p{color:var(--muted);font-size:1.08rem;margin:12px 0 0;}
+
+/* research areas */
+.areas{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:880px){.grid3{grid-template-columns:1fr;}}
+.area{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;transition:all .15s ease;}
+.area:hover{border-color:var(--blue);box-shadow:var(--sh);transform:translateY(-2px);}
+.area .ic{width:42px;height:42px;border-radius:var(--r);background:var(--blue-tint);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.area .ic svg{width:24px;height:24px;stroke:var(--blue);fill:none;stroke-width:1.7;}
+.area h3{font-size:1.12rem;}
+.area p{font-size:.95rem;color:var(--body);margin:8px 0 12px;}
+.area a.more{font-family:var(--hd);font-weight:700;font-size:.86rem;color:var(--blue);}
+.area a.more:hover{color:var(--blue-dark);}
+
+/* lines */
+.lines .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:880px){.lines .grid4{grid-template-columns:1fr 1fr;}}
+.lcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 16px;}
+.lcard .num{font-family:var(--hd);font-size:.74rem;color:var(--muted);letter-spacing:.08em;}
+.lcard h4{font-size:1rem;margin:6px 0 4px;}
+.lcard p{font-size:.86rem;color:var(--muted);margin:0;}
+
+/* value props */
+.value{background:linear-gradient(180deg,var(--bg),#fff);}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+@media(max-width:880px){.grid2{grid-template-columns:1fr;}}
+.vp{display:flex;gap:16px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;}
+.vp .ic{flex:0 0 40px;width:40px;height:40px;border-radius:var(--r);background:var(--blue-dark);display:flex;align-items:center;justify-content:center;}
+.vp .ic svg{width:22px;height:22px;stroke:#cfe0f5;fill:none;stroke-width:1.7;}
+.vp h4{font-size:1.05rem;}
+.vp p{font-size:.94rem;margin:6px 0 0;color:var(--body);}
+
+/* academy band */
+.academy{background:var(--blue-dark);color:#dce8f7;}
+.academy .wrap{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;}
+@media(max-width:880px){.academy .wrap{grid-template-columns:1fr;}}
+.academy .eyebrow{color:#7fb2e6;}
+.academy h2{color:#fff;font-size:clamp(1.7rem,3vw,2.3rem);margin:10px 0 14px;}
+.academy p{color:#bcd0ea;font-size:1.06rem;max-width:52ch;}
+.academy .ac-card{background:rgba(255,255,255,.06);border:1px solid rgba(127,178,230,.3);border-radius:var(--r-lg);padding:24px;}
+.academy .ac-card h4{color:#fff;font-size:1.1rem;}
+.academy .ac-card ul{margin:12px 0 0;padding-left:18px;color:#cfe0f5;font-size:.95rem;}
+.academy .ac-card li{margin:6px 0;}
+
+/* final cta */
+.final{text-align:center;background:var(--surface);border-top:1px solid var(--line);}
+.final h2{font-size:clamp(2rem,4vw,2.8rem);}
+.final p{color:var(--muted);font-size:1.12rem;max-width:54ch;margin:14px auto 26px;}
+.final .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* footer */
+footer.site{background:var(--blue-dark);color:#aebfd4;padding:46px 0 30px;}
+footer .ftop{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;border-bottom:1px solid rgba(127,178,230,.2);padding-bottom:26px;}
+@media(max-width:880px){footer .ftop{grid-template-columns:1fr;}}
+footer .logo svg{height:34px;}
+footer .tag{font-size:.9rem;margin:12px 0 0;max-width:34ch;}
+footer h5{font-family:var(--hd);color:#fff;font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 12px;}
+footer ul{list-style:none;margin:0;padding:0;}
+footer li{margin:7px 0;}
+footer a{color:#cfe0f5;font-size:.92rem;}
+footer a:hover{color:#fff;}
+footer .fbot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:20px;font-size:.82rem;color:#8aa3c2;}
+</style>
+<!--seo-meta-->
+<meta name="description" content="Research Areas
+      Instruments
+      For Labs
+      Academy
+    
+    
+      Talk to a Scientist
+      Request a Quote
+    
+  
+
+
+
+
+  
+  
+    
+      For Universities, National Labs">
+<link rel="canonical" href="https://bnc-draft-website.vercel.app/home-academic.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Berkeley Nucleonics">
+<meta property="og:title" content="Berkeley Nucleonics — Instruments for Research &amp;amp; Academia (draft)">
+<meta property="og:description" content="Research Areas
+      Instruments
+      For Labs
+      Academy
+    
+    
+      Talk to a Scientist
+      Request a Quote
+    
+  
+
+
+
+
+  
+  
+    
+      For Universities, National Labs">
+<meta property="og:url" content="https://bnc-draft-website.vercel.app/home-academic.html">
+<meta property="og:image" content="https://bnc-draft-website.vercel.app/figures/home/hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Berkeley Nucleonics — Instruments for Research &amp;amp; Academia (draft)">
+<meta name="twitter:description" content="Research Areas
+      Instruments
+      For Labs
+      Academy
+    
+    
+      Talk to a Scientist
+      Request a Quote
+    
+  
+
+
+
+
+  
+  
+    
+      For Universities, National Labs">
+<meta name="twitter:image" content="https://bnc-draft-website.vercel.app/figures/home/hero.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Berkeley Nucleonics — Instruments for Research &amp; Academia (draft)", "description": "Research Areas\n      Instruments\n      For Labs\n      Academy\n    \n    \n      Talk to a Scientist\n      Request a Quote\n    \n  \n\n\n\n\n  \n  \n    \n      For Universities, National Labs", "url": "https://bnc-draft-website.vercel.app/home-academic.html", "isPartOf": {"@type": "WebSite", "name": "Berkeley Nucleonics", "url": "https://bnc-draft-website.vercel.app"}}</script>
+<!--/seo-meta-->
+<!--bnc-auth-->
+<link rel="stylesheet" href="_shared/bnc-auth.css">
+<script src="_shared/bnc-auth-config.js"></script>
+<script defer src="_shared/bnc-auth.js"></script>
+<!--/bnc-auth-->
+</head>
+<body>
+
+<div class="draft-flag"><b>DRAFT CONCEPT</b> &mdash; Academic / research-focused homepage variant for review. Not the live site.</div>
+
+<!-- ===== Header ===== -->
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="#" aria-label="Berkeley Nucleonics">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#113163"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#0655a3" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg>
+    </a>
+    <nav class="nav-links">
+      <a href="#areas">Research Areas</a>
+      <a href="#lines">Instruments</a>
+      <a href="#support">For Labs</a>
+      <a href="#academy">Academy</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#contact">Talk to a Scientist</a>
+      <a class="btn btn-primary" href="#contact">Request a Quote</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="grid" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-left">
+      <span class="eyebrow">For Universities, National Labs &amp; Research Groups</span>
+      <h1>Instruments your <span class="accent">research</span> can stand behind.</h1>
+      <p class="lead">Precision timing, signal generation, high voltage, and radiation detection, built for experiments that have to be repeatable. The same hardware that runs in a teaching lab runs on a beamline.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#areas">Browse by research area</a>
+        <a class="btn btn-ghost" href="#contact">Talk to an application scientist</a>
+      </div>
+      <div class="trust">
+        <div><div class="n">Since 1963</div><div class="l">Built in the United States</div></div>
+        <div><div class="n">8 lines</div><div class="l">Across the physics bench</div></div>
+        <div><div class="n">60+ countries</div><div class="l">Labs and institutions served</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <span class="tag">// Bench to beamline</span>
+      <img src="figures/home/spin/765.png" alt="Berkeley Nucleonics precision pulse and delay generator" onerror="this.style.display='none'">
+      <div class="cap"><b>One catalog, many disciplines.</b> Pick the resolution, channel count, and output your experiment needs, then talk to someone who has supported the measurement before.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Research areas ===== -->
+<section class="areas" id="areas">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Start with your experiment</span>
+      <h2>Find instruments by research area.</h2>
+      <p>Most groups do not shop by product category. They shop by the problem in front of them. Start where your work lives.</p>
+    </div>
+    <div class="grid3">
+
+      <div class="area">
+        <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg></div>
+        <h3>Quantum &amp; Cold Atoms</h3>
+        <p>Low-jitter timing and clean signal sources for qubit control, trapping sequences, and coherent measurement.</p>
+        <a class="more" href="#lines">Explore instruments &rsaquo;</a>
+      </div>
+
+      <div class="area">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M2 12h6l2-7 4 14 2-7h6"/></svg></div>
+        <h3>Photonics &amp; Ultrafast Lasers</h3>
+        <p>Pulse and delay generators for Q-switch and Pockels-cell timing, pump-probe synchronization, and LiDAR test.</p>
+        <a class="more" href="#lines">Explore instruments &rsaquo;</a>
+      </div>
+
+      <div class="area">
+        <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+        <h3>Accelerator &amp; Beam Physics</h3>
+        <p>Femtosecond-class delays, multi-channel triggering, and high-voltage pulsing for kickers, gating, and detector bias.</p>
+        <a class="more" href="#lines">Explore instruments &rsaquo;</a>
+      </div>
+
+      <div class="area">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .8-4.5 4.2 1.2 6L12 16l-5.9 3 1.2-6L2.8 8.8 8.9 8z"/></svg></div>
+        <h3>Nuclear &amp; Radiation Science</h3>
+        <p>Scintillation detectors, isotope identifiers, and spectroscopy-grade crystals for gamma and neutron measurement.</p>
+        <a class="more" href="#lines">Explore instruments &rsaquo;</a>
+      </div>
+
+      <div class="area">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12c3-7 5-7 8 0s5 7 8 0"/><path d="M3 18h18"/></svg></div>
+        <h3>RF, Microwave &amp; SATCOM</h3>
+        <p>Signal generators, vector sources, and USB power sensors for receiver test, antenna work, and spectrum studies.</p>
+        <a class="more" href="#lines">Explore instruments &rsaquo;</a>
+      </div>
+
+      <div class="area">
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="1"/><path d="M6 14l3-4 2 2 3-5 4 7"/></svg></div>
+        <h3>Spectroscopy &amp; Detection</h3>
+        <p>Arbitrary waveform generators and detectors for time-of-flight, mass spectrometry, and photon counting.</p>
+        <a class="more" href="#lines">Explore instruments &rsaquo;</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Lines ===== -->
+<section class="lines" id="lines">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The catalog</span>
+      <h2>Eight instrument lines, one supplier to learn.</h2>
+      <p>Standardize your group on instruments that share documentation, support, and a long service life.</p>
+    </div>
+    <div class="grid4">
+      <div class="lcard"><div class="num">01</div><h4>Pulse &amp; Delay Generators</h4><p>Femtosecond to multi-channel timing.</p></div>
+      <div class="lcard"><div class="num">02</div><h4>RF &amp; Microwave Sources</h4><p>Signal, vector, and power sensing.</p></div>
+      <div class="lcard"><div class="num">03</div><h4>Scintillation Detectors</h4><p>Spectroscopy-grade crystals.</p></div>
+      <div class="lcard"><div class="num">04</div><h4>Arbitrary Waveform Gen.</h4><p>Deep memory, high fidelity.</p></div>
+      <div class="lcard"><div class="num">05</div><h4>Isotope ID &amp; Detection</h4><p>Handheld and lab RIID.</p></div>
+      <div class="lcard"><div class="num">06</div><h4>High Power Pulsers</h4><p>Driving diodes, cells, and arrays.</p></div>
+      <div class="lcard"><div class="num">07</div><h4>Spectrum Analyzers</h4><p>Real-time RF capture.</p></div>
+      <div class="lcard"><div class="num">08</div><h4>HV Power Supplies</h4><p>Stable, programmable high voltage.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Value props for labs ===== -->
+<section class="value" id="support">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Built for the way labs actually work</span>
+      <h2>Support that respects a research budget and a research timeline.</h2>
+    </div>
+    <div class="grid2">
+      <div class="vp">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V5a1 1 0 011-1h14a1 1 0 011 1v14"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <div><h4>Talk to scientists, not a script.</h4><p>Application engineers who have set up the measurement help you size the instrument before you write the purchase order.</p></div>
+      </div>
+      <div class="vp">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v20M5 7l7-5 7 5M5 7v10l7 5 7-5V7"/></svg></div>
+        <div><h4>Grant and purchasing friendly.</h4><p>Clear quotes, documented specifications, and configurations you can drop straight into a proposal or a capital request.</p></div>
+      </div>
+      <div class="vp">
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h8M8 11h8M8 15h6"/></svg></div>
+        <div><h4>Documentation you can cite.</h4><p>Faithful user manuals, application notes, and technical articles, so methods sections and lab handovers stay accurate.</p></div>
+      </div>
+      <div class="vp">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M12 7v5l3 3"/></svg></div>
+        <div><h4>Long lifecycles, real calibration.</h4><p>Instruments that stay supported for years, with calibration and repair so a working setup keeps working between grant cycles.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Academy band ===== -->
+<section class="academy" id="academy">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Berkeley Nucleonics Academy</span>
+      <h2>Teach the technique, not just the instrument.</h2>
+      <p>Accredited short courses introduce the terminology and the method behind your measurement, useful for new graduate students, teaching labs, and onboarding a rotating bench.</p>
+      <a class="btn btn-ghost" href="#" style="margin-top:18px;">Browse the courses</a>
+    </div>
+    <div class="ac-card">
+      <h4>Good fits for academic groups</h4>
+      <ul>
+        <li>Timing, jitter, and synchronization fundamentals</li>
+        <li>Reading and comparing a gamma spectrum</li>
+        <li>Choosing a scintillator for your energy range</li>
+        <li>Phase noise and signal purity, explained</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Final CTA ===== -->
+<section class="final" id="contact">
+  <div class="wrap">
+    <span class="eyebrow">Start the conversation</span>
+    <h2>Tell us about your experiment.</h2>
+    <p>Describe the measurement and the constraint. We will point you to the right instrument, the right configuration, and a quote you can act on.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#">Request a quote</a>
+      <a class="btn btn-ghost" href="#">Talk to an application scientist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="ftop">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#7fb2e6" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg>
+        <p class="tag">Test, Measurement and Nuclear Instrumentation since 1963.</p>
+      </div>
+      <div>
+        <h5>Research Areas</h5>
+        <ul>
+          <li><a href="#areas">Quantum &amp; Cold Atoms</a></li>
+          <li><a href="#areas">Photonics &amp; Lasers</a></li>
+          <li><a href="#areas">Accelerator &amp; Beam Physics</a></li>
+          <li><a href="#areas">Nuclear &amp; Radiation Science</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>For Labs</h5>
+        <ul>
+          <li><a href="#contact">Request a Quote</a></li>
+          <li><a href="#contact">Talk to a Scientist</a></li>
+          <li><a href="#academy">Berkeley Nucleonics Academy</a></li>
+          <li><a href="#support">Documentation &amp; Manuals</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbot">
+      <span>&copy; 2026 Berkeley Nucleonics Corporation, San Rafael, CA</span>
+      <span>Draft academic homepage concept</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* ===========================================================================
+   BNC AUTH  —  on-brand styles for the login / gating layer.
+   Brand tokens: BNC Blue #0655a3, Blue Dark #113163, nav dark #0a1626,
+   nav text #c4d6ee, CTA gradient = linear-gradient(115deg,#0655a3,#37b6f0,#3fd0c4).
+   Headers use Myriad Pro with Arial fallback. No emoji.
+   =========================================================================== */
+
+/* ---- header account control (sits left of the Get-a-Quote button) -------- */
+.bnc-acct{display:flex;align-items:center;gap:12px;margin-left:6px;font-family:'Myriad Pro',Arial,sans-serif;}
+.bnc-welcome{color:#c4d6ee;font-size:.82rem;font-weight:600;letter-spacing:.01em;white-space:nowrap;}
+.bnc-welcome b{color:#fff;font-weight:700;}
+.bnc-signin{appearance:none;border:1px solid rgba(120,170,225,.45);background:transparent;color:#dbe7f6;
+  font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.82rem;letter-spacing:.02em;
+  padding:.5em 1em;border-radius:6px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s;}
+.bnc-signin:hover{background:rgba(55,182,240,.14);border-color:#37b6f0;color:#fff;}
+.bnc-userbtn{display:flex;align-items:center;}
+@media(max-width:1040px){.bnc-welcome{display:none;}}
+
+/* ---- manual page-7 gate card (on the white manual body) ------------------ */
+.bnc-gate-card{margin:14px 0 8px;border:1px solid #d6d3d1;border-radius:12px;background:#fafaf9;
+  box-shadow:0 18px 40px -22px rgba(17,49,99,.45);overflow:hidden;font-family:Arial,sans-serif;}
+.bnc-gate-card .accent{height:4px;background:linear-gradient(90deg,#113163,#0655a3 50%,#37b6f0);}
+.bnc-gate-card .inner{padding:30px 30px 32px;text-align:center;}
+.bnc-gate-card .lockwrap{width:46px;height:46px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+  background:#eaf2fb;color:#0655a3;}
+.bnc-gate-card .lockwrap svg{width:22px;height:22px;}
+.bnc-gate-card h3{font-family:'Myriad Pro',Arial,sans-serif;color:#113163;font-size:1.35rem;margin:0 0 8px;}
+.bnc-gate-card p{color:#57534e;font-size:.95rem;line-height:1.55;margin:0 auto 20px;max-width:440px;}
+.bnc-gate-card .cta{display:inline-block;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);
+  color:#fff;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.95rem;
+  padding:.7em 1.6em;border-radius:6px;border:none;cursor:pointer;text-decoration:none;}
+.bnc-gate-card .cta:hover{filter:brightness(1.08);}
+.bnc-gate-card .sub{margin-top:14px;font-size:.82rem;color:#78716c;}
+.bnc-gate-card .sub a{color:#0655a3;text-decoration:none;font-weight:600;}
+
+/* locked table-of-contents links on a gated manual */
+.man-toc a.bnc-locked{color:#a8a29e;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.man-toc a.bnc-locked:hover{background:#f5f3f1;color:#0655a3;}
+.man-toc a.bnc-locked svg{width:11px;height:11px;flex:0 0 auto;opacity:.8;}
+
+/* ---- gated download rows (software & drivers page) ----------------------- */
+a.row.bnc-locked-row{position:relative;}
+a.row.bnc-locked-row .open{color:#0655a3;}
+a.row.bnc-locked-row .open::after{content:"";display:inline-block;width:11px;height:13px;margin-left:7px;vertical-align:-2px;
+  background:currentColor;-webkit-mask:var(--bnc-lock) center/contain no-repeat;mask:var(--bnc-lock) center/contain no-repeat;}
+:root{--bnc-lock:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z'/></svg>");}
+
+/* ---- expanded price list hard-gate block -------------------------------- */
+.bnc-pricing-gate{border:1px dashed #c8d6e8;border-radius:12px;background:#f7faff;padding:28px;text-align:center;font-family:Arial,sans-serif;}
+.bnc-pricing-gate h3{font-family:'Myriad Pro',Arial,sans-serif;color:#113163;font-size:1.15rem;margin:0 0 8px;}
+.bnc-pricing-gate p{color:#57534e;font-size:.92rem;margin:0 0 16px;}
+.bnc-pricing-gate .cta{display:inline-block;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);
+  color:#fff;font-weight:700;padding:.62em 1.4em;border-radius:6px;border:none;cursor:pointer;font-family:'Myriad Pro',Arial,sans-serif;}
+
+/* small toast shown when sign-in isn't configured yet */
+.bnc-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9999;
+  background:#113163;color:#fff;font-family:Arial,sans-serif;font-size:.86rem;padding:11px 18px;border-radius:8px;
+  box-shadow:0 12px 30px -10px rgba(0,0,0,.5);opacity:0;transition:opacity .2s;max-width:90vw;text-align:center;}
+.bnc-toast.show{opacity:1;}
+
+/* ---- expanded price list: collapsible categories ------------------------ */
+.bnc-acc{border:1px solid #d6d3d1;border-radius:9px;background:#fff;margin:10px 0;overflow:hidden;}
+.bnc-acc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;
+  padding:13px 16px;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;color:#113163;font-size:1rem;
+  background:#eef3f9;border-left:4px solid #0655a3;}
+.bnc-acc>summary::-webkit-details-marker{display:none;}
+.bnc-acc>summary::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid #0655a3;border-bottom:2px solid #0655a3;
+  transform:rotate(45deg);transition:transform .18s;}
+.bnc-acc[open]>summary::after{transform:rotate(-135deg);}
+.bnc-acc>summary .cnt{font-family:Arial,sans-serif;font-weight:400;font-size:.8rem;color:#78716c;}
+.bnc-acc table.spec{margin:0;border:none;border-radius:0;}
+.bnc-acc table.spec td.opt{padding-left:26px;color:#57534e;}
+.bnc-acc table.spec td.price{white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right;}
+.bnc-pricing-tools{display:flex;gap:10px;align-items:center;margin:0 0 12px;flex-wrap:wrap;}
+.bnc-pricing-tools input{flex:1;min-width:200px;padding:.55em .8em;border:1px solid #cdd6e2;border-radius:6px;font-size:.92rem;}
+.bnc-pricing-tools button{background:#eef3f9;border:1px solid #cdd6e2;color:#113163;font-weight:600;padding:.5em .9em;border-radius:6px;cursor:pointer;font-size:.85rem;}
+
+/* ---- post sign-in contact / SMS opt-in modal ---------------------------- */
+.bnc-modal-back{position:fixed;inset:0;z-index:10000;background:rgba(10,22,38,.55);display:flex;align-items:center;justify-content:center;padding:18px;}
+.bnc-modal{background:#fff;border-radius:14px;max-width:430px;width:100%;overflow:hidden;box-shadow:0 30px 70px -24px rgba(0,0,0,.6);font-family:Arial,sans-serif;}
+.bnc-modal .accent{height:4px;background:linear-gradient(90deg,#113163,#0655a3 50%,#37b6f0);}
+.bnc-modal .body{padding:26px 26px 22px;}
+.bnc-modal h3{font-family:'Myriad Pro',Arial,sans-serif;color:#113163;font-size:1.28rem;margin:0 0 6px;}
+.bnc-modal p{color:#57534e;font-size:.92rem;line-height:1.5;margin:0 0 16px;}
+.bnc-modal label{display:block;font-size:.82rem;color:#44403c;font-weight:600;margin:0 0 6px;}
+.bnc-modal input[type=tel]{width:100%;padding:.62em .8em;border:1px solid #cdd6e2;border-radius:7px;font-size:.96rem;margin-bottom:14px;}
+.bnc-optin{display:flex;gap:9px;align-items:flex-start;font-size:.82rem;color:#57534e;line-height:1.45;margin-bottom:18px;}
+.bnc-optin input{margin-top:2px;width:16px;height:16px;flex:0 0 auto;}
+.bnc-modal .row{display:flex;gap:10px;}
+.bnc-modal .save{flex:1;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;border:none;border-radius:7px;padding:.72em;cursor:pointer;font-size:.95rem;}
+.bnc-modal .skip{background:transparent;border:none;color:#78716c;font-weight:600;padding:.72em 1em;cursor:pointer;font-size:.9rem;}
+.bnc-modal .save:hover{filter:brightness(1.07);}

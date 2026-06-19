@@ -1,0 +1,361 @@
+{
+ "slug": "pdw-vsg",
+ "pdf": "_docs-pdfs/appnote-pulse-descriptor-word-vsg.pdf",
+ "npages": 25,
+ "pages": [
+  {
+   "page": 1,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n1 \nApplication Note AN6008 \nPulse Descriptor Word for VSG \nImportant Note \nThis application note describes the Pulse Descriptor Word (PDW) feature for BNC’s Vector Signal \nGenerator (VSG) devices. It may contain information about parts of the feature which are not yet \nsupported, but the information of which may be useful for the user for future projects. The contents \nof this application note are subject to change as the PDW feature is currently under development \nand thus adapts as more parts of the feature are released. Not yet supported parts of the PDW \nfeature are marked like this throughout the document. \nTable of Contents \nPulse Descriptor Word Concept ................................................................................................ 2 \nParameters and Words ............................................................................................................. 2 \nTiming ...................................................................................................................................... 3 \nData Transfer ............................................................................................................................ 3 \nPDW Mode ............................................................................................................................... 4 \nMode Overview ..................................................................................................................... 4 \nList Mode .............................................................................................................................. 4 \nStream Mode (Real-Time) ...................................................................................................... 5 \nSingle Mode .......................................................................................................................... 5 \nApplication Details ................................................................................................................... 6 \nDevice Options ..................................................................................................................... 6 \nCarrier Settings ..................................................................................................................... 7 \nWaveform Modulation ........................................................................................................... 7 \nControl Descriptor Word Option ................................................................................................ 7 \nPDW Timing .............................................................................................................................. 7 \nPDW Activation ..................................................................................................................... 7 \nTransient Blanking ................................................................................................................. 7 \nPDW Time Mode ................................................................................................................... 8 \nTime Parameters ................................................................................................................... 8 \nTiming Violation .................................................................................................................... 9 \nPDW Linear Phase Sweep ....................................................................................................... 10 \nPDW Trigger ............................................................................................................................ 11 \nExamples ............................................................................................................................... 11 \n",
+   "images": [
+    {
+     "file": "fig-001.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 2,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n2 \nRecommended PDW List uploaded with VSG GUI ................................................................ 11 \nAdvanced PDW List upload with SCPI commands ................................................................ 12 \nPDW Simulation Start in List Mode ....................................................................................... 12 \nPDW Simulation Start in Stream Mode ................................................................................. 12 \nPDW in Single Mode ............................................................................................................ 13 \nExternal PDW Trigger ........................................................................................................... 14 \nSynchronous PDW Trigger for multichannel devices ............................................................. 15 \nSCPI Commands .................................................................................................................... 16 \nPDW Data .............................................................................................................................. 16 \nPDW Parameters .................................................................................................................... 17 \nPDW Trigger ............................................................................................................................ 18 \nSynchronous Trigger ............................................................................................................... 19 \nPDW Structure ....................................................................................................................... 19 \nWord Detail ............................................................................................................................ 20 \nPDW Parameter Types ............................................................................................................ 23 \nPDW Default .......................................................................................................................... 23 \nPDW List File .......................................................................................................................... 24 \nAppendix ................................................................................................................................ 25 \nAN6008 Changelog ................................................................................................................. 25 \n \n \nPulse Descriptor Word Concept \nPDW parameters each describe the behavior or value of a distinct property of the device. Therefore, \na PDW consists of a set of PDW parameters that deﬁne an output signal. This includes various \nmodulation options, carrier settings and further control of the RF output of the device. \nWith PDWs the user also gains complete control of the duration and timing between modulations. \nHence, PDWs are the perfect modulation control feature for setups and applications that include \nextensive amounts of different modulations or sophisticated carrier sweeps. Setting modulations \nwith PDWs reduces the required memory space compared to storing IQ modulation data on the \ndevice for each modulation. \nParameters and Words \nThe PDW Parameters describe and deﬁne different aspects of the RF output signal for the VSG \ndevice. They all consist of a distinct address and a value. A complete list of all PDW Parameters \n",
+   "images": [
+    {
+     "file": "fig-002.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 3,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n3 \nwith their respective addresses and descriptions of their properties can be found at the end of this \ndocument in section PDW Structure. \nThe Parameters are uploaded to the VSG device and saved as Pulse Descriptor Words. The different \nPDW upload options are described in section Data Transfer. The saved Words form a List of PDWs. \nDepending on the active PDW mode, the PDW List is available for one or multiple playbacks. The \nconsecutive playback of multiple PDWs will henceforth be called Simulation. \n \n \nFigure 1: A PDW Parameter, a Word (one PDW) and a PDW List depicted with their relation to each other. \n \nWith one PDW, both the carrier and the modulation are conﬁgured. This includes settings for the RF \noutput and switching between different modulation types. The modulations supported with the \nPDW feature include pulses, frequency modulations, chirps, as well as waveform playback by \nselecting segment IDs. \nSelecting segment IDs with PDWs for playback is only available for waveforms that are stored on \nthe device’s memory before PDWs are starting to be applied. Furthermore, restrictions such as \nparameter limits and constraints on control settings (e.g., availability of simultaneous modulations) \nnaturally apply when deploying PDWs. \nTiming \nSelecting segment IDs with PDWs for playback is only available for waveforms that are stored on \nthe device’s memory before PDWs are starting to be applied. Furthermore, restrictions such as \nparameter limits and constraints on control settings (e.g., availability of simultaneous modulations) \nnaturally apply when deploying PDWs. \nData Transfer \nAll PDW Parameters can be updated by sending them to the device. Upload options for PDWs are \nthe following. \n• \nUpload a PDW List from a ﬁle with the VSG GUI \n• \nConﬁgure and upload consecutive PDWs with the VSG GUI \n• \nSet PDW Parameters individually through SCPI commands \n• \nSet multiple PDW Parameters (and Words) by using the SCPI command to send block data1 \n• \nSend PDW Parameters through the optional FCP interface [PDW Stream mode only] \n",
+   "images": [
+    {
+     "file": "fig-003.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-004.png",
+     "w": 1410,
+     "h": 321,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 4,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n4 \nSection SCPI Commands gives an overview on the SCPI commands available for PDW control. The \noption to upload a ﬁle containing a PDW List with the GUI is only available in List mode. See section \nPDW List File for details and an example hereof. \nPDW Mode \nThe PDW system can be operated in different modes which differ in their use-cases. \nFor each mode, the upload and playback of PDWs is different. The desired PDW mode must be set \nbefore enabling the PDW feature. \nMode Overview \nPDW \nInput Interface \nPDW Upload \nDevice Storage \nSimulation \nList \nVSG GUI/SCPI \ncommands \nBefore simulation starts \nPDW Memory \nAll PDSs in List, \noptionally repeat List \nStream \nFCP / SCPI commands \nBefore and during \nsimulation \nPDW Buffer (FIFO) \nPDWs in order of \nupload, only once \nSingle \nSCPI commands \nDuring simulation \nSingle PDW register \nEach PDW triggered \nafter upload \n \nList Mode \nThis mode is suggested if there is a bulk of PDWs that are predetermined and require speciﬁc timing \nrelations between each other. It is the default mode to simulate multiple PDWs. \nThe PDW-ﬁle upload is the recommended input form in this mode. Files containing lists of PDWs \nwith their individual parameters can be uploaded to the device through the VSG GUI. The list of \nPDWs is interpreted and preloaded to the PDW memory on the device. The PDWs in the memory all \ncontain a start time at which the respective parameters are applied to the device’s RF output. The \ntiming concept for applying the PDWs saved in the memory is depicted in Figure 2. \nA trigger signal is required to start the Simulation of the PDW List. Information on the PDW Trigger \nSubsystem can be found in section PDW Timing. The List mode also provides the option to repeat \nthe PDW List in one Simulation by setting the List Count. \n1See the PDW:DATA SCPI command, explained in section SCPI Commands: PDW Data \n \nFigure 2: List mode timing concept with relative Time Mode. PDWs are applied at their dedicated start times. Figure \nnot to scale. \n",
+   "images": [
+    {
+     "file": "fig-005.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-006.png",
+     "w": 1338,
+     "h": 472,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 5,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n5 \n \nStream Mode (Real-Time) \nThis mode is ideal for sending PDWs to the device in bursts and obtain real-time streaming of the \nPDWs. \nThe PDW Stream mode is only available with the optional FCP Interface, as PDW Parameters are \nstreamed through this external port. PDW Parameters are streamed consecutively and grouped into \nWords, using the CONFIG_END parameter. Each received PDW is buffered in a FIFO. Thus, PDWs \nare executed consecutively and applied at their respective START_TIME. \nAdditional PDWs can be streamed during Simulation and are then queued in the PDW FIFO buffer. \nOnce applied, PDWs are no longer stored in the buffer. \nThe uploaded Words do not have to contain all possible PDW Parameters. Addresses that are not \nset will keep the previous value. This allows for fast PDW upload when few bytes of each Word are \nbeing set. \nFor further information on the FCP interface speciﬁcally, please consult the Application Note on \nFCP [3]. \n \n \nFigure 3: Stream mode timing concept with absolute Time Mode. Figure not to scale. \n \nSingle Mode \nThis mode does not take into account the START_TIME and PULSE_WIDTH parameters of the PDW, \nbut rather starts pulses on a PDW trigger and keeps them enabled until the next pulse is triggered. \nTherefore, this mode is a good way for users to test their PDW settings and simulate scenarios that \nare not as time critical. \nThe PDW Single mode accepts PDW Parameters through SCPI. The parameters are grouped into \nWords and uploaded to the device’s internal register using the CONFIG_END parameter. The \nuploaded Words do not have to contain all possible PDW Parameters. Parameters that are not set \nwill keep the previous value, or the default value if they are never set at all. \n",
+   "images": [
+    {
+     "file": "fig-007.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-008.png",
+     "w": 1423,
+     "h": 467,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 6,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n6 \nWhen triggered, the last uploaded PDW is activated and then applied to the RF output after a \ntransient time (labeled 𝑡𝑡𝑡𝑡). The general concept of this mode is depicted in Figure 4. \nAn example for a SCPI command sequence in PDW Single Mode can be found in section Examples. \nDetails on the transient time are described in section Transient Blanking. \n \n \nFigure 4: Single mode concept with Trigger. Figure not to scale. \n \nApplication Details \nRequirements and Restrictions \nDevice Options \n• \nThe PDW feature is an optional feature that can be equipped on each channel (separately) \nof an VSG device at the time of ordering. The option PDW must be equipped for each \nchannel of the device to support the PDW functionality described in this document. \n• \nFast PDW switching and short PDW pulses both require the option UFS (Ultra-Fast \nSwitching). Otherwise, time parameters for PDWs are restricted. Parameter limitations and \nother PDW speciﬁcations for all available device options are listed in section PDW in the \nVSG datasheet [1]. \n• \nOption PHS (Phase coherent switching) is available in combination with option PDW. PHS \nenables a well-deﬁned deterministic relative phase between individual channels. \n• \nThe PDW Stream mode is only available with the option FCP. \n• \nSynchronizing the simulations of multiple channels within the same VSG device is \ninherently possible as soon as an VSG device with at least two channels with options PDW \nare purchased. The PDW trigger source SYNC must be used to trigger the PDW Simulation \nof all desired channels simultaneously. More information can be found in section PDW \nTrigger. \n• \nSynchronizing PDW Simulations of multiple devices will be available soon and is only \navailable with option SYNC. Please ensure you mention any desire for multi-device \nsynchronization when ordering your VSG devices. \n• \nPlease make sure you select all desired options when buying your VSG device. \n \n \n",
+   "images": [
+    {
+     "file": "fig-009.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-010.png",
+     "w": 1380,
+     "h": 325,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 7,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n7 \nCarrier Settings \n• \nFor one PDW there can only be a single carrier frequency, power and phase set. Detailed \ninformation about available parameters can be found in section PDW Structure. \nInformation on parameter ranges can be found in the VSG datasheet [1]. \nWaveform Modulation \n• \nSegments (QI ﬁles for waveform modulation) must be uploaded to the device before the \nPDW is enabled. \n• \nOnly a playback rate of 500 MHz is supported for segments in use with PDW. \n• \nThere can only be one selected segment in each PDW. \n• \nIt is the user’s responsibility to ensure the necessary segments are uploaded to the device \nbefore any PDW selects them. Selecting inexistent/not uploaded segments will result in \nsuppressed RF output. \n• \nIf the pulse width of a PDW does not match the length of the enabled waveform segment, \nthe waveform segment will be repeated or cut short. The PDW pulse width is the deﬁning \nparameter for each PDW width. \nControl Descriptor Word Option \nThe VSG devices also provide the option to only control a subset of the parameters of the PDW. This \nsubset is called Control Descriptor Word and allows the user to control only carrier parameters and \nwaveform segment playback. The CDW (Control Descriptor Word) option does not include timing \nparameters and is limited to only support the upload of a single CDW at a time. Furthermore, it is \nonly available in PDW Stream mode and requires the options UFS and FCP. \nPDW Timing \nPDW Activation \nMultiple PDWs can be stored on the device. Depending on the PDW mode, the PDWs are either \nsaved as a List on the device for replay or streamed to the device as subsequent PDWs to be \nreplayed only once. Details on PDW storage limitations can be found in the VSG datasheet [1]. \nOnce saved on the device, the PDWs can be replayed in a Simulation that activates and applies \neach PDW at the RF output, according to its timing parameter speciﬁcations. A trigger starts the \nSimulation of the PDWs. For speciﬁc information on PDW Triggers, please see section PDW Trigger. \nTransient Blanking \nNaturally, when a PDW is activated, there is a transient period while the device transitions between \ndifferent carrier and modulation settings, before the signal is applied at the RF output, as shown in \nFigure 5. With the PDW feature, these transition periods are blanked to prohibit unexpected \nbehavior at the output. \nThe transient period is a ﬁxed value of time and directly dictates the minimum switching time. \nSpeciﬁc values can be found in the PDW section of the VSG Datasheet [1]. \n \n",
+   "images": [
+    {
+     "file": "fig-011.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 8,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n8 \n \nFigure 5: Depiction of transient periods between consecutive PDW pulses. Figure not to scale. \n \nPDW Time Mode \nThe PDW Time Mode deﬁnes how the START_TIME parameter is interpreted by the device and when \nthe simulation time is reset. \nAbsolute Time Mode: \nEach PDW is activated at START_TIME after the Simulation trigger. The Simulation time starts with \nthe Simulation trigger. PDWs are activated when their START_TIME equals the Simulation time. \nThus, the START_TIME is interpreted as an absolute value. \nRelative Time Mode: \nThe ﬁrst PDW is activated at START_TIME after the Simulation trigger. Each consecutive PDW is then \nautomatically activated at the START_TIME after the last activation. Thus, the START_TIME is \ninterpreted relative to the start of the previous PDW. When getting the Simulation time of the \ndevice, the time since the last application of a PDW will be displayed. \nTime Parameters \nThere are multiple parameters that describe the timing of each PDW. The most signiﬁcant ones are \ndescribed here and graphically represented in Figure 6 and Figure 7 which show the start of a PDW \nList simulation for each Time Mode. \n• \nSTART_TIME \nThe time at which a PDW is applied at the RF output. The START_TIME must be set such that \nit allows for the mandatory transient period after the previous pulse. If this PDW timing \nrequirement is not met, the PDW with violating time parameters is discarded and not \napplied at the output. Timing Violations are explained in the next subsection. \n• \nPULSE_WIDTH \nDeﬁnes the width of the PDW pulse at the RF output before it is suppressed again. \n• \nSimulation Trigger Setup Time \nThe time between the arrival of a trigger at the device and the start of the Simulation time. \nSpeciﬁc values can be found in the PDW section of the VSG Datasheet [1]. \n• \nFCP Activation Setup Time \nThe time required to process a received PDW through FCP. This is the time between \nreceiving a CONFIG_END parameter at the FCP interface and the ﬁrst possible point in time \na PDW can be activated. Speciﬁc values can be found in the FCP section of the VSG \nDatasheet [1]. \n \n",
+   "images": [
+    {
+     "file": "fig-012.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-013.png",
+     "w": 1386,
+     "h": 152,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 9,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n9 \n \nFigure 6: Trigger latency, start time and pulse width for a PDW List Simulation in absolute Time Mode. Figure not to \nscale. \n \n \nFigure 7: Trigger latency, start time and pulse width for a PDW List Simulation in relative Time Mode. Figure not to \nscale. \n \nTiming Violation \nFor a PDW to meet the timing requirements, it must comply with the following rules: \n• \nThe START_TIME must arrive after the falling edge of the previous PDW pulse \n• \nThe PDW must be uploaded, so that when read from the PDW memory or PDW buffer FIFO, \nthe START_TIME can be met. As PDWs are read consecutively, they must be uploaded in the \ncorrect order, especially when using the absolute Time Mode. Also, when uploading PDWs \nthrough FCP, the FCP activation setup time must be met. \nIf any of these conditions are violated, the respective PDW is discarded at its activation. Figure 8 \ndepicts a scenario with PDW k+2 being discarded during the pulse width of the previous PDW, as \nthis happens to be its activation time. PDW k+2 thus clearly violates the ﬁrst rule. \n",
+   "images": [
+    {
+     "file": "fig-014.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-015.png",
+     "w": 1191,
+     "h": 510,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-016.png",
+     "w": 1207,
+     "h": 481,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 10,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n10 \n \n \nFigure 8: PDW timing violation due to overlap of PDWk+1 output and PDWk+2 transient. Overlap marked in red. \n \nThe VSG device keeps track of the number of discarded PDWs. The respective SCPI command can \nbe found in section SCPI Commands. The counter of discarded PDWs is reset when a new \nSimulation is triggered, or when the Simulation of one PDW List is restarted in case the List Count is \nbigger than 1 in a List mode Simulation. \nPDW Linear Phase Sweep \nThe PDW Parameters support the option for a linear phase sweep (LPS) on pulse. This section gives \nan overview of the different PDW Parameters to control the phase sweep and gives a graphical \nexample in Figure 9. The following parameters are required to deﬁne the phase sweep for one PDW. \n• \nPHASE_MODE \nIn the ﬁgure below, the nth PDW and the n+2nd PDW have the LPS enabled, which means the \nPHASE_MODE is set to sweep. The n+1st PDW has the LPS state disabled, which equals a \nﬁxed PHASE_MODE. Naturally, the PHASE_MODE must be set to either ﬁxed or sweep to \ndeﬁne if each PDW should contain a linear phase sweep. \n• \nPHASE_STEP \nThis parameter is utilized to deﬁne the difference in phase between two steps in the linear \nphase sweep. Please note that the sweep always starts at the PHASE (labeled Φ𝑛𝑛) value at \nthe start of one PDW and the PHASE_STEP (labeled Φ𝑠𝑠) denotes the increment in phase \nwith each LPS step inside of one PDW. \n• \nSWEEP_DWELL \nThe LPS dwell time, labeled 𝑡𝑡𝐿𝐿𝐿𝐿𝐿𝐿,𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝑑𝑑 in Figure 9, describes how long each phase step is \nactive at the output. This time must be equal or less than the SWEEP_STEP. \n• \nSWEEP_STEP \nDuring one sweep step, the set phase is constant. The sweep step time is set for one PDW. \nIf the SWEEP_DWELL time is less than the SWEEP_STEP time, the LPS generates a pulse \nwith an off time during which the output is blanked. \n \n",
+   "images": [
+    {
+     "file": "fig-017.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-018.png",
+     "w": 1421,
+     "h": 263,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 11,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n11 \n \nFigure 9: Graphical representation of pulse behavior with Linear Phase Sweep. Graph features PDW Pulse deﬁned \nby START_TIME and PULSE_WIDTH, LPS pulse deﬁned by SWEEP_DWELL and SWEEP_STEP and the resulting pulse \nand phase behavior at the RF output of the device. Figure not to scale. \n \nPDW Trigger \nThere are several options for triggering a PDW simulation. \n• \nImmediate trigger of the PDW Trigger subsystem as soon as the PDW state is turned on. \nRequires PDW:TRIG:SOUR to be set to immediate. The Simulation is automatically \nretriggered after it is ﬁnished, with a Simulation Trigger Setup Time delay. \n• \nInternal trigger of the PDW Trigger subsystem, which can be sent with the SCPI command \nPDW:TRIG. Set the PDW:TRIG:SOUR to bus. \n• \nExternal trigger signal sent through an MF input port. Check out the External PDW Trigger \nExample in the next section for details. \n• \nSynchronous trigger to start Simulation of multiple channels simultaneously. Requires \nPDW:TRIG:SOUR to be set to synchronous and the trigger to be executed with an internal \nsynch. trigger TRIG:SYNC or an external synch. trigger - see section Synchronous Trigger in \nSCPI Commands for useful commands and section Synchronous PDW Trigger for \nmultichannel devices for an example. \nExamples \nRecommended PDW List uploaded with VSG GUI \nSection PDW List File describes the required ﬁle format and content for any PDW List ﬁle that is \nuploaded through the GUI.  \nFor the upload process, open the VSG GUI and select List mode in the PDW section. Simply load \nthe content of the desired ﬁle for upload with “Add CSV”, check the displayed list for correct \ninterpretation and upload it to the device. The VSG GUI informs the user in case of any incorrect or \nincomplete settings. \nBe advised that there is a limited amount of PDWs that can be uploaded in one list. \n \n \n",
+   "images": [
+    {
+     "file": "fig-019.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    },
+    {
+     "file": "fig-020.png",
+     "w": 1380,
+     "h": 417,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 12,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n12 \nAdvanced PDW List upload with SCPI commands \nThe following passage explains how to upload a list of PDWs to the device. However, it is strongly \nsuggested to upload PDW Lists by loading .csv ﬁles to the device with the GUI to avoid unsupported \nparameter combinations and timing violations. \nThe following sequence of commands is an example for setting the Parameters for one PDW \nelement in a list of PDWs. The last command of this sequence tells the device that all desired \nParameters are set and the PDW is complete. \n \nPDW:STAR:TIME 5ms  \nSet start time of PDW to 5 milliseconds \n \nPDW:PWID 1ms \n \nSet the pulse width of the PDW to 1 millisecond \n \nPDW:MARK 1  \n \nSet Marker of PDW to 1 \n \nPDW:FREQ 2e9 \n \nSet carrier frequency of PDW to 2 GHz \nPDW:POW -5  \n \nSet ﬁxed output power of PDW to -5 dBm \nPDW:PHAS 0  \n \nSet ﬁxed output phase of PDW to 0 rad \nPDW:OUTP:STAT ON  \nEnable RF output of PDW \nPDW:WAV:STAT ON \n \nEnable the waveform modulation of the PDW \nPDW:WAV:WSEG 1 \n \nSet the waveform segment ID of the PDW to 1 \nPDW:CONF:END \n \nEnd setting Parameters for this PDW (1 PDW in List) \n \nImportant: The SCPI commands must be sent in the correct consecutive order, especially with the \nPDW:CONF:END command. Otherwise, Parameters might be assigned to incorrect Words which \nresults in unexpected output behavior of the device. \nAlternative: The PDWs can also be sent with the PDW:DATA SCPI command that supports block \ndata. Be sure to place the Parameters containing conﬁguration information like the CONF_END \nvalue after the descriptive Parameters for one PDW to group the PDWs together correctly. \nPDW Simulation Start in List Mode \nAfter uploading the PDW list to the device, the PDW Simulation can be started. Please make sure \nthat the intended Time Mode is selected before the Simulation starts, as it dictates how the \nSTART_TIME values are interpreted during Simulation. The following set of SCPI commands is an \nexample of how to start a PDW simulation with an internal trigger. \nPDW:STAR:TIME:MODE ABS  Set the Time Mode to absolute.  \nPDW:LIST:COUN 100   \nSet the List Count to 100 (repeat PDW List 100 times).  \nPDW:TRIG:SOUR BUS   \nSet the trigger source to bus.  \nPDW:MODE LIST  \n \nSet the PDW mode to List.  \nPDW:STAT ON   \n \nEnable the PDW state.  \nPDW:TRIG  \n \n \nSet an internal trigger signal. Starts the Simulation. \nPDW Simulation Start in Stream Mode \nFor the PDW Stream mode, the buffer FIFO does not necessarily need to be ﬁlled before the PDW \nSimulation can be started. Before enabling the PDW in Stream mode, please make sure that the \nintended Time Mode is selected as it dictates how the START_TIME values are interpreted during \n",
+   "images": [
+    {
+     "file": "fig-021.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 13,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n13 \nSimulation. The following set of SCPI commands is an example of how to start a PDW simulation \nwith an internal trigger and when to start streaming PDWs. \nPDW:STAR:TIME:MODE ABS  Set the Time Mode to absolute.  \nPDW:TRIG:SOUR BUS   \nSet the trigger source to bus.  \nPDW:MODE STR  \n \nSet the PDW mode to Stream.  \nPDW:STAT ON   \n \nEnable the PDW state. \nThe device can now receive streamed parameters and queue PDWs in the FIFO buffer. The \nsimulation time has not started yet, so PDWs are not activated yet.  \nPDW:TRIG  \n \n \nSet an internal trigger signal. \nOnce the simulation is started by trigger, PDWs can still be streamed to the device and will be \nqueued in the FIFO buffer for activation. The Simulation in PDW Stream mode only ends once the \nPDW state is disabled. \nPDW in Single Mode \nThis example shows a complete SCPI sequence for the PDW Single mode, with the following steps: \n1. Set the device conﬁguration and enable PDW in Single mode. \n2. Set parameters for the ﬁrst PDW with frequency 2 GHz, power 10.5 dBm, Waveform \nModulation on Pulse with segment ID 3 \n3. Start simulating the ﬁrst PDW with a Trigger. \n4. Set parameters for the second PDW with frequency 2 GHz, power 3 dBm, CW only (no \nmodulation on pulse) \n5. Start simulating the second PDW with a Trigger. \nIn case you would like to utilize a different trigger source like the external trigger or synchronous \ntrigger, please skip the ﬁrst SCPI command and follow the instructions of example External PDW \nTrigger or Synchronous PDW Trigger for multichannel devices respectively, before proceeding with \nthe following commands. \nThis example expects a waveform with segment ID 3 already being uploaded to the device. For \nfurther details on how to upload waveforms to VSG devices, please consult [4]. \nFirst, the PDW trigger source is set to bus, which will allow for the SCPI command PDW:TRIG to \ninitiate a PDW trigger event. Then, the correct PDW mode is selected and the PDW functionality \nenabled. \nPDW:TRIG:SOUR BUS   \nSet the PDW Trigger source to Bus.  \nPDW:MODE SING  \n \nSet the PDW mode to Single.  \nPDW:STAT ON   \n \nEnable the PDW state. \nEnabling the PDW results in the RF output being blanked until the ﬁrst PDW is applied. \nAs soon as the PDW is enabled in Single mode, the ﬁrst PDW can be set. Any parameters that are \nnot set will keep their default values. In this example, the ﬁrst PDW will keep the default phase \nvalue and phase sweep settings. \n",
+   "images": [
+    {
+     "file": "fig-022.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 14,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n14 \nPDW:FREQ 2e9  \n \nSet the carrier frequency to 2 GHz.  \nPDW:POW 10.5  \n \nSet the carrier RF power level to 10.5 dBm.  \nPDW:OUTP:STAT ON   \nEnable the RF output.  \nPDW:WAV:STAT ON  \n \nEnable waveform modulation on pulse.  \nPDW:WAV:WSEG 3  \n \nSet the selected waveform segment ID to 3.  \nPDW:CONF:END  \n \nEnd this PDW and save it in the device for playback. \nThe CONFIG_END parameter is required at the end of each PDW. It tells the device that this (ﬁrst) \nPDW conﬁguration is ﬁnished and ready to be activated. The SCPI commands must be sent in the \ncorrect consecutive order, especially with the PDW:CONF:END command. Otherwise, Parameters \nmight be assigned to incorrect Words which results in unexpected output behavior of the device. \nThe PDW is then activated with a PDW trigger event. For the SCPI command, please be aware that \nthere is a latency caused by the ethernet connection to the device as well as a processing latency \nof the device before the PDW is activated. \nPDW:TRIG  \n \n \nTrigger the uploaded PDW. \nThe RF output ﬁrst shows the blanked transient and then the set PDW. \nNow, a second PDW can be set. Any parameters that are not set anew will keep their previous \nvalues like the carrier frequency of 2GHz in this example. \nPDW:POW 3 \n  \n \nSet the carrier RF power level to 3 dBm. \nPDW:WAV:STAT OFF   \nEnable waveform modulation on pulse.  \nPDW:CONF:END  \n \nEnd this PDW and save it in the device for playback. \nAfter the PDW:CONF:END, the second PDW can be activated with a trigger. Before the new PDW is \ntriggered, the previously activated PDW is still applied at the RF output. \nPDW:TRIG  \n \n \nTrigger the uploaded PDW. \nThe RF output again ﬁrst shows the blanked transient and then the set (second) PDW. \nImportant: The SCPI commands must be sent in the correct consecutive order, especially with the \nPDW:CONF:END command. Otherwise, Parameters might be assigned to incorrect Words which \nresults in unexpected output behavior of the device. \nExternal PDW Trigger \nThe following set of SCPI commands is an example for conﬁguring the device to detect and accept \nexternal PDW trigger signals. \nPDW:TRIG:SOUR EXT   \n \nSet the PDW trigger source to external  \nPDW:TRIG:EXT:SOUR MF1 \n \nSet the external trigger source to MF1 port  \nPDW:TRIG:EXT:SLOP POS  \n \nSet the external trigger slope detection to positive \nNow a positive edge can be sent on the MF1 port. This will trigger the PDW Simulation of the \ncurrently enabled PDW mode. The Simulation will not be triggered if: \n• \nThe PDW:STATe is disabled or \n",
+   "images": [
+    {
+     "file": "fig-023.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 15,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n15 \n• \nThe trigger source is not set correctly or \n• \nList mode: The PDW List is empty (nothing saved in the memory) \nSynchronous PDW Trigger for multichannel devices \nThe following set of SCPI commands is an example for conﬁguring a two-channel device to use \nsynchronous PDW trigger signals on both channels. This conﬁguration is ideal to synchronously \nstart the time base of PDW simulations on multiple channels. \nWith this setting, the PDW trigger subsystems on each individual channel are set to listen to a \nsingle global synchronous trigger event. \nFirst, the source for the synchronous trigger signal should be set. The two main options are to start \nthe synchronized PDW simulations with either a SCPI command or with an external trigger ﬂank at \none of the MF input ports. \nOption 1: \nTRIG:SYNC:SOUR BUS Set the synchronous trigger source to bus, for SCPI. \nOption 2: \nTRIG:SYNC:SOUR EXT   \n \nSet the synchronous trigger source to external.  \nTRIG:SYNC:EXT:SOUR MF1  \n \nSet the external sync. trigger source to MF1 port.  \nTRIG:SYNC:SLOP POS  \n \nSet the MF1 input to trigger on positive edges \nNext, each channel that must be told to start their PDW simulations synchronously by setting the \nsynchronous trigger as the PDW trigger source. \nSOUR:SEL 1  \n \n \n \nSelect device channel 1.  \nPDW:TRIG:SOUR SYNC  \n \nSet the PDW trigger source to synchronous on CH 1.  \nSOUR:SEL 2  \n \n \n \nSelect device channel 2.  \nPDW:TRIG:SOUR SYNC  \n \nSet the PDW trigger source to synchronous on CH 2. \nFinally, the synchronous trigger can be activated to start the PDW simulations on all channels. \nDepending on the source of the synchronous trigger, use the following. \nOption 1: \nTRIG:SYNC Triggers all subsystems listening to synchronous trigger sources. \nOption 2: A positive edge must be sent on the MF1 port. \nImportant: The Simulation will not be triggered if: \n• \nThe PDW:STATe is disabled or \n• \nThe trigger source is not set correctly or \n• \nList mode: the PDW List is empty (nothing saved in the memory) \n \n \n",
+   "images": [
+    {
+     "file": "fig-024.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 16,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n16 \nSCPI Commands \nPDW Settings \n[SOURce<ch>:]PDW:STATe ON|OFF|0|1 \nSet the PDW State. Enabling the PDW state disables the control of RF output settings. \nExample: PDW:STATE ON \n[SOURce<ch>:]PDW:MODE LIST|STReam|SINGle \nSet the PDW mode. See section PDW Mode for details on each mode. PDW:STAT must be turned off \nbefore mode is switched.  \nExample: PDW:MODE LIST \n[SOURce<ch>:]PDW:STARt:TIME:MODE RELative|ABSolute \nSet the Time Mode to interpret the START_TIME value either relative to the previous PDW or as an \nabsolute value of Simulation time. For more information on the start time, see section PDW Timing. \nThe start time mode is set to relative per default. \nExample: PDW:STAR:TIME:MODE ABS \n[SOURce<ch>:]PDW:CONDition:DISCarded? \nGet the number of PDWs that were discarded due to timing violations. \nExample: PDW:COND:DISC? \n[SOURce<ch>:]PDW:SIMulation:TIME? \nGet the Simulation time of the device. See section PDW Timing: PDW Time Mode for an explanation \non the Simulation time. \nExample: PDW:SIM:TIME? \n[SOURce<ch>:]PDW:LIST:DELete \nDelete all PDWs saved on the device in List mode. \nExample: PDW:LIST:DEL \n[SOURce<ch>:]PDW:LIST:COUNt <repeat> \nSet the number of times the list of PDWs is to be repeated in one Simulation run. The repeat value \nmust be an unsigned integer. \nExample: PDW:LIST:COUN 2 \n[SOURce<ch>:]PDW:STReam:COUNt? \nGet the number of saved PDW elements in the FIFO buffer. Returns zero if not in PDW Stream \nmode. \nExample: PDW:STR:COUN? \nPDW Data \n[SOURce<ch>:]PDW:DATA <addr>,<param_data> \nSet the value for one speciﬁc address in the PDW. \nExample: PDW:DATA 4, 1 Enable the waveform state (Addr. 4) \n[SOURce<ch>:]PDW:DATA <block data> \n",
+   "images": [
+    {
+     "file": "fig-025.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 17,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n17 \nSet the value of multiple addresses with block data. Also allows values for addresses of multiple \nPDWs when each Word is terminated with a CONFIG_END of the PDW CONFIG_END Parameter. \nThe block data has IEEE488.2 deﬁnite block data format: \n#<num_digits><byte_count><data bytes> \n<num_digits> speciﬁes how many digits are contained in <byte_count>. \n<byte_count> speciﬁes how many data bytes follow in <data_bytes>. \nExample of deﬁnite block data: \n#18xxxxxxxx \n#18…: byte count is one digit wide  \n#18…: 8 data bytes will follow  \n…xxxxxxxx: 8 bytes of data (4 address-parameter pairs) \nThe data itself consists of address-parameter pairs that are 16 bits wide per pair. Each of these \npairs consists of one address and their respective Parameter value. The address is 8 bits wide \nand is followed by an 8 bit wide value for the Parameter. All bytes are two’s complement values. \nThe sent addresses do not have to be consecutive. Addresses that are not set for a Word \nsimply keep their default value. The CONFIG_END Parameter may be utilized when a full list of \nPDWs is transmitted: \n• \nCONFIG_END signals the end of a PDW. The subsequent address-parameter pairs are set \nto the next PDW in the List. \n[SOURce<ch>:]PDW:DATA:FCP? <addr> \nGet the most recently set value of one speciﬁc address in the PDW. \nExample: PDW:DATA:FCP? 4 Returns 1 if the last sent waveform state is enabled. \n[SOURce<ch>:]PDW:DATA:OUTPut? <addr> \nGet the set value of one speciﬁc address of the active PDW. \nExample: PDW:DATA:OUTP? 55 Returns 1 byte of carrier power of the active PDW. \nFor a list of all SCPI commands and detailed descriptions, please consult the Programmer’s \nManual [2]. \nPDW Parameters \nAvailable SCPI commands for setting Parameters are listed here. For details on their functionality \nplease consult the descriptions for each Parameter in section Word Detail. \nConﬁguration \n[SOURce<ch>:]PDW:CONFigure:END \n[SOURce<ch>:]PDW:WAVeform:STATe ON|OFF|0|1 \n[SOURce<ch>:]PDW:MARKer <integer> \n[SOURce<ch>:]PDW:STARt:TIME <ﬂoat[s]> \n[SOURce<ch>:]PDW:PWIDth <ﬂoat[s]> \nCarrier & Output \n[SOURce<ch>:]PDW:OUTPut:STATe ON|OFF|0|1 \n[SOURce<ch>:]PDW:FREQuency <ﬂoat[Hz]> \n[SOURce<ch>:]PDW:POWer <ﬂoat[dBm]> \n",
+   "images": [
+    {
+     "file": "fig-026.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 18,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n18 \n[SOURce<ch>:]PDW:PHASe <ﬂoat[rad]> \nWaveform Modulation \n[SOURce<ch>:]PDW:WAVeform:WSEGment <integer> \nPhase Sweep \n[SOURce<ch>:]PDW:PHASe:MODE FIXed|SWEep \n[SOURce<ch>:]PDW:PHASe:STEP <ﬂoat[rad]> \n[SOURce<ch>:]PDW:SWEep:DWELl <ﬂoat[s]> \n[SOURce<ch>:]PDW:SWEep:STEP <ﬂoat[s]> \nPDW Trigger \n[SOURce<ch>:]PDW:TRIGger[:SEQuence][:IMMediate] \nExecutes a PDW speciﬁc internal trigger event. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:SOURce IMMediate|BUS|EXTernal|SYNChronous \nSets the trigger source. Set to immediate per default. \nIMM: No waiting for a trigger event occurs. Constantly, immediately triggered. \nBUS: Trigger source is the command PDW:TRIG[:IMM]. \nEXT: Trigger source is an externally applied signal or the command PDW:TRIG[:IMM].  \nSYNC: Tigger source is the synchronous trigger subsystem, see next section for commands. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:EXTernal:DELay <ﬂoat> \nSets the amount of time to delay the response to the trigger. Float value in seconds. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:EXTernal:SOURce[:PORT] MF1|MF2 \nSelect which multi-function channel is used for the external trigger input. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:EXTernal:SLOPe POSitive|NEGative \nSets the polarity for an external trigger signal. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:ABORt \nInhibits the trigger signal. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:INITiate[:IMMediate] \nInitiates the system: Trigger signals will be accepted by the trigger system. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:INITiate:CONTinuous ON|OFF|1|0  \nON: Trigger signals will be accepted by the trigger system continuously.  \nOFF: Trigger signals will be accepted by the trigger until it's triggered once. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:OUTPut:POLarity NORMal|INVerted \nSets the trigger output signal polarity. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:OUTPut:DELay <ﬂoat> \nSets the delay of the trigger output signal in seconds. \n[SOURce<ch>:]PDW:TRIGger[:SEQuence]:OUTPut:PWIDth <ﬂoat> \nSets the pulse width of the trigger output signal in seconds. \n",
+   "images": [
+    {
+     "file": "fig-027.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 19,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n19 \nSynchronous Trigger \nTRIGger:SYNChronous[:IMMediate] \nTriggers all subsystems (e.g. PDW Trigger) listening to synchronous trigger sources. \nTRIGger:SYNChronous:SOURce IMMediate|BUS|EXTernal \nSets the trigger source for the synchronous trigger subsystem. Set to immediate per default. IMM: \nNo waiting for a trigger event occurs. Constantly, immediately triggered. \nBUS: Trigger source is the command TRIG:SYNC[:IMM]. \nEXT: Trigger source is an externally applied signal or the command TRIG:SYNC[:IMM]. \nTRIGger:SYNChronous:EXTernal:SOURce[:PORT] MF1|MF2 \nSelect which multi-function channel is used for the external trigger input. \nTRIGger:SYNChronous:SLOPe POSitive|NEGative \nSets the polarity for an external synchronous trigger signal. \nPDW Structure \nThe following sections describe the structure of a Pulse Descriptor Word that consists of several \nparameters. Marked ﬁelds represent parameters that are intended for future implementation and \nnot yet supported. Please note that details for unsupported parameters are subject to change. \nThe list in section Word Detail does not entail limitations of the parameters, as these are device \ndependent. For more information about the parameter limits, please consult the PDW section in \nthe Datasheet [1] of your VSG device. \nFrequency, power, phase and time parameters share a common ﬁxed-point parameter deﬁnition, \nwhich is described in section PDW Parameter Types at the very end of this document. \nTable 1: Overview of the PDW structure \nAddress Range \nParameter Name \nParameter Group \n1 \nPDW Conﬁguration \nPDW Setting \n2 – 3 \nReserved \n4 \nPDW Modulation \n5 – 6 \nReserved \n7 \nPDW Marker \n8 – 15 \nReserved \n16 – 23 \nStart Time \nPDW Timing \n24 – 31 \nPulse Width \n32 – 33 \nWaveform Segment \nWaveform Modulation \n34 – 47 \nReserved \n48  \nRF Output \nCarrier Output \n49 – 54 \nFrequency \n55 – 56 \nPower \n57 – 58 \nFixed Phase \n60 – 69 \nReserved \nOffset \n70 – 89 \nReserved \nFM/PM \n90 – 97 \nReserved \nAM \n98 – 105 \nReserved \nChirp \n106 \nSweep On Pulse \nPhase Sweep \n107 – 108 \nPhase Step \n109 – 116 \nSweep Dwell Time \n117 – 124 \nSweep Step Time \n125 – 255 \nReserved \nReserved \n",
+   "images": [
+    {
+     "file": "fig-028.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 20,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n20 \nWord Detail \nAdd\nress \nParameter \nName \nBits \nBit Name \nSCPI Command \nDescription \n0 \nReserved \n[7:0] \nRESERVED \n \n \n1 \nPDW Conﬁguration \n0 \nCONFIG_END \nPDW:CONF:END \nSignal the end of one PDW, meaning all \nnecessary parameters have been sent and the \nfollowing parameters will pertain to the \nsubsequent PDW. \nDefault: 0 \n1 \nPULSE_START_IMM \n \nDecide whether the PDW is applied as soon \nas the previous PDW has ended.  \n0: Use the START_TIME value  \n1: Apply immediately after previous PDW. \n2 \nPULSE_WIDTH_INF \n \nDecide whether the PDW pulse width is \ninﬁnite.  \n0: Use the PULSE_WIDTH value  \n1: Pulse ﬁnishes at start of subsequent PDW. \n[7:3] \nRESERVED \n \n \n2 \nReserved \n[7:0] \n \n \n \n3 \nReserved \n[7:0] \n \n \n \n4 \nPDW Modulation \n0 \nWAVE_STATE \nPDW:WAV:STAT \nEnable/Disable Waveform Modulation \nDefault: 0 \n1 \nFM_STATE \n \nEnable/Disable Frequency Modulation \n2 \nPM_STATE \n \nEnable/Disable Phase Modulation \n3 \nAM_STATE \n \nEnable/Disable Amplitude Modulation. \n4 \nCHIRP_STATE \n \nEnable/Disable Chirp Modulation \n[7:5] \nRESERVED \n \n \n5 \nReserved \n[7:0] \nRESERVED \n \n \n6 \nReserved \n[7:0] \nRESERVED \n \n \n7 \nPDW Marker \n[7:0] \nMARKER \nPDW:MARK \n8 bits of marker states that can be connected \nto the multi-function output ports. \nDefault: Marker[7:0] = x00 \n8 \nReserved \n[7:0] \nRESERVED \n \n \n9 \nReserved \n[7:0] \nRESERVED \n \n \n10 \nReserved \n[7:0] \nRESERVED \n \n \n11 \nReserved \n[7:0] \nRESERVED \n \n \n12 \nReserved \n[7:0] \nRESERVED \n \n \n13 \nReserved \n[7:0] \nRESERVED \n \n \n14 \nReserved \n[7:0] \nRESERVED \n \n \n15 \nReserved \n[7:0] \nRESERVED \n \n \n16 \nPulse Start Time 0 \n[7:0] \nSTART_TIME4 [7:0] \nPDW:STAR:TIME \nStart time of the PDW in seconds. \nTime at which PDW is applied to RF output. \nConsult section PDW Time Mode for details \non interpreting this parameter. See Figure 6 \nand Figure 7 for graphical explanations. \nMinimum, maximum and resolution according \nto device limitations5. \nDefault: 1ms \n17 \nPulse Start Time 1 \n[7:0] \nSTART_TIME4 [15:8] \n18 \nPulse Start Time 2 \n[7:0] \nSTART_TIME4 [23:16] \n19 \nPulse Start Time 3 \n[7:0] \nSTART_TIME4 [31:24] \n20 \nPulse Start Time 4 \n[7:0] \nSTART_TIME4 [39:32] \n21 \nPulse Start Time 5 \n[7:0] \nSTART_TIME4 [47:40] \n22 \nPulse Start Time 6 \n[7:0] \nSTART_TIME4 [55:48] \n23 \nPulse Start Time 7 \n[7:0] \nSTART_TIME4 [63:56] \n24 \nPulse Width 0 \n[7:0] \nPULSE_WIDTH4 [7:0] \nPDW:PWID \nWidth of PDW pulse. See Figure 6 for a \ngraphical explanation. \nMinimum, maximum and resolution according \nto device limitations5. \nDefault: 1ms \n25 \nPulse Width 1 \n[7:0] \nPULSE_WIDTH4 [15:8] \n26 \nPulse Width 2 \n[7:0] \nPULSE_WIDTH4 [23:16] \n27 \nPulse Width 3 \n[7:0] \nPULSE_WIDTH4 [31:24] \n28 \nPulse Width 4 \n[7:0] \nPULSE_WIDTH4 [39:32] \n29 \nPulse Width 5 \n[7:0] \nPULSE_WIDTH4 [47:40] \n30 \nPulse Width 6 \n[7:0] \nPULSE_WIDTH4 [55:48] \n31 \nPulse Width 7 \n[7:0] \nPULSE_WIDTH4 [63:56] \n32 \nWaveform Segment \n0 \n[7:0] \nWAVE_WSEG [7:0] \nPDW:WAV:WSEG \nWaveform Segment ID. Unsigned integer \nIt is the user’s responsibility to ensure the \nselected segment IDs exist in the device’s \nsegment memory. Also see section \nRequirements and Restrictions. \nDefault: 0 \n33 \nWaveform Segment \n1 \n[7:0] \nWAVE_WSEG [15:8] \n",
+   "images": [
+    {
+     "file": "fig-029.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 21,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n21 \n34 \nWaveform \nSequence 0 \n[7:0] \nWAVE_WSEQ [7:0] \n \nWaveform Sequence ID. Unsigned integer \n35 \nWaveform \nSequence 1 \n[7:0] \nWAVE_WSEQ [15:8] \n36 \nReserved \n[7:0] \nRESERVED \n \n \n37 \nReserved \n[7:0] \nRESERVED \n \n \n38 \nReserved \n[7:0] \nRESERVED \n \n \n39 \nReserved \n[7:0] \nRESERVED \n \n \n40 \nReserved \n[7:0] \nRESERVED \n \n \n41 \nReserved \n[7:0] \nRESERVED \n \n \n42 \nReserved \n[7:0] \nRESERVED \n \n \n43 \nReserved \n[7:0] \nRESERVED \n \n \n44 \nReserved \n[7:0] \nRESERVED \n \n \n45 \nReserved \n[7:0] \nRESERVED \n \n \n46 \nReserved \n[7:0] \nRESERVED \n \n \n47 \nReserved \n[7:0] \nRESERVED \n \n \n48 \nRF Output \n0 \nOUTP_STATE \nPDW:OUTP:STAT \nRF output state for this PDW. \n0: Disable the RF output \n1: Enable the RF output \nDefault: Device OUTP:STAT default. \n[7:1] \nRESERVED \n \n \n49 \nFrequency 0 \n[7:0] \nFREQ1 [7:0] \nPDW:FREQ \nCarrier frequency value in Hz. \nMinimum and maximum determined by device \nlimitations5. \nResolution determined by device limitations5 \nand PDW frequency format1. \nDefault: Device frequency default. \n50 \nFrequency 1 \n[7:0] \nFREQ1 [15:8] \n51 \nFrequency 2 \n[7:0] \nFREQ1  [23:16] \n52 \nFrequency 3 \n[7:0] \nFREQ1 [31:24] \n53 \nFrequency 4 \n[7:0] \nFREQ1 [39:32] \n54 \nFrequency 5 \n[7:0] \nFREQ1 [47:40] \n55 \nPower 0 \n[7:0] \nPOW2 [7:0] \nPDW:POW \nCarrier power value (RMS) in dBm. \nMinimum and maximum determined by device \nlimitations5. \nResolution determined by device limitations5 \nand PDW power format2. \nDefault: Device power default. \n56 \nPower 1 \n[7:0] \nPOW2 [15:8] \n57 \nPhase 0 \n[7:0] \nPHASE3 [7:0] \nPDW:PHAS \nCarrier phase value, in PDW phase format3. \nResolution determined by device limitations5 \nand PDW phase format3. \nDefault: Device phase default. \n58 \nPhase 1 \n[7:0] \nPHASE3 [15:8] \n59 \nReserved \n[7:0] \nRESERVED \n \n \n60 \nFrequency Offset 0 \n[7:0] \nOFFSET_FREQ1 [7:0] \n \nOffset frequency [Hz] in respect to Carrier \nfrequency. (signed value) \n61 \nFrequency Offset 1 \n[7:0] \nOFFSET_FREQ1 [15:8] \n \n62 \nFrequency Offset 2 \n[7:0] \nOFFSET_FREQ1 [23:16] \n \n63 \nFrequency Offset 3 \n[7:0] \nOFFSET_FREQ1 [31:24] \n \n64 \nFrequency Offset 4 \n[7:0] \nOFFSET_FREQ1 [39:32] \n \n65 \nFrequency Offset 5  \n[7:0] \nOFFSET_FREQ1 [47:40] \n \n66 \nAmplitude Offset 0 \n[7:0] \nOFFSET_AMP2 [7:0] \n \nOffset amplitude [dB] in respect to carrier \namplitude. Must be negative. (signed value) \n67 \nAmplitude 1 \n[7:0] \nOFFSET_AMP2 [15:8] \n \n68 \nPhase Offset 0 \n[7:0] \nOFFSET_PHASE3 [7:0] \n \nOffset phase in respect to carrier phase. \n(signed value) \n69 \nPhase Offset 1 \n[7:0] \nOFFSET_PHASE3 [15:8] \n \n70 \nFM Frequency 0 \n[7:0] \nFM_FREQ1 [7:0] \n \nFrequency modulation: frequency offset \n71 \nFM Frequency 1 \n[7:0] \nFM_FREQ1 [15:8] \n \n72 \nFM Frequency 2 \n[7:0] \nFM_FREQ1 [23:16] \n \n73 \nFM Frequency 3 \n[7:0] \nFM_FREQ1 [31:24] \n \n74 \nFM Frequency 4 \n[7:0] \nFM_FREQ1 [39:32] \n \n75 \nFM Frequency 5 \n[7:0] \nFM_FREQ1 [47:40] \n \n76 \nFM Deviation 0 \n[7:0] \nFM_DEV1 [7:0] \n \nFrequency modulation: frequency deviation \n77 \nFM Deviation 1 \n[7:0] \nFM_DEV1 [15:8] \n \n78 \nFM Deviation 2 \n[7:0] \nFM_DEV1 [23:16] \n \n79 \nFM Deviation 3 \n[7:0] \nFM_DEV1 [31:24] \n \n80 \nFM Deviation 4 \n[7:0] \nFM_DEV1 [39:32] \n \n81 \nFM Deviation 5 \n[7:0] \nFM_DEV1 [47:40] \n \n82 \nΦM Frequency 0 \n[7:0] \nPM_FREQ1[7:0] \n \nPhase modulation: phase deviation \n83 \nΦM Frequency 1 \n[7:0] \nPM_FREQ1[15:8] \n \n84 \nΦM Frequency 2 \n[7:0] \nPM_FREQ1 \n \n",
+   "images": [
+    {
+     "file": "fig-030.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 22,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n22 \n[23:16] \n85 \nΦM Frequency 3 \n[7:0] \nPM_FREQ1 \n[31:24] \n \n86 \nΦM Frequency 4 \n[7:0] \nPM_FREQ1 \n[39:32] \n \n87 \nΦM Frequency 5 \n[7:0] \nPM_FREQ1 \n[47:40] \n \n88 \nΦM Deviation 0 \n[7:0] \nPM_DEV3 \n \n[7:0] \n \nPhase modulation: phase deviation \n89 \nΦM Deviation 1 \n[7:0] \nPM_DEV3 \n[15:8] \n \n90 \nAM Frequency 0 \n[7:0] \nAM_FREQ1 \n \n[7:0] \n \nAmplitude modulation: frequency offset \n91 \nAM Frequency 1 \n[7:0] \nAM _FREQ1 \n[15:8] \n \n92 \nAM Frequency 2 \n[7:0] \nAM_FREQ1 \n[23:16] \n \n93 \nAM Frequency 3 \n[7:0] \nAM_FREQ1 \n[31:24] \n \n94 \nAM Frequency 4 \n[7:0] \nAM_FREQ1 \n[39:32] \n \n95 \nAM Frequency 5 \n[7:0] \nAM_FREQ1 \n[47:40] \n \n96 \nAM Depth 0 \n[7:0] \nAM_DEPTH [7:0] \n \nAmplitude modulation: depth \n97 \nAM Depth 1 \n[7:0] \nAM_DEPTH [15:8] \n \n98 \nChirp Rate 0 \n[7:0] \nCHIRP_RATE [7:0] \n \nChirp rate in kHz/μs \n99 \nChip Rate 1 \n[7:0] \nCHIRP_RATE [15:8] \n \n100 \nChirp Rate 2 \n[7:0] \nCHIRP_RATE [23:16] \n \n101 \nChirp Rate 3 \n[7:0] \nCHIRP_RATE [31:24] \n \n102 \nChirp Shape \n0 \nCHIRP_SHAPE_SIN \n \nChirp shape is sine. One shape per PDW. \n1 \nCHIRP_SHAPE_RUP \n \nChirp shape is ramp up. One shape per PDW. \n2 \nCHIRP_SHAPE_RDOW\nN \n \nChirp shape is ramp down. One shape per \nPDW. \n3 \nCHIRP_SHAPE_TRIAN \n \nChirp shape is triangle. One shape per PDW. \n4 \nCHIRP_SHAPE_SQU \n \nChirp shape is square. One shape per PDW. \n[7:5] \nRESERVED \n \n \n103 \nReserved \n[7:0] \nRESERVED \n \n \n104 \nReserved \n[7:0] \nRESERVED \n \n \n105 \nReserved \n[7:0] \nRESERVED \n \n \n106 \nSweep on Pulse \n0 \nPHASE_MODE \nPDW:PHAS:MOD\nE \nEnable/Disable linear Phase Sweep on Pulse.  \n0: ﬁxed phase in PDW  \n1: sweep phase during PDW \nDefault: 0 (ﬁxed) \n[7:1] \nRESERVED \n \n \n107 \nPhase Step 0 \n[7:0] \nPHASE_STEP3 [7:0] \nPDW:PHAS:STEP \nPhase increment for each step in the phase \nsweep on pulse. Ignored if PHASE_MODE is 0. \nDefault: π \n108 \nPhase Step 1 \n[7:0] \nPHASE_STEP3 [15:8] \n109 \nSweep Dwell Time 0 \n[7:0] \nSWEEP_DWELL4 [7:0] \nPDW:SWE:DWEL \nTime for which each phase step is active for \nthe Phase Sweep on Pulse. The RF out signal is \nthen blanked until the end of SWEEP_STEP. \nIgnored if PHASE_MODE is 0. \nDefault: 500μs \n110 \nSweep Dwell Time 1 \n[7:0] \nSWEEP_DWELL4 [15:8] \n111 \nSweep Dwell Time 2 \n[7:0] \nSWEEP_DWELL4 \n[23:16] \n112 \nSweep Dwell Time 3 \n[7:0] \nSWEEP_DWELL4 \n[31:24] \n113 \nSweep Dwell Time 4 \n[7:0] \nSWEEP_DWELL4 \n[39:32] \n114 \nSweep Dwell Time 5 \n[7:0] \nRESERVED \n115 \nSweep Dwell Time 6 \n[7:0] \nRESERVED \n116 \nSweep Dwell Time 7 \n[7:0] \nRESERVED \n117 \nSweep Step Time 0 \n[7:0] \nSWEEP_STEP4 [7:0] \nPDW:SWE:STEP \nTime for which each phase step is constant \nbefore being incremented for the Linear Phase \nSweep on Pulse. Ignored if PHASE_MODE is 0. \nDefault: 500μs \n118 \nSweep Step Time 1 \n[7:0] \nSWEEP_STEP4 [15:8] \n119 \nSweep Step Time 2 \n[7:0] \nSWEEP_STEP4 [23:16] \n120 \nSweep Step Time 3 \n[7:0] \nSWEEP_STEP4 [31:24] \n",
+   "images": [
+    {
+     "file": "fig-031.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 23,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n23 \n121 \nSweep Step Time 4 \n[7:0] \nSWEEP_STEP4 [39:32] \n122 \nSweep Step Time 5 \n[7:0] \nRESERVED \n123 \nSweep Step Time 6 \n[7:0] \nRESERVED \n124 \nSweep Step Time 7 \n[7:0] \nRESERVED \n125 \nReserved \n[7:0] \nRESERVED \n \n \n… \nReserved \n[7:0] \nRESERVED \n \n \n255 \nReserved \n[7:0] \nRESERVED \n \n \n \nPDW Parameter Types \nThe following deﬁnitions are used for the respective ﬁxed-point parameters of the PDW. All values \nare in 2’s complement format. Maximum and minimum values may depend on device limitations, \nrather than the limits given by the bit widths. \n1Frequency Value [Hz] \nAddr. \n5 \n4 \n3 \n2 \n1 \n0 \nBit \n47 \n… \n40 \n39 \n… \n32 \n31 \n… \n24 \n23 \n… \n16 \n15 \n… \n10 \n9 \n8 \n7 \n… \n0 \nData \nInteger bits (signed) \nFractional bits \n \n2Power Value [dBm] or [dB] \nAddr. \n1 \n0 \nBit \n15 \n \n8 \n7 \n6 \n \n0 \nData \nInteger bits \nFractional b. \n \n3Phase Value [rad] \nAddr. \n1 \n0 \nBit \n15 \n… \n8 \n7 \n… \n0 \nData \nUnsigned bits \n \n4Time Value [ns] \nAddr. \n7 \n6 \n5 \n4 \n3 \n2 \n1 \n0 \nBit \n63 \n… \n56 \n55 \n… \n48 \n47 \n… \n40 \n39 \n… \n32 \n31 \n… \n24 \n23 \n… \n16 \n15 \n… \n10 \n9 \n8 \n7 \n… \n0 \nData \nInteger of time in nanoseconds \nFractional bits \n \nThe time format supports a theoretical resolution of 1ps. The values will however be rounded to the \nactual PDW time resolution of the device. \n5Device Limitations can be found in the VSG Datasheet [1]. \nPDW Default \nThe default state of the PDW Parameters is given by the device default for each Parameter when not \ncontrolled by the PDW. Defaults for PDW speciﬁc parameters can be found in their respective \ndescriptions of the Word Detail. \n \n \n",
+   "images": [
+    {
+     "file": "fig-032.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 24,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n24 \nPDW List File \nEach list ﬁle must be a .csv ﬁle that starts with a header row which indicates the parameters of \neach column. The following rows then contain one PDW each, with the parameters in the \nappropriate columns. The following list gives the strings required in the header row and a \ndescription of the value for the following PDW parameter rows. \nHeader String \nDescription \nValue in Parameter Rows \nOUTP_STATE \nRF Output State \n{1, 0} to either enable or disable \nMARKER \n8-bit Marker value \nas an integer \nSTART_TIME \nPulse Start Time \nvalue in [s] \nPULSE_WIDTH \nPulse Width of PDW \nvalue in [s] \nFREQ \nCarrier Frequency \nvalue in [Hz] \nPOW \nOutput Power \nvalue in [dBm] \nPHASE \nCarrier Phase \nvalue in [rad] \nWAVE_STATE \nWaveform Modulation State \n{1, 0} to either enable or disable \nWAVE_WSEG \nWaveform Segment ID \nvalue in ℕ0 \nPHASE_MODE \nPhase Mode \n{1, 0} for enabled sweep or ﬁxed phase \nPHASE_STEP \nPhase Increment per Step \nvalue in [rad] \nSWEEP_DWELL \nSweep Dwell Time \nvalue in [s] \nSWEEP_STEP \nSweep Step Time \nvalue in [s] \n \nThe VSG GUI interprets the csv list, respecting the following rules. \n• \nEmpty rows are ignored \n• \nEmpty cells are interpreted as a value of zero \nExample List \nThe following table is an example of a PDW List with the mandatory header row and three words. \nWAVE_S\nTATE \nSTART_\nTIME \nMAR\nKER \nPULSE_W\nIDTH \nWAVE_\nWSEG \nOUTP_S\nTATE \nFREQ \nPO\nW \nPHASE \nPHASE_\nMODE \nSWEEP_\nSTEP \nSWEEP_D\nWELL \nPHASE_\nSTEP \n0 \n1.00E-\n03 \n1 \n1.00E-04 \n0 \n1 \n1.00E\n+08 \n5 \n0 \n0 \n5.00E-05 \n5.00E-05 \n0 \n0 \n2.00E-\n03 \n2 \n1.00E-04 \n0 \n1 \n1.00E\n+08 \n-\n5.5 \n3.1415\n9265 \n1 \n2.50E-05 \n1.25E-05 \n3.14159\n265 \n1 \n3.00E-\n03 \n4 \n1.00E-04 \n5 \n1 \n1.00E\n+08 \n0 \n1.5707\n9633 \n0 \n5.00E-05 \n5.00E-05 \n0 \n \nThe VSG GUI interprets the table as a list of 3 PDWs and displays the read values. The GUI also \nchecks each input value against the minimum and maximum setting and adjusts the displayed \nvalues accordingly. \nID \nRF \nState \nMarker \nPulse \nCarrier \nWaveform \nSegment \nLinear Phase Sweep \nStart \nTime \nPulse \nWidth \nFrequency \nPower \nPhase \nState \nID \nState \nStep \nTime \nDwell \nTime \nPhase \nStep \n0 \nON \n0000 \n0001 \n1.0 \nms \n100.0 \nµs \n100.0 MHz \n5.0 \ndBm \n0.0 rad \nOFF \n0 \nOFF \n50.0 \nµs \n50.0 \nµs \n0.0 \nrad \n1 \nON \n0000 \n0010 \n2.0 \nms \n100.0 \nµs \n100.0 MHz \n-5.5 \ndBm \n3.142 \nrad \nOFF \n0 \nON \n25.0 \nµs \n12.5 \nµs \n3.142 \nrad \n2 \nON \n0000 \n0100 \n3.0 \nms \n100.0 \nµs \n100.0 MHz \n0.0 \ndBm \n1.571 \nrad \nON \n5 \nOFF \n50.0 \nµs \n50.0 \nµs \n0.0 \nrad \n \n \n \n",
+   "images": [
+    {
+     "file": "fig-033.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  },
+  {
+   "page": 25,
+   "text": " \nVSG Application Note \nBerkeley Nucleonics Corporation \n25 \nAppendix \nFurther Related Documentation \nAN6008 Changelog \nAN version \nFW version \nNotes \nv1_0 \n0.4.204 \nFirst Release. Parameters and options not supported by Firmware are marked throughout the \ndocument. \nv1_1 \n0.4.205 \nAdded Linear Phase Sweep Parameters. \nv1_2 \n0.4.206 \nIncluded newly supported Stream mode, adapted sections where necessary. Added information \nabout synchronous trigger subsystem for use in multi-channel synchronized simulation. \nv1_3 \n0.4.208 \nCorrected frequency parameter type. Changed the LPS_STATE name to PHASE_MODE and adapted \nthe respective SCPI command accordingly. (previous name still supported.) \nAdded PDW:DATA:FCP? and PDW:DATA:OUTP? \nv1_4 \n0.4.208 \nCorrected some typos. \nv1_5 \n1.0.0 \nFixed small formatting errors. Changed START_TIME and PULSE_WIDTH default to 1ms each.  \nAdded SCPI queries for easier user-side debugging.  \nAdded Single Mode and according Examples. \n \n",
+   "images": [
+    {
+     "file": "fig-034.png",
+     "w": 325,
+     "h": 132,
+     "type": "embedded"
+    }
+   ]
+  }
+ ]
+}
