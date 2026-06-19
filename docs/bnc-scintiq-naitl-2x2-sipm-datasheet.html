@@ -476,5 +476,6 @@ inp.addEventListener("focus",function(){loadVids();if(inp.value)run(inp.value);}
 inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-item");if(ev.key==="ArrowDown"){ev.preventDefault();active=Math.min(active+1,its.length-1);mark(its);}else if(ev.key==="ArrowUp"){ev.preventDefault();active=Math.max(active-1,0);mark(its);}else if(ev.key==="Enter"){var t=(active>=0?its[active]:its[0]);if(t){if(t.getAttribute("data-vid")){ev.preventDefault();openVideo(t.getAttribute("data-vid"),+t.getAttribute("data-t"),t.getAttribute("data-title"));}else{window.open(t.href,"_blank","noopener");}}}else if(ev.key==="Escape"){panel.className="ss-panel";inp.blur();}});
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
+<script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>
