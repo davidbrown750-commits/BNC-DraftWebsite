@@ -263,20 +263,31 @@
   }
 
   /* ---------- post sign-in contact / SMS opt-in --------------------------- */
+  // Wait 10s after sign-in, then offer a text/WhatsApp number (once per browser).
   function maybeShowContactModal() {
     if (!sb || !isSignedIn()) return;
     var asked; try { asked = localStorage.getItem('bncContactAsked'); } catch (e) {}
-    if (asked) return;
+    if (asked || window.__bncContactScheduled) return;
+    window.__bncContactScheduled = true;
+    setTimeout(function () {
+      if (!isSignedIn() || document.querySelector('.bnc-modal-back')) return;
+      var a; try { a = localStorage.getItem('bncContactAsked'); } catch (e) {}
+      if (a) return;
+      showContactModal();
+    }, 10000);
+  }
+
+  function showContactModal() {
     var back = el('div', 'bnc-modal-back'), m = el('div', 'bnc-modal');
     m.appendChild(el('div', 'accent'));
     var body = el('div', 'body');
     body.innerHTML =
-      '<h3>Stay in the loop</h3>' +
-      '<p>Want product updates and quotes by text? Add a mobile number. This is optional.</p>' +
-      '<label for="bncPhone">Mobile number</label>' +
+      '<h3>Prefer to message us?</h3>' +
+      '<p>To start a convenient text or WhatsApp conversation, share a cell number. This is optional.</p>' +
+      '<label for="bncPhone">Cell number</label>' +
       '<input id="bncPhone" type="tel" placeholder="(415) 555-0100" autocomplete="tel">' +
       '<label class="bnc-optin"><input id="bncOptin" type="checkbox"> ' +
-      '<span>Yes, send me occasional SMS updates from Berkeley Nucleonics. Message and data rates may apply. Reply STOP to opt out.</span></label>';
+      '<span>Yes, you can contact me by text or WhatsApp about my inquiry. Message and data rates may apply; reply STOP to opt out.</span></label>';
     var row = el('div', 'row');
     var save = el('button', 'save', 'Save'), skip = el('button', 'skip', 'Not now');
     row.appendChild(save); row.appendChild(skip);
