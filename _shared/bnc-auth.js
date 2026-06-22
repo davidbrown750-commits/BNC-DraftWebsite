@@ -66,7 +66,9 @@
   function triggerSignIn(resumeUrl) {
     if (resumeUrl) { try { sessionStorage.setItem('bncResume', resumeUrl); } catch (e) {} }
     if (configured && Clerk) {
-      Clerk.openSignIn({ afterSignInUrl: location.href, afterSignUpUrl: location.href });
+      Clerk.openSignIn({ afterSignInUrl: location.href, afterSignUpUrl: location.href,
+        signInForceRedirectUrl: location.href, signUpForceRedirectUrl: location.href,
+        fallbackRedirectUrl: location.href });
     } else {
       toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
     }
@@ -76,7 +78,9 @@
   function triggerSignUp(resumeUrl) {
     if (resumeUrl) { try { sessionStorage.setItem('bncResume', resumeUrl); } catch (e) {} }
     if (configured && Clerk) {
-      Clerk.openSignUp({ afterSignInUrl: location.href, afterSignUpUrl: location.href });
+      Clerk.openSignUp({ afterSignInUrl: location.href, afterSignUpUrl: location.href,
+        signInForceRedirectUrl: location.href, signUpForceRedirectUrl: location.href,
+        fallbackRedirectUrl: location.href });
     } else {
       toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
     }
@@ -167,7 +171,7 @@
       'You are previewing the opening of this manual. Sign in with a free account to read the ' +
       'remaining ' + remaining + ' section' + (remaining === 1 ? '' : 's') +
       ', plus download software tools and view expanded pricing.'));
-    var cta = el('button', 'cta', 'Sign in to continue');
+    var cta = el('button', 'cta', 'Create a free account');
     cta.addEventListener('click', function () { triggerSignUp(location.href); });
     inner.appendChild(cta);
     inner.appendChild(el('div', 'sub', 'No account yet? Creating one is free and takes a moment.'));
@@ -435,8 +439,12 @@
       if (isSignedIn()) {
         var resume = null;
         try { resume = sessionStorage.getItem('bncResume'); } catch (e) {}
-        if (resume) { try { sessionStorage.removeItem('bncResume'); } catch (e) {}
-          window.open(resume, '_blank', 'noopener'); }
+        // Only re-open if it was a DIFFERENT destination (e.g. a download link);
+        // for the current page we just stay put — the reload below unlocks it.
+        if (resume && resume !== location.href) {
+          try { sessionStorage.removeItem('bncResume'); } catch (e) {}
+          window.open(resume, '_blank', 'noopener');
+        } else { try { sessionStorage.removeItem('bncResume'); } catch (e) {} }
       }
       applyState();
       recordVisit();
