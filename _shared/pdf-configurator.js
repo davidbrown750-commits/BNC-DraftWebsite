@@ -59,7 +59,8 @@
     var css = "" +
     ".pdfcfg-trigger{display:inline-flex;align-items:center;gap:.5em;font-family:inherit;font-weight:700;font-size:.86rem;letter-spacing:.02em;color:#fff;background:"+BRAND_BLUE+";border:1px solid "+BRAND_BLUE+";border-radius:4px;padding:.55em 1.1em;cursor:pointer;text-decoration:none;box-shadow:0 4px 14px -8px rgba(6,85,163,.8);}" +
     ".pdfcfg-trigger:hover{background:"+BRAND_DARK+";border-color:"+BRAND_DARK+";}" +
-    ".pdfcfg-trigger svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:2;}" +
+    ".pdfcfg-trigger svg{width:45px;height:45px;fill:none;stroke:#fff;stroke-width:2;flex:0 0 auto;}" +
+    ".pdfcfg-trigger .lbl{text-align:left;line-height:1.15;}" +
     ".pdfcfg-overlay{position:fixed;inset:0;background:rgba(17,49,99,.55);backdrop-filter:blur(3px);z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;}" +
     ".pdfcfg-overlay.open{display:flex;}" +
     ".pdfcfg-panel{background:#fff;color:#16233a;width:100%;max-width:560px;max-height:88vh;overflow:auto;border-radius:8px;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);font-family:Arial,Helvetica,sans-serif;}" +
@@ -98,7 +99,7 @@
     injectCSS();
 
     var trigger = el("button", {"class":"pdfcfg-trigger","type":"button"},
-      '<svg viewBox="0 0 24 24"><path d="M14 3v5h5"/><path d="M6 3h8l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M9 13h6M9 16h4"/></svg> Create your own PDF');
+      '<svg viewBox="0 0 24 24"><path d="M14 3v5h5"/><path d="M6 3h8l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M9 13h6M9 16h4"/></svg> <span class="lbl">PDF Download<br>Configurator</span>');
     // Place the button consistently: just below the hero's blue divider, at the
     // top of the body, right-justified to the content column. Anchor to the hero
     // SECTION on both layouts (older .doc-hero, newer .man-hero) so it always
@@ -116,11 +117,22 @@
     holder.appendChild(trigger);
     if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(holder, anchor.nextSibling);
     else document.body.insertBefore(holder, document.body.firstChild);
-    // Match the nav "Get a Quote/Demo" button width for a consistent stacked look.
-    try {
-      var navcta = document.querySelector(".sitenav-cta");
-      if (navcta && navcta.offsetWidth) trigger.style.width = navcta.offsetWidth + "px";
-    } catch (e) {}
+    // Match the nav "Get a Quote/Demo" button width AND align our right edge to
+    // its right edge, so it stacks directly under it (not under the search box).
+    function alignToCta(){
+      try {
+        var navcta = document.querySelector(".sitenav-cta");
+        if (navcta && navcta.offsetWidth) {
+          trigger.style.minWidth = navcta.offsetWidth + "px";
+          trigger.style.marginRight = "0px";
+          var off = trigger.getBoundingClientRect().right - navcta.getBoundingClientRect().right;
+          trigger.style.marginRight = Math.max(0, off) + "px";
+        }
+      } catch (e) {}
+    }
+    alignToCta();
+    setTimeout(alignToCta, 700);   // re-align after the auth nav (Sign up / Welcome) settles
+    window.addEventListener("resize", alignToCta);
 
     var overlay = el("div", {"class":"pdfcfg-overlay"});
     var rows = chapters.map(function(c){
