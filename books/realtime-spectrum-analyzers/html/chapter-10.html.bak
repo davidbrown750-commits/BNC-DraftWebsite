@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 10 - RTSA Form Factors, Packaging, and Environmental Engineering</title>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 10</div>
+<h1>RTSA Form Factors, Packaging, and Environmental Engineering</h1>
+
+<blockquote>The same physics fits in a benchtop chassis, a USB stick, an aircraft pod, and a backpack. The difference is what each form factor costs you, both in dollars and in capability.</blockquote>
+
+<h2>10.1 Benchtop Laboratory Systems</h2>
+
+<p>The classical RTSA form factor is a benchtop instrument: a chassis with a built-in display, knobs, an RF input on the front, and a power cord on the back. Examples weigh 30 to 60 pounds and cost six figures. They offer the cleanest LO phase noise (large enclosures hold OCXOs and isolation easily), the widest RTBW (full ATX power supplies feed wideband ADCs without thermal limits), the largest displays (10-inch touchscreens are standard), the richest connectivity, and the longest calibration intervals.</p>
+
+<p>The cost is mobility. A benchtop instrument lives on a bench. You bring signals to it through coax cables; you don't bring it to the signals. Right for laboratory R&D, factory production test, compliance certification, defense research, and education.</p>
+
+<h2>10.2 Rack-Mounted and Centralized Monitoring</h2>
+
+<p>The next form factor up the integration ladder: a 19-inch rack-mount chassis that drops into a network operations center, a cellular site equipment cabinet, or a security monitoring rack. Rack-mount RTSAs typically lack a built-in display and ship with redundant power supplies, hot-swap fans, and remote management interfaces.</p>
+
+<p>Use cases include cellular tower spectrum monitoring, airport spectrum monitoring, stadium and venue spectrum management, and military command-and-control centers. The deployment model is "set and forget." Once installed, the rack-mount RTSA runs unattended for years.</p>
+
+<p>Aaronia's SPECTRAN family fits this role through rack-mount adapters and the cascading architecture: multiple V6 PLUS units cascaded together provide more bandwidth and DF capability than a single rack-mount instrument from any competitor, at a substantial cost advantage.</p>
+
+<h2>10.3 OEM Embedded and Sensor-Node RTSAs</h2>
+
+<p>When a customer wants RTSA capability inside their own product (an autonomous vehicle, a counter-drone system, a satellite ground station), they need an OEM module: bare circuit boards or compact enclosures that integrate into a larger system without their own user interface.</p>
+
+<p>Characteristics: small physical size (often less than 1 cubic foot), low power consumption (10 to 100 watts typical), standard interfaces (Ethernet, PCIe, USB), programmatic control (no front-panel buttons; everything via API), and reduced feature set tuned for one mission.</p>
+
+<p>Aaronia ships OEM versions of SPECTRAN V6 PLUS for system integrators in counter-UAS, EW, and spectrum monitoring. The hardware is the same as the benchtop USB version, but the software development kit and integration support are tuned for embedded use.</p>
+
+<h2>10.4 Portable Field RTSAs</h2>
+
+<p>Field engineers need an RTSA they can carry to a problem. Portable RTSAs have battery operation (2 to 6 hours typical), compact size (laptop-sized or smaller), built-in display and controls, rugged enclosures, and outdoor-readable displays.</p>
+
+<p>Use cases include cellular site optimization, intermittent interference hunting, broadcast facility monitoring, and counter-surveillance work where the engineer needs to walk into a building or vehicle and start measuring within minutes.</p>
+
+<p>The Aaronia SPECTRAN V6 PLUS USB form factor (250XA, 500XA, 2000XA) qualifies for this category when paired with a rugged laptop. The unit is USB-bus-powered, fits in a small case, and runs the full RTSA Suite PRO on the host laptop. Cost-effective compared to traditional handheld field analyzers, with substantially more capability per dollar.</p>
+
+<h2>10.5 Ruggedized and Military-Grade Systems</h2>
+
+<p>The hardest deployment environment is military or harsh-industrial: vibration, temperature extremes, EMI, shock, salt spray, sandstorm, altitude. Ruggedized RTSAs meet specifications like MIL-STD-810 (environmental), MIL-STD-461 (EMI/EMC), and DO-160 (avionics).</p>
+
+<p>Characteristics: conduction-cooled (no fans drawing in dust or moisture), MIL-spec connectors (locked, sealed, shock-resistant), wide temperature operation (-40 to +75 C typical), vibration and shock isolation, EMI containment.</p>
+
+<p>The cost is significant. A ruggedized variant can cost two to three times the equivalent commercial unit. The benefit is operation in conditions where commercial gear simply fails. Aaronia provides ruggedized variants of SPECTRAN through specialized integration partners; the underlying RTSA technology is the same.</p>
+
+<h2>10.6 Software Ecosystems</h2>
+
+<p>A modern RTSA is half hardware and half software. The user-visible difference between a great RTSA and a mediocre one is often the software.</p>
+
+<h3>RTSA Suite PRO</h3>
+
+<p>Aaronia's RTSA Suite PRO is the user-facing software for the SPECTRAN V6 PLUS family. It runs on Windows, Linux, and macOS. Key capabilities: real-time spectrum analysis with multiple display modes (waterfall, persistence, density, wrapped spectrum), modulation analysis covering BPSK through 4096-QAM and OFDM, PDW extraction and EW analysis, direction finding via IsoLOG 3D DF integration, 24/7 streaming I/Q recording up to 245 MHz bandwidth, SigMF file format support, visual graph editor for custom processing pipelines, editable measurement presets, and KML / GeoJSON / NMEA / MQTT export.</p>
+
+<p>The visual graph editor is the heart. Users without programming background build sophisticated pipelines by dragging blocks and connecting them. Programmers extend the system by writing custom blocks in Python or C++.</p>
+
+<h3>APIs and automation</h3>
+
+<p>For programmatic control, RTSA Suite PRO exposes APIs in Python, C++, and SCPI/VISA. Common automation patterns include factory test scripts, continuous monitoring with custom alerts, and data pipeline integration (stream I/Q to S3 or HDFS for downstream ML training).</p>
+
+<h3>Python ecosystem integration</h3>
+
+<p>The Python ecosystem (numpy, scipy, scikit-rf, GNU Radio, scikit-learn) is the modern lingua franca of RF analysis. RTSA Suite PRO integrates by writing SigMF files that any Python tool reads, by exposing Python API blocks that run inside the graph editor, and by streaming live I/Q to host Python code via shared memory or socket interfaces.</p>
+
+<h2>10.7 Why Packaging Matters</h2>
+
+<p>Packaging is not just aesthetics. It determines where the instrument can go (benchtop in a lab, rack-mount in a datacenter, portable in a vehicle, OEM embedded in a customer system, ruggedized in a forward operating base), what customers buy (the same RTSA technology in different packaging serves entirely different markets at different price points), total cost of ownership (benchtop instruments cost more upfront but last longer; portable units cost less upfront but require more frequent replacement), and deployment economics.</p>
+
+<p>Packaging also affects calibration intervals. Benchtop instruments in stable lab environments hold calibration for years. Portable units in field environments may need recalibration every 6 to 12 months. Ruggedized military units in extreme environments may need recalibration after every major deployment.</p>
+
+<h2>10.8 The Aaronia SPECTRAN V6 PLUS Family at a Glance</h2>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-10-01-spectran-family.svg" style="width:100%;">Figure 10-1</object>
+  <figcaption>Figure 10-1. The four-model SPECTRAN V6 PLUS family scales from 44 MHz of education-tier RTBW to 490 MHz of mmWave/EW capability, with a vector signal generator on the upper two tiers. All models share RTSA Suite PRO software and cascade for combined operation.</figcaption>
+</figure>
+
+<table>
+<thead><tr><th>Model</th><th>Real-Time Bandwidth</th><th>Frequency Range</th><th>Vector Sig Gen</th><th>Target Use</th></tr></thead>
+<tbody>
+<tr><td>SPECTRAN V6 ECO 100XA-6</td><td>44 MHz</td><td>9 kHz to 6 GHz</td><td>No</td><td>Education, hobbyist, cost-sensitive monitoring</td></tr>
+<tr><td>SPECTRAN V6 PLUS 250XA-6</td><td>80 MHz (120 opt)</td><td>9 kHz to 6/8 GHz</td><td>No</td><td>General field work, ISM monitoring, BLE/Wi-Fi</td></tr>
+<tr><td>SPECTRAN V6 PLUS 500XA-6</td><td>80 MHz (120 opt)</td><td>9 kHz to 6/8 GHz</td><td>Yes</td><td>Tx/Rx test benches, transmitter validation</td></tr>
+<tr><td>SPECTRAN V6 PLUS 2000XA-6</td><td>160 MHz (245/490 opt)</td><td>9 kHz to high tier</td><td>Yes</td><td>5G mmWave, Wi-Fi 7, EW, broadband monitoring</td></tr>
+</tbody>
+</table>
+
+<p>All four models share the same RTSA Suite PRO software. All four cascade to multi-GHz aggregate bandwidth. All four work with the IsoLOG 3D DF antenna family. The differences are RTBW capacity, frequency reach, and signal generation capability.</p>
+
+<h3>Choosing the right model</h3>
+
+<ul>
+<li><strong>For education and budget deployments:</strong> ECO 100XA. 44 MHz of RTBW is enough for Wi-Fi 5, BLE, ISM, and most teaching scenarios. Lowest cost in the family.</li>
+<li><strong>For general spectrum monitoring:</strong> PLUS 250XA. 80 to 120 MHz handles 5G FR1 channels, BLE full-band capture, and most field interference investigations.</li>
+<li><strong>For combined Tx and Rx test:</strong> PLUS 500XA. Adds the integrated vector signal generator for transmitter testing, frequency response, and stimulus-response measurements.</li>
+<li><strong>For wideband and mmWave work:</strong> PLUS 2000XA. The 160-490 MHz RTBW handles 5G FR2, Wi-Fi 7 320 MHz channels, and broadband EW. Required for any application that needs more than 120 MHz of instantaneous bandwidth.</li>
+</ul>
+
+<p>For multi-GHz capture, cascade four PLUS 2000XA-6 units for 1 GHz aggregate bandwidth. For DF and geolocation, add IsoLOG 3D DF antennas (covered in Chapter 8).</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: scaling up</h3>
+<p>A typical SPECTRAN V6 PLUS deployment scales like this. Start with one PLUS 250XA for early-stage exploration. Add a second unit for cross-bearing DF or extended RTBW. Migrate to PLUS 2000XA when the application demands wider bandwidth. Eventually deploy multiple cascaded 2000XA units for full-spectrum surveillance. At every step, the same RTSA Suite PRO software runs the show, and captured data is forward-compatible across the family.</p>
+<p>This horizontal-then-vertical growth pattern is the right way to size an RTSA deployment. Customers who buy too much capability at the start often discover they didn't need it. Customers who start small and grow into the family rarely regret it.</p>
+</div>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>Benchtop RTSAs offer the highest capability per dollar at the high end. Used for laboratory R&D, production test, compliance certification, and defense research.</li>
+  <li>Rack-mount RTSAs deploy in network operations centers, cellular sites, and command-and-control facilities for continuous unattended monitoring.</li>
+  <li>OEM embedded RTSAs ship inside customer products such as counter-drone systems, autonomous vehicles, and satellite ground stations. Programmatic control via APIs.</li>
+  <li>Portable RTSAs serve field engineering. Aaronia SPECTRAN V6 PLUS USB units paired with a laptop fill this role at lower cost than traditional field analyzers.</li>
+  <li>Ruggedized military and aerospace systems meet MIL-STD-810, MIL-STD-461, and DO-160 specs at 2 to 3x the cost of commercial equivalents.</li>
+  <li>RTSA Suite PRO is the unifying software ecosystem, with visual graph editor, Python and C++ APIs, SigMF interop, and KML/GeoJSON/MQTT export.</li>
+  <li>The SPECTRAN V6 PLUS family scales from ECO 100XA (44 MHz) to PLUS 2000XA (160-490 MHz). All share the same software.</li>
+</ul>
+</div>
+
+<div class="quiz">
+<h3>End-of-Chapter Quiz</h3>
+<ol>
+<li>Which RTSA form factor offers the highest capability per dollar at the high end?
+  <p>A. Portable</p><p>B. OEM embedded</p><p>C. Benchtop laboratory</p><p>D. USB compact</p>
+</li>
+<li>Rack-mount RTSAs typically:
+  <p>A. Have built-in displays</p><p>B. Lack built-in displays and are managed remotely over Ethernet</p><p>C. Are battery-powered</p><p>D. Are designed for outdoor deployment</p>
+</li>
+<li>OEM embedded RTSAs primarily serve:
+  <p>A. Laboratory researchers</p><p>B. System integrators building larger products with RTSA capability inside</p><p>C. Hobbyists</p><p>D. Educational institutions</p>
+</li>
+<li>The MIL-STD-810 specification covers:
+  <p>A. Cybersecurity</p><p>B. Environmental conditions (vibration, temperature, shock, etc.)</p><p>C. EMI / EMC</p><p>D. Software quality</p>
+</li>
+<li>The SPECTRAN V6 ECO 100XA-6 has a real-time bandwidth of:
+  <p>A. 44 MHz</p><p>B. 80 MHz</p><p>C. 245 MHz</p><p>D. 490 MHz</p>
+</li>
+<li>Which SPECTRAN V6 PLUS model includes an integrated vector signal generator and 80 MHz RTBW?
+  <p>A. ECO 100XA-6</p><p>B. PLUS 250XA-6</p><p>C. PLUS 500XA-6</p><p>D. PLUS 2000XA-6</p>
+</li>
+<li>The flagship PLUS 2000XA-6's maximum optional RTBW is:
+  <p>A. 80 MHz</p><p>B. 245 MHz</p><p>C. 490 MHz</p><p>D. 1 GHz</p>
+</li>
+<li>RTSA Suite PRO supports custom processing blocks written in:
+  <p>A. Python and C++</p><p>B. JavaScript only</p><p>C. Assembly only</p><p>D. None; it is a closed system</p>
+</li>
+<li>SigMF (Signal Metadata Format) enables:
+  <p>A. Compressed I/Q storage</p><p>B. Interoperable I/Q files with documented metadata across tools</p><p>C. Encrypted measurement results</p><p>D. Faster ADC sampling</p>
+</li>
+<li>The recommended growth pattern for SPECTRAN V6 PLUS deployments is to:
+  <p>A. Start with the most capable unit and scale down</p><p>B. Buy one of every model</p><p>C. Start with the model matching current needs and add capability over time</p><p>D. Always cascade four units initially</p>
+</li>
+</ol>
+<p style="margin-top:16px; font-style:italic; color:var(--bnc-deep-plum);">Answer key in Appendix E.</p>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 11 walks through mission-critical applications by sector: cellular and 5G/6G, aerospace and avionics, satellite and GNSS, defense and EW, medical, public venues, counter-UAS, and spectrum regulatory. Each section identifies the specific RF problems a sector faces and the RTSA capabilities that address them.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-09.html">&larr; Ch 9. Calibration and Accuracy</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-11.html">Ch 11. Mission-Critical Applications &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

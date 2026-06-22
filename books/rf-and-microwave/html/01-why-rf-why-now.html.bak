@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>01-why-rf-why-now</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+</head>
+<body>
+<h1 id="chapter-1---why-rf-why-now">1. Why RF, Why Now</h1>
+<p>Radio frequency used to be a quiet specialty. It sat behind the antenna, inside the radio, somewhere in the part of the product that "just worked." That is no longer true. RF has become one of the most contested resources of the decade, and the ability to measure it well has become a competitive advantage rather than a back-office skill.</p>
+<p>This chapter sets the stage for the rest of the book. It explains what changed since the first edition, why measurement sits at the center of nearly every modern RF problem, and how to read the chapters that follow depending on what you are trying to do.</p>
+<h2 id="rf-is-the-contested-resource-of-the-decade">1.1 RF is the Contested Resource of the Decade</h2>
+<p>Spectrum is finite. Every new wireless service, from a 5G base station to a doorbell camera to a weather radar, has to share the same electromagnetic real estate. As more devices come online, the air gets crowded, interference gets harder to track down, and the margins that engineers once relied on get thinner.</p>
+<p>The numbers make the pressure concrete. Industry forecasts put the installed base of connected IoT devices above 30 billion units within the next decade, each one needing at least one radio. [1] Mobile data traffic on 5G networks, roughly 14 exabytes per month at the end of 2022, is projected to climb toward 300 exabytes per month by the end of the decade. [2] All of that traffic moves through the same finite spectrum, which is why regulators, carriers, and defense planners now treat frequency allocation as strategic infrastructure.</p>
+<p>When a resource gets scarce and valuable at the same time, the people who can measure it precisely win. That is the through-line of this book.</p>
+<figure>
+<img src="../figures/fig-01-01-rf-demand-drivers.svg" alt="Four forces driving demand on the RF spectrum" /><figcaption><span class="fig-num">Figure 1.1</span> Four forces driving demand on the RF spectrum: commercial wireless, the Internet of Things, satellite and non-terrestrial networks, and defense.</figcaption>
+</figure>
+<h2 id="the-forces-driving-demand">1.2 The Forces Driving Demand</h2>
+<p>Four forces are pushing harder on the spectrum than anything the first edition anticipated.</p>
+<p><strong>Commercial wireless.</strong> 5G moved part of the industry into millimeter-wave bands (roughly 24 to 40 GHz), where wavelengths are short, beams are narrow, and the front-end electronics multiply. Moving a base station from sub-6 GHz to mmWave can increase the number of RF front-end modules by two to three times. [3] More front ends mean more things to characterize, calibrate, and troubleshoot.</p>
+<p><strong>The Internet of Things.</strong> Billions of low-cost radios, most of them built to a price, are now embedded in everything from pallets to pacemakers. They are individually simple and collectively overwhelming, and they all have to coexist without stepping on each other.</p>
+<p><strong>Satellite and non-terrestrial networks.</strong> Low-earth-orbit constellations and direct-to-device satellite links have turned the sky into an active layer of the network. Signals now arrive from overhead as well as across the street.</p>
+<p><strong>Defense and aerospace.</strong> Radar, electronic warfare, and signals intelligence have returned to the front of national priorities. Wideband capture, fast scanning, and the ability to find a brief signal in a noisy band are no longer niche requirements.</p>
+<h2 id="why-measurement-is-the-bottleneck">1.3 Why Measurement is the Bottleneck</h2>
+<p>Designing an RF system is hard. Proving that it works is harder. A modern signal can be wide, brief, frequency-hopping, and buried under other signals, and none of those properties show up on a casual look. The instrument and the technique you choose decide whether you see the problem or miss it.</p>
+<p>This is why the bulk of this book is about measurement: spectrum analysis, network analysis, noise figure, and the transmitter, receiver, and EMI tests that turn a design into a product. The physics has not changed since the first edition. What has changed is the difficulty of the signals, and therefore the demands placed on the equipment and the operator.</p>
+<blockquote>
+<p><strong>Going Deeper - What "the first edition" assumed</strong></p>
+<p>The first edition of this course was written as a practical introduction for engineers and technicians stepping into RF measurement. It is still correct. This edition keeps that foundation and adds the parts of the field that grew up around it: real-time analysis, modern wireless standards, and the defense and aerospace applications that now drive much of the test market.</p>
+</blockquote>
+<h2 id="what-changed-since-the-first-edition">1.4 What Changed Since the First Edition</h2>
+<p>Three areas grew enough since 2022 to deserve their own chapters in this edition.</p>
+<p>Real-time and FFT-based analysis matured from a specialty into a mainstream technique, because swept analyzers cannot reliably catch the brief, agile signals that modern systems produce. Modern wireless moved from "5G is coming" to "5G is here and 6G is being written," with the first 6G specifications expected around the end of 2028 and early commercial networks near the end of the decade. [4] And defense RF re-emerged as a primary driver of instrument requirements, pulling wideband capture and fast scanning into the standard toolkit.</p>
+<p>The rest of the book reflects that shift. The early chapters build the fundamentals. The middle chapters cover the core measurements. The later chapters connect those measurements to the systems that depend on them today.</p>
+<h2 id="find-your-reading-path">1.5 Find Your Reading Path</h2>
+<p>You do not have to read this book front to back. It supports three paths.</p>
+<p>If you are <strong>learning the field</strong>, read in order. Each chapter builds on the one before it, and the fundamentals in Chapters 2 and 3 carry the rest.</p>
+<p>If you are <strong>choosing instruments for a test project</strong>, start with the measurement chapters that match your task (spectrum analysis, network analysis, noise figure, or the transmitter, receiver, and EMI chapters), then use the instrument selection guide in the appendices.</p>
+<p>If you are <strong>designing and validating RF hardware</strong>, the network analysis, noise, and EMI chapters will matter most, along with the modern wireless and defense chapters that describe the systems your hardware lands in.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Why Berkeley Nucleonics wrote this</strong></p>
+<p>Berkeley Nucleonics builds RF and microwave test instruments, and the questions in this book are the questions customers ask before they buy and while they build. The reader companion at the top of each page can route you to the chapters that fit your work and, if you want one, send a free printed copy.</p>
+</div>
+<h2 id="chapter-1-quiz">Chapter 1 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-01-why-rf-why-now.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>Why has RF measurement become a competitive advantage rather than a back-office skill?</li>
+<li>Name the four forces driving demand on the spectrum described in this chapter.</li>
+<li>What happens to the number of RF front-end modules when a base station moves from sub-6 GHz to millimeter-wave bands, and why does that matter for test?</li>
+<li>Why is measurement, rather than design, described as the bottleneck in modern RF?</li>
+<li>Which reading path fits someone selecting a spectrum analyzer for a specific test, and where should they look next?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Spectrum is finite while demand is rising, so the engineers and organizations that can measure and characterize signals precisely are the ones who can build reliable products and find interference others miss.</li>
+<li>Commercial wireless (5G/mmWave), the Internet of Things, satellite and non-terrestrial networks, and defense and aerospace.</li>
+<li>It can increase by two to three times, because mmWave beamforming and MIMO architectures use many more front-end modules, which multiplies the number of paths that must be characterized and calibrated.</li>
+<li>The physics of RF has not changed, but signals have become wider, briefer, and more agile, so the difficulty has shifted to seeing and proving behavior, which is a measurement problem.</li>
+<li>The instrument-selection path: start with the measurement chapter matching the task, then use the instrument selection guide in the appendices.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] IndexBox, "Radio Frequency Integrated Circuit Market Growth Outlook," 2025 (IoT installed base projection). Verify current figure before publication.</p>
+<p>[2] Ericsson and industry mobility data, 5G monthly traffic growth, 2022 to 2029. Verify current figure before publication.</p>
+<p>[3] Industry RF front-end analyses on sub-6 GHz to mmWave front-end content, 2024. Verify current figure before publication.</p>
+<p>[4] Ericsson, "6G standardization timeline and technology principles," 2024; 3GPP Release 21 planning materials. Verify current dates before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="00-front-matter.html">&larr; Front Matter</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="02-rf-fundamentals.html">2. RF Fundamentals &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

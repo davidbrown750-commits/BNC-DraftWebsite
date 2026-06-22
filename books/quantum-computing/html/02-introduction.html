@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>02-introduction</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="introduction-how-it-all-began-and-what-qc-is">2. Introduction: How It All Began and What QC Is</h1>
+<p>This course gives you the basics, even if all you know about quantum technology today is the riddle of a cat that can be alive and dead at the same time. Quantum computing is a genuinely difficult subject. It defies the intuition built up over a lifetime of living in a world ruled by classical physics. Even here, where we introduce the core ideas and deliberately avoid a deep dive into the mathematics, some of the strangeness is unavoidable. That is the nature of the field.</p>
+<p>The goal is a 50,000-foot view: where quantum computing came from, what it is and what it is not, who the major players are, how you can get hands-on with it, and what the next decade may hold. You will see how a quantum computer works, and how it works differently from a traditional computer built on bits. You will get a taste of the quantum mechanics underneath, and you will learn why the constant management of errors is the single overriding factor in almost every approach to building these machines. All that is asked is that you stay open to what you read. Quantum computing is not built on the intuitive.</p>
+<figure>
+<img src="../figures/img-p004-01-x14.jpeg" alt="The phrase Quantum computing emerging from a field of binary digits" /><figcaption><span class="fig-num">Figure 2.1</span> The phrase &ldquo;Quantum computing&rdquo; emerging from a field of binary digits, a visual shorthand for the leap from classical bits to a fundamentally different model of computation.</figcaption>
+</figure>
+<p>When John Levy, co-founder of the digital quantum computing company SeeQC, was asked which basic questions the industry had been trying to answer, he listed them without hesitation [1]:</p>
+<ul>
+<li>Can you build a quantum computer?</li>
+<li>Can it run an algorithm?</li>
+<li>Can it run an algorithm that has value beyond bragging rights?</li>
+<li>Can a quantum computer do something a classical computer cannot?</li>
+</ul>
+<p>The encouraging news is that the first questions now have answers. Yes, you can build a quantum computer, using approaches such as superconducting circuits, trapped ions, photonics, and several more. Yes, it can run an algorithm, and the development of algorithms across many applications is ongoing. The harder questions, about practical value and provable advantage, draw more nuanced answers depending on who you ask. What is no longer in doubt is that quantum computation is real. It can perform certain tasks that are extraordinarily difficult for a classical machine, even if some would argue those tasks are not, strictly speaking, impossible to do classically.</p>
+<p>Today&rsquo;s quantum computers are expensive, often impractical, and sometimes strange to look at. But they exist. The infrastructure is in place for what is likely to be rapid advancement, driven by government and corporate investment, sustained academic research, and the pull of commercialization. The early questions have been settled. The stage is set for what may eventually look like an overnight explosion of progress, even though the groundwork took more than a century to lay.</p>
+
+<h2 id="how-it-all-began">2.1 How It All Began</h2>
+<p>When you consider the scale of the theoretical and physical research that went into the creation of quantum computing, what was accomplished in a little more than 120 years is remarkable. Advances in the technology are probably not as far along as the industry sometimes hints. They are also much further along than most people realize. The honest picture sits between the hype and the skepticism.</p>
+<p>The story begins not with computers at all, but with a crisis in physics. At the close of the nineteenth century, classical physics could not explain how hot objects radiate energy. The math predicted absurd results. In 1900, Max Planck resolved the contradiction by proposing that energy is emitted not continuously but in discrete packets he called quanta. The energy of each quantum equals the frequency of the radiation multiplied by a universal constant, now known as Planck&rsquo;s constant. It was a mathematical fix, almost reluctant, but it cracked the door open to an entirely new physics.</p>
+<figure>
+<img src="../figures/img-p006-01-x21.jpeg" alt="Quantum computing history timeline part one, 1900 to 1927" /><figcaption><span class="fig-num">Figure 2.2</span> The history of quantum computing, part one: from Max Planck&rsquo;s 1900 quantization of energy through Einstein, Bohr, Pauli, Schrodinger, and Heisenberg. The famous group photograph is the 1927 Solvay Conference, where many of these figures gathered.</figcaption>
+</figure>
+<p>What followed was one of the most productive stretches in the history of science. In 1905, Albert Einstein proposed that light itself comes in packets, later called photons, explaining the photoelectric effect and helping replace classical certainties with probabilities. Niels Bohr built on Planck&rsquo;s ideas around 1913 to 1915 to construct a more accurate model of the atom, with electrons confined to discrete orbits. Wolfgang Pauli formulated his exclusion principle in 1925: two identical fermions cannot occupy the same quantum state simultaneously. In 1926, Erwin Schrodinger developed the wave equation that describes how a quantum system evolves over time. The wave function it produces is the means for predicting the probabilities of measurement results, not the results themselves.</p>
+<figure>
+<img src="../figures/img-p007-01-x25.png" alt="Quantum computing history timeline part two, Dirac through Benioff" /><figcaption><span class="fig-num">Figure 2.3</span> The history of quantum computing, part two: Schrodinger&rsquo;s wave equation, Dirac&rsquo;s relativistic theory, Heisenberg&rsquo;s uncertainty principle, Einstein&rsquo;s EPR paradox and &ldquo;spooky action at a distance,&rdquo; Turing&rsquo;s universal machine in 1935, Everett&rsquo;s Many Worlds interpretation, and the pivotal proposals of Feynman (1959 and 1981) and Benioff (1982).</figcaption>
+</figure>
+<p>In 1927, Werner Heisenberg showed that the position and momentum of a particle cannot both be known with perfect precision. The more sharply you pin down one, the blurrier the other becomes. This is the uncertainty principle, and it is not a limitation of our instruments but a feature of nature itself. Paul Dirac extended quantum theory to account for special relativity in 1928, predicting antimatter in the process. Einstein, never comfortable with the probabilistic core of the theory, co-authored the 1935 EPR paper with Podolsky and Rosen, describing the strange long-range correlations he derided as &ldquo;spooky action at a distance.&rdquo; He meant it as an objection. It turned out to describe one of the most powerful resources in quantum computing.</p>
+<p>The same year, Alan Turing defined the universal computing machine that became the foundation of all modern computers. The two threads, quantum physics and the theory of computation, were now both in place. They would not be braided together for decades.</p>
+<p>That braiding began with Richard Feynman. In 1959, and far more concretely in a famous 1981 lecture, Feynman observed that ordinary computers struggle to simulate quantum systems. The cost of the simulation explodes as the system grows. His insight was to turn the problem around: if you want to simulate nature, build your simulator out of quantum mechanics itself. Around the same time, in 1982, Paul Benioff described a quantum mechanical model of the Turing machine, showing that computation could in principle run on quantum hardware. Quantum computing now had a reason to exist.</p>
+<figure>
+<img src="../figures/img-p008-01-x29.jpeg" alt="Quantum computing history timeline part three, Deutsch through Yale" /><figcaption><span class="fig-num">Figure 2.4</span> The history of quantum computing, part three: Deutsch&rsquo;s universal quantum computer (1985), the Deutsch-Jozsa algorithm (1992), Shor&rsquo;s factoring algorithm (1994), Grover&rsquo;s search algorithm (1996), the first experimental implementations by the Oxford team (1998) and IBM/Stanford (2001), Yale&rsquo;s solid-state qubit (2009), and early quantum teleportation milestones.</figcaption>
+</figure>
+<p>The theory matured quickly. In 1985, David Deutsch described a universal quantum computer and the &ldquo;Church-Turing principle&rdquo; extended to quantum machines, putting quantum computing on a firm theoretical footing. The Deutsch-Jozsa algorithm of 1992 gave the first clean demonstration of a problem a quantum computer could solve faster than any classical one. Then came the results that turned heads outside physics. In 1994, Peter Shor discovered an algorithm that lets a quantum computer factor large integers exponentially faster than the best known classical methods, threatening much of the public-key cryptography in use today. In 1996, Lov Grover at Bell Labs found an algorithm offering a quadratic speedup for searching unstructured data.</p>
+<p>Experiment then started to catch up with theory. In 1998, an Oxford team implemented a quantum algorithm on a two-qubit machine. In 2001, an IBM and Stanford collaboration ran Shor&rsquo;s algorithm to factor the number 15 on a seven-qubit processor. In 2009, Yale created the first solid-state quantum processor, a two-qubit superconducting chip, pointing toward the architecture that dominates much of the industry today.</p>
+<figure>
+<img src="../figures/img-p009-01-x33.jpeg" alt="Quantum computing history timeline part four, 2011 through 2019" /><figcaption><span class="fig-num">Figure 2.5</span> The history of quantum computing, part four: quantum teleportation breakthroughs (2011 to 2012), John Preskill&rsquo;s framing of &ldquo;quantum supremacy&rdquo; (2012), NASA&rsquo;s display of a D-Wave system (2015), IBM&rsquo;s cloud-accessible machines (2016), the 49 to 72 qubit processors from IBM, Intel, and Google (2017), Intel&rsquo;s silicon spin-qubit work, and Google&rsquo;s 2019 quantum supremacy claim.</figcaption>
+</figure>
+<p>The most recent stretch of the timeline reads like a sprint. In 2012, John Preskill coined the term &ldquo;quantum supremacy&rdquo; to describe the moment a well-controlled quantum system performs a task beyond the reach of any classical computer. NASA publicly displayed a D-Wave annealing system in 2015. IBM made a quantum computer available over the cloud in 2016, putting real hardware in the hands of anyone curious enough to log in. By 2017, IBM, Intel, and Google each reported processors with 49 to 72 qubits, and IBM broke a 49-qubit simulation barrier with its IBM Q initiative. Intel began testing silicon spin-qubit processors in 2018. In 2019, Google reported achieving quantum supremacy on a specific sampling task, a milestone that was both celebrated and contested.</p>
+<p>The years since have only accelerated. Qubit counts have climbed well past the hundreds and into the thousands on some platforms, error-correction demonstrations have moved from theory to hardware, and major national programs have committed billions to the field. The point of this history is not the individual dates. It is the recognition that today&rsquo;s machines stand on more than a century of accumulated, hard-won work.</p>
+<blockquote>
+<p><strong>Going Deeper - Newton, Maxwell, and the limits of classical physics</strong></p>
+<p>It is worth remembering that the physics you studied in high school was Newton&rsquo;s and Maxwell&rsquo;s. Newton described the motion of large, macroscopic objects. Maxwell described electromagnetic radiation. Those laws are correct, and they are indispensable for engineering bridges and radios. They simply do not go far enough to describe the atomic and subatomic world, and it is precisely that world quantum computing exploits.</p>
+</blockquote>
+
+<h2 id="what-is-quantum-computing">2.2 What Is Quantum Computing</h2>
+<p>The transistors in today&rsquo;s classical computers are nearly as small as they can practically get. Classical computers obey the laws of physics in the regime where position and momentum describe a system well. But those familiar descriptions break down at atomic and subatomic scales, where quantum physics takes over and a particle&rsquo;s state can no longer be captured by position and momentum alone. Quantum computing makes use of exactly this regime, harnessing the principles of quantum theory to explain and manipulate the behavior of matter and energy at the smallest scales.</p>
+<p>In a classical computer, tiny electronic switches called bits hold a value of either 0 or 1. Binary logic strings these together into operations of the form, &ldquo;if this is true, then do that.&rdquo; Every photo, spreadsheet, and video game ultimately reduces to vast numbers of such switches flipping in sequence. The model is powerful, well understood, and now nearing physical limits.</p>
+<p>Quantum computing starts from a different foundation. Molecules, atoms, and subatomic particles such as electrons carry hidden, undefined properties that have no everyday analog. A convenient example is the electron&rsquo;s spin. Picture its two extremes as &ldquo;up&rdquo; and &ldquo;down.&rdquo; Assign the binary value 0 to up and 1 to down, and you have the quantum counterpart of a bit, called a quantum bit, or qubit. The crucial difference is that before measurement the electron exists in a superposition, a genuine combination of the 0 and 1 states at once. Its definite value is not hidden from us in the way a coin under a hand is hidden. It is genuinely undefined until the qubit interacts strongly enough with its environment to be measured. Quantum physicists call that interaction measurement, and the act of measuring forces the qubit to settle into one definite outcome.</p>
+<figure>
+<img src="../figures/img-p013-01-x43.jpeg" alt="Diagram comparing a classical bit to a qubit on the Bloch sphere" /><figcaption><span class="fig-num">Figure 2.6</span> A bit versus a qubit. A classical bit sits at one of two poles, 0 or 1. A qubit is represented as a point anywhere on the surface of the Bloch sphere, a superposition written as the state alpha times zero plus beta times one, collapsing to 0 or 1 only when measured.</figcaption>
+</figure>
+<p>Superposition is the first of three ideas that give quantum computing its power. The second is interference. When you assemble multiple qubits, you can apply a set of starting conditions that steer their spins and interactions along a particular course, so that the system becomes more likely to arrive at one final state than another. A well-designed quantum algorithm orchestrates this interference deliberately, amplifying the probability of measuring the state that encodes the right answer while suppressing the wrong ones. Computation here is less like flipping switches and more like tuning waves so that the desired result reinforces itself.</p>
+<p>The third and arguably most remarkable idea is entanglement. Quantum particles can interact in such a way that their properties become shared, or entangled. Once two particles are entangled, a measurement on one can instantly affect the outcome of measurements on the other, even when the two are not physically connected and are separated by great distance. This is the very correlation Einstein dismissed as &ldquo;spooky action at a distance.&rdquo; Entanglement is what enables the computational reach that superposition and interference alone could not deliver. Without it, we would be left with classical computers and not quantum ones. It is the resource that lets a quantum machine explore an exponentially large space of possibilities in a coordinated way.</p>
+<p>Putting these together: quantum computing uses qubits, superposition, interference, and entanglement to perform certain computations in ways that have no classical equivalent. We will go deeper into each of these elements in later chapters. For now, the headline is that the strange behaviors of the quantum world are not obstacles to be tolerated. They are the very features being put to work.</p>
+<p>Building actual quantum computers, however, is extraordinarily difficult, for several connected reasons:</p>
+<ul>
+<li>Many candidate quantum systems operate at the scale of a single atom.</li>
+<li>Qubits must be almost perfectly isolated from their surroundings, yet they also have to interact with each other and with control hardware on demand.</li>
+<li>To run algorithms, qubits must be entangled, moved through physical architectures, and controlled precisely.</li>
+<li>Several competing hardware platforms exist, and there is no clear winning platform yet.</li>
+<li>Error correction is a serious challenge for every one of those platforms.</li>
+</ul>
+<p>There are also several operational frameworks for how a quantum computation is actually organized:</p>
+<ul>
+<li><strong>Logical, gate-based quantum computing</strong>, where qubits are prepared in initial states, a sequence of &ldquo;gate operations&rdquo; is applied, and the qubits are then measured to read out results. This is the most familiar model and the closest analog to classical circuits.</li>
+<li><strong>Measurement-based computation</strong>, which begins with a large, highly entangled cluster of qubits. Computation proceeds through a carefully ordered sequence of single-qubit measurements, each one steering the remaining qubits toward the answer.</li>
+<li><strong>Topological computation</strong>, in which qubits and operations are built from exotic quasiparticles and the braiding of their world-lines. These systems are theoretically protected against the noise that destroys qubit coherence, which is what makes them so attractive despite remaining largely experimental.</li>
+<li><strong>Analog quantum computers, or quantum simulators</strong>, which are special-purpose machines programmed to model other quantum systems. They target questions such as how high-temperature superconductors work, how particular chemicals react, or how to design materials with specific properties.</li>
+</ul>
+<p>If this feels like a lot to hold at once, that is expected. Quantum computing is genuinely hard to grasp with minds trained on classical logic. A closer, slower look in the chapters ahead will help. The goal of this book is to make the subject approachable without pretending it is simple.</p>
+
+<h2 id="why-it-matters">2.3 Why It Matters</h2>
+<p>It is fair to ask why any of this deserves attention now, rather than as a curiosity for physicists. The answer is that quantum computing is not a faster version of the computer on your desk. It is a different kind of machine, suited to a specific class of problems that classical computers find intractable. For those problems, the difference is not incremental. It can be the difference between an answer arriving in hours and an answer that would take longer than the age of the universe.</p>
+<figure>
+<img src="../figures/img-p012-01-x40.jpeg" alt="Illustration of the many disciplines that feed into quantum computing" /><figcaption><span class="fig-num">Figure 2.7</span> Quantum computing draws on chemistry, materials science, cryptography, optimization, machine learning, and hardware engineering at once. It is an inherently cross-disciplinary field, which is part of why progress depends on collaboration across many specialties.</figcaption>
+</figure>
+<p>The clearest near-term value lies in simulation, exactly the application Feynman imagined. Chemistry and materials science are quantum problems at their core, and classical machines can only approximate the behavior of molecules of any real complexity. A capable quantum computer could model catalysts, batteries, fertilizers, and drug candidates directly, potentially compressing years of laboratory trial and error into far shorter cycles. Optimization is a second frontier, with applications in logistics, finance, and scheduling, wherever the number of possible configurations grows faster than any classical search can handle. Machine learning may benefit as well, though the size and nature of that advantage is still being worked out honestly by the field.</p>
+<p>Then there is cryptography, which cuts both ways. Shor&rsquo;s algorithm means that a sufficiently large, error-corrected quantum computer could break much of the public-key encryption that secures today&rsquo;s internet, banking, and communications. That threat is years away, but the data being encrypted today may still be sensitive when it arrives, which is why &ldquo;harvest now, decrypt later&rdquo; is a real concern and why post-quantum cryptography is already being standardized and deployed. The same physics that threatens classical encryption also enables quantum key distribution, a method of sharing keys whose security rests on the laws of physics rather than the difficulty of a math problem.</p>
+<div class="callout">
+<p><strong>BNC in Practice - The control and timing layer</strong></p>
+<p>For an instrumentation company like Berkeley Nucleonics, the relevance is concrete rather than abstract. Quantum systems are exquisitely sensitive to their environment, and controlling them demands precise, low-noise timing and signal generation: stable clocks, clean microwave and RF sources, accurately shaped pulses, and tightly synchronized triggers. These are the same engineering problems BNC has worked on for decades in test, measurement, and timing. The control and characterization layer of a quantum computer is built from exactly this kind of instrumentation. As the field moves from physics demonstration to engineered system, the demand for reliable, high-precision control hardware grows with it. (Any specific BNC product fit should be verified against the current datasheet before being cited.)</p>
+</div>
+<p>The honest summary is this. Quantum computing will not replace classical computing, and it is not about to. It is a specialized, powerful tool for a particular set of hard problems, and the infrastructure, investment, and talent now flowing into the field make it one of the most consequential technologies of the coming decades. Understanding the nuts and bolts, and the qubits, is no longer optional for anyone who wants to follow where computing is headed.</p>
+
+<h2 id="chapter-2-quiz">Chapter 2 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-02-introduction.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>What did Max Planck propose in 1900 that is generally regarded as the starting point of quantum theory?</li>
+<li>Name the three quantum phenomena that together give quantum computing its power over classical computing.</li>
+<li>How does a qubit differ fundamentally from a classical bit, and what happens to a qubit&rsquo;s superposition when it is measured?</li>
+<li>Which 1994 algorithm threatens much of today&rsquo;s public-key cryptography, and who discovered it?</li>
+<li>Why is an instrumentation and timing company particularly relevant to the development of quantum computers?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Planck proposed that energy is emitted in discrete packets, called quanta, rather than continuously. The energy of each quantum equals the frequency of the radiation multiplied by a universal constant now known as Planck&rsquo;s constant.</li>
+<li>Superposition, interference, and entanglement. Superposition lets a qubit hold a combination of 0 and 1, interference steers the system toward correct answers, and entanglement shares properties across qubits to enable speedups that superposition and interference alone could not.</li>
+<li>A classical bit is always either 0 or 1. A qubit can exist in a superposition, a genuine combination of 0 and 1 at the same time, represented as a point on the Bloch sphere. When measured, the superposition collapses and the qubit settles into a single definite value of 0 or 1.</li>
+<li>Shor&rsquo;s algorithm, discovered by Peter Shor in 1994. It can factor large integers exponentially faster than the best known classical methods, which undermines the public-key cryptography that relies on factoring being hard.</li>
+<li>Quantum computers require precise, low-noise control: stable clocks, clean microwave and RF sources, accurately shaped pulses, and tightly synchronized triggers. Building and characterizing the control layer depends on exactly the kind of high-precision timing and signal instrumentation that companies like Berkeley Nucleonics specialize in.</li>
+</ol>
+
+<h2 id="references">References</h2>
+<p>[1] John Levy, co-founder of SeeQC, on the foundational questions of the quantum computing industry, as recounted in the first edition of this course. Verify before publication.</p>
+<p>[2] M. Planck, original formulation of energy quantization, 1900. Verify before publication.</p>
+<p>[3] P. W. Shor, &ldquo;Algorithms for quantum computation: discrete logarithms and factoring,&rdquo; Proceedings 35th Annual Symposium on Foundations of Computer Science, 1994. Verify before publication.</p>
+<p>[4] L. K. Grover, &ldquo;A fast quantum mechanical algorithm for database search,&rdquo; 1996. Verify before publication.</p>
+<p>[5] D. Deutsch, &ldquo;Quantum theory, the Church-Turing principle and the universal quantum computer,&rdquo; Proceedings of the Royal Society A, 1985. Verify before publication.</p>
+<p>[6] J. Preskill, on the term &ldquo;quantum supremacy,&rdquo; 2012. Verify before publication.</p>
+<p>[7] Quantum supremacy demonstration reported by Google, 2019. Verify before publication.</p>
+<p>[8] Timeline figures and historical dates adapted from the first edition (2021) of this course. Dates and attributions should be verified before publication.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01-why-quantum-why-now.html">&larr; 1. Why Now</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="03-key-terms.html">3. Key Terms &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

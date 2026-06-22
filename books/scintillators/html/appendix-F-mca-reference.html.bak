@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>F-mca-reference</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">F-mca-reference</h1>
+</header>
+<h1 id="appendix-f---mca-and-reference-guide">Appendix F - MCA and reference guide</h1>
+<p>The multichannel analyzer (MCA) is the histogramming engine at the heart of any pulse-height spectroscopy system. The first edition of this book contained two MCA appendices, one introductory and one a detailed reference guide. This appendix carries that material forward, modernized for the digital pulse processor era and updated for current Berkeley Nucleonics MCA product offerings.</p>
+<h2 id="f.1-what-an-mca-does">F.1 What an MCA does</h2>
+<p>An MCA accepts a stream of pulse-height-analyzed events and builds a histogram of pulse heights, with one bin (channel) per pulse-height interval. The output is a measured spectrum: counts in each channel, accumulated over the acquisition period. From the spectrum, an analyst can extract:</p>
+<ul>
+<li><strong>Energy spectrum.</strong> With the gain calibrated against known reference lines, channel number maps to energy.</li>
+<li><strong>Activity.</strong> Total counts under a peak divided by acquisition live time and corrected for detector efficiency gives activity in becquerels.</li>
+<li><strong>Isotope identity.</strong> Peaks at known energies identify the isotope. Modern instruments perform automated peak search and isotope identification.</li>
+<li><strong>Time evolution.</strong> A series of spectra over time tracks decay or buildup of activity.</li>
+<li><strong>Coincidence.</strong> With timestamping, events from multiple detectors can be correlated event by event.</li>
+</ul>
+<p>The classical MCA was a separate instrument, a rack-mount or benchtop chassis with analog signal input, an analog-to-digital converter (ADC), histogram memory, a display, and a serial or GPIB interface to a computer. The modern MCA is firmware in a small box, often integrated into the detector head, connected by USB or Ethernet to a host computer.</p>
+<h2 id="f.2-the-classical-analog-mca">F.2 The classical analog MCA</h2>
+<p>The classical analog MCA architecture takes a shaped analog pulse from a spectroscopy amplifier as input, digitizes the pulse height with a Wilkinson-type or successive-approximation ADC, and increments a counter at the corresponding histogram address. The architecture has these key properties:</p>
+<p><strong>Linearity.</strong> A high-quality MCA delivers integral non-linearity below 0.025 percent and differential non-linearity below 1 percent across the full ADC range. These numbers determine how accurately peak positions can be measured.</p>
+<p><strong>Dead time.</strong> The ADC and histogramming logic require some time per event during which subsequent events cannot be processed. Dead time corrections are computed by the MCA and reported alongside the live time.</p>
+<p><strong>Resolution.</strong> Histogram channel count is typically 1024, 2048, 4096, 8192, or 16,384. Higher channel counts give finer resolution at the cost of more memory and longer acquisition times for the same per-channel statistics.</p>
+<p><strong>Pile-up rejection.</strong> A pile-up rejection circuit detects events that arrive too close together for individual processing and excludes them from the histogram, preventing artifacts.</p>
+<p>The analog MCA was the standard instrument in nuclear spectroscopy from the 1960s through the 2000s. It is still found in legacy installations and in some specialized applications. New designs have largely replaced it.</p>
+<h2 id="f.3-the-digital-pulse-processor-dpp-mca">F.3 The digital pulse processor (DPP) MCA</h2>
+<p>The modern digital MCA samples the preamplifier output directly with a fast ADC (100 to 500 megasamples per second, 12 to 16 bit) and performs all subsequent processing in firmware on an FPGA or ASIC. The architecture has several practical advantages over the analog MCA:</p>
+<p><strong>Optimal pulse-height estimation.</strong> Digital trapezoidal or cusp-shaped filters approach the theoretical Cramer-Rao limit for pulse-height estimation, outperforming any analog shaping. Energy resolution measurably improves.</p>
+<p><strong>Pile-up handling.</strong> Overlapping pulses can be deconvolved in firmware. A pile-up detector flags events that cannot be deconvolved, preserving statistics on the remaining good events.</p>
+<p><strong>Pulse-shape discrimination.</strong> PSD for n-gamma separation in elpasolite scintillators and PSD plastics is performed in DPP firmware on a per-event basis, without any analog logic.</p>
+<p><strong>List-mode acquisition.</strong> Every event is recorded with its pulse height, timestamp, and metadata. The histogram is one display of the data; the list-mode record allows post-acquisition reanalysis of the same data with different filter settings, different gates, or different histogram binning.</p>
+<p><strong>Real-time gain correction.</strong> Temperature compensation, drift correction, and spectrum stabilization happen in firmware between the digitizer and the histogram. The displayed spectrum is gain-corrected in real time.</p>
+<p><strong>Network connectivity.</strong> DPPs typically include USB, Ethernet, or both. Modern protocols (TCP/IP, MQTT, REST APIs) allow integration with industrial control systems, distributed monitoring networks, and cloud-based analysis platforms.</p>
+<h2 id="f.4-specifying-an-mca-for-an-application">F.4 Specifying an MCA for an application</h2>
+<p>Five questions, in order of importance.</p>
+<p><strong>1. What scintillator and detector are you reading out?</strong> The MCA’s input range and shaping must match the detector’s pulse characteristics. A fast scintillator (LYSO, GAGG:Ce,Mg) with sub-100-nanosecond decay needs an MCA with a fast shaping option; a slow scintillator (CsI(Tl), Cs2HfCl6) is happy with longer shaping. The DPP firmware in modern instruments handles a wide range of decay times, but the input-stage analog bandwidth must accommodate the scintillator.</p>
+<p><strong>2. What count rate do you expect?</strong> The MCA’s maximum throughput rate must exceed the application’s peak rate by some margin (typically 3 to 5x). For low-rate environmental counting (a few counts per second), nearly any MCA works. For PET (hundreds of kilocounts per second per channel), specialized high-throughput MCAs are required.</p>
+<p><strong>3. What channel count and resolution do you need?</strong> A 4096-channel MCA at 14-bit ADC resolution covers most spectroscopy applications. For very high-resolution work (HPGe, Cs2HfCl6 with sub-1 percent FWHM at 662 keV), 8192 or 16,384 channels and 16-bit ADC become useful.</p>
+<p><strong>4. What software environment will you use?</strong> An MCA is only as good as the analysis software that consumes its data. Vendor-supplied software is typically adequate for routine use. Power users want list-mode export, scripting interfaces, and integration with analysis platforms (ROOT, MATLAB, Python). Berkeley Nucleonics MCA software exports list-mode and standard spectrum formats compatible with all major analysis platforms.</p>
+<p><strong>5. What deployment environment?</strong> A laboratory MCA can be a benchtop unit. A field deployment needs an MCA rated for temperature and shock, with appropriate certifications. A network-attached deployment needs Ethernet or cellular connectivity and remote management. Specifying the deployment context drives the form factor and packaging choice.</p>
+<h2 id="f.5-spectrum-file-formats">F.5 Spectrum file formats</h2>
+<p>The MCA’s output is a spectrum, which the analysis software reads. Several file formats are in common use.</p>
+<p><strong>SPE format</strong> (Canberra/Mirion). Plain text with a header block and channel-by-channel counts. Widely supported.</p>
+<p><strong>N42 format</strong> (ANSI N42.42). XML-based, designed for radiological emergency response interoperability. Handheld instruments increasingly export N42 by default.</p>
+<p><strong>HDF5</strong> (Hierarchical Data Format). Binary, hierarchical, supports list-mode plus metadata. Used in research and in instruments with very large data volumes.</p>
+<p><strong>Vendor-specific binary formats.</strong> Each vendor has its own historical format. Modern instruments typically export to one of the standard formats above as well, for portability.</p>
+<p>For procurement specifications, requiring N42 export is a useful default. It ensures the data is interpretable by any standards-compliant analysis platform.</p>
+<h2 id="f.6-calibration-and-quality-control">F.6 Calibration and quality control</h2>
+<p>An MCA’s gain and offset must be calibrated before it is used for quantitative spectroscopy. The standard procedure is:</p>
+<ol type="1">
+<li>Acquire a spectrum with two known reference lines spanning the energy range of interest. Cs-137 at 662 keV and Co-60 at 1173 and 1332 keV is a common choice.</li>
+<li>Identify the peak channels for the reference lines.</li>
+<li>Compute the linear (or polynomial) fit from channel number to energy.</li>
+<li>Store the calibration coefficients in the MCA.</li>
+</ol>
+<p>For continuous quality control, a calibration check is performed periodically (daily for serious work, less often for routine monitoring). The check is not a recalibration; it confirms that the existing calibration is still valid. If the check fails the recalibration is performed.</p>
+<p>Modern MCAs include automated calibration and QC routines. The detector engineer’s job is to specify the QC schedule, the reference sources used, and the acceptance thresholds for the calibration check.</p>
+<h2 id="f.7-integrating-an-mca-into-a-larger-system">F.7 Integrating an MCA into a larger system</h2>
+<p>For a detector built into a larger instrument or a distributed monitoring system, the MCA functions as a sensor that reports its data through the instrument’s communication architecture. The integration questions are:</p>
+<ul>
+<li><strong>Trigger architecture.</strong> Is the MCA self-triggered (every threshold crossing histogrammed) or externally triggered (only events flagged by an external coincidence or veto)?</li>
+<li><strong>Time stamping.</strong> Are MCA events timestamped against an external clock (GPS, IEEE 1588 PTP) for coincidence with other detectors?</li>
+<li><strong>Data streaming.</strong> Does the MCA stream events continuously, or does it accumulate spectra and report at intervals?</li>
+<li><strong>Network protocol.</strong> TCP/IP, MQTT, REST API, OPC UA, or proprietary?</li>
+<li><strong>Buffer and recovery.</strong> What happens if the network goes down? Modern MCAs typically buffer events locally and resync when connectivity returns.</li>
+</ul>
+<p>The integration of MCAs into industrial control systems and distributed monitoring networks is one of the larger architectural shifts in detector electronics over the past decade. The pre-2015 architecture of standalone instruments accessed by laboratory technicians has been replaced in many applications by always-on, always-connected sensors that report to central systems with no human in the loop.</p>
+<h2 id="f.8-modern-berkeley-nucleonics-mca-offerings">F.8 Modern Berkeley Nucleonics MCA offerings</h2>
+<p>Berkeley Nucleonics produces a range of MCAs covering the application spectrum:</p>
+<p><strong>Compact handheld MCAs.</strong> Battery-powered, USB or Bluetooth connectivity, paired with Scionix detector heads for portable isotope identification and survey. Primary application: homeland security, emergency response, medical imaging.</p>
+<p><strong>Benchtop laboratory MCAs.</strong> Higher channel count, multi-input options, comprehensive software ecosystem. Primary application: nuclear physics laboratories, university teaching, calibration laboratories.</p>
+<p><strong>Industrial monitoring MCAs.</strong> Network-attached, environmentally rated, integrated into rack-mount or DIN-rail enclosures. Primary application: power reactor monitoring, environmental monitoring stations, industrial gauging.</p>
+<p><strong>OEM modules.</strong> MCA cores supplied as PCB modules for integration into customer-built instruments. Primary application: instrument vendors building radiation-detection products around Berkeley Nucleonics electronics.</p>
+<p>The current product catalog at the time of writing covers the full range. Detailed specifications and current model numbers are available from Berkeley Nucleonics directly; the product family naturally evolves over the lifetime of this book and the catalog should be referenced for current details rather than this appendix.</p>
+<div class="callout">
+<p><strong>BNC in Practice - The MCA is part of the detector specification</strong></p>
+<p>A detector head specified without an MCA is a half specification. The same Scionix detector paired with an analog MCA from 1995 versus a modern DPP-based MCA delivers measurably different energy resolution, count rate capability, and operational features. Customers comparing detector quotes from different vendors should confirm the MCA architecture, not just the detector head, before drawing conclusions about price-performance ratio. A high-resolution detector hobbled by an undersized analog MCA can lose a percent or two of FWHM that the spec sheet promised. The full system specification, detector plus electronics plus software, is what determines what shows up on the operator’s screen.</p>
+</div>
+<h2 id="f.9-where-mcas-are-heading">F.9 Where MCAs are heading</h2>
+<p>Three trends shape the next generation of MCA design.</p>
+<p><strong>Higher integration.</strong> The MCA is moving inside the detector head. The boundary between detector and instrument is blurring. By 2030, the standalone MCA as a separate product category may largely vanish, replaced by detector heads that include their own histogramming and report directly to networked analysis platforms.</p>
+<p><strong>Higher throughput.</strong> New scintillators with faster decay times (LuAG:Pr, GAGG:Ce,Mg) enable count rates that the previous generation of MCAs could not handle. New DPP architectures with parallel processing pipelines and ASIC implementations are moving the throughput ceiling upward by an order of magnitude per decade.</p>
+<p><strong>Smarter analysis.</strong> Machine learning models running on the DPP itself perform isotope identification, anomaly detection, and contextual classification in real time. The output of a modern MCA is increasingly an interpreted result rather than a raw spectrum, with the spectrum available as a drill-down for analyst review.</p>
+<p>The MCA is one of the older ideas in nuclear electronics. It is also one of the parts of the detector chain that has moved fastest in the past decade. The classical analog rack-mount MCA still works for applications that have not changed since the 1980s. For new designs, the digital, networked, integrated approach is the modern default.</p>
+<h2 id="references">References</h2>
+<p>[1] G. F. Knoll, <em>Radiation Detection and Measurement</em>, 4th ed. Hoboken, NJ: Wiley, 2010.</p>
+<p>[2] V. T. Jordanov and G. F. Knoll, “Digital synthesis of pulse shapes in real time for high resolution radiation spectroscopy,” <em>Nucl. Instrum. Methods A</em>, vol. 345, pp. 337-345, 1994.</p>
+<p>[3] American National Standards Institute, “ANSI N42.42 - Data Format Standard for Radiation Detectors Used for Homeland Security,” 2020.</p>
+<p>[4] Berkeley Nucleonics Corporation, “Multichannel Analyzer Product Family Documentation,” 2025.</p>
+<p>[5] CAEN S.p.A., “Digital Pulse Processing for Physics and Industrial Applications,” white paper, 2024.</p>
+</body>
+</html>

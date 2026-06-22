@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIIDs in the Field, A Field Handbook for First Responders and HazMat Teams</title>
+<meta name="description" content="Berkeley Nucleonics field handbook for using the SAM family of radioisotope identifiers and RD-120 backpack and vehicle systems in radiological response.">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* ====== BNC Book Series Style Guide tokens ====== */
+  :root {
+    --bnc-deep-navy:   #003D6B;
+    --bnc-sky-blue:    #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal:    #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan:  #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan:  #00d4ff;
+    --bnc-target-green:#00ff88;
+    --bnc-white:       #ffffff;
+    --bnc-rule:        #b6c2cc;
+
+    --bnc-sans:  "Helvetica Neue", "Arial", sans-serif;
+    --bnc-black: "Helvetica Neue", "Arial Black", "Helvetica", "Arial", sans-serif;
+    --bnc-serif: "Georgia", "Iowan Old Style", serif;
+    --bnc-mono:  "Consolas", "SFMono-Regular", "Menlo", monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bnc-light-steel);
+    color: var(--bnc-charcoal);
+    font-family: var(--bnc-serif);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 96px 24px;
+  }
+
+  /* ====== cover panel (screen view) ====== */
+  .cover {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    border-radius: 4px;
+    padding: 56px 36px 48px 36px;
+    margin: 0 0 36px 0;
+    box-shadow: 0 12px 40px rgba(0, 31, 56, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover .kicker {
+    font-family: var(--bnc-sans);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--bnc-light-cyan);
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: var(--bnc-black);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.02;
+    margin: 14px 0 12px 0;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: none;
+  }
+  .cover h2 {
+    font-family: var(--bnc-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 24px 0;
+    color: #cfdce6;
+    text-transform: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .cover .meta {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: #cfdce6;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 18px;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+  .cover .meta strong { color: #fff; }
+
+  /* ====== headings (interior) ====== */
+  h1, h2, h3, h4 {
+    font-family: var(--bnc-sans);
+    line-height: 1.2;
+  }
+  h1 {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 56px 0 18px 0;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  h1:first-of-type { margin-top: 32px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 44px 0 14px 0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bnc-sky-blue);
+    margin: 28px 0 10px 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bnc-charcoal);
+    margin: 22px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ====== body text ====== */
+  p { margin: 0 0 14px 0; }
+  ul, ol { margin: 0 0 16px 24px; padding: 0; }
+  li { margin: 4px 0; }
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+
+  /* ====== tables ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: var(--bnc-sans);
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+
+  /* ====== blockquotes / callouts ====== */
+  blockquote {
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    border-radius: 0 4px 4px 0;
+    color: var(--bnc-charcoal);
+  }
+  blockquote p { margin: 0; }
+  blockquote strong { color: var(--bnc-deep-navy); }
+
+  /* ====== code / checklists ====== */
+  code, pre { font-family: var(--bnc-mono); }
+  code {
+    background: var(--bnc-light-steel);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  pre {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-left: 4px solid var(--bnc-deep-navy);
+    padding: 16px 18px;
+    line-height: 1.5;
+    font-size: 14px;
+    border-radius: 0 4px 4px 0;
+    white-space: pre-wrap;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  /* ====== rules ====== */
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--bnc-rule);
+    margin: 36px 0;
+  }
+  hr + h1, hr + h2 { margin-top: 28px; }
+
+  /* ====== TOC and isotope cards ====== */
+  .toc {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    padding: 22px 26px;
+    margin: 24px 0 36px 0;
+  }
+  h3[id^="card-a-"] {
+    background: var(--bnc-light-steel);
+    padding: 8px 14px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    color: var(--bnc-deep-navy);
+    margin-top: 24px;
+  }
+
+  /* ====== links ====== */
+  a {
+    color: var(--bnc-sky-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--bnc-sky-blue);
+  }
+  a:hover { border-bottom-style: solid; }
+
+  /* ====== sticky top bar (screen only) ====== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    padding: 8px 18px;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+  }
+  .topbar a {
+    color: var(--bnc-light-cyan);
+    border-bottom: none;
+    font-weight: 700;
+  }
+  .topbar .brand {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ====== figures ====== */
+  figure {
+    margin: 24px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 31, 56, 0.08);
+  }
+  figcaption {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* ====== mobile ====== */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .shell { padding: 18px 14px 64px 14px; }
+    .cover { padding: 36px 22px 32px 22px; }
+    .cover h1 { font-size: 32px; }
+    .cover h2 { font-size: 17px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 19px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 9px; }
+  }
+
+  /* ====== print: 5x8 trim, BNC interior spec ====== */
+  @media print {
+    @page {
+      size: 5in 8in;
+      margin: 0.45in 0.45in 0.5in 0.45in;
+    }
+    body {
+      background: #fff;
+      font-size: 8.5pt;
+      line-height: 1.32;
+      color: var(--bnc-charcoal);
+    }
+    .topbar { display: none; }
+    .shell { max-width: 100%; padding: 0; margin: 0; }
+    .cover {
+      padding: 0.5in 0.4in;
+      page-break-after: always;
+      min-height: 6.4in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .cover h1 { font-size: 28pt; color: #fff !important; border-bottom: none !important; }
+    .cover h2 { font-size: 14pt; color: #cfdce6 !important; }
+    .cover .kicker { color: var(--bnc-light-cyan) !important; }
+    .cover .meta, .cover .meta strong, .cover p { color: #fff !important; }
+
+    h1 {
+      font-family: var(--bnc-sans);
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--bnc-deep-navy) !important;
+      page-break-before: always;
+      margin: 0 0 12pt 0;
+      padding-bottom: 4pt;
+      border-bottom: 2pt solid var(--bnc-sky-blue);
+      letter-spacing: 0.5pt;
+    }
+    h1:first-of-type { page-break-before: avoid; }
+    h2 { font-family: var(--bnc-sans); font-size: 13pt; font-weight: 700; color: var(--bnc-deep-navy) !important; page-break-after: avoid; margin-top: 14pt; margin-bottom: 6pt; }
+    h3 { font-family: var(--bnc-sans); font-size: 11pt; font-weight: 700; color: var(--bnc-sky-blue) !important; page-break-after: avoid; margin-top: 10pt; margin-bottom: 4pt; }
+    h4 { font-family: var(--bnc-sans); font-size: 9pt; font-weight: 700; color: var(--bnc-charcoal) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+    p, li { orphans: 3; widows: 3; margin-bottom: 4pt; }
+    ul, ol { margin: 4pt 0 4pt 18pt; }
+
+    table, blockquote, pre { page-break-inside: avoid; margin: 6pt 0; }
+    pre { font-size: 7pt; line-height: 1.25; padding: 6pt 8pt; background: #fff; border-color: var(--bnc-rule); border-left-color: var(--bnc-deep-navy); }
+    table { font-size: 7.5pt; }
+    thead th { background: var(--bnc-deep-navy) !important; color: #fff !important; padding: 4pt 5pt; }
+    tbody td { padding: 3pt 5pt; }
+    tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+    blockquote { background: var(--bnc-light-steel); border-left: 4pt solid var(--bnc-sky-blue); padding: 6pt 10pt; }
+    a { color: var(--bnc-charcoal); border-bottom: none; }
+
+    figure { page-break-inside: avoid; margin: 6pt 0; text-align: center; }
+    figure img {
+      max-width: 100%;
+      max-height: 1.9in;
+      width: auto; height: auto;
+      object-fit: contain;
+      box-shadow: none;
+      padding: 2pt;
+      border-color: var(--bnc-rule);
+    }
+    figcaption { font-size: 7.5pt; margin-top: 3pt; line-height: 1.3; color: var(--bnc-charcoal); }
+  }
+
+  /* Cover image full-bleed in print */
+  @media print {
+    .cover {
+      padding: 0 !important;
+      background: none !important;
+      page-break-after: always;
+      min-height: auto;
+      display: block !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    .cover img {
+      width: 5in !important;
+      height: 8in !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: cover;
+      display: block;
+    }
+    @page :first {
+      margin: 0;
+    }
+  }
+
+  /* ====== Callouts and sidebars (BNC style guide section 6) ====== */
+  .callout {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .sidebar-deeper {
+    background: #e6edf3;
+    border: 1px solid #b6c2cc;
+    border-left: 4px solid var(--bnc-charcoal);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .sidebar-deeper h4 {
+    color: var(--bnc-charcoal);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-deeper p { margin: 0; font-size: 14px; }
+
+  @media print {
+    .callout, .sidebar-deeper {
+      page-break-inside: avoid;
+      margin: 6pt 0;
+      padding: 6pt 10pt;
+      font-size: 8pt;
+    }
+    .callout h4, .sidebar-deeper h4 { font-size: 9pt; margin-bottom: 3pt; }
+    .callout p, .sidebar-deeper p { font-size: 8pt; }
+  }
+
+  /* Quiz block */
+  .quiz {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 24px 0;
+    border-radius: 0 0 4px 4px;
+  }
+  .quiz h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+  .quiz ol { margin: 0 0 0 22px; padding: 0; }
+  .quiz ol > li { margin-bottom: 10px; font-size: 14px; }
+  .quiz ol[type="a"] { margin-top: 6px; margin-bottom: 0; }
+  .quiz ol[type="a"] > li { margin-bottom: 2px; font-size: 13px; }
+  @media print {
+    .quiz { page-break-inside: avoid; padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .quiz h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .quiz ol > li { font-size: 8pt; margin-bottom: 4pt; }
+    .quiz ol[type="a"] > li { font-size: 7.5pt; }
+  }
+
+  .checklist, .form-block {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 0 0 4px 4px;
+    page-break-inside: avoid;
+  }
+  .checklist h4, .form-block h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+  }
+  .checklist pre, .form-block pre {
+    margin: 0; border: none; background: transparent; padding: 0;
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 11px; line-height: 1.55; color: var(--bnc-charcoal);
+  }
+  @media print {
+    .checklist, .form-block { padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .checklist h4, .form-block h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .checklist pre, .form-block pre { font-size: 7pt; }
+  }
+
+  /* ====== Refined component system (BNC v2) ====== */
+
+  /* SVG icons: inherit color, baseline-aligned */
+  .bnc-icon, .bnc-cb {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--bnc-sky-blue);
+  }
+
+  /* Card pattern shared by checklist + form */
+  .bnc-card {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 6px;
+    margin: 22px 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0, 31, 56, 0.06);
+  }
+  .bnc-card-head {
+    background: linear-gradient(90deg, #003D6B 0%, #0078B6 100%);
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-card-icon { color: #7fdbff; display: flex; align-items: center; }
+  .bnc-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bnc-card-body {
+    padding: 14px 18px;
+    background: #fff;
+  }
+  .bnc-card-subhead {
+    font-family: var(--bnc-sans);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 12px 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--bnc-rule);
+  }
+  .bnc-card-subhead:first-child { margin-top: 0; }
+  .bnc-card-note {
+    font-family: var(--bnc-serif);
+    font-size: 12px;
+    color: var(--bnc-charcoal);
+    margin: 6px 0;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  /* Checklist items */
+  .bnc-cb-list {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 0;
+  }
+  .bnc-cb-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 4px 0;
+    font-family: var(--bnc-serif);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    line-height: 1.45;
+  }
+  .bnc-cb-list li .bnc-cb { margin-top: 1px; color: var(--bnc-sky-blue); }
+  .bnc-cb-list li.done { color: #5b6770; }
+  .bnc-cb-list li.done .bnc-cb { color: var(--bnc-target-green); }
+
+  /* Fill-in form fields */
+  .bnc-field {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 5px 0;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bnc-deep-navy);
+    flex: 0 0 auto;
+    min-width: 130px;
+    letter-spacing: 0.02em;
+  }
+  .bnc-field-line {
+    flex: 1 1 auto;
+    border-bottom: 1px solid #b6c2cc;
+    height: 16px;
+    margin-bottom: 2px;
+  }
+  .bnc-field-spacer { height: 6px; }
+
+  /* Icon-decorated callouts (overrides earlier .callout / .sidebar-deeper / .quiz) */
+  .callout, .sidebar-deeper {
+    position: relative;
+    padding-left: 46px;
+  }
+  .callout::before, .sidebar-deeper::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+  }
+  .callout::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230078B6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'/></svg>");
+  }
+  .sidebar-deeper::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232C3E50' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>");
+  }
+
+  .quiz { position: relative; padding-left: 46px; }
+  .quiz::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 22px; height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003D6B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3'/><circle cx='12' cy='17' r='0.8' fill='%23003D6B'/></svg>");
+  }
+
+  /* Warm-charcoal body text (subtle warmth) */
+  body { color: #2c3540; }
+
+  /* Sky-blue dotted underline rule on H2 (lighter than before) */
+  h2 {
+    border-bottom: 2px solid var(--bnc-sky-blue);
+    padding-bottom: 6px;
+  }
+
+  @media print {
+    .bnc-card { margin: 8pt 0; box-shadow: none; }
+    .bnc-card-head { padding: 4pt 8pt; }
+    .bnc-card-title { font-size: 8.5pt; }
+    .bnc-card-body { padding: 6pt 10pt; }
+    .bnc-card-subhead { font-size: 7.5pt; margin: 6pt 0 3pt 0; }
+    .bnc-cb-list li { font-size: 7.5pt; padding: 1.5pt 0; gap: 5pt; }
+    .bnc-field label { font-size: 7pt; min-width: 90pt; }
+    .bnc-field { padding: 2pt 0; }
+    .callout, .sidebar-deeper, .quiz { padding-left: 28pt !important; }
+    .callout::before, .sidebar-deeper::before, .quiz::before {
+      width: 14pt; height: 14pt; background-size: 14pt 14pt;
+      left: 7pt; top: 7pt;
+    }
+  }
+
+  body { background: #f5f7f9; }
+  .shell { background: #ffffff; box-shadow: 0 0 0 1px var(--bnc-rule); border-radius: 4px; }
+  h1::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--bnc-sky-blue);
+    margin-bottom: 10px;
+    border-radius: 2px;
+  }
+  h2 { position: relative; }
+  code {
+    background: #eef3f6;
+    color: var(--bnc-deep-navy);
+    border: 1px solid #dde5ea;
+    font-size: 13px;
+  }
+  thead tr:first-child th { border-top: 3px solid var(--bnc-sky-blue); }
+  figcaption { color: #4a5763; font-size: 13.5px; font-style: italic; }
+  @media print {
+    body { background: #fff; }
+    .shell { box-shadow: none; }
+  }
+
+  .bnc-fineprint{font-size:12.5px;line-height:1.5;color:#5b6b78;margin:18px 0}
+  .bnc-fineprint h2,.bnc-fineprint h3{font-size:12.5px;margin:0 0 4px;color:#5b6b78;border:none;padding:0;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+  .bnc-fineprint p{margin:4px 0}
+
+  .president-note{font-size:13.5px;line-height:1.6;color:#3a4a57;background:#f7fbff;border-left:3px solid #0078B6;border-radius:0 4px 4px 0;padding:14px 18px;margin:22px 0;font-family:Georgia,serif}
+  .president-note h2,.president-note h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 8px;border:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-weight:700}
+  .president-note p{margin:8px 0}
+  .president-note .sig{margin-top:12px;font-style:italic;color:#5b6b78}
+
+  /* ====== Page numbers + running header (CSS Paged Media) ====== */
+  @media print {
+    /* Capture current chapter title from each h1 */
+    h1 { string-set: chapter content(); }
+    /* Suppress h1 string capture on the cover-only page (cover has no h1) */
+
+    @page {
+      size: 5in 8in;
+      margin: 0.5in 0.45in 0.55in 0.45in;
+      @bottom-center {
+        content: counter(page);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 8pt;
+        color: #003D6B;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @bottom-left {
+        content: "";
+        background: #0078B6;
+        height: 1pt;
+        width: 0.6in;
+        margin-bottom: 12pt;
+      }
+      @bottom-right {
+        content: "BNC";
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #7fdbff;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @top-right {
+        content: string(chapter);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #5b6770;
+        font-style: italic;
+        margin-bottom: 6pt;
+      }
+    }
+
+    /* Cover page: no headers, no numbers, no margins */
+    @page :first {
+      margin: 0;
+      @bottom-center { content: ""; }
+      @bottom-left { content: ""; }
+      @bottom-right { content: ""; }
+      @top-right { content: ""; }
+    }
+
+    /* Suppress running header on the very first page after the cover (front-matter title) */
+    @page :nth(2) {
+      @top-right { content: ""; }
+    }
+  }
+
+  /* ====== light-touch reconciliation additions ====== */
+  /* clean signature line (replaces the old stripped-attribution comma) */
+  p.signature {
+    text-align: right;
+    color: var(--bnc-deep-navy);
+    font-family: var(--bnc-serif);
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  p.signature em { font-style: italic; }
+
+  /* real Contents list (replaces run-together paragraphs) */
+  nav.toc { margin: 8px 0 0 0; }
+  nav.toc .toc-group {
+    font-family: var(--bnc-sans);
+    color: var(--bnc-deep-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    margin: 22px 0 6px 0;
+  }
+  nav.toc ul, nav.toc ol { margin: 0 0 6px 0; padding-left: 26px; }
+  nav.toc li { margin: 3px 0; line-height: 1.4; }
+  nav.toc a { color: var(--bnc-sky-blue); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  nav.toc ol.toc-alpha { list-style: upper-alpha; }
+
+  /* ====== shared footer (single-file adaptation) ====== */
+  footer.bnc-footer {
+    font-family: var(--bnc-sans); margin-top: 54px;
+    border-top: 2px solid var(--bnc-deep-navy); padding-top: 16px;
+    font-size: 13px; color: var(--bnc-charcoal);
+  }
+  footer.bnc-footer .bnc-nav { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  footer.bnc-footer .bnc-nav a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-nav a:hover { text-decoration: underline; }
+  footer.bnc-footer .bnc-nav a.disabled { color: #9aa7b2; pointer-events: none; font-weight: 400; }
+  footer.bnc-footer .bnc-nav .mid { text-align: center; flex: 0 0 auto; }
+  footer.bnc-footer .bnc-nav .next { text-align: right; }
+  footer.bnc-footer .bnc-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+    padding-top: 10px; border-top: 1px solid var(--bnc-rule); opacity: .92; }
+  footer.bnc-footer .bnc-meta a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-meta .spacer { margin-left: auto; font-weight: 400; opacity: .75; }
+
+  @media print {
+    /* keep footer from fighting the 5x8 print layout: hide screen nav, show compact copyright only */
+    footer.bnc-footer .bnc-nav { display: none; }
+    footer.bnc-footer .bnc-meta a { color: #000; }
+    footer.bnc-footer { margin-top: 18px; border-top: 1px solid #000; font-size: 7.5pt; page-break-inside: avoid; }
+  }
+</style>
+  <link rel="stylesheet" href="front-matter.css">
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top" style="max-width:760px;margin-left:auto;margin-right:auto">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+
+<div class="shell">
+
+<div class="fm-titleblock" style="text-align:center">
+  <p class="fm-series">A Berkeley Nucleonics Field Handbook</p>
+  <h1 class="fm-title">RIIDs in the Field</h1>
+  <p class="fm-subtitle" style="font-family:Georgia,serif;font-style:italic;font-size:16px;color:#3a4a57;margin:0 0 4px;">A Field Handbook for First Responders &amp; HazMat Teams</p>
+  <p class="fm-byline">by <strong>David A. Brown</strong> and the Berkeley Nucleonics team</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">Second Edition &middot; 2026</p>
+</div>
+
+<section class="president-note" id="message-from-the-president">
+<h2>A Message from the President</h2>
+<p>We wrote this book because there is a gap we have seen again and again: agencies that invest in the right instruments, train on basic operation, and then deploy without a tactical framework for what to do when the alarm sounds. A RIID is not just a detector. It is a decision tool. The field handbook you are holding is our attempt to close that gap, specifically for HazMat teams and first responders who carry the SAM family of handhelds and the RD-120 backpack and vehicle systems into real incidents, not controlled exercises.</p>
+<p>Berkeley Nucleonics has been building radiation instrumentation for decades, and this is one of the areas we are most energized about right now. The technology is mature enough to be genuinely reliable in the field, and the operational doctrine is finally catching up. That combination makes this a good moment to get it right. We hope this handbook earns a permanent spot in your truck.</p>
+<p class="sig">David Brown<br>President, Berkeley Nucleonics Corporation</p>
+</section>
+
+<hr />
+<div class="bnc-fineprint">
+<h2 id="copyright-use">Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. RIIDs in the Field, Second Edition, 2026. Published by Berkeley Nucleonics Corporation, San Rafael, California. SAM, RD-120, and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+<hr />
+<section class="second-edition">
+<h2 id="why-a-second-edition">Why a Second Edition, and Why Now</h2>
+<p>Radiological response has moved fast since the first edition. Reachback has become routine rather than exceptional, threat-spectrum libraries have grown, and the line between a HazMat call and a security event keeps blurring. Responders told us the same thing in the field: the procedures held up, but they wanted them tied more tightly to how teams actually work a scene today, from the first alarm to the handoff to a health physicist. This edition rebuilds the SOPs around that feedback.</p>
+<p>Now is the moment because the instruments and the doctrine have finally caught up to each other. The hardware is reliable enough to trust in real incidents, and the operational frameworks around identification and reachback are mature enough to teach cleanly. We tightened the prose, refreshed the scenarios, and kept the one rule that has guided this book from the start: a RIID is a decision tool, not just a detector.</p>
+</section>
+<hr />
+<h3 id="foreword">Foreword</h3>
+<p>A radioisotope identification device, a "RIID", is one of the most consequential tools that a HazMat team or law enforcement officer can carry. Pagers and survey meters tell you radiation is present. A RIID tells you <strong>what</strong> it is. That single shift, from "something is radioactive" to "this is Cs-137 from a disused industrial gauge," is the difference between a wide cordon, a frightened public, and an open-ended event versus a measured, proportional response that ends quickly and safely.</p>
+<p>This handbook was written because too many responders carry RIIDs without a tactical playbook for using them. It is not a sales catalog. It is a field manual. The procedures here have been distilled from years of supporting agencies who deploy SAM family handhelds and RD-120 backpack and vehicle systems in real incidents, traffic stops, lost industrial sources, large public events, hospital false alarms, port screening, and post-incident contamination control.</p>
+<p>Use this book the way it was designed: keep one in every truck, every command rig, every backpack pouch. Reference it during slow shifts. Tab the pages your team uses most. Make notes in the margins. The best operators are the ones whose handbooks are dog-eared.</p>
+<p class="signature"><em>Berkeley Nucleonics Corporation</em></p>
+<hr />
+<h2 id="contents">Contents</h2>
+<nav class="toc" aria-label="Table of contents">
+<p class="toc-group"><strong>Front Matter</strong></p>
+<ul>
+  <li><a href="#message-from-the-president">A Message from the President</a></li>
+  <li><a href="#why-a-second-edition">Why a Second Edition, and Why Now</a></li>
+  <li><a href="#how-to-read-this-book">How to Read This Book</a></li>
+  <li><a href="#quick-start-card-read-this-first">Quick-Start Card</a></li>
+</ul>
+<p class="toc-group"><strong>Part I, Foundations</strong></p>
+<ol>
+<li><a href="01-mission-audience-and-scope.html">Mission, Audience, and Scope</a></li>
+<li><a href="02-radiation-in-6-pages.html">Radiation in 6 Pages: What Operators Must Know</a></li>
+<li><a href="03-the-detection-ladder.html">The Detection Ladder</a></li>
+</ol>
+<p class="toc-group"><strong>Part II, The Instruments</strong></p>
+<ol start="4">
+<li><a href="04-the-sam-family-and-rd-150.html">The SAM Family and the RD-150 System</a></li>
+<li><a href="05-operations-core-alert-identify-send.html">Operations Core: Alert, Identify, Send</a></li>
+</ol>
+<p class="toc-group"><strong>Part III, Field SOPs</strong></p>
+<ol start="6">
+<li><a href="06-sop-1-vehicle-stop.html">SOP-1: Vehicle Stop / Traffic Incident</a></li>
+<li><a href="07-sop-2-public-event-wide-area-search.html">SOP-2: Public Event and Wide-Area Search</a></li>
+<li><a href="08-sop-3-medical-isotopes-norm-scenes.html">SOP-3: Medical Isotopes and NORM Scenes</a></li>
+<li><a href="09-sop-4-cargo-ports-post-detonation.html">SOP-4: Cargo, Ports, and Post-Detonation Response</a></li>
+</ol>
+<p class="toc-group"><strong>Appendices</strong></p>
+<ol class="toc-alpha">
+<li><a href="appendix-A-isotope-cards.html">Isotope Quick-Reference Cards</a></li>
+<li><a href="appendix-B-reachback-worksheet.html">Reachback Worksheet and QA Checklists</a></li>
+<li><a href="appendix-C-glossary.html">Glossary, Acronyms, and Time-Distance-Shielding Aid</a></li>
+<li><a href="appendix-D-standards-crosswalk.html">Standards Crosswalk</a></li>
+<li><a href="appendix-E-education-training.html">Education and Training Pathways</a></li>
+<li><a href="appendix-F-hiring-team-composition.html">Hiring and Team Composition</a></li>
+<li><a href="appendix-G-quiz-answer-key.html">Quiz Answer Key (with Back Matter)</a></li>
+</ol>
+<p class="toc-group"><strong>About</strong></p>
+<ul>
+  <li><a href="about-the-authors.html">About the Authors</a></li>
+</ul>
+</nav>
+<hr />
+
+<section class="how-to-read">
+<h2 id="how-to-read-this-book">How to Read This Book</h2>
+<p>The book divides into three working layers. <strong>Part I (Chapters 1-3)</strong> builds the foundation: mission and audience, "Radiation in 6 Pages," and "The Detection Ladder," which places RIIDs alongside pagers, survey meters, and portal monitors. New to radiological response? Read Part I first. Years of field time? Skim it to confirm your mental model matches the framework used throughout.</p>
+<p><strong>Part II (Chapters 4-5)</strong> covers the instruments. Chapter 4 describes the SAM family and the RD-150 system, including detector types, form factors, and how the hardware maps to mission profiles. Chapter 5 walks the operational core: alert, identify, send. These two chapters are the backbone. Experienced SAM users can treat them as reference, jumping to the subsection that matches a configuration question.</p>
+<p><strong>Part III (Chapters 6-9)</strong> is where the work happens. Four scenario SOPs cover vehicle stops, public events and wide-area search, medical isotopes and NORM scenes, and cargo, ports, and post-detonation response. Each follows the same alert-identify-send structure, so once you drill one, the others feel familiar. The <strong>Appendices</strong> add isotope quick-reference cards, a reachback worksheet with QA checklists, a glossary and time-distance-shielding aid, a standards crosswalk, and training pathways. Appendix A is the one you will reach for most on scene.</p>
+</section>
+<hr />
+<h2 id="quick-start-card-read-this-first">Quick-Start Card (Read This First)</h2>
+<figure><img src="../figures/quick-start-card.png" alt="Quick-Start Card" loading="lazy"><figcaption>Quick-Start Card, the three-beat rhythm of every scene.</figcaption></figure>
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="01-mission-audience-and-scope.html">1. Mission, Audience, and Scope &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+
+</div>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

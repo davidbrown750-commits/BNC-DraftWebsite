@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 4 Quiz - I/Q Fundamentals and Complex Baseband</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 4 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "rtsa",
+  chapterKey: "04",
+  title: "Chapter 4 Quiz",
+  questions: [
+    {
+      q: "The analytic signal differs from a real-valued signal by:",
+      options: [
+        "Having higher amplitude",
+        "Having a one-sided spectrum",
+        "Sampling at a higher rate",
+        "Being filtered"
+      ],
+      answer: 1,
+      explain: "The analytic signal keeps only positive frequencies, giving it a one-sided spectrum."
+    },
+    {
+      q: "Euler's identity expresses a complex exponential as:",
+      options: [
+        "The product of cosine and sine",
+        "The sum of cosine and j times sine",
+        "The Fourier transform of a constant",
+        "A real exponential"
+      ],
+      answer: 1,
+      explain: "Euler's identity writes the complex exponential as cosine plus j times sine."
+    },
+    {
+      q: "Quadrature sampling at the bandwidth requires approximately how much lower a sample rate than real sampling at twice the carrier?",
+      options: [
+        "Half",
+        "Equal",
+        "5x lower",
+        "20-50x lower depending on carrier frequency"
+      ],
+      answer: 3,
+      explain: "Sampling complex baseband at the bandwidth, rather than the carrier, cuts the required rate by roughly 20 to 50 times depending on carrier frequency."
+    },
+    {
+      q: "What does I/Q amplitude and phase imbalance produce in the spectrum?",
+      options: [
+        "Higher noise floor",
+        "A mirror image of every signal across DC",
+        "DC drift",
+        "Random phase noise"
+      ],
+      answer: 1,
+      explain: "Imbalance between the I and Q paths leaks each signal into its mirror frequency across DC."
+    },
+    {
+      q: "Approximately what image rejection ratio results from a 1 percent amplitude imbalance and a 1 degree phase imbalance combined?",
+      options: [
+        "10 dB",
+        "35 dB",
+        "60 dB",
+        "90 dB"
+      ],
+      answer: 1,
+      explain: "A 1 percent amplitude and 1 degree phase error together limit image rejection to roughly 35 dB."
+    },
+    {
+      q: "SigMF metadata is stored in:",
+      options: [
+        "The first kilobyte of the data file",
+        "A JSON sidecar file paired with the data file",
+        "The instrument's firmware",
+        "A binary header"
+      ],
+      answer: 1,
+      explain: "SigMF keeps metadata in a separate JSON file paired with the raw data file."
+    },
+    {
+      q: "The Python expression iq = raw[::2] + 1j * raw[1::2] assumes the raw stream is:",
+      options: [
+        "Real-only samples",
+        "Float64 only",
+        "Interleaved I, Q pairs of equal type",
+        "Complex with separate I and Q files"
+      ],
+      answer: 2,
+      explain: "Taking even samples as I and odd samples as Q assumes the stream is interleaved I, Q pairs of the same type."
+    },
+    {
+      q: "To decode a Bluetooth GFSK burst from raw I/Q, you compute the instantaneous frequency by:",
+      options: [
+        "Taking the FFT magnitude",
+        "Taking the derivative of the unwrapped phase angle",
+        "Squaring the I and Q channels",
+        "Convolving with a sine wave"
+      ],
+      answer: 1,
+      explain: "Instantaneous frequency is the time derivative of the unwrapped phase, which recovers the GFSK frequency deviations."
+    },
+    {
+      q: "Memory-mapping (np.memmap) is useful when the I/Q file:",
+      options: [
+        "Is corrupt",
+        "Has unknown sample rate",
+        "Is too large to fit in RAM",
+        "Contains real samples instead of complex"
+      ],
+      answer: 2,
+      explain: "Memory-mapping lets you work on a file larger than RAM by paging in only the parts you touch."
+    },
+    {
+      q: "RTSA Suite PRO presents I/Q processing as:",
+      options: [
+        "A command-line script only",
+        "A read-only black box",
+        "A visual graph of editable blocks supporting live and replay modes",
+        "A spreadsheet"
+      ],
+      answer: 2,
+      explain: "RTSA Suite PRO models the chain as a visual graph of editable blocks that runs on live or recorded data."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-04.html">&larr; Back to Chapter 4</a>
+    <a class="mid" href="index.html">Contents</a>
+    <a class="next" href="quiz-chapter-05.html">Chapter 5 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

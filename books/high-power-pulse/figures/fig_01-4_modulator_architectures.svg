@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title    { font-size: 16px; font-weight: 600; fill: #111; }
+    .subtitle { font-size: 13px; font-weight: 600; fill: #222; }
+    .label    { font-size: 11px; fill: #333; }
+    .note     { font-size: 10px; fill: #666; font-style: italic; }
+    .wire     { stroke: #222; stroke-width: 1.8; fill: none; }
+    .gnd      { stroke: #222; stroke-width: 1.5; fill: none; }
+    .box      { stroke: #222; stroke-width: 1.5; fill: #fff; }
+    .tube     { fill: #f0d8b8; stroke: #5a3a1a; stroke-width: 1.5; }
+    .switch   { fill: #d8e5f0; stroke: #1a3a5a; stroke-width: 1.5; }
+    .pfn      { fill: #e0f0d8; stroke: #2a5a1a; stroke-width: 1.5; }
+    .arrow    { fill: #222; }
+  </style>
+
+  <text x="440" y="28" text-anchor="middle" class="title">Two ancestors of every modern HV pulser</text>
+
+  <!-- LEFT: Hard-tube modulator -->
+  <text x="220" y="60" text-anchor="middle" class="subtitle">Hard-tube modulator</text>
+  <text x="220" y="78" text-anchor="middle" class="note">Vacuum tube as series-pass element &#8212; arbitrary pulse shape</text>
+
+  <!-- HV supply -->
+  <rect x="60" y="100" width="80" height="40" class="box" />
+  <text x="100" y="125" text-anchor="middle" class="label">HV DC</text>
+  <text x="100" y="155" text-anchor="middle" class="note">+10&#8211;30 kV</text>
+
+  <!-- Wire from HV to plate of tube -->
+  <line x1="140" y1="120" x2="220" y2="120" class="wire" />
+
+  <!-- Tube (vacuum triode) -->
+  <ellipse cx="240" cy="170" rx="28" ry="50" class="tube" />
+  <text x="240" y="174" text-anchor="middle" class="label" font-weight="600">Tube</text>
+  <text x="240" y="188" text-anchor="middle" class="note">(triode/tetrode)</text>
+  <!-- plate connection (top) -->
+  <line x1="240" y1="120" x2="240" y2="120" class="wire" />
+  <line x1="220" y1="120" x2="240" y2="120" class="wire" />
+  <line x1="240" y1="120" x2="240" y2="125" class="wire" />
+  <!-- grid (left bump) -->
+  <line x1="178" y1="170" x2="212" y2="170" class="wire" />
+  <text x="170" y="174" text-anchor="end" class="label">Grid drive</text>
+  <text x="170" y="188" text-anchor="end" class="note">(controls pulse shape)</text>
+  <!-- cathode (bottom) -->
+  <line x1="240" y1="220" x2="240" y2="260" class="wire" />
+
+  <!-- Load -->
+  <rect x="200" y="260" width="80" height="36" class="box" />
+  <text x="240" y="283" text-anchor="middle" class="label">Load</text>
+
+  <!-- Ground return -->
+  <line x1="240" y1="296" x2="240" y2="320" class="wire" />
+  <line x1="100" y1="140" x2="100" y2="320" class="wire" />
+  <line x1="100" y1="320" x2="240" y2="320" class="wire" />
+
+  <!-- Ground symbol -->
+  <line x1="100" y1="320" x2="100" y2="335" class="gnd" />
+  <line x1="90"  y1="335" x2="110" y2="335" class="gnd" />
+  <line x1="93"  y1="340" x2="107" y2="340" class="gnd" />
+  <line x1="96"  y1="345" x2="104" y2="345" class="gnd" />
+
+  <text x="220" y="370" text-anchor="middle" class="note">Modern descendant: half-bridge MOSFET pulsers (PVX-4110, PVX-4150)</text>
+
+  <!-- Vertical divider -->
+  <line x1="440" y1="50" x2="440" y2="360" stroke="#bbb" stroke-width="1" stroke-dasharray="4 4" />
+
+  <!-- RIGHT: Line-type modulator -->
+  <text x="660" y="60" text-anchor="middle" class="subtitle">Line-type modulator</text>
+  <text x="660" y="78" text-anchor="middle" class="note">PFN + thyratron &#8212; pulse shape baked into the network</text>
+
+  <!-- Charging supply -->
+  <rect x="500" y="100" width="80" height="40" class="box" />
+  <text x="540" y="125" text-anchor="middle" class="label">HV DC</text>
+  <text x="540" y="155" text-anchor="middle" class="note">resonant charge</text>
+
+  <!-- Wire to PFN -->
+  <line x1="580" y1="120" x2="620" y2="120" class="wire" />
+
+  <!-- PFN (ladder of L's and C's) -->
+  <rect x="620" y="100" width="120" height="80" class="pfn" />
+  <text x="680" y="118" text-anchor="middle" class="label" font-weight="600">PFN</text>
+  <!-- Inductor zigzags -->
+  <path d="M 632 140 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0" stroke="#2a5a1a" stroke-width="1.5" fill="none" />
+  <!-- Capacitor symbols -->
+  <line x1="640" y1="155" x2="640" y2="170" stroke="#2a5a1a" stroke-width="1.5" />
+  <line x1="635" y1="170" x2="645" y2="170" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="635" y1="174" x2="645" y2="174" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="664" y1="155" x2="664" y2="170" stroke="#2a5a1a" stroke-width="1.5" />
+  <line x1="659" y1="170" x2="669" y2="170" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="659" y1="174" x2="669" y2="174" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="688" y1="155" x2="688" y2="170" stroke="#2a5a1a" stroke-width="1.5" />
+  <line x1="683" y1="170" x2="693" y2="170" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="683" y1="174" x2="693" y2="174" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="712" y1="155" x2="712" y2="170" stroke="#2a5a1a" stroke-width="1.5" />
+  <line x1="707" y1="170" x2="717" y2="170" stroke="#2a5a1a" stroke-width="2" />
+  <line x1="707" y1="174" x2="717" y2="174" stroke="#2a5a1a" stroke-width="2" />
+
+  <!-- Wire from PFN to thyratron -->
+  <line x1="740" y1="140" x2="780" y2="140" class="wire" />
+
+  <!-- Thyratron -->
+  <ellipse cx="800" cy="170" rx="22" ry="38" class="tube" />
+  <text x="800" y="170" text-anchor="middle" class="label" font-weight="600">Thy.</text>
+  <text x="800" y="184" text-anchor="middle" class="note">tron</text>
+  <line x1="800" y1="132" x2="800" y2="135" class="wire" />
+  <line x1="780" y1="140" x2="800" y2="140" class="wire" />
+  <line x1="800" y1="208" x2="800" y2="240" class="wire" />
+
+  <!-- Pulse transformer (step-up) -->
+  <rect x="640" y="240" width="160" height="40" class="box" />
+  <text x="720" y="263" text-anchor="middle" class="label" font-weight="600">Pulse transformer</text>
+
+  <!-- Wire to load -->
+  <line x1="800" y1="240" x2="800" y2="280" class="wire" />
+  <rect x="680" y="290" width="80" height="36" class="box" />
+  <text x="720" y="313" text-anchor="middle" class="label">Load</text>
+  <line x1="720" y1="280" x2="720" y2="290" class="wire" />
+
+  <!-- Ground -->
+  <line x1="540" y1="140" x2="540" y2="345" class="wire" />
+  <line x1="540" y1="345" x2="720" y2="345" class="wire" />
+  <line x1="720" y1="326" x2="720" y2="345" class="wire" />
+  <line x1="540" y1="345" x2="540" y2="358" class="gnd" />
+  <line x1="530" y1="358" x2="550" y2="358" class="gnd" />
+  <line x1="533" y1="363" x2="547" y2="363" class="gnd" />
+  <line x1="536" y1="368" x2="544" y2="368" class="gnd" />
+
+  <text x="660" y="390" text-anchor="middle" class="note">Modern descendant: solid-state Marx generators with isolated gate drives</text>
+</svg>

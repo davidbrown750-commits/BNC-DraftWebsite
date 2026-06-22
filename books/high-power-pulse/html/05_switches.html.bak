@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5: Switch Technologies</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-5">Chapter 5</h1>
+<h2 id="switch-technologies">Switch Technologies</h2>
+<blockquote>
+<p><em>"Show me your switch and I'll tell you what your pulser can do. Almost everything else is bookkeeping around the switch."</em></p>
+</blockquote>
+<hr />
+<h3 id="51-why-the-switch-is-the-pulser">5.1 Why the switch is the pulser</h3>
+<p>Every pulse generator has a store, a switch, and a load. The store can be a capacitor, an inductor, or a transmission line. The load is whatever the application demands. The switch is the only element that has to make a decision: closed or open, and how fast can it transition between the two. That decision determines the rise time, the maximum voltage, the maximum current, the repetition rate, and the failure mode. A pulser is, fundamentally, a fancy way to drive a switch.</p>
+<p>This chapter catalogs the switch technologies that matter in modern pulsed power. The list is longer than V1 had room for, because the field has changed. Wide-bandgap semiconductors crossed the commercial threshold around 2011 and the switch landscape has been reshuffling ever since. A complete catalog as of this writing includes silicon power MOSFETs, IGBTs, silicon carbide MOSFETs, gallium nitride HEMTs, stacked-die series strings, drift-step-recovery diodes, silicon opening switches, photoconductive semiconductor switches, spark gaps, pseudosparks, and magnetic switches. Each gets a section.</p>
+<p>For each technology, the same three questions apply: what is it good for, what is it bad at, and what does it cost. Those three answers determine where each switch belongs in the pulser landscape.</p>
+<hr />
+<h3 id="52-silicon-power-mosfets">5.2 Silicon power MOSFETs</h3>
+<p>The vertical-channel power MOSFET, commercialized in the late 1970s, is the workhorse switch of modern instrument-grade pulsers. Almost every BNC-DEI half-bridge pulser uses MOSFETs in its output stage, often stacked in series to handle voltages above what a single die can hold off.</p>
+<p><strong>What MOSFETs are good for.</strong> Fast switching (rise times of tens of nanoseconds to a few hundred nanoseconds), simple gate drive (voltage-controlled), automatic current sharing in parallel (positive temperature coefficient of on-resistance), and tolerable cost in volume. Single-die voltage ratings range from 30 V to about 1700 V, with current ratings into the hundreds of amps for the larger packages.</p>
+<p><strong>What MOSFETs are bad at.</strong> Switching speed at high voltage is limited by the device capacitances (especially Cgd, the Miller capacitance). Holding off voltages above a few kV requires series stacking with careful gate-drive isolation and snubber design. On-state conduction loss climbs roughly as V_breakdown² because the drift region has to be longer for higher voltage, and that drift region is what dominates R_DS(on) above a few hundred volts.</p>
+<p><strong>What they cost.</strong> A 1200 V silicon MOSFET in a TO-247 package runs $5 to $15 in modest volumes. Stacking eight of them for a 10 kV pulser brings the switch BOM to roughly $100, plus the gate drive transformers, snubber components, and the isolation barrier between the high-voltage stack and the low-voltage control logic.</p>
+<p>The architecture used in BNC-DEI half-bridge pulsers (the PVX-4110, PVX-4150) puts MOSFETs in series strings driven by transformer-coupled gate drivers. Each transformer secondary feeds one stage, with the primaries paralleled and driven from a single low-side fast driver IC. This topology preserves fast switching (each stage transitions in 10 to 30 ns) while distributing the voltage stress across many devices, none of which sees more than its rated breakdown.</p>
+<hr />
+<h3 id="53-igbts">5.3 IGBTs</h3>
+<p>The insulated-gate bipolar transistor combines the bipolar transistor's voltage hold-off with the MOSFET's gate-drive simplicity. IGBTs sit in the middle of the device landscape: slower than MOSFETs, faster than thyratrons, with single-die voltage ratings up to 6.5 kV and current ratings into the kiloamps in module form.</p>
+<p><strong>What IGBTs are good for.</strong> Voltage classes from 600 V to 6.5 kV in single dies, where MOSFET stacking would require too many series devices. Current ratings beyond what MOSFETs typically achieve (commercial modules at 1200 A and above). Cost-effective for moderate-speed applications: motor drives, induction heating, medium-voltage pulsed processes.</p>
+<p><strong>What IGBTs are bad at.</strong> Switching speed. The conductivity-modulation that gives the IGBT its low on-state voltage drop also means stored charge has to be removed at turn-off. The result is a "tail current" that lasts hundreds of nanoseconds to microseconds after the gate signal drops. Tail current is wasted energy and limits maximum repetition rate. For pulsers with rise-time specs below 100 ns, IGBTs are usually the wrong choice.</p>
+<p><strong>What they cost.</strong> A 6.5 kV IGBT module runs several hundred to a few thousand dollars. The trade-off versus MOSFET stacking depends on the pulser's voltage and speed targets: above 3 kV with moderate rise times, IGBTs are usually cost-competitive. Below 3 kV with fast rise times, MOSFETs win.</p>
+<hr />
+<h3 id="54-silicon-carbide-mosfets">5.4 Silicon carbide MOSFETs</h3>
+<p>Silicon carbide is the larger of the two wide-bandgap commercial materials, and SiC MOSFETs have reshaped the kilovolt switch class since they reached production volumes around 2011.</p>
+<p><strong>Why SiC matters.</strong> The breakdown field of SiC is roughly ten times that of silicon. For a given voltage rating, the drift region of an SiC MOSFET is roughly ten times thinner than silicon, the on-resistance is a few times lower, and the device capacitances are smaller. The combination means SiC MOSFETs switch faster than silicon at the same voltage, dissipate less energy per transition, and tolerate higher operating temperatures (silicon caps out around 175°C junction; SiC operates reliably above 200°C).</p>
+<p><strong>What SiC is good for.</strong> Pulser applications where rise time at multi-kilovolt amplitudes matters. A 1.2 kV SiC MOSFET can transition in single-digit nanoseconds where a silicon MOSFET at the same rating needs 30 to 50 ns. Stacked SiC pulsers can deliver sub-nanosecond rise times at tens of kilovolts. The PCO-7125 and similar fast-rise modules are using SiC in their output stages where voltage allows.</p>
+<p><strong>What SiC is bad at.</strong> Cost is still higher than silicon for equivalent ratings, although the gap is closing. Gate-drive design is fussier: SiC MOSFETs typically need a gate-on voltage of 18 to 20 V (versus 10 to 12 V for silicon) and a negative gate-off voltage of -5 V or so to ensure clean turn-off. The dV/dt during transitions is high enough that Miller turn-on becomes a real risk if the gate driver is not optimized. Body diode reverse recovery is also weaker than equivalent silicon devices, which matters in half-bridge topologies where the body diode conducts during dead time.</p>
+<p><strong>What they cost.</strong> A 1.2 kV SiC MOSFET in a TO-247 runs $20 to $50, roughly 3x to 5x silicon at the same rating. Module-class devices (1700 V, 100 A class) are several hundred dollars apiece. The premium is paid back in switching-loss reduction at high frequencies and in compact, lightweight power supplies.</p>
+<hr />
+<h3 id="55-gallium-nitride-hemts">5.5 Gallium nitride HEMTs</h3>
+<p>Gallium nitride high-electron-mobility transistors are the smaller, faster wide-bandgap option. Where SiC redefined the kilovolt class, GaN has redefined the rise-time class.</p>
+<p><strong>Why GaN matters.</strong> The breakdown field of GaN is somewhat higher than SiC, and the lateral HEMT structure has lower parasitic capacitances than vertical MOSFETs at the same voltage. The result is switching speed that no silicon device can match: GaN HEMTs at a few hundred volts can transition in sub-nanosecond times, with associated high dV/dt and dI/dt.</p>
+<p><strong>What GaN is good for.</strong> Sub-nanosecond rise times at voltages from 100 V to about 650 V (commercial limit as of this writing, with 900 V parts emerging). High-frequency power conversion (1 MHz and above), because the switching losses are so low that the heat dissipation does not blow up at high duty cycle. Compact, low-mass pulsers for automotive LiDAR, where size and switching speed both matter.</p>
+<p><strong>What GaN is bad at.</strong> Voltage limits are still lower than SiC. The lateral structure and the typically depletion-mode device behavior make device drive trickier (some GaN HEMTs are normally-on, requiring a cascode arrangement with a low-voltage silicon MOSFET to make them appear normally-off to the gate driver). The dV/dt and dI/dt are so high that PCB layout and gate drive become genuinely difficult: a poorly laid-out GaN circuit will oscillate at gigahertz frequencies and either work intermittently or self-destruct.</p>
+<p><strong>What they cost.</strong> A 650 V GaN HEMT runs $5 to $30 depending on current rating. The premium over silicon is modest, and for fast-rise applications GaN is often the most cost-effective answer once you account for switching-loss reduction.</p>
+<hr />
+<h3 id="56-series-stacking-and-balancing">5.6 Series stacking and balancing</h3>
+<p>Holding off voltages above what a single semiconductor die can handle requires a series string of devices. The string works only if the voltage divides cleanly across all stages, both in the off state (static balancing) and during transitions (dynamic balancing).</p>
+<p><strong>Static balancing</strong> is set by leakage-current matching across the stack. Devices have small leakage currents at off-state voltage, and any mismatch causes the highest-leakage device to develop more voltage than its share, which can overstress and fail. The remedy is parallel resistors across each device, sized so the leakage current of the resistors dominates over device leakage. Typical values are 1 to 10 MΩ, dissipating fractions of a watt per stage.</p>
+<p><strong>Dynamic balancing</strong> is set by capacitance matching during transitions. Switching speed mismatches cause the slower devices to see overvoltage during the transition, until the faster devices catch up. Remedies include gate-drive matching (each gate driver has the same impedance and the same drive timing), parallel snubber capacitors (each device has a small capacitor across it to slow individual transitions and force balanced sharing), and active balancing circuits that monitor each device's voltage and adjust gate timing to compensate.</p>
+<p>For an 8-stage MOSFET stack at 10 kV, both static and dynamic balancing are required. The PVX-4110 uses a transformer-coupled gate-drive scheme where all secondaries are wound on a common core, which forces the gate signals to track each other tightly and helps dynamic balancing. Static balancing is handled with parallel resistors and the device leakage spec is tightened during incoming inspection.</p>
+<hr />
+<h3 id="57-drift-step-recovery-diodes">5.7 Drift-step-recovery diodes</h3>
+<p>DSRDs are not transistors at all. They are diodes that exploit a specific charge-storage effect to produce sharp voltage transitions when forced from forward to reverse current.</p>
+<p><strong>The mechanism.</strong> When a forward-biased diode is rapidly switched to reverse bias, the stored minority charge in the drift region must be removed before the diode can support reverse voltage. In a DSRD designed for the purpose, the geometry is tuned so that the charge removal happens cleanly and quickly, producing a voltage step with rise time as short as a few hundred picoseconds. The resulting "snap" can be used as a pulse-sharpening stage, taking a slow input pulse from a primary switch and producing a fast-rise output.</p>
+<p><strong>What DSRDs are good for.</strong> Sub-nanosecond rise times at tens of kilovolts. Ultra-wideband radar transmitters, electromagnetic-effects testing, fast-rise calibration sources. The Russian pulsed-power community pioneered DSRD design and they remain world leaders in commercial DSRD-based pulsers (FID Technology and Megaimpulse are the names you encounter).</p>
+<p><strong>What they are bad at.</strong> They need a primary switch to drive them, and that switch has to deliver substantial forward current quickly enough to produce the right charge profile. The drive electronics around a DSRD are often more complex than the DSRD stage itself. Pulse repetition rate is limited because the diode needs time to recover its charge profile between pulses.</p>
+<p><strong>What they cost.</strong> Specialty market. Commercial DSRD pulsers run several thousand to several tens of thousands of dollars depending on voltage and rise-time specs.</p>
+<hr />
+<h3 id="58-silicon-opening-switches">5.8 Silicon opening switches</h3>
+<p>A silicon opening switch (SOS) is the dual of a closing switch. Most switches close to deliver current. An SOS opens a current path that has been carrying steady forward current, producing a high voltage across the opened circuit when the inductive energy stored in the upstream circuit forces continued current flow. The result is a fast voltage rise, similar to a DSRD but produced by a different physical mechanism (deep injection and forced extraction of charge in a thick silicon diode).</p>
+<p><strong>What SOS is good for.</strong> Sub-nanosecond rise times at very high voltages (hundreds of kilovolts in some implementations). The geometry scales to higher voltages than DSRDs naturally. Applications include very-high-voltage radar, gigawatt-class HPM sources, and laboratory pulsers used in fundamental physics.</p>
+<p><strong>What it is bad at.</strong> The drive circuit is even more demanding than a DSRD's. The current density during the conducting phase is high, and thermal management of the SOS is a real engineering challenge.</p>
+<p><strong>What it costs.</strong> Almost entirely a research and specialty market. Commercial SOS pulsers run from FID Technology and a few similar vendors, in the tens of thousands of dollars range and up.</p>
+<hr />
+<h3 id="59-photoconductive-semiconductor-switches">5.9 Photoconductive semiconductor switches</h3>
+<p>A photoconductive semiconductor switch (PCSS) is a piece of high-resistivity semiconductor (usually GaAs, sometimes SiC) that becomes conducting when illuminated by a laser pulse. The closing time is set by the laser pulse rise time, which for modern femtosecond lasers is in the picosecond range.</p>
+<p><strong>What PCSS is good for.</strong> Picosecond rise times at field strengths approaching the bulk breakdown of the semiconductor. Optical isolation between the trigger system and the high-voltage circuit (the trigger arrives as a light pulse through fiber, with no electrical connection). Applications in ultra-wideband radar, time-domain reflectometry at picosecond resolution, and physics experiments needing sub-nanosecond timing.</p>
+<p><strong>What it is bad at.</strong> The trigger laser is expensive and must be carefully timed. PCSS devices have limited lifetime: the high field stresses the bulk material and devices typically survive thousands to millions of pulses, not the billions a semiconductor switch handles. Heat dissipation is hard.</p>
+<p><strong>What it costs.</strong> Research scale only. PCSS-equipped pulsers are typically custom-built and integrated into specific physics experiments, not commercial off-the-shelf items.</p>
+<hr />
+<h3 id="510-spark-gaps-and-pseudosparks">5.10 Spark gaps and pseudosparks</h3>
+<p>For voltages above what semiconductors can hold off, spark gaps are still in service. A spark gap is two electrodes separated by a gap of gas (or sometimes vacuum), with a voltage applied that approaches but does not exceed the breakdown voltage of the gap. A trigger event (pulsed UV light, a third electrode, a high-energy density discharge) initiates breakdown, the gap conducts, and the pulse fires.</p>
+<p><strong>What spark gaps are good for.</strong> Voltages above 100 kV, into the megavolt range. The energy-storage Marx generator at the start of any large pulsed-power system is a chain of spark gaps in series, and the Z Machine at Sandia uses spark gaps in its Marx stages because no semiconductor at multi-megavolt level exists.</p>
+<p><strong>What they are bad at.</strong> Jitter is high (nanoseconds to tens of nanoseconds, depending on the trigger system). Lifetime is finite: the electrodes erode with each shot, and the gap gas has to be refreshed periodically. Repetition rate is limited because the gap has to recover its insulating properties between pulses.</p>
+<p><strong>Pseudosparks</strong> are a refined variant. A pseudospark is a gas discharge in a hollow-cathode geometry that switches faster and more cleanly than a conventional spark gap, with lifetimes into the millions of shots. They are commercial products (the FBK series from Marconi and the equivalent from Tachyon are typical). They sit in the gap between thyratrons (which they are competing with) and conventional spark gaps (which they beat on jitter and lifetime).</p>
+<hr />
+<h3 id="511-magnetic-switches">5.11 Magnetic switches</h3>
+<p>A magnetic switch is a saturable inductor used as a switch. Below saturation, the inductor blocks current. When the core saturates (at a flux level determined by the core material and geometry), the inductance collapses to a small value and current flows freely. Magnetic switches are used as pulse-sharpening stages, where a slower primary switch establishes current, the magnetic core saturates at a precise time, and the output pulse is a sharper-edged version of the input.</p>
+<p><strong>What magnetic switches are good for.</strong> Pulse sharpening, especially in chains where multiple stages of compression deliver successively shorter rise times. Used heavily in radar modulators (the Modulator-Klystron Anode, MKA, family of designs) and in some specialty pulsers where a particular rise-time target needs to be met from a slower primary source.</p>
+<p><strong>What they are bad at.</strong> Bulky and heavy. The core material has to handle the full pulse current, which means lots of copper and lots of magnetic material. Repetition rate is limited by core reset time. Modern semiconductor switches have replaced magnetic switching in most applications below the 100 kV class.</p>
+<p><strong>What they cost.</strong> Specialty components. Stangenes Industries is one of the surviving US sources for magnetic switches and saturable reactors at this scale.</p>
+<hr />
+<h3 id="512-switch-selection-in-practice">5.12 Switch selection in practice</h3>
+<p>Faced with a new pulser application, the switch selection process goes roughly like this:</p>
+<ol>
+<li><strong>Identify the voltage and current targets.</strong> This eliminates most of the catalog immediately. Below 1 kV, GaN or silicon MOSFETs. 1 to 10 kV, MOSFETs (stacked) or SiC. 10 to 30 kV, IGBT modules or SiC MOSFETs in stacks. Above 30 kV, custom design with multi-stage stacking, or move to spark-gap technology.</li>
+<li><strong>Identify the rise-time target.</strong> Sub-nanosecond at any kilovolt level pushes you toward GaN, SiC, or DSRD-based pulse sharpening. Tens of nanoseconds, almost anything fits. Microseconds, IGBTs are usually adequate.</li>
+<li><strong>Identify the repetition rate.</strong> High PRF eliminates spark gaps, DSRDs, and PCSS. Low PRF or single-shot opens up the specialty options.</li>
+<li><strong>Identify the duty cycle and average power.</strong> This determines thermal management requirements and may push you toward devices with better thermal characteristics (SiC in particular).</li>
+<li><strong>Identify cost target.</strong> If unit volume is into the thousands, the price premium for SiC may not be tolerable. If single units, almost any technology is affordable.</li>
+</ol>
+<p>The BNC-DEI product line maps cleanly onto this selection process. Half-bridge MOSFET stacks for the kV class with moderate rise times (PVX series). Inductive-storage MOSFET designs for high-current laser drivers (PCO and PCX series). Specialty fast-rise modules using SiC where rise time at kV demands it. The selection logic for any custom pulser follows the same pattern.</p>
+<hr />
+<h3 id="513-questions-for-review">5.13 Questions for review</h3>
+<ol>
+<li>
+<p>The single biggest advantage of SiC MOSFETs over silicon MOSFETs at the same voltage rating is:
+   a. Lower cost.
+   b. Higher breakdown field, leading to thinner drift regions, lower capacitances, and faster switching at the same voltage.
+   c. Negative temperature coefficient of on-resistance.
+   d. Compatibility with standard silicon gate drivers.</p>
+</li>
+<li>
+<p>Which switch technology is the right answer for a sub-nanosecond rise-time pulser at 200 V?
+   a. Silicon power MOSFET.
+   b. IGBT.
+   c. GaN HEMT.
+   d. Spark gap.</p>
+</li>
+<li>
+<p>Drift-step-recovery diodes produce a fast voltage rise by:
+   a. Closing in response to a gate signal, like a transistor.
+   b. Recovering from forward bias to reverse bias quickly, with the voltage step set by the rate of charge removal.
+   c. Generating a discharge in a gas gap.
+   d. Saturating a magnetic core.</p>
+</li>
+<li>
+<p>In a series stack of MOSFETs, dynamic balancing during transitions is most commonly achieved by:
+   a. Connecting all gates to a single voltage rail.
+   b. Transformer-coupled gate drive with all secondaries on a common core, plus parallel snubber capacitors across each device.
+   c. Removing one device from the stack to lower the voltage.
+   d. Using only IGBTs because they are inherently balanced.</p>
+</li>
+<li>
+<p>Photoconductive semiconductor switches close in response to:
+   a. A voltage signal applied to a gate terminal.
+   b. A magnetic field applied to the device.
+   c. A laser pulse incident on the semiconductor bulk.
+   d. Forward current exceeding a threshold.</p>
+</li>
+<li>
+<p>The "tail current" effect that limits IGBT switching speed is caused by:
+   a. Common-mode currents on the gate.
+   b. Stored minority charge in the bipolar drift region taking time to recombine after the gate is turned off.
+   c. Parasitic inductance in the package.
+   d. Insufficient gate drive voltage.</p>
+</li>
+<li>
+<p>Spark gaps remain in service in modern pulsed-power systems primarily because:
+   a. They are cheaper than semiconductors.
+   b. They handle voltages above what any semiconductor can hold off.
+   c. They have lower jitter than thyratrons.
+   d. They are more energy-efficient.</p>
+</li>
+</ol>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="514-further-reading">5.14 Further reading</h3>
+<ul>
+<li>
+<p><strong>Baliga, B.J.</strong> <em>Fundamentals of Power Semiconductor Devices.</em> Springer, 2nd edition. The standard reference on power MOSFET and IGBT physics. Chapters 6 through 9 cover the operating mechanisms in depth.</p>
+</li>
+<li>
+<p><strong>Buttay, C., et al.</strong> "State of the art of high temperature power electronics." <em>Materials Science and Engineering: B,</em> Volume 176, 2011. Specifically on SiC and related wide-bandgap technologies.</p>
+</li>
+<li>
+<p><strong>Lutz, J., Schlangenotto, H., Scheuermann, U., De Doncker, R.</strong> <em>Semiconductor Power Devices: Physics, Characteristics, Reliability.</em> Springer. Comprehensive treatment including failure-mode analysis.</p>
+</li>
+<li>
+<p><strong>Grekhov, I.V., et al.</strong> Series of papers on drift-step-recovery diodes and silicon opening switches, <em>IEEE Transactions on Plasma Science.</em> The Russian / FID lineage of fast-rise switches in detail.</p>
+</li>
+<li>
+<p><strong>Wolfspeed and EPC application notes</strong> on SiC and GaN gate-drive design. The vendor app notes for current-generation devices are usually the most up-to-date practical guidance.</p>
+</li>
+<li>
+<p><strong>Pseudospark switches</strong> application notes from Marconi / e2v. Specific to commercial pseudospark technology.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 5.</em></p>
+<p><em>Chapter 6 (Circuit Topologies) follows.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04_safety.html">&larr; Ch 4: Safety</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="06_topologies.html">Ch 6: Pulser Topologies &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

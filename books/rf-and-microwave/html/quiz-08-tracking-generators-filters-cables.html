@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 8 Quiz &mdash; Tracking Generators, Filters, and Cables</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 8 &middot; Quiz</p>
+      <h1>Tracking Generators, Filters, and Cables</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="08-tracking-generators-filters-cables.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="09-transmitter-testing.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "08",
+    title: "Chapter 8 Quiz: Tracking Generators, Filters, and Cables",
+    questions: [
+      {
+        q: "What does a tracking generator do, and why is its synchronization with the analyzer sweep important?",
+        options: [
+          "It is a fixed-frequency source; synchronization keeps it from drifting",
+          "It is an RF source whose output frequency is locked to the analyzer's sweep, so it always sits at the tuned frequency, letting the displayed trace become the frequency response of the device in the path",
+          "It is a noise source; synchronization sets its temperature",
+          "It is a power meter; synchronization averages its readings"
+        ],
+        answer: 1,
+        explain: "A tracking generator's output tracks the analyzer's tuned frequency, so the trace shows the device's frequency response."
+      },
+      {
+        q: "Why must the cabling and adapters used during normalization be identical to those used during the measurement?",
+        options: [
+          "Because different cables look nicer on the bench",
+          "Because normalization subtracts the stored through-path response; if the path changes, the correction no longer matches and the removed error reappears",
+          "Because the analyzer cannot store more than one configuration",
+          "Because adapters change the device's gain permanently"
+        ],
+        answer: 1,
+        explain: "Normalization stores and subtracts the through path; any added or removed adapter invalidates that correction."
+      },
+      {
+        q: "What is the 3 dB bandwidth of a band-pass filter, and what does it tell you?",
+        options: [
+          "The frequency where output is 3 dB above peak; a wide value means a selective filter",
+          "The passband width between the two half-power points (3 dB below peak); a narrow value indicates a selective filter, a wide value a filter passing a broad range",
+          "The total stopband width; it tells you the insertion loss",
+          "The frequency of peak response; it tells you the center frequency only"
+        ],
+        answer: 1,
+        explain: "The 3 dB bandwidth is the width between the half-power points; narrow means selective, wide means broad."
+      },
+      {
+        q: "When measuring cable loss with a tracking generator, why is a short reference cable normalized first?",
+        options: [
+          "To warm up the generator before the real test",
+          "To establish a near-zero baseline that removes the fixture loss, so the cable under test then shows mostly its own loss rather than the adapters and reference fixture",
+          "To charge the analyzer's battery",
+          "To set the center frequency of the sweep"
+        ],
+        answer: 1,
+        explain: "Normalizing the reference cable zeroes out fixture loss so the trace shows the test cable's own loss."
+      },
+      {
+        q: "How do insertion loss and return loss differ, and why does a tracking generator measure one but not the other directly?",
+        options: [
+          "They are the same; a tracking generator measures both",
+          "Insertion loss is transmitted-power reduction through a component; return loss is reflected-power fraction. A tracking generator reads transmitted power (insertion loss) but cannot separate reflected from incident, so return loss needs a directional coupler, return loss bridge, or VNA",
+          "Insertion loss is reflected power; return loss is transmitted power, and a tracking generator measures return loss",
+          "Both require a VNA and neither can be done with a tracking generator"
+        ],
+        answer: 1,
+        explain: "Insertion loss is transmitted; return loss is reflected. A tracking generator reads transmission directly; return loss needs a coupler, bridge, or VNA."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

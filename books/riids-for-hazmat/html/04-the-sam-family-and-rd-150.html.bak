@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4. The SAM Family and the RD-150 System | RIIDs in the Field</title>
+<meta name="description" content="Berkeley Nucleonics field handbook for using the SAM family of radioisotope identifiers and RD-120 backpack and vehicle systems in radiological response.">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* ====== BNC Book Series Style Guide tokens ====== */
+  :root {
+    --bnc-deep-navy:   #003D6B;
+    --bnc-sky-blue:    #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal:    #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan:  #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan:  #00d4ff;
+    --bnc-target-green:#00ff88;
+    --bnc-white:       #ffffff;
+    --bnc-rule:        #b6c2cc;
+
+    --bnc-sans:  "Helvetica Neue", "Arial", sans-serif;
+    --bnc-black: "Helvetica Neue", "Arial Black", "Helvetica", "Arial", sans-serif;
+    --bnc-serif: "Georgia", "Iowan Old Style", serif;
+    --bnc-mono:  "Consolas", "SFMono-Regular", "Menlo", monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bnc-light-steel);
+    color: var(--bnc-charcoal);
+    font-family: var(--bnc-serif);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 96px 24px;
+  }
+
+  /* ====== cover panel (screen view) ====== */
+  .cover {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    border-radius: 4px;
+    padding: 56px 36px 48px 36px;
+    margin: 0 0 36px 0;
+    box-shadow: 0 12px 40px rgba(0, 31, 56, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover .kicker {
+    font-family: var(--bnc-sans);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--bnc-light-cyan);
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: var(--bnc-black);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.02;
+    margin: 14px 0 12px 0;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: none;
+  }
+  .cover h2 {
+    font-family: var(--bnc-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 24px 0;
+    color: #cfdce6;
+    text-transform: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .cover .meta {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: #cfdce6;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 18px;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+  .cover .meta strong { color: #fff; }
+
+  /* ====== headings (interior) ====== */
+  h1, h2, h3, h4 {
+    font-family: var(--bnc-sans);
+    line-height: 1.2;
+  }
+  h1 {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 56px 0 18px 0;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  h1:first-of-type { margin-top: 32px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 44px 0 14px 0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bnc-sky-blue);
+    margin: 28px 0 10px 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bnc-charcoal);
+    margin: 22px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ====== body text ====== */
+  p { margin: 0 0 14px 0; }
+  ul, ol { margin: 0 0 16px 24px; padding: 0; }
+  li { margin: 4px 0; }
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+
+  /* ====== tables ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: var(--bnc-sans);
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+
+  /* ====== blockquotes / callouts ====== */
+  blockquote {
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    border-radius: 0 4px 4px 0;
+    color: var(--bnc-charcoal);
+  }
+  blockquote p { margin: 0; }
+  blockquote strong { color: var(--bnc-deep-navy); }
+
+  /* ====== code / checklists ====== */
+  code, pre { font-family: var(--bnc-mono); }
+  code {
+    background: var(--bnc-light-steel);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  pre {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-left: 4px solid var(--bnc-deep-navy);
+    padding: 16px 18px;
+    line-height: 1.5;
+    font-size: 14px;
+    border-radius: 0 4px 4px 0;
+    white-space: pre-wrap;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  /* ====== rules ====== */
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--bnc-rule);
+    margin: 36px 0;
+  }
+  hr + h1, hr + h2 { margin-top: 28px; }
+
+  /* ====== TOC and isotope cards ====== */
+  .toc {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    padding: 22px 26px;
+    margin: 24px 0 36px 0;
+  }
+  h3[id^="card-a-"] {
+    background: var(--bnc-light-steel);
+    padding: 8px 14px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    color: var(--bnc-deep-navy);
+    margin-top: 24px;
+  }
+
+  /* ====== links ====== */
+  a {
+    color: var(--bnc-sky-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--bnc-sky-blue);
+  }
+  a:hover { border-bottom-style: solid; }
+
+  /* ====== sticky top bar (screen only) ====== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    padding: 8px 18px;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+  }
+  .topbar a {
+    color: var(--bnc-light-cyan);
+    border-bottom: none;
+    font-weight: 700;
+  }
+  .topbar .brand {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ====== figures ====== */
+  figure {
+    margin: 24px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 31, 56, 0.08);
+  }
+  figcaption {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* ====== mobile ====== */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .shell { padding: 18px 14px 64px 14px; }
+    .cover { padding: 36px 22px 32px 22px; }
+    .cover h1 { font-size: 32px; }
+    .cover h2 { font-size: 17px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 19px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 9px; }
+  }
+
+  /* ====== print: 5x8 trim, BNC interior spec ====== */
+  @media print {
+    @page {
+      size: 5in 8in;
+      margin: 0.45in 0.45in 0.5in 0.45in;
+    }
+    body {
+      background: #fff;
+      font-size: 8.5pt;
+      line-height: 1.32;
+      color: var(--bnc-charcoal);
+    }
+    .topbar { display: none; }
+    .shell { max-width: 100%; padding: 0; margin: 0; }
+    .cover {
+      padding: 0.5in 0.4in;
+      page-break-after: always;
+      min-height: 6.4in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .cover h1 { font-size: 28pt; color: #fff !important; border-bottom: none !important; }
+    .cover h2 { font-size: 14pt; color: #cfdce6 !important; }
+    .cover .kicker { color: var(--bnc-light-cyan) !important; }
+    .cover .meta, .cover .meta strong, .cover p { color: #fff !important; }
+
+    h1 {
+      font-family: var(--bnc-sans);
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--bnc-deep-navy) !important;
+      page-break-before: always;
+      margin: 0 0 12pt 0;
+      padding-bottom: 4pt;
+      border-bottom: 2pt solid var(--bnc-sky-blue);
+      letter-spacing: 0.5pt;
+    }
+    h1:first-of-type { page-break-before: avoid; }
+    h2 { font-family: var(--bnc-sans); font-size: 13pt; font-weight: 700; color: var(--bnc-deep-navy) !important; page-break-after: avoid; margin-top: 14pt; margin-bottom: 6pt; }
+    h3 { font-family: var(--bnc-sans); font-size: 11pt; font-weight: 700; color: var(--bnc-sky-blue) !important; page-break-after: avoid; margin-top: 10pt; margin-bottom: 4pt; }
+    h4 { font-family: var(--bnc-sans); font-size: 9pt; font-weight: 700; color: var(--bnc-charcoal) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+    p, li { orphans: 3; widows: 3; margin-bottom: 4pt; }
+    ul, ol { margin: 4pt 0 4pt 18pt; }
+
+    table, blockquote, pre { page-break-inside: avoid; margin: 6pt 0; }
+    pre { font-size: 7pt; line-height: 1.25; padding: 6pt 8pt; background: #fff; border-color: var(--bnc-rule); border-left-color: var(--bnc-deep-navy); }
+    table { font-size: 7.5pt; }
+    thead th { background: var(--bnc-deep-navy) !important; color: #fff !important; padding: 4pt 5pt; }
+    tbody td { padding: 3pt 5pt; }
+    tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+    blockquote { background: var(--bnc-light-steel); border-left: 4pt solid var(--bnc-sky-blue); padding: 6pt 10pt; }
+    a { color: var(--bnc-charcoal); border-bottom: none; }
+
+    figure { page-break-inside: avoid; margin: 6pt 0; text-align: center; }
+    figure img {
+      max-width: 100%;
+      max-height: 1.9in;
+      width: auto; height: auto;
+      object-fit: contain;
+      box-shadow: none;
+      padding: 2pt;
+      border-color: var(--bnc-rule);
+    }
+    figcaption { font-size: 7.5pt; margin-top: 3pt; line-height: 1.3; color: var(--bnc-charcoal); }
+  }
+
+  /* Cover image full-bleed in print */
+  @media print {
+    .cover {
+      padding: 0 !important;
+      background: none !important;
+      page-break-after: always;
+      min-height: auto;
+      display: block !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    .cover img {
+      width: 5in !important;
+      height: 8in !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: cover;
+      display: block;
+    }
+    @page :first {
+      margin: 0;
+    }
+  }
+
+  /* ====== Callouts and sidebars (BNC style guide section 6) ====== */
+  .callout {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .sidebar-deeper {
+    background: #e6edf3;
+    border: 1px solid #b6c2cc;
+    border-left: 4px solid var(--bnc-charcoal);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .sidebar-deeper h4 {
+    color: var(--bnc-charcoal);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-deeper p { margin: 0; font-size: 14px; }
+
+  @media print {
+    .callout, .sidebar-deeper {
+      page-break-inside: avoid;
+      margin: 6pt 0;
+      padding: 6pt 10pt;
+      font-size: 8pt;
+    }
+    .callout h4, .sidebar-deeper h4 { font-size: 9pt; margin-bottom: 3pt; }
+    .callout p, .sidebar-deeper p { font-size: 8pt; }
+  }
+
+  /* Quiz block */
+  .quiz {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 24px 0;
+    border-radius: 0 0 4px 4px;
+  }
+  .quiz h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+  .quiz ol { margin: 0 0 0 22px; padding: 0; }
+  .quiz ol > li { margin-bottom: 10px; font-size: 14px; }
+  .quiz ol[type="a"] { margin-top: 6px; margin-bottom: 0; }
+  .quiz ol[type="a"] > li { margin-bottom: 2px; font-size: 13px; }
+  @media print {
+    .quiz { page-break-inside: avoid; padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .quiz h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .quiz ol > li { font-size: 8pt; margin-bottom: 4pt; }
+    .quiz ol[type="a"] > li { font-size: 7.5pt; }
+  }
+
+  .checklist, .form-block {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 0 0 4px 4px;
+    page-break-inside: avoid;
+  }
+  .checklist h4, .form-block h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+  }
+  .checklist pre, .form-block pre {
+    margin: 0; border: none; background: transparent; padding: 0;
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 11px; line-height: 1.55; color: var(--bnc-charcoal);
+  }
+  @media print {
+    .checklist, .form-block { padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .checklist h4, .form-block h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .checklist pre, .form-block pre { font-size: 7pt; }
+  }
+
+  /* ====== Refined component system (BNC v2) ====== */
+
+  /* SVG icons: inherit color, baseline-aligned */
+  .bnc-icon, .bnc-cb {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--bnc-sky-blue);
+  }
+
+  /* Card pattern shared by checklist + form */
+  .bnc-card {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 6px;
+    margin: 22px 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0, 31, 56, 0.06);
+  }
+  .bnc-card-head {
+    background: linear-gradient(90deg, #003D6B 0%, #0078B6 100%);
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-card-icon { color: #7fdbff; display: flex; align-items: center; }
+  .bnc-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bnc-card-body {
+    padding: 14px 18px;
+    background: #fff;
+  }
+  .bnc-card-subhead {
+    font-family: var(--bnc-sans);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 12px 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--bnc-rule);
+  }
+  .bnc-card-subhead:first-child { margin-top: 0; }
+  .bnc-card-note {
+    font-family: var(--bnc-serif);
+    font-size: 12px;
+    color: var(--bnc-charcoal);
+    margin: 6px 0;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  /* Checklist items */
+  .bnc-cb-list {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 0;
+  }
+  .bnc-cb-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 4px 0;
+    font-family: var(--bnc-serif);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    line-height: 1.45;
+  }
+  .bnc-cb-list li .bnc-cb { margin-top: 1px; color: var(--bnc-sky-blue); }
+  .bnc-cb-list li.done { color: #5b6770; }
+  .bnc-cb-list li.done .bnc-cb { color: var(--bnc-target-green); }
+
+  /* Fill-in form fields */
+  .bnc-field {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 5px 0;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bnc-deep-navy);
+    flex: 0 0 auto;
+    min-width: 130px;
+    letter-spacing: 0.02em;
+  }
+  .bnc-field-line {
+    flex: 1 1 auto;
+    border-bottom: 1px solid #b6c2cc;
+    height: 16px;
+    margin-bottom: 2px;
+  }
+  .bnc-field-spacer { height: 6px; }
+
+  /* Icon-decorated callouts (overrides earlier .callout / .sidebar-deeper / .quiz) */
+  .callout, .sidebar-deeper {
+    position: relative;
+    padding-left: 46px;
+  }
+  .callout::before, .sidebar-deeper::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+  }
+  .callout::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230078B6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'/></svg>");
+  }
+  .sidebar-deeper::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232C3E50' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>");
+  }
+
+  .quiz { position: relative; padding-left: 46px; }
+  .quiz::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 22px; height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003D6B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3'/><circle cx='12' cy='17' r='0.8' fill='%23003D6B'/></svg>");
+  }
+
+  /* Warm-charcoal body text (subtle warmth) */
+  body { color: #2c3540; }
+
+  /* Sky-blue dotted underline rule on H2 (lighter than before) */
+  h2 {
+    border-bottom: 2px solid var(--bnc-sky-blue);
+    padding-bottom: 6px;
+  }
+
+  @media print {
+    .bnc-card { margin: 8pt 0; box-shadow: none; }
+    .bnc-card-head { padding: 4pt 8pt; }
+    .bnc-card-title { font-size: 8.5pt; }
+    .bnc-card-body { padding: 6pt 10pt; }
+    .bnc-card-subhead { font-size: 7.5pt; margin: 6pt 0 3pt 0; }
+    .bnc-cb-list li { font-size: 7.5pt; padding: 1.5pt 0; gap: 5pt; }
+    .bnc-field label { font-size: 7pt; min-width: 90pt; }
+    .bnc-field { padding: 2pt 0; }
+    .callout, .sidebar-deeper, .quiz { padding-left: 28pt !important; }
+    .callout::before, .sidebar-deeper::before, .quiz::before {
+      width: 14pt; height: 14pt; background-size: 14pt 14pt;
+      left: 7pt; top: 7pt;
+    }
+  }
+
+  body { background: #f5f7f9; }
+  .shell { background: #ffffff; box-shadow: 0 0 0 1px var(--bnc-rule); border-radius: 4px; }
+  h1::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--bnc-sky-blue);
+    margin-bottom: 10px;
+    border-radius: 2px;
+  }
+  h2 { position: relative; }
+  code {
+    background: #eef3f6;
+    color: var(--bnc-deep-navy);
+    border: 1px solid #dde5ea;
+    font-size: 13px;
+  }
+  thead tr:first-child th { border-top: 3px solid var(--bnc-sky-blue); }
+  figcaption { color: #4a5763; font-size: 13.5px; font-style: italic; }
+  @media print {
+    body { background: #fff; }
+    .shell { box-shadow: none; }
+  }
+
+  /* ====== Page numbers + running header (CSS Paged Media) ====== */
+  @media print {
+    /* Capture current chapter title from each h1 */
+    h1 { string-set: chapter content(); }
+    /* Suppress h1 string capture on the cover-only page (cover has no h1) */
+
+    @page {
+      size: 5in 8in;
+      margin: 0.5in 0.45in 0.55in 0.45in;
+      @bottom-center {
+        content: counter(page);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 8pt;
+        color: #003D6B;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @bottom-left {
+        content: "";
+        background: #0078B6;
+        height: 1pt;
+        width: 0.6in;
+        margin-bottom: 12pt;
+      }
+      @bottom-right {
+        content: "BNC";
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #7fdbff;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @top-right {
+        content: string(chapter);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #5b6770;
+        font-style: italic;
+        margin-bottom: 6pt;
+      }
+    }
+
+    /* Cover page: no headers, no numbers, no margins */
+    @page :first {
+      margin: 0;
+      @bottom-center { content: ""; }
+      @bottom-left { content: ""; }
+      @bottom-right { content: ""; }
+      @top-right { content: ""; }
+    }
+
+    /* Suppress running header on the very first page after the cover (front-matter title) */
+    @page :nth(2) {
+      @top-right { content: ""; }
+    }
+  }
+
+  /* ====== light-touch reconciliation additions ====== */
+  /* clean signature line (replaces the old stripped-attribution comma) */
+  p.signature {
+    text-align: right;
+    color: var(--bnc-deep-navy);
+    font-family: var(--bnc-serif);
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  p.signature em { font-style: italic; }
+
+  /* real Contents list (replaces run-together paragraphs) */
+  nav.toc { margin: 8px 0 0 0; }
+  nav.toc .toc-group {
+    font-family: var(--bnc-sans);
+    color: var(--bnc-deep-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    margin: 22px 0 6px 0;
+  }
+  nav.toc ul, nav.toc ol { margin: 0 0 6px 0; padding-left: 26px; }
+  nav.toc li { margin: 3px 0; line-height: 1.4; }
+  nav.toc a { color: var(--bnc-sky-blue); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  nav.toc ol.toc-alpha { list-style: upper-alpha; }
+
+  /* ====== shared footer (single-file adaptation) ====== */
+  footer.bnc-footer {
+    font-family: var(--bnc-sans); margin-top: 54px;
+    border-top: 2px solid var(--bnc-deep-navy); padding-top: 16px;
+    font-size: 13px; color: var(--bnc-charcoal);
+  }
+  footer.bnc-footer .bnc-nav { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  footer.bnc-footer .bnc-nav a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-nav a:hover { text-decoration: underline; }
+  footer.bnc-footer .bnc-nav a.disabled { color: #9aa7b2; pointer-events: none; font-weight: 400; }
+  footer.bnc-footer .bnc-nav .mid { text-align: center; flex: 0 0 auto; }
+  footer.bnc-footer .bnc-nav .next { text-align: right; }
+  footer.bnc-footer .bnc-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+    padding-top: 10px; border-top: 1px solid var(--bnc-rule); opacity: .92; }
+  footer.bnc-footer .bnc-meta a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-meta .spacer { margin-left: auto; font-weight: 400; opacity: .75; }
+
+  @media print {
+    /* keep footer from fighting the 5x8 print layout: hide screen nav, show compact copyright only */
+    footer.bnc-footer .bnc-nav { display: none; }
+    footer.bnc-footer .bnc-meta a { color: #000; }
+    footer.bnc-footer { margin-top: 18px; border-top: 1px solid #000; font-size: 7.5pt; page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body id="top">
+<div class="topbar">
+  <span class="brand">BNC · RIIDs in the Field</span>
+  <a href="00-front-matter.html#contents">Contents</a>
+</div>
+
+<div class="shell">
+
+<h2 id="4-the-sam-family-and-the-rd-150-system">4. The SAM Family and the RD-150 System</h2>
+<p>This chapter introduces the instruments themselves: form factors, detector types, what each is designed for, and the controls and indicators every operator should be able to find with gloves on, in the dark, by feel.</p>
+<p>The deepest specification list lives in the operator manual that ships with each unit. This chapter covers what an operator needs to <strong>deploy</strong> the instrument well, not what an engineer needs to specify it.</p>
+<h3 id="41-family-overview">4.1 Family Overview</h3>
+<p>The SAM family is a line of handheld radioisotope identifiers built around fast scintillators (CeBr or LaBr) with integrated multichannel analyzers, GPS, on-board storage, and connectivity. The RD-150 is a wearable backpack and vehicle-mountable search system that pairs higher-volume detectors with operator interfaces designed for movement.</p>
+<table>
+<thead>
+<tr>
+<th>Instrument</th>
+<th>Form factor</th>
+<th>Primary detector</th>
+<th>Mission</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SAM 940+</strong> <em>(new)</em></td>
+<td>Handheld RIID</td>
+<td>NaI, LaBr, CeBr or CLYC; optional internal neutron</td>
+<td>Current-generation handheld with internal detector, one-click reachback, built-in camera, directional radiation detection</td>
+</tr>
+<tr>
+<td><strong>SAM 940 / 945</strong></td>
+<td>Handheld RIID</td>
+<td>NaI(Tl) or LaBr (configuration-dependent)</td>
+<td>Identify on scene; veteran fleets</td>
+</tr>
+<tr>
+<td><strong>SAM 950</strong></td>
+<td>Handheld RIID</td>
+<td>CeBr or LaBr (configuration-dependent)</td>
+<td>Higher-volume option (3 by 3 in NaI), max sensitivity</td>
+</tr>
+<tr>
+<td><strong>RD-120 Backpack</strong></td>
+<td>Wearable search system</td>
+<td>Large-volume scintillator + neutron</td>
+<td>Wide-area search, public events, sweeps</td>
+</tr>
+<tr>
+<td><strong>RD-150 Vehicle</strong></td>
+<td>Vehicle-mounted survey</td>
+<td>Large-volume scintillator + neutron</td>
+<td>Mobile survey at street speeds</td>
+</tr>
+</tbody>
+</table>
+<p>All units in the family share a <strong>family resemblance</strong> in operator workflow: power-on self-test, calibration check, background acquisition, scan, save, transmit. Once you can run one, you can run any of them.</p>
+<h3 id="42-sam-940plus-the-new-flagship-handheld">4.2 SAM 940+: The New Flagship Handheld</h3>
+<figure><img src="../figures/sam-940plus-hero.jpg" alt="The SAM 940+, re-engineered handheld RIID with internal detector, one-click reachback, built-in camera, and directional radiation detection." loading="lazy"><figcaption>The SAM 940+, re-engineered handheld RIID with internal detector, one-click reachback, built-in camera, and directional radiation detection.</figcaption></figure>
+<p>The <strong>SAM 940+</strong> is the newest handheld in the SAM family and the unit operators will most often see arriving on a HazMat truck today. It is a re-engineered platform built around real-world feedback from the agencies that have been running SAM family handhelds for years.</p>
+<p><strong>What the SAM 940+ adds over earlier handhelds:</strong></p>
+<div class="callout"><h4>BNC in Practice: One-Click Reachback Workflow</h4><p>On the SAM 940+, the 'send' beat from Chapter 5 collapses into one button press. The unit gathers the spectrum, the photo from the built-in camera, the GPS fix, and any operator notes, and packages them as a single N42.42 transmission to your reachback channel. Operators trained on legacy handhelds report saving 4 to 8 minutes per event once they trust the one-click flow.</p></div>
+<ul>
+<li><strong>Internal detector.</strong> Crystal lives inside the chassis; nothing to attach, nothing to break.</li>
+<li><strong>One-click reachback.</strong> Spectrum + scene info to your physicist with a single button press, RadResponder-enabled.</li>
+<li><strong>Built-in camera.</strong> Multi-media capture: take the photo of the source/cargo with the same device that took the spectrum, and they ride together.</li>
+<li><strong>Sourceless automatic real-time stabilization.</strong> No internal source required for stabilization, passes through TSA and customs without licensing complications.</li>
+<li><strong>Directional radiation detection.</strong> A directional indicator helps operators close in on a hotspot more quickly than a count-rate-only display would.</li>
+<li><strong>Remote operation and mirroring display.</strong> Command can see what the operator sees, in real time.</li>
+<li><strong>Detector options.</strong> NaI, LaBr, CeBr, and CLYC (for combined gamma/neutron), pick the configuration that matches your mission profile.</li>
+</ul>
+<figure><img src="../figures/sam-940plus-components.png" alt="SAM 940+ component layout, every operator should be able to identify each numbered component on their unit before deployment." loading="lazy"><figcaption>SAM 940+ component layout, every operator should be able to identify each numbered component on their unit before deployment.</figcaption></figure>
+<figure><img src="../figures/sam-940plus-screen.jpg" alt="SAM 940+ Finder display, count rate, dose rate, neutron channel, and the FINDER / MANUAL ID / EVENT/SETUP soft keys. The arrow icon indicates source bearing." loading="lazy"><figcaption>SAM 940+ Finder display, count rate, dose rate, neutron channel, and the FINDER / MANUAL ID / EVENT/SETUP soft keys. The arrow icon indicates source bearing.</figcaption></figure>
+<p><strong>Operator workflow on the SAM 940+</strong> mirrors the rest of the SAM family, power-on self-test, calibration check, background acquisition, scan, save, transmit, but the one-click reachback and built-in camera collapse the "send" step from minutes to seconds. (See Chapter 5 for the full Operations Core.)</p>
+<blockquote><p><strong>Tip:</strong> Programs that already operate SAM 940 / 945 fleets can transition operators to the SAM 940+ with minimal re-training. The button vocabulary and screen idiom are familiar; the new affordances are additive.</p></blockquote>
+<h3 id="43-sam-940-945-the-established-handheld">4.3 SAM 940 / 945: The Established Handheld You Already Know</h3>
+<p>The SAM 940 series is a long-serving handheld RIID still in active inventory across HazMat, law enforcement, and federal teams. Configurations exist with NaI(Tl) and LaBr crystals, with and without neutron detection, and with various battery and connectivity options.</p>
+<figure><img src="../figures/sam_940_2019-1.png" alt="The SAM 940 series, long-serving handheld RIID across HazMat, law enforcement, and federal teams." loading="lazy"><figcaption>The SAM 940 series, long-serving handheld RIID across HazMat, law enforcement, and federal teams.</figcaption></figure>
+<p><strong>Design intent:</strong> Drop-tolerant single-piece handheld; large display readable in daylight; physical buttons usable with gloves; long-running battery; spectrum storage for hundreds of events; export for reachback.</p>
+<p><strong>Where you'll see it:</strong> Many established programs standardized on the SAM 940 series years ago and are running well-maintained fleets. Operators who learn the SAM 940 can transition to the SAM 950 with little re-training, the workflows match.</p>
+<blockquote>
+<p><strong>Tip:</strong> Older SAM 940 firmware may present library entries differently than current SAM 950 firmware. If your team runs both, compare a known check source on each unit and document the displayed text for your SOPs. Naming conventions matter for reachback.</p>
+</blockquote>
+<h3 id="44-sam-950-the-higher-volume-handheld">4.4 SAM 950: The Higher-Volume Handheld</h3>
+<p>The SAM 950 is a higher-sensitivity handheld in the SAM family, distinguished by its larger internal detector volume in the SAM family. Common configurations use <strong>CeBr</strong> or <strong>LaBr</strong> scintillators, with optional neutron detection, integrated GPS, Wi-Fi/cellular for spectrum transmission, and on-board storage measured in thousands of events.</p>
+<figure><img src="../figures/isatope_identifier008.jpg" alt="The SAM 950, higher-volume handheld with internal CeBr/LaBr or NaI scintillator (3×3 in option), integrated GPS, and N42.42-compliant spectrum export, the SAM family’s highest-sensitivity portable." loading="lazy"><figcaption>The SAM 950, higher-volume handheld with internal CeBr/LaBr or NaI scintillator (3×3 in option), integrated GPS, and N42.42-compliant spectrum export, the SAM family’s highest-sensitivity portable.</figcaption></figure>
+<p>What makes the SAM 950 worth its weight on a HazMat truck:</p>
+<ul>
+<li><strong>Resolution.</strong> CeBr/LaBr crystals deliver field resolution that approaches lab-grade HPGe for the operator decisions that matter. Closely-spaced peaks resolve cleanly; isotope identification confidence is higher; ambiguous cases that would have required reachback on a NaI unit are often answered on scene.</li>
+<li><strong>Stability.</strong> CeBr in particular is stable across temperature swings; the unit holds calibration through cold mornings and hot summer afternoons without drift that would affect identification.</li>
+<li><strong>Connectivity.</strong> Spectra travel as standard files (ANSI N42.42 XML and other industry-standard formats), your reachback partner doesn't need a special viewer to read them.</li>
+<li><strong>Workflow.</strong> The operator interface follows the alert/identify/send rhythm directly, which is why this handbook can talk about workflow without prescribing button-by-button menus that change between firmware versions.</li>
+</ul>
+<figure><img src="../figures/sam-950-detail.png" alt="SAM 950 chassis detail, high-visibility design built for first-responder field use." loading="lazy"><figcaption>SAM 950 chassis detail, high-visibility design built for first-responder field use.</figcaption></figure>
+<figure><img src="../figures/isatope_identifier002.jpg" alt="SAM 950 in field-ready configuration" loading="lazy"><figcaption>The SAM 950 in the operator's hand: physical buttons usable with gloves, large daylight-readable display, and on-board storage measured in thousands of events.</figcaption></figure>
+<figure><img src="../figures/isatope_identifier004.jpg" alt="SAM 950 with operator interface" loading="lazy"><figcaption>Operator interface, survey, search, and ID modes; spectrum view always one button away.</figcaption></figure>
+<h3 id="45-rd-120-backpack-wide-area-search">4.5 RD-120 Backpack: Wide-Area Search</h3>
+<p>The RD-120 backpack pairs a large-volume detector array (gamma + neutron) with a wearable harness and an operator-facing tablet or phone application. The detector hangs against the operator's back; the tablet rides on the chest or in the hand.</p>
+<figure><img src="../figures/new-backpackwithphone_and_gui-1.png" alt="The RD-120 / SAMpack 120 backpack, wearable detector array with operator tablet for live count rate, GPS track, and identification results." loading="lazy"><figcaption>The RD-120 / SAMpack 120 backpack, wearable detector array with operator tablet for live count rate, GPS track, and identification results.</figcaption></figure>
+<p><strong>What it is for:</strong>
+- Sweeping public venues, transit stations, parade routes, port yards
+- Wide-area search for orphan or lost sources
+- Walking grids in support of state or federal source-recovery operations
+- Pre-event sweeps before a high-profile public gathering</p>
+<p><strong>What an operator should know:</strong>
+- Harness fit matters. The detector should ride high and snug; a sloppy harness leads to operator fatigue and inconsistent geometry.
+- Walking pace should be steady. The system is calibrated for a normal walking speed; sprinting or stopping erratically degrades the survey.
+- The tablet shows live count rate, alarm status, GPS track, and identification results. Operators should learn the tablet display before they learn the backpack itself.
+- GPS-tagged spectra mean every alarm has a location and timestamp. That history is gold during after-action review.</p>
+<figure><img src="../figures/sampack_pro_directionality_image_0.png" alt="Backpack directionality coverage: detector geometry resolves source bearing as the operator moves through a sector." loading="lazy"><figcaption>Backpack directionality coverage: detector geometry resolves source bearing as the operator moves through a sector.</figcaption></figure>
+<h3 id="46-rd-150-vehicle-mobile-survey">4.6 RD-150 Vehicle: Mobile Survey</h3>
+<p>The same detection technology in a vehicle-mountable configuration. The system is mounted in a SUV, van, or pickup; the interface runs on a laptop or tablet at the operator station.</p>
+<figure><img src="../figures/sammobile150_001_0006_sammobile150_002.jpg" alt="The RD-150 / SAMmobile, vehicle-mounted survey configuration deployed in the field, sweeping at street speeds with continuous heat-map output." loading="lazy"><figcaption>The RD-150 / SAMmobile, vehicle-mounted survey configuration deployed in the field, sweeping at street speeds with continuous heat-map output.</figcaption></figure>
+<figure><img src="../figures/rd_150_directionality.png" alt="Vehicle-mount directionality: paired detectors resolve which side of the vehicle a hotspot lies on as the unit drives past." loading="lazy"><figcaption>Vehicle-mount directionality: paired detectors resolve which side of the vehicle a hotspot lies on as the unit drives past.</figcaption></figure>
+<p><strong>What it is for:</strong>
+- Sweeping a wide area at street speeds (typical survey at 5–30 mph)
+- Building dose-rate heat maps along a route
+- Pre-event drive-arounds for protective details
+- Post-incident plume mapping in support of state radiation control programs</p>
+<p><strong>What an operator should know:</strong>
+- Vehicle speed affects sensitivity. A faster sweep covers more ground but reduces the per-square-meter dwell time.
+- Mounting matters. The detectors should be at a consistent height on the vehicle; height changes affect geometry.
+- Run a known check source past the vehicle at the start of every shift. If you can't see the check source pop up on the heat map, you have a setup problem.</p>
+<h3 id="47-detector-types-across-the-family">4.7 Detector Types Across the Family</h3>
+<figure><img src="../figures/sam-with-probe.png" alt="SAM handheld with attached survey probe accessory, extends sensitivity for low-energy work." loading="lazy"><figcaption>SAM handheld with attached survey probe accessory, extends sensitivity for low-energy work.</figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Detector</th>
+<th>Typical use in SAM family / RD-150</th>
+<th>Strength</th>
+<th>Operator note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NaI(Tl)</strong></td>
+<td>Some legacy SAM 940 configurations</td>
+<td>Cheap, rugged, well-understood</td>
+<td>Lower resolution; library matches will sometimes be ambiguous</td>
+</tr>
+<tr>
+<td><strong>LaBr₃(Ce)</strong></td>
+<td>SAM 940/945, SAM 950, RD-150</td>
+<td>Excellent resolution; fast</td>
+<td>Has natural La-138 background, visible in spectra; ignore the line</td>
+</tr>
+<tr>
+<td><strong>CeBr₃</strong></td>
+<td>SAM 950 (preferred current build), RD-150</td>
+<td>Excellent resolution; clean (no La-138 line); stable with temperature</td>
+<td>Operator-favorite for response work</td>
+</tr>
+<tr>
+<td><strong>He-3 / Li-glass / B-loaded plastic neutron</strong></td>
+<td>RD-150, optional SAM configurations</td>
+<td>Distinguishes neutron emitters (Pu, Cf) from gamma sources</td>
+<td>Critical for SNM screening</td>
+</tr>
+</tbody>
+</table>
+<p>If your unit has neutron detection, get to know the neutron alarm separately. Neutrons + gammas together is a different kind of alarm than gammas alone. Pu-239 lights both up. Most NORM lights only gammas.</p>
+<div class="callout"><h4>BNC in Practice: Choosing a Detector Configuration</h4><p>CeBr suits programs where temperature swings and shelf stability matter most, the field-favorite for first-response work. LaBr is appropriate where extreme resolution is the priority and the natural La-138 background line is acceptable. CLYC pairs neutron and gamma in a single crystal, useful for SNM screening missions on the SAM 940+. NaI is the volume-sensitivity play, available with a 3 by 3 inch crystal in the SAM 950 for low-activity threats and shielded sources.</p></div>
+<h3 id="48-what-operators-look-for-on-any-sam-display">4.8 What Operators Look For on Any SAM Display</h3>
+<figure><img src="../figures/sam-950-gauge-screen.png" alt="SAM 950 Gauge view, count rate, dose rate, and neutron channel at a glance, with directional indicator for source bearing." loading="lazy"><figcaption>SAM 950 Gauge view, count rate, dose rate, and neutron channel at a glance, with directional indicator for source bearing.</figcaption></figure>
+<p>While exact menus and labels vary across firmware and configuration, <strong>every</strong> SAM family handheld will show you these elements in some form. Find them on your unit before you take it to a scene.</p>
+<ol>
+<li><strong>Battery state.</strong> Percent or icon. If you can't find it without looking, you don't know your unit yet.</li>
+<li><strong>Mode.</strong> survey, search, ID. Modes change which alarm thresholds apply.</li>
+<li><strong>Count rate.</strong> counts per second. The "live wire" indicator.</li>
+<li><strong>Dose rate.</strong> µR/hr or µSv/hr. Read this for personal safety.</li>
+<li><strong>Identification result.</strong> isotope name(s) and confidence level.</li>
+<li><strong>Spectrum view.</strong> the histogram of energies. Real operators glance at it.</li>
+<li><strong>GPS / time stamp.</strong> recorded with every saved event.</li>
+<li><strong>Alarm indicator.</strong> visual + audible. Some units add haptic.</li>
+<li><strong>Save / store.</strong> confirms the event is logged for reachback.</li>
+<li><strong>Connectivity status.</strong> Wi-Fi/cellular ready to transmit?</li>
+</ol>
+<h3 id="49-batteries-charging-and-the-8-hour-rule">4.9 Batteries, Charging, and the 8-Hour Rule</h3>
+<p>Every program loses calls to dead batteries. Don't let it happen on yours.</p>
+<ul>
+<li><strong>Always rotate.</strong> A unit returning from a call gets put on charge, regardless of remaining state.</li>
+<li><strong>8-hour rule.</strong> Plan as if your unit will give you 8 hours of continuous use, even if the spec is longer. Carry a spare for events that exceed that.</li>
+<li><strong>Cold weather.</strong> Lithium-ion runtime drops in cold. Keep spares warm; rotate from a heated cab.</li>
+<li><strong>Charge cycles.</strong> Batteries age. Replace per program schedule, not per failure.</li>
+<li><strong>Document.</strong> Battery serial, install date, and last-replaced date should be on the unit log.</li>
+</ul>
+<h3 id="410-accessories-worth-carrying">4.10 Accessories Worth Carrying</h3>
+<p>A SAM family handheld and an RD-150 are most useful when paired with a small accessory kit:</p>
+<div class="callout"><h4>BNC in Practice: Truck Pack-Out</h4><p>Build the kit once and check it weekly. A foam-padded hard case for the handheld, two charged spare batteries (rotate quarterly), a calibrated check source per agency licensing, a microfiber cloth, a waterproof field notebook with this handbook's reachback worksheet photocopied inside the cover, a phone or camera, and the agency reachback contact card laminated. The kit lives in a known place on the rig, not a different drawer every shift.</p></div>
+<ul>
+<li><strong>Check source</strong> (small, low-activity; typically Cs-137 or Co-60). For function checks before deployment. Stored per agency licensing.</li>
+<li><strong>Foam cradle</strong> for the handheld in the truck, keeps it from rattling.</li>
+<li><strong>Lanyard / harness</strong> for sustained operator carry.</li>
+<li><strong>Spare batteries</strong> (charged and labeled).</li>
+<li><strong>Microfiber cloth</strong> for cleaning the display.</li>
+<li><strong>Waterproof field notebook.</strong> write down everything the unit doesn't auto-log.</li>
+<li><strong>Reference card</strong> of agency reachback numbers (or this handbook).</li>
+<li><strong>Photographic camera</strong> (most teams use phone cameras), every event gets photo documented.</li>
+<li><strong>GPS coordinates / What3Words</strong> capability, useful when an address can't pinpoint a hotspot.</li>
+</ul>
+<h3 id="411-pre-deployment-setup-do-this-before-the-call-comes-in">4.11 Pre-Deployment Setup (Do This Before The Call Comes In)</h3>
+<p>A unit pulled out of a charger and used immediately is a unit that will fail on you. Before you put a SAM family handheld or RD-120 backpack into operational service:</p>
+<ul>
+<li>Charge to 100% and confirm.</li>
+<li>Run a self-test; confirm no error codes.</li>
+<li>Acquire background in a clean indoor location and store.</li>
+<li>Run a check-source verification; confirm energy calibration.</li>
+<li>Verify the date/time and GPS lock.</li>
+<li>Verify connectivity (Wi-Fi/cell) and that test transmission to your reachback channel succeeds.</li>
+<li>Confirm that previous events from the prior shift are archived/exported per your records policy.</li>
+<li>Walk through the alarm tones with the team, at the start of the shift, not the start of the call.</li>
+</ul>
+<p>This is the equivalent of a pilot's pre-flight. Don't skip it.</p>
+<hr />
+<div class="quiz"><h4>Chapter 4 Quick Check</h4><ol><li><strong>Which feature is unique to the SAM 940+ over the SAM 940 / 945?</strong><ol type="a"><li>Internal detector</li><li>One-click reachback with built-in camera</li><li>Sourceless automatic real-time stabilization</li><li>All of the above</li></ol></li><li><strong>The SAM 950's distinguishing characteristic is:</strong><ol type="a"><li>Lowest weight in the family</li><li>Largest internal detector volume option (3 by 3 in NaI)</li><li>Highest channel count</li><li>Built-in camera</li></ol></li><li><strong>The RD-120 backpack is paired with what operator interface?</strong><ol type="a"><li>A wired hand controller</li><li>A tablet or phone application</li><li>A vehicle-mount console only</li><li>A laptop docking station</li></ol></li><li><strong>CLYC scintillator is selected when the program needs:</strong><ol type="a"><li>Best temperature stability</li><li>Lowest cost</li><li>Combined gamma and neutron in a single crystal</li><li>Highest count rate ceiling</li></ol></li><li><strong>The 8-Hour Rule means:</strong><ol type="a"><li>Plan for the spec battery life regardless of conditions</li><li>Plan as if your unit will give you 8 hours of continuous use, and carry a spare</li><li>Replace batteries every 8 weeks</li><li>Charge units for at least 8 hours before deployment</li></ol></li></ol></div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-the-detection-ladder.html">&larr; 3. The Detection Ladder</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="05-operations-core-alert-identify-send.html">5. Operations Core: Alert, Identify, Send &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+
+</div>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

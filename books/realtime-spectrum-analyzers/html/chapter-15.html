@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 15 - Case Studies: Real-World RF Incidents Diagnosed with RTSAs</title>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 15</div>
+<h1>Case Studies: Real-World RF Incidents Diagnosed with RTSAs</h1>
+
+<blockquote>Every case study is a war story with the obscenities removed. The lesson is in what was at stake, what happened, what was done, and what would have been worse without the right instrument.</blockquote>
+
+<h2>How to Read These Cases</h2>
+
+<p>Each case is presented in a five-part format. <strong>Situation</strong> describes what was at risk and what was happening. <strong>Investigation</strong> describes the technical work. <strong>Finding</strong> identifies the root cause. <strong>Resolution</strong> describes the action taken. <strong>Lessons</strong> summarizes what could be done differently or better next time.</p>
+
+<p>The cases are composites and anonymized variations of real engagements. Specific company names, dates, and geographic identifiers have been removed where confidentiality requires it. The technical details are accurate.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-15-01-case-study-pattern.svg" style="width:100%;">Figure 15-1</object>
+  <figcaption>Figure 15-1. Every case study follows the same five-step pattern: Situation, Investigation, Finding, Resolution, Lessons. Eight cases across cellular, aviation, sports, healthcare, corrections, broadcast, telecom, and defense sectors all follow this template. The repetition of the pattern, not the specifics of any single case, is the takeaway.</figcaption>
+</figure>
+
+<div class="case">
+<h2>Case 1: The Mystery Cellular Drop</h2>
+
+<h3>Situation</h3>
+<p>A regional wireless carrier was losing service to a rural cell site for 30 to 60 minutes each weekday afternoon. Customers in three counties experienced dropped calls and degraded data. The pattern suggested local interference, but standard tools showed nothing wrong with the equipment.</p>
+
+<h3>Investigation</h3>
+<p>The carrier deployed a SPECTRAN V6 PLUS 250XA-6 with an IsoLOG 3D DF antenna at the affected site for a week. RTSA Suite PRO ran 24/7 with FMT armed for any signal above the noise floor in the licensed cellular band. The trigger fired at 2:14 PM Tuesday. Replay showed a 5-second burst of broadband noise. By the end of the week, dozens of bursts had been captured. The IsoLOG 3D DF antenna provided bearings on each burst. Cross-bearing analysis converged on a residential address 1.2 km from the cell site.</p>
+
+<h3>Finding</h3>
+<p>A homeowner had installed a non-compliant cellular booster. The booster oscillated when his outdoor antenna was repositioned, generating broadband noise that swamped his local cell tower's receiver.</p>
+
+<h3>Resolution</h3>
+<p>Carrier compliance team contacted the homeowner. The booster was identified as not type-approved. The carrier provided a properly certified replacement at no charge. The interference stopped within 24 hours.</p>
+
+<h3>Lessons</h3>
+<p>Without the RTSA-plus-DF investigation, the carrier might have continued spending money on swap-out diagnostics, never identifying the actual cause. The investigation cost approximately 0.5 percent of one month's revenue from the affected counties. The avoided cost was an order of magnitude higher.</p>
+</div>
+
+<div class="case">
+<h2>Case 2: GPS Spoofing Near an International Airport</h2>
+
+<h3>Situation</h3>
+<p>Air traffic controllers at a major international airport noticed that GPS-equipped ground vehicles were occasionally reporting positions hundreds of meters from their actual locations. The pattern persisted and grew. The risk was twofold: routing of ground equipment in low-visibility conditions, and the possibility that aircraft GPS receivers were being affected.</p>
+
+<h3>Investigation</h3>
+<p>Airport security deployed an Aaronia counter-UAS / GPS-monitoring system: two SPECTRAN V6 PLUS 2000XA-6 units paired with IsoLOG 3D DF antennas. Within 48 hours, the system captured a clear spoofing event: a slowly-modulated signal at 1.575 GHz that was 15 dB above the legitimate GPS signal level. DF analysis traced the source to a vehicle in a long-term parking lot.</p>
+
+<h3>Finding</h3>
+<p>A single hobbyist with relatively inexpensive equipment had assembled a hobby-grade GPS spoofer to test "vulnerabilities" in his consumer drone's geofencing.</p>
+
+<h3>Resolution</h3>
+<p>The individual was charged under aviation safety regulations. The airport upgraded its monitoring to permanent always-on GPS spoofing detection. Aaronia equipment is now part of the standard airport spectrum security stack at multiple airports.</p>
+
+<h3>Lessons</h3>
+<p>The airport had been operating in a "trust GPS" mode that, in the era of cheap SDRs and downloadable spoofing software, is no longer safe. Continuous GPS-band monitoring with DF capability is now considered baseline infrastructure for major airports.</p>
+</div>
+
+<div class="case">
+<h2>Case 3: Stadium Wi-Fi Collapse Under Load</h2>
+
+<h3>Situation</h3>
+<p>A new sports stadium with a heavily-marketed in-venue mobile experience saw repeated Wi-Fi failures during sold-out games. With 70,000 fans expecting fast access to the official app, video replays, and concessions ordering, performance crashed to single-digit megabits per user.</p>
+
+<h3>Investigation</h3>
+<p>The team's IT contractor deployed three SPECTRAN V6 PLUS 250XA-6 units at strategic locations during a test event. RTSA Suite PRO ran continuously, with all three units feeding a central dashboard. The data showed the 2.4 GHz band was almost completely saturated, while 5 GHz was underutilized.</p>
+
+<h3>Finding</h3>
+<p>The Wi-Fi network design assumed clients would prefer 5 GHz, but 30 percent of attending devices either didn't support 5 GHz or had Wi-Fi rules that preferred 2.4 GHz.</p>
+
+<h3>Resolution</h3>
+<p>The IT team implemented band-steering policies, increased 5 GHz AP density, and added 6 GHz capacity for newer Wi-Fi 6E and Wi-Fi 7 devices. Performance recovered to design specification within two months.</p>
+
+<h3>Lessons</h3>
+<p>Stadium and venue Wi-Fi cannot be designed by spec sheet alone. Real-time RF monitoring during live operations is essential. A SPECTRAN V6 PLUS deployment at a stadium pays for itself in one season of avoided performance issues.</p>
+</div>
+
+<div class="case">
+<h2>Case 4: Hospital Telemetry Collision with a New LED Driver</h2>
+
+<h3>Situation</h3>
+<p>A 600-bed hospital began seeing intermittent dropouts in cardiac patient telemetry monitoring on the WMTS 608-614 MHz band. Patient safety risk was substantial: monitoring drops could mask cardiac events. Hospital risk management classified the issue as Severity 1.</p>
+
+<h3>Investigation</h3>
+<p>Biomedical engineering deployed an Aaronia SPECTRAN V6 PLUS 250XA-6 with IsoLOG 3D DF antenna in the affected wing. Within 12 hours, the FMT had captured 47 events. DF analysis traced the source to a specific room.</p>
+
+<h3>Finding</h3>
+<p>The room contained a patient bed with newly-installed LED reading lamps. One batch had switching power supply harmonics extending into the WMTS band. Each time the lamp was turned on, the switching transient created a brief broadband emission.</p>
+
+<h3>Resolution</h3>
+<p>The affected lamps were replaced with compliant alternatives. The hospital's procurement process now requires RF emissions specifications for all electrical equipment in patient care areas. The Aaronia monitoring system was made permanent.</p>
+
+<h3>Lessons</h3>
+<p>WMTS protection requires more than careful RF planning of medical devices. Ambient RF emissions from non-medical equipment can create life-critical safety issues. Continuous RF monitoring is becoming standard infrastructure in modern hospitals.</p>
+</div>
+
+<div class="case">
+<h2>Case 5: Prison Contraband Drone RF Signature</h2>
+
+<h3>Situation</h3>
+<p>A regional correctional facility was experiencing recurring contraband incidents: drones delivering phones, drugs, and weapons over the perimeter. Visual observation by guards was limited at night and in poor weather.</p>
+
+<h3>Investigation</h3>
+<p>Corrections security deployed an Aaronia counter-UAS system: two IsoLOG 3D DF antennas at corner watchtowers, paired with SPECTRAN V6 PLUS 2000XA-6 units. The system was configured with a multi-band monitoring profile: 2.4 GHz, 5.8 GHz, and 915 MHz. In the first 60 days, the system detected 23 drone incursions.</p>
+
+<h3>Finding</h3>
+<p>Multiple coordinated smuggling operations using consumer-grade drones, with a peak operating window between 10 PM and 2 AM.</p>
+
+<h3>Resolution</h3>
+<p>Corrections coordinated with state law enforcement. Several arrests were made based on pattern-of-life analysis from the RF detections combined with traditional surveillance. Successful contraband deliveries dropped to zero within 90 days.</p>
+
+<h3>Lessons</h3>
+<p>Visual monitoring alone is insufficient for prison perimeters in the era of consumer drones. RF-based detection works in all weather, all lighting, and provides actionable bearings. The system cost was less than one year of the previous incident response budget.</p>
+</div>
+
+<div class="case">
+<h2>Case 6: Broadcasting Co-Channel Interference Hunted via TDOA</h2>
+
+<h3>Situation</h3>
+<p>A regional FM broadcaster reported steady degradation of audio quality in three counties of their service area. The interference manifested as audible whining and distortion. The broadcaster's revenue depended on listener satisfaction.</p>
+
+<h3>Investigation</h3>
+<p>A spectrum monitoring contractor deployed three SPECTRAN V6 PLUS 250XA-6 units at surveyed locations across the broadcaster's service area, all GPSDO-synchronized for TDOA capability. The interference was captured: a low-power signal at the same frequency as the legitimate broadcaster. TDOA calculations converged on a location 8 km from the broadcaster's transmitter.</p>
+
+<h3>Finding</h3>
+<p>Unauthorized broadcaster, low-power but co-channel with the licensed broadcaster, creating audible degradation across a multi-county area.</p>
+
+<h3>Resolution</h3>
+<p>The unauthorized transmitter was reported to the FCC. The owner was informed of the regulations and shut down the station voluntarily. Audio quality returned to clean within 24 hours.</p>
+
+<h3>Lessons</h3>
+<p>Co-channel interference from low-power unauthorized transmitters is a recurring problem for licensed broadcasters. TDOA-capable RTSA networks are the right tool: a single sensor cannot localize the source, but three GPSDO-synchronized sensors triangulate to a point in minutes.</p>
+</div>
+
+<div class="case">
+<h2>Case 7: 5G Massive MIMO Beam Verification</h2>
+
+<h3>Situation</h3>
+<p>A major cellular operator was deploying 5G massive MIMO at urban sites. Field tests showed users were getting lower-than-expected throughput, especially at the cell edge.</p>
+
+<h3>Investigation</h3>
+<p>The operator deployed two SPECTRAN V6 PLUS 2000XA-6 units in cascaded mode (980 MHz of effective RTBW) paired with two IsoLOG 3D DF antennas, all running RTSA Suite PRO with the 5G NR analysis preset. Results showed a substantial side lobe leaking energy in an unexpected direction.</p>
+
+<h3>Finding</h3>
+<p>Manufacturing tolerance in the antenna array, not the digital beamforming algorithm, was the root cause of the degraded beam pattern.</p>
+
+<h3>Resolution</h3>
+<p>The equipment vendor accepted the finding, recalled the suspect production run, and replaced affected units. Cell-edge throughput improved substantially within weeks.</p>
+
+<h3>Lessons</h3>
+<p>5G performance claims need to be verified at the RF layer with capable instruments. RTSAs with phase-coherent multi-channel capture make this verification practical. The investigation paid for itself in one round of equipment-vendor disputes.</p>
+</div>
+
+<div class="case">
+<h2>Case 8: EW Range: DRFM Jammer Characterization</h2>
+
+<h3>Situation</h3>
+<p>A defense electronic warfare research range needed to characterize a captured digital radio frequency memory (DRFM) jammer to develop counter-countermeasures. Without quantitative analysis of the jammer's behavior, defensive systems could not be specifically tuned.</p>
+
+<h3>Investigation</h3>
+<p>The range deployed an Aaronia SPECTRAN V6 PLUS 2000XA-6 with the 490 MHz RTBW upgrade, paired with an IsoLOG 3D DF 80-8 antenna. RTSA Suite PRO recorded full 245 MHz I/Q continuously. Analysis revealed:</p>
+<ul>
+<li>DRFM processing latency: 1.2 microseconds</li>
+<li>Frequency-shifting capability: up to 3 MHz, in 50 kHz steps</li>
+<li>Amplitude modulation: 12-bit resolution</li>
+<li>LO phase noise: -125 dBc/Hz at 100 kHz offset</li>
+</ul>
+
+<h3>Finding</h3>
+<p>The DRFM had several characteristic signatures that distinguish it from legitimate radar returns: the 1.2 microsecond processing latency, periodic LO phase noise correlated to the DRFM's clock, and quantization artifacts at specific amplitude levels.</p>
+
+<h3>Resolution</h3>
+<p>The findings became part of a classified detection algorithm, integrated into both the range's own equipment and forward-deployed countermeasures.</p>
+
+<h3>Lessons</h3>
+<p>Modern EW threats require modern EW analysis tools. The 10 ns POI, 490 MHz RTBW, and IsoLOG 3D DF integration of the SPECTRAN V6 PLUS were exactly the capabilities needed for this work. Equivalent capability from larger T&M vendors would have cost three to five times as much.</p>
+</div>
+
+<div class="callout warning">
+<h3>Cross-Case Patterns</h3>
+<p>Eight cases, eight different problem domains, but several patterns repeat:</p>
+<ol>
+<li><strong>Continuous monitoring beats sporadic surveys.</strong> Every case was solved by 24/7 or extended-duration monitoring, not by walk-around testing.</li>
+<li><strong>Direction finding turns RF measurement into actionable position data.</strong> Cases 1, 2, 4, 5, and 6 all relied on DF to localize the source.</li>
+<li><strong>Open data formats enable downstream tooling.</strong> SigMF, KML, CSV PDWs let RTSA outputs feed into operations dashboards, GIS systems, and analyst tools.</li>
+<li><strong>The cost of RF investigation is small relative to the cost of unresolved RF problems.</strong> Each case shows the investigation paying for itself many times over.</li>
+<li><strong>The right instrument matters.</strong> Cases requiring 10 ns POI (1, 5, 8) or wide RTBW (7, 8) could not have been solved with lesser instruments.</li>
+</ol>
+<p>These patterns explain why RTSA-based monitoring is becoming infrastructure rather than special-purpose test equipment.</p>
+</div>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>Eight real-world cases demonstrate RTSA-based diagnosis of RF problems across telecommunications, aviation, sports, healthcare, corrections, broadcasting, cellular, and defense.</li>
+  <li>Common patterns: continuous monitoring trumps sporadic surveys; direction finding turns measurements into actionable positions; open data formats enable tool ecosystems; RF investigations are cost-effective relative to the problems they solve.</li>
+  <li>The Aaronia SPECTRAN V6 PLUS plus IsoLOG 3D DF combination addresses the technical requirements of all eight scenarios.</li>
+  <li>Each case followed a five-part format: situation, investigation, finding, resolution, lessons.</li>
+  <li>The lessons reinforce why RTSA-based monitoring is moving from special-purpose test equipment to infrastructure across multiple sectors.</li>
+</ul>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>The book's main content concludes with this chapter. The remaining material is reference: glossary, math reference, Aaronia product landscape, quick-reference tables, quiz answer keys, the new appendices on education pathways and industry/employer snapshots, and a comprehensive index. These are designed to make the book a daily reference rather than a one-time read.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-14.html">&larr; Ch 14. Labs</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="appendix-A-glossary.html">Appendix A. Glossary &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

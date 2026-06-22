@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 3 Quiz: Common Pitfalls</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 3 Quiz: Common Pitfalls</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "hppg",
+  chapterKey: "03",
+  title: "Chapter 3 Quiz",
+  questions: [
+    {
+      q: "A pulser drives an open-circuit cable. What happens to the voltage at the open end during the pulse?",
+      options: [
+        "The voltage stays the same as the source.",
+        "The voltage drops to zero.",
+        "The voltage doubles due to reflection.",
+        "The voltage oscillates randomly."
+      ],
+      answer: 2,
+      explain: "An open end reflects the wave in phase, so the incident and reflected waves add and the open-end voltage doubles."
+    },
+    {
+      q: "Miller turn-on is caused by:",
+      options: [
+        "Bias on the source resistor.",
+        "dV/dt at the drain coupling current through Cgd into the gate.",
+        "Thermal runaway in the channel.",
+        "Common-mode current on the trigger cable."
+      ],
+      answer: 1,
+      explain: "A fast drain dV/dt pushes current through the gate-drain capacitance, lifting the gate and falsely turning the device on."
+    },
+    {
+      q: "A 10 ns ring period on a scope trace from a pulser-cable system most likely indicates:",
+      options: [
+        "EMI pickup from a nearby AC line.",
+        "Round-trip resonance on a 1 m cable with mismatched impedance.",
+        "Switch ringing from gate-loop inductance.",
+        "Power supply ripple."
+      ],
+      answer: 1,
+      explain: "A 1 m cable has roughly a 5 ns one-way delay, so a 10 ns ring period matches its mismatched round-trip resonance."
+    },
+    {
+      q: "A user replaces the supplied RG-62 cable on a PVX-4150 with a 50 Ω BNC cable that fits the connector. The result is most likely:",
+      options: [
+        "No effect because the impedance difference is small.",
+        "Overshoot and ringing on the pulse waveform.",
+        "The pulser stops working entirely.",
+        "Reduced power dissipation in the pulser."
+      ],
+      answer: 1,
+      explain: "Swapping the matched cable for a different impedance creates a mismatch, producing reflections seen as overshoot and ringing."
+    },
+    {
+      q: "Which of the following is NOT a safe way to make a measurement on a floating load?",
+      options: [
+        "Use a differential probe with adequate voltage rating.",
+        "Use a fiber-coupled isolation amplifier.",
+        "Lift the oscilloscope's safety ground.",
+        "Use a current-viewing resistor with a galvanically isolated digitizer."
+      ],
+      answer: 2,
+      explain: "Lifting the scope safety ground defeats a protective earth and is a shock hazard, never an acceptable floating-measurement method."
+    },
+    {
+      q: "Partial discharge typically leaves what visible evidence?",
+      options: [
+        "A clean burn mark across all conductors.",
+        "Carbonized tracking patterns along the dielectric surface.",
+        "Melted solder joints.",
+        "Discolored heatsinks."
+      ],
+      answer: 1,
+      explain: "Repeated partial discharge erodes the insulation, leaving carbonized tracking paths along the dielectric surface."
+    },
+    {
+      q: "The single most common cause of pulser returns from the field is:",
+      options: [
+        "Switch failure in the output stage.",
+        "Software firmware bugs.",
+        "Cable and connector problems, including wrong cable substitution and disconnect-under-load events.",
+        "Power supply failure."
+      ],
+      answer: 2,
+      explain: "Most field returns trace to cabling, not the pulser, including wrong-impedance substitutions and disconnect-under-load damage."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03_pitfalls.html">&larr; Back to Chapter 3</a>
+    <a class="mid" href="../index.html">Contents</a>
+    <a class="next" href="quiz-04_safety.html">Chapter 4 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

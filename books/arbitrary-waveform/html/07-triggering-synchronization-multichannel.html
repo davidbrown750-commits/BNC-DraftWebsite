@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 7: Triggering, Synchronization, and Multi-Channel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-7-triggering-synchronization-multichannel">Chapter 7: Triggering, Synchronization, and Multi-Channel</h2>
+
+<figure>
+<img src="../figures/chapter-07-opener.png" alt="A multi-channel test setup showing two arbitrary waveform generators chained by clock and trigger cables, driving four time-aligned waveforms onto an oscilloscope where the channels overlay with no visible skew." />
+<figcaption><span class="fig-num">Figure 7.1</span> A single waveform tells you what an instrument can do. Several waveforms that start on the same edge, ride the same clock, and stay aligned to the picosecond tell you whether you can build a system. Triggering, synchronization, and multi-channel operation are the parts of an AWG that turn one good signal into a coordinated set of them.</figcaption>
+</figure>
+
+<p>Up to this point the AWG has been a soloist. It computes a waveform, stores it, and plays it back. The moment you ask it to start at a particular instant, to coordinate with an oscilloscope or a device under test, or to run several channels that must hold a fixed relationship with one another, you have moved from playing a note to conducting an ensemble. This chapter is about the timing infrastructure that makes that ensemble possible: how a generator decides when to start, how it tells the rest of the bench what it is doing, how a shared clock keeps everyone in step, and how a careful engineer keeps many channels phase-coherent across one chassis or several.</p>
+
+<p>The recurring theme is the difference between approximately together and provably together. A lot of test setups look synchronized on a slow time scale and fall apart on a fast one. Getting the distinction right is the whole game, and it starts with the trigger.</p>
+
+<h3 id="trigger-modes">7.1 Trigger Modes</h3>
+
+<p><strong>The trigger is the answer to one question: when does the waveform start?</strong> An AWG sitting in its idle state has a waveform loaded and a clock running, but it is not yet emitting the signal you care about. The trigger is the event that releases it. The behavior after that release is what defines the trigger mode, and most instruments offer the same handful.</p>
+
+<p><strong>Continuous mode</strong> is the simplest. The waveform plays and repeats indefinitely with no trigger required, looping from the end of the record back to the start. This is what you want for a steady reference tone or a free-running clock. <strong>Triggered, or single-shot, mode</strong> arms the instrument and waits. On the trigger event it plays the waveform exactly once, then returns to the armed state to wait for the next event. This is the mode for capturing a one-time response, firing a single radar pulse, or timing an output against an external stimulus. <strong>Gated mode</strong> ties output to the level of a control signal: the waveform runs while the gate is asserted and pauses, or stops, when it is released, which is useful for bursts whose duration is set by something outside the instrument. <strong>Burst mode</strong> plays a defined number of cycles or records on each trigger, then stops and re-arms. A burst of exactly ten cycles on every external pulse is a common requirement in component characterization, and burst mode delivers it without you having to build the count into the waveform itself.</p>
+
+<p><strong>The trigger source</strong> decides where the start event comes from. An <strong>internal</strong> trigger is generated by the instrument's own timer, which lets it free-run at a programmed rate without any external connection. An <strong>external</strong> trigger comes in on a dedicated input, typically a TTL or adjustable-threshold signal from another instrument or a system controller. A <strong>manual</strong> trigger is a front-panel button or a soft control for bench work and debugging. A <strong>bus or software</strong> trigger arrives as a command over the remote interface (USB, LAN, or GPIB), which is how an automated test sequence fires the generator in lockstep with the rest of a script.</p>
+
+<p>Three smaller parameters shape how an external trigger behaves, and they cause more confusion than their size suggests. <strong>Slope</strong> selects whether the instrument triggers on the rising or falling edge of the input. <strong>Level</strong> sets the voltage threshold the input must cross to count as an edge, which matters whenever the trigger signal is not a clean logic level. <strong>Holdoff</strong> is a blanking interval after a valid trigger during which further triggers are ignored, so a noisy or bouncing edge cannot fire the instrument twice. After the waveform finishes and the holdoff expires, the instrument <strong>re-arms</strong>, meaning it returns to the ready state to accept the next qualifying trigger. Get the holdoff too short and you double-trigger on ringing. Get it too long and you miss legitimate events. Tuning it is part of bringing up any triggered measurement.</p>
+
+<figure>
+<img src="../figures/fig-7-1-trigger-timing.svg" alt="A four-row timing diagram sharing one time axis: a trigger input with three edges, a holdoff window that masks the second edge, a waveform output that begins after a fixed trigger latency, and a marker output whose pulse aligns to a defined sample position." />
+<figcaption><span class="fig-num">Figure 7.2</span> The trigger chain on one time axis. The first edge arms and fires the output; the holdoff window blanks the second edge so it is ignored; the output begins after a fixed, deterministic trigger latency; and the marker rises at a defined sample index to drive a scope or device under test. The third edge, arriving after re-arm, starts the cycle again.</figcaption>
+</figure>
+
+<blockquote><p><strong>Engineer's corner.</strong> The single most useful habit in triggered work is to put a counter or a scope on the trigger line itself before you trust the output. Half the synchronization bugs you will ever chase are not in the waveform or the instrument. They are an extra edge on a noisy trigger, a threshold set below the noise floor, or a holdoff left at its default. Verify the trigger is exactly as clean and as frequent as you think it is, then move on to the signal.</p></blockquote>
+
+<table>
+<thead>
+<tr><th>Trigger mode</th><th>What it does on the event</th><th>When to use it</th></tr>
+</thead>
+<tbody>
+<tr><td>Continuous</td><td>Plays and repeats forever, no trigger needed</td><td>Reference tones, free-running clocks, steady stimulus</td></tr>
+<tr><td>Triggered (single-shot)</td><td>Plays the record once, then re-arms</td><td>One-time responses, single radar pulses, event-timed output</td></tr>
+<tr><td>Gated</td><td>Runs while the gate is asserted, pauses when released</td><td>Bursts whose length is set by an external control signal</td></tr>
+<tr><td>Burst</td><td>Plays a fixed cycle or record count, then stops and re-arms</td><td>N-cycle component tests, controlled wakeup sequences</td></tr>
+</tbody>
+</table>
+
+<h3 id="markers-and-sync-outputs">7.2 Markers and Sync Outputs</h3>
+
+<p>If the trigger is how the world tells the AWG when to start, the <strong>marker</strong> is how the AWG tells the world what it is doing. A marker, sometimes called a sync output, is a digital pulse that the instrument emits in a known, repeatable relationship to its own waveform. You define where the pulse goes by tying it to a sample position in the record. Sample 0 might raise the marker, sample 4096 might lower it, and the result is a clean digital edge that lands at a precise point in the analog output every time the waveform plays.</p>
+
+<p><strong>Markers exist to coordinate the rest of the bench.</strong> The most common use is triggering an oscilloscope: rather than letting the scope guess where to trigger on a complex analog waveform, you hand it a clean marker edge aligned to the exact feature you want to view, and the display sits rock-steady. Markers also gate a device under test, enable a power amplifier only during the active part of a pulse, advance a switch matrix between waveform segments, or signal another instrument that a particular segment has begun. Because the marker is generated from the same clock and sample stream as the analog output, it carries the instrument's own timing precision rather than a software-driven approximation.</p>
+
+<p>The catch is that aligned in principle is not aligned at the connector. Two practical imperfections show up. <strong>Latency</strong> is the fixed delay between the sample position you specified and the moment the edge actually appears at the marker output, caused by the digital and analog stages the signal passes through. As long as it is constant, latency is easy to live with: you measure it once and account for it. <strong>Skew</strong> is the relative timing error between the marker and the analog waveform it is supposed to mark, or between one marker and another. Skew is the troublesome one, because it varies with cable length, loading, and sometimes temperature. The fix is the same in every case: measure the marker against the analog output on a fast scope, then apply a programmable delay to one or the other until they line up where you need them.</p>
+
+<blockquote><p><strong>Pro tip.</strong> Treat a marker as a measurement of the AWG, not just a convenience for the scope. Once you have characterized the latency from a chosen sample index to the marker edge, and the skew between the marker and the analog output, you can use the marker as a built-in time reference for everything downstream. A known marker edge is often the cleanest timing fiducial on the entire bench.</p></blockquote>
+
+<h3 id="clocking-and-reference">7.3 Clocking and the Reference</h3>
+
+<p>Everything an AWG does in time is governed by a clock. The <strong>sample clock</strong> is the heartbeat that steps the instrument from one sample to the next, and its frequency is the sample rate. By default the instrument generates this clock internally from an onboard oscillator, which is fine for standalone work. The trouble starts the moment you have more than one instrument, because two free-running oscillators, however good, drift relative to each other. Within minutes their sample streams slide apart, and any measurement that depends on a fixed timing relationship between them slowly falls out of alignment.</p>
+
+<p>There are two ways to pull instruments onto a common time base, and the distinction between them is the most important idea in this chapter. The first is the <strong>external sample clock input</strong>. Here one instrument's sample clock, or an external clock generator, drives the sample clock of every other instrument directly. Every generator steps its samples on literally the same clock edges, which is the tightest form of synchronization available. The second is the <strong>10 MHz reference</strong>. Nearly every piece of RF and timing gear has a 10 MHz reference input and output. You designate one instrument or a dedicated standard as the reference, distribute its 10 MHz to every other instrument's reference input, and each instrument phase-locks its internal oscillator to that common reference.</p>
+
+<p>Here is the subtlety that catches people, and it is worth stating plainly. <strong>A shared 10 MHz reference disciplines frequency, not phase at the sample level.</strong> Two instruments locked to the same 10 MHz reference will run at exactly the same average sample rate, so they will not drift apart over time. That is a real and valuable property. But the reference says nothing about which sample each instrument is playing at a given instant. Each instrument's internal clock divider can come up in a different phase, so two reference-locked generators can be running the same sample rate while sitting tens or hundreds of picoseconds apart, or even a full sample apart, at start. A shared reference gives you frequency coherence. It does not, by itself, give you deterministic sample alignment. For that you need either a shared sample clock or an explicit synchronization protocol that resets the clock dividers together and applies a common start trigger.</p>
+
+<figure>
+<img src="../figures/fig-7-4-multichannel-sync.svg" alt="A block diagram with a reference source and a trigger distribution block on the left feeding a clock-plus-reference bus and a deterministic start-trigger bus, which fan out to three AWG units with two to four channels each; a callout at the bottom highlights residual inter-channel and inter-unit skew." />
+<figcaption><span class="fig-num">Figure 7.3</span> Scaling beyond one chassis. A shared reference and sample clock fan out to every unit on a matched-length bus, while a separate distribution path carries a deterministic start trigger so all units leave sample zero together. The skew callout is the reminder that a shared reference aligns frequency, not sample-zero, and residual skew still has to be calibrated out.</figcaption>
+</figure>
+
+<h3 id="multi-channel-sync">7.4 Multi-Channel and Multi-Instrument Synchronization</h3>
+
+<p>Many applications need more than one coordinated output. An IQ modulator wants two channels in a fixed phase relationship. A MIMO communications test wants several transmit streams that hold their relative timing. A phased array wants a precise, often steerable, phase offset between every element. The cleanest way to deliver these is with multiple channels inside a single chassis, because channels that share one instrument also share one sample clock and one trigger fabric by design. They start on the same edge and step on the same clock, so the only timing error between them is the small, fixed, calibratable skew of their separate output paths.</p>
+
+<p><strong>Berkeley Nucleonics builds for exactly this case.</strong> The Model 686 provides 2 or 4 fully synchronized analog channels paired with 32 digital lines per unit, which suits dense scenarios that need both coordinated analog outputs and digital control or pattern signals alongside them. The Model 685 offers up to 4 synchronized channels for high-speed multi-channel work. Both keep their channels on a common clock domain so the inter-channel relationship is deterministic rather than approximate. As always, confirm the current channel counts and synchronization specifications against the datasheet at berkeleynucleonics.com before you design around them.</p>
+
+<p><strong>Inter-channel skew</strong> is the residual timing difference between channels that should be perfectly aligned. Even within one chassis it is never exactly zero, because each channel has its own DAC output stage, filtering, and connector path, and those paths differ by small amounts. The good news is that this skew is stable and repeatable, which means it can be measured once and removed with a per-channel programmable delay. After calibration, a well-built multi-channel instrument holds its channels aligned to a small fraction of a sample period.</p>
+
+<p>Scaling past the channel count of a single instrument means distributing clock and trigger across several units, which is where Figure 7.3 applies. You carry a shared sample clock or 10 MHz reference to every unit on matched-length cables, and you carry a common start trigger on its own distribution path. <strong>The hard requirement is a deterministic start</strong>: every unit must leave sample zero on the same clock edge, not merely at the same average rate. Achieving that takes more than a shared reference. It takes a synchronization scheme that aligns the clock dividers across units and latches a single start trigger into all of them on a known edge, so the first sample of every channel on every unit emerges together. Once that is in place, the same per-channel delay calibration that handles intra-chassis skew handles the inter-unit skew too.</p>
+
+<table>
+<thead>
+<tr><th>Method</th><th>What it shares</th><th>What it guarantees</th><th>What it does not guarantee</th></tr>
+</thead>
+<tbody>
+<tr><td>Independent internal clocks</td><td>Nothing</td><td>Standalone operation</td><td>Any fixed relationship between instruments</td></tr>
+<tr><td>Shared 10 MHz reference</td><td>Frequency reference</td><td>No long-term drift; common average rate</td><td>Sample-level phase alignment at start</td></tr>
+<tr><td>Shared sample clock</td><td>The actual sample clock edges</td><td>Common stepping, tight frequency coherence</td><td>A common start point without a shared trigger</td></tr>
+<tr><td>Shared clock + sync protocol + start trigger</td><td>Clock, divider phase, and start event</td><td>Deterministic sample-aligned start across units</td><td>Removal of fixed path skew (calibrate that out)</td></tr>
+</tbody>
+</table>
+
+<h3 id="phase-coherence">7.5 Phase Coherence and Skew</h3>
+
+<p><strong>Phase coherence</strong> is the property that two or more channels hold a fixed, known, and stable phase relationship over time. It is stronger than frequency coherence, which only requires the channels to run at the same average rate. Phase-coherent channels share both the same clock and the same start, so a sine on one channel and a sine on another stay locked at, say, exactly ninety degrees apart indefinitely, rather than slowly creeping. This is the property that beamforming and IQ work cannot do without, and it is the reason the shared-clock-plus-start-trigger approach matters so much.</p>
+
+<p><strong>Calibrating skew</strong> is the practical work of turning a phase-coherent instrument into a phase-accurate measurement. The procedure is unglamorous and effective. Output the same signal, often a single tone or a fast edge, on every channel at once. Capture them together on a fast oscilloscope or a calibrated receiver. Measure the time or phase offset between channels. Apply a per-channel programmable delay to pull them into alignment, then verify. Because the underlying skew is stable, this calibration holds until something physical changes, such as swapping a cable or a large shift in temperature, at which point you repeat it. Keeping a stored calibration per cable configuration saves a great deal of bench time.</p>
+
+<p>Two applications make the payoff concrete. In <strong>beamforming and phased arrays</strong>, the direction of the transmitted beam is set entirely by the phase relationships among the elements. A skew error of a few degrees steers the beam off target or smears its pattern, so the channels must be phase-coherent and the residual skew must be calibrated to a tight bound. In <strong>IQ generation</strong>, the in-phase and quadrature channels must sit exactly ninety degrees apart in phase and exactly matched in amplitude. Any phase error between them rotates and distorts the constellation, and any timing skew smears the symbols, which is precisely the failure described in the previous chapter. In both cases the chain is the same: a shared clock for frequency coherence, a common start for phase coherence, and a skew calibration to convert that coherence into accuracy.</p>
+
+<p>The honest summary of this chapter is that synchronization is a stack, not a switch. Frequency coherence comes from a shared reference. Sample-level alignment comes from a shared clock and a deterministic start. Phase accuracy comes from calibrating out the fixed skew that remains. Skip any layer and your channels will look synchronized right up until the measurement that depends on the layer you skipped. Build the whole stack and you get an instrument that conducts its channels as one.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-07.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="06-modulation-and-signal-scenarios.html">&larr; 6. Modulation and Signal Scenarios</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="08-applications.html">8. Applications &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

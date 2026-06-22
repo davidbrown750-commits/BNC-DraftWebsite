@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 7 Quiz &mdash; Noise Parameters and Noise Figure</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 7 &middot; Quiz</p>
+      <h1>Noise Parameters and Noise Figure</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~10 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="07-noise-figure.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="08-tracking-generators-filters-cables.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "07",
+    title: "Chapter 7 Quiz: Noise Parameters and Noise Figure",
+    questions: [
+      {
+        q: "How is noise factor F defined, and why is it always greater than or equal to 1 for a real device?",
+        options: [
+          "F = SNRout / SNRin; it is below 1 because devices add signal",
+          "F = SNRin / SNRout; because a real device can only add noise and degrade SNR, SNRout is at most SNRin, forcing F to be at least 1",
+          "F = Pout / Pin; it equals the gain of the device",
+          "F = Tout / Tin; it depends only on temperature"
+        ],
+        answer: 1,
+        explain: "F = SNRin/SNRout. A real device degrades SNR, so F >= 1; F = 1 would be perfectly noiseless."
+      },
+      {
+        q: "A device is power matched but its noise figure exceeds NFmin. What condition has been violated, and what is the gain under the noise-matched condition called?",
+        options: [
+          "Power matching was violated; the gain is called insertion gain",
+          "Noise matching was violated (Zs is not Zopt), so NF rises above NFmin; the gain under Zs = Zopt is called the associated gain, Gass",
+          "Thermal equilibrium was violated; the gain is called transducer gain",
+          "Nothing was violated; NF cannot exceed NFmin"
+        ],
+        answer: 1,
+        explain: "Power match is not noise match; with Zs not equal to Zopt, NF rises above NFmin. The noise-matched gain is associated gain, Gass."
+      },
+      {
+        q: "Why is the Lange invariant parameter N considered more fundamental than the equivalent noise resistance Rn?",
+        options: [
+          "Rn is invariant in a lossless network while N changes",
+          "N is invariant when the device is embedded in a lossless passive network and enforces physical checks (such as Fmin - 1 >= 4N), whereas Rn changes in a non-simple way",
+          "N and Rn are the same quantity in different units",
+          "N depends on temperature while Rn does not"
+        ],
+        answer: 1,
+        explain: "N stays invariant through lossless embedding and enforces physical bounds; Rn changes non-trivially. Note N = Rn x Gopt."
+      },
+      {
+        q: "In the Y-factor method, how is Y formed and how does the noise factor follow from it?",
+        options: [
+          "Y = Ncold / Nhot; F = Y x ENR",
+          "Y = Nhot / Ncold; with the cold state near T0, F = ENR / (Y - 1)",
+          "Y = Nhot - Ncold; F = ENR + Y",
+          "Y = Nhot x Ncold; F = ENR - Y"
+        ],
+        answer: 1,
+        explain: "Y = Nhot/Ncold; with the cold state near the reference temperature, F = ENR / (Y - 1)."
+      },
+      {
+        q: "In four-region noise-parameter extraction on the Smith chart, what does each region isolate?",
+        options: [
+          "A fixes Rn, B fixes Gopt, C fixes Zopt, D fixes Fmin",
+          "A is a well-matched region fixing the overall noise level, B isolates input-referred noise voltage vn, C isolates input-referred noise current in, and D determines the correlation between vn and in",
+          "A, B, C, D each measure a different temperature",
+          "A measures gain, B measures phase, C measures impedance, D measures power"
+        ],
+        answer: 1,
+        explain: "A sets overall noise level, B isolates vn, C isolates in, and D determines the correlation between vn and in."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

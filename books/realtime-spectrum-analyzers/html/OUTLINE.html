@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nuts and Bolts of RTSA - Expanded Edition Outline</title>
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; max-width: 900px; margin: 40px auto; padding: 0 24px; line-height: 1.6; color: #1a1a1a; background: #fafafa; }
+  h1 { color: #102a43; border-bottom: 3px solid #102a43; padding-bottom: 8px; }
+  h2 { color: #243b53; margin-top: 2em; border-bottom: 1px solid #cbd2d9; padding-bottom: 4px; }
+  h3 { color: #334e68; margin-top: 1.5em; }
+  h4 { color: #486581; margin-top: 1.2em; font-style: italic; }
+  .meta { background: #f0f4f8; border-left: 4px solid #486581; padding: 16px 20px; margin: 20px 0; border-radius: 4px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.95em; }
+  .meta strong { color: #102a43; }
+  ul { padding-left: 1.4em; }
+  li { margin: 4px 0; }
+  .new { color: #007a3d; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Helvetica Neue', sans-serif; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #cbd2d9; }
+  th { background: #102a43; color: white; }
+  tr:nth-child(even) { background: #f0f4f8; }
+  .part { background: #e4e7eb; padding: 8px 16px; margin-top: 30px; border-radius: 4px; font-weight: 600; color: #102a43; }
+  .pages { color: #627d98; font-size: 0.9em; font-weight: normal; }
+  hr { border: none; border-top: 1px dashed #bcccdc; margin: 24px 0; }
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<h1>Nuts and Bolts of Real-Time Spectrum Analysis</h1>
+<h2 style="border: none; margin-top: 0; color: #486581;">Expanded Edition - Proposed Outline</h2>
+
+<div class="meta">
+  <strong>Target length:</strong> ~150 pages<br>
+  <strong>Audience:</strong> Interns, undergrads, new RF hires AND practicing RF/test engineers<br>
+  <strong>Voice:</strong> Engineer-to-engineer, varied rhythm, no em dashes<br>
+  <strong>Vendor posture:</strong> Aaronia-forward (SPECTRAN V6 PLUS, RTSA Suite PRO, IsoLOG 3D DF), light multi-vendor<br>
+  <strong>Figures:</strong> SVG and Mermaid, generated inline<br>
+  <strong>Deliverables:</strong> MD + HTML + styled DOCX + PDF, saved to Google Drive
+</div>
+
+<h2>Front Matter <span class="pages">(~6 pages)</span></h2>
+<ul>
+  <li>Title page, copyright, acknowledgments</li>
+  <li>Foreword (invited from Aaronia leadership)</li>
+  <li>Preface: who this book is for and how to read it</li>
+  <li>How to use this book (icons, boxes, lab cues, Going Deeper callouts)</li>
+  <li>Master table of contents</li>
+</ul>
+
+<div class="part">PART I: FOUNDATIONS <span class="pages">(~26 pages)</span></div>
+
+<h3>Chapter 1 - The Evolution of Spectrum Analysis and the Birth of Real-Time RF Awareness</h3>
+<h4>Expand existing Ch 1 from ~3 pages to ~8 pages</h4>
+<ul>
+  <li>1.1 The Invisible Infrastructure of Modern Civilization</li>
+  <li>1.2 Early Spectrum Analyzers and Swept Superheterodyne Architecture</li>
+  <li>1.3 The RF World Outgrew Swept Instruments</li>
+  <li>1.4 Mathematical Reason Swept Analyzers Miss Signals</li>
+  <li>1.5 The Real-Time Architecture</li>
+  <li>1.6 Wideband ADCs and Deep Memory: The Enablers</li>
+  <li>1.7 From Measurement Tool to RF Infrastructure Sensor</li>
+  <li>1.8 Why This Matters for the Autonomous Future</li>
+  <li><span class="new">NEW</span> Aaronia in Practice: from MCS to SPECTRAN V6 PLUS</li>
+  <li><span class="new">NEW</span> Going Deeper: the math of probability of intercept</li>
+</ul>
+
+<h3>Chapter 2 - Real-Time Spectrum Analyzer Terminology and Core Concepts</h3>
+<h4>Expand existing Ch 2 from ~3 pages to ~8 pages</h4>
+<ul>
+  <li>2.1 Why RTSA Terminology Matters</li>
+  <li>2.2 Real-Time Bandwidth with V6 PLUS 2000XA-6 example (160/245/490 MHz)</li>
+  <li>2.3 Probability of Intercept: worked calculation to 10 ns</li>
+  <li>2.4 Gap-Free Processing (FFT overlap SVG)</li>
+  <li>2.5 FFT Length and Resolution Bandwidth</li>
+  <li>2.6 Waterfall Displays, 2.7 Persistence, 2.8 Frequency Mask Trigger</li>
+  <li>2.9 Streaming and RF Recording (24/7 I/Q at up to 245 MHz)</li>
+  <li>2.10 Phase-Coherent Capture (cascading SPECTRANs for 1 GHz effective RTBW)</li>
+  <li><span class="new">NEW</span> 2.11 Wrapped Spectrum View (Aaronia patented feature)</li>
+</ul>
+
+<h3>Chapter 3 - The Signal Chain: From Antenna to Spectrogram</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~10 pages</h4>
+<ul>
+  <li>3.1 RF Front End: antenna, LNA, preselection, gain staging</li>
+  <li>3.2 Downconversion and IQ Demodulation</li>
+  <li>3.3 ADC Fundamentals: sample rate, aliasing, Nyquist, ENOB, SFDR</li>
+  <li>3.4 Decimation, Filtering, Channelization</li>
+  <li>3.5 FFT Processing Engine</li>
+  <li>3.6 Display Pipeline</li>
+  <li>3.7 Memory and Streaming Architecture</li>
+  <li>3.8 Putting It Together: a trace through the SPECTRAN V6 PLUS signal path</li>
+</ul>
+
+<div class="part">PART II: DIGITAL SIGNAL PROCESSING FOR RTSAs <span class="pages">(~28 pages)</span></div>
+
+<h3>Chapter 4 - I/Q Fundamentals and Complex Baseband</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~10 pages</h4>
+<ul>
+  <li>Analytic signal, Euler, phasors, sampling I/Q vs RF</li>
+  <li>I/Q imbalance, reading I/Q files, decoding a burst</li>
+  <li>Aaronia RTSA Suite PRO I/Q pipeline</li>
+</ul>
+
+<h3>Chapter 5 - FFT, Windowing, and Spectral Estimation</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~8 pages</h4>
+<ul>
+  <li>DFT vs FFT, Hann / Hamming / Blackman / Flat-top / Kaiser</li>
+  <li>Spectral leakage, scalloping loss, ENBW, overlap-add, Welch</li>
+</ul>
+
+<h3>Chapter 6 - Modulation Analysis with an RTSA</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~10 pages</h4>
+<ul>
+  <li>ASK, FSK, PSK, QAM, OFDM families</li>
+  <li>Constellation, EVM, symbol clock recovery</li>
+  <li>Wi-Fi 6/6E/7, BLE, 5G NR, LoRa, Zigbee walkthrough</li>
+  <li>RTSA Suite PRO modulation support (BPSK through 4096-QAM, OFDM)</li>
+</ul>
+
+<div class="part">PART III: ADVANCED CAPABILITIES <span class="pages">(~22 pages)</span></div>
+
+<h3>Chapter 7 - Pulse, Radar, and Electronic Warfare</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~10 pages</h4>
+<ul>
+  <li>Pulse fundamentals, PDW, deinterleaving</li>
+  <li>Chirp radars, jammer families, DRFM</li>
+  <li>10 ns POI for nanosecond-scale radar bursts</li>
+  <li>Counter-UAS and IsoLOG 3D DF + SPECTRAN for EW</li>
+</ul>
+
+<h3>Chapter 8 - Direction Finding, Geolocation, Distributed Sensing</h3>
+<h4>Expand existing Ch 4.6, ~6 pages</h4>
+<ul>
+  <li>DF fundamentals: amplitude, phase, TDOA, AOA</li>
+  <li>IsoLOG 3D DF architecture (16 sectors, 32 antennas, 400 MHz to 40 GHz, 8 microsecond bearing)</li>
+  <li>Real-time 3D bearing with elevation, cross-bearings, distributed grids</li>
+</ul>
+
+<h3>Chapter 9 - Calibration, Accuracy, and Measurement Uncertainty</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~6 pages</h4>
+<ul>
+  <li>Amplitude / frequency accuracy, phase noise, dynamic range</li>
+  <li>Measurement uncertainty budgets, SPECTRAN V6 PLUS calibration workflows</li>
+</ul>
+
+<div class="part">PART IV: PRODUCTS, APPLICATIONS, FUTURE <span class="pages">(~28 pages)</span></div>
+
+<h3>Chapter 10 - RTSA Form Factors, Packaging, Environmental Engineering</h3>
+<h4>Expand existing Ch 5, ~7 pages</h4>
+<ul>
+  <li>Benchtop, rack, OEM, portable, ruggedized</li>
+  <li>Software ecosystems (RTSA Suite PRO, APIs, Python)</li>
+  <li><span class="new">NEW</span> SPECTRAN V6 PLUS family at a glance</li>
+</ul>
+
+<h3>Chapter 11 - Mission-Critical Applications</h3>
+<h4>Expand existing Ch 6, ~8 pages</h4>
+<ul>
+  <li>Cellular / 5G / 6G, aerospace, satellite / GNSS</li>
+  <li>Defense / EW, medical, venues</li>
+  <li><span class="new">NEW</span> Counter-UAS with IsoLOG + SPECTRAN</li>
+  <li><span class="new">NEW</span> Spectrum regulatory and enforcement</li>
+</ul>
+
+<h3>Chapter 12 - The Future of RF Awareness Infrastructure</h3>
+<h4>Expand existing Ch 7, ~5 pages</h4>
+<ul>
+  <li>Smart cities, autonomous transport, hospitals, hubs, AI-driven networks</li>
+  <li><span class="new">NEW</span> RTSAs as a public utility; spectrum-as-a-service</li>
+</ul>
+
+<h3>Chapter 13 - Careers and the RF Workforce of the Future</h3>
+<h4>Expand existing Ch 8, ~8 pages</h4>
+
+<div class="part">PART V: HANDS-ON AND CASE STUDIES <span class="pages">(~24 pages)</span></div>
+
+<h3>Chapter 14 - Labs: Hands-On Exercises</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~12 pages, 10 labs</h4>
+<ul>
+  <li>Wi-Fi spectrogram, persistence transient, FMT, I/Q in Python</li>
+  <li>Window comparison, EVM on QPSK, PDW extraction</li>
+  <li>Direction finding with IsoLOG, 24/7 recording, cascading SPECTRANs</li>
+</ul>
+
+<h3>Chapter 15 - Case Studies: Real-World RF Incidents</h3>
+<h4><span class="new">NEW CHAPTER</span>, ~12 pages, 8 cases</h4>
+<ul>
+  <li>Cellular drop, GPS spoofing, stadium Wi-Fi, hospital telemetry</li>
+  <li>Prison drone, co-channel TDOA hunt, 5G MIMO verification, DRFM jammer</li>
+</ul>
+
+<h2>Back Matter <span class="pages">(~16 pages)</span></h2>
+<ul>
+  <li>Appendix A - Glossary (~60 entries)</li>
+  <li>Appendix B - Math Reference (Fourier, windows, POI derivation, phase noise, dB)</li>
+  <li>Appendix C - Aaronia Product Landscape</li>
+  <li>Appendix D - Quick Reference Tables</li>
+  <li>Appendix E - Quiz Answer Keys</li>
+  <li>Appendix F - Final Comprehensive Assessment</li>
+  <li>Index</li>
+</ul>
+
+<h2>Total Structure</h2>
+<table>
+  <thead><tr><th>Part</th><th>Chapters</th><th>Pages</th></tr></thead>
+  <tbody>
+    <tr><td>Front matter</td><td>-</td><td>6</td></tr>
+    <tr><td>Part I: Foundations</td><td>1-3</td><td>26</td></tr>
+    <tr><td>Part II: DSP for RTSAs</td><td>4-6</td><td>28</td></tr>
+    <tr><td>Part III: Advanced Capabilities</td><td>7-9</td><td>22</td></tr>
+    <tr><td>Part IV: Products, Apps, Future</td><td>10-13</td><td>28</td></tr>
+    <tr><td>Part V: Hands-On and Case Studies</td><td>14-15</td><td>24</td></tr>
+    <tr><td>Back matter</td><td>-</td><td>16</td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>15</strong></td><td><strong>150</strong></td></tr>
+  </tbody>
+</table>
+
+<h2>Summary of Changes from the Original 9-Chapter Draft</h2>
+<ol>
+  <li>Original 9 chapters preserved, renumbered, and expanded</li>
+  <li>Six new chapters added (signal chain, I/Q, FFT/windowing, modulation, pulse/EW, labs, case studies)</li>
+  <li>Five dedicated appendices added</li>
+  <li>Every chapter ends with a quiz, answers in Appendix E</li>
+  <li>Every chapter includes at least one Aaronia-in-Practice callout</li>
+  <li>Every chapter includes at least one SVG/Mermaid figure</li>
+  <li>Going Deeper sidebars for intermediate readers throughout</li>
+</ol>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4 - I/Q Fundamentals and Complex Baseband</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+  .quiz-cta{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .quiz-cta .quiz-cta-num{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  .quiz-cta h3{color:var(--bnc-deep-navy);margin:4px 0 6px}
+  .quiz-cta p{margin:0 0 14px}
+  .quiz-cta .quiz-cta-btn{display:inline-block;font-family:Helvetica,Arial,sans-serif;
+    font-weight:700;letter-spacing:.5px;text-decoration:none;background:var(--bnc-deep-navy);
+    color:#fff;padding:11px 20px;border-radius:4px}
+  .quiz-cta .quiz-cta-btn:hover{background:var(--bnc-sky-blue)}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 4</div>
+<h1>I/Q Fundamentals and Complex Baseband</h1>
+
+<blockquote>If you understand I/Q, you can read any RF system in the world. If you don't, you'll always be one layer above the math, taking someone else's word for it.</blockquote>
+
+<h2>4.1 Why I/Q: The Analytic Signal and One-Sided Spectra</h2>
+
+<p>Open any RTSA file format and you will find a stream of pairs. Each pair is two numbers: I (in-phase) and Q (quadrature). Two real-valued samples, treated as a single complex number. This is the language of modern radio.</p>
+
+<p>It is also the source of more confusion in introductory RF education than any other topic. So let's clear it up.</p>
+
+<p>A real-valued radio signal $s(t)$ has a spectrum that is symmetric across DC. Every component at frequency $+f$ has a mirror at $-f$, and the two halves carry redundant information. If your spectrum analyzer only knew how to handle real signals, half its dynamic range would be wasted on mirror images of every signal you tried to look at.</p>
+
+<p>Worse, you cannot tell from a real-valued sample stream whether a signal is moving up in frequency or down. A 1 kHz tone and a -1 kHz tone produce indistinguishable real samples. The phase information that tells you "this signal is rotating clockwise versus counterclockwise" is lost.</p>
+
+<p>The analytic signal solves both problems. It is a complex-valued signal whose spectrum exists only on the positive frequency axis:</p>
+
+<div class="math-display">$$z(t) = s(t) + j \hat{s}(t)$$</div>
+
+<p>where $\hat{s}(t)$ is the Hilbert transform of $s(t)$, a 90-degree phase shifter applied to every frequency component. The analytic signal has the same information content as the original, but the negative frequencies have been deleted along with their redundancy.</p>
+
+<p>Run an analytic signal through an FFT and you see a one-sided spectrum: positive frequencies are real signals, negative frequencies are signals below the carrier. Direction of rotation is preserved. Bandwidth is fully utilized. Your spectrum analyzer's screen real estate doubles in usefulness.</p>
+
+<p>In a hardware receiver, the analytic signal is constructed by quadrature downconversion rather than the Hilbert transform. The I path multiplies by $\cos$, the Q path multiplies by $\sin$, and the result is treated as the real and imaginary parts of $z(t)$. Same outcome, different machinery.</p>
+
+<p>This is why every modern RTSA stores I/Q samples instead of real samples. Half the storage cost, no information loss, and easier downstream math.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-04-01-iq-spectrum.svg" style="width:100%;">Figure 4-1</object>
+  <figcaption>Figure 4-1. A real-valued signal has a symmetric two-sided spectrum that wastes half its bandwidth on a redundant mirror. The analytic signal removes the negative-frequency mirror and is implemented in hardware by quadrature downconversion. The I/Q pair is the analytic signal in disguise.</figcaption>
+</figure>
+
+<h2>4.2 Euler, Complex Exponentials, and Rotating Phasors</h2>
+
+<p>Euler's identity is the single most useful equation in radio:</p>
+
+<div class="math-display">$$e^{j\theta} = \cos\theta + j\sin\theta$$</div>
+
+<p>Plug in $\theta = 2\pi f t$ and you get a complex sinusoid:</p>
+
+<div class="math-display">$$e^{j 2\pi f t} = \cos(2\pi f t) + j \sin(2\pi f t)$$</div>
+
+<p>This is a unit-magnitude phasor rotating in the complex plane at frequency $f$ revolutions per second. Project it onto the real axis and you get the cosine. Project onto the imaginary axis and you get the sine. The phasor encodes both at once.</p>
+
+<p>Now suppose you have a real cosine at frequency $f$:</p>
+
+<div class="math-display">$$\cos(2\pi f t) = \frac{e^{j 2\pi f t} + e^{-j 2\pi f t}}{2}$$</div>
+
+<p>A real cosine is the sum of a positive-frequency phasor and a negative-frequency phasor of equal magnitude. That is the mathematical reason real signals have symmetric spectra. The two phasors are the mirror image of each other around DC.</p>
+
+<p>The analytic signal of a real cosine keeps only the positive-frequency phasor:</p>
+
+<div class="math-display">$$z(t) = e^{j 2\pi f t}$$</div>
+
+<p>This is a single rotating phasor. Its spectrum is a single point at $+f$. No mirror, no ambiguity.</p>
+
+<h3>Modulation as Phasor Multiplication</h3>
+
+<p>A baseband signal $b(t)$ modulated onto a carrier becomes:</p>
+
+<div class="math-display">$$s(t) = \text{Re}\{b(t) \cdot e^{j 2\pi f_c t}\}$$</div>
+
+<p>where $b(t)$ is itself complex (containing both amplitude and phase modulation). On a real-valued physical antenna, only the real part propagates. But mathematically, the full signal lives in the complex plane.</p>
+
+<p>When this signal arrives at a quadrature receiver, multiplying by $e^{-j 2\pi f_c t}$ in the I/Q mixer recovers $b(t)$. The complex multiplication is the rotation that brings the carrier back to DC, leaving the baseband modulation untouched.</p>
+
+<p>This is the entire engine of digital communication. Every QAM constellation, every OFDM symbol, every chirp pulse is a complex baseband signal pulled into the receiver, rotated to DC, and decoded as a sequence of complex numbers.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: Phasors and Group Delay</h3>
+<p>When a system applies a frequency-dependent phase shift to a signal, the result is dispersion, the smearing of energy across time. Group delay is the rate of change of phase with frequency, $-d\phi/d\omega$. A constant group delay shifts every frequency component by the same time, so the signal arrives intact. A varying group delay smears it. RTSAs measure group delay by comparing the phase of received I/Q across frequency, often using a swept tone or a wideband chirp as the test signal.</p>
+</div>
+
+<h2>4.3 Sampling I/Q vs Sampling RF</h2>
+
+<p>There are two ways to digitize an RF signal. Real sampling at twice the highest frequency, or quadrature sampling at the bandwidth.</p>
+
+<h3>Real Sampling</h3>
+
+<p>Suppose you want to digitize a signal centered at 2 GHz with 100 MHz of bandwidth. Real sampling requires:</p>
+
+<div class="math-display">$$f_s > 2 \cdot 2.05\,\text{GHz} = 4.1\,\text{GS/s}$$</div>
+
+<p>at minimum, more in practice. That is a punishing rate. The ADC and storage are expensive, and most of the samples are wasted on encoding the carrier rather than the modulation.</p>
+
+<h3>Quadrature Sampling</h3>
+
+<p>The same signal sampled in I/Q after downconversion to baseband requires:</p>
+
+<div class="math-display">$$f_s > 100\,\text{MHz}$$</div>
+
+<p>complex (which is 100 MS/s on each of the I and Q channels). The carrier is removed analytically before digitization. The ADC handles the modulation only.</p>
+
+<p>The reduction is enormous. A 41x improvement in sampling rate for the same information content. This is why every wideband RF instrument built since 2000 uses quadrature sampling.</p>
+
+<h3>When Real Sampling Still Appears</h3>
+
+<p>Some architectures sample at the IF (a low intermediate frequency, say 100 to 300 MHz) and then digitally convert to baseband. The math is exactly equivalent to analog quadrature sampling, but the implementation is different: a single ADC handles a real-valued IF signal at maybe 500 MS/s, and a digital downconverter inside the FPGA produces complex baseband. This trades analog mixer complexity for digital signal processing complexity.</p>
+
+<p>In modern RTSAs, both approaches show up. The Aaronia SPECTRAN V6 PLUS uses analog quadrature downconversion to baseband, sampling I and Q on parallel ADCs. Other instrument families use IF sampling followed by digital quadrature conversion. Both end up with the same complex baseband stream.</p>
+
+<h2>4.4 I/Q Imbalance and Correction</h2>
+
+<p>Because real-world I and Q paths involve separate mixers, separate filters, and separate ADCs, they are never perfectly matched. Two systematic errors result.</p>
+
+<h3>Amplitude Imbalance</h3>
+
+<p>If the I path has a gain $G_I$ and the Q path has $G_Q$, with $G_I \neq G_Q$, the rotating phasor becomes elliptical instead of circular. A pure tone produces a constellation that traces an ellipse rather than a circle.</p>
+
+<p>Mathematically, the imbalance produces a small image of every signal mirrored across DC. Suppose the true signal is at $+1$ MHz. With a 1 percent amplitude imbalance, you also see a residual signal at $-1$ MHz, about 40 dB below the original.</p>
+
+<h3>Phase Imbalance</h3>
+
+<p>If the I and Q local oscillators are not perfectly 90 degrees apart (suppose $\phi$ degrees off), a similar image appears at the mirror frequency. A 1 degree phase error produces a -41 dB image. A 0.1 degree error produces -61 dB.</p>
+
+<h3>Combined Imbalance</h3>
+
+<p>The general expression for the image rejection ratio (IRR) given amplitude imbalance $\epsilon$ and phase imbalance $\phi$ in radians is:</p>
+
+<div class="math-display">$$\text{IRR} \approx \frac{4}{\epsilon^2 + \phi^2}\,\text{(linear)}$$</div>
+
+<p>A 1 percent amplitude imbalance and a 1 degree phase imbalance combine to give about 35 dB of image rejection. That is not enough for most measurements. Modern RTSAs digitally correct down to 60, 70, even 80 dB IRR.</p>
+
+<h3>Digital Correction</h3>
+
+<p>The correction is a 2x2 matrix applied to the (I, Q) pair after digitization, with calibration parameters set at the factory across temperature and frequency, then applied in the FPGA as a continuous correction.</p>
+
+<p>Aaronia RTSA Suite PRO offers user-accessible image rejection calibration as part of its commissioning workflow. The calibration uses a known reference signal, measures the residual image, and tunes the correction matrix until the image drops below a target threshold.</p>
+
+<h2>4.5 Reading an I/Q File</h2>
+
+<p>Real engineering work happens when you take an I/Q capture out of the RTSA and feed it into Python, MATLAB, or GNU Radio for custom analysis. To do that, you need to know what's in the file.</p>
+
+<h3>File Formats in the Wild</h3>
+
+<table>
+<thead><tr><th>Format</th><th>Sample type</th><th>Metadata</th><th>Common producers</th></tr></thead>
+<tbody>
+<tr><td>Raw complex int16</td><td>I, Q interleaved 16-bit signed</td><td>None (filename only)</td><td>RTL-SDR, BladeRF, custom</td></tr>
+<tr><td>Raw complex float32</td><td>I, Q interleaved 32-bit float</td><td>None</td><td>GNU Radio, MATLAB</td></tr>
+<tr><td>SigMF</td><td>Float or int with sidecar JSON</td><td>Yes (.sigmf-meta)</td><td>RTSA Suite PRO, GNU Radio</td></tr>
+<tr><td>WAV (2 channel)</td><td>I left, Q right</td><td>RIFF header</td><td>Many SDR tools</td></tr>
+<tr><td>HDF5</td><td>Configurable</td><td>Rich metadata</td><td>Research tools</td></tr>
+</tbody>
+</table>
+
+<p>The two most important to recognize are raw interleaved complex (no metadata, just a stream of I, Q, I, Q, ...) and SigMF (the modern standard with proper metadata).</p>
+
+<h3>SigMF in 60 Seconds</h3>
+
+<p>SigMF (Signal Metadata Format) is a JSON sidecar that pairs with a raw I/Q file. The metadata file describes the data file:</p>
+
+<pre><code>{
+  "global": {
+    "core:datatype": "ci16_le",
+    "core:sample_rate": 245000000,
+    "core:hw": "Aaronia SPECTRAN V6 PLUS 2000XA-6",
+    "core:author": "RTSA Suite PRO"
+  },
+  "captures": [{
+    "core:sample_start": 0,
+    "core:frequency": 3500000000,
+    "core:datetime": "2026-04-25T14:32:11.000Z"
+  }]
+}</code></pre>
+
+<p>This tells any consuming tool: data is complex int16 little-endian, sample rate 245 MHz, captured at 3.5 GHz center on a SPECTRAN V6 PLUS, on April 25, 2026. The data file is just a stream of int16 pairs, byte-for-byte identical to a raw capture, but now interpretable.</p>
+
+<p>RTSA Suite PRO writes SigMF natively. GNU Radio reads it. scikit-rf reads it. Any modern analysis tool reads it. This format is becoming standard, and it deserves to.</p>
+
+<h3>Reading Raw Complex int16 in Python</h3>
+
+<p>A 1-second capture at 245 MS/s of complex int16 is about 980 megabytes. Reading it:</p>
+
+<pre><code>import numpy as np
+
+# Each sample is 2 bytes I + 2 bytes Q = 4 bytes total
+raw = np.fromfile('capture.sigmf-data', dtype=np.int16)
+iq = raw[::2].astype(np.float32) + 1j * raw[1::2].astype(np.float32)
+iq /= 32768.0  # normalize to [-1, +1]
+
+print(f"Loaded {len(iq)} complex samples")
+print(f"Duration: {len(iq) / 245e6:.3f} seconds")</code></pre>
+
+<p>That is the entire decoder. After this, <code>iq</code> is a NumPy complex array ready for FFT, filtering, demodulation, or anything else.</p>
+
+<p>For SigMF files, use the <code>sigmf</code> Python package:</p>
+
+<pre><code>from sigmf import sigmffile
+
+handle = sigmffile.fromfile('capture.sigmf-meta')
+samples = handle.read_samples()  # returns complex64 directly</code></pre>
+
+<p>That's it. Two lines and you have your samples.</p>
+
+<h3>Reading Bigger Captures</h3>
+
+<p>A 24-hour capture at 245 MHz is about 84 terabytes. You don't load that into memory. You memory-map it:</p>
+
+<pre><code>raw = np.memmap('huge_capture.sigmf-data', dtype=np.int16, mode='r')
+# raw is a virtual array; the OS pages in chunks as you index</code></pre>
+
+<p>Combined with chunk-wise processing (read 1 second of samples, FFT, save spectra, drop the buffer, repeat), this scales to arbitrarily large recordings on commodity hardware.</p>
+
+<h2>4.6 Worked Example: Decoding a Burst from Raw I/Q</h2>
+
+<p>Here is a minimum-viable end-to-end analysis. We have a SigMF capture from a SPECTRAN V6 PLUS that contains a Bluetooth Low Energy advertising burst at 2.402 GHz. We want to find the burst, isolate it, and decode the modulation type.</p>
+
+<h3>Step 1: Load the Capture</h3>
+
+<pre><code>from sigmf import sigmffile
+import numpy as np
+
+handle = sigmffile.fromfile('ble_capture.sigmf-meta')
+fs = handle.get_global_field('core:sample_rate')      # 245 MHz
+fc = handle.get_capture_info(0)['core:frequency']     # 2.402 GHz
+iq = handle.read_samples()
+print(f"{len(iq)} samples at {fs/1e6} MHz, centered at {fc/1e9} GHz")</code></pre>
+
+<h3>Step 2: Find the Burst</h3>
+
+<p>A BLE advertising packet lasts roughly 376 microseconds. We slide an energy detector across the capture:</p>
+
+<pre><code>window = int(fs * 50e-6)  # 50 microsecond window
+power = np.abs(iq) ** 2
+energy = np.convolve(power, np.ones(window) / window, mode='valid')
+threshold = np.percentile(energy, 99)
+bursts = np.where(energy > threshold)[0]
+print(f"Detected burst start at sample {bursts[0]}")</code></pre>
+
+<h3>Step 3: Isolate the Burst</h3>
+
+<pre><code>start = bursts[0]
+duration_samples = int(fs * 400e-6)  # slightly longer than expected
+burst = iq[start : start + duration_samples]</code></pre>
+
+<h3>Step 4: Detect Modulation</h3>
+
+<p>BLE uses Gaussian Frequency Shift Keying (GFSK). Frequency shifts encode the bits. We compute the instantaneous frequency by taking the derivative of the unwrapped phase:</p>
+
+<pre><code>phase = np.unwrap(np.angle(burst))
+freq = np.diff(phase) * fs / (2 * np.pi)
+print(f"Frequency excursion: {freq.min()/1e3:.1f} kHz to {freq.max()/1e3:.1f} kHz")</code></pre>
+
+<p>A symmetric excursion of about plus and minus 250 kHz around the carrier confirms BLE 1M PHY GFSK. An excursion of plus and minus 500 kHz confirms BLE 2M PHY. Other excursions might suggest BLE coded PHYs or non-BLE devices entirely.</p>
+
+<h3>Step 5: Visualize</h3>
+
+<pre><code>from scipy import signal
+import matplotlib.pyplot as plt
+
+f, t, Sxx = signal.spectrogram(burst, fs=fs, nperseg=1024, noverlap=896)
+plt.pcolormesh(t * 1e6, f / 1e6, 10 * np.log10(Sxx))
+plt.xlabel('time [us]')
+plt.ylabel('frequency [MHz from carrier]')
+plt.colorbar(label='dB')
+plt.show()</code></pre>
+
+<p>That is one hundred lines of code, end-to-end, from raw I/Q to confirmed modulation type. The same workflow generalizes to any burst-mode signal: Wi-Fi management frames, LoRa chirps, drone control packets, radar pulses, automotive key fob transmissions.</p>
+
+<p>This is the productivity multiplier of working in I/Q. You are not limited to the analyses your instrument vendor wrote. You can write your own.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: RTSA Suite PRO I/Q Pipeline</h3>
+<p>RTSA Suite PRO surfaces the I/Q pipeline as an editable graph, with each block representing a signal-processing stage and edges representing complex baseband streams. A typical I/Q processing graph might be: SPECTRAN source brings live I/Q from the hardware, frequency translator shifts the band of interest to baseband, decimator drops sample rate from 245 MHz to 5 MHz, filter block applies a low-pass, modulation classifier identifies the modulation type, demodulator produces decoded symbols, file writer archives both raw I/Q and decoded output to disk.</p>
+<p>Each block exposes parameters editable in real time. The graph runs continuously, so changing a parameter updates the analysis immediately. A user with no programming experience can build sophisticated pipelines by dragging and connecting blocks. A user with programming experience can write custom blocks in Python or C++ and load them into the same framework. The same pipeline runs on live data and on recorded files. Drop a SigMF file onto the SPECTRAN source block and Suite PRO replays it through the entire chain as if the signal were live.</p>
+</div>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>The analytic signal $z(t) = s(t) + j\hat{s}(t)$ has a one-sided spectrum and preserves direction-of-rotation information that real samples lose.</li>
+  <li>Quadrature downconversion implements the analytic signal in hardware via I and Q paths driven by sine and cosine local oscillators.</li>
+  <li>Euler's identity $e^{j\theta} = \cos\theta + j\sin\theta$ underlies every modulation, every demodulation, and every spectral analysis in modern radio.</li>
+  <li>Quadrature sampling at the bandwidth requires far fewer samples than real sampling at twice the carrier, which is why every modern wideband RTSA samples in I/Q.</li>
+  <li>I/Q amplitude and phase imbalance produce mirror-image distortions; modern RTSAs digitally correct to 60-80 dB image rejection.</li>
+  <li>I/Q files are stored in raw interleaved formats (complex int16, complex float32) or modern SigMF (JSON sidecar plus raw data). RTSA Suite PRO writes SigMF.</li>
+  <li>Loading a raw I/Q file in Python is two or three lines; loading SigMF is even simpler. Memory-mapping handles arbitrarily large captures.</li>
+  <li>A complete burst-detection-and-classification workflow takes about 100 lines of Python; the same pattern generalizes across all burst-mode signal types.</li>
+  <li>Aaronia RTSA Suite PRO presents the I/Q pipeline as a visual graph editable in real time, supporting both live captures and SigMF replay.</li>
+</ul>
+</div>
+
+<div class="quiz-cta">
+<div class="quiz-cta-num">End-of-Chapter Quiz</div>
+<h3>Check your understanding</h3>
+<p>The Chapter 4 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<a class="quiz-cta-btn" href="quiz-chapter-04.html">Take the interactive quiz &rarr;</a>
+</div>
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 5 dives into the FFT itself: window functions in detail, scalloping loss with concrete numbers, the choice between Hann, Hamming, Blackman, Flat-top, and Kaiser, Welch's method for power spectral density estimation, and how to choose FFT length and overlap for a specific measurement objective. By the end of Chapter 5, you'll know exactly which window and FFT length to use when someone hands you a measurement specification, and why.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-03.html">&larr; Ch 3. The Signal Chain</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-05.html">Ch 5. FFT and Windowing &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

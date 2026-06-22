@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6 - Modulation Analysis with an RTSA</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+  .quiz-cta{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .quiz-cta .quiz-cta-num{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  .quiz-cta h3{color:var(--bnc-deep-navy);margin:4px 0 6px}
+  .quiz-cta p{margin:0 0 14px}
+  .quiz-cta .quiz-cta-btn{display:inline-block;font-family:Helvetica,Arial,sans-serif;
+    font-weight:700;letter-spacing:.5px;text-decoration:none;background:var(--bnc-deep-navy);
+    color:#fff;padding:11px 20px;border-radius:4px}
+  .quiz-cta .quiz-cta-btn:hover{background:var(--bnc-sky-blue)}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 6</div>
+<h1>Modulation Analysis with an RTSA</h1>
+
+<blockquote>A modulated signal is a story written in phase and amplitude. Demodulation is reading the story. EVM is asking how legibly the writer wrote.</blockquote>
+
+<h2>6.1 From Spectrum to Symbols: The Demodulation Chain</h2>
+
+<p>A spectrum tells you which frequencies are present and how strong they are. It does not tell you what they are saying. That is the job of demodulation.</p>
+
+<p>The demodulation chain that follows the FFT in an RTSA looks like this: channel selection picks the band of interest from the wideband capture, carrier acquisition finds the exact center frequency of the signal, symbol clock recovery finds the symbol rate and phase of the modulation, equalization compensates for channel-induced amplitude and phase distortion, symbol decision maps each received complex sample to the nearest constellation point, error metrics computes EVM, MER, BER, and any standard-specific quality measures, and decoding (where applicable) recovers bits, frames, and protocol-level structure.</p>
+
+<p>Each stage is its own discipline. A 5G NR modulation analysis tool like the one in Aaronia RTSA Suite PRO contains tens of thousands of lines of code spread across these seven stages. But the architecture is the same for every standard. Once you understand the chain, every protocol-specific implementation becomes a variation on a theme.</p>
+
+<p>The output of the chain is a constellation diagram, an EVM number, and (often) decoded data. That trio answers the question every RF engineer eventually faces: is the signal good enough?</p>
+
+<h2>6.2 Digital Modulation Families</h2>
+
+<p>Digital modulations encode bits onto a carrier by varying its amplitude, phase, frequency, or all three.</p>
+
+<p><strong>Amplitude shift keying (ASK)</strong> is the simplest. Encode a 1 by transmitting the carrier, encode a 0 by turning it off, or use multiple amplitude levels for higher bit rates. Sensitive to fading and rare in modern wireless beyond simple RFID and key fobs.</p>
+
+<p><strong>Frequency shift keying (FSK)</strong> encodes bits by shifting the carrier frequency between predefined values. Binary FSK uses two frequencies. Gaussian FSK (GFSK) shapes the frequency transitions to limit the spectrum, used in Bluetooth Low Energy and many low-power IoT radios. FSK is robust against amplitude variation and easy to demodulate, which is why it dominates short-range and IoT applications.</p>
+
+<p><strong>Phase shift keying (PSK)</strong> encodes bits by shifting the carrier phase. BPSK uses two phases (0 and π). QPSK uses four phases, encoding two bits per symbol. 8-PSK uses eight, encoding three bits per symbol. PSK has constant envelope (no amplitude variation), so it works with efficient saturated power amplifiers. Used heavily in satellite links and older cellular.</p>
+
+<p><strong>Quadrature amplitude modulation (QAM)</strong> encodes bits by combining amplitude and phase. 16-QAM uses 16 distinct combinations of in-phase and quadrature amplitudes. 64-QAM uses 64. 256-QAM, 1024-QAM, and 4096-QAM push higher and higher. Each doubling of constellation points adds one bit per symbol but demands more SNR to decode reliably. Modern Wi-Fi, 5G NR, and DOCSIS cable systems use up to 4096-QAM in clean conditions.</p>
+
+<p><strong>Orthogonal frequency division multiplexing (OFDM)</strong> is not a single modulation but a multiplexing scheme. Split a wideband channel into hundreds or thousands of orthogonal narrowband subcarriers, modulate each subcarrier with QAM, and transmit them in parallel. OFDM tolerates multipath gracefully (each subcarrier sees a flat channel) and scales to wide bandwidths cleanly. Used in Wi-Fi 4 and later, LTE, 5G NR, DVB-T, and most modern wideband systems.</p>
+
+<p><strong>Spread spectrum</strong> modulates the carrier with a pseudorandom code that spreads the signal over a much wider bandwidth than the data alone needs. Direct sequence (DSSS) and frequency hopping (FHSS) are the two flavors. Used in CDMA, GPS, military communications, and some IoT systems where jamming resistance or low-probability-of-intercept matters.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: Modulation Support</h3>
+<p>RTSA Suite PRO supports CW, sweep, noise, and pulse waveforms for signal generation and analysis, plus FSK, BPSK, ASK, QPSK, QPSK-C, 16-QAM, 64-QAM, 256-QAM, 1024-QAM, 4096-QAM, OFDM, raster image modulation, and echo/reflection analysis. The full ladder from BPSK through 4096-QAM means you can analyze every commercial wireless standard that ships in 2026 and most of what is on the standards roadmap for the next five years.</p>
+</div>
+
+<h2>6.3 Constellation Diagrams and EVM</h2>
+
+<p>A constellation diagram plots the I and Q components of received symbols as a scatter plot in the complex plane. Each cluster of dots is a constellation point. A perfect modulator produces dots that land exactly on the ideal points. A real modulator produces dots that scatter around the ideal points due to noise, imperfections, and channel distortion.</p>
+
+<p>The error vector for one symbol is the complex difference between the received point and the ideal point:</p>
+
+<div class="math-display">$$\vec{e}[n] = \vec{r}[n] - \vec{s}[n]$$</div>
+
+<p>Error vector magnitude (EVM) is the RMS of the error vectors across many symbols, normalized by the average constellation power:</p>
+
+<div class="math-display">$$\text{EVM}_{rms} = \sqrt{\frac{\frac{1}{N} \sum_{n=1}^{N} |\vec{e}[n]|^2}{P_{\text{ref}}}}$$</div>
+
+<p>EVM is usually expressed as a percentage of the reference signal amplitude or in dB. For 5G NR 256-QAM, the standard requires EVM better than 3.5 percent (about -29 dB) at the transmitter output. For Wi-Fi 7 1024-QAM, the requirement is even tighter, around 1.4 percent (-37 dB). These numbers are physics constraints. Below the threshold, the constellation points blur together and bit errors explode.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-06-01-constellation-evm.svg" style="width:100%;">Figure 6-1</object>
+  <figcaption>Figure 6-1. Four constellation patterns and what they tell you about the underlying hardware. Clean clusters indicate a healthy chain. Symmetric scatter points to thermal noise. Arc-shaped smear is phase noise. Outer-point degradation in 16-QAM suggests power amplifier compression.</figcaption>
+</figure>
+
+<h3>What EVM Tells You About Your Hardware</h3>
+
+<p>A high EVM means something is wrong. The diagnostic value is in the pattern of the error.</p>
+
+<ul>
+  <li><strong>Symmetric scatter around every point:</strong> thermal noise. SNR is the limit. Either reduce the noise figure or increase signal power.</li>
+  <li><strong>Each cluster smeared along an arc:</strong> phase noise on the LO. Improve oscillator quality or apply phase noise compensation.</li>
+  <li><strong>Each cluster smeared radially:</strong> amplitude noise or AGC instability.</li>
+  <li><strong>Each cluster shifted diagonally:</strong> I/Q imbalance. Calibrate.</li>
+  <li><strong>Constellation rotated as a whole:</strong> residual carrier frequency offset. Improve carrier tracking.</li>
+  <li><strong>Constellation rotated as a function of time:</strong> oscillator drift. Improve frequency stability.</li>
+  <li><strong>Outer constellation points scatter more than inner:</strong> power amplifier compression. Back off the input power or improve PA linearity.</li>
+  <li><strong>Constellation tilted in a regular pattern across symbols:</strong> residual symbol clock error. Improve clock recovery.</li>
+</ul>
+
+<p>A practiced engineer reads constellation diagnoses the way a doctor reads an x-ray. The pattern is the diagnosis.</p>
+
+<h3>MER vs EVM</h3>
+
+<p>Modulation error ratio (MER) is the inverse-power version of EVM:</p>
+
+<div class="math-display">$$\text{MER}_{dB} = -\text{EVM}_{dB}$$</div>
+
+<p>MER is preferred in cable and broadcast contexts. EVM is preferred in cellular and Wi-Fi. They carry the same information.</p>
+
+<h2>6.4 Symbol Clock Recovery and Carrier Tracking</h2>
+
+<p>Two synchronization problems sit between the FFT and the constellation: figuring out when each symbol begins and ends (symbol clock recovery), and figuring out exactly what the carrier frequency is at any moment (carrier tracking).</p>
+
+<p><strong>Symbol clock recovery.</strong> The transmitter emits symbols at a known nominal rate. The receiver does not know exactly when each symbol starts. Estimating that timing is symbol clock recovery. Common algorithms include early-late gate, Mueller-Muller (a digital algorithm that uses successive symbol differences to estimate timing error), and Gardner (better at low SNR). In an RTSA, symbol clock recovery is automatic for most standards.</p>
+
+<p><strong>Carrier frequency offset.</strong> The receiver and transmitter reference oscillators differ by a small amount, typically tens to hundreds of parts per million. At 3.5 GHz, a 1 ppm error is 3.5 kHz of carrier offset. That offset rotates the constellation continuously and must be removed before symbol decisions can be made. Tracking algorithms include the Costas loop (for PSK), decision-directed phase tracking (for QAM), and pilot-based tracking (for OFDM, where pilot subcarriers carry known data).</p>
+
+<p><strong>Phase noise.</strong> Even if the carrier is perfectly locked on average, instantaneous phase wanders due to oscillator phase noise. High-quality reference oscillators (OCXOs, atomic) reduce this; cheap crystals make it worse. The Aaronia SPECTRAN V6 PLUS uses precision reference oscillators with optional external 10 MHz reference input, allowing users to lock to a rubidium or GPSDO source for ultra-low phase noise measurements.</p>
+
+<h2>6.5 Modern Wireless Standards: A Walkthrough</h2>
+
+<p>What does each major standard look like through an RTSA's eyes?</p>
+
+<h3>Wi-Fi 6 / 6E / 7</h3>
+
+<p>Wi-Fi 6 uses OFDMA on top of OFDM, with up to 1024-QAM on individual subcarriers. Wi-Fi 6E extends to 6 GHz. Wi-Fi 7 doubles channel bandwidth to 320 MHz, pushes modulation to 4096-QAM, and adds multi-link operation (MLO) where one device uses multiple bands simultaneously.</p>
+
+<p>For RTSA analysis: Wi-Fi 7 320 MHz channels need at least 320 MHz of RTBW to capture in one shot. The SPECTRAN V6 PLUS 2000XA-6 with 490 MHz RTBW handles this with margin. Constellation density at 4096-QAM means EVM tolerances around -37 dB are non-negotiable.</p>
+
+<h3>Bluetooth Low Energy (BLE)</h3>
+
+<p>BLE 5.x supports 1M PHY (1 megasymbol/second GFSK), 2M PHY (2 megasymbol/second GFSK), and Coded PHY (S=2 and S=8 forward error correction for range extension). LE Audio adds isochronous channels.</p>
+
+<p>For RTSA analysis: BLE bursts are short (around 376 microseconds for advertising packets) and channel-hopping at up to 1600 hops/second. POI matters. Aaronia's 10 nanosecond POI captures every burst, every hop, with margin. Modulation classification works on a single advertising burst.</p>
+
+<h3>5G NR</h3>
+
+<p>OFDM with subcarrier spacings of 15, 30, 60, 120, or 240 kHz. Channel bandwidths up to 100 MHz in FR1 (sub-6 GHz) and up to 400 MHz in FR2 (mmWave). Modulation up to 256-QAM (downlink) and 64-QAM or higher (uplink).</p>
+
+<p>For RTSA analysis: 5G NR EVM measurement requires precise OFDM symbol timing and pilot-based carrier tracking. Aaronia RTSA Suite PRO's 5G NR preset handles this end-to-end.</p>
+
+<h3>LoRa</h3>
+
+<p>Chirp spread spectrum (CSS) with spreading factors from 7 to 12. Each symbol is a frequency-modulated chirp lasting from milliseconds to seconds depending on SF. The chirp shape itself encodes the data.</p>
+
+<p>For RTSA analysis: the waterfall display shows LoRa packets as diagonal stripes; the slope of the stripe indicates the spreading factor. Demodulation requires de-chirping (multiplication by the conjugate chirp) followed by FFT. Aaronia's RTSA Suite PRO has dedicated LoRa decoder blocks.</p>
+
+<h3>Zigbee / 802.15.4</h3>
+
+<p>DSSS with O-QPSK (offset QPSK) at 250 kbps, 16 channels in 2.4 GHz ISM. Used heavily in smart home, industrial sensor networks, and Thread/Matter ecosystems. Decoding a Zigbee frame from RTSA-captured I/Q is the kind of weekend project that fits in 200 lines of Python.</p>
+
+<h2>6.6 Worked Example: Measuring EVM on a QPSK Burst</h2>
+
+<p>A SPECTRAN V6 PLUS captures a QPSK signal at 1 megasymbol/second centered at 2.4 GHz. The capture file is a 100-millisecond SigMF recording.</p>
+
+<p>In RTSA Suite PRO, the workflow looks like:</p>
+
+<ol>
+  <li>Open the capture file. The graph editor loads the SigMF data.</li>
+  <li>Add a Frequency Translation block to bring the band of interest to baseband.</li>
+  <li>Add a Decimator block to drop the rate to 4 megasamples per second.</li>
+  <li>Add a Root Raised Cosine matched filter block with rolloff 0.35.</li>
+  <li>Add a Symbol Clock Recovery block with Mueller-Muller algorithm.</li>
+  <li>Add a Carrier Tracking block with decision-directed Costas loop.</li>
+  <li>Add a QPSK Demodulator block.</li>
+  <li>Add an EVM Computer block, which displays the running EVM value and the constellation diagram.</li>
+</ol>
+
+<p>The graph runs in real time. EVM converges within tens of symbols. The constellation diagram shows the four QPSK clusters, each with a tight scatter that indicates good signal quality.</p>
+
+<p>Same analysis in Python:</p>
+
+<pre><code>import numpy as np
+from scipy.signal import resample_poly, lfilter
+from sigmf import sigmffile
+
+# Load capture
+handle = sigmffile.fromfile('qpsk_capture.sigmf-meta')
+fs = handle.get_global_field('core:sample_rate')
+iq = handle.read_samples()
+
+# Decimate to 4x symbol rate (1 Msps symbol -&gt; 4 Msps complex)
+decim = int(fs / 4e6)
+iq_dec = resample_poly(iq, 1, decim)
+
+# Matched filter (root raised cosine, beta=0.35, span=8 symbols)
+def rrc(beta, span_symbols, sps):
+    N = span_symbols * sps
+    t = np.arange(-N//2, N//2 + 1) / sps
+    h = np.zeros_like(t)
+    for i, ti in enumerate(t):
+        if ti == 0:
+            h[i] = 1 - beta + 4*beta/np.pi
+        elif abs(ti) == 1/(4*beta):
+            h[i] = (beta/np.sqrt(2)) * (
+                (1 + 2/np.pi)*np.sin(np.pi/(4*beta)) +
+                (1 - 2/np.pi)*np.cos(np.pi/(4*beta)))
+        else:
+            num = np.sin(np.pi*ti*(1-beta)) + 4*beta*ti*np.cos(np.pi*ti*(1+beta))
+            den = np.pi*ti*(1 - (4*beta*ti)**2)
+            h[i] = num/den
+    return h / np.sqrt(np.sum(h**2))
+
+mf_taps = rrc(0.35, 8, 4)
+iq_filtered = lfilter(mf_taps, 1, iq_dec)
+
+# Symbol decision (4x oversampled, simple decimation for clean signals)
+sps = 4
+symbols = iq_filtered[::sps]
+
+# Decision: nearest QPSK constellation point
+qpsk_points = np.array([1+1j, 1-1j, -1+1j, -1-1j]) / np.sqrt(2)
+decisions = qpsk_points[np.argmin(np.abs(symbols[:, None] - qpsk_points[None, :]), axis=1)]
+
+# Normalize and compute EVM
+symbols_n = symbols / np.sqrt(np.mean(np.abs(symbols)**2))
+decisions_n = decisions / np.sqrt(np.mean(np.abs(decisions)**2))
+error = symbols_n - decisions_n
+evm_rms = np.sqrt(np.mean(np.abs(error)**2))
+evm_db = 20 * np.log10(evm_rms)
+evm_pct = evm_rms * 100
+
+print(f"EVM: {evm_pct:.2f}% RMS, {evm_db:.1f} dB")</code></pre>
+
+<p>Run this on a clean SPECTRAN V6 PLUS capture and you get an EVM around 1 to 2 percent for a well-designed transmitter. Run it on a degraded signal and the number climbs into the 5 to 10 percent range.</p>
+
+<p>The same logic extends to QAM constellations of any size. Replace <code>qpsk_points</code> with a 16-QAM, 256-QAM, or 1024-QAM grid, and the rest of the code is identical.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: Pilot-Based EVM in OFDM</h3>
+<p>For OFDM systems (Wi-Fi, 5G NR), the EVM measurement uses pilot subcarriers carrying known data to estimate channel response and remove it before measuring per-subcarrier EVM. The pilot pattern is specified by the standard (4 pilots per 64-subcarrier symbol in Wi-Fi 6, scattered pilots in 5G NR). RTSA Suite PRO's standard-specific presets handle this automatically; rolling your own in Python is harder but tractable for simple pilot patterns.</p>
+</div>
+
+<h2>6.7 What Modulation Analysis Tells You About a System</h2>
+
+<p>Modulation analysis is not just a measurement. It is a diagnostic.</p>
+
+<p>If a 5G NR base station shows EVM well within spec, the transmitter is healthy. If it's drifting toward the limit over hours, something is heating up: a power amplifier, a crystal oven, a reference. If it's degrading at one specific frequency, the IF or LO chain has a problem at that frequency. If outer constellation points scatter more than inner ones, the PA is compressing.</p>
+
+<p>A field engineer with an RTSA can walk a cell site, measure EVM on the air, and diagnose problems before they show up as customer complaints. A factory test station can sweep EVM across temperature and supply voltage and reject parts that drift too much. A regulatory inspector can confirm that a transmitter meets emissions masks before granting type approval.</p>
+
+<p>In every case, the measurement is the same: capture I/Q, run the demodulation chain, compute EVM, examine the constellation. Different signal, different standard, same diagnostic. That is what makes the RTSA the right instrument for this work. Streaming I/Q, deterministic POI, and a software framework that runs the demodulation chain end-to-end. Hardware sees the signal; software extracts the meaning.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>The demodulation chain in an RTSA proceeds from channel selection through carrier acquisition, symbol clock recovery, equalization, symbol decision, error metrics, and (where applicable) data decoding.</li>
+  <li>Major digital modulation families are ASK, FSK, PSK, QAM, OFDM, and spread spectrum. Each has characteristic strengths and a typical use case.</li>
+  <li>Constellation diagrams plot received I/Q symbols against the ideal constellation points. EVM is the RMS error normalized by reference power.</li>
+  <li>The pattern of constellation scatter is diagnostic: thermal noise, phase noise, I/Q imbalance, PA compression, and clock errors each leave distinctive signatures.</li>
+  <li>Symbol clock recovery and carrier tracking are the two synchronization problems between the FFT and the constellation. Standard algorithms handle these in software.</li>
+  <li>Modern wireless standards (Wi-Fi 6/6E/7, BLE 5.x, 5G NR, LoRa, Zigbee) all reduce to the same demodulation chain with standard-specific parameters.</li>
+  <li>Aaronia RTSA Suite PRO supports BPSK through 4096-QAM, OFDM, and several spread-spectrum variants, covering every commercial wireless standard shipping in 2026.</li>
+  <li>A complete EVM measurement on a QPSK burst takes about 50 lines of Python, end-to-end from raw I/Q to numerical EVM.</li>
+  <li>Modulation analysis is a diagnostic tool, not just a measurement. The pattern of EVM degradation reveals the underlying hardware fault.</li>
+</ul>
+</div>
+
+<div class="quiz-cta">
+<div class="quiz-cta-num">End-of-Chapter Quiz</div>
+<h3>Check your understanding</h3>
+<p>The Chapter 6 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<a class="quiz-cta-btn" href="quiz-chapter-06.html">Take the interactive quiz &rarr;</a>
+</div>
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 7 dives into pulse, radar, and electronic warfare measurements. Pulse parameters, descriptor words, deinterleaving, frequency-agile and chirp radars, jammer characterization, counter-UAS RF signatures, and how the IsoLOG 3D DF antenna combined with SPECTRAN V6 PLUS is deployed in EW scenarios. This is the chapter that justifies the 10-nanosecond POI floor.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-05.html">&larr; Ch 5. FFT and Windowing</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-07.html">Ch 7. Pulse, Radar, and EW &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 12 Quiz &mdash; Quantum Computing Careers</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 12 &middot; Quiz</p>
+      <h1>Quantum Computing Careers</h1>
+      <p class="sub">Five questions. Write a real attempt before revealing the answer &mdash; the friction is the point.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~10 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Self-graded</span>
+      </div>
+    </header>
+
+    <div class="progress-strip">
+      <span>Progress</span>
+      <div class="bar"><div class="fill" id="progress-fill"></div></div>
+      <span class="count"><span id="answered-count">0</span> / <span id="total-count">5</span></span>
+    </div>
+
+    <section id="questions"></section>
+
+    <footer class="quiz-footer">
+      <div class="summary" id="summary">
+        Write an attempt for each question. Reveal the answer only after you've committed to one.
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="12-careers.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="13-landscape-now.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it with a pen too.</p>
+  </main>
+
+  <script>
+    /* ----- localStorage persistence ----- */
+    const STORAGE_KEY = "qc-quiz-progress-v1";
+    const __m = location.pathname.match(/quiz-(\d{2})-/);
+    const CHAPTER_KEY = __m ? "chapter-" + __m[1] : "chapter-XX";
+    const CHAPTER_LABEL = (document.querySelector(".quiz-header h1") || {}).textContent || CHAPTER_KEY;
+    function __loadAll()  { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e) { return {}; } }
+    function __saveAll(d) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch(e) {} }
+    function __loadChapter() {
+      const all = __loadAll();
+      return all[CHAPTER_KEY] || { title: CHAPTER_LABEL, questions: {}, updatedAt: null };
+    }
+    function __saveChapter(state) {
+      const all = __loadAll();
+      state.title = CHAPTER_LABEL;
+      state.updatedAt = new Date().toISOString();
+      all[CHAPTER_KEY] = state;
+      __saveAll(all);
+    }
+    let __chapterState = __loadChapter();
+    let __saveTimer = null;
+    function __debouncedSave() {
+      clearTimeout(__saveTimer);
+      __saveTimer = setTimeout(() => __saveChapter(__chapterState), 350);
+    }
+    function __ensureQ(n, q, a) {
+      if (!__chapterState.questions[n]) __chapterState.questions[n] = { q: q, a: a };
+      else { __chapterState.questions[n].q = q; __chapterState.questions[n].a = a; }
+      return __chapterState.questions[n];
+    }
+
+    const QUESTIONS = [
+      {n: 1, q: 'Hiring managers in quantum computing most often cite which single attribute as the most important for someone entering the field?', a: 'Curiosity, paired with the confidence to ask questions and ask for help. Specific credentials matter less than the willingness to keep learning in a fast-changing field.'},
+      {n: 2, q: 'Which category represents the largest share of quantum computing jobs today: theory, hardware, or software?', a: 'Software. Writing quantum programs, building compilers and simulators, developing error-mitigation tools, and creating developer tooling is the largest single category, and it builds on ordinary classical software skills.'},
+      {n: 3, q: 'Roughly how large is the current global quantum workforce, and how does it compare to projected demand by 2030?', a: 'The global quantum workforce is roughly 30,000 people, while forecasts project on the order of 250,000 roles by 2030, meaning demand far outstrips the current supply of qualified people [1].'},
+      {n: 4, q: 'Name two free or open-source platforms a beginner can use to learn quantum programming on real hardware or simulators.', a: 'Any two of: IBM Qiskit, Google Cirq, Xanadu PennyLane, Microsoft Q# / Azure Quantum, Amazon Braket. Each offers free tutorials and access to simulators or real hardware.'},
+      {n: 5, q: 'Why does the current quantum job market favor candidates, and what is an "expression of interest" as used by quantum employers?', a: 'There are several open positions for every qualified candidate, so employers compete for talent. An expression of interest is an open invitation many quantum employers extend, encouraging candidates to reach out and describe their skills even when no posted role exactly matches, after which technical leaders review the message.'}
+    ];
+    const MIN_ATTEMPT_CHARS = 4;
+    const ACCENT_PALETTE = [
+      ["var(--bnc-deep-navy)",  "var(--bnc-light-cyan)"],
+      ["var(--bnc-sky-blue)",   "#cbe7f5"],
+      ["var(--bnc-deep-plum)",  "#d9c7e6"],
+      ["var(--bnc-warm-amber)", "#f4dba6"],
+      ["var(--bnc-charcoal)",   "#c8d0d6"]
+    ];
+
+    const root = document.getElementById("questions");
+    document.getElementById("total-count").textContent = QUESTIONS.length;
+
+    QUESTIONS.forEach((Q, idx) => {
+      const [accent, accentLight] = ACCENT_PALETTE[idx % ACCENT_PALETTE.length];
+      const card = document.createElement("article");
+      card.className = "q-card";
+      card.id = "q-" + Q.n;
+      card.style.borderLeftColor = accent;
+      card.innerHTML = `
+        <div class="q-head">
+          <div class="q-badge" aria-hidden="true" style="background:${accent};box-shadow:0 0 0 4px ${accentLight}, 0 0 0 5px ${accent};">${Q.n}</div>
+          <div class="q-text">${escapeHtml(Q.q)}</div>
+        </div>
+        <div class="q-body">
+          <textarea class="q-attempt" placeholder="Type your answer here. Even a guess is fine — the act of writing it changes how the answer lands when you reveal it."></textarea>
+          <div class="q-actions">
+            <button class="q-reveal-btn" disabled style="background:${accent};">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              Reveal answer
+            </button>
+            <span class="q-reveal-hint">Write at least ${MIN_ATTEMPT_CHARS} characters to unlock the answer.</span>
+          </div>
+          <div class="q-answer" aria-live="polite" style="border-left-color:${accent};">
+            <p class="label" style="color:${accent};">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Answer
+            </p>
+            <p class="text">${escapeHtml(Q.a)}</p>
+            <div class="self-grade">
+              <span>How did you do?</span>
+              <button class="grade-btn" data-grade="got-it">Got it</button>
+              <button class="grade-btn" data-grade="close">Got close</button>
+              <button class="grade-btn" data-grade="missed">Missed</button>
+            </div>
+          </div>
+        </div>
+      `;
+      root.appendChild(card);
+
+      const ta = card.querySelector(".q-attempt");
+      const btn = card.querySelector(".q-reveal-btn");
+      const hint = card.querySelector(".q-reveal-hint");
+      const ans = card.querySelector(".q-answer");
+      const grades = card.querySelectorAll(".grade-btn");
+      const __prior = __chapterState.questions[Q.n];
+      if (__prior) {
+        if (__prior.attempt) {
+          ta.value = __prior.attempt;
+          if (ta.value.trim().length >= MIN_ATTEMPT_CHARS) {
+            btn.disabled = false;
+            hint.textContent = "Ready when you are.";
+            hint.style.color = "var(--bnc-target-green)";
+          }
+        }
+        if (__prior.revealed) {
+          ans.classList.add("show");
+          btn.disabled = true;
+          btn.textContent = "Answer revealed";
+          ta.readOnly = true;
+          card.classList.add("answered");
+          card.style.borderLeftColor = "var(--bnc-target-green)";
+        }
+        if (__prior.grade) {
+          grades.forEach(g => { if (g.dataset.grade === __prior.grade) g.classList.add("selected"); });
+          card.dataset.grade = __prior.grade;
+        }
+      }
+
+      ta.addEventListener("input", () => {
+        const ok = ta.value.trim().length >= MIN_ATTEMPT_CHARS;
+        btn.disabled = !ok;
+        if (ok) {
+          hint.textContent = "Ready when you are.";
+          hint.style.color = "var(--bnc-target-green)";
+        } else {
+          hint.textContent = `Write at least ${MIN_ATTEMPT_CHARS} characters to unlock the answer.`;
+          hint.style.color = "var(--bnc-deep-plum)";
+        }
+        const __qs = __ensureQ(Q.n, Q.q, Q.a);
+        __qs.attempt = ta.value;
+        __debouncedSave();
+      });
+
+      btn.addEventListener("click", () => {
+        ans.classList.add("show");
+        btn.disabled = true;
+        btn.textContent = "Answer revealed";
+        ta.readOnly = true;
+        card.classList.add("answered");
+        card.style.borderLeftColor = "var(--bnc-target-green)";
+        const __qsR = __ensureQ(Q.n, Q.q, Q.a);
+        __qsR.attempt = ta.value;
+        __qsR.revealed = true;
+        __qsR.revealedAt = new Date().toISOString();
+        __saveChapter(__chapterState);
+        updateProgress();
+      });
+
+      grades.forEach(g => g.addEventListener("click", () => {
+        grades.forEach(x => x.classList.remove("selected"));
+        g.classList.add("selected");
+        card.dataset.grade = g.dataset.grade;
+        const __qsG = __ensureQ(Q.n, Q.q, Q.a);
+        __qsG.grade = g.dataset.grade;
+        __saveChapter(__chapterState);
+        updateProgress();
+      }));
+    });
+    updateProgress();
+
+    function updateProgress() {
+      const total = QUESTIONS.length;
+      const answered = document.querySelectorAll(".q-card.answered").length;
+      document.getElementById("answered-count").textContent = answered;
+      document.getElementById("progress-fill").style.width = ((answered / total) * 100) + "%";
+
+      if (answered === total) {
+        const tally = { "got-it": 0, "close": 0, "missed": 0 };
+        document.querySelectorAll(".q-card").forEach(c => {
+          if (c.dataset.grade) tally[c.dataset.grade] = (tally[c.dataset.grade] || 0) + 1;
+        });
+        const graded = tally["got-it"] + tally.close + tally.missed;
+        const sumEl = document.getElementById("summary");
+        if (graded === total) {
+          sumEl.innerHTML =
+            `<b>You got ${tally["got-it"]} cleanly, were close on ${tally.close}, and missed ${tally.missed}.</b> ` +
+            `Re-read the chapter sections covering the missed ones — they're the highest-leverage rereads.`;
+        } else {
+          sumEl.innerHTML = `<b>All ${total} revealed.</b> Self-grade each one to get a recommended re-read.`;
+        }
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, c => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      ));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>08-selection</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">08-selection</h1>
+</header>
+<h1 id="chapter-8---choosing-the-scintillator-for-your-application">Chapter 8 - Choosing the scintillator for your application</h1>
+<p>No scintillator has all the desirable properties at once. High light yield trades against decay time. High density trades against energy resolution. Hygroscopic materials offer high yield and need expensive packaging. Non-hygroscopic materials simplify packaging and tend to have either lower yield or longer decay. Picking the right scintillator for an application is the working task of the detector engineer, and it is the most consequential decision in the whole detector design.</p>
+<p>This chapter is the decision framework. The materials catalog in Chapter 3 and the photodetector matching in Chapter 6 supply the inputs. This chapter supplies the order in which to ask the questions.</p>
+<h2 id="the-five-questions-in-order">8.1 The five questions, in order</h2>
+<p>Five questions, in order. The first three eliminate most of the catalog. The last two narrow what remains.</p>
+<p><strong>1. What is the radiation, and what is its energy.</strong> Gamma below 100 keV, gamma above 100 keV, gamma above 1 MeV, alpha, beta, neutron, mixed, pulsed beam. Each pushes toward different materials. Low-energy X-rays favor thin, low-Z scintillators with thin entrance windows. Mid-energy gamma is the broad NaI(Tl) and CsI(Tl) territory. High-energy gamma favors high-Z dense materials (BGO, LYSO, GAGG:Ce). Charged particles favor low-Z (plastic, CaF2:Eu, YAP:Ce). Neutrons require a converter (6Li, 10B, 157Gd) and may be combined with gamma in a single elpasolite crystal.</p>
+<p><strong>2. What is the count rate.</strong> Below a few thousand counts per second, decay time barely matters. Above 100 kHz, slow scintillators (NaI(Tl), CsI(Tl), Cs2HfCl6, SrI2:Eu) drop out and the field narrows to materials with sub-100-nanosecond decay. At MHz rates and above, only the fastest materials work: LYSO, GAGG:Ce,Mg, LuAG:Pr, BaF2 fast component, plastic.</p>
+<p><strong>3. What is the operating environment.</strong> Temperature, vibration, humidity, ambient radiation, vacuum, magnetic field. Down-hole temperature pushes to CsI(Na) or Ce-doped materials. Marine humidity pushes away from hygroscopic. Strong magnetic fields push away from PMT readout. Vacuum pushes away from optical coupling that outgases. High ambient radiation pushes to radiation-hard materials (CeBr3, YAP:Ce, GAGG:Ce).</p>
+<p><strong>4. What is the required size and geometry.</strong> The scintillator has to be available in the size and shape needed. NaI(Tl) is available in arbitrary sizes up to 400 mm diameter. LaBr3:Ce, CeBr3, and the elpasolites have practical size limits set by crystal growth (typically a few inches at the high end as of 2026). Cs2HfCl6 is currently limited to roughly 30 mm cubes. Custom geometries (wells, slabs, annular shapes) cost more time and money and may not be available in the newer materials. Ask the size question before you fall in love with a material.</p>
+<p><strong>5. What is the budget.</strong> Cost per gram varies by orders of magnitude across the catalog. Plastic is the cheapest, NaI(Tl) is moderate, CsI(Tl) is moderate, LaBr3:Ce and CeBr3 and CLLBC are expensive, SrI2:Eu and Cs2HfCl6 are expensive at scale, BGO and LYSO are moderate-to-expensive. For a single instrument, budget rarely binds. For a fleet of 1000 portal monitors, budget is the binding constraint and often pushes the design back to plastic.</p>
+<h2 id="the-decision-tree">8.2 The decision tree</h2>
+<p>Figure 8.1 (rendered as a text decision tree) walks the most common path:</p>
+<pre><code>START: What is the radiation?
+   |
+   +- Gamma only -&gt; What energy?
+   |     |
+   |     +- &lt; 100 keV    -&gt; Thin NaI(Tl), CsI(Tl), CdTe, or CZT (semiconductor)
+   |     +- 100 keV-1 MeV -&gt; What count rate?
+   |     |     |
+   |     |     +- &lt; 100 kHz -&gt; NaI(Tl), CsI(Tl), or for high resolution: LaBr3:Ce, CeBr3, SrI2:Eu, Cs2HfCl6
+   |     |     +- &gt; 100 kHz -&gt; LYSO:Ce, GAGG:Ce,Mg, LaBr3:Ce, CeBr3
+   |     +- &gt; 1 MeV       -&gt; High Z: BGO, LYSO:Ce, GAGG:Ce, CdWO4
+   |
+   +- Charged particles -&gt; Alpha or beta?
+   |     +- Alpha -&gt; ZnS:Ag screen, thin CsI(Tl), thin plastic
+   |     +- Beta  -&gt; Plastic, CaF2:Eu, YAP:Ce (low Z, thin window)
+   |     +- MIPs  -&gt; Plastic bars, long crystal arrays
+   |
+   +- Neutrons -&gt; Thermal or fast?
+   |     +- Thermal only        -&gt; 6LiI(Eu), 6Li-glass, 6LiF/ZnS(Ag), or boron-loaded plastic for large area
+   |     +- Combined gamma + n  -&gt; CLLBC, CLYC, CLLB
+   |     +- Fast neutron        -&gt; PSD plastic, liquid (BC-501A), stilbene
+   |
+   +- Mixed / unknown   -&gt; Dual-mode (CLLBC) or two separate detectors
+   |
+   +- Pulsed beam (HEP) -&gt; LYSO:Ce, GAGG:Ce,Mg, BGO, plastic, or PbWO4 (high rate)</code></pre>
+<p>The decision tree gets you to a candidate material set in two or three branches. The remaining narrowing comes from the photodetector match (Chapter 6), the size and cost constraints, and any application-specific concerns (low background, radiation hardness, dual-mode operation).</p>
+<blockquote>
+<p><strong>Going Deeper - Multi-criteria decision making with figures of merit</strong></p>
+<p>When two materials look comparable on the primary axis, a multi-criteria figure of merit can break the tie. The general form weights each property by its importance to the application:</p>
+<p>FOM = sum_i (w_i * P_i / P_i_ref)</p>
+<p>where P_i is the candidate material’s value for property i, P_i_ref is the reference (often NaI(Tl)) value, and w_i is the application-specific weight. For a homeland-security handheld instrument, weights might be: light yield 0.30, energy resolution 0.30, decay time 0.10, density 0.10, ruggedness 0.20. For a TOF-PET ring, weights would shift dramatically: timing 0.40, density 0.30, light yield 0.15, decay time 0.15. The exercise of explicitly writing down the weights forces a useful conversation with the application stakeholders about what really matters. The numerical answer at the end is less important than the discussion the exercise generates.</p>
+</blockquote>
+<figure>
+<img src="../figures/fig-08-01-decision-tree.svg" alt="" /><figcaption>Figure 8.1 - The selection decision tree. Question 1 (radiation type) is at the top; questions 2-5 (rate, environment, size, budget) cut across the candidates.</figcaption>
+</figure>
+<h2 id="worked-examples">8.3 Worked examples</h2>
+<p>Four worked examples, drawn from the most common applications.</p>
+<h3 id="handheld-isotope-identifier">8.3.1 Handheld isotope identifier</h3>
+<p><strong>Requirements.</strong> Field-portable, gamma spectroscopy with isotope identification, energy resolution sufficient to distinguish K-40 from Cs-137 from natural uranium decay products, operates outdoors in -20 to +50 degrees Celsius, battery powered, drop tested.</p>
+<p><strong>Decision path.</strong> Gamma above 100 keV, low to moderate count rate, harsh outdoor environment, modest size (1.5 inch by 1.5 inch typical). The competitive materials are NaI(Tl) (low cost, modest resolution), LaBr3:Ce (high resolution, La-138 background), CeBr3 (high resolution, no intrinsic background), CLLBC (dual gamma/neutron). The choice depends on cost ceiling and whether neutron detection is in scope. For a moderate-cost gamma-only instrument with high resolution, CeBr3 is the modern default. For dual-mode at higher cost, CLLBC. For a low-cost instrument, NaI(Tl) coupled to a SiPM array.</p>
+<p><strong>Decided.</strong> CeBr3 1.5 inch by 1.5 inch coupled to a NUV-HD SiPM array, with active temperature compensation in firmware, in a drop-tested housing with USB or Bluetooth readout to a smartphone app.</p>
+<h3 id="down-hole-well-logging-tool">8.3.2 Down-hole well-logging tool</h3>
+<p><strong>Requirements.</strong> Tool diameter is fixed at 1.75 inches. Operating temperature 25 to 175 degrees Celsius. Operating period in tool 6 to 12 hours per run. Vibration and shock during deployment. Gamma spectroscopy for natural radioactivity (K-40, U, Th decay chains) and for tracer logging. Modest energy resolution acceptable.</p>
+<p><strong>Decision path.</strong> Gamma in the 30 keV to 3 MeV range. Count rate moderate. Temperature is the binding constraint: NaI(Tl) is marginal above 130 C, CsI(Na) is good to 175 C. Vibration argues for the more rugged CsI(Tl) or CsI(Na) over NaI(Tl). PMT readout has been the historical default; modern tools increasingly use SiPM with active cooling.</p>
+<p><strong>Decided.</strong> CsI(Na) 1 inch by 4 inches in a sealed housing, coupled to a high-temperature PMT or to a SiPM array with thermoelectric cooling, with the full pulse height spectrum recorded as list-mode data for post-run analysis.</p>
+<h3 id="time-of-flight-pet-ring-module">8.3.3 Time-of-flight PET ring module</h3>
+<p><strong>Requirements.</strong> Coincidence resolving time below 250 picoseconds. Stopping power for 511 keV annihilation photons in compact crystal volume. Fast decay for high count rate. Mass-produced array of pixels with sub-millimeter pitch.</p>
+<p><strong>Decision path.</strong> High-Z material is required for 511 keV stopping power. Fast decay rules out NaI(Tl), CsI(Tl), and BGO. The dominant material is LYSO:Ce. GAGG:Ce,Mg is competitive on timing in the latest detector modules. Photodetector must be a fast SiPM or digital silicon photomultiplier.</p>
+<p><strong>Decided.</strong> LYSO:Ce 4 mm by 4 mm by 20 mm pixels in an 8x8 or 12x12 array, coupled one-to-one to a NUV-HD digital SiPM array with picosecond-accuracy timestamping.</p>
+<h3 id="neutron-portal-monitor-at-a-port-of-entry">8.3.4 Neutron portal monitor at a port of entry</h3>
+<p><strong>Requirements.</strong> Pedestrian or vehicle drive-through, large active area, sensitivity to thermal and fast neutrons from special nuclear material, gamma rejection by pulse shape discrimination, all-weather operation, low cost per unit area for a deployed fleet.</p>
+<p><strong>Decision path.</strong> Large area at low cost. Plastic scintillator is the only material that scales economically. Boron-loaded plastic for thermal sensitivity, or PSD-capable plastic for fast neutron and gamma-rejection. 6LiF/ZnS(Ag) screens for the highest thermal sensitivity at higher cost. CLLBC for combined gamma-neutron at the highest cost.</p>
+<p><strong>Decided.</strong> PSD-capable plastic scintillator panels, 1 meter by 2 meters by 5 cm thick, read out by multi-anode PMTs at the panel ends, with digital pulse processors performing real-time PSD and producing alerts on neutron-flagged events.</p>
+<h2 id="what-the-decision-tree-does-not-capture">8.4 What the decision tree does not capture</h2>
+<p>Three application classes that do not follow the standard decision-tree logic.</p>
+<p><strong>Low-background experiments</strong> (dark matter, neutrinoless double-beta decay, rare-event searches) push to materials with the lowest intrinsic radioactivity. La-138 in LaBr3:Ce is a problem here; CeBr3 is preferred. Even CeBr3 is too active for the most demanding searches, which use scintillators specifically purified or grown from depleted feedstock. Ultra-low-background CdWO4 has been used in some neutrinoless double-beta decay experiments.</p>
+<p><strong>Cryogenic applications</strong> (dark matter detection at millikelvin temperatures, ultra-high-resolution X-ray spectroscopy) replace the photodetector with a transition-edge sensor or other thermal-readout device. The scintillator material requirements shift toward materials with high light yield at low temperature, which often means CaWO4 or NaI at cryogenic temperatures. The standard decision tree does not apply.</p>
+<p><strong>Calibration and reference standards.</strong> When the application is to provide a reference signal at a known energy, the decision is driven by how well the candidate material’s calibration is established in the literature, the stability of its response over years of operation, and the availability of reference samples for inter-comparison. NaI(Tl) and CsI(Tl) dominate this niche because of their long history of characterization.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Bring two materials to the table, then choose</strong></p>
+<p>The discipline that separates an experienced applications engineer from a beginner is bringing two competing candidate materials to the customer conversation, not one. The first proposal might be optimal on paper. The second exists to surface what the customer values that the spec sheet missed: cost, schedule, integration ease, regulatory familiarity, the supply-chain story behind the material. Half the time the customer picks the second one for reasons that did not appear in the original requirements document. The other half they pick the first one with more confidence because the comparison was visible. Either way the conversation is better.</p>
+</div>
+<h2 id="why-this-chapter-is-the-most-consequential-decision">8.5 Why this chapter is the most consequential decision</h2>
+<p>A wrong material choice cannot be fixed downstream. A 1 percent FWHM scintillator paired with a noisy preamplifier delivers 1 percent FWHM. A 7 percent FWHM scintillator paired with a perfect preamplifier still delivers 7 percent FWHM. The scintillator sets the ceiling. Every other element in the chain sets the floor between zero and the ceiling. The selection chapter is short, but the decisions it captures shape every other engineering decision that follows.</p>
+<h2 id="chapter-8-quiz">Chapter 8 Quiz</h2>
+<ol type="1">
+<li>List the five questions that should be asked, in order, when selecting a scintillator for a new application.</li>
+<li>For a high-rate application above 1 MHz, which scintillator family is ruled out first.</li>
+<li>What is the dominant scintillator choice for a TOF-PET ring module, and why.</li>
+<li>A low-background dark matter experiment cannot use LaBr3:Ce. Why.</li>
+<li>Why is plastic scintillator the right choice for a large-area neutron portal monitor despite its modest light yield.</li>
+</ol>
+<h3 id="quiz-answers">Quiz answers</h3>
+<ol type="1">
+<li><ol type="1">
+<li>What is the radiation and its energy. (2) What is the count rate. (3) What is the operating environment. (4) What is the required size and geometry. (5) What is the budget.</li>
+</ol></li>
+<li>The slow scintillators with microsecond-scale decay times: NaI(Tl), CsI(Tl), Cs2HfCl6, SrI2:Eu. They cannot resolve adjacent events at MHz rates without pile-up.</li>
+<li>LYSO:Ce. It combines high density (7.20 g/cc) for stopping 511 keV annihilation photons in compact pixel volume, fast decay (40 ns), and good light yield. GAGG:Ce,Mg is competitive in the latest modules.</li>
+<li>The intrinsic La-138 background contributes a continuous beta and gamma signal that overwhelms the rare-event signature being searched for.</li>
+<li>Cost per square meter scales economically with plastic in a way that no inorganic crystal does. The modest light yield is acceptable when the application is screening for “is anything there” rather than identification of a specific isotope.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] G. F. Knoll, <em>Radiation Detection and Measurement</em>, 4th ed. Hoboken, NJ: Wiley, 2010.</p>
+<p>[2] T. Yanagida, “Inorganic scintillating materials and scintillation detectors,” <em>Proc. Jpn. Acad. Ser. B</em>, vol. 94, pp. 75-97, 2018.</p>
+<p>[3] M. Kapusta et al., “Properties of CLLBC scintillator: A combined gamma and neutron detector,” in <em>Proc. IEEE NSS-MIC 2023</em>, Vancouver, 2023.</p>
+<p>[4] S. Vandenberghe et al., "Recent developments in time-of-flight</p>
+</body>
+</html>

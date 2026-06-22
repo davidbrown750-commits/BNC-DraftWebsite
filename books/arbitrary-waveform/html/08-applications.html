@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 8: Applications</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+  .section-kick{font-family:"Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:2.5px;font-size:12px;font-weight:700;color:var(--bnc-sky-blue);margin:0 0 2px;}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<p class="section-kick" id="section-3-applications-selection-and-reference">Section 3 &middot; Applications, Selection, and Reference</p>
+
+<h2 id="chapter-8-applications">Chapter 8: Applications</h2>
+
+<figure>
+<img src="../figures/chapter-08-opener.png" alt="A collage of arbitrary waveform generator use cases spanning radar, quantum computing control electronics, wireless test, and semiconductor automated test equipment" />
+<figcaption><span class="fig-num">Figure 8.1</span> The same instrument that drives a qubit can paint a radar threat scenario or stress a 5G receiver. An AWG is defined less by what it is than by the breadth of what it can be asked to produce.</figcaption>
+</figure>
+
+<p>The first two sections built the instrument from the ground up. You know how an AWG works, what its specifications mean, and how to turn an idea into a clean output. This final section turns outward. It asks where all of that capability actually gets used, how to choose the right instrument for a given job, and where to look things up when you are back at the bench.</p>
+
+<p>Chapter 8 surveys the applications: radar and electronic warfare, quantum computing, wireless and satellite test, semiconductor and component test, and the growing list of sensor-simulation uses. Chapter 9 turns that survey into a selection method, a structured way to map your requirements onto real instruments. Chapter 10 collects the practical performance tips and reference tables that experienced users keep close. Chapter 11 closes the book with the Berkeley Nucleonics AWG family and where each model fits.</p>
+
+<p>The thread running through this chapter is simple. Every application leans hard on a different subset of the specifications you studied in Chapter 3. Radar wants bandwidth and memory. Quantum work wants channels, timing, and quiet. Knowing which spec your problem actually stresses is the difference between buying the right instrument and overpaying for the wrong one.</p>
+
+<hr />
+
+<p>An arbitrary waveform generator is a general-purpose tool that earns its living in highly specialized places. The reason is consistent across every field that uses one. Real systems have to be tested against signals that are too complex, too precise, or too dangerous to capture in the wild on demand. A radar receiver needs to see threats that may not exist yet. A qubit needs a control pulse shaped to a fraction of a nanosecond. A 5G base station needs a waveform that is broken in a known, repeatable way. The AWG supplies all of these by playing back samples, which means any signal that can be described as numbers can be produced, measured against, and reproduced exactly tomorrow.</p>
+
+<p>This chapter walks through five application areas. For each one, the goal is concrete: what the AWG actually generates, which specifications matter most, and what gets tested as a result. By the end you should be able to look at a new problem and predict which column of the specification sheet it will stress.</p>
+
+<h3 id="radar-and-ew">8.1 Radar and Electronic Warfare</h3>
+
+<p>Radar and electronic warfare (EW) are the classic high-end AWG application, and they remain the most demanding. The instrument is asked to generate radar pulses, the linear frequency modulated (LFM) chirps inside those pulses, and entire multi-emitter threat environments where many signals overlap in time and frequency. These waveforms then drive a receiver, an electronic support measures (ESM) system, or a radar warning receiver so that engineers can verify it detects, classifies, and reacts correctly before anything flies.</p>
+
+<p><strong>What the AWG generates.</strong> Start with a single pulse. It has a carrier frequency, a pulse width, and a pulse repetition interval (PRI), the spacing between pulses. Inside the pulse, the carrier is usually modulated, most often as an LFM chirp that sweeps linearly from one frequency to another. That chirp is what gives modern radar its pulse-compression range resolution, and the compression gain depends on the time-bandwidth product of the pulse. Build several such pulse trains, each with its own frequency, PRI, and timing, interleave them, and you have a multi-emitter scenario that looks like a crowded, hostile sky.</p>
+
+<figure>
+<img src="../figures/fig-8-1-radar-chirp-scenario.svg" alt="Diagram of a pulsed LFM radar scenario showing a pulse train with pulse width and pulse repetition interval marked, and a zoomed view inside one pulse revealing a linear frequency modulated chirp" />
+<figcaption><span class="fig-num">Figure 8.2</span> A pulsed LFM radar scenario. The top panel sets pulse width and PRI; the zoom reveals the chirp inside a single pulse. One AWG with enough bandwidth and memory synthesizes the whole thing, then interleaves several to build a multi-emitter environment.</figcaption>
+</figure>
+
+<p><strong>Which specs matter.</strong> Three dominate. Wide bandwidth comes first, because modern radar and EW signals occupy hundreds of megahertz to several gigahertz, and the AWG must cover the chirp bandwidth and the carrier in real time or as an upconverted band. Deep memory comes second, because a realistic threat scenario is long and varied, and playing it without obvious repetition demands a large sample budget. Multi-channel operation comes third, because phased-array work and angle-of-arrival testing need several outputs that stay phase-coherent. A phased array steers its beam by applying precise phase offsets across its elements, and to test the electronics behind it you feed each element a copy of the signal with a controlled phase, which only synchronized channels can deliver.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> The hardest part of EW scenario generation is rarely a single waveform. It is keeping a long, dense environment from looping audibly. A receiver under test that is smarter than your scenario will lock onto the repetition period and flag it. Deep memory buys you a longer non-repeating window, and good sequencing lets you stitch segments so the seams do not line up. Plan the memory budget around the longest dwell you need to defeat, not the average.</p></blockquote>
+
+<p><strong>What gets tested.</strong> Receiver sensitivity, the ability to detect a weak pulse buried in noise. Pulse classification, the ability to sort emitters by their parameters. Reaction time, how quickly the system responds once a threat appears. And dynamic range, whether a strong nearby emitter blinds the receiver to a weak distant one. All of these need a stimulus that is both realistic and known, which is exactly what a memory-based generator provides.</p>
+
+<h3 id="quantum-computing">8.2 Quantum Computing and Physics</h3>
+
+<p>Quantum computing has become one of the most exacting AWG applications, and it stresses a very different set of specifications than radar does. Here the AWG generates the shaped control pulses that manipulate qubits. A superconducting qubit is driven by microwave pulses, often pre-shaped as Gaussian or DRAG envelopes to suppress leakage into unwanted energy levels. A trapped-ion qubit is addressed with precisely timed radio-frequency and laser-control signals. In both cases the pulse shape, amplitude, and phase determine whether a gate operation succeeds or quietly corrupts the computation.</p>
+
+<p><strong>Which specs matter.</strong> Channel count and synchronization dominate. A useful quantum processor has many qubits, each needing one or more control and readout lines, so the AWG must provide many channels that share a common clock and start together. Timing and skew are the next constraint. The relative delay between channels must be controlled to picoseconds, because a two-qubit gate depends on two pulses arriving in a precise temporal relationship. Low noise is the third. Every millivolt of spurious noise on a control line is a small rotation error on the qubit, and those errors accumulate across a deep circuit. Sample rate and bandwidth matter too, but they are usually in service of clean, well-defined pulse edges rather than raw frequency reach.</p>
+
+<blockquote><p><strong>Pro tip.</strong> In multi-qubit work, channel-to-channel skew is the spec that quietly limits your gate fidelity long before noise does. Measure it directly with a fast scope rather than trusting the datasheet number across your exact cable set. A few extra picoseconds of mismatch on one line, added by a longer cable run, can be the difference between a calibrated gate and one that needs constant re-tuning.</p></blockquote>
+
+<p><strong>What gets tested, and where else this shows up.</strong> The qubits themselves, in the sense that the AWG is part of the control stack rather than the device under test. The same demands appear across experimental physics. Nuclear magnetic resonance (NMR) spectroscopy uses shaped RF pulse sequences to manipulate nuclear spins, and the quality of the spectrum depends directly on pulse fidelity. Particle physics, optics, and ultrafast laser experiments lean on AWGs for the same reason: when an experiment hinges on a signal that must be exactly shaped and exactly timed, a memory-based generator is the natural source.</p>
+
+<h3 id="wireless-and-satellite">8.3 Wireless and Satellite Communications</h3>
+
+<p>Wireless and satellite communications testing is where AWGs meet the modern modulated waveform head-on. The instrument generates baseband and IQ signals for standards like 5G NR, Wi-Fi, and satellite communications (satcom). It produces the in-phase and quadrature (I and Q) components that, once upconverted, become the complex modulated carrier the standard defines. Two synchronized channels feed an external IQ modulator, or a wideband single channel produces the signal directly at an intermediate frequency.</p>
+
+<p><strong>Which specs matter.</strong> Sample rate and bandwidth lead, because modern standards are wide. A 5G NR channel can occupy 100 MHz or more, and producing it cleanly needs sample rate well above twice that, with bandwidth to match. Memory matters for long, statistically realistic test sequences and for captured-environment playback. Channel count matters for IQ pairs and for multiple-input multiple-output (MIMO) work, where several spatial streams must be generated coherently. Noise and spectral purity matter because the test signal must be cleaner than the receiver you are trying to characterize, or you cannot tell the receiver's flaws from your own.</p>
+
+<p><strong>What gets tested.</strong> Two complementary jobs. First, standard-compliant generation, where the AWG produces a textbook-perfect waveform to confirm a receiver meets the specification. Second, and often more revealing, impaired-signal generation. Here you deliberately add known impairments, IQ imbalance, phase noise, frequency offset, fading, or interference, and watch how the receiver copes. A receiver that passes on a clean signal but falls apart under a 2 percent error vector magnitude has told you something a compliance test never would. The AWG also shines at wideband scenario playback, replaying a recorded RF environment so a one-off field failure becomes a repeatable bench test.</p>
+
+<h3 id="semiconductor-and-component-test">8.4 Semiconductor and Component Test</h3>
+
+<p>Semiconductor and component test is the high-volume, high-throughput end of the AWG world. The instrument supplies precise, repeatable stimulus to characterize devices: analog-to-digital converters (ADCs) and digital-to-analog converters (DACs), high-speed serial links, automotive sensors, and discrete components inside automated test equipment (ATE). The defining demand here is not a single exotic waveform. It is precision and repeatability delivered fast enough to keep a production line moving.</p>
+
+<p><strong>Which specs matter.</strong> Sample rate and amplitude accuracy lead, because characterizing a data converter means presenting it with a stimulus whose properties are known to better resolution than the device itself. To measure an ADC's effective number of bits, the test tone must be cleaner than the ADC. Bandwidth matters for serial-link and high-speed work. Channel count matters when a single test handles multiple device pins or differential pairs at once. Above all, throughput matters: in ATE, every millisecond of test time is multiplied by millions of parts, so fast waveform switching and tight sequencing translate directly into cost.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> In ATE the spec that pays for itself is not peak performance, it is settling and switching time. A generator that produces a beautiful waveform but takes a long time to change between test segments will throttle a whole line. Look at how fast the instrument moves from one waveform to the next under sequencer control, and how repeatable that transition is part to part. That number, multiplied by your volume, is the real cost.</p></blockquote>
+
+<p><strong>What gets tested.</strong> Converter linearity, noise, and dynamic performance. Serial-link integrity, often with deliberately added jitter or stress patterns. Sensor response across temperature and supply conditions. The Berkeley Nucleonics Model 686 is positioned for semiconductor testing, pairing high real-time update rate and wide bandwidth with the synchronized analog and digital lines that complex device characterization tends to require. As always, confirm current specifications against the datasheet at berkeleynucleonics.com before you design a test plan around any number.</p>
+
+<h3 id="emerging">8.5 Sensor Simulation and Emerging Uses</h3>
+
+<p>The last category is the fastest growing, and it is unified by a single idea: simulating a sensor's input so a system can be tested without the real-world stimulus. Rather than generating a signal a device emits, the AWG generates the signal a device expects to receive, standing in for the physical world.</p>
+
+<p><strong>Automotive radar and lidar emulation</strong> is the headline example. An automotive radar sensor expects echoes from cars, pedestrians, and guard rails. An AWG, often paired with a delay-and-Doppler front end, synthesizes those echoes so the sensor and its perception software can be validated against thousands of scripted scenarios in a lab, repeatably, without a test track. Lidar target emulation works on the same principle in the optical domain, generating return pulses with controlled delay and intensity.</p>
+
+<p><strong>Other emerging uses</strong> share the pattern. Ultrasound and medical imaging systems are driven and characterized with shaped transducer excitation waveforms. Optical and photonics control uses AWGs to drive modulators and shape optical pulses, where sample rate and bandwidth set the achievable optical signaling rate. Across all of these, the AWG is valued for the same reason it always is: when the stimulus has to be exact, repeatable, and arbitrary in shape, nothing else fills the role as cleanly.</p>
+
+<figure>
+<img src="../figures/fig-8-2-application-map.svg" alt="A matrix mapping five AWG application areas against the specifications they stress most: sample rate, bandwidth, channels, memory, and low noise, with filled, half, and open markers indicating primary, secondary, or non-limiting drivers" />
+<figcaption><span class="fig-num">Figure 8.3</span> Each application leans on a different mix of specifications. No single number wins every job, so the practical move is to read down the column your problem actually fills in.</figcaption>
+</figure>
+
+<p>The map above and the table below say the same thing two ways. Match the instrument to the specification your application actually stresses, not to the largest number on the brochure. A radar lab that buys for channel count and a quantum lab that buys for bandwidth will both be disappointed for opposite reasons.</p>
+
+<table>
+<thead>
+<tr><th>Application</th><th>What the AWG generates</th><th>Specs that matter most</th><th>What is tested</th></tr>
+</thead>
+<tbody>
+<tr><td>Radar &amp; EW</td><td>Pulses, LFM chirps, multi-emitter scenarios</td><td>Bandwidth, deep memory, multi-channel (phase coherence)</td><td>Receiver / ESM detection, classification, reaction, dynamic range</td></tr>
+<tr><td>Quantum &amp; physics</td><td>Shaped qubit control pulses; NMR pulse sequences</td><td>Channel count, tight timing/skew, low noise</td><td>Gate fidelity; spectroscopy and physics experiments</td></tr>
+<tr><td>Wireless &amp; satcom</td><td>Baseband / IQ for 5G NR, Wi-Fi, satcom</td><td>Sample rate, bandwidth, low noise, channels (MIMO)</td><td>Compliant and impaired-signal receiver test, scenario playback</td></tr>
+<tr><td>Semiconductor &amp; ATE</td><td>Precise repeatable stimulus for ADCs, DACs, serial links, sensors</td><td>Sample rate, amplitude accuracy, throughput / fast switching</td><td>Converter linearity, link integrity, sensor response</td></tr>
+<tr><td>Sensor sim &amp; emerging</td><td>Emulated radar / lidar echoes, ultrasound, optical control</td><td>Sample rate, bandwidth, scenario depth</td><td>Sensor and perception-system validation</td></tr>
+</tbody>
+</table>
+
+<p>Two lessons close the chapter. First, the AWG is rarely the device under test. It is the trusted source that makes everything else testable, which is why its own fidelity has to exceed the system it stimulates. Second, the right instrument is the one whose strongest specification matches your hardest requirement. The next chapter turns that principle into a repeatable selection method.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-08.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="07-triggering-synchronization-multichannel.html">&larr; 7. Triggering, Synchronization, and Multi-Channel</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="09-selecting-an-awg.html">9. Selecting an Arbitrary Waveform Generator &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

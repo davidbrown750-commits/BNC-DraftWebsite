@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Quiz Progress — RF Book</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <style>
+    .progress-page { max-width: 940px; margin: 32px auto 80px; padding: 0 28px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin: 22px 0 10px;
+    }
+    .stat {
+      background: var(--bnc-white);
+      padding: 18px 20px;
+      border-left: 4px solid var(--bnc-deep-navy);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .stat .num {
+      font-family: Helvetica, "Arial Black", sans-serif;
+      font-size: 28pt;
+      font-weight: 900;
+      color: var(--bnc-deep-navy);
+      line-height: 1;
+      display: block;
+    }
+    .stat .label {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9.5pt;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--bnc-charcoal);
+      margin-top: 6px;
+    }
+    .stat.green   { border-left-color: var(--bnc-target-green); }
+    .stat.green .num { color: #009b54; }
+    .stat.amber   { border-left-color: var(--bnc-warm-amber); }
+    .stat.amber .num { color: var(--bnc-warm-amber); }
+    .stat.plum    { border-left-color: var(--bnc-deep-plum); }
+    .stat.plum .num  { color: var(--bnc-deep-plum); }
+    .stat.sky     { border-left-color: var(--bnc-sky-blue); }
+    .stat.sky .num   { color: var(--bnc-sky-blue); }
+
+    .empty-state {
+      background: var(--bnc-white);
+      padding: 40px 32px;
+      border-left: 4px solid var(--bnc-deep-plum);
+      text-align: center;
+    }
+    .empty-state h2 {
+      color: var(--bnc-deep-navy);
+      border-left: none;
+      margin: 0 0 12px;
+      padding: 0;
+    }
+    .empty-state p { color: var(--bnc-charcoal); margin: 6px 0; }
+
+    .ch-card {
+      background: var(--bnc-white);
+      margin: 16px 0;
+      padding: 0;
+      border-left: 4px solid var(--bnc-charcoal);
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .ch-head {
+      padding: 16px 22px;
+      background: linear-gradient(90deg, #f5f9fc 0%, var(--bnc-white) 60%);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .ch-head h3 {
+      flex: 1;
+      margin: 0;
+      font-size: 14pt;
+      color: var(--bnc-deep-navy);
+    }
+    .ch-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      color: var(--bnc-white);
+      text-transform: uppercase;
+    }
+    .pill.green  { background: var(--bnc-target-green); color: var(--bnc-deep-navy); }
+    .pill.amber  { background: var(--bnc-warm-amber); }
+    .pill.plum   { background: var(--bnc-deep-plum); }
+    .pill.gray   { background: #aab7c0; }
+
+    .ch-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: var(--bnc-white);
+    }
+    .ch-card.open .ch-body { max-height: 5000px; }
+    .ch-body-inner { padding: 4px 22px 18px; }
+
+    .q-row {
+      padding: 14px 0;
+      border-top: 1px solid #e6ecf0;
+    }
+    .q-row:first-child { border-top: none; }
+    .q-num {
+      font-family: Helvetica, "Arial Black", sans-serif;
+      font-weight: 900;
+      color: var(--bnc-sky-blue);
+      margin-right: 8px;
+    }
+    .q-q {
+      font-family: Georgia, serif;
+      font-size: 11pt;
+      color: var(--bnc-deep-navy);
+      font-weight: 600;
+      margin: 0 0 6px;
+    }
+    .q-attempt-box, .q-answer-box {
+      font-family: Georgia, serif;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      padding: 8px 12px;
+      border-radius: 3px;
+      margin: 4px 0;
+    }
+    .q-attempt-box {
+      background: #f5f9fc;
+      border-left: 3px solid var(--bnc-sky-blue);
+      color: var(--bnc-charcoal);
+    }
+    .q-attempt-box .label,
+    .q-answer-box .label {
+      display: block;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 8.5pt;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--bnc-charcoal);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .q-answer-box {
+      background: #fff8ec;
+      border-left: 3px solid var(--bnc-warm-amber);
+      color: var(--bnc-charcoal);
+    }
+    .q-answer-box .label { color: var(--bnc-warm-amber); }
+    .q-grade-badge {
+      display: inline-block;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .q-grade-badge.got-it { background: var(--bnc-target-green); color: var(--bnc-deep-navy); }
+    .q-grade-badge.close  { background: var(--bnc-warm-amber); color: var(--bnc-white); }
+    .q-grade-badge.missed { background: var(--bnc-deep-plum); color: var(--bnc-white); }
+
+    .actions-row {
+      margin: 24px 0 12px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .actions-row button, .actions-row a.btn-link {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border: 2px solid var(--bnc-deep-navy);
+      color: var(--bnc-deep-navy);
+      background: var(--bnc-white);
+      cursor: pointer;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .actions-row button.primary,
+    .actions-row a.btn-link.primary {
+      background: var(--bnc-deep-navy);
+      color: var(--bnc-white);
+    }
+    .actions-row button.danger {
+      border-color: var(--bnc-deep-plum);
+      color: var(--bnc-deep-plum);
+    }
+    .actions-row button.danger:hover {
+      background: var(--bnc-deep-plum);
+      color: var(--bnc-white);
+    }
+    .actions-row button:hover, .actions-row a.btn-link:hover {
+      background: var(--bnc-warm-amber);
+      border-color: var(--bnc-warm-amber);
+      color: var(--bnc-white);
+    }
+    .recommend {
+      background: #f5f0fa;
+      border-left: 4px solid var(--bnc-deep-plum);
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .recommend h3 {
+      margin: 0 0 8px;
+      color: var(--bnc-deep-plum);
+      font-size: 13pt;
+    }
+    .recommend ul { margin: 6px 0 0; padding-left: 20px; }
+    .recommend li { margin: 4px 0; color: var(--bnc-charcoal); }
+
+    @media print {
+      .actions-row, .ch-head { cursor: default; }
+      .ch-card .ch-body { max-height: none !important; }
+      .ch-card { page-break-inside: avoid; }
+      body { background: white; }
+    }
+  </style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="progress-page">
+    <header class="quiz-header" style="margin-bottom: 0;">
+      <p class="crumb">Interactive Reference Guide · Progress</p>
+      <h1>My Quiz Progress</h1>
+      <p class="sub">Your multiple-choice scores across the book, in one place. Saved to this browser only, so you can clear it any time.</p>
+    </header>
+
+    <section id="content"></section>
+
+    <p class="footer-note" style="font-family: Helvetica, Arial, sans-serif; font-size: 9pt; color: var(--bnc-charcoal); text-align: center; margin-top: 30px; letter-spacing: 0.5px;">
+      © 2026 Berkeley Nucleonics Corporation · Progress is stored in your browser's localStorage on this device only.
+    </p>
+  </main>
+
+  <script>
+    // Per-book progress key written by the shared multiple-choice engine (quiz-mc.js).
+    // Shape: { "01": { score: N, total: M }, "02": { ... }, ... }
+    const STORAGE_KEY = "rf-quiz-progress";
+    const CHAPTERS = [
+      { key: "01", title: "1. Why RF, Why Now",                                       file: "01-why-rf-why-now.html",                 quiz: "quiz-01-why-rf-why-now.html" },
+      { key: "02", title: "2. RF Fundamentals",                                       file: "02-rf-fundamentals.html",                quiz: "quiz-02-rf-fundamentals.html" },
+      { key: "03", title: "3. The EM Spectrum and Signal Generation",                 file: "03-em-spectrum-signal-generation.html",  quiz: "quiz-03-em-spectrum-signal-generation.html" },
+      { key: "04", title: "4. Spectrum Analysis: The Swept Superheterodyne Analyzer", file: "04-swept-superheterodyne-analyzer.html", quiz: "quiz-04-swept-superheterodyne-analyzer.html" },
+      { key: "05", title: "5. Real-Time and FFT-Based Spectrum Analysis",             file: "05-realtime-fft-analysis.html",          quiz: "quiz-05-realtime-fft-analysis.html" },
+      { key: "06", title: "6. Vector Network Analysis",                               file: "06-vector-network-analysis.html",        quiz: "quiz-06-vector-network-analysis.html" },
+      { key: "07", title: "7. Noise Parameters and Noise Figure",                     file: "07-noise-figure.html",                   quiz: "quiz-07-noise-figure.html" },
+      { key: "08", title: "8. Tracking Generators, Filters, and Cables",              file: "08-tracking-generators-filters-cables.html", quiz: "quiz-08-tracking-generators-filters-cables.html" },
+      { key: "09", title: "9. Transmitter Testing",                                   file: "09-transmitter-testing.html",            quiz: "quiz-09-transmitter-testing.html" },
+      { key: "10", title: "10. Receiver Testing",                                     file: "10-receiver-testing.html",               quiz: "quiz-10-receiver-testing.html" },
+      { key: "11", title: "11. EMI/EMC Testing and Compliance",                       file: "11-emi-emc-testing.html",                quiz: "quiz-11-emi-emc-testing.html" },
+      { key: "12", title: "12. Modern Wireless: 5G, 6G, mmWave",                      file: "12-modern-wireless-5g-6g.html",          quiz: "quiz-12-modern-wireless-5g-6g.html" },
+      { key: "13", title: "13. Defense and Aerospace RF",                             file: "13-defense-aerospace-rf.html",           quiz: "quiz-13-defense-aerospace-rf.html" },
+      { key: "14", title: "14. Careers, Standards, and the Future of RF",            file: "14-careers-standards-future.html",       quiz: "quiz-14-careers-standards-future.html" }
+    ];
+
+    function loadAll() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") } catch(e) { return {} }
+    }
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, c => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      ));
+    }
+    function pctClass(pct) {
+      if (pct >= 80) return "green";
+      if (pct >= 50) return "amber";
+      return "plum";
+    }
+
+    function render() {
+      const all = loadAll();
+      const root = document.getElementById("content");
+
+      let chaptersTaken = 0, chaptersPerfect = 0, sumScore = 0, sumTotal = 0;
+      const rows = [];
+
+      CHAPTERS.forEach(meta => {
+        const rec = all[meta.key];
+        if (!rec || typeof rec.score !== "number" || !rec.total) return;
+        chaptersTaken++;
+        sumScore += rec.score;
+        sumTotal += rec.total;
+        if (rec.score === rec.total) chaptersPerfect++;
+        rows.push({ meta, score: rec.score, total: rec.total, pct: Math.round((rec.score / rec.total) * 100) });
+      });
+
+      if (chaptersTaken === 0) {
+        root.innerHTML = `
+          <div class="empty-state">
+            <h2>No quiz scores yet.</h2>
+            <p>Once you take any chapter quiz and check your answers, your score will appear here.</p>
+            <p style="margin-top:18px;"><a class="btn-link primary" style="display:inline-block; padding:10px 18px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt;" href="quiz-01-why-rf-why-now.html">Start with Chapter 1 &rarr;</a></p>
+          </div>`;
+        return;
+      }
+
+      const overallPct = sumTotal ? Math.round((sumScore / sumTotal) * 100) : 0;
+
+      // Suggested re-reads: chapters scored below 80 percent.
+      const reread = rows.filter(r => r.pct < 80).map(r => r.meta);
+
+      let html = `
+        <div class="stat-grid">
+          <div class="stat sky">  <span class="num">${chaptersTaken}</span><div class="label">Quizzes taken</div></div>
+          <div class="stat green"><span class="num">${sumScore}</span><div class="label">Correct answers</div></div>
+          <div class="stat">      <span class="num">${overallPct}%</span><div class="label">Overall score</div></div>
+          <div class="stat amber"><span class="num">${chaptersPerfect}</span><div class="label">Perfect quizzes</div></div>
+        </div>
+        <p style="font-size:10pt; color:var(--bnc-charcoal); margin:0 0 6px;">
+          ${sumScore} of ${sumTotal} correct across ${chaptersTaken} quiz${chaptersTaken===1?'':'zes'}.
+        </p>
+      `;
+
+      if (reread.length) {
+        html += `
+          <div class="recommend">
+            <h3>Suggested re-reads</h3>
+            <p style="margin:0;">You scored under 80 percent on these chapters. Worth a second pass:</p>
+            <ul>
+              ${reread.map(m => `<li><a href="${m.file}">${escapeHtml(m.title)}</a> &mdash; <a href="${m.quiz}">retake the quiz</a></li>`).join("")}
+            </ul>
+          </div>`;
+      }
+
+      html += `
+        <div class="actions-row">
+          <button class="primary" onclick="window.print()">Print my progress</button>
+          <button onclick="exportJson()">Export as JSON</button>
+          <button class="danger" onclick="clearAll()">Clear all progress</button>
+        </div>
+      `;
+
+      // Per-chapter score cards.
+      rows.forEach(r => {
+        html += `
+          <article class="ch-card">
+            <div class="ch-head" style="cursor:default;">
+              <h3>${escapeHtml(r.meta.title)}</h3>
+              <div class="ch-pills">
+                <span class="pill ${pctClass(r.pct)}">${r.score} / ${r.total} &middot; ${r.pct}%</span>
+              </div>
+              <a href="${r.meta.quiz}" style="font-size:9pt; letter-spacing:1px; text-transform:uppercase; color:var(--bnc-sky-blue); text-decoration:none; border-bottom:1px dotted var(--bnc-sky-blue);">retake &rarr;</a>
+            </div>
+          </article>
+        `;
+      });
+
+      root.innerHTML = html;
+    }
+
+    function exportJson() {
+      const data = loadAll();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "rf-quiz-progress.json";
+      a.click();
+    }
+
+    function clearAll() {
+      if (!confirm("Clear all your saved quiz scores? This cannot be undone.")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>

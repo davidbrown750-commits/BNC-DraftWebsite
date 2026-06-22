@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2C3E50"/>
+    </marker>
+    <linearGradient id="blindGrad" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#e4e7eb"/>
+      <stop offset="50%" stop-color="#f0c330"/>
+      <stop offset="100%" stop-color="#e4e7eb"/>
+    </linearGradient>
+    <linearGradient id="rtGrad" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#7fb77e"/>
+      <stop offset="100%" stop-color="#7fb77e"/>
+    </linearGradient>
+  </defs>
+
+  <text x="550" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Figure 1-1: Swept vs Real-Time Spectrum Analyzer Architecture</text>
+
+  <!-- LEFT: Swept Architecture -->
+  <rect x="20" y="55" width="510" height="440" rx="10" fill="#f0f4f8" stroke="#bcccdc"/>
+  <text x="275" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#2C3E50">Swept Superheterodyne</text>
+
+  <g transform="translate(40,100)">
+    <!-- Antenna -->
+    <polygon points="30,20 50,20 40,0" fill="#486581"/>
+    <line x1="40" y1="20" x2="40" y2="60" stroke="#486581" stroke-width="2"/>
+
+    <!-- Mixer -->
+    <circle cx="120" cy="60" r="20" fill="#fff" stroke="#2C3E50" stroke-width="2"/>
+    <text x="120" y="65" text-anchor="middle">X</text>
+    <line x1="40" y1="60" x2="100" y2="60" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- LO -->
+    <rect x="90" y="120" width="60" height="30" fill="#fff" stroke="#2C3E50"/>
+    <text x="120" y="140" text-anchor="middle">Swept LO</text>
+    <line x1="120" y1="120" x2="120" y2="80" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="160" y="140" font-size="11" fill="#486581">f_LO(t)</text>
+
+    <!-- IF Filter -->
+    <rect x="170" y="40" width="80" height="40" fill="#fff" stroke="#2C3E50"/>
+    <text x="210" y="58" text-anchor="middle" font-size="11">Narrow IF</text>
+    <text x="210" y="72" text-anchor="middle" font-size="11">Filter (RBW)</text>
+    <line x1="140" y1="60" x2="170" y2="60" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Detector -->
+    <rect x="270" y="40" width="70" height="40" fill="#fff" stroke="#2C3E50"/>
+    <text x="305" y="65" text-anchor="middle">Detector</text>
+    <line x1="250" y1="60" x2="270" y2="60" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Display -->
+    <rect x="360" y="40" width="100" height="40" fill="#fff" stroke="#2C3E50"/>
+    <text x="410" y="65" text-anchor="middle">CRT Display</text>
+    <line x1="340" y1="60" x2="360" y2="60" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- Swept time-frequency view -->
+  <g transform="translate(55,280)">
+    <text x="220" y="0" text-anchor="middle" font-size="13" font-weight="600" fill="#334e68">Observation window (one frequency at a time)</text>
+    <rect x="0" y="10" width="440" height="70" fill="#fff" stroke="#bcccdc"/>
+    <!-- freq axis -->
+    <text x="-5" y="98" font-size="11" fill="#627d98">f_start</text>
+    <text x="420" y="98" font-size="11" fill="#627d98">f_stop</text>
+    <line x1="0" y1="85" x2="440" y2="85" stroke="#486581" stroke-width="1"/>
+    <!-- dwell window - moving highlight -->
+    <rect x="140" y="12" width="30" height="66" fill="#f0c330" opacity="0.85"/>
+    <text x="155" y="46" text-anchor="middle" font-size="10" font-weight="700" fill="#2C3E50">DWELL</text>
+    <!-- blind time indicators -->
+    <text x="50" y="46" text-anchor="middle" font-size="10" fill="#9fb3c8">BLIND</text>
+    <text x="260" y="46" text-anchor="middle" font-size="10" fill="#9fb3c8">BLIND</text>
+    <text x="370" y="46" text-anchor="middle" font-size="10" fill="#9fb3c8">BLIND</text>
+    <!-- sweep arrow -->
+    <line x1="20" y1="105" x2="420" y2="105" stroke="#c0392b" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="220" y="120" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="600">LO sweeps left to right over T_sweep</text>
+  </g>
+
+  <g transform="translate(40,440)">
+    <text x="0" y="0" font-size="12" font-weight="600" fill="#c0392b">POI at any given frequency:</text>
+    <text x="0" y="20" font-size="12" fill="#2C3E50" font-family="Courier New, monospace">P = (t_dwell + t_burst) / T_sweep</text>
+    <text x="0" y="40" font-size="12" fill="#c0392b">Typical: ~0.1% for microsecond bursts</text>
+  </g>
+
+  <!-- RIGHT: Real-Time Architecture -->
+  <rect x="570" y="55" width="510" height="440" rx="10" fill="#e8f5e9" stroke="#a5d6a7"/>
+  <text x="825" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#1b5e20">Real-Time (RTSA)</text>
+
+  <g transform="translate(590,100)">
+    <!-- Antenna -->
+    <polygon points="30,20 50,20 40,0" fill="#2e7d32"/>
+    <line x1="40" y1="20" x2="40" y2="60" stroke="#2e7d32" stroke-width="2"/>
+
+    <!-- Wideband downconverter -->
+    <rect x="70" y="40" width="90" height="40" fill="#fff" stroke="#1b5e20"/>
+    <text x="115" y="58" text-anchor="middle" font-size="11">Wideband</text>
+    <text x="115" y="72" text-anchor="middle" font-size="11">Downconverter</text>
+    <line x1="40" y1="60" x2="70" y2="60" stroke="#1b5e20" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- ADC -->
+    <rect x="180" y="40" width="70" height="40" fill="#fff" stroke="#1b5e20"/>
+    <text x="215" y="58" text-anchor="middle" font-size="11">Wideband</text>
+    <text x="215" y="72" text-anchor="middle" font-size="11">ADC</text>
+    <line x1="160" y1="60" x2="180" y2="60" stroke="#1b5e20" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- FFT Engine -->
+    <rect x="270" y="25" width="90" height="70" fill="#fff" stroke="#1b5e20"/>
+    <text x="315" y="50" text-anchor="middle" font-size="11">Overlapping</text>
+    <text x="315" y="66" text-anchor="middle" font-size="11">FFT Engine</text>
+    <text x="315" y="82" text-anchor="middle" font-size="10" fill="#2e7d32">(parallel)</text>
+    <line x1="250" y1="60" x2="270" y2="60" stroke="#1b5e20" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Outputs -->
+    <rect x="380" y="10" width="100" height="30" fill="#fff" stroke="#1b5e20"/>
+    <text x="430" y="30" text-anchor="middle" font-size="11">Waterfall</text>
+    <rect x="380" y="45" width="100" height="30" fill="#fff" stroke="#1b5e20"/>
+    <text x="430" y="65" text-anchor="middle" font-size="11">Persistence</text>
+    <rect x="380" y="80" width="100" height="30" fill="#fff" stroke="#1b5e20"/>
+    <text x="430" y="100" text-anchor="middle" font-size="11">I/Q Streaming</text>
+    <line x1="360" y1="40" x2="380" y2="25" stroke="#1b5e20" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="360" y1="60" x2="380" y2="60" stroke="#1b5e20" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="360" y1="80" x2="380" y2="95" stroke="#1b5e20" stroke-width="2" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- RT observation window -->
+  <g transform="translate(605,280)">
+    <text x="220" y="0" text-anchor="middle" font-size="13" font-weight="600" fill="#1b5e20">Observation window (all frequencies simultaneously)</text>
+    <rect x="0" y="10" width="440" height="70" fill="url(#rtGrad)" opacity="0.85" stroke="#1b5e20"/>
+    <text x="220" y="52" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">FULL RTBW CONTINUOUSLY OBSERVED</text>
+    <!-- freq axis -->
+    <text x="-5" y="98" font-size="11" fill="#2e7d32">f_start</text>
+    <text x="420" y="98" font-size="11" fill="#2e7d32">f_stop</text>
+    <line x1="0" y1="85" x2="440" y2="85" stroke="#1b5e20" stroke-width="1"/>
+    <!-- burst indicators -->
+    <text x="220" y="120" text-anchor="middle" font-size="11" fill="#1b5e20" font-weight="600">Every frequency, every moment, no blind time</text>
+  </g>
+
+  <g transform="translate(590,440)">
+    <text x="0" y="0" font-size="12" font-weight="600" fill="#1b5e20">POI approaches 100% within RTBW:</text>
+    <text x="0" y="20" font-size="12" fill="#2C3E50" font-family="Courier New, monospace">P ≈ 1 for t_burst ≥ POI_min</text>
+    <text x="0" y="40" font-size="12" fill="#1b5e20">SPECTRAN V6 PLUS: POI_min = 10 ns</text>
+  </g>
+
+</svg>

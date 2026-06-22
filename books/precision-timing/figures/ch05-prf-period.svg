@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" role="img" aria-labelledby="t d">
+  <title id="t">PRF and period relationship</title>
+  <desc id="d">A horizontal time axis with three identical periods marked by T0 ticks, one pulse near the start of each period, a brace labeling one period as 1 divided by PRF, and a callout relating PRF to budget size.</desc>
+  <rect x="0" y="0" width="720" height="380" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="379" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="36" y="42" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#003D6B">Repetition rate sets the period</text>
+
+  <!-- time axis -->
+  <line x1="60" y1="230" x2="560" y2="230" stroke="#b6c2cc" stroke-width="1.5"/>
+  <polygon points="560,230 552,226 552,234" fill="#b6c2cc"/>
+  <text x="566" y="234" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#2C3E50">time</text>
+
+  <!-- period ticks at x=100, 260, 420, 580(clamped to 540) -->
+  <!-- three periods, each 150 wide starting at 100 -->
+  <g stroke="#003D6B" stroke-width="2">
+    <line x1="100" y1="218" x2="100" y2="242"/>
+    <line x1="250" y1="218" x2="250" y2="242"/>
+    <line x1="400" y1="218" x2="400" y2="242"/>
+    <line x1="550" y1="218" x2="550" y2="242"/>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#003D6B" text-anchor="middle">
+    <text x="100" y="260">T0</text>
+    <text x="250" y="260">T0</text>
+    <text x="400" y="260">T0</text>
+    <text x="550" y="260">T0</text>
+  </g>
+
+  <!-- pulses near left of each period -->
+  <g stroke="#0655a3" stroke-width="2.5" fill="none">
+    <path d="M108 230 L108 175 L128 175 L128 230"/>
+    <path d="M258 230 L258 175 L278 175 L278 230"/>
+    <path d="M408 230 L408 175 L428 175 L428 230"/>
+  </g>
+
+  <!-- brace over first period -->
+  <path d="M100 150 q0 -10 8 -10 L167 140 q8 0 8 -10 q0 10 8 10 L242 140 q8 0 8 10"
+        fill="none" stroke="#C77E00" stroke-width="2"/>
+  <text x="175" y="120" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#113163" text-anchor="middle" font-weight="700">Period = 1 / PRF</text>
+
+  <!-- callout box -->
+  <rect x="60" y="296" width="500" height="64" fill="#eaf4fb" stroke="#b6c2cc" rx="4"/>
+  <text x="76" y="322" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#113163">High PRF &#8594; short period &#8594; small budget</text>
+  <text x="76" y="346" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#113163">Low PRF &#8594; long period &#8594; large budget</text>
+</svg>

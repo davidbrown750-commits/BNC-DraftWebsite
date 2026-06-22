@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>appendix-C-further-reading</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="appendix-c-further-reading">Appendix C. Further Reading and Online Courses</h1>
+<p>Quantum computing rewards the reader who keeps going. The field moves quickly, the vocabulary is dense, and almost every concept has a deeper layer waiting underneath it. This appendix points you toward the resources that working engineers, students, and researchers actually use. It starts close to home with the two Berkeley Nucleonics Academy courses that accompany this book, then widens out to the textbooks, the vendor learning platforms, and the standards bodies that define the field. The aim is not to list everything. It is to give you a short, trustworthy path from "I finished the book" to "I can run my own circuits and read a research paper without drowning."</p>
+<p>A note on links and details. Course catalogs, textbook editions, platform names, and free-tier policies all change. Specific external references in this appendix are marked "Verify before publication" so the editorial team can confirm current titles, URLs, and availability before this book ships.</p>
+<h2 id="c.1-bnc-academy-companion-courses">C.1 BNC Academy Companion Courses</h2>
+<p>The most direct continuation of this book is the pair of courses on the Berkeley Nucleonics Academy at academy.berkeleynucleonics.com. They were built to sit alongside the chapters you have just read, so the language, the diagrams, and the instrument context will already feel familiar.</p>
+<p><strong>QC01 - The Nuts and Bolts and Qubits of Quantum Computing.</strong> This is the course form of this book. It walks through the same arc, from the physics of superposition and entanglement to qubits, gates, circuits, and the leading hardware platforms, in a guided video and exercise format. If you learn better by watching a concept built up on screen than by reading it cold, start here. The course is a good way to reinforce the first half of the book and to check your understanding before moving into hands-on work.</p>
+<p><strong>QC02 - Quantum Computing Instrumentation.</strong> This is where the book's quiet theme becomes the main subject. Quantum computers are not abstractions. They are racks of real hardware that need precise timing, clean signals, careful triggering, and stable references. QC02 focuses on the measurement and control layer: the signal generators, pulse and delay generators, clocks, and synchronization that turn a theoretical gate into a physical operation on a qubit. For anyone coming to quantum computing from a test-and-measurement or instrumentation background, this is the course that connects what you already know to what is new.</p>
+<p>Taken together, QC01 gives you the concepts and QC02 gives you the bench. The two map cleanly onto the two halves of an engineer's working life in this field: understanding the model, then making the apparatus behave.</p>
+<h2 id="c.2-textbooks-and-accessible-introductions">C.2 Textbooks and Accessible Introductions</h2>
+<p>Books still carry the load when you want depth and a stable reference you can return to. The titles below are the ones most often recommended, organized from accessible to rigorous. Confirm current editions and publishers before relying on any specific citation.</p>
+<p><strong>The standard graduate reference.</strong> Nielsen and Chuang, <em>Quantum Computation and Quantum Information</em>, remains the canonical text after more than two decades [1]. Practitioners call it "Mike and Ike." It is comprehensive and mathematically complete, covering quantum mechanics, the circuit model, algorithms, error correction, and quantum information theory. It assumes comfort with linear algebra and is better as a course companion or reference than as a first read. If you own one quantum computing book, this is usually it.</p>
+<p><strong>A rigorous but friendlier first course.</strong> Several texts aim to bridge the gap between popular science and the full Nielsen and Chuang treatment. Mermin's <em>Quantum Computer Science: An Introduction</em> is concise and written for computer scientists rather than physicists [2]. Kaye, Laflamme, and Mosca's <em>An Introduction to Quantum Computing</em> is another well-regarded entry point [3]. These reward a reader who is comfortable with matrices but does not yet want the full graduate apparatus.</p>
+<p><strong>Accessible introductions for the motivated general reader.</strong> If you want the ideas without the heavy mathematics, look for books written for a broad audience by working physicists and science writers. These trade completeness for intuition, and they are useful for building the mental models that make the technical texts easier later. Popular introductions by authors such as Chris Bernhardt (<em>Quantum Computing for Everyone</em>) and similar accessible titles fall in this category [4]. Verify titles and authors against current catalogs.</p>
+<p><strong>Specialized and free online texts.</strong> For algorithms specifically, lecture notes and open texts from university courses are often more current than printed books, because instructors update them every term. Many leading departments post full course notes for free. These are worth searching out when you want a focused treatment of one topic, such as quantum error correction or variational algorithms, rather than a survey.</p>
+<h2 id="c.3-vendor-learning-platforms">C.3 Vendor Learning Platforms</h2>
+<p>The fastest way to move from reading about gates to running them is to use a vendor platform. Most offer free tiers with simulators, and several give limited free access to real hardware. The descriptions below are conceptual. Exact free-tier limits, hardware access, and product names change often, so verify current details before you commit to one.</p>
+<p><strong>IBM Quantum and the Qiskit ecosystem.</strong> IBM offers one of the most complete on-ramps in the field. Qiskit is its open-source Python framework for building, simulating, and running circuits, and IBM pairs it with extensive free learning material, including structured courses and interactive tutorials that were historically known as the Qiskit textbook [5]. You can write a circuit in a notebook, run it on a simulator, and submit it to real superconducting hardware through the cloud. For most readers of this book, the IBM path is the lowest-friction way to get hands-on.</p>
+<p><strong>Microsoft Azure Quantum.</strong> Microsoft's cloud service provides access to hardware and simulators from multiple partners through a single interface, alongside the Q# language and a set of resource-estimation tools that help you reason about what a full fault-tolerant algorithm would actually cost in qubits and time [6]. The resource estimator is genuinely useful for understanding the gap between today's machines and the ones algorithms like Shor's would need.</p>
+<p><strong>Amazon Braket.</strong> AWS Braket is a managed service that lets you design algorithms, test them on simulators, and run them on several classes of real hardware, including superconducting, trapped-ion, and neutral-atom systems, all through one SDK and console [7]. Its strength is breadth: you can compare how the same circuit behaves on physically different machines without learning a separate toolchain for each vendor.</p>
+<p><strong>PennyLane and Xanadu.</strong> PennyLane, from Xanadu, is an open-source framework built around quantum machine learning and differentiable programming, meaning it treats quantum circuits as functions you can train with gradient descent [8]. It connects to many hardware backends and simulators, not just Xanadu's own photonic systems, and it comes with a deep library of tutorials and a course-style learning site. If your interest leans toward quantum machine learning or variational algorithms, this is a natural home.</p>
+<p><strong>Google Cirq.</strong> Cirq is Google's open-source Python framework for writing, optimizing, and running circuits, with particular attention to the constraints of near-term, noisy hardware [9]. It pairs with simulators and with Google's broader quantum software stack. Cirq tends to appeal to users who want fine-grained control over how a circuit maps onto real device topology and timing.</p>
+<p>A practical suggestion: do not try to learn all of these. Pick one platform that matches your goal, learn it well enough to run a few circuits of your own, and only branch out once you understand the common ideas underneath. The frameworks differ in syntax far more than in substance.</p>
+<h2 id="c.4-standards-community-and-policy-bodies">C.4 Standards, Community, and Policy Bodies</h2>
+<p>Beyond courses and code, a set of standards and community organizations shape how the field develops, how results are reported, and how the technology will interact with security and policy. Following them is the best way to separate durable progress from press-release noise.</p>
+<p><strong>NIST (National Institute of Standards and Technology).</strong> NIST runs the U.S. post-quantum cryptography standardization effort, which is selecting and publishing the encryption algorithms meant to resist attack by future quantum computers [10]. This work matters far beyond quantum specialists, because it drives how ordinary software and hardware will be secured for decades. NIST also contributes to quantum measurement standards and benchmarking.</p>
+<p><strong>IEEE.</strong> The IEEE develops standards and hosts conferences and publications across quantum computing and quantum engineering, including efforts to define common terminology, benchmarks, and performance metrics so that claims from different vendors can be compared on a fair basis [11].</p>
+<p><strong>National quantum initiatives.</strong> Many countries now run coordinated national programs. In the United States, the National Quantum Initiative organizes federal research funding and coordination across agencies such as NIST, the National Science Foundation, and the Department of Energy [12]. Comparable programs exist across Europe, the United Kingdom, China, Canada, and elsewhere. These programs publish roadmaps and reports that are a useful, if optimistic, guide to where public investment is headed.</p>
+<p><strong>Open research archives and the broader community.</strong> Most serious quantum computing research appears first on open preprint servers before formal publication, which means the cutting edge is often freely readable months ahead of the journals. Conferences, vendor user groups, and active online communities round out the picture. For a working engineer, the combination of one vendor platform, one solid textbook, and a habit of reading preprints is enough to stay genuinely current.</p>
+<p>A closing thought. The best way to learn quantum computing is to alternate between layers. Read a concept, run a small circuit that uses it, then read a little deeper. The resources in this appendix are arranged so you can do exactly that, starting with the two BNC Academy courses and widening out as your curiosity pulls you forward.</p>
+<h2 id="references">References</h2>
+<p>[1] M. A. Nielsen and I. L. Chuang, <em>Quantum Computation and Quantum Information</em>, Cambridge University Press, anniversary edition. Verify before publication.</p>
+<p>[2] N. D. Mermin, <em>Quantum Computer Science: An Introduction</em>, Cambridge University Press. Verify before publication.</p>
+<p>[3] P. Kaye, R. Laflamme, and M. Mosca, <em>An Introduction to Quantum Computing</em>, Oxford University Press. Verify before publication.</p>
+<p>[4] C. Bernhardt, <em>Quantum Computing for Everyone</em>, MIT Press. Verify before publication.</p>
+<p>[5] IBM Quantum, Qiskit open-source framework and associated learning resources (formerly the Qiskit textbook). Verify before publication.</p>
+<p>[6] Microsoft, Azure Quantum platform, Q# language, and resource-estimation tools. Verify before publication.</p>
+<p>[7] Amazon Web Services, Amazon Braket managed quantum computing service. Verify before publication.</p>
+<p>[8] Xanadu, PennyLane open-source framework for quantum machine learning and associated tutorials. Verify before publication.</p>
+<p>[9] Google Quantum AI, Cirq open-source framework for quantum circuits. Verify before publication.</p>
+<p>[10] National Institute of Standards and Technology, Post-Quantum Cryptography standardization program. Verify before publication.</p>
+<p>[11] IEEE quantum computing and quantum engineering standards, conferences, and publications. Verify before publication.</p>
+<p>[12] National Quantum Initiative (United States) and comparable national programs internationally. Verify before publication.</p>
+<p>[13] Berkeley Nucleonics Academy, courses QC01 (The Nuts and Bolts and Qubits of Quantum Computing) and QC02 (Quantum Computing Instrumentation), academy.berkeleynucleonics.com. Verify before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-B-timeline.html">&larr; App. B: Timeline</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next disabled">End of book &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 8: Performance Tips</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-8-performance-tips">Chapter 8: Performance Tips</h2>
+<figure>
+<img src="../figures/chapter-08-opener.svg" alt="" /><figcaption>Chapter 8 — Performance Tips</figcaption>
+</figure>
+<p>Straightforward power measurements under good conditions are usually not a challenge. Hook up a power meter and read the result. Many application-related issues can make the process more challenging, however. This chapter covers three topics: reducing measurement noise, optimizing ATE performance, and statistical techniques for amplifier testing.</p>
+<h3 id="reducing-measurement-noise">8.1 Reducing Measurement Noise</h3>
+<p>Power measurements often span a wide dynamic range, and sensors can be challenged at both extremes. The top of the range usually has hard limits: average and peak power must remain within a safe (for the sensor) and calibrated range to be measured accurately. The lower end of the range is harder to define.</p>
+<p>All measurements are made in the presence of noise. It is part of every electrical measurement, including RF power. Unless the amplitude of the signal is considerably greater than the noise amplitude, the noise adds to the measured signal and produces measurement uncertainty (see Chapter 9).</p>
+<p>One convenient aspect of noise is that it is random. Power measurement noise is fairly wideband and roughly white, meaning constant power per hertz. If the bandwidth is halved, so is the average noise power. When the noise bandwidth exceeds the bandwidth of the signal to be measured, filtering the noise bandwidth reduces the total noise power.</p>
+<p>CW signals represent the extreme case. The bandwidth of a CW signal is effectively 0 Hz, so it is possible to filter the signal and noise together to sub-1 Hz bandwidth without affecting accuracy. Most power meters provide an averaging filter that averages a number of readings over a defined time interval to yield a filtered result. Increasing the averaging time reduces the measurement noise at the expense of settling time when the signal level changes.</p>
+<p>Other types of noise are present besides Gaussian noise, which causes increased filtering to reach a point of diminishing returns. A one-second filter time is generally appropriate for -60 dBm with a CW diode sensor. Increasing the filter to ten seconds will not reduce noise by a factor of ten and so will not allow the same accuracy at -70 dBm.</p>
+<p>Most CW and average power meters include an auto-filter setting, in which the instrument chooses the filter time constant based on the measured power level. This can cause extended settling times when the level changes. If you know the expected power level, set the filter manually for best performance.</p>
+<p>The averaging filter of most CW and average power meters, and peak power meters operating in continuous, free-run, or modulated mode, is most often a sliding-window filter. Power readings happen at a relatively fast rate and are averaged together as needed. The filtered power reading at any time is the average of the last N samples, where N is the filter time divided by the internal acquisition rate. Unweighted averages are most common, but other weightings are sometimes used to accommodate fluctuating signals such as pulse waveforms. By continuously adding new samples and discarding old ones, the filter output is recomputed and updated at the acquisition rate.</p>
+<p>When measuring a wideband signal with a peak power meter, filtering noise becomes harder. Peak power meters often need to maintain measurement bandwidths of tens of MHz or more. It is not possible to apply filters with millisecond or second time constants without also filtering out desirable signal characteristics.</p>
+<p><strong>Take advantage of the redundancy of repetitive signals.</strong> Any periodic waveform can be synchronously filtered by averaging together multiple periods. As long as the individual periods or waveform events align closely in time, hundreds or thousands of cycles can be averaged together to produce a filtered waveform with significantly less visible noise and no degradation of the waveform’s amplitude or profile. The result on a low-level (-39 dBm) pulse is dramatic. With no averaging, peak-to-peak measurement noise might be 2.4 dB. With 1024 averages, peak-to-peak noise during the pulse drops below 0.2 dB, and the noise floor moves down from -53 dBm to below -70 dBm.</p>
+<figure>
+<img src="../figures/image133.jpeg" alt="Trace averaging dramatically reduces noise on periodic waveforms" /><figcaption>Figure 8.1.1 Trace averaging dramatically reduces noise on periodic waveforms.</figcaption>
+</figure>
+<p>Synchronous waveform averaging is often called “trace averaging” or simply “averaging” in peak power meters operating in triggered (pulse) mode. Sometimes the term “video averaging” is used, since it is familiar to spectrum analyzer users. This can be confusing in power meters.</p>
+<p>The source of confusion is that some peak power meters offer an additional method for reducing noise. They reduce the video bandwidth of the sensor or meter input circuitry. This technique does not introduce errors as long as the video bandwidth of the measurement remains above the video bandwidth of the signal. In most cases, this bandwidth reduction offers only a modest reduction in noise, but it can make the difference between a signal that can and cannot be measured. It can be used in conjunction with filtering or averaging.</p>
+<p>Another technique is simply to sample faster. If the meter is already sampling at or above Nyquist rate, this method will not yield significant improvement. If it is undersampling and has excess bandwidth, a faster sample rate tends to filter the noise without affecting the signal.</p>
+<h3 id="optimizing-ate-performance">8.2 Optimizing ATE Performance</h3>
+<p>Modern peak power meters typically include high-speed connectivity (GPIB, LAN, USB) for remote control by a PC or system controller, integrating into automated test equipment (ATE) systems. This functionality extends instrument capabilities far beyond manual front-panel operation. Other devices combine with the power meter to provide a centralized location to control them and to collect and display data from multiple instruments.</p>
+<p>The glue that ties instruments to a PC consists of a PC I/O interface such as the VISA library. VISA is short for VXIplug&amp;play Systems Alliance, now part of the IVI Foundation. VISA lets the physical interface on the PC be its built-in serial, Ethernet LAN, or USB interface, a PCI-based GPIB card, a USB-to-GPIB cable, or a combination. The library includes the low-level drivers and functions required to use any of these interfaces for instrument control. The result is a portable, bus-independent programming model that frees the developer from implementing a low-level communication channel for each instrument and bus.</p>
+<p>The developer chooses a development environment to create the automation software. The .NET IDE allows Visual Basic, C#, or C++ for code development. Iconic programming environments such as Agilent VEE or National Instruments LabVIEW let users create automation applications without extensive programming experience. Add-on libraries, utilities, and example programs make it easier for the non-programmer engineer to develop automation software for a specific application. Modern Berkeley Nucleonics drivers ship for Python, MATLAB, LabVIEW, and C/C++ on Windows, Linux, and macOS.</p>
+<p><strong>Instrument-to-host communication.</strong> Most instruments today adhere to the SCPI (Standard Commands for Programmable Instruments) software standard, which defines a common interface language. SCPI commands are ASCII text messages in a defined syntax and can be implemented in any PC host programming environment. Conformance means instruments with similar functions accept the same commands, minimizing or eliminating software changes when instruments are swapped.</p>
+<p>All SCPI commands are sent as ASCII text strings, but measurement data returned by an instrument can be transferred either as ASCII (default) or in binary format. Binary is more compact. It is the most efficient method when both host and instrument use IEEE floating-point format, for three reasons. First, the binary-to-ASCII conversion on the instrument side is eliminated. Second, the ASCII-to-binary conversion on the host side is eliminated. Third, the number of bytes per value is reduced because of more efficient packing and the elimination of delimiters.</p>
+<p>The default ASCII transfer mode is simplest to implement, since formatting is performed transparently by the VISA library. ASCII is also simplest for troubleshooting, because bus transactions can be monitored and logged using readily available tools. When reduced I/O traffic or transfer speed becomes an issue, binary transfer can improve system efficiency with a little more programming effort.</p>
+<p><strong>Why automate.</strong> Several reasons justify the effort.</p>
+<ul>
+<li>It provides consistency by eliminating possible errors from front-panel manual operation.</li>
+<li>Timing of system events and measurements can be made totally consistent.</li>
+<li>Higher throughput provides either reduced test time or the ability to collect more data in the same time.</li>
+<li>Automation facilitates large-volume production testing where test time and accuracy are paramount.</li>
+<li>Collecting results from multiple devices for processing and display on the PC enables information presentations beyond the capability of any single stand-alone device.</li>
+<li>Instruments can acquire data at a rate faster than their display update rate. PC control bypasses the display to take advantage of acquisition speed.</li>
+<li>Recording and archiving measurement results for QA or regulatory purposes is simpler.</li>
+</ul>
+<p>Historically, RF power measurement in ATE systems was performed via a query-response protocol. ASCII command and data transfer were used in both directions, either via SCPI or proprietary protocols. Recent advances in power measurement, coupled with increased user requirements, have made it necessary to examine newer solutions for system throughput. Modern power meters, especially peak power meters, have very high bandwidths and measurement rates, and their performance can far exceed the capability of a manual or query-response process to record and view results.</p>
+<p>In a typical ATE system with several instruments connected to the host, the overall speed and efficiency of the measurement process can degrade due to I/O traffic. This is especially true when ATE systems mimic the manual testing model of “measure then record.” That technique is still valid for most automated applications and is faster and more consistent under PC control, but it is only as fast as the entire sequential measurement cycle permits.</p>
+<h4 id="one-loop-of-a-sequential-measurement-cycle">One Loop of a Sequential Measurement Cycle</h4>
+<p>A sequential measurement cycle typically contains the following steps for each measurement.</p>
+<p><strong>Step 1. Configure signal source.</strong> Controller configures the signal source for the next step in the sweep: power, frequency, attenuation, etc.</p>
+<p><strong>Step 2. Configure power meter.</strong> Controller configures the power meter for any expected changes in the source signal: frequency, range, filtering, etc.</p>
+<p><strong>Step 3. Delay for signal settling.</strong> Controller waits for a pre-programmed or adaptive time delay to allow the source to settle before measurement.</p>
+<p><strong>Step 4. Initiate new measurement.</strong> Controller commands the power meter to flush the last reading and begin acquiring fresh data.</p>
+<p><strong>Step 5. Acquire measurement data.</strong> Power meter acquires data and stops when complete. This step may run concurrently with the next step.</p>
+<p><strong>Step 6. Process measurement data.</strong> Power meter processes the acquired data to yield a single measurement result. May run concurrently with acquisition.</p>
+<p><strong>Step 7. Notification of “measurement ready” state.</strong> Power meter notifies the host that a new reading is ready, via either a one-way notification or bidirectional polling.</p>
+<p><strong>Step 8. Return measurement result.</strong> Controller reads back the new measurement from the instrument and saves the result.</p>
+<p><strong>Step 9. Next measurement in sequence.</strong> Repeat steps 1 to 8 for each point.</p>
+<p>Step 7 may consist of polling, where the host continuously polls the meter for current measurement status, or notification, such as a power-meter-to-host interrupt. The IEEE-488 has a Service Request (SRQ) signal line dedicated to this, and many newer remote-control protocols support or emulate the functionality. Once the host has confirmation that a new result is ready, it reads and records the result.</p>
+<p>In many systems, some steps can be combined to reduce bus traffic. Steps 4 through 8 are often replaced by a single query-response cycle, in which the meter is told to “start a fresh measurement, stop when done, process, and return the result.” Once the command is given, the controller waits for the meter to return a finished result. The SCPI language allows this via the READ query. This eliminates polling or interrupt-driven schemes for status, at the expense of tying up the remote-control bus while the host waits.</p>
+<h4 id="the-modern-approach-buffered-sweep-measurement">The Modern Approach: Buffered Sweep Measurement</h4>
+<p>Instruments today have enough intelligence built in to allow portions of the cycle to proceed without controller intervention. A signal generator can usually be programmed to perform a pre-configured power or frequency sweep with a single command. A power meter can be commanded to acquire and buffer a series of readings and return all values at once as a delimited list or binary data block. Sending many values via a single bus transaction is considerably more efficient than sending them one at a time. In some cases the device under test performs under self-control, sometimes via a built-in test or diagnostic mode. Cellular handset test is one example, where the handset is commanded to sequence through a programmed series of transmit power steps to test its power-control subsystem.</p>
+<p><strong>Step 1. Configure and arm power meter.</strong> Controller configures the meter to acquire and buffer a sequence of measurements matching the expected sweep.</p>
+<p><strong>Step 2. Configure and initiate signal source sweep.</strong> Controller configures the source to perform a full sweep: start and end power, frequency, attenuation, sweep rate / duration, then initiates the sweep.</p>
+<p><strong>Step 3. Acquire sweep measurement data into power meter buffer.</strong> Meter acquires data for the entire sweep and stops when complete.</p>
+<p><strong>Step 4. Notification of “sweep ready” state.</strong> Meter notifies the host via either one-way notification or bidirectional polling.</p>
+<p><strong>Step 5. Return measurement sweep result.</strong> Controller reads all buffered readings from the sweep and saves the result.</p>
+<figure>
+<img src="../figures/fig-8-2-1-ate-sequential-vs-buffered.svg" alt="Sequential versus buffered ATE measurement cycles, illustrating the throughput advantage" /><figcaption>Figure 8.2.1 Sequential versus buffered ATE measurement cycles, illustrating the throughput advantage.</figcaption>
+</figure>
+<p>If suitable source control and measurement buffering are available, the entire measurement process consists of a single sequence of host transactions to initiate the process and a final host step to read back all results. All other steps are managed and timed within the source and meter, and proceed without controller intervention. The challenge is synchronizing the acquired measurement data with the sweep progress of the source signal. Without direct communication between source and meter, it can be difficult to know which power step the source is on.</p>
+<p><strong>Synchronization options.</strong></p>
+<p>The simplest method is to use time. The source is programmed to perform a linear sweep over a known time interval or at a known sweep rate. The meter is programmed to acquire data over the same time interval. If both processes start in synchronization, and the source sweep rate and meter recording rate are both accurately known, the source state can be inferred from the position of a reading in the returned array. This works well with continuous and CW sweeps.</p>
+<p>A second method uses triggered acquisition with a hardware connection between source and meter. Many signal generators have a synchronization output that goes to a logic state when each step in a pre-programmed sweep is occurring. Usually the signal is not asserted until the source is stable, which addresses the need for a programmed signal-settling delay. The synchronization pulse is then used directly as a trigger to the meter, instructing it to record a reading on each pulse. Timing and polarity must match: the source sweep must be programmed at a rate appropriate for the meter to complete a measurement at each desired point.</p>
+<p>Sometimes it is helpful to control the source sweep externally. An external pulse generator or custom hardware generates sync pulses sent to both source and meter. Each time a pulse is received, the source steps and the meter acquires a reading. Necessary time delays for settling and acquisition can usually be programmed into the meter, although it is possible to use the pulse generator so that the source steps on the rising edge and the meter acquires on the falling edge.</p>
+<p>Another option on peak power meters is to use the signal source itself for synchronization. When the signal is periodic or pulsed, the meter’s internal trigger system is used. The meter is configured to initiate a sweep on the leading edge of each pulse. With suitable trigger delay settings to allow pre-trigger acquisition, the entire pulse is acquired and processed, and its average power stored as a reading. Control of the source provides both the start-sweep and acquire-new-reading signals.</p>
+<figure>
+<img src="../figures/image129.png" alt="GSM 128-step power sweep captured in a single buffered measurement cycle" /><figcaption>Figure 8.2.2 GSM 128-step power sweep captured in a single buffered measurement cycle.</figcaption>
+</figure>
+<p><strong>A worked GSM example.</strong> A GSM handset is programmed to transmit a power sweep that tests each level of its internal power-control attenuator. The attenuator has 128 levels. Attenuation is incremented for each GSM frame, with the handset transmitting for one timeslot per frame. In GSM, a timeslot is 577 µs and a frame of eight timeslots is 4.615 ms, so the phone transmits a pulsed signal with a 217 Hz period.</p>
+<p>The meter is set to trigger on the signal’s rising edge for each timeslot, then perform an interval-average power measurement over the active portion (typically the middle 550 µs of the pulse). A trigger holdoff of about 4.5 ms ensures the meter does not retrigger before the next timeslot begins. The trigger level must be low enough that even the lowest pulse amplitude triggers a sweep.</p>
+<p>To initiate the sweep, the meter is configured and armed, and the source commanded to begin a sweep of 128 frames. The sweep takes 128 / 217 = 590 ms. At the end, the controller queries the meter to retrieve the buffer containing all 128 readings. If carefully optimized, the entire process should take less than one second.</p>
+<p><strong>Buffered measurement modes.</strong> Modern power meters acquire a series of measurements into memory with little or no processing. If needed, the data may be post-processed after the acquisition cycle is complete. Buffered acquisition is set up and executed under PC control. Results can be collected in free-run or triggered mode. Data rates of up to 1,000 readings per second are typical for free-run mode; the triggered mode rate may be lower because of latency to re-arm for the next trigger event. Buffer sizes of 1 million readings or more per channel are typical. For buffers implemented as FIFOs (first in, first out), data collection can continue beyond the buffer fill time, since FIFOs can be read while still being filled. Reading the buffer when it is half-filled allows continuous acquisition as read and write pointers update as the FIFO is accessed. This works as long as the time to read a fraction of the buffer is less than the time to fill the entire buffer. Binary data transfer reduces data transfer times further when needed.</p>
+<p>For CW mode, up to 1 million readings can be stored at preprogrammed rates as high as 1,000 readings per second. Data is transferred to the host PC after all readings are stored. The user trades off time resolution, measurement duration, and data set size. This mode is best for continuous modulation formats where the power is stepped at periodic intervals.</p>
+<p>For pulsed signal types, triggered pulse measurements can also be buffered to record power sweeps for discontinuous formats such as GSM or TDMA. Each pulse trigger stores a reading in the buffer. The Berkeley Nucleonics 12100 series supports buffered sweep mode out of the box: arm with a single SCPI command, capture up to 1 million triggered readings, return them in a single bulk transfer when the sweep completes.</p>
+<h3 id="communication-amplifier-testing">8.3 Communication Amplifier Testing</h3>
+<p>For communications PAs, the canonical test is the 1 dB compression point. Sweep input power upward and find the input level at which the output is 1 dB below the linear extrapolation. This defines the amplifier’s useful linear range for narrowband CW signals. For modulated signals, the situation is more complex. Statistical analysis using a peak power meter offers a fast way to characterize amplifier behavior under realistic operating conditions.</p>
+<p><strong>Part 1. Measure the 1 dB compression point of the DUT.</strong> Use a peak sensor on both input and output. Sweep input power from well below compression to well above. Plot output versus input in dB. Find the point where output deviates 1 dB from the linear fit. That is your P1dB.</p>
+<p>A two-channel power meter with buffered sweep makes this measurement in seconds. The signal generator is programmed to step the input power, the meter is armed in buffered triggered mode, and at the end the controller pulls back the full input-vs-output table.</p>
+<figure>
+<img src="../figures/image137.png" alt="Amplifier 1 dB compression point measurement, sweeping input power against output" /><figcaption>Figure 8.3.1 Amplifier 1 dB compression point measurement, sweeping input power against output.</figcaption>
+</figure>
+<p><strong>Part 2. Characterize performance around P1dB using statistical analysis.</strong> For amplifiers driven by modulated signals, the 1 dB compression point is only a rough indicator. The real question is how much of the signal’s statistical distribution enters compression. A good crest-factor reduction (CFR) algorithm can allow operation well above P1dB on a CCDF basis, improving amplifier efficiency substantially.</p>
+<p>Drive the amplifier with the actual modulated signal it will see in service. Capture CCDFs at the input and output simultaneously. The shape difference between input and output reveals exactly how the amplifier compresses across the statistical distribution of the input signal. This is far more informative than P1dB alone, and it correlates more directly with system-level performance metrics such as ACLR and EVM.</p>
+<p><strong>Part 3. Verify across modulation and temperature.</strong> Amplifier performance drifts with temperature and with modulation type. Run the full sweep at cold, room, and hot temperatures, and at every modulation format the amplifier is intended to support. Store results in a traceable database. Your QA team will thank you. Your field-failure analysis team will thank you more.</p>
+<blockquote>
+<p><strong>Engineer’s corner.</strong> A common production-line shortcut is to measure CCDF at one frequency, one temperature, and one modulation format, then declare the amplifier characterized. Skip that shortcut. Run the full matrix at least once during NPI, save the data, and use it as the gold reference against which production units are compared. The Berkeley Nucleonics 12100 series, with its built-in real-time clock and large internal logging buffer, makes building that gold reference dataset straightforward.</p>
+</blockquote>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="07-power-measurement-applications.html">&larr; 7. Power Measurement Applications</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="09-measurement-accuracy.html">9. Measurement Accuracy &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

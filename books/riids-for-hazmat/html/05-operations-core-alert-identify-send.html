@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5. Operations Core: Alert, Identify, Send | RIIDs in the Field</title>
+<meta name="description" content="Berkeley Nucleonics field handbook for using the SAM family of radioisotope identifiers and RD-120 backpack and vehicle systems in radiological response.">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* ====== BNC Book Series Style Guide tokens ====== */
+  :root {
+    --bnc-deep-navy:   #003D6B;
+    --bnc-sky-blue:    #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal:    #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan:  #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan:  #00d4ff;
+    --bnc-target-green:#00ff88;
+    --bnc-white:       #ffffff;
+    --bnc-rule:        #b6c2cc;
+
+    --bnc-sans:  "Helvetica Neue", "Arial", sans-serif;
+    --bnc-black: "Helvetica Neue", "Arial Black", "Helvetica", "Arial", sans-serif;
+    --bnc-serif: "Georgia", "Iowan Old Style", serif;
+    --bnc-mono:  "Consolas", "SFMono-Regular", "Menlo", monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bnc-light-steel);
+    color: var(--bnc-charcoal);
+    font-family: var(--bnc-serif);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 96px 24px;
+  }
+
+  /* ====== cover panel (screen view) ====== */
+  .cover {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    border-radius: 4px;
+    padding: 56px 36px 48px 36px;
+    margin: 0 0 36px 0;
+    box-shadow: 0 12px 40px rgba(0, 31, 56, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover .kicker {
+    font-family: var(--bnc-sans);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--bnc-light-cyan);
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: var(--bnc-black);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.02;
+    margin: 14px 0 12px 0;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: none;
+  }
+  .cover h2 {
+    font-family: var(--bnc-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 24px 0;
+    color: #cfdce6;
+    text-transform: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .cover .meta {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: #cfdce6;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 18px;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+  .cover .meta strong { color: #fff; }
+
+  /* ====== headings (interior) ====== */
+  h1, h2, h3, h4 {
+    font-family: var(--bnc-sans);
+    line-height: 1.2;
+  }
+  h1 {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 56px 0 18px 0;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  h1:first-of-type { margin-top: 32px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 44px 0 14px 0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bnc-sky-blue);
+    margin: 28px 0 10px 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bnc-charcoal);
+    margin: 22px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ====== body text ====== */
+  p { margin: 0 0 14px 0; }
+  ul, ol { margin: 0 0 16px 24px; padding: 0; }
+  li { margin: 4px 0; }
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+
+  /* ====== tables ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: var(--bnc-sans);
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+
+  /* ====== blockquotes / callouts ====== */
+  blockquote {
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    border-radius: 0 4px 4px 0;
+    color: var(--bnc-charcoal);
+  }
+  blockquote p { margin: 0; }
+  blockquote strong { color: var(--bnc-deep-navy); }
+
+  /* ====== code / checklists ====== */
+  code, pre { font-family: var(--bnc-mono); }
+  code {
+    background: var(--bnc-light-steel);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  pre {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-left: 4px solid var(--bnc-deep-navy);
+    padding: 16px 18px;
+    line-height: 1.5;
+    font-size: 14px;
+    border-radius: 0 4px 4px 0;
+    white-space: pre-wrap;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  /* ====== rules ====== */
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--bnc-rule);
+    margin: 36px 0;
+  }
+  hr + h1, hr + h2 { margin-top: 28px; }
+
+  /* ====== TOC and isotope cards ====== */
+  .toc {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    padding: 22px 26px;
+    margin: 24px 0 36px 0;
+  }
+  h3[id^="card-a-"] {
+    background: var(--bnc-light-steel);
+    padding: 8px 14px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    color: var(--bnc-deep-navy);
+    margin-top: 24px;
+  }
+
+  /* ====== links ====== */
+  a {
+    color: var(--bnc-sky-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--bnc-sky-blue);
+  }
+  a:hover { border-bottom-style: solid; }
+
+  /* ====== sticky top bar (screen only) ====== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    padding: 8px 18px;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+  }
+  .topbar a {
+    color: var(--bnc-light-cyan);
+    border-bottom: none;
+    font-weight: 700;
+  }
+  .topbar .brand {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ====== figures ====== */
+  figure {
+    margin: 24px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 31, 56, 0.08);
+  }
+  figcaption {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* ====== mobile ====== */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .shell { padding: 18px 14px 64px 14px; }
+    .cover { padding: 36px 22px 32px 22px; }
+    .cover h1 { font-size: 32px; }
+    .cover h2 { font-size: 17px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 19px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 9px; }
+  }
+
+  /* ====== print: 5x8 trim, BNC interior spec ====== */
+  @media print {
+    @page {
+      size: 5in 8in;
+      margin: 0.45in 0.45in 0.5in 0.45in;
+    }
+    body {
+      background: #fff;
+      font-size: 8.5pt;
+      line-height: 1.32;
+      color: var(--bnc-charcoal);
+    }
+    .topbar { display: none; }
+    .shell { max-width: 100%; padding: 0; margin: 0; }
+    .cover {
+      padding: 0.5in 0.4in;
+      page-break-after: always;
+      min-height: 6.4in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .cover h1 { font-size: 28pt; color: #fff !important; border-bottom: none !important; }
+    .cover h2 { font-size: 14pt; color: #cfdce6 !important; }
+    .cover .kicker { color: var(--bnc-light-cyan) !important; }
+    .cover .meta, .cover .meta strong, .cover p { color: #fff !important; }
+
+    h1 {
+      font-family: var(--bnc-sans);
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--bnc-deep-navy) !important;
+      page-break-before: always;
+      margin: 0 0 12pt 0;
+      padding-bottom: 4pt;
+      border-bottom: 2pt solid var(--bnc-sky-blue);
+      letter-spacing: 0.5pt;
+    }
+    h1:first-of-type { page-break-before: avoid; }
+    h2 { font-family: var(--bnc-sans); font-size: 13pt; font-weight: 700; color: var(--bnc-deep-navy) !important; page-break-after: avoid; margin-top: 14pt; margin-bottom: 6pt; }
+    h3 { font-family: var(--bnc-sans); font-size: 11pt; font-weight: 700; color: var(--bnc-sky-blue) !important; page-break-after: avoid; margin-top: 10pt; margin-bottom: 4pt; }
+    h4 { font-family: var(--bnc-sans); font-size: 9pt; font-weight: 700; color: var(--bnc-charcoal) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+    p, li { orphans: 3; widows: 3; margin-bottom: 4pt; }
+    ul, ol { margin: 4pt 0 4pt 18pt; }
+
+    table, blockquote, pre { page-break-inside: avoid; margin: 6pt 0; }
+    pre { font-size: 7pt; line-height: 1.25; padding: 6pt 8pt; background: #fff; border-color: var(--bnc-rule); border-left-color: var(--bnc-deep-navy); }
+    table { font-size: 7.5pt; }
+    thead th { background: var(--bnc-deep-navy) !important; color: #fff !important; padding: 4pt 5pt; }
+    tbody td { padding: 3pt 5pt; }
+    tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+    blockquote { background: var(--bnc-light-steel); border-left: 4pt solid var(--bnc-sky-blue); padding: 6pt 10pt; }
+    a { color: var(--bnc-charcoal); border-bottom: none; }
+
+    figure { page-break-inside: avoid; margin: 6pt 0; text-align: center; }
+    figure img {
+      max-width: 100%;
+      max-height: 1.9in;
+      width: auto; height: auto;
+      object-fit: contain;
+      box-shadow: none;
+      padding: 2pt;
+      border-color: var(--bnc-rule);
+    }
+    figcaption { font-size: 7.5pt; margin-top: 3pt; line-height: 1.3; color: var(--bnc-charcoal); }
+  }
+
+  /* Cover image full-bleed in print */
+  @media print {
+    .cover {
+      padding: 0 !important;
+      background: none !important;
+      page-break-after: always;
+      min-height: auto;
+      display: block !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    .cover img {
+      width: 5in !important;
+      height: 8in !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: cover;
+      display: block;
+    }
+    @page :first {
+      margin: 0;
+    }
+  }
+
+  /* ====== Callouts and sidebars (BNC style guide section 6) ====== */
+  .callout {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .sidebar-deeper {
+    background: #e6edf3;
+    border: 1px solid #b6c2cc;
+    border-left: 4px solid var(--bnc-charcoal);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .sidebar-deeper h4 {
+    color: var(--bnc-charcoal);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-deeper p { margin: 0; font-size: 14px; }
+
+  @media print {
+    .callout, .sidebar-deeper {
+      page-break-inside: avoid;
+      margin: 6pt 0;
+      padding: 6pt 10pt;
+      font-size: 8pt;
+    }
+    .callout h4, .sidebar-deeper h4 { font-size: 9pt; margin-bottom: 3pt; }
+    .callout p, .sidebar-deeper p { font-size: 8pt; }
+  }
+
+  /* Quiz block */
+  .quiz {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 24px 0;
+    border-radius: 0 0 4px 4px;
+  }
+  .quiz h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+  .quiz ol { margin: 0 0 0 22px; padding: 0; }
+  .quiz ol > li { margin-bottom: 10px; font-size: 14px; }
+  .quiz ol[type="a"] { margin-top: 6px; margin-bottom: 0; }
+  .quiz ol[type="a"] > li { margin-bottom: 2px; font-size: 13px; }
+  @media print {
+    .quiz { page-break-inside: avoid; padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .quiz h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .quiz ol > li { font-size: 8pt; margin-bottom: 4pt; }
+    .quiz ol[type="a"] > li { font-size: 7.5pt; }
+  }
+
+  .checklist, .form-block {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 0 0 4px 4px;
+    page-break-inside: avoid;
+  }
+  .checklist h4, .form-block h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+  }
+  .checklist pre, .form-block pre {
+    margin: 0; border: none; background: transparent; padding: 0;
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 11px; line-height: 1.55; color: var(--bnc-charcoal);
+  }
+  @media print {
+    .checklist, .form-block { padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .checklist h4, .form-block h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .checklist pre, .form-block pre { font-size: 7pt; }
+  }
+
+  /* ====== Refined component system (BNC v2) ====== */
+
+  /* SVG icons: inherit color, baseline-aligned */
+  .bnc-icon, .bnc-cb {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--bnc-sky-blue);
+  }
+
+  /* Card pattern shared by checklist + form */
+  .bnc-card {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 6px;
+    margin: 22px 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0, 31, 56, 0.06);
+  }
+  .bnc-card-head {
+    background: linear-gradient(90deg, #003D6B 0%, #0078B6 100%);
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-card-icon { color: #7fdbff; display: flex; align-items: center; }
+  .bnc-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bnc-card-body {
+    padding: 14px 18px;
+    background: #fff;
+  }
+  .bnc-card-subhead {
+    font-family: var(--bnc-sans);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 12px 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--bnc-rule);
+  }
+  .bnc-card-subhead:first-child { margin-top: 0; }
+  .bnc-card-note {
+    font-family: var(--bnc-serif);
+    font-size: 12px;
+    color: var(--bnc-charcoal);
+    margin: 6px 0;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  /* Checklist items */
+  .bnc-cb-list {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 0;
+  }
+  .bnc-cb-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 4px 0;
+    font-family: var(--bnc-serif);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    line-height: 1.45;
+  }
+  .bnc-cb-list li .bnc-cb { margin-top: 1px; color: var(--bnc-sky-blue); }
+  .bnc-cb-list li.done { color: #5b6770; }
+  .bnc-cb-list li.done .bnc-cb { color: var(--bnc-target-green); }
+
+  /* Fill-in form fields */
+  .bnc-field {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 5px 0;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bnc-deep-navy);
+    flex: 0 0 auto;
+    min-width: 130px;
+    letter-spacing: 0.02em;
+  }
+  .bnc-field-line {
+    flex: 1 1 auto;
+    border-bottom: 1px solid #b6c2cc;
+    height: 16px;
+    margin-bottom: 2px;
+  }
+  .bnc-field-spacer { height: 6px; }
+
+  /* Icon-decorated callouts (overrides earlier .callout / .sidebar-deeper / .quiz) */
+  .callout, .sidebar-deeper {
+    position: relative;
+    padding-left: 46px;
+  }
+  .callout::before, .sidebar-deeper::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+  }
+  .callout::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230078B6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'/></svg>");
+  }
+  .sidebar-deeper::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232C3E50' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>");
+  }
+
+  .quiz { position: relative; padding-left: 46px; }
+  .quiz::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 22px; height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003D6B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3'/><circle cx='12' cy='17' r='0.8' fill='%23003D6B'/></svg>");
+  }
+
+  /* Warm-charcoal body text (subtle warmth) */
+  body { color: #2c3540; }
+
+  /* Sky-blue dotted underline rule on H2 (lighter than before) */
+  h2 {
+    border-bottom: 2px solid var(--bnc-sky-blue);
+    padding-bottom: 6px;
+  }
+
+  @media print {
+    .bnc-card { margin: 8pt 0; box-shadow: none; }
+    .bnc-card-head { padding: 4pt 8pt; }
+    .bnc-card-title { font-size: 8.5pt; }
+    .bnc-card-body { padding: 6pt 10pt; }
+    .bnc-card-subhead { font-size: 7.5pt; margin: 6pt 0 3pt 0; }
+    .bnc-cb-list li { font-size: 7.5pt; padding: 1.5pt 0; gap: 5pt; }
+    .bnc-field label { font-size: 7pt; min-width: 90pt; }
+    .bnc-field { padding: 2pt 0; }
+    .callout, .sidebar-deeper, .quiz { padding-left: 28pt !important; }
+    .callout::before, .sidebar-deeper::before, .quiz::before {
+      width: 14pt; height: 14pt; background-size: 14pt 14pt;
+      left: 7pt; top: 7pt;
+    }
+  }
+
+  body { background: #f5f7f9; }
+  .shell { background: #ffffff; box-shadow: 0 0 0 1px var(--bnc-rule); border-radius: 4px; }
+  h1::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--bnc-sky-blue);
+    margin-bottom: 10px;
+    border-radius: 2px;
+  }
+  h2 { position: relative; }
+  code {
+    background: #eef3f6;
+    color: var(--bnc-deep-navy);
+    border: 1px solid #dde5ea;
+    font-size: 13px;
+  }
+  thead tr:first-child th { border-top: 3px solid var(--bnc-sky-blue); }
+  figcaption { color: #4a5763; font-size: 13.5px; font-style: italic; }
+  @media print {
+    body { background: #fff; }
+    .shell { box-shadow: none; }
+  }
+
+  /* ====== Page numbers + running header (CSS Paged Media) ====== */
+  @media print {
+    /* Capture current chapter title from each h1 */
+    h1 { string-set: chapter content(); }
+    /* Suppress h1 string capture on the cover-only page (cover has no h1) */
+
+    @page {
+      size: 5in 8in;
+      margin: 0.5in 0.45in 0.55in 0.45in;
+      @bottom-center {
+        content: counter(page);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 8pt;
+        color: #003D6B;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @bottom-left {
+        content: "";
+        background: #0078B6;
+        height: 1pt;
+        width: 0.6in;
+        margin-bottom: 12pt;
+      }
+      @bottom-right {
+        content: "BNC";
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #7fdbff;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @top-right {
+        content: string(chapter);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #5b6770;
+        font-style: italic;
+        margin-bottom: 6pt;
+      }
+    }
+
+    /* Cover page: no headers, no numbers, no margins */
+    @page :first {
+      margin: 0;
+      @bottom-center { content: ""; }
+      @bottom-left { content: ""; }
+      @bottom-right { content: ""; }
+      @top-right { content: ""; }
+    }
+
+    /* Suppress running header on the very first page after the cover (front-matter title) */
+    @page :nth(2) {
+      @top-right { content: ""; }
+    }
+  }
+
+  /* ====== light-touch reconciliation additions ====== */
+  /* clean signature line (replaces the old stripped-attribution comma) */
+  p.signature {
+    text-align: right;
+    color: var(--bnc-deep-navy);
+    font-family: var(--bnc-serif);
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  p.signature em { font-style: italic; }
+
+  /* real Contents list (replaces run-together paragraphs) */
+  nav.toc { margin: 8px 0 0 0; }
+  nav.toc .toc-group {
+    font-family: var(--bnc-sans);
+    color: var(--bnc-deep-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    margin: 22px 0 6px 0;
+  }
+  nav.toc ul, nav.toc ol { margin: 0 0 6px 0; padding-left: 26px; }
+  nav.toc li { margin: 3px 0; line-height: 1.4; }
+  nav.toc a { color: var(--bnc-sky-blue); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  nav.toc ol.toc-alpha { list-style: upper-alpha; }
+
+  /* ====== shared footer (single-file adaptation) ====== */
+  footer.bnc-footer {
+    font-family: var(--bnc-sans); margin-top: 54px;
+    border-top: 2px solid var(--bnc-deep-navy); padding-top: 16px;
+    font-size: 13px; color: var(--bnc-charcoal);
+  }
+  footer.bnc-footer .bnc-nav { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  footer.bnc-footer .bnc-nav a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-nav a:hover { text-decoration: underline; }
+  footer.bnc-footer .bnc-nav a.disabled { color: #9aa7b2; pointer-events: none; font-weight: 400; }
+  footer.bnc-footer .bnc-nav .mid { text-align: center; flex: 0 0 auto; }
+  footer.bnc-footer .bnc-nav .next { text-align: right; }
+  footer.bnc-footer .bnc-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+    padding-top: 10px; border-top: 1px solid var(--bnc-rule); opacity: .92; }
+  footer.bnc-footer .bnc-meta a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-meta .spacer { margin-left: auto; font-weight: 400; opacity: .75; }
+
+  @media print {
+    /* keep footer from fighting the 5x8 print layout: hide screen nav, show compact copyright only */
+    footer.bnc-footer .bnc-nav { display: none; }
+    footer.bnc-footer .bnc-meta a { color: #000; }
+    footer.bnc-footer { margin-top: 18px; border-top: 1px solid #000; font-size: 7.5pt; page-break-inside: avoid; }
+  }
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body id="top">
+<div class="topbar">
+  <span class="brand">BNC · RIIDs in the Field</span>
+  <a href="00-front-matter.html#contents">Contents</a>
+</div>
+
+<div class="shell">
+
+<h2 id="5-operations-core-alert-identify-send">5. Operations Core: ALERT · IDENTIFY · SEND</h2>
+<p>This is the chapter every operator should be able to recite. The three-beat rhythm, alert, identify, send, is the same on every scene, regardless of the scenario. Master it once and the SOPs in Part III feel like variations on a theme.</p>
+<h3 id="51-alert-when-something-trips">5.1 ALERT: When Something Trips</h3>
+<p>An alert is any signal, from any source, that radiation may be present at a level above expected background.</p>
+<p><strong>Sources of alert in a typical program:</strong>
+- Officer's PRD chirps during a vehicle stop
+- Stationary portal monitor flags a pedestrian or vehicle
+- Survey meter reads above an action threshold during routine sweep
+- Witness report (citizen sees a labeled package, an open shipping container, a yellow trefoil)
+- Intelligence-driven assignment from command
+- Suspicious-package call where radiation is one of several modalities being checked</p>
+<p><strong>The 60-second alert response:</strong>
+1. <strong>Stop.</strong> Don't keep advancing toward the suspected source.
+2. <strong>Step back.</strong> Inverse-square law works in your favor.
+3. <strong>Note.</strong> Time, location, who alarmed, what the reading was, weather, anything in the area that might be a NORM source.
+4. <strong>Communicate.</strong> Dispatch + supervisor + adjacent units. Make sure someone outside the cordon knows the situation.
+5. <strong>Stage.</strong> Position the SAM handheld and any RD-150 resources between you and the source, or upwind, on a clear approach line.
+6. <strong>Document.</strong> Begin the timeline. Every minute thereafter gets logged.</p>
+<blockquote>
+<p><strong>Rule:</strong> No one approaches the source until a RIID is en route. The PRD has done its job. The next instrument up the ladder takes the next step.</p>
+</blockquote>
+<h3 id="52-identify-putting-the-riid-to-work">5.2 IDENTIFY: Putting the RIID To Work</h3>
+<p>The handheld RIID, your SAM 940/945 or SAM 950, is designed to give a confident isotope identification in a span of seconds to a few minutes. There are five steps. Run them every time, in this order.</p>
+<h4 id="step-1-power-on-and-self-test">Step 1. Power-on and Self-Test</h4>
+<p>Turn the unit on. Confirm the self-test completes without errors. Confirm:
+- Battery &gt; 20% (preferably &gt; 50%). If lower, swap batteries before scanning.
+- Date and time are correct. Spectra without a correct timestamp are difficult to use in court or in reachback.
+- GPS has lock. Outdoors, this should happen within seconds. Indoors, expect to lose GPS or use last-known.
+- Spectrum store has space. If full, archive or transfer before continuing.</p>
+<h4 id="step-2-calibration-check">Step 2. Calibration Check</h4>
+<p>Most modern SAM family units perform automatic gain stabilization using internal references, the operator does not run a manual calibration on every shift. However, <strong>you should confirm</strong> the unit has stabilized and is reporting a normal energy scale.</p>
+<ul>
+<li>If the unit has just been powered on after time in a cold vehicle or a hot trunk, allow it to settle (1–5 minutes typically).</li>
+<li>If your program uses a shift-start check source (small Cs-137 or Co-60), now is the moment to verify the photopeak appears at the expected channel/energy.</li>
+<li>If the photopeak is off, e.g., 662 keV showing as 640 keV, let the unit re-stabilize and repeat. If still off, take the unit out of service and use a backup.</li>
+</ul>
+<h4 id="step-3-acquire-background">Step 3. Acquire Background</h4>
+<p>Move to the cleanest area you can reach (relative to the suspected source) and acquire a background spectrum. Most units have a "background" mode that takes 30–120 seconds.</p>
+<p>Why this matters: the unit subtracts background to find peaks above the natural radiation field. A bad background equals a bad ID.</p>
+<ul>
+<li>Stand far enough from the suspected source that you read normal ambient (5–15 µR/hr is typical).</li>
+<li>Stand far from large concrete or stone structures if you can, they can elevate background.</li>
+<li>Save the background. Many units will reuse it; many will warn you when the field changes meaningfully.</li>
+</ul>
+<p>If you cannot acquire a clean background, for example, the entire scene is hot and there is no clean approach, note that fact and proceed. Reachback can compensate, but they need to know.</p>
+<h4 id="step-4-approach-and-scan">Step 4. Approach and Scan</h4>
+<p>This is the moment most operators worry about. They shouldn't, if they remember TDS.</p>
+<ul>
+<li><strong>Distance.</strong> Bring the unit to a position where the count rate is well above background but personal dose rate is acceptable. For most legitimate sources, you can scan from 0.5–2 m and get a clean spectrum without exceeding routine limits.</li>
+<li><strong>Time.</strong> Allow the scan to run until the confidence threshold is met. Some isotopes (Cs-137, Co-60) identify in seconds. Some (mixed sources, low-yield, masked) take longer. <strong>Do not pull the trigger early.</strong></li>
+<li><strong>Geometry.</strong> A consistent geometry helps. If the source is in a vehicle, place the unit on the seat or against the door. If in a package, place it on the surface or use a stand. Avoid waving the unit; let it rest.</li>
+<li><strong>Do not get closer than necessary.</strong> "I'll just hold it right against it" is how operators take dose they don't need.</li>
+</ul>
+<p>While scanning, watch the screen:
+- Count rate, should be above background.
+- Dose rate, your personal safety indicator.
+- Isotope name(s) appearing, initially low confidence, building.
+- Spectrum view, peaks should grow taller and narrower as counts accumulate.</p>
+<h4 id="step-5-confidence-and-save">Step 5. Confidence and Save</h4>
+<p>When the unit declares an identification with confidence above the threshold (every model uses a scale; "high" or a checkmark or a specific score, depending on firmware), confirm and save.</p>
+<ul>
+<li><strong>Save the event.</strong> Most units do this with a single button. The save captures spectrum, dose rate, GPS, time, and any operator notes you've entered.</li>
+<li><strong>Photograph the source/cargo.</strong> A picture is part of every event.</li>
+<li><strong>Add operator notes</strong> if the unit supports them (e.g., "tractor trailer, manifest indicates oilfield equipment, no driver present").</li>
+</ul>
+<p>If the unit cannot reach confidence in a reasonable time:
+- Verify you have a clean background.
+- Try moving closer (within ALARA).
+- Try a longer dwell.
+- Consider that you may have a mixed or shielded source, note it and prepare for reachback.</p>
+<div class="callout"><h4>BNC in Practice: Building Confidence Under Low Count Rate</h4><p>Two minutes of dwell at 0.5 m beats 30 seconds at the source for ALARA. If confidence is stuck below threshold, first verify your background is clean (re-acquire if you moved). Then check geometry: the unit should be still, not waving. Move closer only if dose rate at the new position is acceptable. If you have done all three and confidence is still low, mark it as a candidate for reachback and send the spectrum with your notes.</p></div>
+<h3 id="53-send-spectrum-to-expert-result-to-command">5.3 SEND: Spectrum to Expert, Result to Command</h3>
+<p>A clean identification on scene is half the win. The other half is getting that information to the right people in a form they can act on.</p>
+<p><strong>Three audiences for "send":</strong></p>
+<ol>
+<li><strong>Reachback (radiological expertise).</strong> A licensed health physicist or an operations center physicist can review the spectrum and confirm or refine your identification. On the <strong>SAM 940+</strong>, this is a one-click operation, the spectrum, photo, GPS, and scene notes travel as a single packet to your reachback channel without the operator leaving the scan screen. The SAM family supports spectrum file export in standard formats; transmit via your agency's preferred channel, secure email, dedicated cloud upload, or direct device-to-server connection.</li>
+<li><strong>Incident command.</strong> The IC or appropriate supervisor needs the headline: "Cs-137, high confidence, ~350 µSv/hr at the housing, consistent with industrial gauge." Plain-language summary first, technical detail second.</li>
+<li><strong>Records of the event.</strong> Department records, possibly a state health department report, possibly a federal incident report. Save everything. Spectra, photos, notes, dose readings, names, times.</li>
+</ol>
+<p><strong>A good "send" packet contains:</strong>
+- Spectrum file (ANSI N42.42 XML or vendor-native, per reachback preference)
+- Photograph(s) of the source/scene
+- GPS coordinates of measurement
+- Time of measurement
+- Dose rate at measurement point and at perimeter
+- Background spectrum (if acquired separately)
+- Operator notes, what you know, what you suspect, and what you do not know
+- Contact information for the on-scene operator</p>
+<p>A good reachback partner can return a confirmation, a refined ID, or a "we need more" within minutes, but only if your packet is clean.</p>
+<figure><img src="../figures/sam-950-gauge-elevated.jpg" alt="A SAM gauge view at an elevated reading, 95.28 µrem/h at 2,646 cps. The red sweep at the right of the dial tells the operator at a glance that they are well above background." loading="lazy"><figcaption>A SAM gauge view at an elevated reading, 95.28 µrem/h at 2,646 cps. The red sweep at the right of the dial tells the operator at a glance that they are well above background.</figcaption></figure>
+<h3 id="54-the-spectrum-what-operators-should-see">5.4 The Spectrum: What Operators Should See</h3>
+<p>Every operator should be able to glance at a spectrum and say something true about it. You don't need to be a spectroscopist; you need to recognize the obvious.</p>
+<ul>
+<li><strong>A single clean photopeak with a smooth Compton continuum below it</strong> = simple single-isotope source.</li>
+<div class="sidebar-deeper"><h4>Going Deeper: Reading the Compton Edge</h4><p>When a gamma scatters in the crystal and escapes before depositing all its energy, the partial deposit shows up at lower energy. The maximum back-scatter (180 degree scatter) defines the Compton edge, a step in the spectrum at E_c = E_gamma * (1 - 1/(1 + 2*E_gamma/511)). For Cs-137 at 662 keV, E_c is about 478 keV. Operators who can spot the Compton edge at the right energy gain a quick sanity check on the photopeak fit.</p></div>
+<li><strong>Multiple distinct peaks at characteristic ratios</strong> = a known multi-line isotope (e.g., Co-60 has two well-known photopeaks; Eu-152 has many).</li>
+<li><strong>Low broad bumps at the low end of the spectrum</strong> = scattered radiation; check shielding/geometry.</li>
+<li><strong>A peak that doesn't match anything in the displayed ID</strong> = something unusual; mark it, send it.</li>
+<li><strong>No peaks at all, just a smooth continuum</strong> = either too few counts (give it more time) or you're in pure background.</li>
+</ul>
+<h3 id="55-common-pitfalls-in-the-identify-step">5.5 Common Pitfalls in the Identify Step</h3>
+<ul>
+<li><strong>Calling it before confidence builds.</strong> The unit's job is to be sure. Yours is to wait.</li>
+<li><strong>Scanning while walking.</strong> Don't. Set the unit down or hold it stably.</li>
+<li><strong>Trusting the screen blindly without looking at the spectrum.</strong> Two seconds of glance can save a misread.</li>
+<li><strong>Forgetting to save.</strong> "I had it, then I closed the screen and lost it." Don't.</li>
+<li><strong>Skipping background because the source is obvious.</strong> Even an obvious source produces a cleaner ID with a current background.</li>
+</ul>
+<h3 id="56-the-three-beat-mnemonic">5.6 The Three-Beat Mnemonic</h3>
+<figure><img src="../figures/three-beat-mnemonic.png" alt="The Three-Beat Mnemonic" loading="lazy"><figcaption>The Three-Beat Mnemonic. Drill it until automatic.</figcaption></figure>
+<p>Drill this. Make it automatic. Then read Part III, where it gets applied to the four scenarios you are most likely to face.</p>
+<hr />
+<div class="quiz"><h4>Chapter 5 Quick Check</h4><ol><li><strong>The three-beat rhythm of every scene is:</strong><ol type="a"><li>Detect, dose, decide</li><li>Alert, identify, send</li><li>Find, fix, finish</li><li>Survey, scan, sample</li></ol></li><li><strong>Before scanning a suspected source, the operator must first:</strong><ol type="a"><li>Acquire a clean background spectrum</li><li>Photograph the scene</li><li>Power-cycle the unit</li><li>Notify command of the upcoming scan</li></ol></li><li><strong>If identification confidence stays below threshold, the right move is to:</strong><ol type="a"><li>Pull the trigger early and report</li><li>Verify background is clean, check geometry, then dwell longer or close distance within ALARA</li><li>Switch to a different RIID</li><li>Conclude the source is masked SNM</li></ol></li><li><strong>A clean reachback packet contains:</strong><ol type="a"><li>Only the spectrum</li><li>Spectrum, photo, GPS, time, dose at multiple distances, and operator notes</li><li>Just the operator's verbal summary by phone</li><li>The spectrum and a federal incident number</li></ol></li><li><strong>Which spectrum feature most reliably indicates a single-isotope source?</strong><ol type="a"><li>A flat continuum</li><li>A clean photopeak with the expected Compton continuum below it</li><li>Multiple low-energy bumps</li><li>An uneven baseline</li></ol></li></ol></div>
+<div class="callout"><h4>Test Yourself</h4>
+<p>Prefer to answer on screen? <a href="quiz-05.html">Take the interactive quiz &rarr;</a> Click an answer for each question, then check your score. Your answers are saved on this device.</p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04-the-sam-family-and-rd-150.html">&larr; 4. The SAM Family and the RD-150 System</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="06-sop-1-vehicle-stop.html">6. SOP-1: Vehicle Stop / Traffic Incident &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+
+</div>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

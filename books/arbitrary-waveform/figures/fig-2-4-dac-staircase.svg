@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="380" fill="#ffffff"/>
+  <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#003D6B">DAC Staircase vs Reconstructed Waveform</text>
+
+  <!-- Axes -->
+  <line x1="70" y1="320" x2="780" y2="320" stroke="#2C3E50" stroke-width="2"/>
+  <line x1="70" y1="60" x2="70" y2="320" stroke="#2C3E50" stroke-width="2"/>
+  <text x="425" y="360" text-anchor="middle" font-size="12" fill="#2C3E50">time (sample periods)</text>
+  <text x="28" y="195" text-anchor="middle" font-size="12" fill="#2C3E50" transform="rotate(-90 28 195)">output voltage</text>
+
+  <!-- Sample tick marks on x axis -->
+  <g stroke="#b6c2cc" stroke-width="1">
+    <line x1="120" y1="60" x2="120" y2="320"/>
+    <line x1="170" y1="60" x2="170" y2="320"/>
+    <line x1="220" y1="60" x2="220" y2="320"/>
+    <line x1="270" y1="60" x2="270" y2="320"/>
+    <line x1="320" y1="60" x2="320" y2="320"/>
+    <line x1="370" y1="60" x2="370" y2="320"/>
+    <line x1="420" y1="60" x2="420" y2="320"/>
+    <line x1="470" y1="60" x2="470" y2="320"/>
+    <line x1="520" y1="60" x2="520" y2="320"/>
+    <line x1="570" y1="60" x2="570" y2="320"/>
+    <line x1="620" y1="60" x2="620" y2="320"/>
+    <line x1="670" y1="60" x2="670" y2="320"/>
+    <line x1="720" y1="60" x2="720" y2="320"/>
+  </g>
+
+  <!-- Staircase (sample-and-hold) one sine period, samples at each tick -->
+  <!-- sine values mapped: center y=190, amplitude 110. y = 190 - 110*sin(theta) -->
+  <polyline fill="none" stroke="#C77E00" stroke-width="2.5"
+    points="70,190 120,190 120,148 170,148 170,113 220,113 220,99 270,99 270,113 320,113 320,148 370,148 370,190 420,190 420,232 470,232 470,267 520,267 520,281 570,281 570,267 620,267 620,232 670,232 670,190 720,190 720,148 770,148"/>
+
+  <!-- Smooth reconstructed sine overlay -->
+  <path fill="none" stroke="#0078B6" stroke-width="3"
+    d="M70,190
+       C 95,190 95,148 120,138
+       C 150,127 190,104 220,99
+       C 250,104 290,127 320,138
+       C 345,148 345,190 370,190
+       C 395,190 395,232 420,242
+       C 450,253 490,276 520,281
+       C 550,276 590,253 620,242
+       C 645,232 645,190 670,190
+       C 695,190 695,148 720,138
+       C 740,131 760,123 770,120"/>
+
+  <!-- sample dots on staircase corners -->
+  <g fill="#003D6B">
+    <circle cx="120" cy="148" r="3.5"/>
+    <circle cx="170" cy="113" r="3.5"/>
+    <circle cx="220" cy="99" r="3.5"/>
+    <circle cx="270" cy="113" r="3.5"/>
+    <circle cx="320" cy="148" r="3.5"/>
+    <circle cx="370" cy="190" r="3.5"/>
+    <circle cx="420" cy="232" r="3.5"/>
+    <circle cx="470" cy="267" r="3.5"/>
+    <circle cx="520" cy="281" r="3.5"/>
+    <circle cx="570" cy="267" r="3.5"/>
+    <circle cx="620" cy="232" r="3.5"/>
+    <circle cx="670" cy="190" r="3.5"/>
+  </g>
+
+  <!-- Legend -->
+  <rect x="540" y="58" width="14" height="14" fill="#C77E00"/>
+  <text x="560" y="70" font-size="12.5" fill="#2C3E50">DAC staircase (sample-and-hold)</text>
+  <rect x="540" y="80" width="14" height="14" fill="#0078B6"/>
+  <text x="560" y="92" font-size="12.5" fill="#2C3E50">after reconstruction filter</text>
+</svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="480" fill="#ffffff"/>
+  <text x="410" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#003D6B">Two Bench Cheat Sheets: dB Ladder and Rise Time vs Bandwidth</text>
+
+  <!-- ================= LEFT: dB ladder ================= -->
+  <text x="40" y="62" font-size="13" font-weight="bold" fill="#2C3E50">dB to ratio (power, then voltage)</text>
+
+  <!-- ladder axis -->
+  <line x1="120" y1="86" x2="120" y2="430" stroke="#2C3E50" stroke-width="1.5"/>
+
+  <!-- rungs: y, dB, power ratio, voltage ratio -->
+  <!-- 0 dB -->
+  <line x1="112" y1="410" x2="128" y2="410" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="106" y="414" text-anchor="end" font-size="12" font-weight="bold" fill="#003D6B">0 dB</text>
+  <rect x="135" y="398" width="20" height="24" fill="#ECEFF1" stroke="#0078B6"/>
+  <text x="170" y="408" font-size="11" fill="#2C3E50">power &#215;1</text>
+  <text x="170" y="422" font-size="11" fill="#2C3E50">voltage &#215;1</text>
+
+  <!-- 3 dB -->
+  <line x1="112" y1="362" x2="128" y2="362" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="106" y="366" text-anchor="end" font-size="12" font-weight="bold" fill="#003D6B">3 dB</text>
+  <rect x="135" y="350" width="35" height="24" fill="#ECEFF1" stroke="#0078B6"/>
+  <text x="185" y="360" font-size="11" fill="#2C3E50">power &#215;2</text>
+  <text x="185" y="374" font-size="11" fill="#2C3E50">voltage &#215;1.41</text>
+
+  <!-- 6 dB -->
+  <line x1="112" y1="314" x2="128" y2="314" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="106" y="318" text-anchor="end" font-size="12" font-weight="bold" fill="#003D6B">6 dB</text>
+  <rect x="135" y="302" width="55" height="24" fill="#ECEFF1" stroke="#0078B6"/>
+  <text x="205" y="312" font-size="11" fill="#2C3E50">power &#215;4</text>
+  <text x="205" y="326" font-size="11" font-weight="bold" fill="#C77E00">voltage &#215;2 (doubling)</text>
+
+  <!-- 10 dB -->
+  <line x1="112" y1="250" x2="128" y2="250" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="106" y="254" text-anchor="end" font-size="12" font-weight="bold" fill="#003D6B">10 dB</text>
+  <rect x="135" y="238" width="80" height="24" fill="#ECEFF1" stroke="#0078B6"/>
+  <text x="230" y="248" font-size="11" fill="#2C3E50">power &#215;10</text>
+  <text x="230" y="262" font-size="11" fill="#2C3E50">voltage &#215;3.16</text>
+
+  <!-- 20 dB -->
+  <line x1="112" y1="150" x2="128" y2="150" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="106" y="154" text-anchor="end" font-size="12" font-weight="bold" fill="#003D6B">20 dB</text>
+  <rect x="135" y="138" width="120" height="24" fill="#ECEFF1" stroke="#00b4ff"/>
+  <text x="270" y="148" font-size="11" fill="#2C3E50">power &#215;100</text>
+  <text x="270" y="162" font-size="11" font-weight="bold" fill="#C77E00">voltage &#215;10</text>
+
+  <text x="40" y="455" font-size="11" fill="#2C3E50" font-style="italic">dB = 10&#183;log&#8321;&#8320;(P/P&#8320;) = 20&#183;log&#8321;&#8320;(V/V&#8320;). Every 6 dB doubles voltage.</text>
+
+  <!-- vertical divider -->
+  <line x1="410" y1="50" x2="410" y2="440" stroke="#e3e7ea" stroke-width="1"/>
+
+  <!-- ================= RIGHT: rise time vs bandwidth ================= -->
+  <text x="445" y="62" font-size="13" font-weight="bold" fill="#2C3E50">Rise time &#8776; 0.35 / Bandwidth</text>
+
+  <!-- axes -->
+  <line x1="470" y1="100" x2="470" y2="390" stroke="#2C3E50" stroke-width="1.5"/>
+  <line x1="470" y1="390" x2="790" y2="390" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="455" y="106" text-anchor="end" font-size="10" fill="#2C3E50">t(r)</text>
+  <text x="785" y="408" text-anchor="end" font-size="10" fill="#2C3E50">bandwidth &#8594;</text>
+
+  <!-- gridlines -->
+  <line x1="470" y1="330" x2="790" y2="330" stroke="#eef1f3"/>
+  <line x1="470" y1="270" x2="790" y2="270" stroke="#eef1f3"/>
+  <line x1="470" y1="210" x2="790" y2="210" stroke="#eef1f3"/>
+  <line x1="470" y1="150" x2="790" y2="150" stroke="#eef1f3"/>
+
+  <!-- inverse curve t = 0.35/BW, mapped -->
+  <path d="M486,110 C500,170 520,250 560,310 C610,360 690,378 790,384" fill="none" stroke="#0078B6" stroke-width="2.5"/>
+
+  <!-- annotated points -->
+  <circle cx="520" cy="245" r="4" fill="#C77E00"/>
+  <text x="528" y="240" font-size="10" fill="#2C3E50">100 MHz &#8594; 3.5 ns</text>
+  <circle cx="610" cy="350" r="4" fill="#C77E00"/>
+  <text x="618" y="345" font-size="10" fill="#2C3E50">1 GHz &#8594; 350 ps</text>
+  <circle cx="745" cy="380" r="4" fill="#C77E00"/>
+  <text x="660" y="372" font-size="10" fill="#2C3E50">10 GHz &#8594; 35 ps</text>
+
+  <text x="630" y="430" text-anchor="middle" font-size="11" fill="#2C3E50" font-style="italic">More bandwidth buys faster edges. The constant 0.35 assumes a</text>
+  <text x="630" y="446" text-anchor="middle" font-size="11" fill="#2C3E50" font-style="italic">single-pole (Gaussian-like) response measured 10% to 90%.</text>
+</svg>

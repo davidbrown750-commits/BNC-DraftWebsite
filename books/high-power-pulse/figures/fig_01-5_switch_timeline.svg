@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 16px; font-weight: 600; fill: #111; }
+    .axis  { stroke: #333; stroke-width: 1.5; }
+    .tick  { stroke: #555; stroke-width: 1; }
+    .label { font-size: 11px; fill: #444; }
+    .era   { font-size: 12px; font-weight: 600; }
+    .note  { font-size: 10px; fill: #666; font-style: italic; }
+    .bar   { opacity: 0.85; rx: 4; ry: 4; }
+  </style>
+
+  <text x="440" y="30" text-anchor="middle" class="title">A century of pulsed-power switches</text>
+  <text x="440" y="48" text-anchor="middle" class="note">Dominant switching technology by era, with representative voltage hold-off</text>
+
+  <!-- Timeline axis -->
+  <line x1="60" y1="290" x2="820" y2="290" class="axis" />
+  <!-- Decade ticks: 1920-2030 -->
+  <g class="tick">
+    <line x1="60"  y1="290" x2="60"  y2="296" />
+    <line x1="129" y1="290" x2="129" y2="296" />
+    <line x1="198" y1="290" x2="198" y2="296" />
+    <line x1="267" y1="290" x2="267" y2="296" />
+    <line x1="336" y1="290" x2="336" y2="296" />
+    <line x1="405" y1="290" x2="405" y2="296" />
+    <line x1="474" y1="290" x2="474" y2="296" />
+    <line x1="543" y1="290" x2="543" y2="296" />
+    <line x1="612" y1="290" x2="612" y2="296" />
+    <line x1="681" y1="290" x2="681" y2="296" />
+    <line x1="750" y1="290" x2="750" y2="296" />
+    <line x1="819" y1="290" x2="819" y2="296" />
+  </g>
+  <g class="label" text-anchor="middle">
+    <text x="60"  y="312">1920</text>
+    <text x="129" y="312">1930</text>
+    <text x="198" y="312">1940</text>
+    <text x="267" y="312">1950</text>
+    <text x="336" y="312">1960</text>
+    <text x="405" y="312">1970</text>
+    <text x="474" y="312">1980</text>
+    <text x="543" y="312">1990</text>
+    <text x="612" y="312">2000</text>
+    <text x="681" y="312">2010</text>
+    <text x="750" y="312">2020</text>
+    <text x="819" y="312">2030</text>
+  </g>
+
+  <!-- Era bars: x = (year - 1920) * 6.9 + 60 -->
+  <!-- Spark gaps: 1920-2030 (still used at very high voltage) -->
+  <rect x="60"  y="80"  width="759" height="22" fill="#7c3a3a" class="bar" />
+  <text x="69"  y="96"  fill="#fff" class="era">Spark gaps &amp; pseudosparks  &#8212;  &gt; 1 MV class, still in service</text>
+
+  <!-- Hydrogen thyratrons: 1942-2010+ -->
+  <rect x="212" y="112" width="538" height="22" fill="#9b6b3a" class="bar" />
+  <text x="221" y="128" fill="#fff" class="era">Hydrogen thyratrons  &#8212;  10&#8211;100 kV, radar &amp; accelerator modulators</text>
+
+  <!-- Power MOSFETs: 1975-present -->
+  <rect x="440" y="144" width="380" height="22" fill="#3a5b9b" class="bar" />
+  <text x="449" y="160" fill="#fff" class="era">Power MOSFETs  &#8212;  100 V&#8211;10 kV stacked, sub-&#181;s switching</text>
+
+  <!-- IGBTs: 1990-present -->
+  <rect x="543" y="176" width="277" height="22" fill="#3a8b6b" class="bar" />
+  <text x="552" y="192" fill="#fff" class="era">IGBTs  &#8212;  &lt; 6.5 kV, motor drives + medium-V pulsers</text>
+
+  <!-- SiC/GaN wide-bandgap: 2010-present -->
+  <rect x="681" y="208" width="139" height="22" fill="#6b3a8b" class="bar" />
+  <text x="690" y="224" fill="#fff" class="era">SiC &amp; GaN  &#8212;  sub-ns, 1.2&#8211;15 kV</text>
+
+  <!-- DSRD/SOS/PCSS specialty -->
+  <rect x="681" y="240" width="139" height="22" fill="#8b3a5b" class="bar" />
+  <text x="690" y="256" fill="#fff" class="era">DSRD / SOS / PCSS  &#8212;  ps&#8211;ns, specialty</text>
+
+  <!-- Marx invention marker -->
+  <line x1="89" y1="60" x2="89" y2="78" stroke="#222" stroke-width="1.5" />
+  <circle cx="89" cy="60" r="3" fill="#222" />
+  <text x="89" y="55" text-anchor="middle" class="label" font-weight="600">Marx 1924</text>
+
+  <!-- Radar inflection -->
+  <line x1="219" y1="60" x2="219" y2="78" stroke="#222" stroke-width="1.5" />
+  <circle cx="219" cy="60" r="3" fill="#222" />
+  <text x="219" y="55" text-anchor="middle" class="label" font-weight="600">Radar 1942</text>
+
+  <!-- Wide-bandgap inflection -->
+  <line x1="688" y1="60" x2="688" y2="78" stroke="#222" stroke-width="1.5" />
+  <circle cx="688" cy="60" r="3" fill="#222" />
+  <text x="688" y="55" text-anchor="middle" class="label" font-weight="600">SiC commercial 2011</text>
+
+  <text x="60" y="345" class="note">Bars show the era of dominant or competitive use, not first invention. Vertical position carries no quantitative meaning.</text>
+</svg>

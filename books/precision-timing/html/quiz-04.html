@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 4 Quiz</title>
+<link rel="stylesheet" href="light-touch.css"/>
+<script defer src="reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1>Chapter 4 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "tmi",
+  chapterKey: "04",
+  title: "Chapter 4 Quiz: Operating a Multi-Channel Timing System",
+  questions: [
+    {
+      q: "In which output mode does a channel produce one pulse on the first trigger only, after which it is inhibited?",
+      options: [
+        "Normal",
+        "Single shot",
+        "Burst",
+        "Duty cycle"
+      ],
+      answer: 1,
+      explain: "Single shot produces one output pulse on the first trigger only, then inhibits the channel. Normal produces one pulse per trigger, while burst produces a preset number of pulses per trigger."
+    },
+    {
+      q: "What does the multiplex feature do?",
+      options: [
+        "Locks the instrument to an external 10 MHz reference",
+        "Combines the outputs of several channels onto one output connector",
+        "Counts the total number of output pulses produced",
+        "Skips a set number of pulses before a channel begins output"
+      ],
+      answer: 1,
+      explain: "Multiplex combines several channels onto one physical output connector as a composite sequence. Because more than one channel maps to a single output, it is a classic source of overlap conflicts."
+    },
+    {
+      q: "How does a system mode relate to the individual channel modes?",
+      options: [
+        "Channel modes always take precedence over the system mode",
+        "The system mode sets overall timing that takes precedence over individual channel modes",
+        "System and channel modes can never be active at the same time",
+        "The system mode only affects the first channel"
+      ],
+      answer: 1,
+      explain: "A system mode sits above the channels. A system burst, for example, limits the triggers that ever reach the channel layer, so every channel responds to the new envelope at once."
+    },
+    {
+      q: "In the pulse inhibit method of channel gating, what happens to a pulse that is already underway when the gate inhibits the channel?",
+      options: [
+        "It is cut off immediately",
+        "It is allowed to finish cleanly",
+        "It is stretched to fill the gate window",
+        "It is rerouted to another channel"
+      ],
+      answer: 1,
+      explain: "Pulse inhibit prevents the channel from being triggered by its own trigger source pulse, but any pulse already underway is allowed to finish cleanly. The gate is set Active High or Active Low."
+    },
+    {
+      q: "What does a shot counter track?",
+      options: [
+        "The number of channels currently enabled",
+        "The external reference frequency in MHz",
+        "The total number of output pulses, or shots, the instrument has produced",
+        "The delay from the trigger to the first pulse"
+      ],
+      answer: 2,
+      explain: "A shot counter tracks how many output pulses the instrument has produced. It enforces a known total when a test calls for one and confirms a sequence ran to completion, giving one trusted number across many channels and modes."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04-multi-channel-timing.html">&larr; Back to Chapter 4</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="05-rep-rates-overlap.html">5. Rep Rates &amp; Overlap &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

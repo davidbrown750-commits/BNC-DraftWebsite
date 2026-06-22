@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 430" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="A spectrogram stacks spectra over time to show frequency activity history, while a density display color-grades how often each point is hit so rare transients stand out from the steady noise background">
+  <defs>
+    <style>
+      .axis{stroke:#2C3E50;stroke-width:1.4;}
+      .tick{fill:#2C3E50;font-size:10px;}
+      .ttl{fill:#003D6B;font-size:13px;font-weight:700;}
+      .note{fill:#2C3E50;font-size:11px;}
+    </style>
+  </defs>
+
+  <text x="20" y="28" fill="#003D6B" font-size="15" font-weight="700">Spectrogram and Density (Persistence) Displays</text>
+
+  <!-- LEFT: spectrogram -->
+  <text x="40" y="60" class="ttl">Spectrogram: frequency vs time</text>
+  <line class="axis" x1="55" y1="76" x2="55" y2="300"/>
+  <line class="axis" x1="55" y1="300" x2="370" y2="300"/>
+  <text x="25" y="200" class="tick" transform="rotate(-90 25 200)">Time (newest at top)</text>
+  <text x="210" y="320" class="tick" text-anchor="middle">Frequency</text>
+  <!-- background tiles (noise) -->
+  <rect x="56" y="77" width="313" height="222" fill="#003D6B" fill-opacity="0.10"/>
+  <!-- steady carrier: a vertical stripe -->
+  <rect x="150" y="77" width="14" height="222" fill="#0078B6"/>
+  <text x="157" y="73" class="note" text-anchor="middle" fill="#0078B6">steady carrier</text>
+  <!-- hopping signal: diagonal dashes -->
+  <rect x="220" y="90" width="14" height="20" fill="#C77E00"/>
+  <rect x="270" y="130" width="14" height="20" fill="#C77E00"/>
+  <rect x="320" y="170" width="14" height="20" fill="#C77E00"/>
+  <rect x="250" y="210" width="14" height="20" fill="#C77E00"/>
+  <rect x="300" y="250" width="14" height="20" fill="#C77E00"/>
+  <text x="285" y="293" class="note" text-anchor="middle" fill="#C77E00">frequency hopper (its history is visible)</text>
+
+  <!-- RIGHT: density display -->
+  <text x="450" y="60" class="ttl">Density display: how often vs amplitude</text>
+  <line class="axis" x1="465" y1="76" x2="465" y2="300"/>
+  <line class="axis" x1="465" y1="300" x2="780" y2="300"/>
+  <text x="435" y="200" class="tick" transform="rotate(-90 435 200)">Amplitude</text>
+  <text x="620" y="320" class="tick" text-anchor="middle">Frequency</text>
+  <!-- frequently hit: hot (navy) steady signal -->
+  <path d="M520 296 L560 294 Q575 150 590 294 L630 296" fill="#003D6B" fill-opacity="0.85" stroke="#003D6B" stroke-width="2"/>
+  <text x="575" y="140" class="note" text-anchor="middle" fill="#003D6B">often hit (hot)</text>
+  <!-- rare transient: cool (cyan), faint -->
+  <path d="M660 296 L690 295 Q702 200 714 295 L744 296" fill="#00b4ff" fill-opacity="0.35" stroke="#00b4ff" stroke-width="2"/>
+  <text x="702" y="190" class="note" text-anchor="middle" fill="#0078B6">rare transient (cool)</text>
+  <!-- noise haze -->
+  <rect x="466" y="280" width="313" height="19" fill="#00b4ff" fill-opacity="0.12"/>
+
+  <line x1="20" y1="330" x2="800" y2="330" stroke="#b6c2cc" stroke-width="1"/>
+  <text x="20" y="356" class="note">A spectrogram answers "when did it happen?"; the density display answers "how often, and how strong?"</text>
+  <text x="20" y="376" class="note">Color grading by frequency-of-occurrence lets a rare event that flashes once stand out from the steady noise floor,</text>
+  <text x="20" y="396" class="note">even when both sit at the same amplitude. A density or frequency-mask trigger can then capture the event automatically.</text>
+  <text x="20" y="420" class="note" fill="#C77E00">Persistence keeps recent hits visible so intermittent and overlapping signals do not vanish between updates.</text>
+</svg>

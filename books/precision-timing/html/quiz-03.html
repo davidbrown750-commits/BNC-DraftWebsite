@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 3 Quiz</title>
+<link rel="stylesheet" href="light-touch.css"/>
+<script defer src="reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1>Chapter 3 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "tmi",
+  chapterKey: "03",
+  title: "Chapter 3 Quiz: Gating, Delaying & Clocking Signals",
+  questions: [
+    {
+      q: "When an external trigger crosses a noisy threshold on a slow edge, what is the main consequence?",
+      options: [
+        "The output amplitude drops",
+        "The crossing time wanders, which shows up later as trigger jitter",
+        "The instrument switches to an internal trigger automatically",
+        "The pulse width doubles"
+      ],
+      answer: 1,
+      explain: "On a slow edge crossing a noisy threshold, the crossing instant wanders cycle to cycle, and that wander appears later as trigger jitter. The fastest, cleanest edge gives the lowest jitter."
+    },
+    {
+      q: "What does trigger holdoff do after a trigger fires?",
+      options: [
+        "It blocks new triggers for a set time, preventing double-triggering and enforcing minimum spacing",
+        "It increases the output amplitude for the next cycle",
+        "It switches the slope from rising to falling",
+        "It arms the instrument for the next setup signal"
+      ],
+      answer: 0,
+      explain: "Holdoff blanks the trigger input for a set time after a trigger, so a bouncing source cannot double-trigger and a fast train cannot pack pulses too close together."
+    },
+    {
+      q: "What is the difference between output inhibit and pulse inhibit when a gate disables a channel?",
+      options: [
+        "Output inhibit is slower than pulse inhibit",
+        "Output inhibit cuts the output immediately and can truncate a pulse in progress, while pulse inhibit lets an in-progress pulse finish cleanly before stopping",
+        "They are two names for the same behavior",
+        "Pulse inhibit only works over a software bus"
+      ],
+      answer: 1,
+      explain: "Output inhibit is a hard, immediate cutoff that can leave a runt pulse. Pulse inhibit blocks new triggers but allows any pulse already underway to complete cleanly."
+    },
+    {
+      q: "If channel B is chained to channel A by a fixed offset, what happens when the operator slides A later in time?",
+      options: [
+        "B stays fixed and the A-to-B spacing changes",
+        "B follows A, keeping the A-to-B spacing constant",
+        "B fires before To",
+        "Both channels are disabled until re-armed"
+      ],
+      answer: 1,
+      explain: "Delay chaining references one channel to another, so moving A automatically carries B along and holds the spacing between them constant. This moves a whole feature without disturbing its internal structure."
+    },
+    {
+      q: "Which time base is best suited for low close-in phase noise and good short-term stability?",
+      options: [
+        "A rubidium reference",
+        "A GPS-disciplined oscillator",
+        "An oven-controlled crystal oscillator (OCXO)",
+        "A standard uncompensated crystal"
+      ],
+      answer: 2,
+      explain: "An OCXO holds a crystal at constant temperature, giving low phase noise and good short-term stability. Rubidium and GPS excel at long-term stability and traceability, locked to a 10 MHz reference where needed."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-gating-delaying-clocking.html">&larr; Back to Chapter 3</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="04-multi-channel-timing.html">4. Multi-Channel Timing System &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

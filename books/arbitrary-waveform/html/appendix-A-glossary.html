@@ -1,0 +1,516 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appendix A: Glossary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+<style>
+.glossary, dl.glossary, .wrap, main, body, dd, p { text-align: left; }
+figure[style*="float"]{ float:none !important; clear:both !important; width:33% !important; max-width:340px !important; margin:1rem 0 1.2rem 0 !important; }
+figure figcaption { text-align: center; }
+@media (max-width:640px){ figure[style*="float"]{ width:auto !important; max-width:100% !important; margin:1rem 0 !important; } }
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="appendix-a-glossary">Appendix A: Glossary of Terms</h2>
+
+<p>Arbitrary waveform generation borrows vocabulary from sampling theory, data conversion, RF engineering, and instrument control, and the same word sometimes means slightly different things in each. This glossary collects the terms used throughout the book and defines them as a practicing engineer would use them at the bench. Definitions are general engineering knowledge, not product claims. Where a Berkeley Nucleonics instrument is mentioned, treat the figures as a snapshot and confirm current numbers against the datasheet at berkeleynucleonics.com.</p>
+
+<h3 id="gloss-a">A</h3>
+
+<p><strong>Aliasing.</strong> The distortion that occurs when a signal contains frequency content above the Nyquist frequency, causing those components to fold back and appear as lower, false frequencies in the output. In an AWG, aliasing limits how high in frequency you can faithfully reconstruct a waveform for a given sample rate, and it is the reason a reconstruction filter sits at the output.</p>
+
+<p><strong>Amplitude.</strong> The size of a signal, usually expressed as peak, peak-to-peak, or RMS voltage into a stated load. On an AWG the amplitude setting scales the full-scale range of the digital-to-analog converter, so changing amplitude changes how the stored sample values map to output volts.</p>
+
+<p><strong>Analog Bandwidth.</strong> The frequency at which the output amplitude has fallen by 3 dB relative to its low-frequency value, set by the output amplifier and reconstruction filter rather than the sample rate alone. Bandwidth and sample rate are related but distinct: you can have plenty of one and be limited by the other.</p>
+
+<p><strong>Arbitrary Waveform.</strong> A waveform defined point by point in memory rather than by a mathematical function selector, allowing any shape the sample resolution and memory depth can represent. This is what separates an AWG from a plain function generator.</p>
+
+<figure style="float:right;width:38%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-photo-awg.jpg" alt="A DDS function generator on a laboratory bench, front panel showing controls and display" style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">A real arbitrary waveform generator on the bench: front-panel controls set frequency, amplitude, and output mode while internal memory holds the waveform.</figcaption>
+</figure>
+
+<p><strong>Arbitrary Waveform Generator (AWG).</strong> An instrument that plays back a user-defined sequence of sample values through a digital-to-analog converter and a reconstruction filter to produce a precise analog signal. An AWG can reproduce standard functions, captured real-world signals, and entirely synthetic waveforms with equal ease.</p>
+
+<p><strong>ASK (Amplitude-Shift Keying).</strong> A digital modulation scheme that encodes data by switching the carrier amplitude between discrete levels. On-off keying, the simplest form, turns the carrier fully on and off.</p>
+
+<h3 id="gloss-b">B</h3>
+
+<p><strong>Burst Mode.</strong> An output mode that emits a defined number of waveform cycles on each trigger event, then returns to idle. Burst is the workhorse for radar pulses, ultrasound pings, and any scenario that needs a finite count of cycles rather than a continuous tone.</p>
+
+<h3 id="gloss-c">C</h3>
+
+<p><strong>Chirp (LFM, Linear Frequency Modulation).</strong> A signal whose instantaneous frequency sweeps linearly across a span during the pulse, widely used in radar and sonar for pulse compression. Chirps trade a long, low-power transmit pulse for fine range resolution after matched filtering.</p>
+
+<p><strong>Clock (Sample Clock).</strong> The timing reference that steps the digital-to-analog converter from one sample to the next. Its rate sets the sample rate, and its stability and jitter directly limit the spectral purity of the output.</p>
+
+<p><strong>Code (DAC Code).</strong> The integer value, drawn from the converter's quantization range, that the DAC converts into a specific output level. A 14-bit converter has 16,384 distinct codes; a 16-bit converter has 65,536.</p>
+
+<p><strong>Crest Factor.</strong> The ratio of a signal's peak amplitude to its RMS value, often expressed in decibels. High-crest-factor signals such as multitone and OFDM waveforms force you to back off average power to avoid clipping the peaks.</p>
+
+<h3 id="gloss-d">D</h3>
+
+<figure style="float:left;width:38%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-diagram-dac.svg" alt="DAC staircase reconstruction diagram: a stepped sample-and-hold output (sky blue) tracking a smooth sine wave (navy dashed)" style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">The DAC builds the waveform from discrete voltage steps (sky blue staircase); a reconstruction filter then smooths those steps into the continuous output (navy dashed curve).</figcaption>
+</figure>
+
+<p><strong>DAC (Digital-to-Analog Converter).</strong> The component that turns each stored sample code into a proportional analog voltage or current. Its resolution, speed, and linearity set the ceiling on an AWG's fidelity.</p>
+
+<p><strong>dBc.</strong> Decibels relative to the carrier, used to express the level of a spur, harmonic, or noise component compared with the main signal. A spur at minus 60 dBc sits a millionth of the carrier power below it.</p>
+
+<p><strong>dBm.</strong> Decibels relative to one milliwatt, an absolute power unit. Zero dBm is 1 mW, which is about 0.224 V RMS into 50 ohms; plus 10 dBm is 10 mW.</p>
+
+<p><strong>Deterministic Jitter.</strong> The bounded, data-dependent or periodic component of timing jitter, as distinct from random jitter. It comes from identifiable causes such as crosstalk, duty-cycle distortion, or reflections, and it does not grow without limit as you observe longer.</p>
+
+<p><strong>Differential Output.</strong> A two-wire output that carries a signal and its inverse, so the receiver reads the difference between them. Differential drive rejects common-mode noise and doubles the available swing compared with a single-ended output of the same rail.</p>
+
+<p><strong>Direct Digital Synthesis (DDS).</strong> A technique that generates a waveform by stepping a phase accumulator at a fixed clock rate and looking up the corresponding amplitude in a waveform table. DDS gives fine frequency resolution and fast, phase-continuous frequency changes, which is why it underpins many function and sweep modes.</p>
+
+<p><strong>Dither.</strong> A small amount of noise added deliberately before quantization to randomize the quantization error, trading a slightly higher noise floor for the removal of correlated spurs. Done well, dither makes a converter's distortion behave more like benign noise.</p>
+
+<p><strong>Dynamic Range.</strong> The ratio between the largest and smallest signals an instrument can handle at once, typically the span from full scale down to the noise or spur floor. It tells you whether a small feature will survive in the presence of a large one.</p>
+
+<h3 id="gloss-e">E</h3>
+
+<p><strong>ENOB (Effective Number of Bits).</strong> A measured figure of merit that expresses real converter performance, including noise and distortion, as the bit count of an ideal converter with the same signal-to-noise-and-distortion ratio. ENOB is always lower than the nominal bit count, and the gap is where the engineering lives.</p>
+
+<p><strong>Envelope.</strong> The slowly varying outline that bounds a faster carrier, describing how amplitude changes over time. Pulse shaping, AM, and IQ baseband design all work in terms of the envelope.</p>
+
+<p><strong>External Trigger.</strong> A signal applied to a dedicated input that starts, gates, or advances waveform playback in response to an event outside the instrument. External triggering is how an AWG synchronizes to the rest of a test system.</p>
+
+<h3 id="gloss-f">F</h3>
+
+<p><strong>Function Generator.</strong> An instrument that produces standard waveforms such as sine, square, triangle, and ramp from built-in generators, usually with adjustable frequency, amplitude, and offset. It is the simpler ancestor of the AWG, fixed to a menu of shapes rather than arbitrary memory playback.</p>
+
+<p><strong>FSK (Frequency-Shift Keying).</strong> A digital modulation scheme that encodes data by switching the carrier between two or more discrete frequencies. It is robust and simple, which keeps it in service for telemetry and low-rate links.</p>
+
+<h3 id="gloss-g">G</h3>
+
+<p><strong>Gated Mode.</strong> An output mode in which the waveform plays only while an external gate signal is asserted and pauses or stops when it is removed. Unlike burst, which counts cycles, a gate controls duration directly.</p>
+
+<p><strong>Glitch Energy.</strong> The transient area, measured in volt-seconds, of the unwanted spike a DAC produces at a code transition, especially at major-carry boundaries. Large glitch energy shows up as distortion and spurs, so converter designers work hard to keep it small.</p>
+
+<p><strong>Granularity.</strong> The required quantization of waveform length, meaning that the number of samples in a segment must be a multiple of some fixed value set by the architecture. Granularity constraints affect how cleanly a loop closes and how precisely you can set a period.</p>
+
+<h3 id="gloss-h">H</h3>
+
+<p><strong>Harmonic Distortion.</strong> Unwanted signal energy at integer multiples of the fundamental frequency, produced by nonlinearity in the converter and output stage. It is often summarized as total harmonic distortion (THD), the combined power of the harmonics relative to the fundamental.</p>
+
+<p><strong>Holdoff.</strong> A programmed dead time after a trigger during which further triggers are ignored, used to prevent retriggering on noise or on unwanted edges within a burst. Holdoff buys clean, predictable spacing between accepted events.</p>
+
+<h3 id="gloss-i">I</h3>
+
+<p><strong>Image (Spectral Image).</strong> A replica of the desired signal that appears around multiples of the sample rate as a consequence of sampling. The reconstruction filter exists to suppress these images so that only the wanted band reaches the output.</p>
+
+<p><strong>Interpolation.</strong> The process of computing intermediate sample values to raise the effective sample rate, often performed in a digital filter ahead of the DAC. Interpolation pushes the spectral images farther from the signal band and eases the reconstruction filter's job.</p>
+
+<p><strong>IQ Modulation.</strong> A method that represents a signal by two baseband components, in-phase (I) and quadrature (Q), which together define both amplitude and phase of a carrier. IQ is the native language of modern digital communications, and a two-channel AWG can supply the I and Q baseband pair directly.</p>
+
+<h3 id="gloss-j">J</h3>
+
+<p><strong>Jitter.</strong> Short-term variation in the timing of clock or signal edges away from their ideal positions. In an AWG, sample-clock jitter modulates the output in time and raises the noise floor, particularly for high-frequency content.</p>
+
+<h3 id="gloss-m">M</h3>
+
+<p><strong>Marker.</strong> A separate digital output, aligned to specific points in a waveform, used to trigger or synchronize other instruments. Markers let a stored waveform announce its own key moments to the rest of the bench.</p>
+
+<p><strong>Memory Depth.</strong> The number of samples the waveform memory can hold, which sets the longest unique signal you can play before repeating or sequencing. Deeper memory buys longer records, finer detail, or both, and it is often the quiet constraint behind a complex test.</p>
+
+<p><strong>Modulation Index.</strong> A measure of how strongly a carrier is modulated, such as the ratio of peak deviation to a reference in FM or the depth fraction in AM. It sets occupied bandwidth and, for analog schemes, the trade between signal strength and distortion.</p>
+
+<h3 id="gloss-n">N</h3>
+
+<figure style="float:right;width:33%;max-width:280px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-photo-nyquist.jpg" alt="Portrait photograph of Harry Nyquist, Swedish-American engineer and physicist" style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Harry Nyquist (1889-1976), Swedish-American engineer at Bell Labs. His 1928 sampling theorem established that a signal must be sampled at least twice its highest frequency to be faithfully reconstructed, the principle that defines the Nyquist frequency.</figcaption>
+</figure>
+
+<p><strong>Nyquist Frequency.</strong> Half the sample rate, the highest frequency that sampling can represent without aliasing. Signal content must stay below it for faithful reconstruction.</p>
+
+<figure style="float:left;width:38%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-eq-nyquist.png" alt="Nyquist sampling theorem equation: f_s is greater than or equal to 2 times f_max" style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">The Nyquist sampling criterion: the sample rate f_s (in samples per second) must be at least twice the highest frequency f_max present in the signal. Violating this limit produces aliasing.</figcaption>
+</figure>
+
+<p><strong>Nyquist Zone.</strong> One of the equal frequency bands, each half the sample rate wide, into which the spectrum divides. The first zone runs from DC to the Nyquist frequency; higher zones contain the spectral images, and some advanced techniques deliberately operate in them.</p>
+
+<h3 id="gloss-o">O</h3>
+
+<p><strong>Offset (DC Offset).</strong> A constant voltage added to the waveform, shifting the whole signal up or down relative to ground. Offset positions a signal within a device's input window without changing its shape.</p>
+
+<p><strong>Oversampling.</strong> Running the sample rate well above the minimum the Nyquist criterion demands. Oversampling relaxes the reconstruction filter, spreads quantization noise over a wider band, and improves in-band fidelity.</p>
+
+<h3 id="gloss-p">P</h3>
+
+<p><strong>Phase Accumulator.</strong> The register at the heart of a DDS that adds a fixed increment on every clock cycle, with its overflow tracing out the phase of the output waveform. The size of the increment sets the frequency, and the accumulator's width sets the frequency resolution.</p>
+
+<p><strong>Phase Noise.</strong> The rapid, random fluctuation of a signal's phase, seen in the frequency domain as a skirt of noise around the carrier and specified in dBc per hertz at a given offset. It is the spectral fingerprint of timing instability and a key limit for coherent and communications work.</p>
+
+<p><strong>Pulse Repetition Interval (PRI).</strong> The time between the start of one pulse and the start of the next in a pulsed signal, the reciprocal of the pulse repetition frequency. PRI is a defining parameter in radar, and agile or staggered PRI is a common test requirement.</p>
+
+<h3 id="gloss-q">Q</h3>
+
+<p><strong>Quantization Noise.</strong> The error introduced when a continuous amplitude is rounded to the nearest available DAC code, modeled as a noise floor that sets the best achievable signal-to-noise ratio for an ideal converter. Each additional bit of resolution lowers it by about 6 dB.</p>
+
+<h3 id="gloss-r">R</h3>
+
+<p><strong>Ramp.</strong> A waveform whose amplitude rises (or falls) linearly with time, also called a sawtooth when it resets sharply. Ramps drive sweeps, scan generators, and time-base references.</p>
+
+<p><strong>Reconstruction Filter.</strong> The analog low-pass filter at a DAC's output that removes the spectral images and smooths the sampled staircase into a continuous waveform. Its cutoff and roll-off shape the usable bandwidth and the cleanliness of the output.</p>
+
+<p><strong>Reference Clock (10 MHz).</strong> A common timing reference, conventionally a 10 MHz signal, shared between instruments so that they hold a common sense of frequency and phase. Locking AWGs and analyzers to one reference is the first step toward coherent multi-instrument measurements.</p>
+
+<figure style="float:right;width:38%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-eq-resolution.png" alt="DAC resolution equation: Levels equals 2 to the power N" style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">An N-bit converter produces 2 to the N discrete amplitude levels. Each additional bit doubles the number of steps and lowers the quantization noise floor by approximately 6 dB.</figcaption>
+</figure>
+
+<p><strong>Resolution (Vertical).</strong> The number of bits a DAC uses to represent each sample, which fixes how finely the output amplitude is quantized. More vertical bits means smaller steps, a lower quantization floor, and more usable dynamic range.</p>
+
+<p><strong>Rise Time.</strong> The time a signal takes to transition from 10 percent to 90 percent of its final value, a direct measure of edge speed and an inverse indicator of bandwidth. Fast edges demand both fast converters and wide analog bandwidth to survive to the output.</p>
+
+<h3 id="gloss-s">S</h3>
+
+<p><strong>Sample.</strong> A single amplitude value, stored as a DAC code, representing the signal at one instant in time. A waveform is just an ordered list of samples played at the sample rate.</p>
+
+<p><strong>Sample Rate.</strong> The number of samples the DAC converts per second, expressed in samples per second (Sa/s) and its multiples (MSa/s, GSa/s). It sets the Nyquist frequency and, with memory depth, the duration of a unique record.</p>
+
+<p><strong>Sequencing.</strong> Chaining stored waveform segments into a longer scenario using loops, jumps, conditional branches, and repeat counts, so that a finite memory plays a long or adaptive signal. Sequencing turns an AWG from a single-shot player into a scenario engine.</p>
+
+<p><strong>SFDR (Spurious-Free Dynamic Range).</strong> The ratio, usually in dBc, between the fundamental and the largest spurious component anywhere in the output spectrum. SFDR tells you how small a real signal can be and still be distinguished from the instrument's worst spur.</p>
+
+<p><strong>sin(x)/x (Sinc) Roll-off.</strong> The gentle amplitude droop across frequency that a zero-order-hold DAC imposes on its output, following the shape of the sinc function. Many AWGs apply an inverse-sinc filter to flatten the band before the Nyquist edge.</p>
+
+<p><strong>Single-Ended Output.</strong> An output referenced to ground on a single conductor, the common arrangement for general-purpose signals. It is simpler than differential drive but more exposed to common-mode noise.</p>
+
+<p><strong>Skew.</strong> A timing offset between channels or between signal lines that should be aligned, measured as the difference in their edge arrival times. Multichannel work, especially IQ and digital buses, depends on holding skew to a small, calibrated value.</p>
+
+<p><strong>SNR (Signal-to-Noise Ratio).</strong> The ratio of signal power to the total noise power in a defined bandwidth, usually expressed in decibels. It is a headline measure of how clean an output is, and quantization, jitter, and thermal noise all chip away at it.</p>
+
+<p><strong>Spurious-Free Dynamic Range.</strong> See SFDR.</p>
+
+<p><strong>Standard Function.</strong> One of the built-in canonical waveforms (sine, square, ramp, triangle, pulse, noise, DC) that an instrument can generate without a user-supplied memory pattern. Standard functions cover routine signals so arbitrary memory is reserved for the unusual ones.</p>
+
+<h3 id="gloss-t">T</h3>
+
+<p><strong>Trigger.</strong> An event, internal or external, that starts, advances, or gates waveform output. Triggering is how an AWG decides not just what to play but exactly when to play it.</p>
+
+<h3 id="gloss-u">U</h3>
+
+<p><strong>Update Rate.</strong> The rate at which the DAC is loaded with new sample values, effectively the sample rate viewed from the playback side. A higher update rate supports higher output frequencies and finer time resolution.</p>
+
+<h3 id="gloss-v">V</h3>
+
+<p><strong>Vector Signal Generation.</strong> The creation of modulated RF signals defined by their IQ components, allowing arbitrary digital and analog modulation formats to be produced from baseband. A wideband AWG can serve as the engine of a vector signal source by supplying the IQ or direct-RF waveform.</p>
+
+<p><strong>Vpp (Volts Peak-to-Peak).</strong> The total voltage swing of a signal from its most negative to its most positive excursion. It is the most common way to state AWG amplitude, since it maps directly onto the converter's full-scale range.</p>
+
+<h3 id="gloss-w">W</h3>
+
+<p><strong>Waveform.</strong> The shape of a signal as a function of time, whether a simple tone or a complex captured record. In an AWG it exists as the ordered set of samples held in memory.</p>
+
+<p><strong>Waveform Memory.</strong> The fast storage that holds the sample values played back through the DAC, the resource that memory depth measures. Its size and how it is partitioned govern how long and how complex a played signal can be.</p>
+
+<h3 id="gloss-z">Z</h3>
+
+<p><strong>Zero-Order Hold.</strong> The DAC behavior of holding each sample value constant until the next clock edge, producing the characteristic staircase output. The hold is what creates both the spectral images and the sin(x)/x roll-off that the reconstruction stage must address.</p>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="11-berkeley-nucleonics-awg-solutions.html">&larr; 11. Berkeley Nucleonics AWG Solutions</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-B-quiz-questions.html">Appendix B: Quiz Questions &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

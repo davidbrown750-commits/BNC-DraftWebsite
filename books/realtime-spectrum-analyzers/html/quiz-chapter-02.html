@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 2 Quiz - RTSA Terminology and Core Concepts</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 2 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "rtsa",
+  chapterKey: "02",
+  title: "Chapter 2 Quiz",
+  questions: [
+    {
+      q: "Which specification determines the width of spectrum captured simultaneously by an RTSA?",
+      options: [
+        "RBW",
+        "RTBW",
+        "IF bandwidth",
+        "Sweep speed"
+      ],
+      answer: 1,
+      explain: "Real-time bandwidth (RTBW) is the span the instrument digitizes and analyzes all at once, with no sweeping."
+    },
+    {
+      q: "Why does increasing FFT length improve frequency resolution?",
+      options: [
+        "It increases ADC sample rate.",
+        "It includes more samples per transform, narrowing each bin.",
+        "It increases on-board memory.",
+        "It reduces the noise figure of the front end."
+      ],
+      answer: 1,
+      explain: "A longer transform spreads the same span across more bins, so each bin is narrower and resolution improves."
+    },
+    {
+      q: "What does gap-free processing guarantee?",
+      options: [
+        "Faster display refresh.",
+        "Continuous time coverage with no missed samples.",
+        "Narrower IF filters.",
+        "Higher display brightness."
+      ],
+      answer: 1,
+      explain: "Gap-free processing means every incoming sample is analyzed, so no signal slips through between frames."
+    },
+    {
+      q: "Approximately what is the resolution bandwidth of a 4096-point FFT at a 2 GS/s sample rate?",
+      options: [
+        "2 kHz",
+        "50 kHz",
+        "488 kHz",
+        "2 MHz"
+      ],
+      answer: 2,
+      explain: "Bin spacing is sample rate divided by FFT length: 2 GS/s / 4096 is about 488 kHz."
+    },
+    {
+      q: "What is the published probability of intercept floor of Aaronia RTSA Suite PRO?",
+      options: [
+        "10 microseconds",
+        "1 microsecond",
+        "10 nanoseconds",
+        "1 millisecond"
+      ],
+      answer: 2,
+      explain: "The published probability of intercept floor is 10 nanoseconds."
+    },
+    {
+      q: "Which display reveals rare emitters by accumulating hit probability over time?",
+      options: [
+        "Single FFT trace",
+        "Waterfall",
+        "Persistence",
+        "Time domain"
+      ],
+      answer: 2,
+      explain: "Persistence accumulates how often each frequency-amplitude point is hit, surfacing rare or intermittent emitters."
+    },
+    {
+      q: "A frequency mask trigger fires when:",
+      options: [
+        "The trace updates more than 100 times per second.",
+        "The spectrum violates a user-defined envelope.",
+        "The ADC clips its input.",
+        "The trace average exceeds the maximum hold."
+      ],
+      answer: 1,
+      explain: "A frequency mask trigger fires the moment the live spectrum crosses the user-defined mask envelope."
+    },
+    {
+      q: "What aggregate real-time bandwidth do four cascaded SPECTRAN V6 PLUS units produce?",
+      options: [
+        "80 MHz",
+        "245 MHz",
+        "490 MHz",
+        "1 GHz"
+      ],
+      answer: 3,
+      explain: "Four cascaded units combine to roughly 1 GHz of aggregate real-time bandwidth."
+    },
+    {
+      q: "Which Aaronia patented display wraps a wide frequency span across multiple stacked lines for high-resolution viewing?",
+      options: [
+        "Heatmap View",
+        "Wrapped Spectrum",
+        "Persistence Cube",
+        "Density Plot"
+      ],
+      answer: 1,
+      explain: "The patented Wrapped Spectrum stacks a wide span across multiple lines so fine detail stays visible."
+    },
+    {
+      q: "Continuous I/Q recording up to 245 MHz of bandwidth in RTSA Suite PRO is limited by:",
+      options: [
+        "CPU cycles",
+        "The size of the attached storage",
+        "The display refresh rate",
+        "The ADC resolution"
+      ],
+      answer: 1,
+      explain: "Streaming I/Q is written continuously, so the practical limit is how much storage is attached."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-02.html">&larr; Back to Chapter 2</a>
+    <a class="mid" href="index.html">Contents</a>
+    <a class="next" href="quiz-chapter-03.html">Chapter 3 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

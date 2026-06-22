@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3. The Detection Ladder | RIIDs in the Field</title>
+<meta name="description" content="Berkeley Nucleonics field handbook for using the SAM family of radioisotope identifiers and RD-120 backpack and vehicle systems in radiological response.">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* ====== BNC Book Series Style Guide tokens ====== */
+  :root {
+    --bnc-deep-navy:   #003D6B;
+    --bnc-sky-blue:    #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal:    #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan:  #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan:  #00d4ff;
+    --bnc-target-green:#00ff88;
+    --bnc-white:       #ffffff;
+    --bnc-rule:        #b6c2cc;
+
+    --bnc-sans:  "Helvetica Neue", "Arial", sans-serif;
+    --bnc-black: "Helvetica Neue", "Arial Black", "Helvetica", "Arial", sans-serif;
+    --bnc-serif: "Georgia", "Iowan Old Style", serif;
+    --bnc-mono:  "Consolas", "SFMono-Regular", "Menlo", monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bnc-light-steel);
+    color: var(--bnc-charcoal);
+    font-family: var(--bnc-serif);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 96px 24px;
+  }
+
+  /* ====== cover panel (screen view) ====== */
+  .cover {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    border-radius: 4px;
+    padding: 56px 36px 48px 36px;
+    margin: 0 0 36px 0;
+    box-shadow: 0 12px 40px rgba(0, 31, 56, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover .kicker {
+    font-family: var(--bnc-sans);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--bnc-light-cyan);
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: var(--bnc-black);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.02;
+    margin: 14px 0 12px 0;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: none;
+  }
+  .cover h2 {
+    font-family: var(--bnc-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 24px 0;
+    color: #cfdce6;
+    text-transform: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .cover .meta {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: #cfdce6;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 18px;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+  .cover .meta strong { color: #fff; }
+
+  /* ====== headings (interior) ====== */
+  h1, h2, h3, h4 {
+    font-family: var(--bnc-sans);
+    line-height: 1.2;
+  }
+  h1 {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 56px 0 18px 0;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  h1:first-of-type { margin-top: 32px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 44px 0 14px 0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bnc-sky-blue);
+    margin: 28px 0 10px 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bnc-charcoal);
+    margin: 22px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ====== body text ====== */
+  p { margin: 0 0 14px 0; }
+  ul, ol { margin: 0 0 16px 24px; padding: 0; }
+  li { margin: 4px 0; }
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+
+  /* ====== tables ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: var(--bnc-sans);
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+
+  /* ====== blockquotes / callouts ====== */
+  blockquote {
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    border-radius: 0 4px 4px 0;
+    color: var(--bnc-charcoal);
+  }
+  blockquote p { margin: 0; }
+  blockquote strong { color: var(--bnc-deep-navy); }
+
+  /* ====== code / checklists ====== */
+  code, pre { font-family: var(--bnc-mono); }
+  code {
+    background: var(--bnc-light-steel);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  pre {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-left: 4px solid var(--bnc-deep-navy);
+    padding: 16px 18px;
+    line-height: 1.5;
+    font-size: 14px;
+    border-radius: 0 4px 4px 0;
+    white-space: pre-wrap;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  /* ====== rules ====== */
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--bnc-rule);
+    margin: 36px 0;
+  }
+  hr + h1, hr + h2 { margin-top: 28px; }
+
+  /* ====== TOC and isotope cards ====== */
+  .toc {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    padding: 22px 26px;
+    margin: 24px 0 36px 0;
+  }
+  h3[id^="card-a-"] {
+    background: var(--bnc-light-steel);
+    padding: 8px 14px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    color: var(--bnc-deep-navy);
+    margin-top: 24px;
+  }
+
+  /* ====== links ====== */
+  a {
+    color: var(--bnc-sky-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--bnc-sky-blue);
+  }
+  a:hover { border-bottom-style: solid; }
+
+  /* ====== sticky top bar (screen only) ====== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    padding: 8px 18px;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+  }
+  .topbar a {
+    color: var(--bnc-light-cyan);
+    border-bottom: none;
+    font-weight: 700;
+  }
+  .topbar .brand {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ====== figures ====== */
+  figure {
+    margin: 24px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 31, 56, 0.08);
+  }
+  figcaption {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* ====== mobile ====== */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .shell { padding: 18px 14px 64px 14px; }
+    .cover { padding: 36px 22px 32px 22px; }
+    .cover h1 { font-size: 32px; }
+    .cover h2 { font-size: 17px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 19px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 9px; }
+  }
+
+  /* ====== print: 5x8 trim, BNC interior spec ====== */
+  @media print {
+    @page {
+      size: 5in 8in;
+      margin: 0.45in 0.45in 0.5in 0.45in;
+    }
+    body {
+      background: #fff;
+      font-size: 8.5pt;
+      line-height: 1.32;
+      color: var(--bnc-charcoal);
+    }
+    .topbar { display: none; }
+    .shell { max-width: 100%; padding: 0; margin: 0; }
+    .cover {
+      padding: 0.5in 0.4in;
+      page-break-after: always;
+      min-height: 6.4in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .cover h1 { font-size: 28pt; color: #fff !important; border-bottom: none !important; }
+    .cover h2 { font-size: 14pt; color: #cfdce6 !important; }
+    .cover .kicker { color: var(--bnc-light-cyan) !important; }
+    .cover .meta, .cover .meta strong, .cover p { color: #fff !important; }
+
+    h1 {
+      font-family: var(--bnc-sans);
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--bnc-deep-navy) !important;
+      page-break-before: always;
+      margin: 0 0 12pt 0;
+      padding-bottom: 4pt;
+      border-bottom: 2pt solid var(--bnc-sky-blue);
+      letter-spacing: 0.5pt;
+    }
+    h1:first-of-type { page-break-before: avoid; }
+    h2 { font-family: var(--bnc-sans); font-size: 13pt; font-weight: 700; color: var(--bnc-deep-navy) !important; page-break-after: avoid; margin-top: 14pt; margin-bottom: 6pt; }
+    h3 { font-family: var(--bnc-sans); font-size: 11pt; font-weight: 700; color: var(--bnc-sky-blue) !important; page-break-after: avoid; margin-top: 10pt; margin-bottom: 4pt; }
+    h4 { font-family: var(--bnc-sans); font-size: 9pt; font-weight: 700; color: var(--bnc-charcoal) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+    p, li { orphans: 3; widows: 3; margin-bottom: 4pt; }
+    ul, ol { margin: 4pt 0 4pt 18pt; }
+
+    table, blockquote, pre { page-break-inside: avoid; margin: 6pt 0; }
+    pre { font-size: 7pt; line-height: 1.25; padding: 6pt 8pt; background: #fff; border-color: var(--bnc-rule); border-left-color: var(--bnc-deep-navy); }
+    table { font-size: 7.5pt; }
+    thead th { background: var(--bnc-deep-navy) !important; color: #fff !important; padding: 4pt 5pt; }
+    tbody td { padding: 3pt 5pt; }
+    tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+    blockquote { background: var(--bnc-light-steel); border-left: 4pt solid var(--bnc-sky-blue); padding: 6pt 10pt; }
+    a { color: var(--bnc-charcoal); border-bottom: none; }
+
+    figure { page-break-inside: avoid; margin: 6pt 0; text-align: center; }
+    figure img {
+      max-width: 100%;
+      max-height: 1.9in;
+      width: auto; height: auto;
+      object-fit: contain;
+      box-shadow: none;
+      padding: 2pt;
+      border-color: var(--bnc-rule);
+    }
+    figcaption { font-size: 7.5pt; margin-top: 3pt; line-height: 1.3; color: var(--bnc-charcoal); }
+  }
+
+  /* Cover image full-bleed in print */
+  @media print {
+    .cover {
+      padding: 0 !important;
+      background: none !important;
+      page-break-after: always;
+      min-height: auto;
+      display: block !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    .cover img {
+      width: 5in !important;
+      height: 8in !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: cover;
+      display: block;
+    }
+    @page :first {
+      margin: 0;
+    }
+  }
+
+  /* ====== Callouts and sidebars (BNC style guide section 6) ====== */
+  .callout {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .sidebar-deeper {
+    background: #e6edf3;
+    border: 1px solid #b6c2cc;
+    border-left: 4px solid var(--bnc-charcoal);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .sidebar-deeper h4 {
+    color: var(--bnc-charcoal);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-deeper p { margin: 0; font-size: 14px; }
+
+  @media print {
+    .callout, .sidebar-deeper {
+      page-break-inside: avoid;
+      margin: 6pt 0;
+      padding: 6pt 10pt;
+      font-size: 8pt;
+    }
+    .callout h4, .sidebar-deeper h4 { font-size: 9pt; margin-bottom: 3pt; }
+    .callout p, .sidebar-deeper p { font-size: 8pt; }
+  }
+
+  /* Quiz block */
+  .quiz {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 24px 0;
+    border-radius: 0 0 4px 4px;
+  }
+  .quiz h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+  .quiz ol { margin: 0 0 0 22px; padding: 0; }
+  .quiz ol > li { margin-bottom: 10px; font-size: 14px; }
+  .quiz ol[type="a"] { margin-top: 6px; margin-bottom: 0; }
+  .quiz ol[type="a"] > li { margin-bottom: 2px; font-size: 13px; }
+  @media print {
+    .quiz { page-break-inside: avoid; padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .quiz h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .quiz ol > li { font-size: 8pt; margin-bottom: 4pt; }
+    .quiz ol[type="a"] > li { font-size: 7.5pt; }
+  }
+
+  .checklist, .form-block {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 0 0 4px 4px;
+    page-break-inside: avoid;
+  }
+  .checklist h4, .form-block h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+  }
+  .checklist pre, .form-block pre {
+    margin: 0; border: none; background: transparent; padding: 0;
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 11px; line-height: 1.55; color: var(--bnc-charcoal);
+  }
+  @media print {
+    .checklist, .form-block { padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .checklist h4, .form-block h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .checklist pre, .form-block pre { font-size: 7pt; }
+  }
+
+  /* ====== Refined component system (BNC v2) ====== */
+
+  /* SVG icons: inherit color, baseline-aligned */
+  .bnc-icon, .bnc-cb {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--bnc-sky-blue);
+  }
+
+  /* Card pattern shared by checklist + form */
+  .bnc-card {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 6px;
+    margin: 22px 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0, 31, 56, 0.06);
+  }
+  .bnc-card-head {
+    background: linear-gradient(90deg, #003D6B 0%, #0078B6 100%);
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-card-icon { color: #7fdbff; display: flex; align-items: center; }
+  .bnc-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bnc-card-body {
+    padding: 14px 18px;
+    background: #fff;
+  }
+  .bnc-card-subhead {
+    font-family: var(--bnc-sans);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 12px 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--bnc-rule);
+  }
+  .bnc-card-subhead:first-child { margin-top: 0; }
+  .bnc-card-note {
+    font-family: var(--bnc-serif);
+    font-size: 12px;
+    color: var(--bnc-charcoal);
+    margin: 6px 0;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  /* Checklist items */
+  .bnc-cb-list {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 0;
+  }
+  .bnc-cb-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 4px 0;
+    font-family: var(--bnc-serif);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    line-height: 1.45;
+  }
+  .bnc-cb-list li .bnc-cb { margin-top: 1px; color: var(--bnc-sky-blue); }
+  .bnc-cb-list li.done { color: #5b6770; }
+  .bnc-cb-list li.done .bnc-cb { color: var(--bnc-target-green); }
+
+  /* Fill-in form fields */
+  .bnc-field {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 5px 0;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bnc-deep-navy);
+    flex: 0 0 auto;
+    min-width: 130px;
+    letter-spacing: 0.02em;
+  }
+  .bnc-field-line {
+    flex: 1 1 auto;
+    border-bottom: 1px solid #b6c2cc;
+    height: 16px;
+    margin-bottom: 2px;
+  }
+  .bnc-field-spacer { height: 6px; }
+
+  /* Icon-decorated callouts (overrides earlier .callout / .sidebar-deeper / .quiz) */
+  .callout, .sidebar-deeper {
+    position: relative;
+    padding-left: 46px;
+  }
+  .callout::before, .sidebar-deeper::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+  }
+  .callout::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230078B6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'/></svg>");
+  }
+  .sidebar-deeper::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232C3E50' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>");
+  }
+
+  .quiz { position: relative; padding-left: 46px; }
+  .quiz::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 22px; height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003D6B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3'/><circle cx='12' cy='17' r='0.8' fill='%23003D6B'/></svg>");
+  }
+
+  /* Warm-charcoal body text (subtle warmth) */
+  body { color: #2c3540; }
+
+  /* Sky-blue dotted underline rule on H2 (lighter than before) */
+  h2 {
+    border-bottom: 2px solid var(--bnc-sky-blue);
+    padding-bottom: 6px;
+  }
+
+  @media print {
+    .bnc-card { margin: 8pt 0; box-shadow: none; }
+    .bnc-card-head { padding: 4pt 8pt; }
+    .bnc-card-title { font-size: 8.5pt; }
+    .bnc-card-body { padding: 6pt 10pt; }
+    .bnc-card-subhead { font-size: 7.5pt; margin: 6pt 0 3pt 0; }
+    .bnc-cb-list li { font-size: 7.5pt; padding: 1.5pt 0; gap: 5pt; }
+    .bnc-field label { font-size: 7pt; min-width: 90pt; }
+    .bnc-field { padding: 2pt 0; }
+    .callout, .sidebar-deeper, .quiz { padding-left: 28pt !important; }
+    .callout::before, .sidebar-deeper::before, .quiz::before {
+      width: 14pt; height: 14pt; background-size: 14pt 14pt;
+      left: 7pt; top: 7pt;
+    }
+  }
+
+  body { background: #f5f7f9; }
+  .shell { background: #ffffff; box-shadow: 0 0 0 1px var(--bnc-rule); border-radius: 4px; }
+  h1::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--bnc-sky-blue);
+    margin-bottom: 10px;
+    border-radius: 2px;
+  }
+  h2 { position: relative; }
+  code {
+    background: #eef3f6;
+    color: var(--bnc-deep-navy);
+    border: 1px solid #dde5ea;
+    font-size: 13px;
+  }
+  thead tr:first-child th { border-top: 3px solid var(--bnc-sky-blue); }
+  figcaption { color: #4a5763; font-size: 13.5px; font-style: italic; }
+  @media print {
+    body { background: #fff; }
+    .shell { box-shadow: none; }
+  }
+
+  /* ====== Page numbers + running header (CSS Paged Media) ====== */
+  @media print {
+    /* Capture current chapter title from each h1 */
+    h1 { string-set: chapter content(); }
+    /* Suppress h1 string capture on the cover-only page (cover has no h1) */
+
+    @page {
+      size: 5in 8in;
+      margin: 0.5in 0.45in 0.55in 0.45in;
+      @bottom-center {
+        content: counter(page);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 8pt;
+        color: #003D6B;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @bottom-left {
+        content: "";
+        background: #0078B6;
+        height: 1pt;
+        width: 0.6in;
+        margin-bottom: 12pt;
+      }
+      @bottom-right {
+        content: "BNC";
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #7fdbff;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @top-right {
+        content: string(chapter);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #5b6770;
+        font-style: italic;
+        margin-bottom: 6pt;
+      }
+    }
+
+    /* Cover page: no headers, no numbers, no margins */
+    @page :first {
+      margin: 0;
+      @bottom-center { content: ""; }
+      @bottom-left { content: ""; }
+      @bottom-right { content: ""; }
+      @top-right { content: ""; }
+    }
+
+    /* Suppress running header on the very first page after the cover (front-matter title) */
+    @page :nth(2) {
+      @top-right { content: ""; }
+    }
+  }
+
+  /* ====== light-touch reconciliation additions ====== */
+  /* clean signature line (replaces the old stripped-attribution comma) */
+  p.signature {
+    text-align: right;
+    color: var(--bnc-deep-navy);
+    font-family: var(--bnc-serif);
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  p.signature em { font-style: italic; }
+
+  /* real Contents list (replaces run-together paragraphs) */
+  nav.toc { margin: 8px 0 0 0; }
+  nav.toc .toc-group {
+    font-family: var(--bnc-sans);
+    color: var(--bnc-deep-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    margin: 22px 0 6px 0;
+  }
+  nav.toc ul, nav.toc ol { margin: 0 0 6px 0; padding-left: 26px; }
+  nav.toc li { margin: 3px 0; line-height: 1.4; }
+  nav.toc a { color: var(--bnc-sky-blue); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  nav.toc ol.toc-alpha { list-style: upper-alpha; }
+
+  /* ====== shared footer (single-file adaptation) ====== */
+  footer.bnc-footer {
+    font-family: var(--bnc-sans); margin-top: 54px;
+    border-top: 2px solid var(--bnc-deep-navy); padding-top: 16px;
+    font-size: 13px; color: var(--bnc-charcoal);
+  }
+  footer.bnc-footer .bnc-nav { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  footer.bnc-footer .bnc-nav a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-nav a:hover { text-decoration: underline; }
+  footer.bnc-footer .bnc-nav a.disabled { color: #9aa7b2; pointer-events: none; font-weight: 400; }
+  footer.bnc-footer .bnc-nav .mid { text-align: center; flex: 0 0 auto; }
+  footer.bnc-footer .bnc-nav .next { text-align: right; }
+  footer.bnc-footer .bnc-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+    padding-top: 10px; border-top: 1px solid var(--bnc-rule); opacity: .92; }
+  footer.bnc-footer .bnc-meta a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-meta .spacer { margin-left: auto; font-weight: 400; opacity: .75; }
+
+  @media print {
+    /* keep footer from fighting the 5x8 print layout: hide screen nav, show compact copyright only */
+    footer.bnc-footer .bnc-nav { display: none; }
+    footer.bnc-footer .bnc-meta a { color: #000; }
+    footer.bnc-footer { margin-top: 18px; border-top: 1px solid #000; font-size: 7.5pt; page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body id="top">
+<div class="topbar">
+  <span class="brand">BNC · RIIDs in the Field</span>
+  <a href="00-front-matter.html#contents">Contents</a>
+</div>
+
+<div class="shell">
+
+<h2 id="3-the-detection-ladder">3. The Detection Ladder</h2>
+<p>A response program is not built around one instrument. It is built around a <strong>ladder.</strong> layered sensors, each suited to a particular question. The instruments don't compete; they hand off. The PRD on the officer's belt finds it. The handheld RIID identifies it. The backpack maps it. The vehicle covers ground at speed. Reachback closes the loop with expertise.</p>
+<p>This chapter explains where each rung sits, what it can answer, what it cannot, and how the SAM family and RD-150 fit on the ladder.</p>
+<h3 id="31-rung-1-personal-radiation-detectors-prds">3.1 Rung 1: Personal Radiation Detectors (PRDs)</h3>
+<p>A PRD is a small wearable detector, pager-sized or smaller, that <strong>detects</strong> gamma radiation and alerts the wearer when levels exceed a learned background.</p>
+<p><strong>What a PRD does well</strong>
+- Constant, hands-free monitoring
+- Fast alarm in ambient gamma fields
+- Lightweight, batteries last weeks
+- Cheap enough to issue at scale</p>
+<p><strong>What a PRD cannot do</strong>
+- Tell you <strong>what</strong> isotope is present
+- Reliably distinguish a hot patient from a threat source
+- Provide a spectrum to send to reachback
+- Quantify dose rate accurately at a distance from the source</p>
+<figure><img src="../figures/prd-illustration.png" alt="A Personal Radiation Detector, vendor-neutral schematic. Wearable, alarm-only, the first rung of the detection ladder." loading="lazy"><figcaption>A Personal Radiation Detector, vendor-neutral schematic. Wearable, alarm-only, the first rung of the detection ladder.</figcaption></figure>
+<p>PRDs are an <strong>alerting layer</strong>. They are always part of a program; they are never the last word. When a PRD alarms, the operator's job is to <em>escalate</em>, not to <em>interpret</em>.</p>
+<div class="callout"><h4>BNC in Practice: Wallet Cards for Medical Patients</h4><p>Hospitals issuing Tc-99m, F-18, I-131, and Lu-177 increasingly hand the patient a wallet card with the isotope, time of administration, and clinic contact. When you encounter a PRD alarm at a transit checkpoint or building entry, ask the citizen if they have a card. A 30-second card check has resolved many alarms that would otherwise require a full RIID scan and reachback packet.</p></div>
+<h3 id="32-rung-2-survey-meters">3.2 Rung 2: Survey Meters</h3>
+<p>Survey meters (rate meters with a Geiger-Müller tube or scintillator probe) measure dose rate. Some can detect alpha and beta in addition to gamma. They give a quantitative reading, "how much", but, like PRDs, they cannot identify the isotope.</p>
+<figure><img src="../figures/palmrad-907-detector.jpg" alt="BNC palmRAD 907, a 2-inch pancake-GM survey meter that detects alpha, beta, gamma, and X-ray. The kind of unit operators carry alongside a RIID for quick dose checks and contamination surveys." loading="lazy"><figcaption>BNC palmRAD 907, a 2-inch pancake-GM survey meter that detects alpha, beta, gamma, and X-ray. The kind of unit operators carry alongside a RIID for quick dose checks and contamination surveys.</figcaption></figure>
+<p>Survey meters are essential for cordon work and dose tracking. They are the right tool for sweeping a known scene and confirming where it is "safe to walk" versus "stop and call." But again, they cannot answer the central question: <em>what is it?</em></p>
+<h3 id="33-rung-3-handheld-riids-the-sam-family">3.3 Rung 3: Handheld RIIDs (the SAM Family)</h3>
+<p>A handheld radioisotope identifier is purpose-built to answer "what is it?" It combines:</p>
+<ul>
+<li>A larger, higher-resolution scintillator (CeBr or LaBr in the SAM family)</li>
+<li>A multichannel analyzer (MCA) running an isotope library</li>
+<li>A ruggedized handheld form factor with display, controls, GPS, storage, and connectivity</li>
+</ul>
+<figure><img src="../figures/sam-with-wand.png" alt="SAM 940 with telescoping survey wand, useful for hard-to-reach scans without breaking ALARA distance." loading="lazy"><figcaption>SAM 940 with telescoping survey wand, useful for hard-to-reach scans without breaking ALARA distance.</figcaption></figure>
+<p>The operator points it, scans, and gets back a name: "Cs-137. High confidence. 350 µSv/hr at the housing." That answer lets command decide whether the cordon stays, expands, or contracts; whether the public must be warned; whether federal partners need to be on a plane.</p>
+<p>The SAM family sits here on the ladder, the <strong>SAM 940+</strong> (current flagship), the SAM 940 / 945 (established fleets), and the SAM 950 (higher-volume handheld). All three are described in detail in Chapter 4.</p>
+<p><strong>What a handheld RIID does well</strong>
+- Identifies gamma-emitting isotopes in 30–120 seconds
+- Quantifies dose rate
+- Records spectra for reachback
+- Stores prior events with GPS and time
+- Supports integration with command and reachback workflows</p>
+<p><strong>What a handheld RIID does less well</strong>
+- Wide-area search (it is not a sweep tool by itself)
+- High-rate-of-motion search from a vehicle (it can do it, but a backpack/vehicle system is purpose-built)
+- Definitive identification of difficult, masked, or shielded SNM mixtures (federal HPGe lab analysis is the final word)</p>
+<h3 id="34-rung-4-backpack-and-vehicle-search-systems-rd-150">3.4 Rung 4: Backpack and Vehicle Search Systems (RD-150)</h3>
+<p>Some missions are too big for a handheld. A stadium sweep, a port yard, a wide-area orphan-source search, a parade route, a presidential venue, these demand more crystal volume, longer dwell time, GPS-tagged spectra, and an instrument that can be worn or vehicle-mounted while the operator covers ground.</p>
+<p>The <strong>RD-150</strong> family answers that need:</p>
+<ul>
+<li><strong>RD-120 Backpack:</strong> A wearable detector with neutron and gamma channels, a paired tablet or phone interface for the operator, GPS-tagged spectra, and integration with operations centers. The operator walks at a normal pace; the system continuously logs and alarms.</li>
+<li><strong>RD-150 Vehicle:</strong> The same detection technology in a vehicle-mountable configuration, sweeping at street speeds, building a heat map of dose rate and identifications along the route.</li>
+</ul>
+<p>Backpack/vehicle systems belong on the ladder above handheld RIIDs because they extend coverage area dramatically. They do not replace the handheld, when the backpack identifies a hotspot, an operator typically follows up with a SAM family handheld for confirmation, photo documentation, and reachback hand-off.</p>
+<h3 id="35-rung-5-reachback-and-laboratory-spectroscopy">3.5 Rung 5: Reachback and Laboratory Spectroscopy</h3>
+<p>Reachback is not an instrument; it is a <em>channel</em>. When you transmit a spectrum from a SAM family handheld or RD-150 to a duty health physicist, you are accessing a different rung, laboratory expertise, software re-analysis, comparison to internal databases, and judgment from people who have seen thousands of spectra.</p>
+<p>Some events also escalate to <strong>HPGe lab analysis</strong> by federal partners or state health departments. HPGe gives the cleanest spectrum available; it is the right tool for definitive identification of the ambiguous case, but it is slow, lab-bound, and not a frontline option.</p>
+<blockquote>
+<p><strong>Operator rule:</strong> <em>Reachback is not a sign of weakness.</em> Reachback is part of how the system is designed. The fastest way to look like a pro is to send a clean spectrum with good notes early.</p>
+</blockquote>
+<h3 id="36-how-the-ladder-behaves-on-a-real-call">3.6 How the Ladder Behaves on a Real Call</h3>
+<p>A typical sequence for a productive scene:</p>
+<ol>
+<li><strong>PRD</strong> on a patrol officer's belt alarms during a traffic stop.</li>
+<li>The officer steps back, calls dispatch, and stays observable.</li>
+<li><strong>HazMat arrives</strong> with handheld survey meters and a SAM family RIID.</li>
+<li>Survey meter confirms elevated gamma; operator notes dose rate at perimeter.</li>
+<li><strong>SAM RIID</strong> is brought to within scanning range, acquires a clean spectrum, returns "Cs-137, high confidence."</li>
+<li>Operator saves the spectrum, photographs the source/cargo, transmits to reachback.</li>
+<li>Reachback confirms identification consistent with a missing industrial gauge from a regional manifest.</li>
+<li>Cordon held; appropriate transport and source-recovery resources dispatched. No public alert needed.</li>
+</ol>
+<p>The same scene without the ladder might end with an evacuation order, a media event, and a frightened community, for a misplaced industrial gauge. The instrument doctrine is the difference.</p>
+<h3 id="37-where-operators-get-confused">3.7 Where Operators Get Confused</h3>
+<p>A few common errors that good training prevents:</p>
+<ul>
+<li><strong>Treating a PRD alarm as an answer.</strong> It is a question. Don't act on it without escalating.</li>
+<li><strong>Treating a high-confidence ID as a license to break ALARA.</strong> The instrument tells you <em>what.</em> Distance and time still apply.</li>
+<li><strong>Skipping background.</strong> A RIID that hasn't acquired a clean background will struggle to identify low-rate sources. Always background.</li>
+<li><strong>Holding the handheld too far from a small, weak source.</strong> If the count rate is barely above background, you'll never get confidence. Closing distance (within ALARA) and dwelling longer are both valid.</li>
+<li><strong>Believing the screen over the spectrum.</strong> Confident operators look at the spectrum shape, not just the displayed name. We'll show you what to look for in Chapter 5.</li>
+</ul>
+<h3 id="38-detection-ladder-at-a-glance">3.8 Detection Ladder, at a Glance</h3>
+<figure><img src="../figures/detection-ladder.png" alt="The Detection Ladder" loading="lazy"><figcaption>The Detection Ladder, five rungs from PRD up through Reachback and Lab. Each rung passes the call up.</figcaption></figure>
+<p>A well-equipped HazMat or law enforcement program runs all five rungs every day, even if most of them never need to escalate.</p>
+<hr />
+<div class="quiz"><h4>Chapter 3 Quick Check</h4><ol><li><strong>A PRD's primary role is to:</strong><ol type="a"><li>Identify isotopes</li><li>Detect and alert on gamma radiation</li><li>Quantify dose at a distance</li><li>Transmit spectra</li></ol></li><li><strong>When a PRD alarms, the operator's correct first action is to:</strong><ol type="a"><li>Approach the source for confirmation</li><li>Step back and escalate to a higher-rung instrument</li><li>Adjust the PRD threshold</li><li>Begin a manual identification</li></ol></li><li><strong>Reachback is best characterized as:</strong><ol type="a"><li>A backup instrument</li><li>A federal-only resource</li><li>A channel for radiological expertise during a live event</li><li>A post-incident reporting tool</li></ol></li><li><strong>A RIID's neutron channel is most useful for:</strong><ol type="a"><li>Detecting K-40 NORM</li><li>Identifying medical isotopes</li><li>Distinguishing SNM emitters from gamma-only sources</li><li>Calibrating the gamma channel</li></ol></li><li><strong>The detection ladder is built on the principle that:</strong><ol type="a"><li>One instrument fits all missions</li><li>Each rung answers a question and hands off to the next</li><li>PRDs replace RIIDs in trained programs</li><li>Reachback is a sign of operator weakness</li></ol></li></ol></div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="02-radiation-in-6-pages.html">&larr; 2. Radiation in 6 Pages: What Operators Must Know</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="04-the-sam-family-and-rd-150.html">4. The SAM Family and the RD-150 System &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+
+</div>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>The Nuts and Bolts of Precision Timing</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <link rel="stylesheet" href="front-matter.css">
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+<div class="fm-titleblock">
+  <p class="fm-series">The Nuts and Bolts of</p>
+  <h1 class="fm-title">Precision Timing</h1>
+  <p class="fm-byline">by <strong>David A. Brown</strong> and the Berkeley Nucleonics team</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">Second Edition &middot; 2026</p>
+</div>
+
+<section class="president-note" id="message-from-the-president">
+<h2>A Message from the President</h2>
+<p>Precision timing is one of those disciplines where the gap between knowing the vocabulary and understanding what is actually happening inside a signal can cost weeks of troubleshooting. We wrote this book because we kept seeing the same confusion in labs and test facilities worldwide: engineers who were comfortable with the instrument's front panel but unsure why a 2 ns timing error was ruining their results. This book is the direct answer to that gap.</p>
+<p>At Berkeley Nucleonics, we have been building delay and pulse generators for more than sixty years, and the problems are still genuinely interesting. Picosecond-scale synchronization for quantum experiments, multi-channel timing across distributed systems, and new LIDAR and accelerator applications are pushing what the technology can do. We are excited about where this field is going, and we think you will be too.</p>
+<p class="sig">David Brown<br>President, Berkeley Nucleonics Corporation</p>
+</section>
+
+<section class="second-edition">
+<h2 id="why-a-second-edition">Why a Second Edition, and Why Now</h2>
+<p>The first edition treated precision timing mostly as a single-channel problem: get one pulse where it needs to be, on time, with a clean edge. The work has moved on. Experiments now coordinate many channels at once, jitter budgets that used to live in nanoseconds are measured in picoseconds, and timing decisions that once happened on a front panel now happen in software. This edition reflects that shift, with expanded treatment of multi-channel systems, phase alignment, and the trade-offs that show up only when many signals share one timeline.</p>
+<p>The newer applications are why it matters now. Quantum optics, LIDAR, and accelerator work are pushing synchronization tighter than most benches were ever asked to hold, and the same demands are reaching ordinary labs. We rewrote the applications chapter and the trends chapter around where the field is actually heading, so the book stays useful past the moment you first pick it up. The fundamentals from the first edition are still here, still the foundation. We have simply built the rest of the timeline on top of them.</p>
+</section>
+
+<section class="how-to-read">
+<h2 id="how-to-read-this-book">How to Read This Book</h2>
+<p>Eight chapters build on each other, from a single timed pulse to a coordinated multi-channel experiment. Where you start depends on what you already know.</p>
+<p><strong>New to timing instruments?</strong> Read Chapter 1 (General Properties of a Timing Signal) and Chapter 2 (Pulse Shape and Signal Integrity) first. They set the vocabulary, width, delay, period, jitter, rise time, every later chapter assumes. Skip them and you pay for it later.</p>
+<p><strong>Already on the bench?</strong> Chapters 3 through 5 are your core: gating, delaying, and clocking, then multi-channel timing systems, then rep rates and overlap. Chapter 6 is the applications chapter and the most directly useful for lab work. Chapters 7 and 8 cover communications, storage, and safety, then where the field is heading.</p>
+<p>Need one term fast? Appendix G, the Glossary of Timing Terms, stands alone as a setup-time reference. Each chapter ends with a quiz. Use them. The book is meant to be marked up.</p>
+</section>
+<hr />
+
+<div class="bnc-fineprint">
+<h2 id="copyright">Copyright</h2>
+<p>This handbook is the companion to the Berkeley Nucleonics Academy course <em>TMI 01: Precision Timing Terminology and Fundamentals</em>. Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. The Nuts and Bolts of Precision Timing, Second Edition, 2026. Published by Berkeley Nucleonics Corporation, San Rafael, California. BNC and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+<hr />
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<style>
+nav.toc { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; margin: 18px 0 26px; }
+nav.toc h3.toc-section {
+  font-family: Helvetica, "Arial Black", sans-serif;
+  font-size: 10pt; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--bnc-warm-amber); border-bottom: 1px solid var(--bnc-rule);
+  padding-bottom: 4px; margin: 22px 0 10px;
+}
+nav.toc ul.toc-front { list-style: none; padding: 0; margin: 0 0 10px; font-style: italic; color: var(--bnc-charcoal); font-size: 10pt; }
+nav.toc ul.toc-front li { margin: 3px 0; padding-left: 14px; position: relative; }
+nav.toc ul.toc-front li::before { content: "\2756"; position: absolute; left: 0; color: var(--bnc-deep-plum); }
+nav.toc .toc-row { margin: 4px 0; }
+nav.toc a.toc-link { display: flex; align-items: baseline; gap: 6px; text-decoration: none; border-bottom: none; color: var(--bnc-deep-navy); padding: 3px 0; }
+nav.toc .toc-title { flex: 0 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+nav.toc .toc-leader { flex: 1; border-bottom: 1.5px dotted var(--bnc-rule); margin: 0 6px; transform: translateY(-3px); min-width: 18px; }
+nav.toc .toc-page { flex: 0 0 auto; color: var(--bnc-deep-plum); font-weight: 700; letter-spacing: 0.5px; min-width: 28px; text-align: right; }
+nav.toc a.toc-link:hover .toc-title { color: var(--bnc-sky-blue); }
+</style>
+<nav class="toc">
+<h3 class="toc-section">FRONT MATTER</h3>
+<ul class="toc-front">
+  <li>Title Page</li>
+  <li>Copyright</li>
+  <li><a href="#message-from-the-president">A Message from the President</a></li>
+  <li><a href="#why-a-second-edition">Why a Second Edition, and Why Now</a></li>
+  <li><a href="#how-to-read-this-book">How to Read This Book</a></li>
+  <li>Table of Contents</li>
+</ul>
+<h3 class="toc-section">CHAPTERS</h3>
+<div class="toc-row"><a href="01-general-properties.html" class="toc-link"><span class="toc-title">1. General Properties of a Timing Signal</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">1</span></a></div>
+<div class="toc-row"><a href="02-pulse-shape-signal-integrity.html" class="toc-link"><span class="toc-title">2. Pulse Shape &amp; Signal Integrity</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">9</span></a></div>
+<div class="toc-row"><a href="03-gating-delaying-clocking.html" class="toc-link"><span class="toc-title">3. Gating, Delaying &amp; Clocking Signals</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">19</span></a></div>
+<div class="toc-row"><a href="04-multi-channel-timing.html" class="toc-link"><span class="toc-title">4. Operating a Multi-Channel Timing System</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">29</span></a></div>
+<div class="toc-row"><a href="05-rep-rates-overlap.html" class="toc-link"><span class="toc-title">5. Multi-Signal Timing: Rep Rates &amp; Overlap</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">39</span></a></div>
+<div class="toc-row"><a href="06-applications.html" class="toc-link"><span class="toc-title">6. Applications of Precision Timing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">49</span></a></div>
+<div class="toc-row"><a href="07-communications-storage-safety.html" class="toc-link"><span class="toc-title">7. Communications, Storage &amp; Safety</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">65</span></a></div>
+<div class="toc-row"><a href="08-industry-trends.html" class="toc-link"><span class="toc-title">8. Industry Trends &amp; the Future of Precision Timing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">73</span></a></div>
+<h3 class="toc-section">BACK MATTER &amp; APPENDICES</h3>
+<div class="toc-row"><a href="appendix-G-glossary.html" class="toc-link"><span class="toc-title">Appendix G. Glossary of Timing Terms</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">83</span></a></div>
+<div class="toc-row"><a href="about-the-authors.html" class="toc-link"><span class="toc-title">About the Authors</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">95</span></a></div>
+<h3 class="toc-section">READER COMPANION</h3>
+<div class="toc-row"><a href="../web/reader-quiz.html" class="toc-link"><span class="toc-title">Find Your Reading Path / Free Print Copy</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">&#9656;</span></a></div>
+</nav>
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="01-general-properties.html">1. General Properties &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

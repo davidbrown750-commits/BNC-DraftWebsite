@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Block diagram of an RF vector signal generator">
+  <defs>
+    <linearGradient id="sgcore" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#003D6B"/>
+      <stop offset="1" stop-color="#0078B6"/>
+    </linearGradient>
+    <style>
+      .ttl{fill:#003D6B;font-size:18px;font-weight:700;letter-spacing:.3px;}
+      .blk{fill:#ffffff;stroke:#b6c2cc;stroke-width:1.5;}
+      .bttl{fill:#003D6B;font-size:13px;font-weight:700;}
+      .bsub{fill:#2C3E50;font-size:10.5px;}
+      .sig{stroke:#0078B6;stroke-width:2.5;fill:none;}
+      .wlbl{fill:#2C3E50;font-size:10px;}
+      .corelbl{fill:#ffffff;font-size:13px;font-weight:700;}
+      .coresub{fill:#bfe3ff;font-size:10px;}
+    </style>
+    <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0078B6"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="34" class="ttl">RF Vector Signal Generator: Signal Chain</text>
+
+  <!-- Reference -->
+  <rect class="blk" x="40" y="70" width="130" height="70" rx="4"/>
+  <rect x="40" y="70" width="6" height="70" fill="#4B2A6B"/>
+  <text x="62" y="98" class="bttl">Reference</text>
+  <text x="62" y="116" class="bsub">OCXO / GPSDO</text>
+  <text x="62" y="131" class="bsub">10 MHz timebase</text>
+
+  <!-- Frequency synthesizer -->
+  <rect class="blk" x="40" y="170" width="130" height="80" rx="4"/>
+  <rect x="40" y="170" width="6" height="80" fill="#0078B6"/>
+  <text x="62" y="198" class="bttl">Synthesizer</text>
+  <text x="62" y="216" class="bsub">PLL / fractional-N</text>
+  <text x="62" y="231" class="bsub">+ YIG / VCO</text>
+  <text x="62" y="246" class="bsub">sets the carrier</text>
+
+  <!-- Baseband / I-Q (vector) -->
+  <rect class="blk" x="40" y="290" width="130" height="80" rx="4"/>
+  <rect x="40" y="290" width="6" height="80" fill="#00b4ff"/>
+  <text x="62" y="318" class="bttl">Baseband</text>
+  <text x="62" y="336" class="bsub">Arb / DAC</text>
+  <text x="62" y="351" class="bsub">I and Q samples</text>
+  <text x="62" y="366" class="bsub">waveform memory</text>
+
+  <!-- IQ modulator (center) -->
+  <rect x="250" y="180" width="150" height="120" rx="6" fill="url(#sgcore)"/>
+  <text x="325" y="230" text-anchor="middle" class="corelbl">I/Q Vector</text>
+  <text x="325" y="250" text-anchor="middle" class="corelbl">Modulator</text>
+  <text x="325" y="272" text-anchor="middle" class="coresub">mixes carrier + I/Q</text>
+
+  <!-- ALC / amplifier -->
+  <rect class="blk" x="470" y="180" width="130" height="60" rx="4"/>
+  <rect x="470" y="180" width="6" height="60" fill="#0078B6"/>
+  <text x="492" y="206" class="bttl">ALC + Amp</text>
+  <text x="492" y="224" class="bsub">levels the power</text>
+
+  <!-- Step attenuator + filter -->
+  <rect class="blk" x="470" y="250" width="130" height="60" rx="4"/>
+  <rect x="470" y="250" width="6" height="60" fill="#003D6B"/>
+  <text x="492" y="276" class="bttl">Atten + Filter</text>
+  <text x="492" y="294" class="bsub">sets output range</text>
+
+  <!-- Output -->
+  <rect class="blk" x="660" y="210" width="100" height="70" rx="4"/>
+  <rect x="660" y="210" width="6" height="70" fill="#C77E00"/>
+  <text x="682" y="240" class="bttl">RF Out</text>
+  <text x="682" y="258" class="bsub">coax / waveguide</text>
+
+  <!-- signal flow arrows -->
+  <line class="sig" x1="170" y1="105" x2="200" y2="105" />
+  <line class="sig" x1="200" y1="105" x2="200" y2="210" />
+  <line class="sig" x1="170" y1="210" x2="250" y2="210" marker-end="url(#ah2)"/>
+  <line class="sig" x1="170" y1="330" x2="210" y2="330" />
+  <line class="sig" x1="210" y1="330" x2="210" y2="270" />
+  <line class="sig" x1="210" y1="270" x2="250" y2="270" marker-end="url(#ah2)"/>
+
+  <line class="sig" x1="400" y1="225" x2="470" y2="210" marker-end="url(#ah2)"/>
+  <line class="sig" x1="600" y1="210" x2="630" y2="210" />
+  <line class="sig" x1="630" y1="210" x2="630" y2="245" />
+  <line class="sig" x1="600" y1="280" x2="630" y2="280" />
+  <line class="sig" x1="630" y1="280" x2="630" y2="245" />
+  <line class="sig" x1="630" y1="245" x2="660" y2="245" marker-end="url(#ah2)"/>
+
+  <text x="178" y="100" class="wlbl">clock</text>
+  <text x="178" y="345" class="wlbl">I/Q</text>
+
+  <!-- legend -->
+  <rect x="40" y="400" width="720" height="40" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5" rx="4"/>
+  <rect x="40" y="400" width="6" height="40" fill="#0078B6"/>
+  <text x="58" y="418" class="bsub" font-weight="700" fill="#003D6B">Analog vs. vector:</text>
+  <text x="170" y="418" class="bsub">An analog generator uses only the reference, synthesizer, and output stages for CW, AM, FM, or pulse.</text>
+  <text x="58" y="433" class="bsub">A vector generator adds the baseband (arb) and I/Q modulator to produce complex digitally modulated signals.</text>
+</svg>

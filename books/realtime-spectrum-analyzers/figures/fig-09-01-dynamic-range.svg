@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <linearGradient id="dynRange" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1b5e20" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#1b5e20" stop-opacity="0.45"/>
+    </linearGradient>
+  </defs>
+
+  <text x="550" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Figure 9-1: Dynamic Range and Its Limits</text>
+  <text x="550" y="48" text-anchor="middle" font-size="12" fill="#486581">Three independent floors: noise, SFDR, and IIP3-driven intermod set the usable measurement range.</text>
+
+  <!-- Vertical amplitude axis -->
+  <line x1="100" y1="80" x2="100" y2="450" stroke="#2C3E50" stroke-width="2"/>
+  <text x="80" y="85" text-anchor="end" font-size="11" fill="#486581">+10 dBm</text>
+  <text x="80" y="135" text-anchor="end" font-size="11" fill="#486581">0 dBm</text>
+  <text x="80" y="185" text-anchor="end" font-size="11" fill="#486581">-30 dBm</text>
+  <text x="80" y="235" text-anchor="end" font-size="11" fill="#486581">-60 dBm</text>
+  <text x="80" y="285" text-anchor="end" font-size="11" fill="#486581">-90 dBm</text>
+  <text x="80" y="335" text-anchor="end" font-size="11" fill="#486581">-120 dBm</text>
+  <text x="80" y="385" text-anchor="end" font-size="11" fill="#486581">-150 dBm</text>
+  <text x="80" y="435" text-anchor="end" font-size="11" fill="#486581">-180 dBm</text>
+
+  <!-- Tick marks -->
+  <g stroke="#2C3E50" stroke-width="1">
+    <line x1="95" y1="85" x2="100" y2="85"/>
+    <line x1="95" y1="135" x2="100" y2="135"/>
+    <line x1="95" y1="185" x2="100" y2="185"/>
+    <line x1="95" y1="235" x2="100" y2="235"/>
+    <line x1="95" y1="285" x2="100" y2="285"/>
+    <line x1="95" y1="335" x2="100" y2="335"/>
+    <line x1="95" y1="385" x2="100" y2="385"/>
+    <line x1="95" y1="435" x2="100" y2="435"/>
+  </g>
+
+  <!-- Compression ceiling at +10 dBm -->
+  <line x1="100" y1="85" x2="700" y2="85" stroke="#c0392b" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="710" y="89" font-size="11" fill="#c0392b" font-weight="600">PA compression ceiling (around +10 dBm)</text>
+
+  <!-- Strong reference signal -->
+  <line x1="200" y1="155" x2="220" y2="155" stroke="#0078B6" stroke-width="3"/>
+  <line x1="210" y1="155" x2="210" y2="450" stroke="#0078B6" stroke-width="2" opacity="0.4"/>
+  <text x="210" y="148" text-anchor="middle" font-size="11" fill="#0078B6" font-weight="700">Strong signal</text>
+  <text x="210" y="135" text-anchor="middle" font-size="10" fill="#0078B6">-15 dBm</text>
+
+  <!-- Noise floor -->
+  <line x1="100" y1="380" x2="700" y2="380" stroke="#1b5e20" stroke-width="2"/>
+  <text x="710" y="384" font-size="11" fill="#1b5e20" font-weight="600">Noise floor: N = -174 + 10·log(RBW) + NF</text>
+  <text x="710" y="400" font-size="10" fill="#486581">at 1 dB NF, 100 kHz RBW: -123 dBm</text>
+
+  <!-- SFDR floor (analyzer-generated spurs) -->
+  <line x1="100" y1="285" x2="700" y2="285" stroke="#003D6B" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="710" y="289" font-size="11" fill="#003D6B" font-weight="600">SFDR floor (analyzer spurs)</text>
+  <text x="710" y="305" font-size="10" fill="#486581">~80-95 dB below strongest signal</text>
+
+  <!-- IIP3 driven IM3 floor (depends on input) -->
+  <line x1="100" y1="240" x2="500" y2="240" stroke="#c0392b" stroke-width="2" stroke-dasharray="6,3" opacity="0.7"/>
+  <text x="510" y="244" font-size="11" fill="#c0392b" font-weight="600">IIP3-driven IM3 floor</text>
+  <text x="510" y="260" font-size="10" fill="#486581">P_IM3 = 3·P_in - 2·P_IIP3</text>
+
+  <!-- Effective dynamic range area -->
+  <rect x="105" y="285" width="600" height="95" fill="url(#dynRange)" stroke="none"/>
+  <text x="400" y="335" text-anchor="middle" font-size="14" font-weight="700" fill="#1b5e20">EFFECTIVE DYNAMIC RANGE</text>
+  <text x="400" y="355" text-anchor="middle" font-size="11" fill="#1b5e20">(set by the highest of the three floors)</text>
+
+  <!-- Phase noise skirt around strong signal -->
+  <path d="M 200,155 Q 215,165 240,200 L 240,380 L 180,380 L 180,200 Q 205,165 220,155 Z" fill="#0078B6" opacity="0.15" stroke="#0078B6" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <text x="245" y="200" font-size="10" fill="#0078B6">phase noise skirt</text>
+
+  <!-- Weak signals to find -->
+  <line x1="350" y1="320" x2="370" y2="320" stroke="#1b5e20" stroke-width="2"/>
+  <text x="380" y="324" font-size="11" fill="#1b5e20" font-weight="600">Weak signal (-100 dBm) - VISIBLE</text>
+
+  <line x1="450" y1="370" x2="470" y2="370" stroke="#c0392b" stroke-width="2"/>
+  <text x="480" y="374" font-size="11" fill="#c0392b" font-weight="600">Very weak signal (-145 dBm) - BURIED IN NOISE</text>
+
+  <!-- Bottom labels -->
+  <line x1="100" y1="450" x2="700" y2="450" stroke="#2C3E50" stroke-width="2"/>
+  <text x="400" y="475" text-anchor="middle" font-size="13" font-weight="700" fill="#003D6B">Frequency (any single span)</text>
+
+  <text x="50" y="265" text-anchor="middle" font-size="13" font-weight="700" fill="#003D6B" transform="rotate(-90 50 265)">Power</text>
+</svg>

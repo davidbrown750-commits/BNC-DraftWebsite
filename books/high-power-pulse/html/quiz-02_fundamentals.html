@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 2 Quiz: Pulser Fundamentals</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 2 Quiz: Pulser Fundamentals</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "hppg",
+  chapterKey: "02",
+  title: "Chapter 2 Quiz",
+  questions: [
+    {
+      q: "A voltage pulser drives a 200 pF capacitive load with a 500 V, 1 µs pulse at 10 kHz. Approximately how much average power must the pulser dissipate due to the load alone?",
+      options: ["5 mW", "0.5 W", "5 W", "50 W"],
+      answer: 1,
+      explain: "Using P = C V² F, 200 pF times (500 V)² times 10 kHz is about 0.5 W into the capacitive load."
+    },
+    {
+      q: "A pulse generator has a rise time spec of 10 ns. What scope bandwidth do you need to measure that rise time within 10% of its true value?",
+      options: ["35 MHz", "350 MHz", "1 GHz", "10 GHz"],
+      answer: 2,
+      explain: "The 0.35/BW rule gives a 350 MHz scope for a 10 ns edge, but measuring within 10% needs roughly three times that, near 1 GHz."
+    },
+    {
+      q: "A current pulser with 50 V compliance voltage attempts to drive 20 A into a 5 µH inductor with a 200 ns rise time. What happens?",
+      options: [
+        "The pulse rise time stretches to roughly 2 µs because the compliance voltage is the limit.",
+        "The pulser overheats and shuts down.",
+        "The current overshoots and rings.",
+        "The output is unaffected because 5 µH is a small inductance."
+      ],
+      answer: 0,
+      explain: "dI/dt is capped by V/L. With 50 V across 5 µH, reaching 20 A takes about 2 µs, so the edge stretches well past 200 ns."
+    },
+    {
+      q: "Which of the following best describes droop?",
+      options: [
+        "The slow downward sag of pulse amplitude during the flat top, caused by the energy store discharging.",
+        "Overshoot at the rising edge.",
+        "Reflection from a mismatched load.",
+        "EMI pickup on the monitor output."
+      ],
+      answer: 0,
+      explain: "Droop is the gradual fall of the flat top as the storage element discharges into the load during the pulse."
+    },
+    {
+      q: "A 1 ns rise time pulser drives a 1 m coaxial cable. Which design regime applies?",
+      options: [
+        "Lumped-element, because 1 m is a short length.",
+        "Transmission-line, because the rise time is shorter than the cable's propagation delay.",
+        "Either, depending on the cable impedance.",
+        "Neither, because rise time and cable length are independent."
+      ],
+      answer: 1,
+      explain: "A 1 m cable has a few nanoseconds of delay. When the edge is faster than that delay, the cable behaves as a transmission line."
+    },
+    {
+      q: "The maximum power dissipation in a voltage pulser driving a capacitive load is approximately:",
+      options: ["P = V × I", "P = C × V² × F", "P = I² × R", "P = V² / R"],
+      answer: 1,
+      explain: "Each charge-discharge cycle moves C V² of energy, so average power scales as C V² F for a capacitive load."
+    },
+    {
+      q: "Which load type is most demanding on compliance voltage at fast rise times?",
+      options: ["Resistive", "Capacitive", "Inductive", "All loads are equally demanding"],
+      answer: 2,
+      explain: "An inductor opposes fast current change, so forcing a fast edge demands high compliance voltage to satisfy V = L dI/dt."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="02_fundamentals.html">&larr; Back to Chapter 2</a>
+    <a class="mid" href="../index.html">Contents</a>
+    <a class="next" href="quiz-03_pitfalls.html">Chapter 3 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

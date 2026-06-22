@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 9 Quiz: Scintillation Light Detection Devices</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 9 · Quiz</p>
+      <h1>Scintillation Light Detection Devices</h1>
+      <p class="sub">Five multiple-choice questions. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~10 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Auto-scored</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="09-photodetectors.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="10-nomenclature.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it with a pen too.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "scintillator",
+    chapterKey: "09",
+    title: "Chapter 9 Quiz: Scintillation Light Detection Devices",
+    questions: [
+      {
+        q: "A standard 10-stage bialkali PMT has approximately what overall gain?",
+        options: [
+          "About 10^5 to 10^6",
+          "About 10 to 100",
+          "About 10^12",
+          "Unity, since PMTs have no internal gain"
+        ],
+        answer: 0,
+        explain: "Per-dynode multiplication over ten stages compounds to roughly 10^5 to 10^6 depending on voltage."
+      },
+      {
+        q: "Why is a silicon photodiode a poor match for NaI(Tl) but a good match for CsI(Tl)?",
+        options: [
+          "NaI(Tl) emits at 415 nm where photodiode QE is low; CsI(Tl) emits at 550 nm where it exceeds 85 percent",
+          "NaI(Tl) is too fast for a photodiode",
+          "CsI(Tl) provides its own internal gain",
+          "NaI(Tl) emits in the infrared"
+        ],
+        answer: 0,
+        explain: "Silicon photodiode QE peaks in the red, so it captures CsI(Tl) green light far better than NaI(Tl) blue light."
+      },
+      {
+        q: "The breakdown voltage of a typical SiPM shifts with temperature at approximately what rate?",
+        options: [
+          "25 to 50 millivolts per degree Celsius",
+          "2 to 5 volts per degree Celsius",
+          "1 nanovolt per degree Celsius",
+          "It is independent of temperature"
+        ],
+        answer: 0,
+        explain: "The same 25 to 50 mV per degree drift that drives the need for bias compensation."
+      },
+      {
+        q: "What is the dominant noise source in a SiPM at low light levels and room temperature?",
+        options: [
+          "Dark count rate, the spontaneous Geiger discharges from thermal generation",
+          "Johnson noise in the readout resistor",
+          "Cosmic ray pile-up",
+          "Photocathode shot noise"
+        ],
+        answer: 0,
+        explain: "DCR runs about 50 to 200 kHz per square millimeter at room temperature and dominates at low light."
+      },
+      {
+        q: "Why do microchannel plate PMTs achieve better timing than conventional PMTs, and at what cost?",
+        options: [
+          "Continuous channel multipliers cut transit-time spread to sub-100 ps, at the cost of shorter life and higher price",
+          "They run at lower voltage, at the cost of lower gain",
+          "They use a larger photocathode, at the cost of weight",
+          "They are cheaper but slower"
+        ],
+        answer: 0,
+        explain: "MCPs replace discrete dynodes with continuous channels, giving sub-100 ps TTS but aging faster and costing far more."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

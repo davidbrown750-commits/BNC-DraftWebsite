@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 16px; font-weight: 700; fill: #003D6B; }
+    .lbl { font-size: 10px; fill: #2C3E50; }
+    .ann { font-size: 10px; fill: #003D6B; font-weight: 600; }
+    .note { font-size: 9px; fill: #2C3E50; opacity: 0.8; font-style: italic; }
+    .axis { stroke: #2C3E50; stroke-width: 1.2; fill: none; }
+    .grid { stroke: #d4d8db; stroke-width: 0.5; fill: none; }
+    .pulse { stroke: #00b4ff; stroke-width: 2.4; fill: none; }
+    .target { stroke: #003D6B; stroke-width: 1; stroke-dasharray: 4 3; }
+    .arrow { stroke: #003D6B; stroke-width: 1.2; fill: none; marker-end: url(#a); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#003D6B"/>
+    </marker>
+  </defs>
+
+  <text x="440" y="26" text-anchor="middle" class="title">Pulse with reflection-induced overshoot and ringing</text>
+
+  <!-- Grid -->
+  <g class="grid">
+    <line x1="80" y1="80" x2="820" y2="80" />
+    <line x1="80" y1="140" x2="820" y2="140" />
+    <line x1="80" y1="200" x2="820" y2="200" />
+    <line x1="80" y1="260" x2="820" y2="260" />
+    <line x1="80" y1="320" x2="820" y2="320" />
+  </g>
+
+  <!-- Y axis labels -->
+  <text x="72" y="84" text-anchor="end" class="lbl">110%</text>
+  <text x="72" y="144" text-anchor="end" class="lbl">100%</text>
+  <text x="72" y="204" text-anchor="end" class="lbl">50%</text>
+  <text x="72" y="324" text-anchor="end" class="lbl">0%</text>
+
+  <!-- Target amplitude line -->
+  <line x1="80" y1="140" x2="820" y2="140" class="target" />
+
+  <!-- Axes -->
+  <line x1="80" y1="320" x2="820" y2="320" class="axis" />
+  <line x1="80" y1="320" x2="80" y2="60" class="axis" />
+
+  <!-- Pulse with overshoot and damped ring -->
+  <path class="pulse" d="M 80 320
+    L 240 320
+    L 270 75
+    L 280 95
+    L 295 115
+    L 312 130
+    L 330 145
+    L 348 153
+    L 366 148
+    L 384 144
+    L 402 142
+    L 420 140
+    L 580 140
+    L 612 320
+    L 630 305
+    L 648 312
+    L 666 318
+    L 684 320
+    L 820 320"/>
+
+  <!-- Annotations -->
+  <line x1="280" y1="80" x2="380" y2="55" class="arrow" />
+  <text x="386" y="50" class="ann">Overshoot</text>
+  <text x="386" y="64" class="note">first reflection back at source</text>
+
+  <line x1="350" y1="150" x2="460" y2="195" class="arrow" />
+  <text x="466" y="200" class="ann">Damped ringing</text>
+  <text x="466" y="214" class="note">round-trip echo, period = 2L/v</text>
+
+  <line x1="500" y1="140" x2="500" y2="105" class="arrow" />
+  <text x="500" y="98" text-anchor="middle" class="ann">Target amplitude</text>
+
+  <text x="120" y="354" class="note">Period of the ringing reveals the cable's electrical length. 100 MHz ring = 10 ns round trip = ~1 m of 0.66c cable.</text>
+  <text x="120" y="368" class="note">Eliminate by terminating the cable end with R = Z_cable, or by using snubber networks for inductive ringing.</text>
+</svg>

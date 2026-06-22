@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 14 - Labs: Hands-On Exercises with an RTSA</title>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 14</div>
+<h1>Labs: Hands-On Exercises with an RTSA</h1>
+
+<blockquote>Reading about RF is education. Sitting at a bench with an analyzer is engineering. The difference is what you remember a year from now.</blockquote>
+
+<h2>How to Use This Chapter</h2>
+
+<p>Each lab gives you a goal, a list of equipment, a step-by-step procedure, the expected result, and discussion questions to verify understanding. Labs progress in difficulty: 1 through 4 are foundational, 5 through 7 build technique, 8 through 10 stretch the instrument.</p>
+
+<p>Equipment baseline for all labs unless noted otherwise: Aaronia SPECTRAN V6 PLUS (any model from ECO 100XA-6 up; flagship 2000XA-6 for advanced labs), host computer running RTSA Suite PRO (Windows, Linux, or macOS), appropriate antenna (HyperLOG, OmniLOG, or similar), Wi-Fi router or other test signal source, and for advanced labs an IsoLOG 3D DF antenna, second SPECTRAN unit, and GPSDO.</p>
+
+<p>Each lab takes 30 to 90 minutes. None require expensive consumables. Some require nothing more than a Wi-Fi router you already own.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-14-01-lab-bench-setup.svg" style="width:100%;">Figure 14-1</object>
+  <figcaption>Figure 14-1. The standard lab bench setup. Solid lines show baseline equipment used in all ten labs (antenna, SPECTRAN V6 PLUS, host computer running RTSA Suite PRO, test signal source). Dashed lines show optional additions for advanced labs: external storage for Lab 9, IsoLOG 3D DF for Lab 8, and a second SPECTRAN for Lab 10.</figcaption>
+</figure>
+
+<div class="lab">
+<h2>Lab 1: First Capture - Power-On Through a Wi-Fi Spectrogram</h2>
+<div class="meta"><strong>Objective:</strong> complete the full setup-to-data path with a familiar signal. <strong>Equipment:</strong> baseline plus a Wi-Fi router.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Connect the SPECTRAN to the host via USB-C. Power on. Confirm the device appears in RTSA Suite PRO.</li>
+<li>Connect a 2.4 GHz antenna to the RF input.</li>
+<li>In RTSA Suite PRO, set center frequency to 2.437 GHz (Wi-Fi channel 6) and span to 30 MHz.</li>
+<li>Set RBW to 100 kHz, FFT length to 4096, window to Hann.</li>
+<li>Enable the waterfall display.</li>
+<li>Watch as Wi-Fi traffic paints the waterfall. Observe beacons every 102.4 ms and data bursts in between.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>A clear waterfall image showing Wi-Fi beacons as periodic horizontal stripes and data activity in between. The 22 MHz Wi-Fi channel is clearly visible as a wide block of energy.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>What is the average duty cycle of a Wi-Fi network you observe?</li>
+<li>How do beacons differ visually from data frames?</li>
+<li>What happens to the waterfall when you stream a video over the Wi-Fi?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 2: Finding a Transient with Persistence Display</h2>
+<div class="meta"><strong>Objective:</strong> see what persistence reveals that a single FFT cannot. <strong>Equipment:</strong> baseline plus any source of intermittent transmissions (Bluetooth device, microwave oven, garage door remote).</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Tune the SPECTRAN to the band of interest (2.4 GHz for Bluetooth, 2.45 GHz for microwave leakage, 315 or 433 MHz for garage doors).</li>
+<li>Set span and RBW appropriately.</li>
+<li>Enable the persistence display. Set integration time to 5 seconds.</li>
+<li>Trigger the device intermittently. Watch the persistence display accumulate.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>Rare bursts that are nearly invisible on the live trace become bright dots on the persistence display. The same view shows continuous signals as bright bands and noise as a diffuse cloud.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>Why does persistence reveal signals that single FFTs miss?</li>
+<li>What is the difference between persistence and a max-hold trace?</li>
+<li>When would you choose persistence over a waterfall?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 3: Building a Frequency Mask Trigger for an ISM Band</h2>
+<div class="meta"><strong>Objective:</strong> automate detection of out-of-envelope events. <strong>Equipment:</strong> baseline plus a clean RF environment in 2.4 GHz ISM.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Set center 2.45 GHz, span 100 MHz.</li>
+<li>With no nearby active transmitters, observe the noise floor for one minute. This is your baseline.</li>
+<li>Open the FMT editor. Define a mask 10 dB above the noise floor across the entire span.</li>
+<li>Arm the trigger. Walk away.</li>
+<li>Have a friend turn on a Bluetooth device or other 2.4 GHz transmitter. The FMT should fire and capture the event.</li>
+<li>Replay the captured I/Q to confirm the event was captured.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>The mask trigger fires within milliseconds of any signal exceeding the threshold. The recorded I/Q shows pre-trigger samples (from the rolling buffer), the trigger event, and post-trigger samples.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>How would you tighten the mask if the noise floor varies with frequency?</li>
+<li>Could you use FMT as a regulatory enforcement tool?</li>
+<li>What is the latency between event and trigger fire? Why does it matter?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 4: Reading Raw I/Q and Plotting in Python</h2>
+<div class="meta"><strong>Objective:</strong> export RTSA-captured data and analyze it offline. <strong>Equipment:</strong> baseline plus a Python environment with NumPy and Matplotlib.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Capture a 100 millisecond I/Q recording at 2.45 GHz, span 80 MHz. Save as SigMF.</li>
+<li>In Python, install the <code>sigmf</code> package: <code>pip install sigmf</code>.</li>
+<li>Run this code:</li>
+</ol>
+
+<pre><code>from sigmf import sigmffile
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import spectrogram
+
+handle = sigmffile.fromfile('capture.sigmf-meta')
+fs = handle.get_global_field('core:sample_rate')
+iq = handle.read_samples()
+
+print(f"Loaded {len(iq)} samples at {fs/1e6:.1f} MHz")
+
+f, t, Sxx = spectrogram(iq, fs=fs, nperseg=1024, return_onesided=False)
+plt.pcolormesh(t * 1e3, np.fft.fftshift(f) / 1e6,
+               10*np.log10(np.fft.fftshift(Sxx, axes=0)), shading='auto')
+plt.xlabel('time (ms)')
+plt.ylabel('frequency (MHz from carrier)')
+plt.colorbar(label='dB')
+plt.title('Wi-Fi capture (offline analysis)')
+plt.show()</code></pre>
+
+<h3>Expected Result</h3>
+<p>A Matplotlib spectrogram nearly identical to the RTSA Suite PRO waterfall.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>What advantages does offline Python analysis have over the built-in display?</li>
+<li>How would you compute the average power in a specific channel programmatically?</li>
+<li>Could you use this workflow for automated production testing?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 5: Windowing Comparison (Hann vs Flat-top)</h2>
+<div class="meta"><strong>Objective:</strong> see scalloping loss with your own eyes. <strong>Equipment:</strong> baseline plus a calibrated signal generator.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Connect a tone source generating a clean sinusoid at 2.401 GHz at -30 dBm.</li>
+<li>Tune the SPECTRAN to 2.4 GHz center, 2 MHz span.</li>
+<li>With the tone exactly on a bin center, measure the amplitude. Record.</li>
+<li>Shift the source frequency by half a bin (e.g., to 2.401001 GHz). Measure again. Record.</li>
+<li>Switch the window from Hann to Flat-top. Repeat steps 3 and 4.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>With Hann, the off-bin reading is 1 to 2 dB lower than the on-bin reading. With Flat-top, both readings are within 0.05 dB of each other.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>Why is Flat-top the right choice for amplitude calibration?</li>
+<li>Why is Hann the better choice for general spectrum monitoring?</li>
+<li>When would you use Blackman-Harris instead of either?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 6: EVM on a QPSK Signal</h2>
+<div class="meta"><strong>Objective:</strong> measure transmitter quality with a constellation diagram. <strong>Equipment:</strong> baseline plus a vector signal generator transmitting QPSK, OR a SPECTRAN V6 PLUS 500XA-6 with built-in vector signal generator.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Configure the source to transmit QPSK at 1 Msps with raised-cosine pulse shaping (rolloff 0.35), -30 dBm output.</li>
+<li>In RTSA Suite PRO, load the QPSK modulation analysis preset.</li>
+<li>Tune to the source's center frequency, set span to 5 MHz.</li>
+<li>Observe the constellation diagram and the running EVM value.</li>
+<li>Record the EVM in percent and dB.</li>
+<li>Increase the source power to drive the analyzer's front-end into compression. Observe what happens to outer constellation points.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>Clean constellation with EVM in the 1 to 3 percent range. As compression sets in, outer points scatter while inner points remain tight.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>What is the EVM contribution of the analyzer itself?</li>
+<li>Could you separate transmitter EVM from receiver EVM?</li>
+<li>What other distortions would you expect to see in real transmitters?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 7: Pulse Descriptor Word Extraction from a Radar Capture</h2>
+<div class="meta"><strong>Objective:</strong> extract structured pulse data from a radar-like signal. <strong>Equipment:</strong> baseline plus a pulse-mode signal generator.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Set up the source to generate 1 microsecond pulses at 1 kHz PRF, center 1 GHz, output -30 dBm.</li>
+<li>In RTSA Suite PRO, load the PDW extraction preset.</li>
+<li>Tune to 1 GHz center, span 10 MHz.</li>
+<li>Run for 5 seconds. Save the PDW table.</li>
+<li>Open the table in a spreadsheet. Verify pulse width measurements, PRI calculations, and amplitude readings.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>PDW table with 5000 rows, each containing TOA (with nanosecond precision), pulse width close to 1 microsecond, and amplitude near -30 dBm. Computed PRI distribution is centered on 1 ms with sub-microsecond variance.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>How would the PDW extraction handle a frequency-hopping radar?</li>
+<li>What additional fields would you want in the PDW for EW analysis?</li>
+<li>How would deinterleaving work if you had two radars at different PRIs?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 8: Direction Finding with IsoLOG 3D DF</h2>
+<div class="meta"><strong>Objective:</strong> locate a transmitter using an IsoLOG 3D DF antenna. <strong>Equipment:</strong> baseline plus IsoLOG 3D DF antenna and known transmitter at known location.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Mount the IsoLOG 3D DF antenna at a known surveyed position.</li>
+<li>Connect to the SPECTRAN via the appropriate RF and control connections.</li>
+<li>In RTSA Suite PRO, enable the DF mode and the 3D map view.</li>
+<li>Place a transmitter (any 2.4 GHz signal) at a measured distance and bearing from the antenna.</li>
+<li>Observe the bearing and elevation reported by the system.</li>
+<li>Compare to the actual position. Compute error in degrees.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>Bearing within 1 to 3 degrees of true position. Elevation correctly distinguishes ground-level vs elevated transmitters.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>How does multipath affect the bearing accuracy?</li>
+<li>What is the optimal range for accurate DF with this antenna?</li>
+<li>How would you set up a two-site cross-bearing test?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 9: 24/7 Recording and Search</h2>
+<div class="meta"><strong>Objective:</strong> demonstrate continuous I/Q recording and post-event analysis. <strong>Equipment:</strong> baseline plus an external SSD or NAS with at least 1 TB free.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Configure RTSA Suite PRO to stream I/Q at 80 MHz bandwidth, center 2.45 GHz, to the external storage.</li>
+<li>Start recording. Let it run for at least 1 hour.</li>
+<li>During the recording, intentionally trigger interference: turn on a microwave oven, run a wireless camera, etc.</li>
+<li>Stop recording. Note the file size (should be approximately 1.4 GB per minute, or 84 GB per hour).</li>
+<li>Use RTSA Suite PRO's search function to find time periods of high power. Replay the matching segments.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>The recording captures every event during the hour. The search function locates them by power threshold or pattern matching, and replay shows them as if live.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>How would you scale this to multi-day recordings?</li>
+<li>What's the right compression strategy for long-term archives?</li>
+<li>How would you trigger automatic alerts during the recording?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 10: Cascading Two SPECTRANs for Doubled RTBW</h2>
+<div class="meta"><strong>Objective:</strong> combine two SPECTRAN units for wider effective bandwidth. <strong>Equipment:</strong> two SPECTRAN V6 PLUS units, shared 10 MHz reference, wideband signal source.</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Connect the two units via Ethernet to the same network and via the 10 MHz reference cable to ensure phase coherence.</li>
+<li>In RTSA Suite PRO, configure the units for cascaded operation. Each unit covers a different center frequency, with the channels adjacent.</li>
+<li>With a signal source generating a wideband test signal (an OFDM modulator with wide bandwidth), capture using both units simultaneously.</li>
+<li>Verify that the stitched spectrum from both units shows a continuous wideband signal.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>The two captures combine into a single coherent spectrum twice as wide as either unit alone. Phase relationships across the boundary are smooth.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>What synchronization is essential for cascading?</li>
+<li>How would the math change for four cascaded units?</li>
+<li>What applications justify the added cost and complexity?</li>
+</ul>
+</div>
+
+<h2>Going Further</h2>
+
+<p>Beyond these ten labs, the SPECTRAN V6 PLUS and RTSA Suite PRO support hundreds of additional measurement scenarios. Suggested next-steps:</p>
+
+<ul>
+<li><strong>Lab 11:</strong> Modulation classification on an unknown signal</li>
+<li><strong>Lab 12:</strong> 5G NR EVM measurement using the standards-aware preset</li>
+<li><strong>Lab 13:</strong> BLE advertising packet decoding with offline Python</li>
+<li><strong>Lab 14:</strong> TDOA geolocation across three sensor sites</li>
+<li><strong>Lab 15:</strong> Phase noise measurement with cross-correlation</li>
+<li><strong>Lab 16:</strong> Compliance test of a known device against FCC Part 15 limits</li>
+<li><strong>Lab 17:</strong> AI-assisted classification of captured I/Q signatures</li>
+</ul>
+
+<p>Each builds on the foundation of these ten. With the same hardware and software, the only limit is the time you spend exploring.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>Ten hands-on labs cover the full RTSA workflow from first capture through cascaded direction finding.</li>
+  <li>Labs 1-4 establish foundations: power-on, persistence, FMT, Python integration.</li>
+  <li>Labs 5-7 build measurement technique: windowing comparison, EVM measurement, PDW extraction.</li>
+  <li>Labs 8-10 stretch the instrument into advanced territory: direction finding, 24/7 recording, multi-unit cascading.</li>
+  <li>Each lab requires only baseline equipment for completion.</li>
+  <li>The same patterns generalize to dozens of additional scenarios for ongoing skill development.</li>
+</ul>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 15 is a collection of real-world case studies: actual RF incidents diagnosed and resolved using RTSA techniques. These cases ground the theoretical content of earlier chapters in operational reality.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-13.html">&larr; Ch 13. Careers and the RF Workforce</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-15.html">Ch 15. Case Studies &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

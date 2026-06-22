@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>07-temperature</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">07-temperature</h1>
+</header>
+<h1 id="chapter-7---temperature-influence-on-scintillation-response">Chapter 7 - Temperature influence on scintillation response</h1>
+<p>The light output of a scintillator depends on temperature. The photodetector’s gain and dark noise also depend on temperature. The combination determines the temperature behavior of the complete detector and is what an applications engineer has to predict before deploying a detector to a well-logging tool, an outdoor monitoring station, or a lunar surface experiment.</p>
+<h2 id="why-scintillation-light-yield-depends-on-temperature">7.1 Why scintillation light yield depends on temperature</h2>
+<p>Scintillation is a competition. Energy deposited by ionization populates excited states in the scintillator. Those excited states can either emit a photon (radiative transition) or relax non-radiatively (heat). The branching ratio depends on the population of intermediate states, the energy gaps between them, and the rates of the competing processes. All of these have temperature dependence.</p>
+<p>In doped scintillators (NaI(Tl), CsI(Tl), LaBr3:Ce, GAGG:Ce), the activator ion sites are the radiative emitters. The energy deposited migrates from the host lattice to the activator through a transport process that involves trapping and detrapping at lattice defects. Above some characteristic temperature, thermal quenching of the radiative transition dominates, and the light yield falls. Below some temperature, the migration to the activator becomes inefficient and light yield also falls. The result is a maximum in light yield at some intermediate temperature, often near room temperature for well-developed materials.</p>
+<p>In undoped scintillators where the host emits directly (BGO, BaF2, undoped CsI), the temperature dependence reflects the rate of thermal population of non-radiative pathways. BGO light yield rises monotonically as temperature falls; BaF2 fast component is largely temperature-independent.</p>
+<h2 id="light-yield-versus-temperature-for-major-materials">7.2 Light yield versus temperature for major materials</h2>
+<p>The reference data, expressed as light yield relative to its room-temperature value, drawn from manufacturer specifications and the SCINT/IEEE NSS literature [1][2]:</p>
+<p><strong>Table 7.1 - Relative light yield versus temperature for selected scintillators</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>T (deg C)</th>
+<th>BGO</th>
+<th>CeBr3</th>
+<th>NaI(Tl)</th>
+<th>CsI(Tl)</th>
+<th>LaBr3:Ce</th>
+<th>GAGG:Ce</th>
+<th>LYSO:Ce</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-100</td>
+<td>2.10</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>0.55</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr class="even">
+<td>-80</td>
+<td>2.05</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>0.60</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr class="odd">
+<td>-60</td>
+<td>1.95</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>0.70</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+<tr class="even">
+<td>-40</td>
+<td>1.75</td>
+<td>n/a</td>
+<td>0.80</td>
+<td>0.80</td>
+<td>0.95</td>
+<td>1.05</td>
+<td>1.05</td>
+</tr>
+<tr class="odd">
+<td>-20</td>
+<td>1.50</td>
+<td>1.15</td>
+<td>0.90</td>
+<td>0.90</td>
+<td>1.00</td>
+<td>1.05</td>
+<td>1.05</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>1.25</td>
+<td>1.10</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.02</td>
+<td>1.02</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<td>40</td>
+<td>0.75</td>
+<td>0.95</td>
+<td>0.95</td>
+<td>1.00</td>
+<td>0.95</td>
+<td>0.95</td>
+<td>0.95</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>0.55</td>
+<td>0.90</td>
+<td>0.90</td>
+<td>0.95</td>
+<td>0.90</td>
+<td>0.90</td>
+<td>0.90</td>
+</tr>
+<tr class="even">
+<td>80</td>
+<td>0.40</td>
+<td>0.85</td>
+<td>0.85</td>
+<td>0.90</td>
+<td>0.85</td>
+<td>0.85</td>
+<td>0.85</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>0.25</td>
+<td>0.80</td>
+<td>0.80</td>
+<td>0.85</td>
+<td>0.80</td>
+<td>0.80</td>
+<td>0.80</td>
+</tr>
+<tr class="even">
+<td>120</td>
+<td>0.15</td>
+<td>0.75</td>
+<td>0.75</td>
+<td>0.80</td>
+<td>0.75</td>
+<td>0.75</td>
+<td>0.75</td>
+</tr>
+<tr class="odd">
+<td>140</td>
+<td>0.05</td>
+<td>0.70</td>
+<td>0.70</td>
+<td>0.75</td>
+<td>0.70</td>
+<td>0.70</td>
+<td>0.70</td>
+</tr>
+<tr class="even">
+<td>160</td>
+<td>0.00</td>
+<td>0.65</td>
+<td>0.65</td>
+<td>0.70</td>
+<td>0.65</td>
+<td>0.65</td>
+<td>0.65</td>
+</tr>
+</tbody>
+</table>
+<p>Patterns:</p>
+<ul>
+<li>BGO is sharply temperature-dependent and is essentially unusable above 140 degrees Celsius. It rises strongly with cooling.</li>
+<li>The doped alkali halides (NaI(Tl), CsI(Tl), CsI(Na)) have broad maxima near room temperature with about 15 percent loss at 80 C and 30 percent loss at 140 C.</li>
+<li>The Ce-doped materials (CeBr3, LaBr3:Ce, LBC, YAP:Ce) are markedly less temperature-sensitive. Useful range extends to 150 C with modest correction.</li>
+<li>LYSO:Ce and GAGG:Ce track each other and the Ce-doped halides in temperature behavior.</li>
+<li>BaF2 fast component is temperature-independent within experimental error; the slow component drops with temperature like the alkali halides.</li>
+</ul>
+<p>The decay time also depends on temperature. CsI(Tl) decay slows substantially below 0 C (the slow component fraction grows). NaI(Tl) decay accelerates slightly with cooling. For high-rate or fast-timing applications the decay-time temperature dependence may matter as much as the light-yield dependence.</p>
+<figure>
+<img src="../figures/fig-07-01-light-yield-vs-temperature.svg" alt="" /><figcaption>Figure 7.1 - Relative scintillation light yield versus temperature for representative materials. BGO swings dramatically; the Ce-doped materials are markedly flatter.</figcaption>
+</figure>
+<h2 id="photodetector-temperature-behavior">7.3 Photodetector temperature behavior</h2>
+<p>PMT gain depends on temperature primarily through the secondary-electron-emission yield at the dynodes, which has weak temperature dependence (typically less than 0.5 percent per degree Celsius). PMTs also exhibit hysteresis after large gain changes that persists for hours, complicating any in-service correction.</p>
+<p>SiPM gain depends on temperature dramatically. The breakdown voltage shifts by about 25 to 50 millivolts per degree Celsius in modern devices, and gain at fixed bias voltage shifts by 1 to 2 percent per degree Celsius. The dark count rate doubles approximately every 10 degrees Celsius. SiPM-based detectors must include either active bias compensation (adjust the bias voltage to track temperature) or downstream gain correction (calibrate the gain offline as a function of temperature and apply the correction in firmware). Modern SiPM front-end ASICs include both options.</p>
+<p>Photodiodes have small temperature dependencies and are mostly limited by their leakage-current contribution to the total noise floor, which doubles approximately every 10 degrees Celsius like the SiPM dark count rate.</p>
+<h2 id="compensation-strategies">7.4 Compensation strategies</h2>
+<p>Three strategies are used to make temperature-dependent detectors deliver stable output.</p>
+<p><strong>Hardware temperature stabilization.</strong> The detector housing includes a thermistor and a heater (or thermoelectric cooler), and the system holds the crystal and photodetector at a fixed temperature during operation. This is standard for laboratory instruments and for the most demanding measurements but adds power consumption, weight, and warm-up time. Not practical for handhelds and portable instruments.</p>
+<p><strong>Real-time bias adjustment.</strong> For SiPMs, a closed-loop bias supply tracks the temperature reading from a thermistor on the detector head and adjusts bias to hold gain constant. Modern integrated circuits do this with sub-millivolt accuracy and microsecond response. The result is gain stability comparable to a PMT over the full operating temperature range.</p>
+<p><strong>Firmware gain correction.</strong> A temperature reading is recorded with each measurement, and a stored calibration table converts each pulse height to its room-temperature equivalent before histogramming. The simplest implementation is a one-dimensional lookup; more sophisticated implementations track multiple parameters (gain, peak position, resolution) and apply event-by-event correction. This is the dominant approach in modern handheld instruments because it requires no extra hardware on the detector head.</p>
+<p><strong>Spectrum-domain stabilization.</strong> The detector tracks a known spectral feature (an internal Am-241 alpha pulser, an LED reference flash, or a natural background line such as K-40 at 1460 keV or Tl-208 at 2614 keV) and adjusts gain to hold the feature at a fixed channel. This compensates for any source of drift, not only temperature, and is the standard solution for fielded outdoor monitoring stations.</p>
+<h2 id="operating-in-the-temperature-extremes">7.5 Operating in the temperature extremes</h2>
+<p>Several application classes push detectors to temperature extremes.</p>
+<p><strong>Down-hole well logging.</strong> Tools operate at 100 to 200 degrees Celsius for hours at a time. Scintillator choice is constrained to materials that retain useful light yield at these temperatures: CsI(Na) (good to about 175 C), CsI(Tl) with corrections, LaBr3:Ce, GAGG:Ce. NaI(Tl) is marginal above 130 C. PMTs in this environment use specially designed high-temperature dynode chains. Modern logging tools increasingly use SiPMs with active cooling and bias compensation.</p>
+<p><strong>Outdoor environmental monitoring.</strong> Stations operate from -40 C in winter to +60 C in summer in continental climates. Both scintillator and photodetector exhibit substantial drift over this range; the standard solution is a Peltier-cooled detector head plus firmware spectrum stabilization on a natural background line. Detector reliability over 10 to 20 year deployments depends on minimizing thermal cycling stress on the optical coupling.</p>
+<p><strong>Space.</strong> Operating temperatures span -150 to +150 degrees Celsius depending on the mission and the satellite’s solar exposure. Scintillator choice is constrained to materials that survive thermal cycling without optical-coupling failure. CsI(Tl) coupled to a SiPM array, with the entire detector head in a temperature-controlled enclosure, is the modern default for space applications.</p>
+<p><strong>Cryogenic dark matter and rare-event physics.</strong> Operating temperatures below 100 millikelvin push some scintillators (CaWO4 at 10 mK in CRESST, NaI at 5 mK in proposed experiments) into a regime where the photodetector is replaced by a phonon-based readout or a transition-edge sensor. Light yield typically rises with cooling for materials in this regime, recovering some of the photon statistics lost to temperature-related quenching at room temperature.</p>
+<blockquote>
+<p><strong>Going Deeper - The Mott-Seitz model of thermal quenching</strong></p>
+<p>The temperature dependence of luminescent efficiency in many scintillators follows the Mott-Seitz form:</p>
+<p>eta(T) = 1 / (1 + C * exp(-E_a / kT))</p>
+<p>where C is a dimensionless prefactor and E_a is the activation energy for non-radiative quenching. Below the activation temperature (where kT &lt;&lt; E_a), efficiency approaches unity. Above it, efficiency falls exponentially. Fitting measured light-yield-vs-temperature curves to the Mott-Seitz form gives an activation energy that characterizes the quenching mechanism. For NaI(Tl), the activation energy is around 60 meV. For BGO, around 200 meV. For most Ce-doped materials, well above 100 meV, which is why their temperature dependence is mild over normal operating ranges. SCINT and IEEE NSS papers report Mott-Seitz fits routinely for new materials; the activation energy is one of the published parameters that lets an applications engineer predict detector performance at non-room-temperature operating conditions.</p>
+</blockquote>
+<div class="callout">
+<p><strong>BNC in Practice - The temperature characterization run</strong></p>
+<p>Before any deployment outside controlled laboratory temperatures, run a characterization sweep. Place the detector in a thermal chamber. Step through the expected operating range, top to bottom and back up, with at least an hour at each temperature for thermal equilibrium. Record the pulse height of a fixed reference line (Cs-137 at 662 keV is the standard) at each step. The resulting curve is the gain-versus-temperature lookup that goes into firmware. Skipping this step in favor of theoretical prediction has produced enough field surprises that any deployment plan that omits it should raise an eyebrow during review.</p>
+</div>
+<h2 id="why-temperature-compensation-moved-from-optional-to-default">7.5 Why temperature compensation moved from optional to default</h2>
+<p>Through the 1990s and 2000s, temperature compensation was an extra feature that some instruments had and some did not. The instruments that lacked it accepted gain drift as an operating fact and recalibrated frequently. The shift came from two directions at once. SiPM-based detectors raised the stakes because their gain temperature coefficient is larger than a PMT’s, which made compensation a requirement rather than an option. At the same time, low-power microcontrollers reached a price point where embedding a real-time gain correction loop in any handheld instrument cost almost nothing. By 2026, a fielded instrument without temperature compensation is a legacy product, not a current design. The engineering question shifted from whether to compensate to which compensation strategy fits the application.</p>
+<h2 id="chapter-7-quiz">Chapter 7 Quiz</h2>
+<ol type="1">
+<li>BGO light yield at 100 degrees Celsius is approximately what fraction of its room-temperature value.</li>
+<li>Which class of scintillators has the mildest temperature dependence over the standard operating range.</li>
+<li>The breakdown voltage of a modern SiPM shifts by approximately how much per degree Celsius.</li>
+<li>What four compensation strategies are commonly used to deliver stable detector output across temperature.</li>
+<li>Down-hole well-logging tools operate at what typical temperature range, and what scintillators tolerate that environment best.</li>
+</ol>
+<h3 id="quiz-answers">Quiz answers</h3>
+<ol type="1">
+<li>Approximately 25 percent of room-temperature value (BGO drops by a factor of about 4 by 100 C).</li>
+<li>The cerium-doped materials (CeBr3, LaBr3:Ce, LBC, GAGG:Ce, LYSO:Ce, YAP:Ce). Their temperature dependence is much milder than the doped alkali halides or BGO.</li>
+<li>25 to 50 millivolts per degree Celsius in modern devices.</li>
+<li>Hardware temperature stabilization (thermistor + heater or thermoelectric cooler), real-time SiPM bias adjustment, firmware gain correction from a stored calibration table, and spectrum-domain stabilization on a known feature (Am-pulser, LED, or background line).</li>
+<li>100 to 200 degrees Celsius. CsI(Na) (good to about 175 C), CsI(Tl) with corrections, LaBr3:Ce, and GAGG:Ce. NaI(Tl) is marginal above 130 C.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] T. Yanagida, “Inorganic scintillating materials and scintillation detectors,” <em>Proc. Jpn. Acad. Ser. B</em>, vol. 94, pp. 75-97, 2018.</p>
+<p>[2] M. Moszynski et al., “Temperature dependences of LaBr3(Ce), LaCl3(Ce) and NaI(Tl) scintillators,” <em>Nucl. Instrum. Methods A</em>, vol. 568, pp. 73</p>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2C3E50"/>
+    </marker>
+  </defs>
+
+  <text x="550" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Figure 4-1: Real Signal vs Analytic Signal Spectrum</text>
+  <text x="550" y="48" text-anchor="middle" font-size="12" fill="#486581">A real-valued signal has a symmetric, two-sided spectrum. The analytic signal keeps only positive frequencies.</text>
+
+  <!-- LEFT: Real signal spectrum -->
+  <rect x="30" y="65" width="510" height="240" fill="#ECEFF1" stroke="#0078B6" rx="6"/>
+  <text x="285" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#003D6B">REAL-VALUED SIGNAL s(t)</text>
+
+  <!-- Real spectrum axes -->
+  <g transform="translate(60,200)">
+    <line x1="0" y1="0" x2="450" y2="0" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#ar4)"/>
+    <text x="455" y="5" font-size="11" fill="#486581">f</text>
+    <line x1="225" y1="-90" x2="225" y2="20" stroke="#2C3E50" stroke-width="1.5"/>
+    <text x="218" y="-95" text-anchor="end" font-size="11" fill="#486581">|S(f)|</text>
+
+    <!-- Negative frequency component (mirror) -->
+    <path d="M 145,0 L 165,-50 L 185,0 Z" fill="#003D6B" opacity="0.5" stroke="#003D6B"/>
+    <text x="165" y="-55" text-anchor="middle" font-size="10" fill="#003D6B">redundant mirror</text>
+    <text x="165" y="14" text-anchor="middle" font-size="11" fill="#486581">-f₀</text>
+
+    <!-- Positive frequency component -->
+    <path d="M 265,0 L 285,-50 L 305,0 Z" fill="#003D6B" stroke="#003D6B"/>
+    <text x="285" y="14" text-anchor="middle" font-size="11" fill="#486581">+f₀</text>
+
+    <!-- DC mark -->
+    <text x="225" y="14" text-anchor="middle" font-size="11" fill="#486581">0 (DC)</text>
+
+    <!-- Annotations -->
+    <text x="50" y="-95" font-size="11" fill="#486581">Spectrum is symmetric about DC.</text>
+    <text x="50" y="-78" font-size="11" fill="#486581">Cannot tell rotation direction</text>
+    <text x="50" y="-63" font-size="11" fill="#486581">from real samples alone.</text>
+    <text x="50" y="50" font-size="11" fill="#003D6B" font-weight="600">→ wastes half the bandwidth</text>
+    <text x="50" y="65" font-size="11" fill="#003D6B" font-weight="600">→ ambiguous direction</text>
+  </g>
+
+  <!-- RIGHT: Analytic signal spectrum -->
+  <rect x="560" y="65" width="510" height="240" fill="#e8f5e9" stroke="#1b5e20" rx="6"/>
+  <text x="815" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#1b5e20">ANALYTIC SIGNAL z(t) = s(t) + j·ŝ(t)</text>
+
+  <g transform="translate(590,200)">
+    <line x1="0" y1="0" x2="450" y2="0" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#ar4)"/>
+    <text x="455" y="5" font-size="11" fill="#486581">f</text>
+    <line x1="225" y1="-90" x2="225" y2="20" stroke="#2C3E50" stroke-width="1.5"/>
+    <text x="218" y="-95" text-anchor="end" font-size="11" fill="#486581">|Z(f)|</text>
+
+    <!-- Negative frequency suppressed -->
+    <path d="M 145,0 L 165,-50 L 185,0 Z" fill="none" stroke="#1b5e20" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.4"/>
+    <line x1="145" y1="-50" x2="185" y2="0" stroke="#c0392b" stroke-width="2"/>
+    <text x="165" y="-55" text-anchor="middle" font-size="10" fill="#c0392b">suppressed</text>
+
+    <!-- Positive frequency only - doubled -->
+    <path d="M 265,0 L 285,-90 L 305,0 Z" fill="#1b5e20" stroke="#1b5e20"/>
+    <text x="285" y="14" text-anchor="middle" font-size="11" fill="#486581">+f₀</text>
+    <text x="225" y="14" text-anchor="middle" font-size="11" fill="#486581">0 (DC)</text>
+
+    <text x="50" y="-95" font-size="11" fill="#486581">One-sided spectrum.</text>
+    <text x="50" y="-78" font-size="11" fill="#486581">Negative frequencies = signals</text>
+    <text x="50" y="-63" font-size="11" fill="#486581">below carrier (no ambiguity).</text>
+    <text x="50" y="50" font-size="11" fill="#1b5e20" font-weight="600">→ doubles useful bandwidth</text>
+    <text x="50" y="65" font-size="11" fill="#1b5e20" font-weight="600">→ direction unambiguous</text>
+  </g>
+
+  <!-- BOTTOM: I/Q components -->
+  <text x="550" y="350" text-anchor="middle" font-size="14" font-weight="700" fill="#003D6B">Hardware Implementation: Quadrature Downconversion</text>
+
+  <g transform="translate(120,380)">
+    <!-- s(t) input -->
+    <text x="0" y="50" font-size="13" font-weight="600" fill="#2C3E50">s(t)</text>
+    <line x1="20" y1="48" x2="80" y2="48" stroke="#2C3E50" stroke-width="1.5"/>
+
+    <!-- Split point -->
+    <circle cx="80" cy="48" r="3" fill="#2C3E50"/>
+    <line x1="80" y1="48" x2="80" y2="20" stroke="#2C3E50" stroke-width="1.5"/>
+    <line x1="80" y1="48" x2="80" y2="76" stroke="#2C3E50" stroke-width="1.5"/>
+
+    <!-- I path mixer -->
+    <line x1="80" y1="20" x2="120" y2="20" stroke="#2C3E50" stroke-width="1.5"/>
+    <circle cx="140" cy="20" r="18" fill="#fff" stroke="#2C3E50" stroke-width="1.5"/>
+    <text x="140" y="25" text-anchor="middle" font-size="14">×</text>
+    <text x="140" y="0" text-anchor="middle" font-size="11" fill="#2C3E50">cos(2π f_LO t)</text>
+
+    <!-- Q path mixer -->
+    <line x1="80" y1="76" x2="120" y2="76" stroke="#2C3E50" stroke-width="1.5"/>
+    <circle cx="140" cy="76" r="18" fill="#fff" stroke="#2C3E50" stroke-width="1.5"/>
+    <text x="140" y="81" text-anchor="middle" font-size="14">×</text>
+    <text x="140" y="108" text-anchor="middle" font-size="11" fill="#2C3E50">sin(2π f_LO t)</text>
+
+    <!-- LPFs -->
+    <line x1="158" y1="20" x2="195" y2="20" stroke="#2C3E50" stroke-width="1.5"/>
+    <rect x="195" y="5" width="50" height="30" fill="#fff" stroke="#2C3E50"/>
+    <text x="220" y="25" text-anchor="middle" font-size="11">LPF</text>
+
+    <line x1="158" y1="76" x2="195" y2="76" stroke="#2C3E50" stroke-width="1.5"/>
+    <rect x="195" y="61" width="50" height="30" fill="#fff" stroke="#2C3E50"/>
+    <text x="220" y="81" text-anchor="middle" font-size="11">LPF</text>
+
+    <!-- Outputs -->
+    <line x1="245" y1="20" x2="290" y2="20" stroke="#2C3E50" stroke-width="1.5"/>
+    <text x="305" y="25" font-size="13" font-weight="600" fill="#1b5e20">I(t)</text>
+
+    <line x1="245" y1="76" x2="290" y2="76" stroke="#2C3E50" stroke-width="1.5"/>
+    <text x="305" y="81" font-size="13" font-weight="600" fill="#1b5e20">Q(t)</text>
+
+    <!-- ADC + complex -->
+    <rect x="350" y="5" width="60" height="86" fill="#fff" stroke="#1b5e20" stroke-width="1.5"/>
+    <text x="380" y="35" text-anchor="middle" font-size="11" font-weight="600">ADC</text>
+    <text x="380" y="55" text-anchor="middle" font-size="11" font-weight="600">pair</text>
+    <line x1="290" y1="20" x2="350" y2="20" stroke="#1b5e20" stroke-width="1.5"/>
+    <line x1="290" y1="76" x2="350" y2="76" stroke="#1b5e20" stroke-width="1.5"/>
+
+    <line x1="410" y1="48" x2="480" y2="48" stroke="#1b5e20" stroke-width="2" marker-end="url(#ar4)"/>
+    <text x="500" y="44" font-size="14" font-weight="700" fill="#1b5e20">z(t) = I + jQ</text>
+    <text x="500" y="60" font-size="11" fill="#1b5e20">complex baseband stream</text>
+  </g>
+
+  <text x="550" y="525" text-anchor="middle" font-size="11" fill="#486581" font-style="italic">The I/Q pair IS the analytic signal, constructed by hardware rather than by Hilbert transform.</text>
+</svg>

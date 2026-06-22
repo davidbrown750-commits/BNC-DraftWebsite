@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" font-family="Helvetica, Arial, sans-serif">
+  <title>Trigger, delay, and width timing diagram</title>
+  <desc>Two stacked waveforms. The trigger pulse defines the To reference. The output pulse leading edge is offset from To by the programmed delay, and its width is measured at 50 percent amplitude from leading to falling edge.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <!-- Common vertical axis label -->
+  <text x="22" y="210" fill="#2C3E50" font-size="13" transform="rotate(-90 22 210)" text-anchor="middle">Amplitude</text>
+
+  <!-- ===================== TRIGGER (top) ===================== -->
+  <text x="60" y="40" fill="#003D6B" font-size="16" font-weight="700">TRIGGER</text>
+
+  <!-- top baseline / axis -->
+  <line x1="60" y1="120" x2="690" y2="120" stroke="#b6c2cc" stroke-width="1.5"/>
+
+  <!-- trigger pulse: rises at To -->
+  <path d="M 60 120 L 150 120 L 150 60 L 210 60 L 210 120 L 690 120"
+        fill="none" stroke="#003D6B" stroke-width="2.5"/>
+
+  <!-- To reference dashed vertical line dropping through both plots -->
+  <line x1="150" y1="55" x2="150" y2="360" stroke="#C77E00" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="150" y="48" fill="#C77E00" font-size="14" font-weight="700" text-anchor="middle">T&#8320;</text>
+  <text x="118" y="88" fill="#2C3E50" font-size="12" text-anchor="end">leading edge</text>
+
+  <!-- ===================== OUTPUT (bottom) ===================== -->
+  <text x="60" y="225" fill="#003D6B" font-size="16" font-weight="700">PULSE OUT</text>
+
+  <!-- bottom baseline / axis -->
+  <line x1="60" y1="360" x2="690" y2="360" stroke="#b6c2cc" stroke-width="1.5"/>
+
+  <!-- output pulse: leading edge offset to right of To -->
+  <!-- baseline y=360, top y=250, leading edge x=330, falling edge x=520 -->
+  <path d="M 60 360 L 330 360 L 330 250 L 520 250 L 520 360 L 690 360"
+        fill="none" stroke="#003D6B" stroke-width="2.5"/>
+
+  <!-- 50% amplitude dashed horizontal line -->
+  <line x1="60" y1="305" x2="690" y2="305" stroke="#C77E00" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="690" y="300" fill="#2C3E50" font-size="11" text-anchor="end">50% amplitude</text>
+
+  <!-- vertical guide at output leading edge -->
+  <line x1="330" y1="245" x2="330" y2="360" stroke="#b6c2cc" stroke-width="1" stroke-dasharray="3 3"/>
+  <!-- vertical guide at output falling edge -->
+  <line x1="520" y1="245" x2="520" y2="360" stroke="#b6c2cc" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- Delay bracket from To to output leading edge, along 50% line region -->
+  <g stroke="#C77E00" stroke-width="2" fill="none">
+    <line x1="150" y1="285" x2="330" y2="285"/>
+    <line x1="150" y1="280" x2="150" y2="290"/>
+    <line x1="330" y1="280" x2="330" y2="290"/>
+    <!-- arrowheads -->
+    <path d="M 158 281 L 150 285 L 158 289" />
+    <path d="M 322 281 L 330 285 L 322 289" />
+  </g>
+  <text x="240" y="277" fill="#C77E00" font-size="14" font-weight="700" text-anchor="middle">Delay</text>
+
+  <!-- Width bracket at 50% line, leading to falling edge -->
+  <g stroke="#C77E00" stroke-width="2" fill="none">
+    <line x1="330" y1="330" x2="520" y2="330"/>
+    <line x1="330" y1="325" x2="330" y2="335"/>
+    <line x1="520" y1="325" x2="520" y2="335"/>
+    <path d="M 338 326 L 330 330 L 338 334" />
+    <path d="M 512 326 L 520 330 L 512 334" />
+  </g>
+  <text x="425" y="350" fill="#C77E00" font-size="14" font-weight="700" text-anchor="middle">Width (at 50% amplitude)</text>
+
+  <!-- horizontal axis label -->
+  <text x="375" y="398" fill="#2C3E50" font-size="13" text-anchor="middle">Time &#8594;</text>
+</svg>

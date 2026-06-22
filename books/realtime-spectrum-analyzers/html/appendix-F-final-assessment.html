@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appendix F: Final Comprehensive Assessment - Nuts and Bolts of Real-Time Spectrum Analysis</title>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:16px 0;font-family:Helvetica,Arial,sans-serif;font-size:15px}
+  .quiz ol li .opts{display:block;margin:6px 0 0 0;font-family:Georgia,serif;font-size:15px;color:var(--bnc-charcoal)}
+  .answer-key{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:22px 0;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:14px;line-height:2.0}
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Appendix F</div>
+<h1>Final Comprehensive Assessment</h1>
+
+<p class="lead">Forty questions covering the full book. Work them cold, then score against the key at the end. The scoring guide tells you where you stand.</p>
+
+<div class="quiz">
+<ol>
+<li>The fundamental architectural difference between a swept analyzer and an RTSA is that the RTSA:
+<span class="opts">A. Uses smaller knobs &nbsp; B. Digitizes the entire RTBW continuously and processes overlapping FFTs &nbsp; C. Has a brighter display &nbsp; D. Costs less</span></li>
+<li>POI of 10 nanoseconds is achieved through:
+<span class="opts">A. Software only &nbsp; B. Hardware peak detection plus deep parallel FFT processing &nbsp; C. Faster knob rotation &nbsp; D. Cheaper ADCs</span></li>
+<li>The flagship SPECTRAN V6 PLUS 2000XA-6 maximum optional RTBW is:
+<span class="opts">A. 80 MHz &nbsp; B. 245 MHz &nbsp; C. 490 MHz &nbsp; D. 2 GHz</span></li>
+<li>Friis's formula for cascade noise figure says:
+<span class="opts">A. Noise figure of every stage is equally important &nbsp; B. The first stage with sufficient gain dominates the system noise figure &nbsp; C. The last stage matters most &nbsp; D. Gain cancels noise</span></li>
+<li>Quadrature (I/Q) sampling at the bandwidth requires what fraction of the sample rate of real sampling at twice the carrier?
+<span class="opts">A. The same &nbsp; B. Roughly 1/(carrier/bandwidth) lower &nbsp; C. Twice as much &nbsp; D. Independent of carrier</span></li>
+<li>Image rejection ratio (IRR) for I/Q imbalance combines amplitude and phase errors as:
+<span class="opts">A. Their sum &nbsp; B. Approximately 4 / (epsilon^2 + phi^2) &nbsp; C. Their product &nbsp; D. Independent quantities</span></li>
+<li>SigMF is:
+<span class="opts">A. A proprietary file format &nbsp; B. An open metadata standard pairing JSON sidecar with raw I/Q data &nbsp; C. A modulation type &nbsp; D. A cellular standard</span></li>
+<li>Welch's method reduces variance in PSD estimates by:
+<span class="opts">A. Faster sampling &nbsp; B. Averaging multiple windowed periodograms &nbsp; C. Using narrower windows &nbsp; D. Skipping FFTs</span></li>
+<li>Flat-top window is the right choice for:
+<span class="opts">A. Burst detection &nbsp; B. Accurate amplitude measurement (minimal scalloping) &nbsp; C. Maximum frequency resolution &nbsp; D. Lowest noise floor</span></li>
+<li>Blackman-Harris window provides:
+<span class="opts">A. Wide main lobe with very low sidelobes (high dynamic range) &nbsp; B. Narrow main lobe with high sidelobes &nbsp; C. Same as rectangular &nbsp; D. Best amplitude accuracy</span></li>
+<li>EVM for 5G NR 256-QAM at the transmitter is typically required to be better than:
+<span class="opts">A. 30 percent &nbsp; B. 10 percent &nbsp; C. 3.5 percent &nbsp; D. 0.01 percent</span></li>
+<li>A constellation rotated as a whole indicates:
+<span class="opts">A. PA compression &nbsp; B. Residual carrier frequency offset &nbsp; C. Thermal noise only &nbsp; D. Scalloping</span></li>
+<li>LFM chirps appear on a waterfall display as:
+<span class="opts">A. Vertical stripes &nbsp; B. Diagonal stripes whose slope encodes chirp rate &nbsp; C. Horizontal stripes &nbsp; D. Random scatter</span></li>
+<li>DRFM jammers retransmit modified versions of:
+<span class="opts">A. Their own internal noise &nbsp; B. The victim's own incoming signal &nbsp; C. Pre-recorded waveforms &nbsp; D. Random data</span></li>
+<li>The IsoLOG 3D DF antenna covers:
+<span class="opts">A. Audio band only &nbsp; B. 400 MHz to 40 GHz &nbsp; C. 1 GHz to 6 GHz &nbsp; D. 30-300 MHz</span></li>
+<li>The flagship IsoLOG 3D DF has 16 sectors and how many antennas?
+<span class="opts">A. 16 &nbsp; B. 24 &nbsp; C. 32 &nbsp; D. 48</span></li>
+<li>TDOA geolocation requires clock synchronization across sensors of approximately:
+<span class="opts">A. 1 second &nbsp; B. 1 millisecond &nbsp; C. 10-30 nanoseconds (GPSDO) or picoseconds (PTP) &nbsp; D. 1 femtosecond</span></li>
+<li>Absolute amplitude accuracy for typical RTSAs across full frequency range is approximately:
+<span class="opts">A. plus/minus 0.001 dB &nbsp; B. plus/minus 0.5 to 2 dB &nbsp; C. plus/minus 10 dB &nbsp; D. None</span></li>
+<li>A measurement uncertainty budget combines individual error contributions by:
+<span class="opts">A. Linear sum &nbsp; B. Sum in quadrature with coverage factor &nbsp; C. Maximum &nbsp; D. Average</span></li>
+<li>Phase noise close to the carrier degrades dynamic range via:
+<span class="opts">A. Scalloping &nbsp; B. Reciprocal mixing &nbsp; C. Clipping &nbsp; D. Aliasing</span></li>
+<li>SFDR (spurious-free dynamic range) is the difference between:
+<span class="opts">A. The noise floor and zero &nbsp; B. The strongest signal and the strongest analyzer-generated spur &nbsp; C. The maximum and minimum signals &nbsp; D. Two carriers</span></li>
+<li>The SPECTRAN V6 ECO 100XA-6 is best suited for:
+<span class="opts">A. Defense EW &nbsp; B. Education and hobbyist use &nbsp; C. mmWave 5G research &nbsp; D. Counter-UAS at airports</span></li>
+<li>Cascading four SPECTRAN V6 PLUS units produces aggregate RTBW of:
+<span class="opts">A. 245 MHz &nbsp; B. 490 MHz &nbsp; C. 1 GHz &nbsp; D. 10 GHz</span></li>
+<li>RTSA Suite PRO supports custom processing blocks written in:
+<span class="opts">A. Python and C++ &nbsp; B. JavaScript only &nbsp; C. Assembly only &nbsp; D. None</span></li>
+<li>Wi-Fi 7 maximum channel bandwidth is:
+<span class="opts">A. 80 MHz &nbsp; B. 160 MHz &nbsp; C. 320 MHz &nbsp; D. 1 GHz</span></li>
+<li>WMTS protected bands for medical telemetry include:
+<span class="opts">A. 600 MHz cellular &nbsp; B. 608-614 MHz, 1395-1400 MHz, 1429-1432 MHz &nbsp; C. 2.4 GHz ISM &nbsp; D. 5G n78</span></li>
+<li>GPS spoofing of ground vehicles at airports is best detected by:
+<span class="opts">A. Visual inspection &nbsp; B. Continuous GPS-band monitoring with DF capability &nbsp; C. Cellular signal analysis &nbsp; D. Acoustic sensors</span></li>
+<li>The fastest-growing RF career specialty in 2026 is:
+<span class="opts">A. Spectrum compliance officer &nbsp; B. RF cybersecurity specialist &nbsp; C. Tower technician &nbsp; D. Field engineer</span></li>
+<li>Counter-UAS deployments span all the following except:
+<span class="opts">A. Airports &nbsp; B. Prisons &nbsp; C. Submarines underwater &nbsp; D. Stadiums</span></li>
+<li>The smart-city sensor grid pattern uses RTSAs for:
+<span class="opts">A. Air quality only &nbsp; B. Continuous RF monitoring across the urban spectrum &nbsp; C. Traffic light control &nbsp; D. Pure data storage</span></li>
+<li>The "Wrapped Spectrum" view in RTSA Suite PRO is:
+<span class="opts">A. A standard display from all RTSA vendors &nbsp; B. An Aaronia patented feature wrapping wide spans across stacked lines &nbsp; C. Only available on benchtop instruments &nbsp; D. A modulation type</span></li>
+<li>The probability of intercept formula for a swept analyzer relates:
+<span class="opts">A. ADC bits to bandwidth &nbsp; B. Burst duration plus dwell time, divided by sweep time &nbsp; C. Power to frequency &nbsp; D. Window length to overlap</span></li>
+<li>ENBW (equivalent noise bandwidth) for a Hann window relative to the bin spacing is approximately:
+<span class="opts">A. 0.5 &nbsp; B. 1.0 &nbsp; C. 1.5 &nbsp; D. 4.0</span></li>
+<li>The DRFM characterization in Case Study 8 measured a processing latency of:
+<span class="opts">A. 12 nanoseconds &nbsp; B. 1.2 microseconds &nbsp; C. 12 microseconds &nbsp; D. 1.2 milliseconds</span></li>
+<li>The classic mobile DF truck workflow is used by:
+<span class="opts">A. Hospitals only &nbsp; B. Spectrum regulators tracking pirate radios and unauthorized transmitters &nbsp; C. Cellular operators only &nbsp; D. Stadiums</span></li>
+<li>The 5G NR FR2 mmWave maximum channel bandwidth is:
+<span class="opts">A. 100 MHz &nbsp; B. 200 MHz &nbsp; C. 400 MHz &nbsp; D. 1 GHz</span></li>
+<li>Spectrum-as-a-Service business models include all the following except:
+<span class="opts">A. Per-site monitoring contracts &nbsp; B. Compliance-as-a-Service &nbsp; C. Surgical procedures &nbsp; D. Counter-UAS-as-a-Service</span></li>
+<li>The IsoLOG 3D DF tracking accuracy paired with SPECTRAN V6 PLUS is approximately:
+<span class="opts">A. 30 degrees &nbsp; B. 10 degrees &nbsp; C. 1 degree &nbsp; D. 0.001 degree</span></li>
+<li>RTSA-based monitoring is best characterized in 2026 as:
+<span class="opts">A. A specialized niche tool &nbsp; B. Becoming infrastructure across multiple sectors &nbsp; C. Replaced by AI alone &nbsp; D. Obsolete</span></li>
+<li>The common thread across all 12 RF employer sectors is:
+<span class="opts">A. They all are ground-based &nbsp; B. RF and spectrum used to be niche but is becoming central to most infrastructure-relevant industries &nbsp; C. They are all defense &nbsp; D. They are all university research</span></li>
+</ol>
+</div>
+
+<h2>Final Assessment Answer Key</h2>
+
+<div class="answer-key">
+1.B  2.B  3.C  4.B  5.B  6.B  7.B  8.B  9.B  10.A<br>
+11.C  12.B  13.B  14.B  15.B  16.C  17.C  18.B  19.B  20.B<br>
+21.B  22.B  23.C  24.A  25.C  26.B  27.B  28.B  29.C  30.B<br>
+31.B  32.B  33.C  34.B  35.B  36.C  37.C  38.C  39.B  40.B
+</div>
+
+<p><strong>Scoring:</strong></p>
+<ul>
+<li>36-40 correct: Mastery (you could teach this).</li>
+<li>30-35 correct: Strong working knowledge.</li>
+<li>24-29 correct: Solid foundation; review weak areas.</li>
+<li>Below 24: Recommended re-read of relevant chapters.</li>
+</ul>
+
+<p>The book ends here in technical content. The remaining four appendices (G through J) provide reference material on education, employers, standards, and tools that turn this from a one-time read into a working desk reference.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-E-quiz-answer-keys.html">&larr; Appendix E. Quiz Answer Keys</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="appendix-G-education-pathways.html">Appendix G. Education Pathways &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

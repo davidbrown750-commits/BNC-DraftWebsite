@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2: Pulse Generator Fundamentals</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-2">Chapter 2</h1>
+<h2 id="pulse-generator-fundamentals">Pulse Generator Fundamentals</h2>
+<blockquote>
+<p><em>"Every pulser does the same three things. It accumulates energy somewhere. It releases that energy through a switch. It shapes the result for a load. The art is in the trade-offs."</em></p>
+</blockquote>
+<hr />
+<h3 id="21-two-ways-to-think-about-a-pulser">2.1 Two ways to think about a pulser</h3>
+<p>Pulse generators come in two main flavors: voltage pulsers and current pulsers. Both deliver voltage and both deliver current. The difference is which one the device controls and which one the load is allowed to do whatever it wants with.</p>
+<p>A voltage pulser maintains a voltage waveform across its output. The current that flows through the load adjusts to whatever the load impedance and the supply can support. If the load is a high impedance (a Pockels cell, a deflection plate, a capacitive bus), the current stays small and the pulser is happy. If the load impedance drops (an arc, a short, a low-resistance plasma), the pulser tries to maintain voltage, the current shoots up, and components have to dissipate the extra power. Bad day for the pulser.</p>
+<p>A current pulser is the inverse. It maintains a current waveform through its output. The voltage across the load adjusts to whatever the load needs to draw that current. If the load is a forward-biased laser diode (forward voltage 2 to 4 volts at the operating current), the pulser delivers a few volts and is happy. If the load opens up or the impedance climbs, the pulser tries to maintain current, the voltage rises to the compliance limit, and the pulser shuts down protectively (or, if the design is unlucky, fails).</p>
+<p>The choice between voltage and current control is the first decision in any pulsed-power application. Get this wrong and nothing else matters: a voltage pulser into a low-impedance plasma is a destructive science experiment, and a current pulser into an open circuit is just a brief light show.</p>
+<h4 id="ohms-law-again-but-for-power">Ohm's law, again, but for power</h4>
+<p>The relationship that drives every design choice is Ohm's law for power:</p>
+<blockquote>
+<p>P = V × I</p>
+</blockquote>
+<p>Both V and I are real, both are simultaneously present at every node in the circuit, and both contribute to the power dissipated in any component that has resistance. The pulser engineer's job is to keep that product manageable everywhere it matters.</p>
+<p>A voltage pulser at 10,000 V driving 1 A into a load (say, a Pockels cell at high duty cycle) means somewhere inside the device, components are dissipating something close to 10 kW unless the design is extraordinarily efficient. That heat has to go somewhere. The current pulser at 450 A with 10 V across its output (load forward voltage 100 V, supply at 110 V) means MOSFETs in the output stage are dissipating 450 × 100 = 45,000 W during the pulse. Also bad.</p>
+<p>The duty cycle is what saves you. A 1 microsecond pulse at 1 kHz repetition has a 0.1% duty cycle, so the average dissipation is one-thousandth of the peak. Run the same pulse at 50% duty cycle and the same components have to handle five hundred times more average power. Most pulser data sheets specify a "safe operating area" graph that maps allowed combinations of pulse width, repetition rate, and amplitude. Read those graphs. They are the difference between a long-lived instrument and an expensive paperweight.</p>
+<hr />
+<h3 id="22-what-lives-inside-a-pulser">2.2 What lives inside a pulser</h3>
+<p>Strip away the front panel and any pulse generator, voltage or current, contains the same three functional blocks:</p>
+<ol>
+<li><strong>An energy store.</strong> Almost always a capacitor bank, sometimes an inductor. The store accumulates energy slowly from a modest power supply and holds it ready for release.</li>
+<li><strong>A switch.</strong> A MOSFET stack, an IGBT, a thyratron, a spark gap, depending on the voltage class and rise time required. The switch transfers energy from the store to the load on command.</li>
+<li><strong>A trigger and timing system.</strong> Logic-level inputs that tell the switch when to fire. In modern pulsers this is usually a microcontroller with optical isolation between the low-voltage logic and the high-voltage output stage.</li>
+</ol>
+<p>A more integrated pulser adds three more elements:</p>
+<ol>
+<li><strong>A high-voltage power supply</strong> to charge the energy store between pulses.</li>
+<li><strong>An internal pulse engine</strong> that generates trigger pulses on command, with adjustable width and repetition rate, so the user does not have to provide an external trigger source.</li>
+<li><strong>Voltage and current monitor outputs</strong> that scale the pulse waveform down to oscilloscope-friendly levels. These are essential for debugging and verification, and they are not optional in any serious instrument.</li>
+</ol>
+<p>Figure 2.1 shows the block diagram common to almost every commercial pulser, with the V1 block diagram preserved for continuity.</p>
+<p><img alt="Block diagram of a high-voltage pulse generator showing a high-voltage DC supply charging an energy store (capacitor bank), feeding a fast switch (MOSFET stack), driving the load through an output network. Trigger logic with optical isolation drives the switch gate. Voltage and current monitor outputs provide oscilloscope-scaled views of the pulse." src="../figures/fig_02-1_pulser_block_diagram.svg" />
+<em>Figure 2.1, The functional anatomy of a generic high-power pulse generator. The store (capacitor bank), switch (MOSFET stack), and trigger logic are the three indispensable blocks. The HV supply, internal pulse engine, and monitor outputs are what make the instrument practical to use.</em></p>
+<p>The V1 product examples in Chapter 9 are all variations on this skeleton. The PVX-4110 and PVX-4150 add overcurrent protection and arc-detection logic. The PCX-7500 adds a PID-controlled current loop. The PCO modules strip everything down to the essentials for embedded use. Same skeleton, different fleshings.</p>
+<hr />
+<h3 id="23-loads-and-what-they-do-to-your-pulse">2.3 Loads and what they do to your pulse</h3>
+<p>The load on the output of a pulser does not care about your nominal specifications. It only cares about Ohm's law and Kirchhoff's voltage law. Three load types cover almost every real situation, and each one stresses the pulser in a different way.</p>
+<h4 id="capacitive-loads">Capacitive loads</h4>
+<p>Most BNC/DEI high-voltage pulsers drive capacitive loads: Pockels cells, deflection plates, microchannel plates, photomultiplier grids. Capacitors do not conduct DC. They conduct only when the voltage across them changes. At the rising edge of a pulse, current flows into the capacitor at a rate determined by the rate of change of voltage:</p>
+<blockquote>
+<p>I = C × dV/dt</p>
+</blockquote>
+<p>Once the capacitor is charged to the pulse voltage, the current drops to zero (apart from leakage). At the falling edge, current flows out at the same rate, in the opposite direction.</p>
+<p>The peak current demand at the edges can be enormous. A 1 nF load charged to 1 kV in 25 ns sees a peak current of:</p>
+<blockquote>
+<p>I = 10^-9 × 1000 / 25×10^-9 = 40 A</p>
+</blockquote>
+<p>That 40 A peak appears for only the duration of the rising edge, but it sets the requirement on the switch's transient current capability and on the cable's current-handling spec. The internal capacitance of the pulser and the capacitance of the cable both add to the load capacitance, so the effective C is always larger than the nominal load alone.</p>
+<p>The total power dissipation when driving a capacitive load with a periodic pulse is:</p>
+<blockquote>
+<p>P = C × V² × F</p>
+</blockquote>
+<p>where C is the total capacitance (load + cable + internal), V is the pulse voltage, and F is the repetition frequency. This is the equation that determines how hot the pulser gets at high duty cycle, and it is where the maximum-frequency specification comes from. The PVX-4140, for example, has a maximum power rating of 100 W. At 3,500 V output, the maximum allowed total capacitance at 5 kHz is:</p>
+<blockquote>
+<p>C_max = P / (V² × F) = 100 / (3500² × 5000) ≈ 1.63 nF</p>
+</blockquote>
+<p>Subtract roughly 200 pF for the internal capacitance and another 126 pF for 6 ft of RG-59 coaxial cable, and the actual load capacitance allowed is about 1.3 nF. Exceed that and the pulser starts running hotter than it can dissipate, the safe-operating-area limits kick in, and the device throttles back or shuts down.</p>
+<h4 id="resistive-loads">Resistive loads</h4>
+<p>Resistive loads are easier to reason about but harder to drive efficiently. The current is set directly by Ohm's law:</p>
+<blockquote>
+<p>I = V / R</p>
+</blockquote>
+<p>For a 50 kΩ resistive load at 1500 V, the current is 30 mA. For the PVX-4150 at maximum continuous current of 50 mA, that is comfortably within spec. For a 10 kΩ load at the same voltage, the current is 150 mA, which is three times the maximum. The pulser will current-limit, the output voltage will sag, and the pulse fidelity will suffer.</p>
+<p>The average power into a resistive load with a pulsed output is:</p>
+<blockquote>
+<p>P_avg = V × I × duty_cycle</p>
+</blockquote>
+<p>For pulsed work this is usually fine. For DC or near-DC operation, the resistive load becomes the dominant power dissipator and the supply has to deliver continuously. Use this rule when planning: if the load resistance times the maximum continuous current exceeds the pulse voltage, you have a problem.</p>
+<p>A practical aside on resistor selection: avoid wire-wound resistors in pulsed circuits. Their inductance is significant at fast edges and causes ringing. Use bulk-film, thick-film, or non-inductive types rated for the peak voltage and the average power.</p>
+<h4 id="inductive-loads">Inductive loads</h4>
+<p>Inductive loads are the most demanding. The voltage required to push current through an inductor is:</p>
+<blockquote>
+<p>V = L × dI/dt + R × I</p>
+</blockquote>
+<p>The first term is the killer. To drive a 10 µH inductor at 100 A with a 100 ns rise time:</p>
+<blockquote>
+<p>V = 10×10^-6 × 100 / 100×10^-9 = 10,000 V</p>
+</blockquote>
+<p>That 10 kV appears across the inductor only during the rise, but the pulser must be able to deliver it. If the compliance voltage is lower, the rise time stretches until the voltage equation balances. A current pulser with 110 V compliance trying to drive 100 A into 10 µH will achieve a rise time of 9.1 µs, regardless of what its switch can do. The compliance voltage is the limit, not the switch.</p>
+<p>This is why true inductive loads are rare in commercial pulsers and why deflection coils, electromagnets, and pulsed-magnetic-field experiments need purpose-built drivers.</p>
+<hr />
+<h3 id="24-the-pulse-measured">2.4 The pulse, measured</h3>
+<p>Once the pulser is firing into a load, six numbers describe what comes out. Get these six right and almost any pulse spec is well-defined. Miss one and you will spend hours debugging a problem that does not exist.</p>
+<p><img alt="Annotated diagram of a single rectangular pulse waveform. The trace shows zero baseline, a rising edge from 10% to 90% of full amplitude (rise time), a flat top labeled with the 50% pulse-width markers, a falling edge from 90% to 10% (fall time), and the period from one rising edge to the next. Overshoot, ringing, and droop are labeled on the appropriate features." src="../figures/fig_02-2_pulse_anatomy.svg" />
+<em>Figure 2.2, Anatomy of a pulse. The six fundamental specifications are amplitude, rise time, fall time, pulse width, period (or repetition rate), and pulse-top fidelity (overshoot, ringing, droop, and flatness).</em></p>
+<p><strong>Amplitude.</strong> Peak voltage or current, measured at the flat-top region away from the edges. Specify the polarity (positive, negative, or bipolar). For bipolar pulses, both rails are independent specs.</p>
+<p><strong>Rise time.</strong> The time for the pulse to climb from 10% to 90% of full amplitude. Some industries use 20%-80%; the laser community sometimes uses 50%-50%. Document which convention is in use because the numbers differ by a factor of roughly 1.7 between conventions. For this book, all rise and fall times are 10%-90% unless explicitly stated otherwise.</p>
+<p><strong>Fall time.</strong> Same idea, in reverse. For a pulser driving a capacitive load with a single high-side switch (such as the PVX-4140), the fall time depends on the load configuration because the discharge path is through the load termination, not back through the switch. For half-bridge designs (such as the PVX-4110 and PVX-4150), rise and fall times are symmetrical because the switch sources and sinks current actively.</p>
+<p><strong>Pulse width.</strong> The time the pulse is "on." Conventionally measured at 50% of full amplitude in the laser industry, at 90% in some other communities. Document which.</p>
+<p><strong>Period (or repetition rate).</strong> Time from one rising edge to the next, or its reciprocal. Maximum repetition rate is bounded by the pulser's average power rating and by recovery time of the switch.</p>
+<p><strong>Pulse-top fidelity.</strong> Three sub-specs: overshoot (how far above the target amplitude the pulse goes immediately after the rising edge), ringing (oscillations on the flat top), and droop (slow downward sag during the flat top). Overshoot and ringing come from inductance in the output network and load, usually fixable by termination or snubber design. Droop comes from the energy store discharging into the load during the pulse, and it is bounded by the stored energy budget.</p>
+<h4 id="stored-energy-and-droop">Stored energy and droop</h4>
+<p>The flat-top of a pulse is never perfectly flat. A capacitor energy store loses voltage as it delivers current to the load:</p>
+<blockquote>
+<p>ΔV = (I × Δt) / C</p>
+</blockquote>
+<p>For a 100 µF storage capacitor delivering 10 A for a 10 µs pulse:</p>
+<blockquote>
+<p>ΔV = (10 × 10×10^-6) / (100×10^-6) = 1.0 V</p>
+</blockquote>
+<p>If the pulse amplitude is 1 kV, that 1 V droop is 0.1%, generally acceptable. If the pulse is 1 ms long instead of 10 µs:</p>
+<blockquote>
+<p>ΔV = (10 × 10^-3) / (100×10^-6) = 100 V, a 10% droop</p>
+</blockquote>
+<p>That 10% droop will be visible as a clearly sloped flat top on an oscilloscope, and most applications will not tolerate it. The remedy is either a larger storage capacitor (more energy, more droop budget) or a regulated output (a feedback loop that compensates by raising the driving voltage as the storage capacitor discharges). The PCX-7500 takes the regulated-output approach with its PID-controlled current loop, achieving flat-top droop of better than 1% across multi-millisecond pulses at 450 A.</p>
+<hr />
+<h3 id="25-rise-time-bandwidth-and-the-speed-limit">2.5 Rise time, bandwidth, and the speed limit</h3>
+<p>The rise time of a pulse is connected to the bandwidth of the system that delivers it by a famous approximation:</p>
+<blockquote>
+<p>t_rise ≈ 0.35 / BW</p>
+</blockquote>
+<p>A pulser with a 25 ns rise time has roughly 14 MHz of bandwidth in its output stage. A pulser with a 1 ns rise time has 350 MHz. A pulser with a 100 ps rise time has 3.5 GHz, which is real microwave engineering territory.</p>
+<p>This relationship is not exact. The 0.35 constant assumes a single-pole Gaussian-like response. Real pulsers have multiple poles, transmission-line effects, and switch-physics quirks that make the relationship looser. But it is close enough that you can read a rise time off a data sheet and immediately know what bandwidth your scope, your probes, and your cables need to have.</p>
+<p>The implication for measurement is direct: if you are measuring a 1 ns rise time, you need a scope with at least 350 MHz of bandwidth, and probably 1 GHz to be safe. If your scope is bandwidth-limited, the rise time you measure will be slower than the actual pulse, by a factor approximately:</p>
+<blockquote>
+<p>t_measured = √(t_pulse² + t_scope²)</p>
+</blockquote>
+<p>A 1 ns pulse measured on a 250 MHz scope (1.4 ns inherent rise time) will appear as:</p>
+<blockquote>
+<p>√(1² + 1.4²) = 1.7 ns</p>
+</blockquote>
+<p>That apparent slowness is the scope, not the pulser. Chapter 7 goes deeper on diagnostics and measurement.</p>
+<hr />
+<h3 id="26-lumped-elements-and-transmission-lines">2.6 Lumped elements and transmission lines</h3>
+<p>There are two regimes in pulsed-power circuit design. The lumped-element regime treats every wire as zero-impedance and every component as a point. The transmission-line regime acknowledges that signals take a finite time to propagate and that mismatched impedances reflect.</p>
+<p>The threshold between regimes is set by the rise time and the physical dimensions:</p>
+<blockquote>
+<p>If t_rise &gt; 6 × (length / propagation_speed), lumped-element analysis works.
+If t_rise &lt; (length / propagation_speed), full transmission-line analysis is required.
+Between those, it gets complicated.</p>
+</blockquote>
+<p>For a typical 1 m coaxial cable with propagation velocity 0.66c (200,000,000 m/s), the cable length divided by propagation speed is 5 ns. A 25 ns rise time pulser into 1 m of cable is comfortably in the lumped regime. A 1 ns rise time pulser into the same cable is in the transmission-line regime, and impedance matching matters.</p>
+<p>Impedance matching means terminating the cable with a resistance equal to its characteristic impedance, so reflections at the load-end are absorbed rather than bouncing back. Common cable impedances are 50 Ω (RG-58, RG-213), 75 Ω (RG-59, video), and 93 Ω (RG-62, special-purpose). The pulser's output impedance and the cable's characteristic impedance should match within reason. Mismatches cause overshoot, ringing, and ghost pulses, and they are the single most common cause of "weird scope traces" in pulsed-power debugging.</p>
+<p>For capacitive loads, impedance matching is impossible (a capacitor is not a resistor). The standard fix is to add a parallel termination resistor at the load: R_term = Z_cable. The resistor dissipates some power but absorbs reflections cleanly. The PVX-4000 series ships with a recommended termination network for exactly this reason.</p>
+<hr />
+<h3 id="27-pulse-forming-networks-a-preview">2.7 Pulse-forming networks: a preview</h3>
+<p>For applications that need pulses longer than a switching time and shorter than what a capacitor-discharge can sustain without significant droop, a different topology earns its keep: the pulse-forming network, or PFN.</p>
+<p>A PFN is a ladder of inductors and capacitors that emulates a charged transmission line. When switched into a matched load, it delivers a square pulse with a duration set by the network's electrical length. The pulse shape is determined by the PFN topology and component values, not by an active control loop. This is both the strength and the limitation: the pulse shape is consistent and rugged, but it is fixed at design time.</p>
+<p>PFNs come in five canonical Guillemin types (Type A through Type E) that differ in how the L's and C's are arranged and what trade-offs they make between pulse flatness, parts count, and ease of charging. Type E (the most common) gives a reasonably flat pulse with modest parts count and is what you find in most modern radar modulators.</p>
+<p>Chapter 6 develops PFNs in full, with circuit diagrams and design equations. For now, just know that PFNs exist as a third architecture alongside the half-bridge MOSFET pulser and the inductive-storage current driver, and that they are the right answer when the pulse is too long to come from a simple capacitor discharge and too short to need an active regulator.</p>
+<hr />
+<h3 id="28-compliance-voltage-again-with-feeling">2.8 Compliance voltage, again, with feeling</h3>
+<p>Compliance voltage is the maximum voltage a current pulser can develop across its output. It is set by the supply voltage, the switch hold-off rating, and the design of the output stage. It is the single specification that determines what loads a current pulser can drive.</p>
+<p>If the load forward voltage at the desired current is below the compliance voltage, the pulser delivers the requested current. The voltage across the load self-adjusts to whatever the load needs. Everyone is happy.</p>
+<p>If the load forward voltage at the desired current is at or above the compliance voltage, the pulser cannot push the requested current through. The current limits to whatever the compliance voltage allows. The output is a current-limited pulse, often visibly clipped on a scope, and the application does not get what it asked for.</p>
+<p>The PCX-7500 ships in several variants with compliance voltages from 5 V to 110 V, plus an "EX" model that accepts an external high-voltage supply for adjustable compliance. Choose the variant that exceeds your load's forward voltage at the operating current with reasonable margin (factor of 1.3 to 1.5 is normal). Choose less and you will be sad on the bench.</p>
+<p>For inductive loads, the compliance voltage requirement is much higher than the steady-state load needs, because of the L × dI/dt term in the load voltage equation. A 5 µH inductor at 50 A with a 1 µs rise time needs:</p>
+<blockquote>
+<p>V = 5×10^-6 × 50 / 1×10^-6 = 250 V</p>
+</blockquote>
+<p>at the rising edge, even if the steady-state forward voltage of the load is only a few volts. If your compliance voltage is 110 V, your rise time will stretch to 2.3 µs regardless of how fast the switch is. Engineering pulsed magnetic-field systems is mostly an exercise in compliance-voltage budgeting.</p>
+<hr />
+<h3 id="29-questions-for-review">2.9 Questions for review</h3>
+<ol>
+<li>
+<p>A voltage pulser drives a 200 pF capacitive load with a 500 V, 1 µs pulse at 10 kHz. Approximately how much average power must the pulser dissipate due to the load alone?
+   a. 5 mW
+   b. 0.5 W
+   c. 5 W
+   d. 50 W</p>
+</li>
+<li>
+<p>A pulse generator has a rise time spec of 10 ns. What scope bandwidth do you need to measure that rise time within 10% of its true value?
+   a. 35 MHz
+   b. 350 MHz
+   c. 1 GHz
+   d. 10 GHz</p>
+</li>
+<li>
+<p>A current pulser with 50 V compliance voltage attempts to drive 20 A into a 5 µH inductor with a 200 ns rise time. What happens?
+   a. The pulse rise time stretches to roughly 2 µs because the compliance voltage is the limit.
+   b. The pulser overheats and shuts down.
+   c. The current overshoots and rings.
+   d. The output is unaffected because 5 µH is a small inductance.</p>
+</li>
+<li>
+<p>Which of the following best describes droop?
+   a. The slow downward sag of pulse amplitude during the flat top, caused by the energy store discharging.
+   b. Overshoot at the rising edge.
+   c. Reflection from a mismatched load.
+   d. EMI pickup on the monitor output.</p>
+</li>
+<li>
+<p>A 1 ns rise time pulser drives a 1 m coaxial cable. Which design regime applies?
+   a. Lumped-element, because 1 m is a short length.
+   b. Transmission-line, because the rise time is shorter than the cable's propagation delay.
+   c. Either, depending on the cable impedance.
+   d. Neither, because rise time and cable length are independent.</p>
+</li>
+<li>
+<p>The maximum power dissipation in a voltage pulser driving a capacitive load is approximately:
+   a. P = V × I
+   b. P = C × V² × F
+   c. P = I² × R
+   d. P = V² / R</p>
+</li>
+<li>
+<p>Which load type is most demanding on compliance voltage at fast rise times?
+   a. Resistive
+   b. Capacitive
+   c. Inductive
+   d. All loads are equally demanding</p>
+</li>
+</ol>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="210-further-reading">2.10 Further reading</h3>
+<ul>
+<li>
+<p><strong>Glasoe, G.N. and Lebacqz, J.V.</strong> <em>Pulse Generators.</em> MIT Radiation Laboratory Series, Volume 5. McGraw-Hill, 1948. Chapter 1 of Glasoe and Lebacqz remains the most rigorous treatment of pulse-shape definitions and modulator anatomy.</p>
+</li>
+<li>
+<p><strong>Bluhm, H.</strong> <em>Pulsed Power Systems.</em> Springer, 2006. Chapters 2 and 3 cover energy-storage budgets and stored-energy droop in detail.</p>
+</li>
+<li>
+<p><strong>Tek Application Note 55W-15839, "Bandwidth and Rise Time."</strong> A clear short treatment of the t_rise = 0.35/BW relationship, with measurement examples on real scopes.</p>
+</li>
+<li>
+<p><strong>Kerns, Q.A. and Kerns, K.W.</strong> "High-Voltage Pulse Generators." In <em>Methods of Experimental Physics</em>, Volume 2A. Useful for the lumped-vs-transmission-line regime treatment, particularly the threshold rules.</p>
+</li>
+<li>
+<p><strong>BNC PVX-4000 Series Application Note</strong> on capacitive load driving and termination network design. Covers the C × V² × F relationship in operational detail.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 2.</em></p>
+<p><em>Chapter 3 (Common Pitfalls and Failure Modes) follows.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01_history.html">&larr; Ch 1: The History of Pulsed Power</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="03_pitfalls.html">Ch 3: Common Pitfalls &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

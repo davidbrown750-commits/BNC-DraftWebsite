@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>09-transmitter-testing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="transmitter-testing">9. Transmitter Testing</h1>
+<p>An RF transmitter is any device that intentionally sources a signal into the radio frequency band of the electromagnetic spectrum. Its job sounds simple. Create a signal with the right power, the right frequency, and the right encoding, then deliver it to a receiver that can read it. Doing that job reliably, and proving you did it, is where the work lives.</p>
+<p>Most transmitters are wireless. AM and FM broadcast stations, Bluetooth radios, Wi-Fi access points, and cellular base stations all push energy into the air and rely on a distant receiver to recover the message. Some transmitters work over wire instead. Cable television (CATV) is the most familiar wired RF system, carrying hundreds of channels of modulated RF down a coaxial line. Wired or wireless, the testing principles are the same, and this chapter walks through them: the common tests that apply to every transmitter, the specific procedures for AM and FM, the hunt for harmonics and spurs, and the modern digital metrics that dominate today's wireless standards.</p>
+<h2 id="common-transmitter-tests">9.1 Common Transmitter Tests</h2>
+<p>Whether a transmitter sends its signal through the air or down a cable, the core requirements do not change. The transmitted signal must carry the proper amplitude in the proper frequency band so the intended receiver can pick it up cleanly without disturbing anyone else. Measuring transmitters is routine throughout the design cycle, and it does not stop at design. Operators monitor fielded transmitters for the life of the system. An AM or FM broadcast station, for example, checks its transmitter continuously to confirm it stays inside its licensed frequency band and power limit, because drifting outside either one can mean interference, a regulatory violation, or both.</p>
+<p>Two measurements form the foundation: output power and transmission frequency. Get those two right and you have answered the first question any transmitter test asks, which is whether the device is producing the signal it is supposed to produce.</p>
+<h3 id="output-power">Output Power</h3>
+<p>Output power is simply a measure of the transmitted signal's strength. It is the most direct check of whether a transmitter is alive and working. The strength of an RF transmission can be degraded by a long list of outside factors, and it helps to picture everything a signal must pass through on its way from a broadcast antenna to your receiver:</p>
+<ul>
+<li>Glass</li>
+<li>Drywall</li>
+<li>Furniture</li>
+<li>Trees</li>
+<li>Humidity</li>
+<li>Stormy weather</li>
+<li>Many other obstacles and conditions</li>
+</ul>
+<p>By measuring output power, you confirm two things at once. The signal is present, and it has enough power to reach the receiver with margin to spare. The cleanest place to take this measurement is directly at the transmitter output, using a cable to route the signal into the instrument. If the power reads correctly there, you can move down the transmission path and take remote measurements at a distance, swapping the cable for antennas to capture the radiated signal the way a real receiver would.</p>
+<figure>
+<img src="../figures/fig-p073-01.png" alt="Direct transmitter output measurement using a cable" /><figcaption><span class="fig-num">Figure 9.1</span> Direct transmitter output measurement using a cable connection between the transmitter and the measurement instrument.</figcaption>
+</figure>
+<figure>
+<img src="../figures/fig-p073-02.png" alt="Remote transmitter output measurement using antennas" /><figcaption><span class="fig-num">Figure 9.2</span> Remote transmitter output measurement using antennas in place of the cable, capturing the radiated signal as a receiver would.</figcaption>
+</figure>
+<p>A power measurement can be made with a dedicated RF power meter or with a spectrum analyzer. Power meters tend to be more accurate because they integrate the total energy in the channel with a calibrated sensor, but they generally take longer to settle than a spectrum analyzer reading. A spectrum analyzer trades a little absolute accuracy for speed and the ability to show you where the power sits across frequency, which is why it is the more common tool when you are also interested in the shape of the signal.</p>
+<blockquote>
+<p><strong>Going Deeper - Average power, peak power, and why the distinction matters</strong></p>
+<p>A continuous-wave carrier has one power value, but real modulated signals do not. A signal with a high peak-to-average power ratio, common in modern digital modulation, can read very differently depending on whether the instrument reports average power, peak power, or something in between. Always know which one your measurement represents and which one the specification calls for, because confusing the two is one of the most common sources of disagreement between a design lab and a production floor.</p>
+</blockquote>
+<h3 id="transmission-band">Transmission Band</h3>
+<p>The transmission frequency is the second foundational measurement. When you test the frequency band, you are measuring exactly which frequency, or set of frequencies, the signal occupies in the spectrum. This confirms two separate things. First, the signal sits at the right frequency for the intended receiver to detect it. Second, the signal stays inside its assigned channel and does not bleed into neighboring bands where it would interfere with other services.</p>
+<p>Signals that leak into adjacent bands cause interference and disrupt the reception of whatever legitimately occupies that band. This is not a minor concern. The entire regulatory framework around spectrum exists to keep transmitters in their lanes, and adjacent-channel behavior is one of the most scrutinized parts of any transmitter certification.</p>
+<blockquote>
+<p><strong>Tech Note</strong></p>
+<p>Signals that bleed into or occupy adjacent bands can cause interference and disturb the reception of other signals operating in that band. Keeping emissions inside the assigned channel is both an engineering requirement and a legal one.</p>
+</blockquote>
+<h2 id="am-transmitter-test">9.2 AM Transmitter Test</h2>
+<p>Amplitude modulation (AM) is one of the original methods for adding information to an RF signal. The amplitude of the carrier waveform changes in proportion to the input message signal. AM is typically used to carry voice, and it was the primary modulation scheme for the earliest radio communications research in the first decades of the twentieth century. It remains in service today across broadcast, aviation, and many other applications, which makes it a useful first case study in transmitter testing.</p>
+<p>In the time domain, a typical AM signal has a recognizable shape. The high-frequency carrier rides inside an envelope that traces the slower message waveform.</p>
+<figure>
+<img src="../figures/fig-p074-01.png" alt="10 MHz carrier with 1 kHz AM modulation on an oscilloscope" /><figcaption><span class="fig-num">Figure 9.3</span> A 10 MHz carrier with 1 kHz amplitude modulation shown on an oscilloscope. The slow envelope follows the modulating signal.</figcaption>
+</figure>
+<p>In this example, the carrier frequency is 10 MHz and the AM modulation rate is 1 kHz. Notice the periodic beats, or nulls, in the time-domain waveform. These are the points where the carrier amplitude drops near zero, and the beat frequency matches the 1 kHz modulation rate exactly. The envelope you see is the message, drawn out by the changing carrier amplitude.</p>
+<p>Zoom in on a single beat and the underlying carrier is still there, oscillating at its full 10 MHz rate inside the slower envelope.</p>
+<figure>
+<img src="../figures/fig-p074-02.png" alt="Zoomed view of the 10 MHz AM signal" /><figcaption><span class="fig-num">Figure 9.4</span> A zoomed view of the same 10 MHz AM signal on the oscilloscope. The 10 MHz carrier remains visible inside the modulation envelope.</figcaption>
+</figure>
+<h3 id="testing-an-am-transmitter">Testing an AM Transmitter</h3>
+<p>You could verify the frequency and amplitude of an AM signal with an oscilloscope, but a spectrum analyzer is the better tool for the job. The analyzer presents a cleaner impedance match at the RF input and delivers a more accurate measurement of transmitter performance, especially for low-power signals and high carrier frequencies where an oscilloscope struggles. The spectrum analyzer also shows the carrier and its sidebands directly, which is exactly the information an AM test needs.</p>
+<p>The procedure below performs a basic AM transmitter test using a spectrum analyzer.</p>
+<p><strong>Required hardware:</strong></p>
+<ul>
+<li>AM transmitter under test</li>
+<li>Spectrum analyzer</li>
+<li>Cables, adapters, or antennas to connect the transmitter to the analyzer</li>
+<li>An external attenuator may be needed to limit the signal power reaching the analyzer input</li>
+</ul>
+<p><strong>Test steps:</strong></p>
+<ol type="1">
+<li>Connect the transmitter to the cable, adapter, or transmission antenna.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Clean the mating surfaces of the adapters and the analyzer input with a lint-free cloth before connecting. This prevents damage to the connectors and improves measurement repeatability.</p>
+</blockquote>
+<ol type="1" start="2">
+<li>Connect the other end of the cable or adapter, or the receiving antenna, to the RF input of the spectrum analyzer.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> If you are using an external attenuator, place it at the RF input of the analyzer so it protects the front end and sets a known reference level.</p>
+</blockquote>
+<ol type="1" start="3">
+<li>Set the center frequency of the analyzer to the carrier frequency of the input signal. In this example we monitor a 900 MHz AM transmission.</li>
+<li>Set the analyzer frequency span to roughly ten times the expected modulation frequency. Here the carrier is modulated at 1 kHz, so we set the span to 10 kHz. A span this narrow keeps the carrier and its close-in sidebands centered and resolvable.</li>
+<li>Set the resolution bandwidth (RBW) to a value smaller than the modulation frequency. In the example below the RBW is set to 100 Hz. If the RBW is close to the modulation frequency, the analyzer cannot resolve the modulation sidebands from the carrier and the measurement loses meaning.</li>
+</ol>
+<figure>
+<img src="../figures/fig-p076-01.png" alt="900 MHz AM signal on a spectrum analyzer with delta markers" /><figcaption><span class="fig-num">Figure 9.5</span> A 900 MHz carrier with 1 kHz AM modulation displayed on a spectrum analyzer. Delta markers measure the offset and amplitude of the sidebands relative to the carrier.</figcaption>
+</figure>
+<p>In this trace, delta markers have been enabled to show the frequency and amplitude differences between the carrier and the modulation sidebands. The center peak sits at the 900 MHz carrier frequency, and the two additional peaks fall exactly 1 kHz away on either side, which is the signature of single-tone AM. The carrier power here reads about -50 dBm. The spacing of the sidebands tells you the modulation rate, and their amplitude relative to the carrier tells you the modulation depth.</p>
+<h3 id="max-hold-and-passfail">Max Hold and Pass/Fail</h3>
+<p>The signal above was modulated by a fixed 1 kHz tone, which produces a clean, stationary pair of sidebands. A real AM transmitter carrying voice or audio does not behave that way. The modulation rate and depth change constantly, so the sidebands move and grow as the program material changes. Several analyzer features exist to capture this kind of moving, real-world signal.</p>
+<p>Max hold is the most useful of them. A max hold trace works like a running histogram of peaks. For every frequency bin, the analyzer keeps only the highest value it has ever measured, and that value stays on screen until an even higher one replaces it. Over many sweeps, this lets the analyzer build up the full modulation envelope of a changing signal rather than showing only one instant.</p>
+<figure>
+<img src="../figures/fig-p077-01.png" alt="900 MHz AM signal with varying modulation, clear-write and max hold traces" /><figcaption><span class="fig-num">Figure 9.6</span> A 900 MHz AM signal with varying modulation on a spectrum analyzer. The yellow trace is a live clear-write trace; the purple trace is a max hold accumulated over many sweeps.</figcaption>
+</figure>
+<p>In this figure, the yellow trace is a clear-write trace showing the live signal, and the purple trace is a max hold built up over successive sweeps. The max hold envelope reveals the full range of frequencies and amplitudes the modulated signal touches, which is exactly what you need to confirm a voice signal stays inside its channel.</p>
+<p>If the spectrum analyzer supports pass/fail masking, you can define a limit mask around the allowed envelope. The analyzer then flags any sweep that violates the mask, giving you an instant, unambiguous verdict on whether the signal meets its specification. This turns a subjective eyeball check into a repeatable, documented test that anyone on the line can run the same way.</p>
+<figure>
+<img src="../figures/fig-p077-02.png" alt="Spectrum analyzer pass/fail mask on an AM max hold trace" /><figcaption><span class="fig-num">Figure 9.7</span> A spectrum analyzer applying a pass/fail limit mask to an AM max hold trace. Any portion of the signal crossing the mask is flagged as a failure.</figcaption>
+</figure>
+<div class="callout">
+<p><strong>BNC in Practice - Masks on the production floor</strong></p>
+<p>Pass/fail masking is where transmitter testing stops being an art and becomes a process. A well-defined mask captures the regulatory and design limits in one reusable template, so the same go/no-go decision applies whether the unit is the first prototype or the ten-thousandth production article. Most modern BNC spectrum analyzers include limit-line and mask functions; verify the specific feature set against the current datasheet for the model you are using.</p>
+</div>
+<h2 id="fm-transmitter-test">9.3 FM Transmitter Test</h2>
+<h3 id="measuring-fm-deviation">Measuring FM Deviation</h3>
+<p>Frequency modulation (FM) is the other classic method for adding information to an RF signal. Instead of varying the carrier's amplitude, FM varies the carrier's frequency in proportion to the message signal. The amplitude stays constant. FM is widely used for voice and high-fidelity audio, and its constant-amplitude nature makes it more robust against the amplitude noise that plagues AM. That same property changes how you test it.</p>
+<p>In the time domain, an FM signal looks like a sine wave whose spacing tightens and loosens as the frequency shifts.</p>
+<figure>
+<img src="../figures/fig-p078-01.png" alt="10 MHz carrier with 1 kHz FM modulation and display persistence" /><figcaption><span class="fig-num">Figure 9.8</span> A 10 MHz carrier with 1 kHz FM modulation captured with display persistence enabled, which reveals the frequency shifting over time.</figcaption>
+</figure>
+<p>Here the carrier is at 10 MHz and the FM modulation is 1 kHz. Frequency modulation is hard to capture on an oscilloscope because of how most scopes trigger. The trigger locks to a voltage level, but the information in FM lives in the changing frequency, not the amplitude. To visualize the frequency variation, lengthen the display persistence so multiple cycles layer on top of one another. The widening of the waveform near the edges of the trace is the frequency changing with time.</p>
+<blockquote>
+<p><strong>Tech Note</strong></p>
+<p>The persistence setting controls how long a waveform stays on the display. A longer persistence time holds each captured waveform on screen longer, so new waveforms layer over old ones and let you compare them directly. For FM, this layering is what makes the otherwise invisible frequency variation visible.</p>
+</blockquote>
+<p>As Figure 9.8 shows, the frequency of the sine wave changes over time, seen in the increased thickness of the waveform near the trace edges. FM signals are difficult to analyze on an oscilloscope, even one with FFT capability, because the frequency is constantly moving. This is exactly the situation a spectrum analyzer was built for, since it presents frequency information directly rather than inferring it from a voltage trace.</p>
+<h3 id="fm-transmitter-test-procedure">FM Transmitter Test</h3>
+<p>The procedure below performs a basic FM transmitter test using a spectrum analyzer. It parallels the AM procedure closely, which is a reminder that once you have the analyzer set up correctly, the same instrument handles both modulation types.</p>
+<p><strong>Required hardware:</strong></p>
+<ul>
+<li>FM transmitter under test</li>
+<li>Spectrum analyzer</li>
+<li>Cables, adapters, or antennas to connect the transmitter to the analyzer</li>
+<li>An external attenuator may be needed to limit the signal power reaching the analyzer input</li>
+</ul>
+<p><strong>Test steps:</strong></p>
+<ol type="1">
+<li>Connect the transmitter to the cable, adapters, or transmission antenna.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Clean the mating surfaces of the adapters and the analyzer input with a lint-free cloth to prevent connector damage and ensure repeatability.</p>
+</blockquote>
+<ol type="1" start="2">
+<li>Connect the other end of the cable or adapter, or the receiving antenna, to the RF input of the spectrum analyzer.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> If you are using an external attenuator, place it at the RF input of the analyzer.</p>
+</blockquote>
+<ol type="1" start="3">
+<li>Set the center frequency of the analyzer to the carrier frequency of the input signal. In this example we monitor a 100 MHz FM transmission.</li>
+<li>Set the analyzer frequency span to roughly ten times the expected modulation frequency. With 1 kHz modulation, set the span to 10 kHz.</li>
+<li>Set the resolution bandwidth (RBW) to a value smaller than the modulation frequency. In the example below the RBW is 100 Hz. An RBW close to the modulation frequency will not have the resolution to reveal the modulation sidebands.</li>
+</ol>
+<figure>
+<img src="../figures/fig-p080-01.png" alt="100 MHz carrier with 1 kHz FM modulation on a spectrum analyzer" /><figcaption><span class="fig-num">Figure 9.9</span> A 100 MHz carrier with 1 kHz FM modulation on a spectrum analyzer. FM produces multiple sideband pairs whose number and amplitude depend on the modulation index.</figcaption>
+</figure>
+<p>One feature of FM stands out immediately on the analyzer. Unlike AM, which produces a single sideband pair for a single tone, FM produces a series of sideband pairs spaced at the modulation frequency. How many sidebands carry significant power, and how the energy distributes among them, depends on the modulation index, which is the ratio of frequency deviation to modulation rate. This sideband structure follows the Bessel function relationship, and it is the reason an FM signal occupies more bandwidth than a comparable AM signal.</p>
+<h3 id="max-hold">Max Hold</h3>
+<p>The signal above was modulated by a fixed 1 kHz tone. A real-world FM transmitter carrying audio or voice produces a nonlinear, time-varying change in frequency, so the deviation moves around as the program material changes. As with the AM test, enabling the max hold trace lets you accumulate sweeps over time and capture the full extent of the deviation. From the accumulated trace you can read the peak frequency deviation directly, which is the headline specification for an FM transmitter.</p>
+<figure>
+<img src="../figures/fig-p080-02.png" alt="100 MHz FM signal with varying modulation, clear-write and max hold traces" /><figcaption><span class="fig-num">Figure 9.10</span> A 100 MHz FM signal with varying modulation. The yellow clear-write trace shows the live signal; the purple max hold trace shows the accumulated frequency excursion.</figcaption>
+</figure>
+<p>In Figure 9.10, the yellow trace is the live clear-write trace and the purple trace is the max hold built up over successive sweeps. The width of the max hold envelope is a direct picture of how much spectrum the modulated signal actually uses.</p>
+<blockquote>
+<p><strong>Tech Note</strong></p>
+<p>FM deviation measurements matter because they show exactly which frequencies the transmission uses. If the deviation grows too large, the signal widens and can interfere with adjacent channels. Continuously monitoring the deviation lets an operator adjust the transmitter to keep the signal inside its assigned band and within its licensed characteristics.</p>
+</blockquote>
+<h2 id="transmitter-harmonics-and-spurs">9.4 Transmitter Harmonics and Spurs</h2>
+<h3 id="minimizing-unwanted-signal-components">Minimizing Unwanted Signal Components</h3>
+<p>An ideal transmitter would deliver exactly the signal you intended and nothing else. No real transmitter does. Every practical transmitter produces some unwanted output alongside the desired signal, the two most common forms being excessive harmonics and spurious emissions. The good news is that both are measurable, and both can usually be reduced once you find them.</p>
+<p>Transmitters almost always include amplifiers to boost signal strength, and amplifiers are a primary source of the problem. Most amplifier designs are not perfectly linear, and any nonlinearity generates harmonics of the input signal and then amplifies them along with the desired output. The higher you push the output power, the more pronounced this effect tends to become.</p>
+<p>A harmonic is a waveform whose frequency is an integer multiple of the intended signal's fundamental frequency. For a 10 MHz fundamental, the second harmonic is 20 MHz, the third is 30 MHz, and so on. This connects back to the superposition of sinusoids discussed earlier in the book, where summing a fundamental and its harmonics builds up the various non-sinusoidal waveform shapes. The reverse is also true: a distorted signal can be decomposed into a fundamental plus its harmonic content.</p>
+<figure>
+<img src="../figures/fig-p082-01.png" alt="10 MHz sine wave with 20 MHz second harmonic" /><figcaption><span class="fig-num">Figure 9.11</span> A 10 MHz fundamental sine wave (yellow) shown alongside its 20 MHz second harmonic (blue).</figcaption>
+</figure>
+<p>Here is a screen capture of a 10 MHz sine wave taken from a high-quality RF source. Even a clean source is not perfectly pure.</p>
+<figure>
+<img src="../figures/fig-p083-01.png" alt="10 MHz sine input on a spectrum analyzer showing harmonics" /><figcaption><span class="fig-num">Figure 9.12</span> A 10 MHz sine wave from an RF source displayed on a spectrum analyzer. The fundamental and lower-amplitude harmonics are both visible.</figcaption>
+</figure>
+<p>Although the source was programmed to output a single 10 MHz tone, the spectrum shows additional components above the fundamental. These are the harmonics, and they appear in the output of even a high-quality source.</p>
+<h3 id="searching-for-harmonics">Searching for Harmonics</h3>
+<p>When hunting for harmonics, widen the frequency span on the analyzer well beyond the fundamental. If your transmitter's fundamental is 100 MHz, set the span to look from 100 MHz out to 500 MHz or more, so you capture the first several harmonics in one view. Harmonics live at predictable, evenly spaced frequencies, so a wide span quickly reveals how many of them carry meaningful power.</p>
+<p>Harmonics are usually much weaker than the fundamental. In the capture above, the power level drops sharply between the fundamental at around -10 dBm and the harmonics down near -64 dBm and -73 dBm. That large drop is good news for signal quality but it makes the harmonics hard to see, especially on an oscilloscope. On a spectrum analyzer, lowering the RBW pushes down the displayed noise floor, and engaging a preamplifier (if the instrument has one) lowers it further, so the weak harmonics rise clear of the noise where you can measure them.</p>
+<blockquote>
+<p><strong>Tech Note</strong></p>
+<p>If you find excessive harmonics, you can often reduce them with output filtering, such as a low-pass or band-pass filter tuned to pass the fundamental and reject the harmonic frequencies, or by moving to a more linear amplifier or transmitter design.</p>
+</blockquote>
+<h3 id="spurious-emissions">Spurious Emissions</h3>
+<p>Spurious emissions, usually shortened to spurs, are the other class of unwanted output. A spur is typically the result of nonlinear components somewhere in the circuit or transmission path. Common culprits include:</p>
+<ul>
+<li>Amplifiers</li>
+<li>Mixers</li>
+<li>Diodes</li>
+</ul>
+<p>Spurs can also be generated by oxide layers on the mating surfaces of cables and adapters, where a thin nonlinear film acts like an accidental diode and creates new frequencies. This is one reason connector cleanliness and proper torque matter so much in precise measurements.</p>
+<p>Searching for spurs resembles searching for harmonics. Configure the analyzer to span a frequency range wide enough to cover where you expect the spurs to land, and lower the noise floor using a narrow RBW and the preamplifier. The key difference is location. Harmonics fall at clean integer multiples of the fundamental, but spurs appear at less predictable frequencies, which makes them harder to anticipate and find.</p>
+<h3 id="mixers">Mixers</h3>
+<p>Many spurs are the products of mixing, whether intentional or not. A good first place to look is anywhere two known signals can combine, because mixing produces new frequencies at the sum and difference of the inputs. Mixers were introduced earlier in the book, and the basic behavior is worth restating here. In the simplest case, a mixer takes two input signals and produces an output that contains the original signals plus their sum and difference frequencies.</p>
+<figure>
+<img src="../figures/fig-p084-01.png" alt="A simple mixer block diagram" /><figcaption><span class="fig-num">Figure 9.13</span> A simple mixer. Two input signals produce an output containing the originals plus their sum and difference frequencies.</figcaption>
+</figure>
+<p>Eliminating spurs entirely is often impractical, but filtering can usually knock them down to acceptable levels. Beyond filtering, mechanical details matter: proper connector torque, clean apertures, and good shielding all reduce the number of paths where unwanted mixing and re-radiation can occur.</p>
+<h2 id="modern-digital-transmitter-metrics">9.5 Modern Digital Transmitter Metrics</h2>
+<p>The AM and FM tests above cover the classic analog cases, and they still matter. But the bulk of today's transmitters carry digitally modulated signals: 4G LTE, 5G NR, Wi-Fi, Bluetooth, and the satellite links that increasingly fill the sky. These signals use schemes such as quadrature amplitude modulation (QAM) and orthogonal frequency-division multiplexing (OFDM), where information is encoded into both the amplitude and phase of many subcarriers at once. Testing them requires metrics that go beyond carrier power and deviation. Two dominate modern transmitter specifications: adjacent channel power ratio (ACPR) and error vector magnitude (EVM).</p>
+<h3 id="why-digital-signals-need-new-metrics">Why Digital Signals Need New Metrics</h3>
+<p>A digitally modulated signal is noise-like in the time domain and occupies a continuous block of spectrum rather than a carrier with discrete sidebands. You cannot judge its quality by looking at a single peak. Two questions matter most. How much energy is leaking out of the assigned channel into the neighbors? And how accurately is the transmitter placing each symbol in the constellation it is supposed to hit? ACPR answers the first. EVM answers the second. Together they capture the two failure modes that matter most for a digital transmitter: interfering with others, and corrupting its own data.</p>
+<h3 id="adjacent-channel-power-ratio-acpr">Adjacent Channel Power Ratio (ACPR)</h3>
+<p>ACPR, also called adjacent channel leakage ratio (ACLR) in 3GPP cellular standards, measures how much of a transmitter's power spills into the adjacent channels relative to the power in the main channel. It is usually expressed in decibels, comparing the integrated power in an adjacent-channel bandwidth to the integrated power in the main channel. A more negative ACPR number is better, because it means less leakage.</p>
+<p>ACPR is fundamentally a measure of transmitter linearity under modulation. When a power amplifier is driven into compression, the nonlinearity that produces harmonics in a single-tone test instead produces spectral regrowth in a digitally modulated test, smearing energy out of the channel and into the neighbors. The shoulders of the spectrum lift, and that lift is what ACPR quantifies. Because spectral regrowth scales with how hard the amplifier is pushed, ACPR is one of the sharpest tools for finding the limit of a power amplifier's usable output.</p>
+<p>To measure ACPR on a spectrum analyzer, you typically use a dedicated ACPR or ACLR measurement mode. You define the main channel bandwidth and the adjacent channel offsets and bandwidths to match the standard under test, and the analyzer integrates the power in each band and reports the ratios automatically. Cellular standards specify these channel definitions precisely. For example, 5G NR and LTE define channel bandwidths and an ACLR limit that base-station and user-equipment transmitters must meet, commonly cited around 45 dBc for base-station transmitters, with exact values depending on the configuration and release. [1] Always work from the current version of the standard for the device class you are testing.</p>
+<h3 id="error-vector-magnitude-evm">Error Vector Magnitude (EVM)</h3>
+<p>EVM measures modulation quality directly. A digital modulation scheme maps data onto specific points in a constellation diagram, where each point is defined by an in-phase (I) and quadrature (Q) value. An ideal transmitter would place every transmitted symbol exactly on its target point. A real transmitter misses, scattering the symbols around their targets. EVM is the distance between where each symbol landed and where it should have landed, averaged across many symbols and normalized, usually expressed as a percentage or in decibels.</p>
+<p>Low EVM means the constellation points are tight and well-placed, so the receiver has a wide margin to decide which symbol was sent. High EVM means the points are smeared together, the decision margin shrinks, and the bit error rate climbs. EVM rolls up nearly every transmitter impairment into one number: phase noise, amplifier nonlinearity, I/Q imbalance, carrier leakage, frequency error, and noise all push symbols away from their ideal locations and all show up in EVM.</p>
+<p>The higher the order of the modulation, the tighter the EVM requirement. A simple QPSK constellation has four widely spaced points and tolerates relatively high EVM. A dense 256-QAM constellation packs 256 points into the same space, so the same absolute error is far more likely to push a symbol across a decision boundary. This is why standards tie maximum allowed EVM to the modulation order, with high-order schemes such as 256-QAM in 5G NR and Wi-Fi requiring EVM on the order of a few percent or better. [2] Measuring EVM requires a vector signal analyzer or a spectrum analyzer with vector signal analysis software that can demodulate the signal, recover the constellation, and compute the error against the ideal reference.</p>
+<blockquote>
+<p><strong>Going Deeper - ACPR and EVM are two views of the same amplifier</strong></p>
+<p>Both metrics are driven heavily by power amplifier linearity, and they trade against each other. Push an amplifier harder for more output power and efficiency, and both ACPR and EVM degrade together. Back the amplifier off for cleaner signals, and you sacrifice power and efficiency. Modern transmitters use digital predistortion (DPD) to linearize the amplifier electronically, which lets designers recover much of that lost power while keeping ACPR and EVM inside spec. A large part of modern transmitter testing is verifying that the DPD is actually doing its job across temperature, frequency, and power.</p>
+</blockquote>
+<div class="callout">
+<p><strong>BNC in Practice - Choosing an analyzer for digital transmitter test</strong></p>
+<p>Measuring ACPR and EVM requires more than a basic swept spectrum analyzer. You need adequate analysis bandwidth to capture the full modulated channel, low residual EVM so the instrument is not the limiting factor, and demodulation software for the standard you are testing. When selecting an instrument for 5G, Wi-Fi, or wideband digital work, confirm the analysis bandwidth and supported standards against the current BNC datasheet for the model under consideration rather than assuming a given capability.</p>
+</div>
+<h2 id="chapter-9-quiz">Chapter 9 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-09-transmitter-testing.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>What two foundational measurements apply to essentially every transmitter, and what does each one confirm?</li>
+<li>When testing an AM transmitter on a spectrum analyzer, why should the resolution bandwidth (RBW) be set smaller than the modulation frequency?</li>
+<li>What is the purpose of a max hold trace when measuring a voice-modulated AM or FM transmitter?</li>
+<li>How does a harmonic differ from a spurious emission, and why are spurs generally harder to locate?</li>
+<li>What does ACPR measure, what does EVM measure, and why do both depend heavily on power amplifier linearity?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Output power and transmission frequency. Output power confirms the signal is present and strong enough to reach the receiver. Transmission frequency confirms the signal sits in its assigned band and is not leaking into adjacent channels.</li>
+<li>If the RBW is close to or larger than the modulation frequency, the analyzer cannot resolve the modulation sidebands from the carrier, so the modulation becomes invisible. An RBW smaller than the modulation frequency provides the resolution needed to see the sidebands.</li>
+<li>A real voice-modulated signal changes constantly, so a single sweep captures only one instant. Max hold keeps the highest value in each frequency bin across many sweeps, building up the full modulation envelope so you can confirm the signal stays within its channel.</li>
+<li>A harmonic falls at an integer multiple of the fundamental frequency, so its location is predictable. A spur results from nonlinear mixing and can appear at less predictable frequencies, which makes spurs harder to anticipate and find than evenly spaced harmonics.</li>
+<li>ACPR measures how much transmitter power leaks into the adjacent channels relative to the main channel. EVM measures how accurately the transmitter places each symbol in its constellation. Both depend on amplifier linearity because driving an amplifier into compression causes spectral regrowth (raising ACPR) and pushes symbols off their ideal points (raising EVM).</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] 3GPP TS 38.104 (5G NR base station radio transmission and reception) and TS 36.104 (LTE), adjacent channel leakage ratio (ACLR) requirements and channel definitions. Verify current release and exact limit values before publication.</p>
+<p>[2] 3GPP TS 38.101 (5G NR user equipment) and IEEE 802.11 (Wi-Fi), maximum error vector magnitude (EVM) requirements by modulation order. Verify current values before publication.</p>
+<p>[3] Keysight and Rohde &amp; Schwarz application notes on ACPR/ACLR and EVM measurement techniques for digitally modulated signals. Verify citations and current editions before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="08-tracking-generators-filters-cables.html">&larr; 8. Tracking Generators</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="10-receiver-testing.html">10. Receiver Testing &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

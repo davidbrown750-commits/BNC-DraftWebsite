@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 6 Quiz &mdash; Vector Network Analysis</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 6 &middot; Quiz</p>
+      <h1>Vector Network Analysis</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="06-vector-network-analysis.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="07-noise-figure.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "06",
+    title: "Chapter 6 Quiz: Vector Network Analysis",
+    questions: [
+      {
+        q: "What does a vector network analyzer measure that a scalar network analyzer does not?",
+        options: [
+          "Only the magnitude of the response, but faster",
+          "Both magnitude and phase, where phase carries the timing and direction of reflections and enables group delay, Smith chart plotting, and matching design",
+          "Only DC resistance of the device",
+          "Only the temperature of the device under test"
+        ],
+        answer: 1,
+        explain: "A VNA adds phase to magnitude; phase enables group delay, Smith chart work, and impedance matching."
+      },
+      {
+        q: "For an amplifier, what everyday quantities do S21 and S11 represent?",
+        options: [
+          "S21 is the gain (forward transmission); S11 is the input return loss (input reflection)",
+          "S21 is the input return loss; S11 is the gain",
+          "S21 is the noise figure; S11 is the output power",
+          "S21 is the DC bias; S11 is the supply voltage"
+        ],
+        answer: 0,
+        explain: "S21 (forward transmission) is the amplifier's gain; S11 (input reflection) in dB is the input return loss."
+      },
+      {
+        q: "What is a reference plane, and what role does calibration play?",
+        options: [
+          "It is the analyzer's front panel; calibration sets the screen brightness",
+          "It is the electrical location (usually the device connector) where the measurement is defined valid; calibration measures and subtracts the error terms of everything between the receivers and that plane",
+          "It is the floor of the lab; calibration levels the bench",
+          "It is the power supply rail; calibration sets the voltage"
+        ],
+        answer: 1,
+        explain: "The reference plane is where the measurement is valid; calibration uses known standards to remove everything between the receivers and that plane."
+      },
+      {
+        q: "Which statement correctly contrasts SOLT and TRL calibration?",
+        options: [
+          "SOLT uses Thru, Reflect, and Line standards; TRL uses Short, Open, Load, Thru",
+          "SOLT uses Short, Open, Load, and Thru and is fast in coax; TRL uses a Thru, a Reflect, and Lines whose accuracy comes from physical dimensions, preferred for waveguide, on-wafer, or fixtured work",
+          "SOLT and TRL are identical methods with different names",
+          "TRL requires precisely modeled opens and loads, which SOLT avoids"
+        ],
+        answer: 1,
+        explain: "SOLT (Short-Open-Load-Thru) is fast in coax; TRL relies on physical line dimensions, better for waveguide/on-wafer/fixtured measurements."
+      },
+      {
+        q: "On a Smith chart, where is a perfect 50-ohm match, where is a short circuit, and what does the upper half represent?",
+        options: [
+          "Match at far right, short at center, upper half is capacitive",
+          "Match at center, short at the far-left point, upper half represents inductive (positive reactance) loads",
+          "Match at far left, short at far right, upper half is resistive",
+          "Match at the top, short at the bottom, upper half is purely real"
+        ],
+        answer: 1,
+        explain: "A 50-ohm match is the center, a short is the far-left point, and the upper half is inductive (positive reactance)."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

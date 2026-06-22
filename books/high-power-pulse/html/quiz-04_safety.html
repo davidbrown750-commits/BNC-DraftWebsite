@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 4 Quiz: Safety</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 4 Quiz: Safety</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "hppg",
+  chapterKey: "04",
+  title: "Chapter 4 Quiz",
+  questions: [
+    {
+      q: "The energy stored in a 100 µF capacitor charged to 2 kV is approximately:",
+      options: ["2 J", "20 J", "200 J", "2000 J"],
+      answer: 2,
+      explain: "Energy is ½ C V². Half of 100 µF times (2 kV)² is about 200 J, firmly in the lethal range."
+    },
+    {
+      q: "Which of the following is the safest way to make a measurement on a 10 kV floating load?",
+      options: [
+        "Lift the scope's safety ground.",
+        "Use a high-voltage differential probe rated for the load voltage.",
+        "Use a regular passive probe with a long ground lead.",
+        "Connect the scope chassis to the load chassis."
+      ],
+      answer: 1,
+      explain: "A high-voltage differential probe rated for the load keeps the scope grounded while measuring across the floating nodes safely."
+    },
+    {
+      q: "The threshold capacitor energy below which a discharge is generally non-lethal is approximately:",
+      options: ["0.1 J", "1 J", "10 J", "100 J"],
+      answer: 2,
+      explain: "Around 10 J is the widely cited threshold below which a stored-energy discharge is generally considered non-lethal."
+    },
+    {
+      q: "When discharging a high-voltage capacitor bank with a hot stick, the correct order is:",
+      options: [
+        "Touch the high-voltage node first, then connect to ground.",
+        "Touch ground first, then the high-voltage node.",
+        "Order does not matter as long as you discharge.",
+        "Always use a low-resistance shorting strap with no series resistance."
+      ],
+      answer: 1,
+      explain: "Connect the stick to ground first so the grounded reference is established before you ever touch the energized node."
+    },
+    {
+      q: "The standard most BNC-DEI products are certified to is:",
+      options: ["NFPA 70E", "IEC 60204-1", "IEC 61010-1", "UL 1492"],
+      answer: 2,
+      explain: "IEC 61010-1 is the safety standard for electrical test and measurement equipment that most BNC-DEI products are certified to."
+    },
+    {
+      q: "X-ray emission becomes a meaningful hazard at pulser voltages above approximately:",
+      options: ["1 kV", "10 kV", "30 kV", "100 kV"],
+      answer: 2,
+      explain: "Above roughly 30 kV, accelerated electrons striking a target can produce X-rays at levels worth controlling."
+    },
+    {
+      q: "The \"dielectric memory\" effect refers to:",
+      options: [
+        "Failure of capacitor markings to remain readable.",
+        "Capacitors recovering some voltage after a discharge, due to absorbed charge in the dielectric.",
+        "The capacitor's tendency to remember its operating voltage.",
+        "Loss of capacitance after repeated charge cycles."
+      ],
+      answer: 1,
+      explain: "Charge absorbed in the dielectric can redistribute after a discharge, so a shorted capacitor can recover a dangerous voltage."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04_safety.html">&larr; Back to Chapter 4</a>
+    <a class="mid" href="../index.html">Contents</a>
+    <a class="next" href="quiz-05_switches.html">Chapter 5 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

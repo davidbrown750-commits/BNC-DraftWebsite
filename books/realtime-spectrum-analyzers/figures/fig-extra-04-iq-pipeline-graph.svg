@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 580" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="arx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2C3E50"/>
+    </marker>
+  </defs>
+
+  <text x="600" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">RTSA Suite PRO Visual Graph: 5G NR EVM Measurement Pipeline</text>
+  <text x="600" y="48" text-anchor="middle" font-size="12" fill="#486581">Drag-and-drop blocks, edit live, run on capture or recorded SigMF file. Same pipeline scales from BLE to 4096-QAM.</text>
+
+  <!-- Block 1: Source -->
+  <g transform="translate(50,100)">
+    <rect x="0" y="0" width="160" height="70" fill="#1b5e20" rx="6" stroke="#7fb77e" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">SPECTRAN Source</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#bcccdc">SPECTRAN V6 PLUS 2000XA-6</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#bcccdc">245 MHz IQ stream</text>
+  </g>
+  <line x1="210" y1="135" x2="240" y2="135" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <!-- Block 2: Frequency translator -->
+  <g transform="translate(245,100)">
+    <rect x="0" y="0" width="160" height="70" fill="#0078B6" rx="6" stroke="#003D6B" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Frequency Shift</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#bcccdc">3.5 GHz center →</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#bcccdc">DC baseband</text>
+  </g>
+  <line x1="405" y1="135" x2="435" y2="135" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <!-- Block 3: Decimator -->
+  <g transform="translate(440,100)">
+    <rect x="0" y="0" width="160" height="70" fill="#0078B6" rx="6" stroke="#003D6B" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Decimator</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#bcccdc">245 MHz → 100 MHz</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#bcccdc">Polyphase FIR</text>
+  </g>
+  <line x1="600" y1="135" x2="630" y2="135" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <!-- Block 4: 5G channelizer -->
+  <g transform="translate(635,100)">
+    <rect x="0" y="0" width="160" height="70" fill="#003D6B" rx="6" stroke="#2C3E50" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">5G NR OFDM</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#fff">Demux 30 kHz</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#fff">subcarriers</text>
+  </g>
+  <line x1="795" y1="135" x2="825" y2="135" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <!-- Block 5: Symbol clock -->
+  <g transform="translate(830,100)">
+    <rect x="0" y="0" width="160" height="70" fill="#003D6B" rx="6" stroke="#2C3E50" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Sym Clock</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#fff">Mueller-Muller</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#fff">Pilot-aided</text>
+  </g>
+  <line x1="990" y1="135" x2="1020" y2="135" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <!-- Block 6: Constellation -->
+  <g transform="translate(1025,100)">
+    <rect x="0" y="0" width="135" height="70" fill="#c0392b" rx="6" stroke="#9b1b30" stroke-width="2"/>
+    <text x="67" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">EVM + Const.</text>
+    <text x="67" y="45" text-anchor="middle" font-size="10" fill="#fff">256-QAM check</text>
+    <text x="67" y="60" text-anchor="middle" font-size="10" fill="#fff">vs 3GPP spec</text>
+  </g>
+
+  <!-- Branch to recording -->
+  <line x1="600" y1="170" x2="600" y2="240" stroke="#2C3E50" stroke-width="2"/>
+  <line x1="600" y1="240" x2="900" y2="240" stroke="#2C3E50" stroke-width="2"/>
+  <line x1="900" y1="240" x2="900" y2="270" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <g transform="translate(820,275)">
+    <rect x="0" y="0" width="160" height="70" fill="#486581" rx="6" stroke="#2C3E50" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">SigMF Writer</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#bcccdc">24/7 IQ archive</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#bcccdc">to NVMe RAID</text>
+  </g>
+
+  <!-- Branch to FMT -->
+  <line x1="325" y1="170" x2="325" y2="240" stroke="#2C3E50" stroke-width="2"/>
+  <line x1="325" y1="240" x2="180" y2="240" stroke="#2C3E50" stroke-width="2"/>
+  <line x1="180" y1="240" x2="180" y2="270" stroke="#2C3E50" stroke-width="2" marker-end="url(#arx)"/>
+
+  <g transform="translate(100,275)">
+    <rect x="0" y="0" width="160" height="70" fill="#0078B6" rx="6" stroke="#003D6B" stroke-width="2"/>
+    <text x="80" y="25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">FMT Trigger</text>
+    <text x="80" y="45" text-anchor="middle" font-size="10" fill="#fff">Mask: -10 dBm</text>
+    <text x="80" y="60" text-anchor="middle" font-size="10" fill="#fff">Alert on violation</text>
+  </g>
+
+  <!-- Block annotations / display panel -->
+  <rect x="50" y="370" width="1110" height="180" fill="#f0f4f8" stroke="#bcccdc" rx="6"/>
+  <text x="600" y="395" text-anchor="middle" font-size="14" font-weight="700" fill="#003D6B">Live outputs from this pipeline</text>
+
+  <g transform="translate(80,415)">
+    <rect x="0" y="0" width="200" height="120" fill="#fff" stroke="#1b5e20" stroke-width="2" rx="4"/>
+    <text x="100" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#1b5e20">Constellation</text>
+    <circle cx="50" cy="50" r="2" fill="#1b5e20"/>
+    <circle cx="100" cy="50" r="2" fill="#1b5e20"/>
+    <circle cx="150" cy="50" r="2" fill="#1b5e20"/>
+    <circle cx="50" cy="80" r="2" fill="#1b5e20"/>
+    <circle cx="100" cy="80" r="2" fill="#1b5e20"/>
+    <circle cx="150" cy="80" r="2" fill="#1b5e20"/>
+    <circle cx="50" cy="100" r="2" fill="#1b5e20"/>
+    <circle cx="100" cy="100" r="2" fill="#1b5e20"/>
+    <circle cx="150" cy="100" r="2" fill="#1b5e20"/>
+    <text x="100" y="115" text-anchor="middle" font-size="9" fill="#486581">256-QAM grid</text>
+  </g>
+
+  <g transform="translate(310,415)">
+    <rect x="0" y="0" width="200" height="120" fill="#fff" stroke="#0078B6" stroke-width="2" rx="4"/>
+    <text x="100" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#0078B6">EVM (running)</text>
+    <text x="100" y="60" text-anchor="middle" font-size="28" font-weight="700" fill="#003D6B">2.4%</text>
+    <text x="100" y="85" text-anchor="middle" font-size="11" fill="#486581">Spec: &lt; 3.5%</text>
+    <text x="100" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#1b5e20">PASS</text>
+  </g>
+
+  <g transform="translate(540,415)">
+    <rect x="0" y="0" width="200" height="120" fill="#fff" stroke="#003D6B" stroke-width="2" rx="4"/>
+    <text x="100" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#003D6B">Per-subcarrier EVM</text>
+    <line x1="20" y1="80" x2="180" y2="80" stroke="#bcccdc"/>
+    <line x1="100" y1="40" x2="100" y2="100" stroke="#bcccdc"/>
+    <path d="M 20,75 Q 60,72 100,70 Q 140,73 180,76" fill="none" stroke="#003D6B" stroke-width="2"/>
+    <text x="100" y="115" text-anchor="middle" font-size="9" fill="#486581">flat across band</text>
+  </g>
+
+  <g transform="translate(770,415)">
+    <rect x="0" y="0" width="200" height="120" fill="#fff" stroke="#c0392b" stroke-width="2" rx="4"/>
+    <text x="100" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#c0392b">Compliance verdict</text>
+    <text x="100" y="55" text-anchor="middle" font-size="20" font-weight="700" fill="#1b5e20">3GPP TS 38.104</text>
+    <text x="100" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#1b5e20">PASSED</text>
+    <text x="100" y="105" text-anchor="middle" font-size="9" fill="#486581">Tx within tolerance</text>
+  </g>
+
+  <g transform="translate(1000,415)">
+    <rect x="0" y="0" width="160" height="120" fill="#fff" stroke="#486581" stroke-width="2" rx="4"/>
+    <text x="80" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#486581">Recording</text>
+    <circle cx="30" cy="50" r="6" fill="#c0392b"/>
+    <text x="80" y="55" text-anchor="middle" font-size="11" fill="#2C3E50">REC ACTIVE</text>
+    <text x="80" y="80" text-anchor="middle" font-size="11" fill="#486581">12.4 GB written</text>
+    <text x="80" y="100" text-anchor="middle" font-size="11" fill="#486581">3 min 14 sec</text>
+  </g>
+</svg>

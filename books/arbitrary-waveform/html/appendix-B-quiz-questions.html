@@ -1,0 +1,704 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appendix B: Quiz Questions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="appendix-b-quiz-questions">Appendix B: Chapter Quiz Questions</h2>
+
+<p>This appendix gathers every chapter quiz into one place, so you can review the full set without jumping between chapters. Each chapter contributes five questions, drawn from the interactive end-of-chapter quizzes. Read through them as a self-test, then check yourself against Appendix C, which gives the correct option and a short explanation for every question.</p>
+
+<h3>Chapter 1: Signal Generation Basics</h3>
+<ol>
+  <li>A waveform is best described as a record of what?
+    <ol type="a">
+      <li>How current divides across a circuit</li>
+      <li>How voltage changes over time</li>
+      <li>How power is distributed across frequency</li>
+      <li>How impedance varies with temperature</li>
+    </ol>
+  </li>
+  <li>The period of a periodic waveform is equal to which of the following?
+    <ol type="a">
+      <li>The amplitude times the frequency</li>
+      <li>The peak-to-peak voltage divided by two</li>
+      <li>One divided by the frequency</li>
+      <li>The phase expressed in radians</li>
+    </ol>
+  </li>
+  <li>What fundamentally separates an arbitrary waveform generator from a function generator?
+    <ol type="a">
+      <li>The AWG can reach higher voltages</li>
+      <li>The AWG plays voltage samples from memory instead of using fixed shape circuits</li>
+      <li>The function generator cannot produce a sine wave</li>
+      <li>The AWG has no digital-to-analog converter</li>
+    </ol>
+  </li>
+  <li>Which task requires an arbitrary waveform generator rather than a basic function generator?
+    <ol type="a">
+      <li>Producing a clean 1 kHz sine tone</li>
+      <li>Outputting a fixed-frequency square clock</li>
+      <li>Replaying a real-world signal captured on an oscilloscope</li>
+      <li>Generating a simple linear ramp</li>
+    </ol>
+  </li>
+  <li>Direct digital synthesis (DDS), which arrived in the 1970s and 1980s, generates a signal by doing what?
+    <ol type="a">
+      <li>Tuning an analog oscillator with a variable resistor</li>
+      <li>Stepping through a stored table of sine values with a digital accumulator and a DAC</li>
+      <li>Amplifying broadband noise through a narrow filter</li>
+      <li>Mixing two crystal oscillators to produce a beat frequency</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 2: How an AWG Works</h3>
+<ol>
+  <li>An AWG stores a 2,000-sample waveform and clocks it out at 200 MSa/s, looping continuously. What is the output frequency of the repeating waveform?
+    <ol type="a">
+      <li>10 kHz</li>
+      <li>100 kHz</li>
+      <li>400 kHz</li>
+      <li>200 MHz</li>
+    </ol>
+  </li>
+  <li>What does the reconstruction (anti-imaging) filter remove from the DAC output?
+    <ol type="a">
+      <li>DC offset added by the output amplifier</li>
+      <li>Quantization noise from the finite bit depth</li>
+      <li>The high-frequency spectral images created by sampling, leaving the smooth waveform</li>
+      <li>Glitch energy generated inside the DAC core</li>
+    </ol>
+  </li>
+  <li>Which statement best distinguishes direct digital synthesis (DDS) from true arbitrary playback?
+    <ol type="a">
+      <li>DDS uses a phase accumulator and lookup table for fine-resolution tones; true arb reads sequential memory point by point</li>
+      <li>DDS requires deeper memory than true arbitrary playback</li>
+      <li>True arb can only produce sine waves, while DDS produces any shape</li>
+      <li>DDS works only above 1 GHz, true arb only below</li>
+    </ol>
+  </li>
+  <li>Why is DAC quality usually the dominant factor in an AWG's output fidelity?
+    <ol type="a">
+      <li>The DAC sets the maximum memory depth of the instrument</li>
+      <li>The DAC is the digital-to-analog border, so its resolution, update rate, and glitch energy set the noise floor and spurious performance</li>
+      <li>The DAC determines the trigger latency</li>
+      <li>The DAC controls the 50-ohm output impedance</li>
+    </ol>
+  </li>
+  <li>A bench instrument offers standard sine, square, and ramp shapes plus 256K points of arbitrary memory at a moderate sample rate. Which family does it belong to?
+    <ol type="a">
+      <li>A pure function generator with no arbitrary capability</li>
+      <li>An arbitrary function generator (AWFG)</li>
+      <li>A true high-speed AWG with gigasample memory</li>
+      <li>A digital pattern generator</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 3: Key Specifications</h3>
+<ol>
+  <li>An AWG runs at a 2 GSa/s update rate. Ignoring practical filter roll-off, what is the highest frequency it can in principle represent?
+    <ol type="a">
+      <li>2 GHz, equal to the sample rate</li>
+      <li>1 GHz, half the sample rate (the Nyquist limit)</li>
+      <li>4 GHz, twice the sample rate</li>
+      <li>500 MHz, one quarter of the sample rate</li>
+    </ol>
+  </li>
+  <li>Using the ideal converter relation SNR = 6.02N + 1.76 dB, roughly how much dynamic range does each added bit of DAC resolution buy?
+    <ol type="a">
+      <li>About 1.76 dB per bit</li>
+      <li>About 3 dB per bit</li>
+      <li>About 6 dB per bit</li>
+      <li>About 20 dB per bit</li>
+    </ol>
+  </li>
+  <li>A generator stores 1,000,000 points and plays them at 20 GSa/s. How long is the unique playback before the waveform must repeat or refill?
+    <ol type="a">
+      <li>50 microseconds</li>
+      <li>20 microseconds</li>
+      <li>1 millisecond</li>
+      <li>500 nanoseconds</li>
+    </ol>
+  </li>
+  <li>An AWG output stage has roughly 1 GHz of analog bandwidth. Using the rule of thumb, what is its approximate rise time?
+    <ol type="a">
+      <li>35 ps</li>
+      <li>350 ps</li>
+      <li>3.5 ns</li>
+      <li>35 ns</li>
+    </ol>
+  </li>
+  <li>What does SFDR (spurious-free dynamic range) specifically measure?
+    <ol type="a">
+      <li>The total integrated noise power across the whole band</li>
+      <li>The amplitude gap, in dBc, between the fundamental and the single largest spur, harmonic or not</li>
+      <li>The number of effective bits the DAC delivers at high frequency</li>
+      <li>The short-term frequency instability of the sample clock</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 4: Sampling Theory and Signal Fidelity</h3>
+<ol>
+  <li>An AWG updates its DAC at a sample rate Fs. According to the Nyquist-Shannon sampling theorem, the highest frequency component it can represent must be:
+    <ol type="a">
+      <li>Strictly less than Fs/2, the Nyquist frequency</li>
+      <li>Exactly equal to Fs</li>
+      <li>Strictly less than Fs, the full sample rate</li>
+      <li>Equal to twice Fs</li>
+    </ol>
+  </li>
+  <li>A 600 MHz frequency component is generated on a system sampling at 1000 MS/s. Where does it actually appear in the first Nyquist zone?
+    <ol type="a">
+      <li>It stays at 600 MHz with no penalty</li>
+      <li>It aliases to 400 MHz (Fs minus the tone)</li>
+      <li>It is fully removed by the reconstruction filter</li>
+      <li>It appears at 1600 MHz only</li>
+    </ol>
+  </li>
+  <li>Because a DAC holds each sample value until the next clock edge (a zero-order hold), the output amplitude at the Nyquist frequency is attenuated by approximately:
+    <ol type="a">
+      <li>0 dB, the hold has no effect</li>
+      <li>1.76 dB</li>
+      <li>3.9 dB relative to DC</li>
+      <li>6 dB per bit</li>
+    </ol>
+  </li>
+  <li>What is the primary benefit of oversampling or digital interpolation in an AWG?
+    <ol type="a">
+      <li>It increases the DAC's bit depth automatically</li>
+      <li>It pushes the spectral images higher in frequency so a gentler reconstruction filter can be used</li>
+      <li>It eliminates the need for any output filter</li>
+      <li>It removes quantization noise entirely</li>
+    </ol>
+  </li>
+  <li>Why is dither added to a signal before quantization?
+    <ol type="a">
+      <li>To boost high-frequency amplitude lost to the zero-order hold</li>
+      <li>To increase the number of DAC output levels</li>
+      <li>To randomize quantization error so periodic spurs spread into a smooth noise floor</li>
+      <li>To raise the sample rate of the DAC</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 5: Creating and Sequencing Waveforms</h3>
+<ol>
+  <li>When you import a scope capture into an AWG and play it back, why does setting the sample rate correctly matter?
+    <ol type="a">
+      <li>A data file has no inherent time axis, so the AWG plays the samples at its own clock; a mismatch shifts every frequency in the signal.</li>
+      <li>Imported files always replay at exactly the capture rate regardless of the AWG clock.</li>
+      <li>Sample rate only affects amplitude, not timing.</li>
+      <li>The AWG automatically detects the capture rate from the file contents.</li>
+    </ol>
+  </li>
+  <li>What is the main advantage of sequencing segments over storing one giant waveform?
+    <ol type="a">
+      <li>It increases the DAC's vertical resolution.</li>
+      <li>A repeated segment is stored once and looped, so memory is reused and the scenario can react to triggers and events.</li>
+      <li>It removes the need to set a sample rate.</li>
+      <li>It guarantees seamless loop points automatically.</li>
+    </ol>
+  </li>
+  <li>An instrument has a waveform granularity of 16 samples. Which buffer length is legal?
+    <ol type="a">
+      <li>1000 samples</li>
+      <li>1004 samples</li>
+      <li>1008 samples</li>
+      <li>1010 samples</li>
+    </ol>
+  </li>
+  <li>Why does a looped waveform with a fractional number of cycles in the buffer produce spurs?
+    <ol type="a">
+      <li>Fractional cycles raise the average power of the signal.</li>
+      <li>The end phase does not match the start phase, so the wrap forces a step discontinuity that is wideband and repeats every loop.</li>
+      <li>Fractional cycles cause the DAC to clip.</li>
+      <li>The instrument refuses to loop and outputs DC instead.</li>
+    </ol>
+  </li>
+  <li>A captured transient cannot be made to hold an integer number of cycles. What is the practical fix to reduce the loop glitch?
+    <ol type="a">
+      <li>Increase the amplitude until the step disappears.</li>
+      <li>Lower the sample rate until the file fits.</li>
+      <li>Apply a window that tapers the start and end toward a common value so the junction no longer takes a hard step.</li>
+      <li>Store the waveform twice back to back.</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 6: Modulation and Signal Scenarios</h3>
+<ol>
+  <li>In amplitude modulation, what happens when the modulation index m exceeds 1.0?
+    <ol type="a">
+      <li>The carrier frequency doubles</li>
+      <li>Overmodulation occurs and the envelope clips through zero, distorting the recovered message</li>
+      <li>The signal becomes a pure FM waveform</li>
+      <li>Nothing changes; the index has no upper limit</li>
+    </ol>
+  </li>
+  <li>Which three parameters fully define a linear frequency modulated (LFM) chirp?
+    <ol type="a">
+      <li>Amplitude, phase, and duty cycle</li>
+      <li>Modulation index, deviation, and carrier power</li>
+      <li>Start frequency, stop frequency, and sweep duration</li>
+      <li>Pulse width, rise time, and PRF</li>
+    </ol>
+  </li>
+  <li>When using two synchronized AWG channels for IQ vector generation, what does the external IQ modulator do?
+    <ol type="a">
+      <li>It computes the inverse FFT of the subcarriers</li>
+      <li>It mixes I and Q against a local oscillator and its 90-degree-shifted copy, then sums them into one RF output</li>
+      <li>It adds Gaussian noise to set the SNR</li>
+      <li>It stores the recorded RF environment for replay</li>
+    </ol>
+  </li>
+  <li>A 16-QAM constellation appears rotated and sheared even though the computed samples are correct. What is the most likely cause?
+    <ol type="a">
+      <li>The waveform memory is too small</li>
+      <li>Gain, delay, or phase mismatch between the I and Q channels in the analog path</li>
+      <li>The modulation index is set to zero</li>
+      <li>The DAC resolution is too high</li>
+    </ol>
+  </li>
+  <li>Why is replaying a recorded RF environment from AWG memory valuable for receiver testing?
+    <ol type="a">
+      <li>It eliminates the need for any digital modulation</li>
+      <li>It lowers the required DAC sample rate to zero</li>
+      <li>It makes a one-off field failure into a repeatable test case you can run against firmware revision after revision</li>
+      <li>It automatically corrects multipath in the receiver</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 7: Triggering, Synchronization, and Multi-Channel</h3>
+<ol>
+  <li>What is the purpose of trigger holdoff?
+    <ol type="a">
+      <li>It increases the output amplitude after a trigger</li>
+      <li>It is a blanking interval after a valid trigger during which further triggers are ignored, preventing double-triggering on a noisy or bouncing edge</li>
+      <li>It selects whether the instrument triggers on the rising or falling edge</li>
+      <li>It sets the number of cycles played in burst mode</li>
+    </ol>
+  </li>
+  <li>In which trigger mode does the AWG play its waveform exactly once on each trigger event and then return to the armed state?
+    <ol type="a">
+      <li>Continuous mode</li>
+      <li>Gated mode</li>
+      <li>Triggered (single-shot) mode</li>
+      <li>Internal mode</li>
+    </ol>
+  </li>
+  <li>A marker (sync output) is most useful because it is generated from the same clock and sample stream as the analog output. What does that let it do?
+    <ol type="a">
+      <li>Replace the need for a sample clock entirely</li>
+      <li>Provide a clean digital edge aligned to a precise sample position, ideal for triggering a scope or gating a device under test</li>
+      <li>Increase the instrument's vertical resolution</li>
+      <li>Convert the analog output into IQ baseband</li>
+    </ol>
+  </li>
+  <li>Why is a shared 10 MHz reference NOT the same as deterministic sample alignment between two instruments?
+    <ol type="a">
+      <li>A 10 MHz reference cannot be distributed to more than one instrument</li>
+      <li>The reference disciplines frequency so the instruments do not drift, but each instrument's clock divider can come up in a different phase, so they may sit hundreds of picoseconds or a full sample apart at start</li>
+      <li>A shared reference forces both instruments to use the same waveform</li>
+      <li>The reference only works for analog outputs, not digital markers</li>
+    </ol>
+  </li>
+  <li>After establishing phase coherence across channels, what step turns a phase-coherent instrument into a phase-accurate one?
+    <ol type="a">
+      <li>Raising the sample rate until skew disappears</li>
+      <li>Switching every channel to continuous mode</li>
+      <li>Calibrating skew: output the same signal on all channels, measure the offset on a fast scope, and apply a per-channel programmable delay until they align</li>
+      <li>Removing the shared reference so the channels run independently</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 8: Applications</h3>
+<ol>
+  <li>In a pulsed radar scenario, what does the linear frequency modulated (LFM) chirp inside each pulse provide?
+    <ol type="a">
+      <li>It lowers the carrier frequency to baseband</li>
+      <li>It supplies pulse-compression range resolution, with compression gain tied to the time-bandwidth product</li>
+      <li>It removes the need for any pulse repetition interval</li>
+      <li>It eliminates receiver noise automatically</li>
+    </ol>
+  </li>
+  <li>Why does electronic warfare scenario generation place such a heavy demand on AWG memory depth?
+    <ol type="a">
+      <li>Because each pulse needs its own DAC</li>
+      <li>Because a long, dense threat environment must play without an audible repetition the receiver can lock onto</li>
+      <li>Because memory sets the carrier frequency</li>
+      <li>Because low noise is only available in large memories</li>
+    </ol>
+  </li>
+  <li>Which specification most quietly limits two-qubit gate fidelity in a multi-channel quantum control setup?
+    <ol type="a">
+      <li>Peak sample rate</li>
+      <li>Total waveform memory</li>
+      <li>Channel-to-channel timing skew</li>
+      <li>Output connector type</li>
+    </ol>
+  </li>
+  <li>What is the value of impaired-signal generation when testing a wireless or satcom receiver?
+    <ol type="a">
+      <li>It guarantees the receiver passes every standard</li>
+      <li>It reveals how the receiver copes with known, deliberate impairments like IQ imbalance, phase noise, or fading</li>
+      <li>It reduces the required sample rate to zero</li>
+      <li>It replaces the need for a clean reference signal</li>
+    </ol>
+  </li>
+  <li>In semiconductor automated test equipment (ATE), which AWG characteristic translates most directly into production cost?
+    <ol type="a">
+      <li>The maximum output voltage</li>
+      <li>The number of front-panel buttons</li>
+      <li>Waveform settling and switching time between test segments, multiplied by part volume</li>
+      <li>The color of the display</li>
+    </ol>
+  </li>
+</ol>
+
+<h3>Chapter 9: Selecting an Arbitrary Waveform Generator</h3>
+<ol>
+  <li>What should drive your AWG selection before you open any datasheet?
+    <ol type="a">
+      <li>The price ceiling set by your budget</li>
+      <li>A description of the worst-case signal you must produce</li>
+      <li>The brand the rest of the lab already owns</li>
+      <li>The instrument with the highest sample rate available</li>
+    </ol>
+  </li>
+  <li>If the highest meaningful frequency in your signal is 500 MHz, what is a sensible practical sample-rate target?
+    <ol type="a">
+      <li>Exactly 1 GS/s, the Nyquist minimum</li>
+      <li>500 MS/s, matching the frequency</li>
+      <li>1.25 to 2.5 GS/s, for headroom above Nyquist</li>
+      <li>20 GS/s, because more is always better</li>
+    </ol>
+  </li>
+  <li>Your output shows soft, rounded edges and amplitude that droops at the top of the band. Which specification is most likely the limit?
+    <ol type="a">
+      <li>Memory depth</li>
+      <li>Analog bandwidth</li>
+      <li>Channel count</li>
+      <li>Sample rate is too high</li>
+    </ol>
+  </li>
+  <li>When does 16-bit resolution matter more than raw sample rate?
+    <ol type="a">
+      <li>When generating multi-GHz carriers by direct synthesis</li>
+      <li>When you must reproduce a small signal cleanly beside a much larger one</li>
+      <li>When the only goal is the fastest possible edges</li>
+      <li>When memory is the binding constraint</li>
+    </ol>
+  </li>
+  <li>Why can a mid-tier AWG with strong sequencing beat a top-tier instrument with deep flat memory?
+    <ol type="a">
+      <li>Sequencing increases the DAC resolution</li>
+      <li>Most real scenarios repeat, so storing unique segments with loop counts uses far less memory than a flat waveform</li>
+      <li>Sequencing removes the need for analog bandwidth</li>
+      <li>Flat memory cannot be streamed</li>
+    </ol>
+  </li>
+</ol>
+
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-A-glossary.html">&larr; Appendix A: Glossary</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-C-quiz-answer-key.html">Appendix C: Answer Key &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

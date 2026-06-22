@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 5 Quiz - FFT, Windowing, and Spectral Estimation</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 5 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "rtsa",
+  chapterKey: "05",
+  title: "Chapter 5 Quiz",
+  questions: [
+    {
+      q: "What is the computational complexity of an FFT, compared to a naive DFT?",
+      options: [
+        "O(N^2) vs O(N log N), FFT is slower",
+        "O(N log N) vs O(N^2), FFT is faster",
+        "Both are O(N)",
+        "O(N!) vs O(2^N)"
+      ],
+      answer: 1,
+      explain: "The FFT runs in O(N log N) against the DFT's O(N squared), which is why it is far faster for large transforms."
+    },
+    {
+      q: "The bin spacing of an FFT is given by:",
+      options: [
+        "fs times N",
+        "fs / N",
+        "N / fs",
+        "fs + N"
+      ],
+      answer: 1,
+      explain: "Bin spacing equals the sample rate divided by the FFT length."
+    },
+    {
+      q: "Which window is best for accurate absolute amplitude measurements of a known tone?",
+      options: [
+        "Rectangular",
+        "Hann",
+        "Flat-top",
+        "Blackman-Harris"
+      ],
+      answer: 2,
+      explain: "The flat-top window has a broad, level main lobe that gives accurate amplitude readings even when the tone is off bin center."
+    },
+    {
+      q: "Which window provides the highest dynamic range (lowest sidelobes) at the cost of a wider main lobe?",
+      options: [
+        "Hamming",
+        "Rectangular",
+        "Hann",
+        "Blackman-Harris or Kaiser"
+      ],
+      answer: 3,
+      explain: "Blackman-Harris and Kaiser windows push sidelobes very low for high dynamic range, trading a wider main lobe."
+    },
+    {
+      q: "Spectral leakage is caused by:",
+      options: [
+        "ADC quantization",
+        "Discontinuity at the boundary of an FFT window",
+        "LO phase noise",
+        "Antenna mismatch"
+      ],
+      answer: 1,
+      explain: "When a tone is not periodic in the window, the boundary discontinuity smears energy into nearby bins as leakage."
+    },
+    {
+      q: "Scalloping loss is the variation in measured amplitude as a signal:",
+      options: [
+        "Moves between FFT bin centers",
+        "Sweeps across the full RTBW",
+        "Drifts in temperature",
+        "Triggers the FMT"
+      ],
+      answer: 0,
+      explain: "Scalloping loss is the dip in measured level when a tone falls between bin centers rather than on one."
+    },
+    {
+      q: "Welch's method reduces variance in a PSD estimate by:",
+      options: [
+        "Increasing the sample rate",
+        "Averaging multiple windowed periodograms",
+        "Using a longer FFT",
+        "Decreasing overlap"
+      ],
+      answer: 1,
+      explain: "Welch's method averages several overlapping windowed periodograms, smoothing the estimate at the cost of resolution."
+    },
+    {
+      q: "For a 65,536-point FFT at 245 MS/s, the resolution bandwidth is approximately:",
+      options: [
+        "4 Hz",
+        "4 kHz (about 3.7 kHz)",
+        "4 MHz",
+        "245 MHz"
+      ],
+      answer: 1,
+      explain: "245 MS/s divided by 65,536 is about 3.7 kHz per bin."
+    },
+    {
+      q: "To capture an intermittent burst, you should choose:",
+      options: [
+        "The longest FFT possible",
+        "A short FFT (around 1024 points or fewer)",
+        "A flat-top window",
+        "No window at all"
+      ],
+      answer: 1,
+      explain: "A short FFT gives fine time resolution, so a brief burst is not averaged away across a long frame."
+    },
+    {
+      q: "What benefit do measurement presets in RTSA Suite PRO provide?",
+      options: [
+        "They limit user flexibility",
+        "They preconfigure windows, FFT length, overlap, and averaging for specific measurement tasks while remaining editable",
+        "They run at a faster sample rate",
+        "They eliminate the need for windowing"
+      ],
+      answer: 1,
+      explain: "Presets bundle window, FFT length, overlap, and averaging for a task, and stay editable for fine tuning."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-05.html">&larr; Back to Chapter 5</a>
+    <a class="mid" href="index.html">Contents</a>
+    <a class="next" href="quiz-chapter-06.html">Chapter 6 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

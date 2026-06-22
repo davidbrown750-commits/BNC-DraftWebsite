@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="380" fill="#ffffff"/>
+  <text x="410" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#003D6B">DAC Output Spectrum: Fundamental and Reconstruction Images</text>
+
+  <!-- Baseline / frequency axis -->
+  <line x1="60" y1="300" x2="780" y2="300" stroke="#2C3E50" stroke-width="1.5"/>
+  <polygon points="780,300 770,295 770,305" fill="#2C3E50"/>
+  <text x="775" y="325" text-anchor="end" font-size="12" fill="#2C3E50">frequency</text>
+
+  <!-- Nyquist zone shading -->
+  <rect x="60" y="70" width="180" height="230" fill="#0078B6" opacity="0.06"/>
+  <rect x="240" y="70" width="180" height="230" fill="#C77E00" opacity="0.06"/>
+  <rect x="420" y="70" width="180" height="230" fill="#0078B6" opacity="0.06"/>
+  <rect x="600" y="70" width="180" height="230" fill="#C77E00" opacity="0.06"/>
+
+  <!-- Zone labels -->
+  <text x="150" y="88" text-anchor="middle" font-size="11" fill="#2C3E50">1st Nyquist zone</text>
+  <text x="330" y="88" text-anchor="middle" font-size="11" fill="#2C3E50">2nd zone</text>
+  <text x="510" y="88" text-anchor="middle" font-size="11" fill="#2C3E50">3rd zone</text>
+  <text x="690" y="88" text-anchor="middle" font-size="11" fill="#2C3E50">4th zone</text>
+
+  <!-- Frequency tick marks: 0, Fs/2, Fs, 3Fs/2, 2Fs -->
+  <g stroke="#2C3E50" stroke-width="1">
+    <line x1="60" y1="300" x2="60" y2="306"/>
+    <line x1="240" y1="300" x2="240" y2="306"/>
+    <line x1="420" y1="300" x2="420" y2="306"/>
+    <line x1="600" y1="300" x2="600" y2="306"/>
+    <line x1="780" y1="300" x2="780" y2="306"/>
+  </g>
+  <g font-size="12" fill="#2C3E50" text-anchor="middle">
+    <text x="60" y="322">0</text>
+    <text x="240" y="322">Fs/2</text>
+    <text x="420" y="322">Fs</text>
+    <text x="600" y="322">3Fs/2</text>
+    <text x="780" y="322">2Fs</text>
+  </g>
+
+  <!-- Nyquist boundary dashed lines -->
+  <g stroke="#4B2A6B" stroke-width="1.2" stroke-dasharray="5 4">
+    <line x1="240" y1="70" x2="240" y2="300"/>
+    <line x1="600" y1="70" x2="600" y2="300"/>
+  </g>
+
+  <!-- Fundamental tone (desired) -->
+  <line x1="150" y1="300" x2="150" y2="120" stroke="#003D6B" stroke-width="3"/>
+  <polygon points="150,112 144,124 156,124" fill="#003D6B"/>
+  <text x="150" y="106" text-anchor="middle" font-size="11" font-weight="bold" fill="#003D6B">fundamental</text>
+  <text x="150" y="118" text-anchor="middle" font-size="10" fill="#003D6B">f0</text>
+
+  <!-- Image at Fs - f0 -->
+  <line x1="330" y1="300" x2="330" y2="160" stroke="#C77E00" stroke-width="3"/>
+  <text x="330" y="150" text-anchor="middle" font-size="10" fill="#C77E00">Fs - f0</text>
+
+  <!-- Image at Fs + f0 -->
+  <line x1="510" y1="300" x2="510" y2="170" stroke="#0078B6" stroke-width="3"/>
+  <text x="510" y="160" text-anchor="middle" font-size="10" fill="#0078B6">Fs + f0</text>
+
+  <!-- Image at 2Fs - f0 -->
+  <line x1="690" y1="300" x2="690" y2="195" stroke="#C77E00" stroke-width="3"/>
+  <text x="690" y="185" text-anchor="middle" font-size="10" fill="#C77E00">2Fs - f0</text>
+
+  <!-- Sinc envelope guide -->
+  <path d="M60,128 C200,150 320,205 420,235 C520,258 660,272 780,278" fill="none" stroke="#2C3E50" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>
+  <text x="470" y="222" font-size="10" fill="#2C3E50" opacity="0.8">sin(x)/x envelope</text>
+
+  <!-- Amplitude axis label -->
+  <text x="44" y="180" text-anchor="middle" font-size="12" fill="#2C3E50" transform="rotate(-90 44 180)">amplitude</text>
+
+  <!-- Legend -->
+  <rect x="60" y="345" width="14" height="10" fill="#003D6B"/>
+  <text x="80" y="354" font-size="11" fill="#2C3E50">desired tone</text>
+  <rect x="190" y="345" width="14" height="10" fill="#C77E00"/>
+  <text x="210" y="354" font-size="11" fill="#2C3E50">image (can alias back into band)</text>
+</svg>

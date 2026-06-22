@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 6: RF Power Analysis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-6-rf-power-analysis">Chapter 6: RF Power Analysis</h2>
+<figure>
+<img src="../figures/chapter-06-opener.svg" alt="" /><figcaption>Chapter 6 — RF Power Analysis</figcaption>
+</figure>
+<p>RF power measurement breaks down into three broad categories. Continuous power measurement is free-running, with no pauses in acquisition, and results delivered as they come. The primary measurement is usually average power, sometimes with peak as well. Triggered pulse or burst acquisition is discontinuous, synchronized with the signal, and once initiated runs for a defined window before stopping and delivering the result. The output is generally a power-versus-time representation of the signal, often with advanced time and power analysis. Statistical power analysis is a relatively newer method in which a large population of power samples is acquired and analyzed by frequency of occurrence rather than time of occurrence. Samples may be acquired free-running or synchronized with the signal.</p>
+<p>This chapter walks through each in detail. All power meters support at least one of these methods. Advanced peak power meters support all three. Which mode is appropriate depends primarily on the signal being measured and on which parameters of that signal matter most.</p>
+<h3 id="continuous-power-measurement">6.1 Continuous Power Measurement</h3>
+<p>Continuous mode is the most common. Operation is similar to a digital multimeter. The sensor is connected to a CW or modulated signal, and the meter displays the average power. The display can be numeric (with selectable resolution) or graphical, often a bargraph or meter scale. Units are dBm or watts.</p>
+<p>CW and average diode sensors, thermal sensors, and other low-bandwidth true-average sensors all operate in continuous mode, often called CW mode for these sensor types because operation is tailored to CW signals. Modulated signals can also be accommodated, but the operator must take care to keep the signal within the square-law region if a CW diode sensor is used. Modern instruments perform continuous mode measurements with a low-noise, low-bandwidth, high-resolution analog channel that processes and digitizes the sensor output. All shaping and corrections are then performed by a microprocessor to yield an accurate power value.</p>
+<p>Peak power sensors can also operate in continuous mode. Some peak meters call this Modulated Mode because peak sensors offer more flexibility with modulated signals. The circuitry is somewhat different. A high-bandwidth amplifier and high-speed digitizer follow the detector, and the digitized samples are linearized and averaged together to yield the average power. Additional parameters such as peak and minimum power become available with suitable processing. The basic operating idea is the same: power is continuously measured and displayed.</p>
+<p>Continuous-mode instruments generally measure power at a relatively slow rate, from about 10 Hz to a few kHz, then apply a time-integration filter to reduce noise further at low signal levels. The filter is also useful for reducing displayed power fluctuations caused by modulation. For periodic signals, set the averaging time equal to an integer number of modulation cycles. Chapter 8 discusses signal filtering in detail.</p>
+<p>In addition to a numeric power display, continuous-mode measurements can be presented graphically as power versus time, subject to the limitations of the measurement rate. A strip-chart display showing power as a scrolling line is the most useful presentation. Some instruments span seconds to hours on a strip chart, which is valuable for observing a drifting signal, especially in conjunction with appropriate filtering.</p>
+<p>Ratiometric measurement is another common feature.</p>
+<figure>
+<img src="../figures/image145.jpeg" alt="Continuous power measurement with ratiometric reference display" /><figcaption>Figure 6.1.1 Continuous power measurement with a ratiometric reference display.</figcaption>
+</figure>
+<p>Most power meters allow the user to store a reference level from which a power ratio is computed and displayed, usually in dBr, with 0.00 dBr representing power equal to the reference level. For dual-channel power meters, displaying the ratio between two channels is straightforward. This is useful for computing gain or attenuation. When used with a directional coupler, the ratio between channels equals the return loss of the signal passing through the coupler.</p>
+<p>The primary display can be the actual sensor signal amplitude, an offset amplitude, or a mathematical function (ratio, sum, difference) of the sensor signal and a second sensor or stored reference. The Berkeley Nucleonics PowerEye software supports all of these presentations from any 12100 sensor over USB.</p>
+<h3 id="triggered-and-pulse-analysis">6.2 Triggered and Pulse Analysis</h3>
+<p>For periodic or pulsed signals, it is often necessary to analyze the power for a portion of the waveform or a specific region of a pulse or pulse burst. Before walking through the analysis methods, a brief review of power measurement fundamentals is useful.</p>
+<p><strong>Unmodulated carrier power.</strong> The average power of an unmodulated carrier (a continuous, constant-amplitude sinewave) is also called CW power. For a known load impedance Z_LOAD and applied voltage V_RMS, average power is:</p>
+<blockquote>
+<p><em>P = V_RMS² / Z_LOAD watts</em></p>
+</blockquote>
+<p>Power meters designed to measure CW power can use thermoelectric detectors that respond to the heating effect of the signal, or diode detectors that respond to the RMS voltage. With careful calibration, accurate measurements are possible across a wide range of input power levels.</p>
+<p><strong>Modulated carrier power.</strong> The average power of a modulated carrier with varying amplitude can be measured accurately by an average or CW power meter with a thermoelectric detector. The lack of sensitivity limits the range. Diode detectors can be used at low power levels within the square-law region (no peaks higher than about -20 dBm). At higher levels the diode responds proportionally to voltage rather than power, and significant error in the average power reading results.</p>
+<p><strong>Pulse power.</strong> Pulse power refers to the power measured during the on-time of pulsed RF signals. Traditionally these signals were measured in two steps: an average-responding sensor (thermoelectric or square-law diode) measured the average power, and the average reading was divided by the duty cycle to obtain pulse power.</p>
+<blockquote>
+<p><em>P_PULSE = P_AVERAGE / Duty Cycle</em>, where Duty Cycle = Pulse Width / Pulse Period.</p>
+</blockquote>
+<p>Pulse power computed this way provides useful results for ideal periodic rectangular pulse waveforms, but is inaccurate for distorted pulse shapes (overshoot, droop) or when pulse period and width are not perfectly uniform.</p>
+<p><strong>Peak power.</strong> Peak power meters perform measurements that overcome the limitations of the duty-cycle method and provide both peak and average power readings for all types of modulated carriers. Fast-responding diode detectors track the RF envelope to produce a wideband video signal sampled at high bandwidth and high data rate by the meter. Sampled detector points are converted to instantaneous power in watts on an individual basis using stored calibration information.</p>
+<p>Once samples have been converted to linear power, the mean of all (or a subset) is computed to yield the true average power without restriction to the diode’s square-law region. A time-domain reconstruction of the signal envelope is created by assembling the samples in sequence into a display buffer. For repetitive signals, equivalent-time or interleaved sampling techniques yield time resolutions that exceed the raw sample rate when synchronized by an internal or external trigger. Repetitive signals also permit synchronous filtering (trace or video filtering) of the resulting waveform, discussed below.</p>
+<p>Peak power meters often refer to this measurement mode as Triggered or Pulse Mode. Operation is similar to a modern digital storage oscilloscope. Power samples are stored in a circular memory buffer until a trigger signal is received. The samples, with the desired relationship to the trigger, are then selected and processed to obtain a power-versus-time trace.</p>
+<p>The trigger signal can be a separately applied external pulse, or it can be generated by the RF signal’s amplitude crossing a defined threshold in either direction. The trigger source, level, and polarity are programmable, and oscilloscope-like settings such as trigger delay time and trigger holdoff are typically available.</p>
+<p>Early peak power meters did not have memory. They used a variable delay generator and sampled the input signal at some defined period after the trigger to yield “power at a time offset.” To reconstruct the waveform, the delay time was incremented in small steps in successive triggers, and the resulting array of power points assembled in order on a display. This technique permitted wide measurement bandwidth using the slow A/D converters of the time period.</p>
+<figure>
+<img src="../figures/image155.jpeg" alt="Triggered acquisition with circular buffer and pre/post-trigger samples" /><figcaption>Figure 6.2.1 Triggered acquisition with a circular buffer and pre- and post-trigger samples.</figcaption>
+</figure>
+<p>Modern peak power meters acquire the signal at very high conversion rates, typically many MHz, and large acquisition buffers permit display of both pre- and post-trigger portions of the waveform. For each triggered sweep, data acquisition into the circular buffer restarts and runs at high speed until a trigger edge is detected and all post-trigger samples are acquired. At that point acquisition typically stops and the buffer is processed and displayed before another trace is restarted.</p>
+<figure>
+<img src="../figures/image164.jpeg" alt="Real-time power processing: parallel acquisition and analysis with no buffer overflow" /><figcaption>Figure 6.2.2 Real-time power processing: parallel acquisition and analysis with no buffer overflow.</figcaption>
+</figure>
+<p><strong>Real-time processing techniques</strong> such as Berkeley Nucleonics’ Real-Time Power Processing™ reduce total cycle time significantly. By combining a dedicated acquisition engine, hardware trigger, integrated sample buffer, and parallel processing architecture, real-time power processing performs most of the sweep processing steps simultaneously, beginning immediately after the trigger instead of waiting for the end of the acquisition cycle. Key processing steps run in parallel and keep pace with the signal acquisition. With no added computational overhead to prolong the sweep cycle, the sample buffer cannot overflow, so there is no need to halt acquisition for trace processing. This means gap-free signal acquisition and guarantees that intermittent signal phenomena (transients, dropouts, interference) will be reliably captured and analyzed. These events are most often missed by conventional power meters because of acquisition gaps during processing.</p>
+<p><strong>Triggering options.</strong> Like a DSO, several trigger options exist. Auto-trigger modes force a trigger when no edges are detected, but synchronize with the signal once edges appear. A peak-to-peak trigger mode automatically sets the trigger level based on the input signal. The most advanced peak power meters have complex trigger generators that can do trigger arming and qualification on counted signal events or time delays. Some have programmable fence and exclusion intervals to assist triggering on burst signals.</p>
+<p><strong>Display timebases</strong> range down to a few ns/div, limited generally by the video bandwidth and time resolution of the instrument. Time resolutions of 100 ps or better are available on the fastest peak power meters and are critical to accurate waveform reconstruction and pulse measurement.</p>
+<p><strong>Programmable time markers (cursors)</strong> can be positioned on any portion of the displayed trace to mark regions of interest for detailed analysis. Cursor measurements include the power at each marker plus a series of parameters for the interval between the markers, usually at least average and peak power. This is useful for examining the power during a radar pulse or digital communication burst when only the central region matters. By adjusting trigger delay and other parameters, you can measure the power of burst signals such as the specific frames of an 802.11ac WiFi or LTE-TDD signal, or specific timeslots of TDMA signals such as GSM and EDGE.</p>
+<p><strong>Trigger holdoff</strong> allows burst synchronization even when there is more than one edge in the burst that satisfies the trigger level. Set the holdoff time to slightly shorter than the burst’s repetition interval to guarantee that triggering occurs at the same point in the burst on each sweep.</p>
+<p><strong>Automatic pulse parameter measurement.</strong> For periodic waveforms, automatic measurement of waveform parameters is available in pulse mode. Once a stable, periodic signal is detected, the instrument locates the waveform transitions and calculates pulse frequency, width, duty cycle, rise and fall times, top and bottom power, pulse-on power, overshoot, and full-cycle average power.</p>
+<p><strong>Trace averaging</strong> is helpful for low-level measurements due to the wideband noise of peak power sensors. Unlike continuous mode (in which measurement bandwidth is reduced by averaging more samples), pulse mode uses synchronous averaging, also called video averaging. Each acquisition sample is averaged with other samples at exactly the same time offset relative to the trigger, effectively averaging each trace with previous traces while maintaining time alignment. Video averaging works best for periodic waveforms. Chapter 8 discusses the process and benefits in detail.</p>
+<p>Pulse mode of advanced peak power meters often includes the same kinds of features found in advanced digital oscilloscopes: deep memory, fast waveform update, waveform zoom, trace storage and recall, and mathematical functions between traces.</p>
+<h3 id="statistical-power-analysis">6.3 Statistical Power Analysis</h3>
+<p>For pulsed and periodic waveforms, the signal’s power envelope can be reconstructed and analyzed in the time domain to provide a considerable amount of useful information. For continuously modulated signals, or periodic signals with noise-like modulation within bursts or packets, it becomes difficult or impossible to trigger from the signal itself or to extract useful information in the time domain. Simple continuous-mode processing yields the average and sometimes peak power, but often more information is available through alternative acquisition and processing methods.</p>
+<p>Many modern communication signals fall into this category because of their noise-like, digitally modulated formats. CDMA, OFDM, and various forms of QAM are examples. For these signals, statistical power analysis often makes more sense than time-domain analysis. When statistical analysis is performed, power samples are acquired and analyzed by how frequently each power value occurs rather than precisely when it occurs. A large sample population is acquired (asynchronously or synchronously) and sorted by power into bins to yield a histogram. The more samples in the population, the finer the histogram resolution.</p>
+<p><strong>Statistical power analysis is best for signals with these characteristics:</strong></p>
+<ul>
+<li>Moderate signal level above about -40 dBm.</li>
+<li>Digitally modulated signals, especially noise-like formats such as CDMA (and its extensions) or OFDM such as 802.11ac and LTE, when probability information is helpful.</li>
+<li>Any signal with random, infrequent peaks, when you need to know peak probability, peak-to-average power ratio (PAPR), and crest factor.</li>
+</ul>
+<p><strong>Statistical presentations.</strong> There are several common ways to view statistical power measurements:</p>
+<p>A power histogram is the simplest. Samples are sorted into equal-width bins of any convenient size. Bin divisions are most often logarithmic in power, with each bin ranging an equal number of dBm. Bin depths (maximum count values) can reach or exceed 32 bits (4 billion counts).</p>
+<p>The Probability Density Function (PDF) is essentially a continuous function similar to an infinite-resolution (zero bin width) histogram. The PDF cannot directly return absolute signal measurements, but its shape gives a qualitative indication of the power distribution. A multi-level signal such as QAM shows up as a distinct hump at each power level, useful for visualizing system linearity.</p>
+<p>The Cumulative Distribution Function (CDF) is the integral of the PDF. Its value is monotonic and increases from 0.0 to 1.0, representing the probability that the power is at or below a given level. Textbook representations show power on the X axis and probability on the Y axis. A CDF value of 0.0 is at the minimum power point and 1.0 is at the maximum (absolute peak) power.</p>
+<p>The Complementary Cumulative Distribution Function (CCDF), sometimes shown as 1-CDF, is the arithmetic inverse of the CDF, representing the probability that the power is at or above a given level. A CCDF value of 0.0 is at the maximum power and 1.0 is at the minimum. CCDF is more often used for power analysis because peak power is generally of more interest than minimum power, and it is convenient to expand about the origin.</p>
+<figure>
+<img src="../figures/fig-6-3-1-ccdf-three-signals.svg" alt="CCDF of three reference signals on log-log axes" /><figcaption>Figure 6.3.1 CCDF of three reference signals on log-log axes. The shape of each curve reveals how often a signal sits above a given power level.</figcaption>
+</figure>
+<p>The CCDF is usually shown in graphical format, with log power (dBm) on the X axis and log probability on the Y axis. For analyzing communication signals, normalize the power to the average so the X axis represents the number of dB above or below the average power level (relative dB, dBr). This is useful when only the shape of the CCDF matters and not its absolute power value. In this case, a power value of 0 dBr is the average power, and a CCDF value of 0.0 represents the peak-to-average power ratio.</p>
+<p>Some power meters invert the X and Y axes to maintain the power measurement convention of displaying amplitude on the Y axis. This is particularly useful when presenting a histogram or PDF alongside a corresponding time-domain trace. Both orientations present the same information.</p>
+<p><strong>Tabular CCDF values</strong> are also common. Power (relative or absolute) is treated as the dependent variable. A “0.01% CCDF power level” indicates the peak-to-average threshold above which only 0.01% of the power samples (probability of 1e-4) fall. A typical CDMA signal might have a 0.01% CCDF value of 8.7 dBr, indicating that one of every 10,000 power points is more than 8.7 dB above average power.</p>
+<p>These measurements are useful because the expected CCDF shape can be computed from the data patterns and modulation format, or a CCDF for an undistorted “gold” signal can be acquired, analyzed, and stored. The CCDF of the actual signal is then measured at various points in the signal chain (for example, immediately after a power amplifier). When the curves are overlaid, distortion is immediately evident from the difference in shapes. Mild peak compression appears as the output CCDF falling off at a steeper rate than the input CCDF as peak-to-average ratio increases. Absolute limiting (clipping) appears as the CCDF becoming vertical. Statistical analysis for amplifier testing is discussed further in Section 8.3.</p>
+<figure>
+<img src="../figures/image148.jpeg" alt="Gated CCDF excludes off-time and preamble for a cleaner payload distribution" /><figcaption>Figure 6.3.2 A gated CCDF excludes off-time and preamble for a cleaner payload distribution.</figcaption>
+</figure>
+<p><strong>Gated statistics.</strong> Many modern signals are transmitted in bursts or timeslots and use noise-like digital modulation formats that benefit from statistical analysis. For these protocols, it is helpful to acquire the statistical population synchronously, triggered or gated externally or by the signal itself, so that acquired samples represent only specific intervals in time. GSM-EDGE is one example. It is most useful to acquire data only during the payload portion of the timeslot. WiFi and other signals have similar requirements. A burst often begins with a training sequence that skews the distribution in undesirable ways if those samples are included in the population.</p>
+<p>High-end peak power analyzers offer the ability to operate in two modes simultaneously. The instrument is set up for a basic pulse-mode acquisition so the triggered waveform is visible. All triggering features may be used. Cursors are positioned on the waveform to indicate the interval over which to perform statistical analysis. Only power samples occurring within that interval are included in the population. Samples outside the interval (burst off-time, rising and falling edges, pilots, training sequences) are discarded and do not skew the distribution.</p>
+<p><strong>Statistical acquisition size.</strong> One weakness of statistical power analysis is that the power bins used to acquire data are not of infinite depth. The faster data points are acquired, the sooner the bins fill. Eventually the maximum count limit is reached and acquisition can no longer proceed. A decision must be made on how to handle the situation.</p>
+<p>The simplest option is to consider the acquisition complete and stop adding new samples. Depending on whether statistical measurements will be required immediately, it may be more appropriate to clear the population and restart acquisition. The downside of flush-and-restart is that there is a short period at the start of each acquisition when the population is small and the statistical resolution is extremely coarse. If a CCDF measurement at a very small probability is needed, there may not be enough samples for a statistically valid return value.</p>
+<p>To remedy this, a portion of the distribution can be discarded, or “decimated.” All power bins are scaled by an equal value, for example 0.5. This is computationally simple and fast. Binary count values in each bin are right-shifted by one bit. Once all the count bins have been halved, acquisition continues. The shape of the statistical distribution is not affected except at the very rarest power values, where binary roundoff or truncation becomes significant.</p>
+<p>The effect functions as a CCDF filter. The distribution is most heavily weighted by recent events, and older events are eventually decimated off. The time it takes is proportional to the count at which decimation occurs, and inversely proportional to the sample rate.</p>
+<p>Many signals yield meaningful CCDF results with several to a few tens of megasamples, so it is possible to make use of decimation for less than a “full” bin. Peak power meters may include the option to terminate, restart, or decimate statistical acquisition after a user-defined population size (Terminal Count) or time interval (Terminal Time).</p>
+<blockquote>
+<p><strong>Engineer’s corner.</strong> For long-term average-power statistics where the question is “what is the distribution of mean readings over hours or days,” the Berkeley Nucleonics 12100 series is purpose-built. Millions of timestamped true-RMS readings into internal memory, downloaded as CSV for offline analysis. Drift, duty-cycle, and compliance studies that used to require rack-mounted data loggers now run from a sensor that fits in your pocket.</p>
+</blockquote>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="05-calibration-issues.html">&larr; 5. Calibration Issues</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="07-power-measurement-applications.html">7. Power Measurement Applications &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

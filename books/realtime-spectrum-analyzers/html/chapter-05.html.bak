@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5 - FFT, Windowing, and Spectral Estimation</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 5</div>
+<h1>FFT, Windowing, and Spectral Estimation</h1>
+
+<blockquote>The window you pick is a confession of what you care about. Pick one before you understand the choice and your measurement is already wrong.</blockquote>
+
+<h2>5.1 DFT vs FFT: Computational Heart of the RTSA</h2>
+
+<p>Every spectrum on every RTSA display starts with a discrete Fourier transform. The DFT takes $N$ complex samples in time and produces $N$ complex values in frequency. Each output bin is the projection of the input onto a complex sinusoid at that bin's frequency.</p>
+
+<p>The textbook DFT formula is:</p>
+
+<div class="math-display">$$X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j 2\pi k n / N}, \quad k = 0, 1, \ldots, N-1$$</div>
+
+<p>If you compute this directly, you do $N$ complex multiplies for each of $N$ outputs, for a total of $N^2$ multiplies. For a 4096-point transform, that is about 16.7 million multiplies. For a 1-million-point transform, it is a trillion multiplies. Real-time spectrum analysis at thousands of frames per second is impossible at $O(N^2)$.</p>
+
+<p>The Fast Fourier Transform reduces this to $O(N \log N)$ multiplies. For 4096 points, the FFT does about 50 thousand multiplies instead of 16.7 million. A factor-of-340 speedup. For 1 million points, the speedup is a factor of 50,000. The FFT is the reason real-time spectrum analyzers exist.</p>
+
+<p>The most common FFT algorithm is Cooley-Tukey radix-2. It requires $N$ to be a power of 2 and decomposes the transform recursively into pairs of half-length transforms. Modern FPGAs implement it in pipelined hardware that ingests one sample per clock and emits a complete spectrum every $N$ clocks. At 2 GHz clock and 4096-point transforms, that is roughly 488 thousand spectra per second per pipeline.</p>
+
+<h3>Bin frequency and bin spacing</h3>
+
+<p>The output of an FFT lives on a discrete frequency grid. Each bin corresponds to a frequency:</p>
+
+<div class="math-display">$$f_k = \frac{k \cdot f_s}{N}$$</div>
+
+<p>for $k = 0, 1, \ldots, N/2 - 1$ (positive frequencies in a complex FFT). The spacing between adjacent bins is:</p>
+
+<div class="math-display">$$\Delta f = \frac{f_s}{N}$$</div>
+
+<p>This is the resolution bandwidth of the FFT, before windowing.</p>
+
+<h3>What the FFT is actually telling you</h3>
+
+<p>Each FFT output bin is a complex number whose magnitude is the amplitude of the input at that bin's frequency, and whose phase is the phase of the input at that frequency. The full spectrum is therefore both an amplitude spectrum and a phase spectrum. Most displays show only the amplitude. Phase is used for modulation analysis, group delay, and cross-spectrum measurements.</p>
+
+<p>A practical RTSA also computes power spectral density (PSD), which normalizes the FFT magnitude squared for window energy and bin width:</p>
+
+<div class="math-display">$$\text{PSD}[k] = \frac{|X[k]|^2}{f_s \cdot \sum_n w[n]^2}$$</div>
+
+<p>where $w[n]$ is the window function. PSD has units of dBm/Hz and lets you compare measurements at different RBWs on a common axis.</p>
+
+<h2>5.2 Window Functions</h2>
+
+<p>A finite-length FFT sees only $N$ consecutive samples of an infinite-length signal. The transition at the start and end of that window introduces artifacts. Window functions are how we manage those artifacts.</p>
+
+<h3>Why windowing exists</h3>
+
+<p>Imagine sampling a pure sinusoid at exactly 100.0 MHz with a sample rate that gives a bin centered at exactly 100.0 MHz. The signal lines up perfectly. The FFT produces a single bin of energy at 100.0 MHz and zero everywhere else. Beautiful.</p>
+
+<p>Now shift the signal to 100.05 MHz. The sinusoid no longer fits an integer number of cycles in the window. The discontinuity at the window boundaries causes the FFT to produce a spread of energy across many bins. This is spectral leakage. Energy that belongs at one frequency leaks into the entire spectrum.</p>
+
+<p>A window function tapers the input signal to zero at the start and end of the window before the FFT runs. The taper smooths the boundary discontinuity, dramatically reducing leakage. The cost is a wider main lobe at every spectral peak.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-05-01-window-comparison.svg" style="width:100%;">Figure 5-1</object>
+  <figcaption>Figure 5-1. Time-domain shapes (left) and frequency responses (right) of common window functions. Rectangular has the narrowest main lobe but worst sidelobe suppression. Flat-top has the widest main lobe but the best amplitude accuracy. Blackman-Harris balances dynamic range and main lobe width. Hann is the general-purpose default.</figcaption>
+</figure>
+
+<h3>The window menu</h3>
+
+<table>
+<thead><tr><th>Window</th><th>Main lobe -3 dB (bins)</th><th>Highest sidelobe (dB)</th><th>Best for</th></tr></thead>
+<tbody>
+<tr><td>Rectangular</td><td>0.89</td><td>-13</td><td>tones aligned to bins</td></tr>
+<tr><td>Hann (Hanning)</td><td>1.44</td><td>-32</td><td>general-purpose</td></tr>
+<tr><td>Hamming</td><td>1.30</td><td>-43</td><td>low-noise tone detection</td></tr>
+<tr><td>Blackman</td><td>1.68</td><td>-58</td><td>strong sidelobe suppression</td></tr>
+<tr><td>Blackman-Harris (4-term)</td><td>1.90</td><td>-92</td><td>extreme dynamic range</td></tr>
+<tr><td>Flat-top</td><td>3.86</td><td>-88</td><td>accurate amplitude</td></tr>
+<tr><td>Kaiser ($\beta=14$)</td><td>2.39</td><td>-120</td><td>tunable extreme suppression</td></tr>
+</tbody>
+</table>
+
+<p>Pick by use case. <strong>Hann</strong> is the default for general spectrum monitoring. It is fast to compute, gives modest sidelobe suppression, and is fine for most measurements. <strong>Flat-top</strong> is the right choice when you need accurate amplitude readings. Its main lobe is wide enough that a tone landing anywhere in a bin reads at almost the same amplitude. Use it when measuring the absolute power of a known tone, calibrating, or doing compliance work. <strong>Blackman-Harris</strong> is for high dynamic range measurements such as searching for weak signals near strong carriers. Wide main lobes, very low sidelobes. <strong>Kaiser</strong> is the sniper rifle: parameter $\beta$ continuously adjusts the tradeoff. Use when none of the standard windows fit.</p>
+
+<p>In Aaronia RTSA Suite PRO, the window is a per-display setting. Each display (live, waterfall, persistence) can use a different window because each has different priorities. The waterfall might use Hann for fast updates while the high-resolution view uses Blackman-Harris for dynamic range.</p>
+
+<h3>The math</h3>
+
+<p>For a window of length $N$, the Hann window is:</p>
+
+<div class="math-display">$$w[n] = 0.5 \cdot \left(1 - \cos\left(\frac{2\pi n}{N-1}\right)\right)$$</div>
+
+<p>Hamming differs slightly:</p>
+
+<div class="math-display">$$w[n] = 0.54 - 0.46 \cos\left(\frac{2\pi n}{N-1}\right)$$</div>
+
+<p>Blackman is a 3-term cosine sum, Blackman-Harris a 4-term, and Kaiser uses modified Bessel functions. Each is computed once per FFT length and stored as a table. The runtime cost of windowing is negligible.</p>
+
+<h2>5.3 Spectral Leakage, Scalloping Loss, and ENBW</h2>
+
+<p>Three artifacts of finite-length spectral estimation deserve named attention.</p>
+
+<h3>Spectral leakage</h3>
+
+<p>Leakage is energy that belongs at one frequency appearing at others. Without a window, leakage extends across the entire spectrum at -13 dB or worse. With a Hann window, leakage drops to -32 dB at the nearest sidelobe and falls off as $1/f^3$.</p>
+
+<p>Leakage matters when you are looking for a weak signal near a strong one. A strong carrier without windowing will hide a weak adjacent signal up to 13 dB below it. With Blackman-Harris, the same carrier hides only signals below -92 dB.</p>
+
+<h3>Scalloping loss</h3>
+
+<p>Scalloping is the variation in measured amplitude as a tone moves between bin centers. With a rectangular window, a tone exactly between two bins reads about 4 dB lower than the same tone exactly on a bin. With a Hann window, the variation drops to 1.4 dB. With a Flat-top window, scalloping is essentially eliminated, less than 0.01 dB.</p>
+
+<p>This is why Flat-top is the window for accurate amplitude. The wide main lobe is a feature, not a bug. It guarantees that a tone anywhere in the bin reads at the correct amplitude.</p>
+
+<h3>Equivalent noise bandwidth (ENBW)</h3>
+
+<p>When you measure the noise floor of a signal, the noise power is integrated across the equivalent noise bandwidth of the analyzer:</p>
+
+<div class="math-display">$$\text{ENBW} = \frac{\sum_n w[n]^2}{(\sum_n w[n])^2 / N} \cdot \Delta f$$</div>
+
+<p>ENBW is wider than the bin spacing $\Delta f$ for any practical window. For Hann, ENBW is 1.5 times the bin spacing. For Flat-top, it's 3.77 times. When you compare noise floors across different window choices, you need to normalize by ENBW or you'll get the wrong answer. Most modern RTSAs do this normalization automatically and display dBm/Hz instead of dBm-per-bin. The user does not see the math. The math is still happening.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: the time-bandwidth tradeoff</h3>
+<p>Every window function obeys the same fundamental constraint: the product of its time duration and its frequency bandwidth has a lower bound. This is a special case of the Heisenberg-Gabor uncertainty principle:</p>
+<div class="math-display">$$\Delta t \cdot \Delta f \geq \frac{1}{4\pi}$$</div>
+<p>A short window in time gives wide bandwidth in frequency. A long window gives narrow bandwidth. There is no window that wins both axes. Engineering work is choosing where to sit on this curve for the measurement at hand. The window choice and FFT length together set your operating point.</p>
+</div>
+
+<h2>5.4 Overlap-Add and Overlap-Save Processing</h2>
+
+<p>We met overlap in Chapter 2 as the mechanism for gap-free observation. Overlap-add and overlap-save are two specific implementations.</p>
+
+<p>In <strong>overlap-add</strong>, successive FFTs share a fraction of their samples. With 50 percent overlap, FFT $k$ uses samples $[kN/2, kN/2 + N - 1]$, and FFT $k+1$ uses $[kN/2 + N/2, kN/2 + 3N/2 - 1]$. Each input sample is in two consecutive FFT windows. The result is that the power spectra can be averaged across overlapping FFTs without bias from the window taper.</p>
+
+<p><strong>Overlap-save</strong> is the dual: you compute longer FFTs and discard portions of the output that are corrupted by circular convolution effects. This is used in fast convolution implementations, such as digital channelizer filters in an RTSA. The user never sees this layer; it is hidden in the FPGA.</p>
+
+<p>For RTSA displays, the standard overlap is 50 percent for waterfall (faster updates) and 75 percent for high-priority live trace (smoother spectra). Higher overlaps (87.5 or 93.75 percent) appear in research-grade instruments where every dB of dynamic range matters. Aaronia's RTSA Suite PRO supports user-selectable overlap up to 93.75 percent, with the practical limit set by host CPU/GPU compute.</p>
+
+<h2>5.5 Welch's Method and Averaging Strategies</h2>
+
+<p>A single FFT of a noisy signal is itself noisy. The variance of the spectral estimate at any bin is comparable to the mean. To get a smooth, reliable noise floor, you average.</p>
+
+<p>Welch's method is the standard. Divide the long input record into overlapping segments of length $N$. Apply a window to each segment. Compute the FFT magnitude squared (the periodogram) for each segment. Average the periodograms across segments.</p>
+
+<p>The result is a power spectral density estimate with reduced variance. With $K$ averages, the variance drops by a factor of approximately $K$ (for non-overlapped segments). With overlapped segments, the reduction is slightly less than $K$ because adjacent segments share information.</p>
+
+<p>In practice, an RTSA displays a running Welch estimate in three forms: <strong>live trace</strong> (the latest FFT only, maximum responsiveness, maximum noise), <strong>averaged trace</strong> (a moving average across the last K FFTs, smooth noise floor, slight lag for transients), <strong>max hold</strong> (the bin-wise maximum across all FFTs since the trace started, catches transients but builds up over time), and <strong>min hold</strong> (the bin-wise minimum, reveals the noise floor and rejects intermittent strong signals). These four traces overlay on the same display. Each tells you a different thing. A practiced engineer reads them simultaneously.</p>
+
+<p>When to use each: <strong>live + averaged</strong> for general monitoring, <strong>max hold</strong> when hunting for intermittent signals, <strong>min hold</strong> when characterizing the noise floor or rejecting a known interferer, <strong>persistence</strong> (Chapter 2) when you want a probability density rather than a max or average. Welch is a tool. So is max hold. So is persistence. Each captures a different statistical aspect of the signal. The cost of an RTSA is paying for the compute that runs all of them in parallel; the value is having all of them at your fingertips when troubleshooting.</p>
+
+<h2>5.6 Choosing FFT Length for a Given Measurement</h2>
+
+<p>The user's most common question is: "what FFT length should I use?" The answer depends on what you are measuring.</p>
+
+<h3>For a known continuous signal</h3>
+
+<p>Use the longest FFT you can afford. Long FFTs give narrow RBW, which means lower noise floor (because less noise integrates into each bin) and higher dynamic range. The penalty is slow updates, but for a continuous signal that does not matter.</p>
+
+<p>For a 5G NR carrier viewed at 30 kHz subcarrier resolution, a 65,536-point FFT at 245 MS/s sample rate gives 3.7 kHz RBW, which is fine enough to resolve every subcarrier with margin. Each FFT takes 33 milliseconds to acquire, so the trace updates 30 times per second. Plenty fast for visual confirmation.</p>
+
+<h3>For an intermittent burst</h3>
+
+<p>Use a short FFT. A 1024-point FFT at 245 MS/s acquires in 4.2 microseconds, fast enough to land at least one window inside most realistic bursts. The RBW is 240 kHz, which is coarse but acceptable for burst visualization in a waterfall.</p>
+
+<h3>For accurate amplitude</h3>
+
+<p>Use a Flat-top window with a moderate FFT length. The Flat-top eliminates scalloping; the moderate length keeps the noise floor reasonable. 4096 points at 245 MS/s gives 60 kHz RBW with ENBW of 226 kHz under Flat-top. Amplitude readings are within 0.02 dB regardless of where the tone falls in the bin.</p>
+
+<h3>For modulation analysis</h3>
+
+<p>Match the FFT length to the symbol rate or subcarrier spacing. For 5G NR with 30 kHz subcarriers, you want bins of 7.5 kHz or finer (a quarter of subcarrier spacing). At 245 MS/s, that is at least 32,768 points. RTSA Suite PRO modulation analysis configures this automatically based on the standard you select.</p>
+
+<h3>For phase noise measurements</h3>
+
+<p>Use the longest FFT you can sit through. Phase noise sidebands close to a carrier need fine RBW to resolve. A 1 MHz offset measurement with 100 Hz RBW requires a million-point FFT. Modern RTSAs like the SPECTRAN V6 PLUS handle this through their high-resolution analysis path, often computed offline from streamed I/Q.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: presets in RTSA Suite PRO</h3>
+<p>RTSA Suite PRO ships with a library of measurement presets, each preconfigured with the right window, FFT length, overlap, and averaging strategy for a specific task. "5G NR EVM," "BLE channel survey," "ISM compliance," "Phase noise scan," and dozens more. The user picks a preset, points the instrument at the signal, and gets a correct measurement without needing to know which window or FFT length is appropriate.</p>
+<p>For practitioners who want to dig deeper, every preset is editable and saveable. Inherit a preset, tweak the FFT length for your specific scenario, save it under a new name. The compute pipeline stays valid because the framework forces consistent ENBW normalization. This is where the visual-graph approach (Chapter 4) and the preset library combine. Beginners get correctness from presets; experts get flexibility from the graph. Both work in the same instrument.</p>
+</div>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>The FFT computes the discrete Fourier transform in $O(N \log N)$ instead of $O(N^2)$, enabling real-time spectrum analysis.</li>
+  <li>Window functions taper the input to reduce spectral leakage at the cost of wider main lobes. Hann is general-purpose, Flat-top is for accurate amplitude, Blackman-Harris and Kaiser for high dynamic range.</li>
+  <li>Spectral leakage, scalloping loss, and equivalent noise bandwidth are three named artifacts of finite-length spectral estimation that the window choice manages.</li>
+  <li>Overlap-add and overlap-save processing enable gap-free coverage and efficient digital filtering in RTSA pipelines.</li>
+  <li>Welch's method averages multiple windowed periodograms for variance reduction in noise-floor estimation.</li>
+  <li>FFT length choice depends on the measurement: long for continuous signals, short for transient bursts, matched to symbol rates for modulation analysis, very long for phase noise.</li>
+  <li>Aaronia RTSA Suite PRO ships with editable measurement presets that pre-select windows, FFT lengths, overlap, and averaging for common tasks, while allowing full customization for advanced users.</li>
+</ul>
+</div>
+
+<div class="quiz">
+<h3>End-of-Chapter Quiz</h3>
+<ol>
+<li>What is the computational complexity of an FFT, compared to a naive DFT?
+  <p>A. $O(N^2)$ vs $O(N \log N)$, FFT is slower</p><p>B. $O(N \log N)$ vs $O(N^2)$, FFT is faster</p><p>C. Both are $O(N)$</p><p>D. $O(N!)$ vs $O(2^N)$</p>
+</li>
+<li>The bin spacing of an FFT is given by:
+  <p>A. $f_s \cdot N$</p><p>B. $f_s / N$</p><p>C. $N / f_s$</p><p>D. $f_s + N$</p>
+</li>
+<li>Which window is best for accurate absolute amplitude measurements of a known tone?
+  <p>A. Rectangular</p><p>B. Hann</p><p>C. Flat-top</p><p>D. Blackman-Harris</p>
+</li>
+<li>Which window provides the highest dynamic range (lowest sidelobes) at the cost of a wider main lobe?
+  <p>A. Hamming</p><p>B. Rectangular</p><p>C. Hann</p><p>D. Blackman-Harris or Kaiser</p>
+</li>
+<li>Spectral leakage is caused by:
+  <p>A. ADC quantization</p><p>B. Discontinuity at the boundary of an FFT window</p><p>C. LO phase noise</p><p>D. Antenna mismatch</p>
+</li>
+<li>Scalloping loss is the variation in measured amplitude as a signal:
+  <p>A. Moves between FFT bin centers</p><p>B. Sweeps across the full RTBW</p><p>C. Drifts in temperature</p><p>D. Triggers the FMT</p>
+</li>
+<li>Welch's method reduces variance in a PSD estimate by:
+  <p>A. Increasing the sample rate</p><p>B. Averaging multiple windowed periodograms</p><p>C. Using a longer FFT</p><p>D. Decreasing overlap</p>
+</li>
+<li>For a 65,536-point FFT at 245 MS/s, the resolution bandwidth is approximately:
+  <p>A. 4 Hz</p><p>B. 4 kHz (about 3.7 kHz)</p><p>C. 4 MHz</p><p>D. 245 MHz</p>
+</li>
+<li>To capture an intermittent burst, you should choose:
+  <p>A. The longest FFT possible</p><p>B. A short FFT (around 1024 points or fewer)</p><p>C. A flat-top window</p><p>D. No window at all</p>
+</li>
+<li>What benefit do measurement presets in RTSA Suite PRO provide?
+  <p>A. They limit user flexibility</p><p>B. They preconfigure windows, FFT length, overlap, and averaging for specific measurement tasks while remaining editable</p><p>C. They run at a faster sample rate</p><p>D. They eliminate the need for windowing</p>
+</li>
+</ol>
+<p style="margin-top:16px; font-style:italic; color:var(--bnc-deep-plum);">Answer key in Appendix E.</p>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 6 brings I/Q and FFT machinery together for modulation analysis. Constellation diagrams, EVM, symbol clock recovery, and protocol-specific workflows for Wi-Fi 6/6E/7, Bluetooth Low Energy, 5G NR, LoRa, and Zigbee. We work through a complete EVM measurement on a QPSK burst from raw I/Q to a numerical answer, using RTSA Suite PRO and Python side by side.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-04.html">&larr; Ch 4. I/Q Fundamentals</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-06.html">Ch 6. Modulation Analysis &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

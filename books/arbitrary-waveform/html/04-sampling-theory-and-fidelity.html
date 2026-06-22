@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 4: Sampling Theory and Signal Fidelity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+  .section-kick{font-family:"Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:2.5px;font-size:12px;font-weight:700;color:var(--bnc-sky-blue);margin:0 0 2px;}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<p class="section-kick" id="section-2-designing-and-generating-waveforms">Section 2 &middot; Designing and Generating Waveforms</p>
+
+<h2 id="chapter-4-sampling-theory-and-fidelity">Chapter 4: Sampling Theory and Signal Fidelity</h2>
+
+<figure>
+<img src="../figures/chapter-04-opener.png" alt="A smooth continuous sine wave overlaid with the discrete sample points and staircase reconstruction an AWG actually produces" />
+<figcaption><span class="fig-num">Figure 4.1</span> Every waveform an AWG produces starts life as a list of numbers. Sampling theory is the bridge between the continuous wave you imagine and the discrete one the instrument can actually build.</figcaption>
+</figure>
+
+<p>The first three chapters treated the arbitrary waveform generator mostly as a black box: signal in concept, signal out at the connector. This section opens the box. Chapters 4 through 7 cover the work that turns an idea into a real output, starting with the math that governs whether the output resembles what you asked for at all.</p>
+
+<p>Chapter 4 lays the foundation: sampling, aliasing, reconstruction, and quantization. These are the physics-level rules that decide how clean your signal can be and where it will fall apart. Chapter 5 moves to practice, covering how you actually build, store, and sequence waveforms in memory. Chapter 6 takes those waveforms into the field with modulation and real-world signal scenarios. Chapter 7 closes the section with triggering, synchronization, and multi-channel operation.</p>
+
+<p>If you read only one chapter in this section closely, make it this one. Almost every frustrating AWG result, the mysterious spur, the amplitude that sags at high frequency, the tone that should not be there, traces back to a sampling-theory principle that was quietly violated upstream.</p>
+
+<hr />
+
+<p>An arbitrary waveform generator does not draw a curve. It plays back a finite list of numbers at a fixed cadence and lets a digital-to-analog converter and an output filter do the rest. That single fact, that the signal is sampled, sets hard limits on what the instrument can and cannot reproduce. Sampling theory is not academic decoration here. It is the rulebook that tells you the highest frequency you can trust, where unwanted tones will appear, why the top of your band sags, and how much noise the finite resolution of the DAC adds to the floor.</p>
+
+<p>This chapter walks through five linked ideas. Each one is a place where fidelity is won or lost: the sampling theorem itself, aliasing and spectral images, sin(x)/x reconstruction roll-off, interpolation and oversampling, and quantization noise with dither. None of it is difficult, but the consequences compound, and the engineers who get clean signals are the ones who plan around all five at once.</p>
+
+<h3 id="nyquist-shannon">4.1 The Nyquist-Shannon Sampling Theorem</h3>
+
+<p>The Nyquist-Shannon sampling theorem states the central constraint plainly. To represent a signal without loss, you must sample at a rate strictly greater than twice the highest frequency component present in that signal. Sample at exactly twice, and you are already in trouble. Sample below it, and the lost information does not just disappear quietly. It comes back disguised as a lower frequency, which is the problem we cover in the next section.</p>
+
+<p>For an AWG, the sample clock is the term that matters. If the instrument updates its DAC at a sample rate of <code>Fs</code>, then the Nyquist frequency is <code>Fs/2</code>, and that is the theoretical ceiling on any frequency component in the waveform you generate. A 1.25 GS/s generator has a Nyquist frequency of 625 MHz. You cannot produce a clean 700 MHz tone from it, no matter how the waveform is defined, because there is no way to represent that tone in the sample stream.</p>
+
+<p><strong>The theoretical limit is not the practical limit.</strong> Pushing a signal right up to <code>Fs/2</code> looks fine on paper and behaves badly in hardware. Reconstruction filters are not brick walls, the sin(x)/x roll-off (section 4.3) eats your amplitude as you approach Nyquist, and images sit dangerously close to the band edge. The working rule among practicing engineers is to keep the highest frequency component well below <code>Fs/2</code>, often at or under <code>Fs/2.5</code> to <code>Fs/3</code> for signals where shape and spectral purity matter.</p>
+
+<table>
+<thead>
+<tr><th>Highest signal frequency</th><th>As a fraction of Fs</th><th>Practical verdict</th></tr>
+</thead>
+<tbody>
+<tr><td>0.50 &times; Fs</td><td>At Nyquist</td><td>Theoretical limit only. Do not design here.</td></tr>
+<tr><td>0.45 &times; Fs</td><td>Just under Nyquist</td><td>Aggressive. Needs a sharp filter and sinc correction.</td></tr>
+<tr><td>0.40 &times; Fs</td><td>Comfortable margin</td><td>Common upper bound for clean single tones.</td></tr>
+<tr><td>0.33 &times; Fs</td><td>Roughly Fs/3</td><td>Safe for complex and modulated waveforms.</td></tr>
+<tr><td>0.20 &times; Fs</td><td>Heavy oversampling</td><td>Easy filtering, low images, best fidelity.</td></tr>
+</tbody>
+</table>
+
+<blockquote><p><strong>Engineer's corner.</strong> The sampling theorem assumes the signal is band-limited before it is sampled. Inside an AWG you control the source waveform, so band-limiting is your responsibility, not the instrument's. If you define an ideal square wave with infinitely sharp edges and play it near Nyquist, you are asking for harmonics that physically cannot exist below <code>Fs/2</code>. They will fold back as aliases. Band-limit the math, not just the hardware.</p></blockquote>
+
+<h3 id="aliasing-and-images">4.2 Aliasing, Images, and the Nyquist Zones</h3>
+
+<p>Sampling is periodic, and periodicity in time produces repetition in frequency. When the DAC reconstructs your waveform, it does not produce a single clean copy of the spectrum. It produces that spectrum plus mirror copies, called images, repeated around every integer multiple of the sample rate: around <code>Fs</code>, <code>2Fs</code>, <code>3Fs</code>, and so on. The fundamental you wanted lives in the first Nyquist zone, from DC to <code>Fs/2</code>. The images live in the zones above it.</p>
+
+<figure>
+<img src="../figures/fig-4-2-nyquist-zones.svg" alt="Spectrum plot showing a fundamental tone in the first Nyquist zone and its reconstruction images near Fs and 2Fs, with Nyquist zone boundaries marked and a sin(x)/x envelope" />
+<figcaption><span class="fig-num">Figure 4.2</span> A single tone at f0 generates images at Fs-f0, Fs+f0, 2Fs-f0, and beyond. Each Nyquist zone is a mirror of its neighbor. The dashed sin(x)/x envelope shows how image amplitude falls off with frequency.</figcaption>
+</figure>
+
+<p><strong>Images are not aliases, but they become aliases when they fold.</strong> An image sitting up near <code>Fs</code> is harmless if your reconstruction filter removes it and your application never looks that high. The danger appears when a frequency component lands above <code>Fs/2</code> in the original waveform. There is no room for it in the first Nyquist zone, so it folds back, mirrored around <code>Fs/2</code>, and lands at a lower frequency where it masquerades as a legitimate tone. A 600 MHz component on an 1000 MS/s generator does not appear at 600 MHz. It aliases to 400 MHz, and no filter downstream can separate it from a real 400 MHz signal, because by then they are indistinguishable.</p>
+
+<p>Two defenses matter. The first is a <strong>reconstruction filter</strong>, an analog low-pass filter on the DAC output that passes the first Nyquist zone and rejects the images above it. The sharper this filter, the closer to Nyquist you can work, but sharp filters add cost, group-delay ripple, and phase distortion. The second defense is <strong>frequency planning</strong>: choosing a sample rate so that the tones you care about, and any images or aliases they generate, fall where the filter can deal with them. On wideband instruments engineers sometimes deliberately operate in a higher Nyquist zone, using an image as the output of interest, but that is an advanced tactic and demands careful filtering.</p>
+
+<blockquote><p><strong>Pro tip.</strong> When a spur appears at a frequency you cannot explain, check whether it is an alias before you chase it through the hardware. Compute <code>Fs minus your tone</code> and <code>2Fs minus your tone</code>. If the mystery spur matches one of those, you have a folding problem upstream, not a defective output stage. Raising the sample rate or band-limiting the source waveform usually makes it vanish.</p></blockquote>
+
+<h3 id="reconstruction-rolloff">4.3 Reconstruction and the sin(x)/x Roll-off</h3>
+
+<p>A practical DAC does not output mathematical impulses. It holds each sample value steady until the next clock edge, producing the familiar staircase output. That hold operation, called a zero-order hold, is convenient to build and has one unavoidable side effect: it shapes the spectrum with a sin(x)/x envelope, also written as a sinc function. Low frequencies pass at nearly full amplitude. As you climb toward Nyquist, the envelope rolls the amplitude down.</p>
+
+<figure>
+<img src="../figures/fig-4-3-sinc-rolloff.svg" alt="Amplitude roll-off curve following sin(x)/x from DC to the sample rate, with the minus 3.9 dB point marked at the Nyquist frequency Fs over 2" />
+<figcaption><span class="fig-num">Figure 4.3</span> The zero-order-hold sin(x)/x amplitude response from DC to Fs. Output amplitude falls to roughly -3.9 dB at the Nyquist frequency and reaches a null at Fs.</figcaption>
+</figure>
+
+<p><strong>The number to remember is -3.9 dB.</strong> At the Nyquist frequency, <code>Fs/2</code>, the zero-order hold has attenuated your signal by about 3.9 dB relative to DC. That is roughly a 36 percent amplitude loss, and it is not a defect. It is the cost of holding samples. The roll-off is gradual and predictable: a few tenths of a dB in the lower part of the band, climbing steeply as you near Nyquist, and reaching a complete null at <code>Fs</code> itself. This is also why working at, say, <code>0.4 &times; Fs</code> is so much kinder than working at <code>0.48 &times; Fs</code>. The penalty rises fast near the edge.</p>
+
+<p>The fix is <strong>sinc correction</strong>, sometimes called inverse-sinc or pre-emphasis filtering. You apply a filter, in the digital domain before the DAC or in an analog equalizer after it, whose response is the inverse of the sinc curve. It boosts the high end by exactly the amount the zero-order hold will cut, so the net response across the band stays flat. Many modern AWGs include selectable sinc correction. The tradeoff is that boosting the high end also lifts high-frequency noise and consumes a little dynamic range, so it is worth enabling when flatness matters and leaving off when it does not.</p>
+
+<table>
+<thead>
+<tr><th>Output frequency</th><th>sin(x)/x amplitude</th><th>Approx. attenuation</th></tr>
+</thead>
+<tbody>
+<tr><td>0.1 &times; Fs</td><td>0.984</td><td>-0.14 dB</td></tr>
+<tr><td>0.2 &times; Fs</td><td>0.935</td><td>-0.58 dB</td></tr>
+<tr><td>0.3 &times; Fs</td><td>0.858</td><td>-1.33 dB</td></tr>
+<tr><td>0.4 &times; Fs</td><td>0.757</td><td>-2.42 dB</td></tr>
+<tr><td>0.5 &times; Fs (Nyquist)</td><td>0.637</td><td>-3.92 dB</td></tr>
+</tbody>
+</table>
+
+<h3 id="interpolation-and-oversampling">4.4 Interpolation and Oversampling</h3>
+
+<p>If working near Nyquist is the source of so much grief, the obvious remedy is to move Nyquist further away. Oversampling does exactly that. You run the DAC faster than the signal strictly requires, which lifts <code>Fs/2</code> well above your highest frequency component and gives every downstream stage more room to work.</p>
+
+<p><strong>Oversampling buys margin on three fronts at once.</strong> First, it pushes the spectral images higher in frequency, away from the band of interest, so the reconstruction filter has a wide transition region to roll off in. A gentle, cheap filter with good phase behavior can replace a sharp, expensive one. Second, it moves your signal down the sin(x)/x curve toward the flat region, cutting the roll-off penalty. A tone at <code>0.4 &times; Fs</code> loses 2.4 dB; the same tone at <code>0.1 &times; Fs</code> loses less than 0.2 dB. Third, it spreads quantization noise across a wider bandwidth, which lowers the noise density inside your band of interest.</p>
+
+<p>Digital <strong>interpolation</strong> is the technique that raises the effective update rate without forcing you to author every sample by hand. The instrument takes your lower-rate sample stream and computes intermediate samples with a digital filter, presenting a higher-rate stream to the DAC. The original waveform is preserved, the images move up, and the analog filter relaxes. This is why many high-speed converters integrate 2x, 4x, or 8x interpolators on chip.</p>
+
+<p>The tradeoffs are real and worth naming. Running the DAC faster consumes <strong>memory</strong> if you store samples at the higher rate, and it consumes <strong>compute and power</strong> in the interpolation filter and the converter itself. There is also a point of diminishing returns: once your images are comfortably out of band and the roll-off is negligible, more oversampling mostly adds cost. The art is matching the oversampling ratio to what the signal and the filter actually need.</p>
+
+<table>
+<thead>
+<tr><th>Oversampling ratio</th><th>Image separation</th><th>Filter demand</th><th>Cost</th></tr>
+</thead>
+<tbody>
+<tr><td>1x (Nyquist-rate)</td><td>Images crowd the band edge</td><td>Very sharp filter required</td><td>Lowest memory, hardest analog</td></tr>
+<tr><td>2x</td><td>First image near Fs</td><td>Moderate filter</td><td>Balanced, common default</td></tr>
+<tr><td>4x</td><td>Images well separated</td><td>Gentle filter</td><td>More memory and compute</td></tr>
+<tr><td>8x and up</td><td>Images far out of band</td><td>Minimal filtering</td><td>Highest memory, power, and cost</td></tr>
+</tbody>
+</table>
+
+<h3 id="quantization-and-dither">4.5 Quantization Noise and Dither</h3>
+
+<p>Sampling deals with time. Quantization deals with amplitude. A DAC has a finite number of output levels, set by its vertical resolution: an N-bit converter offers 2 to the N distinct levels. Every sample must snap to the nearest available level, and the small rounding error left over is quantization error. Across a signal it behaves like added noise, the quantization noise that sets the converter's ideal noise floor.</p>
+
+<p>The familiar rule of thumb is that an ideal converter delivers roughly <strong>6.02 dB of signal-to-noise ratio per bit</strong>, plus about 1.76 dB. A perfect 14-bit DAC tops out near 86 dB SNR; a 16-bit DAC near 98 dB. Real converters fall short of the ideal, but the lesson holds: more bits means a lower noise floor and more headroom for small signals riding on large ones.</p>
+
+<p><strong>Quantization noise is not always benign noise.</strong> When the input is a simple, periodic waveform whose period lines up neatly with the sample grid, the rounding errors stop being random. They become periodic too, and periodic error produces discrete spectral spurs rather than a smooth floor. These spurs can be more damaging than broadband noise because they concentrate energy at specific frequencies, which is exactly where a sensitive measurement or a clean carrier cannot tolerate them. This shows up directly in the spurious-free dynamic range, the SFDR spec covered in Chapter 3.</p>
+
+<p><strong>Dither</strong> is the standard cure. You deliberately add a small amount of random noise to the signal before quantization. That randomness breaks the correlation between the signal and the rounding error, so the energy that would have piled up into discrete spurs spreads out into a smooth, benign noise floor instead. You trade a slightly higher broadband noise level for the disappearance of the spurs, and in most spectral-purity-sensitive applications that is a trade worth making. The dither amplitude is typically a fraction of one LSB to a few LSBs, just enough to randomize without meaningfully raising the floor.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> Dither and sinc correction pull in different directions, so set them with intent. Sinc correction boosts high-frequency content, which can lift the noise floor near the band edge; dither raises the floor everywhere by design. If your application lives or dies by a single clean carrier, favor low spurs (dither on) and accept the marginally higher floor. If you need flat broadband amplitude, favor sinc correction and watch the SFDR. Few signals need both pushed to the maximum at once.</p></blockquote>
+
+<p>Put the five ideas together and a working discipline emerges. Keep your highest frequency well under <code>Fs/2</code>. Plan the spectrum so images and aliases land where a filter can reject them. Expect and correct the sin(x)/x roll-off. Oversample enough to relax the analog filter without wasting memory. Choose resolution and dither to keep the noise floor and spurs below what your application can tolerate. Do that, and the output at the connector will look like the waveform you imagined. Skip any one of them, and sampling theory will remind you which one you skipped.</p>
+
+<p>As always, confirm the sample rate, resolution, and reconstruction-filter behavior of any specific instrument against its current datasheet at <a href="/">berkeleynucleonics.com</a> before you design around them.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-04.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-key-specifications.html">&larr; 3. Key Specifications</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="05-creating-and-sequencing-waveforms.html">5. Creating and Sequencing Waveforms &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

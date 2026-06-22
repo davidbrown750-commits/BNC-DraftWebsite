@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>03-materials</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">03-materials</h1>
+</header>
+<h1 id="chapter-3---properties-and-use-of-scintillation-materials">Chapter 3 - Properties and Use of Scintillation Materials</h1>
+<p>A working scintillator is a compromise. Light yield, decay time, density, atomic number, energy resolution, hygroscopicity, mechanical robustness, and cost all matter, and no single material optimizes all of them. The catalog of usable scintillators has expanded substantially since the first edition of this book, and the engineer specifying a detector in 2026 has more choices than they had in 2020. This chapter walks through the properties that matter, the material families, and which to reach for in which situation.</p>
+<h2 id="scintillator-properties">3.1 Scintillator Properties</h2>
+<p>Five characteristics, in roughly the order an engineer asks about them.</p>
+<p><strong>Density and effective Z.</strong> For gamma detection, high density and high Z mean high stopping power per unit volume. Inorganic scintillators range from 3.0 to 9.0 grams per cubic centimeter and from Z_eff of about 30 to over 70. The high-Z, high-density materials (BGO at 7.13 g/cc, LYSO at 7.20 g/cc, CdWO4 at 7.90 g/cc, PbWO4 at 8.28 g/cc) dominate applications where you need a compact, efficient gamma detector and you can tolerate the energy-resolution trade-off that comes with these materials. The low-Z scintillators (plastic at 1.02 g/cc, CaF2:Eu at 3.18 g/cc, YAP:Ce at 5.55 g/cc with low Z_eff) are reached for when you specifically want low backscatter for charged particles.</p>
+<p><strong>Light output.</strong> Photon statistics drive energy resolution at low energies, so high light yield is generally desirable. Light output is normally specified in photons per MeV (typically 10,000 to 60,000 for inorganic scintillators, 10,000 to 12,000 for plastics). It is sometimes specified relative to NaI(Tl) under the same conditions; when it is, a number around 100 means “comparable to NaI(Tl)”. The emission wavelength must also match the photodetector’s sensitivity, which is what Chapter 6 is about.</p>
+<p><strong>Decay time.</strong> The 1/e fall time of the scintillation pulse, after the rise. Some materials have multiple decay components (BaF2 has a sub-ns fast component and a 600 ns slow component; CsI(Tl) has 0.6 us and 3.4 us components; CLYC has 1, 50, and 1000 ns components). The “effective average decay time” reported in tables is a weighted average and can be misleading for fast-timing applications. For gating, timing, and high-rate counting, the fast component is what you actually use.</p>
+<p><strong>Mechanical and optical properties.</strong> Hygroscopicity is the big one. NaI(Tl) is highly hygroscopic; one fingerprint with a sweaty hand on a bare crystal will fog its surface. CsI(Tl) is only slightly hygroscopic and can be handled with reasonable care. CLLBC, CLYC, and the lanthanum halides are hygroscopic to various degrees. Hygroscopic materials must be hermetically sealed inside metal housings; this drives the canister design covered in Chapter 11. CsI(Tl) is also “plastic” in the mechanical sense: it deforms rather than cracking under stress, which is useful in array applications. NaI(Tl) cleaves preferentially along certain crystal planes. Refractive index ranges from 1.47 (CaF2) to 2.30 (CdWO4); higher indices make light extraction harder and impose stricter requirements on optical coupling.</p>
+<p><strong>Cost.</strong> A NaI(Tl) detector costs a small fraction of a LaBr3:Ce detector of similar volume, which costs a small fraction of a CLLBC detector of similar volume. Cost scales with crystal growth time, raw material cost, and yield. Custom geometries cost more than catalog sizes. Lead times have widened since 2022 across nearly all inorganic scintillators (Chapter 14, Section 14.10).</p>
+<h2 id="master-comparison-table">3.2 Master Comparison Table</h2>
+<p>Table 3.1 gives the working specifications of the most common scintillators. Newer materials are added in the rows highlighted as “since first edition.” For research-stage materials still in characterization, see Appendix A.</p>
+<p><strong>Table 3.1 - Physical properties of common scintillation materials</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Material</th>
+<th>Density (g/cc)</th>
+<th>Emission max (nm)</th>
+<th>Decay time</th>
+<th>Refractive index</th>
+<th>Light yield (% of NaI:Tl)</th>
+<th>Hygroscopic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>NaI(Tl)</td>
+<td>3.67</td>
+<td>415</td>
+<td>230 ns</td>
+<td>1.85</td>
+<td>100</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>CsI(Tl)</td>
+<td>4.51</td>
+<td>550</td>
+<td>0.6 / 3.4 us</td>
+<td>1.79</td>
+<td>45 (PMT) / 165 (PD)</td>
+<td>slightly</td>
+</tr>
+<tr class="odd">
+<td>CsI(Na)</td>
+<td>4.51</td>
+<td>420</td>
+<td>630 ns</td>
+<td>1.84</td>
+<td>85</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>CsI (undoped)</td>
+<td>4.51</td>
+<td>315</td>
+<td>16 ns</td>
+<td>1.95</td>
+<td>4-6</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>CaF2(Eu)</td>
+<td>3.18</td>
+<td>435</td>
+<td>840 ns</td>
+<td>1.47</td>
+<td>50</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>LaCl3:Ce (90%)</td>
+<td>3.79</td>
+<td>350</td>
+<td>70 ns</td>
+<td>1.90</td>
+<td>95-100</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>LaBr3:Ce (5%)</td>
+<td>5.08</td>
+<td>380</td>
+<td>16 ns</td>
+<td>1.90</td>
+<td>165-180</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>LaBr2.85Cl0.15:Ce (LBC)</td>
+<td>4.90</td>
+<td>380</td>
+<td>35 ns</td>
+<td>1.90</td>
+<td>140</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>CeBr3</td>
+<td>5.23</td>
+<td>370</td>
+<td>18 ns</td>
+<td>1.90</td>
+<td>130</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>SrI2(Eu)</td>
+<td>4.60</td>
+<td>450</td>
+<td>1-5 us</td>
+<td>1.85</td>
+<td>120-140</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>6LiI(Eu)</td>
+<td>4.08</td>
+<td>470</td>
+<td>1.4 us</td>
+<td>1.96</td>
+<td>35</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>6Li-glass (GS-20)</td>
+<td>2.6</td>
+<td>390/430</td>
+<td>60 ns</td>
+<td>1.56</td>
+<td>4-6</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>BaF2</td>
+<td>4.88</td>
+<td>220 / 315</td>
+<td>0.8 ns / 630 ns</td>
+<td>1.54</td>
+<td>5 (fast) / 16 (slow)</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>YAP:Ce</td>
+<td>5.55</td>
+<td>350</td>
+<td>27 ns</td>
+<td>1.94</td>
+<td>35-40</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>LYSO:Ce</td>
+<td>7.20</td>
+<td>420</td>
+<td>50 ns</td>
+<td>1.82</td>
+<td>70-80</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>LSO:Ce</td>
+<td>7.40</td>
+<td>420</td>
+<td>40 ns</td>
+<td>1.82</td>
+<td>70</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>GSO:Ce</td>
+<td>6.71</td>
+<td>440</td>
+<td>56 / 600 ns</td>
+<td>1.85</td>
+<td>20-25</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>BGO</td>
+<td>7.13</td>
+<td>480</td>
+<td>300 ns</td>
+<td>2.15</td>
+<td>15-20</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>CdWO4</td>
+<td>7.90</td>
+<td>470 / 540</td>
+<td>5 / 20 us</td>
+<td>2.30</td>
+<td>25-30</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>PbWO4</td>
+<td>8.28</td>
+<td>420</td>
+<td>7 ns</td>
+<td>2.16</td>
+<td>0.2</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td>Plastic (PVT-based)</td>
+<td>1.02</td>
+<td>375-600</td>
+<td>2-5 ns</td>
+<td>1.58</td>
+<td>25-30</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td>Cs2LiYCl6:Ce (CLYC)</td>
+<td>3.31</td>
+<td>275-450</td>
+<td>1 / 50 / 1000 ns</td>
+<td>1.81</td>
+<td>30-40 (gamma)</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>Cs2LiLaBr6:Ce (CLLB)</td>
+<td>4.18</td>
+<td>410</td>
+<td>55 / 270 ns</td>
+<td>n/a</td>
+<td>60</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td>Cs2LiLa(Br,Cl)6:Ce (CLLBC)</td>
+<td>4.10</td>
+<td>410</td>
+<td>55 / 270 ns</td>
+<td>n/a</td>
+<td>60-70</td>
+<td>yes</td>
+</tr>
+<tr class="odd">
+<td>GAGG:Ce (Gd3Al2Ga3O12:Ce)</td>
+<td>6.63</td>
+<td>520</td>
+<td>90-150 ns</td>
+<td>1.92</td>
+<td>130-160</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td><strong>Cs2HfCl6</strong> (since 1st ed.)</td>
+<td>3.86</td>
+<td>380</td>
+<td>4 us</td>
+<td>1.81</td>
+<td>130-180</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td><strong>CLLBC</strong> (expanded)</td>
+<td>4.10</td>
+<td>410</td>
+<td>55 / 270 / 1100 ns</td>
+<td>n/a</td>
+<td>60-70 (gamma)</td>
+<td>yes</td>
+</tr>
+<tr class="even">
+<td><strong>GYAGG:Ce</strong> (since 1st ed.)</td>
+<td>5.8</td>
+<td>540</td>
+<td>60-90 ns</td>
+<td>1.92</td>
+<td>110-130</td>
+<td>no</td>
+</tr>
+<tr class="odd">
+<td><strong>GAGG:Ce,Mg</strong> (since 1st ed.)</td>
+<td>6.63</td>
+<td>520</td>
+<td>50-90 ns</td>
+<td>1.92</td>
+<td>110-140</td>
+<td>no</td>
+</tr>
+<tr class="even">
+<td><strong>LuAG:Pr</strong> (since 1st ed.)</td>
+<td>6.73</td>
+<td>305</td>
+<td>20 ns</td>
+<td>1.84</td>
+<td>50-60</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>Notes: light yield is at room temperature, with PMT readout having a bi-alkali photocathode unless otherwise noted. CsI(Tl) in particular shows a very different relative light yield depending on whether the readout is PMT or photodiode/SiPM, because its 550 nm emission is far better matched to silicon than to a bialkali PMT.</p>
+<figure>
+<img src="../figures/fig-03-01-light-yield-vs-resolution.svg" alt="" /><figcaption>Figure 3.1 - The scintillator landscape mapped on light yield versus energy resolution. Top-left is the goal; CsI(Tl) appears at two locations because PMT versus SiPM readout shifts the measured pulse height substantially.</figcaption>
+</figure>
+<h2 id="material-families-and-their-applications">3.3 Material Families and Their Applications</h2>
+<p>This section walks through each major family, what it is good at, and where it tends to be deployed.</p>
+<h3 id="the-alkali-halide-workhorses">3.3.1 The Alkali Halide Workhorses</h3>
+<p><strong>NaI(Tl)</strong> - sodium iodide thallium-doped. The most widely used scintillation crystal for gamma spectroscopy because of its high light output, the good match between its 415 nm emission and the spectral response of bialkali PMTs, and its low cost relative to its competitors. Energy resolution at 662 keV is typically 6 to 7 percent FWHM. NaI(Tl) is hygroscopic; bare crystals fog within minutes in normal humidity. NaI(Tl) ingots can be grown to 400 mm diameter in batches of hundreds of kilograms and can be cut to almost any size or shape. Cleaves preferentially along certain crystal planes. The non-proportionality of NaI(Tl) limits its energy resolution at high gamma energies; this is the bottleneck the high-resolution proportional scintillators were developed to break.</p>
+<p><strong>CsI(Tl)</strong> - cesium iodide thallium-doped. Density 4.51 grams per cubic centimeter, higher than NaI(Tl). Only slightly hygroscopic; long-term humidity affects the surface but not the bulk. Mechanically tough; deforms rather than cracking under stress, which makes it suitable for arrays of long thin pixels. Emission at 550 nm makes it a poor match for bialkali PMTs (relative light yield about 45 percent of NaI(Tl) with PMT readout) but an excellent match for silicon photodiodes and SiPMs (relative yield about 165 percent of NaI(Tl) on silicon). The decay time has two components, 0.6 microsecond and 3.4 microsecond; the relative ratio depends on the ionization density, which means CsI(Tl) responds differently to alpha and gamma events and can be used for alpha-gamma pulse shape discrimination. CsI(Tl) coupled to SiPM arrays is the dominant configuration in modern handheld and compact gamma spectrometers.</p>
+<p><strong>CsI(Na)</strong> - cesium iodide sodium-doped. Hygroscopic, high light output, mechanically rugged. Emission at 420 nm matches PMTs well, so its relative light yield with PMT readout is about 85 percent of NaI(Tl). At temperatures below 120 degrees Celsius it is an alternative to NaI(Tl). Used heavily in geophysical applications (well logging) where ruggedness matters and where temperature operating range is well below 120 C.</p>
+<p><strong>CsI (undoped)</strong> - intrinsic cesium iodide. Same density and Z as the doped versions, but with a fast emission near 300 nm and a decay time of about 16 nanoseconds at room temperature. Light yield is much lower than the doped variants because most of the scintillation is thermally quenched. Primarily used in calorimetry and other physics applications where speed matters more than light yield.</p>
+<h3 id="the-high-resolution-proportional-scintillators">3.3.2 The High-Resolution Proportional Scintillators</h3>
+<p>These materials achieve energy resolution well below the alkali-halide limit because their light yield is more proportional to electron energy.</p>
+<p><strong>LaBr3:Ce</strong> - cerium-doped lanthanum bromide. Light yield about 165 to 180 percent of NaI(Tl). Decay time around 16 nanoseconds. Energy resolution of 2.5 to 3 percent FWHM at 662 keV in well-grown samples. Hygroscopic. The downside is intrinsic background from La-138, which contributes a continuous beta and gamma signal in the spectrum and limits low-background applications. Despite this, LaBr3:Ce is the high-resolution gamma scintillator of choice for handheld isotope identifiers and for security applications where energy resolution wins over background concerns.</p>
+<p><strong>LaCl3:Ce</strong> - cerium-doped lanthanum chloride. Lower density than LaBr3:Ce, lower light yield (about 95 to 100 percent of NaI(Tl)), 70 nanosecond decay. Same La-138 intrinsic background concern. Used where the chloride form’s better energy proportionality at low energies matters.</p>
+<p><strong>LBC</strong> - lanthanum bromide chloride mixed crystal (LaBr2.85Cl0.15:Ce). A compromise between LaBr3:Ce and LaCl3:Ce, with light yield about 140 percent of NaI(Tl) and 35 nanosecond decay time. Reduced La-138 background relative to pure LaBr3:Ce because of the lower lanthanum atomic concentration.</p>
+<p><strong>CeBr3</strong> - cerium bromide. Density 5.23 grams per cubic centimeter. Light yield about 130 percent of NaI(Tl). Decay time 18 nanoseconds. Energy resolution comparable to LaBr3:Ce. The big advantage over LaBr3:Ce is the absence of intrinsic background, which makes CeBr3 the high-resolution scintillator of choice for low-background and homeland-security applications where false alarms from intrinsic activity are a concern.</p>
+<p><strong>SrI2(Eu)</strong> - europium-doped strontium iodide. Light yield 120 to 140 percent of NaI(Tl). Slow decay time, 1 to 5 microseconds. Energy resolution as good as 2.5 percent FWHM at 662 keV in well-grown samples. Hygroscopic. The slow decay limits SrI2(Eu) for high-rate applications, but for low-to-moderate rate spectroscopy it competes directly with LaBr3:Ce on energy resolution without the La-138 background.</p>
+<p><strong>Cs2HfCl6 (CHC)</strong> - cesium hafnium chloride. The biggest material development between the first and second editions of this book. Density 3.86 grams per cubic centimeter. Light yield reported at 130 to 180 percent of NaI(Tl) in research-grade samples [1][2]. Decay time around 4 microseconds. Energy resolution of 2 to 3 percent FWHM at 662 keV in commercial samples and below 1 percent in the best research-grade samples [1]. Critically, Cs2HfCl6 is non-hygroscopic, which means it can be packaged in plastic or epoxy housings rather than welded metal canisters. The slow decay time limits high-rate spectroscopy, but for applications where energy resolution and ruggedness matter and rate is moderate, Cs2HfCl6 is a strong new option. Appendix A covers the material in depth.</p>
+<h3 id="the-fast-and-high-density-oxides">3.3.3 The Fast and High-Density Oxides</h3>
+<p><strong>BGO</strong> - bismuth germanate Bi4Ge3O12. Density 7.13 grams per cubic centimeter, very high stopping power. Modest light yield (15 to 20 percent of NaI(Tl)) and modest energy resolution (10 to 12 percent at 662 keV). 300 nanosecond decay time. Used heavily in PET, in high-energy physics calorimetry where compact stopping power matters more than energy resolution, in Compton suppression spectrometers as the anti-coincidence shield around an HPGe, and in well-logging where high density helps with the limited tool diameter.</p>
+<p><strong>LSO:Ce</strong> - cerium-doped lutetium oxyorthosilicate Lu2SiO5:Ce. Density 7.40 grams per cubic centimeter. Light yield about 70 percent of NaI(Tl). 40 nanosecond decay. The fast, dense scintillator that displaced BGO in commercial PET starting in the early 2000s.</p>
+<p><strong>LYSO:Ce</strong> - cerium-doped lutetium-yttrium oxyorthosilicate Lu2(1-x)Y2xSiO5:Ce. A solid solution of LSO and yttrium oxyorthosilicate with similar properties. Slightly cheaper to grow than pure LSO. Now the dominant PET crystal. Energy resolution around 8 to 10 percent at 662 keV is typical. Modern LYSO-based TOF-PET modules achieve coincidence resolving times below 200 picoseconds and are still improving [3].</p>
+<p><strong>GSO:Ce</strong> - cerium-doped gadolinium oxyorthosilicate Gd2SiO5:Ce. Density 6.71 g/cc. Lower light yield than LSO, dual decay times (56 ns fast, 600 ns slow). Used in PET historically, mostly displaced by LSO and LYSO.</p>
+<p><strong>YAP:Ce</strong> - cerium-doped yttrium aluminum perovskite YAlO3:Ce. Density 5.55 g/cc but low Z_eff, so it has lower stopping power for gammas than its density suggests. 27 nanosecond decay, light yield 35 to 40 percent of NaI(Tl). Non-hygroscopic and can withstand gamma doses up to 10^4 Gy without degradation, making it useful in radiation-hard applications. Used in positron lifetime studies, fast timing, and high-rate (multi-MHz) X-ray spectroscopy.</p>
+<p><strong>CdWO4</strong> - cadmium tungstate. Very high density (7.90 g/cc), low afterglow, slow decay (5 to 20 microseconds). Used in computed tomography arrays, in particle physics, and in geophysical research.</p>
+<p><strong>PbWO4</strong> - lead tungstate. Highest practical density (8.28 g/cc), fast decay (7 ns), but dramatically low light yield (0.2 percent of NaI(Tl)). Used in high-rate, high-energy physics calorimetry where all that matters is stopping power and timing, and where the calorimeter has enough channels and integration time to overcome the photon-statistics deficit. The CMS electromagnetic calorimeter at the Large Hadron Collider is the canonical PbWO4 application.</p>
+<h3 id="the-garnet-family">3.3.4 The Garnet Family</h3>
+<p>The garnet scintillators emerged commercially in the 2010s and have expanded rapidly. The base material is Gd3Al2Ga3O12, the gadolinium aluminum gallium garnet (GAGG), and dopants and substitutions have produced a substantial family.</p>
+<p><strong>GAGG:Ce</strong> - cerium-doped GAGG. Density 6.63 g/cc. Light yield 130 to 160 percent of NaI(Tl). Decay time 90 to 150 nanoseconds. Energy resolution 5 to 6 percent at 662 keV. Non-hygroscopic. Mechanically robust, can be machined into pixels, fibers, or arbitrary shapes. Emission at 520 nm is excellent for silicon photodetectors. GAGG:Ce coupled to SiPM arrays has become a standard architecture for compact gamma spectrometers and array detectors.</p>
+<p><strong>GAGG:Ce,Mg</strong> - magnesium-codoped variant. Magnesium codoping shortens the decay time substantially (down to 50 to 90 nanoseconds) by suppressing slow components, with a modest light yield reduction. The codoped material is preferred for high-rate applications and for timing.</p>
+<p><strong>GYAGG:Ce</strong> - gadolinium-yttrium aluminum gallium garnet. Yttrium substitution reduces density slightly (5.8 g/cc) and lowers Gd-related self-absorption issues at large crystal sizes. Light yield 110 to 130 percent of NaI(Tl).</p>
+<p><strong>LuAG:Ce</strong> and <strong>LuAG:Pr</strong> - lutetium aluminum garnet doped with cerium or praseodymium. Density 6.73 g/cc. LuAG:Pr in particular has 20 nanosecond decay and emits at 305 nanometers, useful for very fast timing applications. Light yield is lower than GAGG:Ce, around 50 to 60 percent of NaI(Tl). Used in fast timing and in transparent ceramic forms for pixelated arrays.</p>
+<p><strong>Transparent ceramic garnets</strong>. The newest development is the production of garnet scintillators not as bulk single crystals but as transparent ceramics, fabricated by powder consolidation and sintering. This eliminates the slow Czochralski growth process and allows fabrication of complex shapes and large areas. Performance is approaching but not yet equaling the best single-crystal samples. Appendix A covers the state of the art.</p>
+<h3 id="the-dual-gamma-neutron-elpasolites">3.3.5 The Dual Gamma-Neutron Elpasolites</h3>
+<p>Elpasolites are a family of mixed halides with the general formula Cs2NaY(Cl,Br)6 or related variants. They scintillate under both gamma rays and neutrons (via the 6Li or 6Li-equivalent nuclear reaction), and the difference in pulse shape between gamma and neutron events allows pulse shape discrimination. This makes elpasolites the dominant material for combined gamma-neutron handheld detection in homeland-security applications.</p>
+<p><strong>CLYC</strong> - Cs2LiYCl6:Ce. Density 3.31 g/cc. Light yield 30 to 40 percent of NaI(Tl) for gamma events. Three decay components (1, 50, 1000 nanoseconds), with the relative weights of the components depending on whether the event was a gamma or a neutron, which is what enables PSD. Energy resolution around 5 percent at 662 keV. Hygroscopic.</p>
+<p><strong>CLLB</strong> - Cs2LiLaBr6:Ce. Higher density (4.18 g/cc) than CLYC, higher light yield (around 60 percent of NaI(Tl) for gamma). Decay times 55 and 270 nanoseconds.</p>
+<p><strong>CLLBC</strong> - Cs2LiLa(Br,Cl)6:Ce. The mixed-halide version of CLLB. Density 4.10 g/cc. Light yield 60 to 70 percent of NaI(Tl) for gamma. Better energy resolution than CLYC, around 4 percent at 662 keV. The dominant material in current dual gamma-neutron handheld instruments.</p>
+<blockquote>
+<p><strong>Going Deeper - Pulse shape discrimination in elpasolites</strong></p>
+<p>A neutron capture event in CLYC, CLLB, or CLLBC produces a different mix of fast and slow scintillation light than a gamma interaction. Specifically, the ratio of the fast (singlet) component to the slow (triplet) component changes with linear energy transfer. Neutron capture produces a high-LET alpha and triton from the 6Li(n,alpha)3H reaction, which biases scintillation toward the slow component. Gamma interactions produce low-LET secondary electrons, biasing toward the fast component. PSD algorithms compute either a charge-comparison ratio (fast charge / total charge) or a time-of-arrival statistic and assign each event to a gamma or neutron bin in real time on the digital pulse processor. Modern implementations achieve figure-of-merit values above 3 for CLLBC, which corresponds to gamma misidentification rates below 0.01 percent at typical detection thresholds.</p>
+</blockquote>
+<h3 id="the-thermal-neutron-specialty-scintillators">3.3.6 The Thermal-Neutron Specialty Scintillators</h3>
+<p>For pure thermal neutron detection (without gamma sensitivity as a feature), three older specialty scintillators remain in use.</p>
+<p><strong>6LiI(Eu)</strong> - europium-doped lithium iodide enriched in Li-6. Light yield about 35 percent of NaI(Tl). Detects thermal neutrons via the 6Li(n,alpha)3H reaction, with Q value of 4.78 MeV. The thermal neutron peak appears at a gamma-equivalent energy above 3 MeV, well above most natural gamma background, which makes 6LiI(Eu) suitable for applications where gamma rejection by energy thresholding is sufficient. 90 percent of thermal neutrons absorb in 3 mm of material. Crystals are grown to 25 mm diameter.</p>
+<p><strong>6Li-glass (GS-20)</strong> - cerium-activated lithium silicate glass enriched in Li-6. Lower light yield (4 to 6 percent of NaI(Tl)) than 6LiI(Eu), so the thermal neutron peak is broader and appears around 1.6 MeV gamma-equivalent. 90 percent thermal neutron absorption in 1 mm. Non-hygroscopic. Used in security and physics applications that need a robust thermal neutron detector but can tolerate the lower energy resolution.</p>
+<p>Both 6Li-containing scintillators also detect fast neutrons, but with much lower efficiency than thermal.</p>
+<h3 id="the-barium-fluoride-special-case">3.3.7 The Barium Fluoride Special Case</h3>
+<p><strong>BaF2</strong> - barium fluoride. Two emission components: a fast sub-nanosecond UV component at 220 nm, and a slow 630 nanosecond component at 315 nm. The fast component requires a quartz-window photodetector to capture the UV. BaF2 is the fastest known inorganic scintillator and the choice for sub-nanosecond timing applications including positron lifetime measurements. Modest energy resolution (10 to 12 percent at 662 keV). Non-hygroscopic.</p>
+<h2 id="organic-plastic-scintillators">3.4 Organic (Plastic) Scintillators</h2>
+<p>Plastic scintillators are organic dye molecules embedded in a polymer matrix, typically polyvinyltoluene (PVT) or polystyrene. They are cheap, easy to machine, available in arbitrary sizes from millimeter pixels to multi-meter sheets, and fast (decay times in the few-nanosecond range). Light yield is modest (25 to 30 percent of NaI(Tl)). Energy resolution is poor, typically not used for spectroscopy. Density is around 1.02 grams per cubic centimeter, so stopping power for gammas is very low.</p>
+<p>Plastic scintillators are dominant in:</p>
+<ul>
+<li>Large-area neutron and gamma portal monitors (where cost per square meter wins)</li>
+<li>Cosmic-ray veto and active shielding (large area, fast timing)</li>
+<li>Charged-particle detection in physics experiments (Bethe-Bloch detection of MIPs)</li>
+<li>Pulse shape discrimination plastic formulations for n-gamma separation in alternatives to liquid scintillator</li>
+<li>Boron-loaded or lithium-loaded plastic for thermal neutron detection</li>
+<li>Wavelength-shifting fiber arrays in calorimetry</li>
+</ul>
+<p>The PSD plastics deserve a special mention: formulations that incorporate certain dye combinations exhibit distinct fast and slow components that allow pulse shape discrimination similar to elpasolite-based dual-mode detectors, with much lower cost and much larger achievable volumes [4]. The trade-off is lower discrimination figure-of-merit; PSD plastics are well-suited to portal-monitor applications where moderate discrimination at low cost beats high discrimination at high cost.</p>
+<h2 id="liquid-scintillators">3.5 Liquid Scintillators</h2>
+<p>Liquid scintillators are organic dye dissolved in a solvent (typically xylene, pseudocumene, or linear alkylbenzene). They share most properties with plastic scintillators (low density, fast, modest light yield, poor energy resolution) but with the additional ability to dissolve the radioactive sample directly into the scintillator. This is called “sample mixing” or “cocktail counting” and is the foundation of liquid scintillation counting (LSC) for low-energy beta detection.</p>
+<p>LSC is the only scintillation technique that delivers near-100-percent detection efficiency for tritium (H-3) and carbon-14 betas, because the radiation never has to cross a wall. The sample is mixed with the scintillator cocktail in a vial, the vial is loaded into a counter that measures the resulting scintillations through a photomultiplier system, and the counts are corrected for sample-related quenching. LSC is the workhorse technique for biomedical research with H-3 and C-14 labels, environmental monitoring of low-level beta activity, and bioassay of internally deposited radionuclides in workforce dosimetry.</p>
+<p>Liquid scintillators are also used in physics experiments at very large scales: kiloton-scale liquid scintillator detectors for neutrino physics (KamLAND, Daya Bay, JUNO under construction) and tens-of-cubic-meter active-shielding tanks around HPGe detectors in low-background applications.</p>
+<p>The main failure modes of liquid scintillators are oxygen quenching (which can cut light yield by 20 to 30 percent if the vial is not sealed), color quenching (sample color reduces the transmitted light), and chemical interaction between sample and cocktail. Modern cocktails are formulated to mitigate all three.</p>
+<h2 id="afterglow">3.6 Afterglow</h2>
+<p>Afterglow is the residual emission of light from a scintillator after a primary scintillation event, persisting on timescales much longer than the nominal decay time. It arises from delayed recombination of trapped charge carriers and varies dramatically across materials. CsI(Tl) has notable afterglow at the 0.1 percent level after several milliseconds; this matters for high-rate imaging applications such as CT, where pulse pile-up and afterglow combine to limit achievable rate. CdWO4 has been bred specifically for low afterglow. Plastic and most non-alkali halide inorganics have very low afterglow.</p>
+<p>Afterglow is specified in two ways: as a fraction of the prompt light at a specific time delay, and as a decay function over a longer timescale. Manufacturer specifications usually give the value at a few hundred milliseconds or 1 second, but applications-driven characterization may need data out to seconds.</p>
+<p>In a CT scanner, afterglow at the few-tens-of-microsecond timescale shows up as ghosting in the reconstructed image. In a PET scanner with a fast scintillator, prompt-component afterglow shows up as random coincidences. In a gamma camera, afterglow shows up as a slowly decaying baseline that the spectrum-stabilization algorithm has to track.</p>
+<blockquote>
+<p><strong>Going Deeper - Afterglow as trap depth distribution</strong></p>
+<p>The afterglow time profile reflects the distribution of trap depths in the scintillator. A trap of depth E_t has an emptying rate proportional to exp(-E_t / kT), so deep traps empty slowly and shallow traps empty fast. Multi-component afterglow (often modeled as a sum of two or three exponentials) reflects discrete trap populations. Annealing the crystal at elevated temperature can sometimes reduce trap density. Co-doping (the magnesium addition in GAGG:Ce,Mg, for example) is used specifically to suppress slow components by competing with the slow-trap pathway. Modern characterization techniques include thermoluminescence glow curves to map trap depth distributions and time-correlated single photon counting to directly measure the long-tail emission.</p>
+</blockquote>
+<h2 id="what-this-chapter-does-not-cover">3.7 What This Chapter Does Not Cover</h2>
+<p>The remaining gaps in the materials catalog are filled in:</p>
+<ul>
+<li><strong>Appendix A</strong> for the new and research-stage materials: Cs2HfCl6 deep dive, beyond-GAGG garnets, CsI(Tl)+SiPM optimization studies, perovskites, nanocomposites, and quantum-dot scintillators.</li>
+<li><strong>Chapter 4</strong> for thermal neutron detection details, including the helium-3 replacement story and modern fast-neutron PSD detectors.</li>
+<li><strong>Chapter 5</strong> for radiation damage and recovery across material families.</li>
+<li><strong>Chapter 6</strong> for emission-spectrum versus photodetector matching with quantitative quantum-efficiency curves.</li>
+</ul>
+<div class="callout">
+<p><strong>BNC in Practice - The first call to the applications engineer</strong></p>
+<p>When a customer calls and says “I need a scintillator,” the first three questions an experienced applications engineer asks are: what energy range, what count rate, and what environment. Energy range narrows the material choice to high-Z (gamma above 100 keV) or low-Z (charged particles), and points toward proportional or non-proportional materials. Count rate decides whether a microsecond decay (Cs2HfCl6, SrI2(Eu)) is acceptable or whether a fast scintillator (LYSO, GAGG:Ce,Mg, BaF2) is required. Environment, meaning temperature, vibration, humidity, and ambient radiation, decides the housing, the photodetector, and which Ce-doped or non-hygroscopic material wins. The catalog is wide. The right configuration is rarely the customer’s first guess.</p>
+</div>
+<h2 id="the-catalog-has-more-than-the-catalog-page-suggests">3.8 The Catalog Has More than the Catalog Page Suggests</h2>
+<p>The materials in this chapter are the standard catalog. The materials in Appendix A are the ones moving from research into the catalog. The next book on this subject, written ten years from now, will list materials that have not been characterized yet and will treat what is here today as the foundation. The pace is what is new. The right way to read this chapter is not as a closed list but as a snapshot of a list that is opening at the bottom every year.</p>
+<h2 id="chapter-3-quiz">Chapter 3 Quiz</h2>
+<ol type="1">
+<li>Why does CsI(Tl) deliver a much higher relative pulse height with a SiPM than with a bialkali PMT.</li>
+<li>What is the dominant intrinsic background source in LaBr3:Ce, and what alternative scintillator avoids it.</li>
+<li>Name two scintillators with energy resolution at 662 keV better than 3 percent FWHM.</li>
+<li>The garnet variant GAGG:Ce,Mg differs from GAGG:Ce in what scintillation property.</li>
+<li>Why does Cs2HfCl6 have a slow (microsecond) decay despite its high light yield.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>CsI(Tl) emits at 550 nm. Bialkali PMTs have low QE (around 12 percent) at 550 nm. RGB-optimized SiPMs have much higher PDE (around 55 percent) at 550 nm. The four to five fold improvement in photon detection per scintillation photon shows up as a higher measured pulse height.</li>
+<li>La-138 intrinsic radioactivity. CeBr3 has comparable energy resolution and high light yield without intrinsic background.</li>
+<li>Any two of: LaBr3:Ce (2.5 to 3 percent), CeBr3 (comparable), SrI2:Eu (2.5 to 2.7 percent), Cs2HfCl6 in best research samples (sub-1 percent), LBC.</li>
+<li>Magnesium codoping shortens the decay time (from 90 to 150 ns down to 50 to 90 ns) by suppressing slow components, with a modest reduction in light yield.</li>
+<li>The dominant emission mechanism is a self-trapped exciton on the [HfCl6]^2- octahedron rather than a doped activator. The radiative lifetime of self-trapped excitons is intrinsically long, on the microsecond scale.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] M. Yoshikawa et al., “Cs2HfCl6 single crystal growth and scintillation properties,” in <em>Proc. SCINT 2024</em>, Milan, 2024.</p>
+<p>[2] B. P. Kang et al., “Crystal growth and scintillation properties of Cs2HfCl6,” <em>J. Cryst. Growth</em>, vol. 593, p. 126773, 2022.</p>
+<p>[3] S. Vandenberghe et al., “Recent developments in time-of-flight PET,” <em>EJNMMI Phys.</em>, vol. 7, p. 35, 2020.</p>
+<p>[4] N. Zaitseva et al., “Plastic scintillators with efficient neutron/gamma pulse shape discrimination,” <em>Nucl. Instrum. Methods A</em>, vol. 668, pp. 88-93, 2012.</p>
+<p>[5] M. Kapusta et al., “Properties of CLLBC scintillator: A combined gamma and neutron detector,” in <em>Proc. IEEE NSS-MIC 2023</em>, Vancouver, 2023.</p>
+<p>[6] M. T. Lucchini et al., “Co-doping of GAGG with Mg for improved scintillation timing,” <em>Nucl. Instrum. Methods A</em>, vol. 816, pp. 176-183, 2016.</p>
+<p>[7] K. Kamada et al., “Composition engineering in cerium-doped (Lu,Gd)3(Ga,Al)5O12 single-crystal scintillators,” <em>Cryst. Growth Des.</em>, vol. 11, pp. 4484-4490, 2011.</p>
+<p>[8]</p>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 460" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 16px; font-weight: 700; fill: #003D6B; }
+    .lbl { font-size: 11px; fill: #2C3E50; }
+    .lbl-w { font-size: 11px; font-weight: 700; fill: #003D6B; text-anchor: middle; }
+    .note { font-size: 9px; fill: #2C3E50; opacity: 0.75; font-style: italic; }
+    .wire { stroke: #2C3E50; stroke-width: 1.8; fill: none; }
+    .gnd { stroke: #2C3E50; stroke-width: 1.5; fill: none; }
+    .blk-supply { fill: #ECEFF1; stroke: #003D6B; stroke-width: 1.8; }
+    .blk-store { fill: #d8e5f0; stroke: #003D6B; stroke-width: 1.8; }
+    .blk-switch { fill: #b6d4ee; stroke: #003D6B; stroke-width: 1.8; }
+    .blk-load { fill: #fff; stroke: #2C3E50; stroke-width: 1.8; }
+    .blk-trig { fill: #fff; stroke: #0078B6; stroke-width: 1.5; stroke-dasharray: 4 3; }
+    .blk-mon { fill: #fff; stroke: #0078B6; stroke-width: 1; }
+  </style>
+
+  <text x="440" y="28" text-anchor="middle" class="title">Anatomy of a high-power pulse generator</text>
+
+  <!-- HV DC Supply -->
+  <rect x="40" y="80" width="120" height="60" rx="4" class="blk-supply" />
+  <text x="100" y="110" text-anchor="middle" class="lbl-w">HV DC supply</text>
+  <text x="100" y="128" text-anchor="middle" class="note">slow charge, kV class</text>
+
+  <!-- Energy Store -->
+  <rect x="220" y="80" width="120" height="60" rx="4" class="blk-store" />
+  <text x="280" y="110" text-anchor="middle" class="lbl-w">Energy store</text>
+  <text x="280" y="128" text-anchor="middle" class="note">capacitor bank</text>
+
+  <!-- Switch -->
+  <rect x="400" y="80" width="120" height="60" rx="4" class="blk-switch" />
+  <text x="460" y="110" text-anchor="middle" class="lbl-w">Switch</text>
+  <text x="460" y="128" text-anchor="middle" class="note">MOSFET stack / IGBT</text>
+
+  <!-- Output network -->
+  <rect x="580" y="80" width="120" height="60" rx="4" class="blk-load" />
+  <text x="640" y="110" text-anchor="middle" class="lbl-w">Output network</text>
+  <text x="640" y="128" text-anchor="middle" class="note">termination, snubber</text>
+
+  <!-- Load -->
+  <rect x="760" y="80" width="100" height="60" rx="4" class="blk-load" />
+  <text x="810" y="115" text-anchor="middle" class="lbl-w">Load</text>
+
+  <!-- Wires connecting top row -->
+  <line x1="160" y1="110" x2="220" y2="110" class="wire" />
+  <line x1="340" y1="110" x2="400" y2="110" class="wire" />
+  <line x1="520" y1="110" x2="580" y2="110" class="wire" />
+  <line x1="700" y1="110" x2="760" y2="110" class="wire" />
+
+  <!-- Trigger logic -->
+  <rect x="380" y="220" width="160" height="50" rx="4" class="blk-trig" />
+  <text x="460" y="248" text-anchor="middle" class="lbl-w">Trigger logic</text>
+  <text x="460" y="262" text-anchor="middle" class="note">opto-isolated gate drive</text>
+
+  <!-- Internal pulse engine -->
+  <rect x="180" y="220" width="160" height="50" rx="4" class="blk-trig" />
+  <text x="260" y="248" text-anchor="middle" class="lbl-w">Pulse engine</text>
+  <text x="260" y="262" text-anchor="middle" class="note">width / PRF / delay</text>
+
+  <!-- TTL trigger input -->
+  <rect x="40" y="220" width="100" height="50" rx="4" class="blk-trig" />
+  <text x="90" y="248" text-anchor="middle" class="lbl-w">Trigger in</text>
+  <text x="90" y="262" text-anchor="middle" class="note">TTL / 5 V</text>
+
+  <!-- Wires for trigger chain -->
+  <line x1="140" y1="245" x2="180" y2="245" class="wire" />
+  <line x1="340" y1="245" x2="380" y2="245" class="wire" />
+  <!-- vertical to switch -->
+  <line x1="460" y1="220" x2="460" y2="140" class="wire" />
+  <polygon points="460,138 456,148 464,148" fill="#2C3E50" />
+
+  <!-- Monitor outputs -->
+  <rect x="580" y="220" width="120" height="50" rx="4" class="blk-mon" />
+  <text x="640" y="245" text-anchor="middle" class="lbl-w" style="font-size:10px">V monitor</text>
+  <text x="640" y="262" text-anchor="middle" class="note">scaled to scope</text>
+
+  <rect x="720" y="220" width="120" height="50" rx="4" class="blk-mon" />
+  <text x="780" y="245" text-anchor="middle" class="lbl-w" style="font-size:10px">I monitor</text>
+  <text x="780" y="262" text-anchor="middle" class="note">CVR or Rogowski</text>
+
+  <!-- Tap lines from output to monitors -->
+  <line x1="640" y1="140" x2="640" y2="220" class="wire" />
+  <circle cx="640" cy="140" r="3" fill="#2C3E50" />
+  <line x1="780" y1="140" x2="780" y2="220" class="wire" />
+  <circle cx="780" cy="140" r="3" fill="#2C3E50" />
+
+  <!-- Ground bus -->
+  <line x1="100" y1="140" x2="100" y2="380" class="wire" />
+  <line x1="100" y1="380" x2="810" y2="380" class="wire" />
+  <line x1="810" y1="140" x2="810" y2="380" class="wire" />
+
+  <!-- Ground symbol -->
+  <line x1="455" y1="380" x2="455" y2="395" class="gnd" />
+  <line x1="445" y1="395" x2="465" y2="395" class="gnd" />
+  <line x1="448" y1="400" x2="462" y2="400" class="gnd" />
+  <line x1="451" y1="405" x2="459" y2="405" class="gnd" />
+
+  <!-- Annotations -->
+  <text x="180" y="178" text-anchor="middle" class="note">slow charge path (kV / mA)</text>
+  <text x="540" y="178" text-anchor="middle" class="note">fast discharge path (kV / 100 A)</text>
+
+  <!-- Color legend -->
+  <rect x="40" y="425" width="14" height="14" class="blk-store" />
+  <text x="60" y="436" class="note">main signal path</text>
+  <rect x="200" y="425" width="14" height="14" class="blk-trig" />
+  <text x="220" y="436" class="note">control / timing</text>
+  <rect x="340" y="425" width="14" height="14" class="blk-mon" />
+  <text x="360" y="436" class="note">diagnostic outputs</text>
+
+  <text x="440" y="455" text-anchor="middle" class="note">Same skeleton, scaled to taste: PVX-4000 series, PCX-7500, PCO-6131, all variants on this diagram.</text>
+</svg>

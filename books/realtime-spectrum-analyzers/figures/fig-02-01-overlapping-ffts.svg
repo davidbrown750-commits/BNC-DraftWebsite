@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2C3E50"/>
+    </marker>
+    <linearGradient id="hannGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0078B6" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#0078B6" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#0078B6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <text x="550" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Figure 2-1: Overlapping FFT Processing for Gap-Free Observation</text>
+  <text x="550" y="50" text-anchor="middle" font-size="12" fill="#486581">75% overlap means every sample is fully weighted by at least one window</text>
+
+  <!-- TOP: time axis -->
+  <line x1="60" y1="100" x2="1040" y2="100" stroke="#486581" stroke-width="1.5" marker-end="url(#arrow2)"/>
+  <text x="50" y="105" text-anchor="end" font-size="12" fill="#486581">time</text>
+  <text x="1050" y="105" font-size="12" fill="#486581">t →</text>
+
+  <!-- Window function shapes (Hann-shaped bell curves) - 4 overlapping windows -->
+  <g>
+    <!-- Window 1 (starts at 100, ends at 380) -->
+    <path d="M 100,200 C 120,200 140,140 240,140 C 340,140 360,200 380,200 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5"/>
+    <text x="240" y="135" text-anchor="middle" font-size="11" fill="#003D6B" font-weight="600">FFT 1</text>
+
+    <!-- Window 2 (starts at 170, ends at 450) - 75% overlap with window 1 -->
+    <path d="M 170,260 C 190,260 210,200 310,200 C 410,200 430,260 450,260 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5"/>
+    <text x="310" y="195" text-anchor="middle" font-size="11" fill="#003D6B" font-weight="600">FFT 2</text>
+
+    <!-- Window 3 (starts at 240, ends at 520) -->
+    <path d="M 240,200 C 260,200 280,140 380,140 C 480,140 500,200 520,200 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5"/>
+    <text x="380" y="135" text-anchor="middle" font-size="11" fill="#003D6B" font-weight="600">FFT 3</text>
+
+    <!-- Window 4 (starts at 310, ends at 590) -->
+    <path d="M 310,260 C 330,260 350,200 450,200 C 550,200 570,260 590,260 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5"/>
+    <text x="450" y="195" text-anchor="middle" font-size="11" fill="#003D6B" font-weight="600">FFT 4</text>
+
+    <!-- And more windows fading out -->
+    <path d="M 380,200 C 400,200 420,140 520,140 C 620,140 640,200 660,200 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5" opacity="0.6"/>
+    <path d="M 450,260 C 470,260 490,200 590,200 C 690,200 710,260 730,260 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5" opacity="0.45"/>
+    <path d="M 520,200 C 540,200 560,140 660,140 C 760,140 780,200 800,200 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5" opacity="0.3"/>
+    <path d="M 590,260 C 610,260 630,200 730,200 C 830,200 850,260 870,260 Z" fill="url(#hannGrad)" stroke="#0078B6" stroke-width="1.5" opacity="0.2"/>
+  </g>
+
+  <!-- Bracket showing T_FFT and T_hop -->
+  <g transform="translate(0,310)">
+    <line x1="100" y1="0" x2="380" y2="0" stroke="#c0392b" stroke-width="1.5"/>
+    <line x1="100" y1="-5" x2="100" y2="5" stroke="#c0392b" stroke-width="1.5"/>
+    <line x1="380" y1="-5" x2="380" y2="5" stroke="#c0392b" stroke-width="1.5"/>
+    <text x="240" y="-8" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="600">T_FFT (full window length)</text>
+
+    <line x1="100" y1="22" x2="170" y2="22" stroke="#1b5e20" stroke-width="1.5"/>
+    <line x1="100" y1="17" x2="100" y2="27" stroke="#1b5e20" stroke-width="1.5"/>
+    <line x1="170" y1="17" x2="170" y2="27" stroke="#1b5e20" stroke-width="1.5"/>
+    <text x="135" y="40" text-anchor="middle" font-size="11" fill="#1b5e20" font-weight="600">T_hop = T_FFT/4</text>
+    <text x="135" y="54" text-anchor="middle" font-size="10" fill="#1b5e20">(75% overlap)</text>
+  </g>
+
+  <!-- Burst examples below -->
+  <g transform="translate(0,400)">
+    <text x="550" y="0" text-anchor="middle" font-size="13" font-weight="600" fill="#003D6B">Burst capture examples</text>
+
+    <line x1="60" y1="20" x2="1040" y2="20" stroke="#486581" stroke-width="1"/>
+
+    <!-- Captured burst -->
+    <rect x="280" y="14" width="40" height="12" fill="#1b5e20"/>
+    <text x="300" y="50" text-anchor="middle" font-size="11" fill="#1b5e20">burst lasting 2.5x T_hop</text>
+    <text x="300" y="65" text-anchor="middle" font-size="10" font-weight="600" fill="#1b5e20">CAPTURED with full energy in FFT 2 and FFT 3</text>
+
+    <!-- Marginal burst -->
+    <rect x="500" y="16" width="14" height="8" fill="#0078B6"/>
+    <text x="507" y="50" text-anchor="middle" font-size="11" fill="#003D6B">burst lasting ~T_hop</text>
+    <text x="507" y="65" text-anchor="middle" font-size="10" font-weight="600" fill="#003D6B">CAPTURED but with reduced energy</text>
+
+    <!-- POI floor burst (only with peak detection hardware) -->
+    <rect x="700" y="18" width="3" height="4" fill="#c0392b"/>
+    <text x="703" y="50" text-anchor="middle" font-size="11" fill="#c0392b">burst &lt; T_hop (10 ns)</text>
+    <text x="703" y="65" text-anchor="middle" font-size="10" font-weight="600" fill="#c0392b">CAPTURED via hardware peak detection</text>
+  </g>
+
+  <g transform="translate(60, 510)">
+    <text x="0" y="0" font-size="11" fill="#486581">RBW = f_s / N_FFT  •  POI_min ≤ T_hop with peak detection  •  Aaronia SPECTRAN V6 PLUS: POI = 10 ns</text>
+  </g>
+</svg>

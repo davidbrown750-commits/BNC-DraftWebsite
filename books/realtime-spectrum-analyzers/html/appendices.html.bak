@@ -1,0 +1,500 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appendices - Nuts and Bolts of Real-Time Spectrum Analysis</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<h1>Appendices A through J</h1>
+
+<div class="toc">
+<h3>Table of Contents</h3>
+<ul>
+<li><a href="#appA">Appendix A - Glossary of RTSA Terms</a></li>
+<li><a href="#appB">Appendix B - Math Reference</a></li>
+<li><a href="#appC">Appendix C - Aaronia Product Landscape Reference</a></li>
+<li><a href="#appD">Appendix D - Quick Reference Tables</a></li>
+<li><a href="#appE">Appendix E - Quiz Answer Keys</a></li>
+<li><a href="#appF">Appendix F - Final Comprehensive Assessment</a></li>
+<li><a href="#appG">Appendix G - Education Pathways</a></li>
+<li><a href="#appH">Appendix H - Industry Snapshot</a></li>
+<li><a href="#appI">Appendix I - Standards Quick Reference</a></li>
+<li><a href="#appJ">Appendix J - Tools, Software, and Datasets</a></li>
+</ul>
+</div>
+
+<h1 id="appA">Appendix A: Glossary of RTSA Terms</h1>
+
+<p>The full glossary of 80+ terms is available in the appendices Markdown file. Highlights here include the most-referenced terms across the book.</p>
+
+<p><span class="glossary-term">RTBW (Real-Time Bandwidth)</span> - Width of spectrum that an RTSA digitizes simultaneously with no time gaps.</p>
+<p><span class="glossary-term">POI (Probability of Intercept)</span> - Minimum signal duration captured with near certainty by an analyzer. SPECTRAN V6 PLUS achieves 10 ns POI.</p>
+<p><span class="glossary-term">SigMF</span> - Open standard for I/Q file metadata; JSON sidecar paired with raw data file.</p>
+<p><span class="glossary-term">PDW (Pulse Descriptor Word)</span> - Fixed-format record describing a single pulse: TOA, PW, frequency, amplitude.</p>
+<p><span class="glossary-term">EVM (Error Vector Magnitude)</span> - RMS error between received and ideal constellation points, normalized by reference power.</p>
+<p><span class="glossary-term">DRFM (Digital Radio Frequency Memory)</span> - EW jammer that captures, modifies, and retransmits incoming victim signals.</p>
+<p><span class="glossary-term">IsoLOG 3D DF</span> - Aaronia's direction-finding antenna family with sectored arrays and elevation capability. 16 sectors, 32 antennas, 400 MHz to 40 GHz, 8 microsecond bearing.</p>
+<p><span class="glossary-term">SPECTRAN V6 PLUS</span> - Aaronia's flagship USB real-time spectrum analyzer family.</p>
+<p><span class="glossary-term">Wrapped Spectrum</span> - Aaronia patented display that stacks frequency axis across multiple lines for high-resolution wide-span monitoring.</p>
+
+<p><em>For the full 80+ term glossary, see the Markdown source in /book/appendices/APPENDICES-A-F.md.</em></p>
+
+<h1 id="appB">Appendix B: Math Reference</h1>
+
+<h2>Fourier Transform</h2>
+
+<p><strong>DFT:</strong></p>
+<div class="math-display">$$X[k] = \sum_{n=0}^{N-1} x[n] e^{-j 2\pi k n / N}$$</div>
+
+<p><strong>Bin frequency:</strong> $f_k = k \cdot f_s / N$. <strong>RBW:</strong> $\Delta f = f_s / N$.</p>
+
+<h2>Window Functions</h2>
+
+<table>
+<thead><tr><th>Window</th><th>ENBW factor</th><th>Highest sidelobe (dB)</th><th>Main lobe -3 dB (bins)</th></tr></thead>
+<tbody>
+<tr><td>Rectangular</td><td>1.00</td><td>-13</td><td>0.89</td></tr>
+<tr><td>Hann</td><td>1.50</td><td>-32</td><td>1.44</td></tr>
+<tr><td>Hamming</td><td>1.36</td><td>-43</td><td>1.30</td></tr>
+<tr><td>Blackman</td><td>1.73</td><td>-58</td><td>1.68</td></tr>
+<tr><td>Blackman-Harris</td><td>2.00</td><td>-92</td><td>1.90</td></tr>
+<tr><td>Flat-top</td><td>3.77</td><td>-88</td><td>3.86</td></tr>
+</tbody>
+</table>
+
+<h2>POI Formula (Swept Analyzer)</h2>
+
+<div class="math-display">$$P_{\text{intercept}} = \frac{t_{\text{dwell}} + t_b}{T_{\text{sweep}}}$$ where $$t_{\text{dwell}} = \frac{B_{IF} \cdot T_{\text{sweep}}}{\Delta f}$$</div>
+
+<h2>Friis Noise Formula</h2>
+
+<div class="math-display">$$F_{\text{total}} = F_1 + \frac{F_2 - 1}{G_1} + \frac{F_3 - 1}{G_1 G_2} + \cdots$$</div>
+
+<h2>EVM</h2>
+
+<div class="math-display">$$\text{EVM}_{rms} = \sqrt{\frac{\frac{1}{N} \sum_n |\vec{e}[n]|^2}{P_{\text{ref}}}}$$</div>
+
+<h2>IIP3 / IM3</h2>
+
+<div class="math-display">$$P_{IM3} = 3P - 2 \cdot P_{IIP3}$$</div>
+
+<h2>Decibel Quick Reference</h2>
+
+<table>
+<thead><tr><th>Linear ratio</th><th>dB (power)</th><th>dB (voltage)</th></tr></thead>
+<tbody>
+<tr><td>0.001</td><td>-30</td><td>-60</td></tr>
+<tr><td>0.1</td><td>-10</td><td>-20</td></tr>
+<tr><td>0.5</td><td>-3</td><td>-6</td></tr>
+<tr><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>2</td><td>+3</td><td>+6</td></tr>
+<tr><td>10</td><td>+10</td><td>+20</td></tr>
+<tr><td>100</td><td>+20</td><td>+40</td></tr>
+<tr><td>1000</td><td>+30</td><td>+60</td></tr>
+</tbody>
+</table>
+
+<h1 id="appC">Appendix C: Aaronia Product Landscape</h1>
+
+<h2>SPECTRAN V6 PLUS Family</h2>
+
+<table>
+<thead><tr><th>Model</th><th>Real-Time BW</th><th>Frequency Range</th><th>Vector SG</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td>SPECTRAN V6 ECO 100XA-6</td><td>44 MHz</td><td>9 kHz - 6 GHz</td><td>No</td><td>Education, hobbyist</td></tr>
+<tr><td>SPECTRAN V6 PLUS 250XA-6</td><td>80 MHz (120 opt)</td><td>9 kHz - 6/8 GHz</td><td>No</td><td>Field work, ISM</td></tr>
+<tr><td>SPECTRAN V6 PLUS 500XA-6</td><td>80 MHz (120 opt)</td><td>9 kHz - 6/8 GHz</td><td>Yes</td><td>Tx/Rx test bench</td></tr>
+<tr><td>SPECTRAN V6 PLUS 2000XA-6</td><td>160 MHz (245/490 opt)</td><td>9 kHz - high tier</td><td>Yes</td><td>mmWave, EW, broadband</td></tr>
+</tbody>
+</table>
+
+<p><strong>Cascading:</strong> Four V6 PLUS units yield 1 GHz aggregate RTBW. <strong>POI:</strong> 10 nanoseconds. <strong>Sweep speed:</strong> 1+ THz/s class.</p>
+
+<h2>IsoLOG 3D DF Antenna Family</h2>
+
+<table>
+<thead><tr><th>Model</th><th>Frequency Range</th><th>Sectors / Antennas</th><th>Bearing Speed</th><th>Tracking Accuracy</th></tr></thead>
+<tbody>
+<tr><td>IsoLOG 3D DF 80-8</td><td>680 MHz - 8 GHz</td><td>16 / 16</td><td>8 µs/sector</td><td>1-3 deg</td></tr>
+<tr><td>IsoLOG 3D DF 160-8</td><td>400 MHz - 8 GHz</td><td>16 / 32</td><td>8 µs/sector</td><td>1-3 deg</td></tr>
+<tr><td>IsoLOG 3D DF (full)</td><td>400 MHz - 40 GHz</td><td>16 / 32</td><td>8 µs/sector</td><td>1 deg (with V6 PLUS)</td></tr>
+</tbody>
+</table>
+
+<p><strong>Common features:</strong> Watertight radome, Ethernet+power integration, 60 dBi max gain, software included for Windows/Linux/macOS.</p>
+
+<h2>RTSA Suite PRO Capabilities</h2>
+
+<ul>
+<li><strong>Display modes:</strong> Live trace, waterfall, persistence, density, wrapped spectrum.</li>
+<li><strong>Modulation:</strong> CW, sweep, noise, pulse, FSK, BPSK, ASK, QPSK, QPSK-C, 16-QAM through 4096-QAM, OFDM, raster image, echo/reflection.</li>
+<li><strong>Direction finding:</strong> Real-time 3D bearing with elevation, cross-bearings, mobile truck support, GPS position solving, 3D map view.</li>
+<li><strong>Recording:</strong> 24/7 I/Q streaming up to 245 MHz, SigMF format, replay-as-live.</li>
+<li><strong>Triggers:</strong> Frequency mask, level, pulse, external, software-defined.</li>
+<li><strong>Visual programming:</strong> Block-based pipeline editor with custom Python and C++ blocks.</li>
+<li><strong>Data export:</strong> SigMF, KML, KMZ, GeoJSON, NMEA, CSV, MQTT, REST API.</li>
+</ul>
+
+<h1 id="appD">Appendix D: Quick Reference Tables</h1>
+
+<h2>RBW vs FFT Length</h2>
+
+<table>
+<thead><tr><th>$f_s$ \\ $N$</th><th>1024</th><th>4096</th><th>16,384</th><th>65,536</th><th>1,048,576</th></tr></thead>
+<tbody>
+<tr><td>100 MS/s</td><td>97.7 kHz</td><td>24.4 kHz</td><td>6.1 kHz</td><td>1.5 kHz</td><td>95 Hz</td></tr>
+<tr><td>245 MS/s</td><td>239 kHz</td><td>60 kHz</td><td>15 kHz</td><td>3.7 kHz</td><td>234 Hz</td></tr>
+<tr><td>500 MS/s</td><td>488 kHz</td><td>122 kHz</td><td>30.5 kHz</td><td>7.6 kHz</td><td>477 Hz</td></tr>
+<tr><td>1 GS/s</td><td>977 kHz</td><td>244 kHz</td><td>61 kHz</td><td>15 kHz</td><td>953 Hz</td></tr>
+<tr><td>2 GS/s</td><td>1.95 MHz</td><td>488 kHz</td><td>122 kHz</td><td>31 kHz</td><td>1.9 kHz</td></tr>
+</tbody>
+</table>
+
+<h2>Window Quick-Pick</h2>
+
+<table>
+<thead><tr><th>Use Case</th><th>Window</th></tr></thead>
+<tbody>
+<tr><td>General spectrum monitoring</td><td>Hann</td></tr>
+<tr><td>Accurate amplitude</td><td>Flat-top</td></tr>
+<tr><td>Weak signal near strong (high dyn. range)</td><td>Blackman-Harris</td></tr>
+<tr><td>Tunable extreme suppression</td><td>Kaiser</td></tr>
+<tr><td>Tones aligned to bins (rare)</td><td>Rectangular</td></tr>
+</tbody>
+</table>
+
+<h2>Common Signal Bandwidths</h2>
+
+<table>
+<thead><tr><th>Signal</th><th>Bandwidth</th></tr></thead>
+<tbody>
+<tr><td>FM broadcast</td><td>200 kHz</td></tr>
+<tr><td>Wi-Fi 4-6</td><td>20-160 MHz</td></tr>
+<tr><td>Wi-Fi 7</td><td>20-320 MHz</td></tr>
+<tr><td>LTE</td><td>1.4-20 MHz</td></tr>
+<tr><td>5G NR FR1</td><td>5-100 MHz</td></tr>
+<tr><td>5G NR FR2</td><td>50-400 MHz</td></tr>
+<tr><td>BLE</td><td>1-2 MHz hops</td></tr>
+<tr><td>LoRa</td><td>125-500 kHz</td></tr>
+<tr><td>GPS L1 C/A</td><td>2 MHz</td></tr>
+</tbody>
+</table>
+
+<h2>Frequency Bands</h2>
+
+<table>
+<thead><tr><th>Band</th><th>Range</th><th>Band</th><th>Range</th></tr></thead>
+<tbody>
+<tr><td>HF</td><td>3-30 MHz</td><td>X-band</td><td>8-12 GHz</td></tr>
+<tr><td>VHF</td><td>30-300 MHz</td><td>Ku-band</td><td>12-18 GHz</td></tr>
+<tr><td>UHF</td><td>300 MHz-3 GHz</td><td>K-band</td><td>18-27 GHz</td></tr>
+<tr><td>L-band</td><td>1-2 GHz</td><td>Ka-band</td><td>27-40 GHz</td></tr>
+<tr><td>S-band</td><td>2-4 GHz</td><td>V-band</td><td>40-75 GHz</td></tr>
+<tr><td>C-band</td><td>4-8 GHz</td><td>W-band</td><td>75-110 GHz</td></tr>
+</tbody>
+</table>
+
+<h1 id="appE">Appendix E: Quiz Answer Keys</h1>
+
+<div class="answer-key">
+<strong>Chapter 1:</strong> 1.B  2.B  3.B  4.C  5.D  6.B  7.C  8.C<br>
+<strong>Chapter 2:</strong> 1.B  2.B  3.B  4.C  5.C  6.C  7.B  8.D  9.B  10.B<br>
+<strong>Chapter 3:</strong> 1.B  2.B  3.B  4.C  5.B  6.B  7.B  8.B  9.B  10.C<br>
+<strong>Chapter 4:</strong> 1.B  2.B  3.D  4.B  5.B  6.B  7.C  8.B  9.C  10.C<br>
+<strong>Chapter 5:</strong> 1.B  2.B  3.C  4.D  5.B  6.A  7.B  8.B  9.B  10.B<br>
+<strong>Chapter 6:</strong> 1.B  2.C  3.B  4.A  5.C  6.B  7.C  8.C  9.D  10.B<br>
+<strong>Chapter 7:</strong> 1.B  2.B  3.D  4.B  5.C  6.B  7.B  8.A  9.B  10.C<br>
+<strong>Chapter 8:</strong> 1.B  2.B  3.C  4.C  5.B  6.B  7.C  8.B  9.A  10.B<br>
+<strong>Chapter 9:</strong> 1.B  2.B  3.B  4.B  5.B  6.B  7.B  8.C  9.B  10.D<br>
+<strong>Chapter 10:</strong> 1.C  2.B  3.B  4.B  5.A  6.C  7.C  8.A  9.B  10.C<br>
+<strong>Chapter 11:</strong> 1.C  2.B  3.B  4.B  5.B  6.B  7.C  8.B  9.D  10.B<br>
+<strong>Chapter 12:</strong> 1.B  2.B  3.B  4.C  5.B  6.B  7.D  8.D  9.A  10.B<br>
+<strong>Chapter 13:</strong> 1.B  2.B  3.B  4.B  5.B  6.C  7.B  8.D  9.A  10.A
+</div>
+
+<h1 id="appF">Appendix F: Final Comprehensive Assessment</h1>
+
+<p>40-question comprehensive assessment available in the Markdown source. Answer key:</p>
+
+<div class="answer-key">
+1.B  2.B  3.C  4.B  5.B  6.B  7.B  8.B  9.B  10.A<br>
+11.C  12.B  13.B  14.B  15.B  16.C  17.C  18.B  19.B  20.B<br>
+21.B  22.B  23.C  24.A  25.C  26.B  27.B  28.B  29.C  30.B<br>
+31.B  32.B  33.C  34.B  35.B  36.C  37.C  38.C  39.B  40.B
+</div>
+
+<p><strong>Scoring:</strong> 36-40 correct: Mastery. 30-35: Strong working knowledge. 24-29: Solid foundation; review weak areas. Below 24: Re-read recommended.</p>
+
+<h1 id="appG">Appendix G: Education Pathways</h1>
+
+<h2>Universities with Strong RF / Microwave Programs</h2>
+
+<h3>United States</h3>
+<p>MIT (Lincoln Lab affiliation), Stanford (BWRC ties), UC Berkeley (BWRC), Georgia Tech (GTRI), University of Michigan (Radlab), University of Texas Austin (WNCG), Virginia Tech (Wireless@VT), USC, Carnegie Mellon.</p>
+
+<h3>Europe</h3>
+<p>ETH Zurich (IIS), TU Munich (Hochfrequenztechnik), KTH Stockholm (Wireless@KTH), Imperial College London, TU Delft, Aalborg University.</p>
+
+<h3>Asia</h3>
+<p>Tsinghua, IIT Bombay/Madras/Delhi, NUS Singapore, University of Tokyo / Tokyo Tech, KAIST.</p>
+
+<h2>Online Courses</h2>
+<ul>
+<li><strong>MIT OpenCourseWare:</strong> 6.012, 6.013, 6.450 (free, no certificate)</li>
+<li><strong>Coursera:</strong> SDR specialization (UNSW), Wireless Communications (HKUST)</li>
+<li><strong>edX / MITx:</strong> Wireless Communications</li>
+<li><strong>Udemy:</strong> Practical SDR with GNU Radio, RTL-SDR, HackRF</li>
+<li><strong>YouTube:</strong> GreatScottGadgets (Mike Ossmann), w2aew, Phil's Lab</li>
+</ul>
+
+<h2>Industry Certifications</h2>
+<ul>
+<li>iNARTE Certified RF/Wireless Engineer</li>
+<li>iNARTE NARTE EMC</li>
+<li>IEEE WCET</li>
+<li>CWNA (Wi-Fi-focused)</li>
+<li>Vendor-specific: 3GPP training, R&S certs, Keysight Test University, Aaronia training</li>
+</ul>
+
+<h2>Recommended Reading</h2>
+
+<h3>Foundational</h3>
+<ul>
+<li>Pozar, <em>Microwave Engineering</em> (4th ed., Wiley)</li>
+<li>Kraus & Marhefka, <em>Antennas For All Applications</em> (3rd ed., McGraw-Hill)</li>
+<li>Skolnik, <em>Radar Handbook</em> (3rd ed., McGraw-Hill)</li>
+<li>Oppenheim & Schafer, <em>Discrete-Time Signal Processing</em> (3rd ed., Pearson)</li>
+<li>Proakis & Salehi, <em>Digital Communications</em> (5th ed., McGraw-Hill)</li>
+</ul>
+
+<h3>Specialized</h3>
+<ul>
+<li>Adamy, <em>EW101</em> series (Artech House)</li>
+<li>Reed, <em>Software Radio</em> (Prentice Hall)</li>
+<li>Collins et al., <em>Software-Defined Radio for Engineers</em> (free PDF, Analog Devices)</li>
+<li>Schleher, <em>Electronic Warfare in the Information Age</em></li>
+<li>Aaronia <em>RTSA Suite PRO Quick Guide</em> (free, downloads.aaronia.com)</li>
+</ul>
+
+<h2>Conferences</h2>
+<p>IEEE IMS, EuMW, IEEE RWS, MILCOM, IEEE GLOBECOM, WInnComm (SDR), DEF CON RF Hacking Village.</p>
+
+<h2>Journals</h2>
+<p>IEEE Trans. on Microwave Theory and Techniques, IEEE Microwave Magazine, Microwave Journal, IEEE Spectrum, IEEE Communications Magazine.</p>
+
+<h1 id="appH">Appendix H: Industry Snapshot - Who Hires for Spectrum Skills</h1>
+
+<h2>Test and Measurement OEMs</h2>
+<p>Aaronia AG (Germany), Berkeley Nucleonics (US), Keysight, Rohde & Schwarz, Anritsu, Tektronix, Signal Hound, ThinkRF, Per Vices.</p>
+
+<h2>Software-Defined Radio</h2>
+<p>Ettus Research / NI, Nuand, Great Scott Gadgets, RFspace, Lime Microsystems.</p>
+
+<h2>Defense and Electronic Warfare Primes</h2>
+<p>Raytheon, Lockheed Martin, BAE Systems, Northrop Grumman, L3Harris, Mercury Systems, Leonardo DRS, Elbit, Thales, IAI, Saab, MBDA.</p>
+
+<h2>Telecom Infrastructure</h2>
+<p>Ericsson, Nokia, Samsung Networks, ZTE, NEC, Ciena, Mavenir, Parallel Wireless.</p>
+
+<h2>Counter-UAS</h2>
+<p>Aaronia AG, Dedrone, DroneShield, D-Fend Solutions, Black Sage Technologies, Liteye Systems, Anduril Industries.</p>
+
+<h2>Cellular Operators and Tower Companies</h2>
+<p>AT&T, Verizon, T-Mobile, Vodafone, Deutsche Telekom, NTT Docomo, China Mobile. Tower companies: Crown Castle, American Tower, SBA, Cellnex.</p>
+
+<h2>Aerospace and Avionics</h2>
+<p>Honeywell Aerospace, Collins Aerospace, Garmin, Thales Avionics, GE Aerospace, Boeing, Airbus.</p>
+
+<h2>Cybersecurity / RF Security</h2>
+<p>Bastille Networks, RFconnect, Mission Secure, Stratosphere Networks.</p>
+
+<h2>Salary Bands by Role (US, 2026)</h2>
+
+<table>
+<thead><tr><th>Role</th><th>Entry</th><th>Mid</th><th>Senior</th></tr></thead>
+<tbody>
+<tr><td>RF Systems Engineer</td><td>$90-110K</td><td>$120-160K</td><td>$170-250K+</td></tr>
+<tr><td>RF Field Engineer</td><td>$55-75K</td><td>$80-110K</td><td>$115-140K</td></tr>
+<tr><td>Spectrum Compliance Officer</td><td>$80-100K</td><td>$110-150K</td><td>$160-220K</td></tr>
+<tr><td>RF Cybersecurity Specialist</td><td>$110-130K</td><td>$140-180K</td><td>$190-280K+</td></tr>
+<tr><td>EW / Intelligence Analyst (contractor)</td><td>$115-140K</td><td>$145-175K</td><td>$180-240K</td></tr>
+<tr><td>EW / Intelligence Analyst (govt)</td><td>$85-110K</td><td>$115-130K</td><td>$135-160K</td></tr>
+<tr><td>Smart Infrastructure RF Operations</td><td>$85-105K</td><td>$115-155K</td><td>$165-220K</td></tr>
+</tbody>
+</table>
+
+<h2>Hiring Trends (2026)</h2>
+<ul>
+<li>Counter-UAS roles: 30-50 percent year-over-year growth</li>
+<li>Cellular RF field engineering: in demand for 5G dense-urban deployments</li>
+<li>EW analysts: in shortage globally, especially clearance-required positions</li>
+<li>RF cybersecurity: emerging as discrete job family with premium salaries</li>
+<li>AI-for-RF research: concentrated in academic-industry consortia</li>
+<li>6G research: growing as standardization timeline accelerates</li>
+</ul>
+
+<h1 id="appI">Appendix I: Standards and Regulatory Quick Reference</h1>
+
+<h2>US FCC Parts</h2>
+<ul>
+<li><strong>Part 15:</strong> Unlicensed RF devices (ISM, U-NII)</li>
+<li><strong>Part 22, 24, 27:</strong> Cellular and PCS</li>
+<li><strong>Part 73, 74:</strong> Broadcast and aux broadcast</li>
+<li><strong>Part 90:</strong> Land mobile radio (public safety)</li>
+<li><strong>Part 95:</strong> Personal radio (CB, FRS, GMRS)</li>
+<li><strong>Part 96:</strong> CBRS spectrum sharing (3.5 GHz)</li>
+<li><strong>Part 97:</strong> Amateur radio</li>
+</ul>
+
+<h2>ETSI EN Standards (Europe)</h2>
+<ul>
+<li>EN 300 220: Short-range devices (25 MHz - 1 GHz)</li>
+<li>EN 301 893: 5 GHz Wi-Fi</li>
+<li>EN 302 208: RFID</li>
+<li>EN 303 645: IoT cybersecurity</li>
+</ul>
+
+<h2>3GPP (Cellular)</h2>
+<ul>
+<li>TS 38.xxx: 5G NR (TS 38.101 UE, 38.104 BS, 38.211-214 PHY)</li>
+<li>TS 36.xxx: LTE</li>
+<li>TR 38.913: 5G requirements</li>
+</ul>
+
+<h2>MIL-STD / Aerospace</h2>
+<ul>
+<li>MIL-STD-461: EMI/EMC for military equipment</li>
+<li>MIL-STD-188: Telecommunications</li>
+<li>MIL-STD-810: Environmental engineering</li>
+<li>DO-160 (RTCA): Avionics environmental</li>
+<li>DO-178 / DO-254: Software / hardware safety for avionics</li>
+</ul>
+
+<h2>ITU-R Recommendations</h2>
+<ul>
+<li>ITU-R SM.1880: Spectrum monitoring evolution</li>
+<li>ITU-R SM.443: Direction finding</li>
+<li>ITU-R SM.1538: Methods of measurement of radio noise</li>
+</ul>
+
+<h2>IEEE 802.11 Wi-Fi</h2>
+<ul>
+<li>802.11ac: Wi-Fi 5</li>
+<li>802.11ax: Wi-Fi 6 / 6E (1024-QAM, OFDMA, 6 GHz)</li>
+<li>802.11be: Wi-Fi 7 (320 MHz channels, 4096-QAM, MLO)</li>
+<li>802.11bn: Wi-Fi 8 (in development)</li>
+</ul>
+
+<h1 id="appJ">Appendix J: Tools, Software, and Datasets</h1>
+
+<h2>Open-Source Signal Processing</h2>
+<ul>
+<li><strong>GNU Radio:</strong> de facto open-standard SDR framework</li>
+<li><strong>scikit-rf:</strong> Python RF/microwave network analysis</li>
+<li><strong>scipy.signal:</strong> general DSP within scientific Python</li>
+<li><strong>NumPy:</strong> foundational array math</li>
+<li><strong>MATLAB Signal Processing Toolbox:</strong> commercial</li>
+<li><strong>Octave:</strong> free MATLAB-compatible alternative</li>
+</ul>
+
+<h2>SDR Control Software</h2>
+<ul>
+<li>GQRX (multi-SDR), SDR# / SDRSharp (Windows), SDR Console, CubicSDR (cross-platform), OpenWebRX (web-based)</li>
+</ul>
+
+<h2>Specialized Analysis Tools</h2>
+<ul>
+<li>Inspectrum (graphical I/Q analysis)</li>
+<li>Universal Radio Hacker (protocol reverse engineering)</li>
+<li>rtl_433 (433/315/868/915 MHz device decoding)</li>
+<li>Wireshark with Bluetooth/Wi-Fi plugins</li>
+</ul>
+
+<h2>SigMF Ecosystem</h2>
+<p>Open standard for I/Q metadata. Python <code>sigmf</code> package, supported by GNU Radio, scikit-rf, RTSA Suite PRO, and most modern tools.</p>
+
+<h2>Aaronia RTSA Suite PRO</h2>
+<ul>
+<li>Block-based pipeline editor</li>
+<li>Custom triggers and FMTs</li>
+<li>AI classification plugins</li>
+<li>Modulation-specific demodulators</li>
+<li>Python and C++ scripting hooks</li>
+<li>KML / KMZ / GeoJSON / NMEA / MQTT / REST export</li>
+</ul>
+
+<h2>Public Datasets</h2>
+<ul>
+<li>DARPA Spectrum Collaboration Challenge</li>
+<li>RadioML 2018 / 2024 datasets</li>
+<li>DeepSig RFML Dataset</li>
+<li>Galaxy Radio Survey archives</li>
+<li>ETSI test vector sets</li>
+</ul>
+
+<h2>Connectors and Cables</h2>
+
+<table>
+<thead><tr><th>Connector</th><th>Frequency Range</th><th>Use</th></tr></thead>
+<tbody>
+<tr><td>BNC</td><td>DC - 4 GHz</td><td>Lab</td></tr>
+<tr><td>N</td><td>DC - 18 GHz</td><td>RF systems</td></tr>
+<tr><td>SMA</td><td>DC - 18 GHz</td><td>Compact</td></tr>
+<tr><td>3.5 mm</td><td>DC - 33 GHz</td><td>Precision</td></tr>
+<tr><td>K / 2.92 mm</td><td>DC - 40 GHz</td><td>Microwave</td></tr>
+<tr><td>V / 1.85 mm</td><td>DC - 67-70 GHz</td><td>mmWave</td></tr>
+<tr><td>W</td><td>DC - 110 GHz</td><td>mmWave</td></tr>
+</tbody>
+</table>
+
+<h2>Closing Note</h2>
+
+<p>These appendices are designed to be referenced repeatedly. The glossary lookup, math formulas, product comparisons, quick-reference tables, quiz keys, education pathways, employer lists, standards summaries, and tool ecosystem entries all reduce friction in daily work. A book that lives on the bench earns its keep through these reference sections more than through any single read of the main chapters.</p>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-15.html">&larr; Ch 15. Case Studies</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next disabled">End of book</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

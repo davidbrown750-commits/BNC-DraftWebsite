@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 1 Quiz - The Evolution of Spectrum Analysis</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 1 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "rtsa",
+  chapterKey: "01",
+  title: "Chapter 1 Quiz",
+  questions: [
+    {
+      q: "Why do swept spectrum analyzers miss burst signals?",
+      options: [
+        "Their displays have limited resolution.",
+        "They observe only one narrow frequency at a time and blind time exists between sweeps.",
+        "Their ADCs are too noisy.",
+        "Their IF filters are too narrow."
+      ],
+      answer: 1,
+      explain: "A swept analyzer tunes across the span one slice at a time, so any burst outside the current slice during the dead time between sweeps is never seen."
+    },
+    {
+      q: "What two semiconductor advances enabled real-time spectrum analysis?",
+      options: [
+        "Touchscreens and Wi-Fi.",
+        "Multi-GS/s ADCs and deep streaming memory.",
+        "USB-C and solid-state drives.",
+        "GPUs and DSP chips."
+      ],
+      answer: 1,
+      explain: "Gigasample-per-second ADCs digitize the full band at once, and deep streaming memory holds the continuous sample flow for gap-free processing."
+    },
+    {
+      q: "What does overlapping FFT processing guarantee?",
+      options: [
+        "Faster sweep rates.",
+        "Gap-free time coverage with no dead zones.",
+        "Narrower IF filters.",
+        "Higher display brightness."
+      ],
+      answer: 1,
+      explain: "Overlapping the FFT frames means every sample is covered by at least one transform, leaving no blind time between frames."
+    },
+    {
+      q: "Approximately what is the probability of intercept when a swept analyzer with a 10 ms sweep time and 10 kHz RBW across a 1 GHz span encounters a 10 microsecond burst?",
+      options: [
+        "Around 99 percent.",
+        "Around 50 percent.",
+        "Around 0.1 percent.",
+        "Around 0 percent."
+      ],
+      answer: 2,
+      explain: "The analyzer dwells on the burst's frequency for only a tiny fraction of each sweep, so the odds of catching a brief burst are roughly a tenth of a percent."
+    },
+    {
+      q: "In the SPECTRAN V6 PLUS family, what is the real-time bandwidth of the flagship V6 PLUS 2000XA-6 with its full upgrade license?",
+      options: [
+        "20 MHz.",
+        "80 MHz.",
+        "245 MHz.",
+        "490 MHz."
+      ],
+      answer: 3,
+      explain: "With the full upgrade license the flagship reaches 490 MHz of real-time bandwidth."
+    },
+    {
+      q: "What is the minimum probability of intercept advertised by Aaronia RTSA Suite PRO?",
+      options: [
+        "10 microseconds.",
+        "10 nanoseconds.",
+        "1 millisecond.",
+        "100 microseconds."
+      ],
+      answer: 1,
+      explain: "RTSA Suite PRO advertises a probability of intercept down to 10 nanoseconds, fast enough for short EW and radar transients."
+    },
+    {
+      q: "Which of the following is NOT a characteristic of modern RF signals that broke swept analyzer assumptions?",
+      options: [
+        "OFDM.",
+        "Frequency hopping.",
+        "Continuous sinusoidal carriers.",
+        "Burst transmissions."
+      ],
+      answer: 2,
+      explain: "A continuous sinusoidal carrier is exactly what swept analyzers were designed for. OFDM, hopping, and bursts are the dynamic signals that broke those assumptions."
+    },
+    {
+      q: "When cascading multiple SPECTRAN V6 PLUS units, what aggregate real-time bandwidth is achievable with four units?",
+      options: [
+        "160 MHz.",
+        "500 MHz.",
+        "1 GHz.",
+        "2 GHz."
+      ],
+      answer: 2,
+      explain: "Four cascaded units combine their bandwidth to deliver roughly 1 GHz of aggregate real-time coverage."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-01.html">&larr; Back to Chapter 1</a>
+    <a class="mid" href="index.html">Contents</a>
+    <a class="next" href="quiz-chapter-02.html">Chapter 2 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

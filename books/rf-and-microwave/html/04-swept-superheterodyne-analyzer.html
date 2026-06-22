@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>04-swept-superheterodyne-analyzer</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="chapter-4-spectrum-analysis-the-swept-superheterodyne-analyzer">4. Spectrum Analysis: The Swept Superheterodyne Analyzer</h1>
+<p>If Chapter 3 explained what lives in the electromagnetic spectrum, this chapter explains the instrument that lets you see it. The swept superheterodyne spectrum analyzer is the workhorse of RF measurement. It is the tool engineers reach for when they need to know what frequencies are present in a signal, how strong each one is, and whether anything is hiding in the noise. Decades after its core architecture was settled, it remains the most common spectrum analyzer design in use, and understanding how it works stage by stage is one of the most useful things an RF practitioner can learn.</p>
+<p>This chapter starts with the simpler instruments most engineers already know, then builds up to the superheterodyne receiver at the heart of the analyzer. We walk the full signal chain, one circuit element at a time, from the RF connector to the trace on the screen. Along the way we cover the two settings that dominate every measurement you will ever make with one of these instruments: resolution bandwidth and sweep time.</p>
+<h2 id="measuring-frequency">4.1 Measuring Frequency</h2>
+<p>Before reaching for a spectrum analyzer, it helps to understand the instruments that came before it and why they fall short for fine frequency work.</p>
+<h3 id="from-analog-to-digital-oscilloscopes">From Analog to Digital Oscilloscopes</h3>
+<p>The original oscilloscopes were strictly analog. They used a cathode ray tube (CRT) as a display, much like the early television sets of the same era. The scope would "draw" the incoming signal directly on the screen by steering an electron beam. This was enormously helpful for visualizing a waveform in the time domain, but it had two real limits. Direct measurement was difficult, since the operator had to read values off a graticule by eye, and the data could only be saved by photographing the display.</p>
+<p>The arrival of digital technology changed both limits at once. Once the raw voltage and time data are digitized, they can be stored, recalled, and processed directly inside the instrument. Modern digital oscilloscopes calculate rise time and fall time, frequency, period, duty cycle, pulse width, and voltage amplitude automatically, and they do it on every acquisition. The measurement that once took a careful hand and a Polaroid now happens in milliseconds.</p>
+<blockquote>
+<p><strong>Going Deeper - How engineers stored a waveform in 1975</strong></p>
+<p>In the 1970s, capturing a transient for later study was a physical act. Companies kept Polaroid cameras fitted with special hoods that clamped onto the scope bezel, sealing out room light so the operator could photograph the glowing trace. The picture was the record. There was no file, no recall, and no way to re-measure the same event later. Digitization did not just add convenience. It changed what kinds of analysis were possible at all.</p>
+</blockquote>
+<figure>
+<img src="../figures/fig-p021-01.png" alt="Digital oscilloscope display with automatic measurements" /><figcaption><span class="fig-num">Figure 4.1</span> A digital oscilloscope display showing automatic measurements (frequency, period, rise time, amplitude) for a 10 MHz square-wave input.</figcaption>
+</figure>
+<p>Some digital scopes can also display amplitude versus frequency by running a fast Fourier transform (FFT) on the captured time-domain data. The FFT function is useful for identifying a fundamental frequency and seeing the rough harmonic content of a signal, as shown in the next figure.</p>
+<figure>
+<img src="../figures/fig-p021-02.png" alt="Oscilloscope FFT of a 10 MHz square wave" /><figcaption><span class="fig-num">Figure 4.2</span> An oscilloscope FFT of a 10 MHz square wave, showing the fundamental and its odd harmonics in the frequency domain.</figcaption>
+</figure>
+<p>So a scope gives you two views. In the time domain it shows phase and shape, the actual rise and fall of the waveform. In the frequency domain, by way of the FFT, it gives you basic amplitude and frequency information. For a lot of bench work, that is enough.</p>
+<h3 id="oscilloscopes-versus-spectrum-analyzers">Oscilloscopes Versus Spectrum Analyzers</h3>
+<p>For careful frequency work, though, the oscilloscope runs into trouble. The first problem is the noise floor. Oscilloscopes carry a noise floor that is much higher than dedicated frequency instruments like spectrum analyzers. That makes small-amplitude features, such as higher-order harmonics or low-level spurs, hard or impossible to see. They simply sink below the grass.</p>
+<p>The second problem is bandwidth. Oscilloscopes are wideband instruments by design. They detect a broad range of frequencies all at once, which is exactly what you want for capturing a fast edge but exactly what you do not want for separating two tones that sit close together. Looking at everything at once raises the effective noise floor and offers no clean way to distinguish signals whose frequencies are near each other. To pull a weak signal out of the noise, and to tell two nearby signals apart, you need an instrument built for the frequency domain from the start.</p>
+<h2 id="the-swept-spectrum-analyzer">4.2 The Swept Spectrum Analyzer</h2>
+<p>Spectrum analyzers come in two broad families, and it is worth placing the swept design in context before we open it up.</p>
+<h3 id="real-time-spectrum-analyzers">Real-Time Spectrum Analyzers</h3>
+<p>Real-time spectrum analyzers are conceptually close to oscilloscopes. They first collect data in the time domain, then compute the frequency content using FFT algorithms. By capturing a large block of samples across a broad frequency range, they can calculate amplitude versus frequency and refresh the display very quickly. They differ from scopes in two important ways. They tend to offer lower noise floors, and they include specialized filtering that can separate signals which sit close together.</p>
+<p>That speed makes real-time analyzers very good at one thing in particular: catching signals that change quickly. Frequency-hopping radios, short bursts, transient interference, and the agile waveforms common in modern digital communications all favor a real-time approach, because a real-time analyzer can capture a brief event that a swept instrument would sweep right past.</p>
+<blockquote>
+<p><strong>Going Deeper - The price of speed</strong></p>
+<p>Compared to swept analyzers, real-time systems capture transients and fast signals far better. That capability is not free. For a given price point, a real-time analyzer typically carries a higher noise floor and a higher unit cost than a comparable swept instrument. Chapter 5 covers the real-time FFT architecture in depth. For most steady-state measurements, the swept design still wins on noise performance and value, which is a large part of why it remains so common.</p>
+</blockquote>
+<p>Real-time systems are gaining ground, but in the installed base they are still outnumbered by swept analyzers by a wide margin. The swept superheterodyne design is the one most engineers will use most often, so it is the one we open up next.</p>
+<h3 id="why-superheterodyne">Why "Superheterodyne"?</h3>
+<p>Spectrum analyzers built on the swept superheterodyne design are popular for three connected reasons: low noise, ease of use, and the ability to separate signals that sit at very close frequencies. In broad terms, the swept superheterodyne receiver is almost identical to an ordinary radio receiver. Both can be set to a frequency range, both filter out everything outside that range (the way you tune in one station and reject the others), and both then observe the signal that gets through.</p>
+<p>The difference is in how they tune. A radio is set to one fixed frequency and feeds the result to a speaker. An analyzer is never parked on a single frequency. It sweeps across a band in steps, the way you might walk a radio dial from one end to the other, and instead of playing the result through a speaker it draws the signal amplitude on a display.</p>
+<blockquote>
+<p><strong>Going Deeper - Where the name comes from</strong></p>
+<p>"Superheterodyne" is short for "supersonic heterodyne." US engineer Edwin Armstrong developed the architecture in 1918, near the end of the First World War. "Supersonic" here refers to frequencies above the range of human hearing (roughly 31 Hz to 21 kHz, in the convention of the time). "Heterodyne" combines the Greek roots hetero-, meaning different, and -dyne, meaning power or force. The name describes the central trick of the design: mixing two different frequencies to produce a new one that is easier to work with.</p>
+</blockquote>
+<h3 id="combining-signals">Combining Signals</h3>
+<p>The swept superheterodyne analyzer takes an unknown signal, the input or RFin, and mixes it with a sweeping signal from a swept local oscillator (LO) to create a combined signal. The LO is swept from a start frequency to a stop frequency in discrete steps. Each step defines a frequency "bin" on the display. At each bin, the analyzer measures the power present. If the unknown signal has a frequency component that falls inside the bin, the display plots a point at the matching amplitude. When the sweep finishes, the trace on the screen represents one complete scan across the span set by the start and stop frequencies.</p>
+<p>That is the whole idea in one paragraph. The rest of the chapter explains how each circuit element contributes to producing that trace.</p>
+<figure>
+<img src="../figures/fig-04-01-superheterodyne-block-diagram.svg" alt="Block diagram of a swept superheterodyne spectrum analyzer" /><figcaption><span class="fig-num">Figure 4.3</span> Block diagram of a modern swept superheterodyne spectrum analyzer. The RF and IF signal path runs left to right; the swept local oscillator (dashed amber) drives the mixer; the later stages move into digital signal processing before the trace reaches the display.</figcaption>
+</figure>
+<h2 id="the-superheterodyne-receiver-stage-by-stage">4.3 The Superheterodyne Receiver, Stage by Stage</h2>
+<p>A signal entering the RF connector passes through a chain of stages, each with a specific job. We follow that chain in order. The block diagram above is your map: keep it in view as we walk through the eleven stages, from the attenuator at the front to the video bandwidth filter that smooths the trace at the end.</p>
+<h3 id="stage-1-the-attenuator">Stage 1: The Attenuator</h3>
+<p>The input RF signal connects to the RF input of the analyzer and immediately enters the attenuator. The attenuator's job is to reduce the power delivered to the circuit elements that follow, which protects them from damage. A strong input that is fine for a power meter can overload and destroy a sensitive front end, so the attenuator stands guard at the door.</p>
+<p>The attenuator does more than protect hardware. By holding input power in a sensible range, it reduces spurious emissions (often called spurs) and the modulation effects that an overdriven mixer would otherwise generate. Many analyzers include an integrated attenuator that the operator controls directly from the instrument settings. External attenuators, fixed or variable, can also be added in front of the input when extra headroom is needed.</p>
+<p>The input circuit usually includes a DC block as well. This element strips out any DC component on the input, since a DC offset riding on the RF can overload or damage the stages downstream.</p>
+<h3 id="stage-2-the-preamplifier">Stage 2: The Preamplifier</h3>
+<p>The preamplifier, or PA, is a low-noise amplifier that boosts the input signal's amplitude. By raising the signal before the noisier stages that follow, it improves the signal-to-noise ratio and increases the instrument's sensitivity to low-power features in the input. Like the attenuator, the preamp is usually under the analyzer's control, switched in when you are hunting for weak signals and switched out when the input is already strong.</p>
+<p>There is a balance to strike here. A small adjustable attenuator often sits ahead of the preamp specifically to keep the signal within the preamp's input dynamic range. Too much signal and the preamp compresses or distorts. Too little and weak features stay buried. The attenuator and preamp work as a pair to land the signal in the sweet spot.</p>
+<h3 id="stage-3-the-preselector-low-pass-filter">Stage 3: The Preselector (Low-Pass Filter)</h3>
+<p>The preselector is a filter that allows only certain frequencies to reach the stages beyond it. By rejecting or limiting unwanted signals such as harmonics and spurs, it prevents them from creating false readings later in the chain. Not every analyzer includes one. A preselector adds cost and complexity, and a low-cost design may leave it out, but its presence lowers the chance of false peaks appearing in the displayed spectrum.</p>
+<p>The benefit is easy to demonstrate. Picture a 1 GHz RF signal with a peak power around +4.2 dBm, accompanied by a third harmonic near -6.4 dBm. The difference between the fundamental and the harmonic is only about 10 dB, close enough that the harmonic could be mistaken for a real, separate signal. Add a simple first-order low-pass filter and the third harmonic drops sharply relative to the fundamental, widening the gap to more than 18 dB. A second- or third-order filter rejects the harmonic harder still. The preselector cleans up the picture before the analyzer ever tries to interpret it.</p>
+<p>There is also a low-pass filter that enforces the instrument's maximum operating frequency, keeping any energy above that limit from entering the circuit where it would be harder to remove. Together with the DC block mentioned earlier, these front-end filters define the clean window of frequencies the analyzer actually acts on.</p>
+<h3 id="stage-4-the-mixer">Stage 4: The Mixer</h3>
+<p>The mixer is the heart of the superheterodyne design. It is a three-port device that takes two input signals and produces an output that combines them. In this architecture, the mixer multiplies the unknown input signal, at frequency f<sub>sig</sub>, with the known local oscillator signal, at frequency f<sub>LO</sub>.</p>
+<p>That multiplication does not just pass the two signals through. The output contains the original RF signal (f<sub>sig</sub>), the local oscillator signal (f<sub>LO</sub>), and crucially the sum and difference of the two: f<sub>LO</sub> + f<sub>sig</sub> and f<sub>LO</sub> - f<sub>sig</sub>. It also contains sums and differences of higher harmonics, such as 2f<sub>LO</sub> - f<sub>sig</sub> and 2f<sub>LO</sub> + f<sub>sig</sub>, which are usually ignored for clarity when first learning the design. The sum and difference products are the ones we care about. Each is called an intermediate frequency, or IF.</p>
+<blockquote>
+<p><strong>Tech Note - The intermediate frequency</strong></p>
+<p>The output frequency produced by the mixer is called the intermediate frequency (IF). The whole point of the superheterodyne design is to shift the unknown signal to this fixed, convenient IF where it can be filtered and measured precisely.</p>
+</blockquote>
+<p>A worked example makes the arithmetic concrete. Suppose RFin is 10 MHz and the LO is 2 GHz. The downconverted (difference) IF is:</p>
+<blockquote>
+<p>IF<sub>down</sub> = f<sub>LO</sub> - f<sub>RF</sub> = (2 x 10<sup>9</sup> Hz) - (10 x 10<sup>6</sup> Hz) = 1.99 x 10<sup>9</sup> Hz = 1.99 GHz</p>
+</blockquote>
+<p>The upconverted (sum) IF is:</p>
+<blockquote>
+<p>IF<sub>up</sub> = f<sub>LO</sub> + f<sub>RF</sub> = (2 x 10<sup>9</sup> Hz) + (10 x 10<sup>6</sup> Hz) = 2.01 x 10<sup>9</sup> Hz = 2.01 GHz</p>
+</blockquote>
+<p>In practice, an analyzer may use several mixer stages in series to balance frequency resolution against operating range. The tension is fundamental. Fine resolution demands narrow-bandwidth filters, but the instrument also needs to operate over a wide frequency range, and narrow band-pass filters do not work well across a broad span. Adding filters raises cost and complexity. The two requirements pull against each other.</p>
+<h3 id="multiple-if-stages">Multiple IF Stages</h3>
+<p>Multiple IF stages resolve that tension. By adding stages, a design can maximize frequency resolution while still extending its operating range. Each stage can upconvert (step up) or downconvert (step down) the signal into a new range where a filter can cleanly remove unwanted products before handing the signal to the next stage. Cascading these conversions gives the instrument superior sensitivity, good frequency stability, and high frequency selectivity. The combined result is a wide operating range together with the ability to separate signals whose frequencies sit very close together.</p>
+<h3 id="stage-5-the-local-oscillator-and-phase-noise">Stage 5: The Local Oscillator and Phase Noise</h3>
+<p>The local oscillator is the swept signal that the mixer multiplies against the input. Its quality matters enormously, because any imperfection in the LO transfers directly onto every measurement. The most important imperfection is phase noise.</p>
+<p>Phase noise effectively raises the noise floor near a signal. It can mask small signals that sit just off a strong input frequency, smearing energy outward from the carrier and covering up the very features you are trying to see. Low phase noise does the opposite. It keeps the skirts of a strong signal narrow, which lets you observe low-level signals near a measured input frequency. Picture a 100 MHz RF input traced in yellow, with the analyzer's own noise floor traced in purple at identical settings. Near the center frequency, the noise floor rises toward the carrier. That rise is phase noise, contributed by whichever source dominates, either the signal source or the analyzer.</p>
+<p>Phase noise is minimized by choosing high-quality reference oscillator materials and by controlling the operating environment, particularly temperature. Several oscillator designs are used to keep it low:</p>
+<ul>
+<li>Temperature-compensated crystal oscillators (TCXO)</li>
+<li>Microcontroller-compensated crystal oscillators (MCXO)</li>
+<li>Oven-controlled crystal oscillators (OCXO)</li>
+</ul>
+<p>Each climbs a rung in stability, and cost, over the one before it. An OCXO holds its crystal at a constant elevated temperature inside a small oven, which makes it the most stable of the three and a common choice where low phase noise is critical.</p>
+<h3 id="stage-6-the-if-filter">Stage 6: The IF Filter</h3>
+<p>The IF filter sits immediately after the mixer. Its job is to keep one of the mixing products and reject the rest. It filters out f<sub>sig</sub> and f<sub>LO</sub> and leaves either the upconverted product (f<sub>LO</sub> + f<sub>sig</sub>) or the downconverted product (f<sub>LO</sub> - f<sub>sig</sub>), depending on the design.</p>
+<p>Here is where the cleverness of the architecture becomes clear. Our original unknown signal has now been shifted by a known amount (f<sub>LO</sub>) to create the IF. Because we know the LO frequency exactly, we could apply a filter with a known center frequency and known bandwidth to the IF and measure what comes through. If the IF is not in that filter's range, we could step to a different filter with a different center frequency and check again. With enough filters, we could keep stepping through center frequencies until we found the IF, then subtract the LO frequency to recover the unknown f<sub>sig</sub>.</p>
+<p>That brute-force approach works on paper, but building analog filter networks with enough range and performance to cover gigahertz of spectrum is difficult and expensive. Fully analog designs performed very well within their intended ranges, yet they carried real disadvantages in size, cost, and flexibility. Modern designs use a smarter strategy: a final IF stage with a fixed center frequency, and a swept LO. Rather than moving the filter to find the signal, the instrument moves the signal past a stationary filter. Sweeping the LO slides each input frequency, in turn, into the fixed IF filter's window. That single decision, fixed filter and swept oscillator, is what makes the whole instrument practical.</p>
+<h3 id="stage-7-the-analog-to-digital-converter-adc">Stage 7: The Analog-to-Digital Converter (ADC)</h3>
+<p>Early spectrum analyzers were analog from end to end, with an analog CRT for the readout. Wider operating ranges and narrower band-pass filters demanded ever more components, and the analog parts of the day were bulky, so a fully analog spectrum analyzer was typically large, heavy, and costly.</p>
+<p>Today, many of the filters and processing blocks have been replaced by digital signal processors (DSPs) that faithfully model their analog counterparts. Moving into the digital domain simplified the design dramatically. A modern spectrum analyzer is often about the size of a few textbooks, and prices have fallen sharply. Some instruments are no larger than a pack of playing cards, including USB-controlled models that run from a laptop.</p>
+<p>The ADC is the gateway to that digital world. After the mixer has converted the unknown signal to the IF, the IF signal is fed to an analog-to-digital converter, which produces a digital output proportional to the analog input. Once the signal is digital, we can manipulate it freely, applying mathematical algorithms to isolate the unknown signal with a precision that analog filters could not match.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Modern analyzer form factors</strong></p>
+<p>Berkeley Nucleonics builds spectrum analyzers across this range, from benchtop instruments to compact and portable units suited to field work. The shift from analog to digital signal processing is what made that range possible: the same measurement that once filled a rack now fits in a carry case. For exact frequency ranges, displayed average noise level, phase noise, and other specifications, consult the current datasheet for the specific model, since these figures are model-specific. Verify against current datasheet.</p>
+</div>
+<h3 id="stage-8-the-resolution-bandwidth-rbw-filter">Stage 8: The Resolution Bandwidth (RBW) Filter</h3>
+<p>Following the ADC is the resolution bandwidth (RBW) filter. Its purpose is to isolate the IF and reject anything out of band. It may be implemented as the final stage of the IF filtering or further down the chain, depending on the design, but its role is the same: it sets how finely the analyzer can resolve frequency.</p>
+<p>The RBW filter is a band-pass filter. It passes frequencies inside its envelope and rejects those outside. Most designs give it a Gaussian shape. A band-pass filter has a center frequency and a bandwidth, and by convention the bandwidth is specified at the 3 dB point, which corresponds to 50% of the filter's response. The 3 dB point is the amplitude at which the area under the curve is split in half: 50% lies above it and 50% below. The bandwidth is the frequency difference (f<sub>2</sub> - f<sub>1</sub>) measured at that 3 dB point.</p>
+<p>The Gaussian shape is chosen because it offers the best balance of phase linearity and selectivity. Selectivity measures how well a filter rejects signals near its operating range. Other shapes, such as a flat-top filter, have better selectivity and can reject out-of-band signals more precisely, but they pay for it with poor phase linearity, which causes effects like ringing that cannot be easily filtered back out. Gaussian filters are the popular default, although analog, digital, and hybrid filter types all appear in practice.</p>
+<p>Digital filters can be designed with better selectivity than their analog equivalents, and they bring other advantages too. Many electromagnetic compatibility (EMC) tests, for instance, call for a 6 dB Gaussian filter. This filter's bandwidth is defined at the 6 dB point, where roughly 75% of the filter's area lies above the point. That wider definition gives a more desirable response to impulses and short bursts of RF, which are major contributors to electromagnetic interference (EMI). Being able to switch filter definitions in software, rather than swapping hardware, is one of the quiet benefits of the digital approach.</p>
+<p>The effect of RBW on what you can see is dramatic. Imagine two signals separated by only 100 kHz, captured at three settings: a yellow trace at 1 MHz RBW, a purple trace at 100 kHz, and a light-blue trace at 10 kHz. At 1 MHz, the RBW is wider than the spacing between the signals, so they merge into a single bump. That rounded shape is the swept IF tracing out the envelope filter that follows the RBW filter, not two distinct peaks. Narrow the RBW to 100 kHz and then 10 kHz, and two things happen at once. Frequency resolution improves until the two signals separate into distinct peaks, and the noise floor drops. Both gains come from the same change.</p>
+<figure>
+<img src="../figures/fig-04-02-rbw-sweep-tradeoff.svg" alt="The RBW tradeoff between resolution, noise floor, and sweep time" /><figcaption><span class="fig-num">Figure 4.4</span> The RBW tradeoff. A wide RBW (left) merges two close tones into one bump and sits on a high noise floor. A narrow RBW (right) resolves the two tones and lowers the noise floor, but sweep time scales as 1/RBW squared, so the gain in resolution and sensitivity is paid for in time.</figcaption>
+</figure>
+<h3 id="stage-9-the-envelope-detector">Stage 9: The Envelope Detector</h3>
+<p>Immediately after the RBW filter sits the envelope detector. It measures the voltage envelope of the time-based IF signal passing through.</p>
+<p>The behavior depends on what the IF contains. If the IF is a single-frequency sine wave, the detector's output is a single DC voltage. That is the situation when the IF is just the LO with no mixing products present. If the IF instead contains multiple frequencies, which happens whenever mixing products are present, the output voltage follows the envelope of the IF over time. The detector, in other words, traces the outline of the signal rather than its instantaneous value.</p>
+<p>Now we can see how the swept LO, the RBW filter, and the envelope detector work together to turn a time-domain signal into a frequency-domain trace. Picture an unknown signal f<sub>s</sub> being mixed against three successive steps of a sweeping LO: f<sub>LO1</sub>, f<sub>LO2</sub>, and f<sub>LO3</sub>. At each step the envelope detector returns a voltage. For each LO step, the analyzer plots that amplitude against the step frequency. String all the steps together and you have the familiar amplitude-versus-frequency trace.</p>
+<h3 id="detector-types">Detector Types</h3>
+<p>Many analyzers offer a choice of detectors, letting the operator decide which voltage value from each frequency bin gets sent to the display. The choice matters, because a bin holds many samples and the detector decides which one represents it.</p>
+<ul>
+<li><strong>Positive peak.</strong> Reports the maximum amplitude in each bin. Ideal for sinusoidal inputs. Not recommended for noise, because it hides the true random character of a noise source.</li>
+<li><strong>Negative peak.</strong> Reports the minimum amplitude in each bin.</li>
+<li><strong>Sample.</strong> Picks a single value from the bin at a fixed point in time. Most useful for observing noise.</li>
+<li><strong>Normal ("rose-and-fell").</strong> Selects the positive or negative peak depending on the trend within the bin. If the signal rose across the bin, it reports the positive peak; if it fell, the negative. If the signal both rose and fell, it treats the input as noise and alternates between positive and negative peaks for a more representative response. Useful for both noise and sinusoidal signals.</li>
+</ul>
+<p>There are also averaging detectors:</p>
+<ul>
+<li><strong>RMS.</strong> Reports the root-mean-square value of the signals in the bin. The right choice for measuring the power of communication and other complex signals.</li>
+<li><strong>Voltage average.</strong> Reports the mean voltage of the bin. Helpful for EMI measurements.</li>
+<li><strong>Quasi-peak (QP).</strong> A specialized weighted average used for EMC compliance testing. The quasi-peak detector has a fixed integration time that is significantly longer than the standard detectors, so it increases sweep time considerably. It exists to match a specific regulatory measurement, not to speed up the bench.</li>
+</ul>
+<h3 id="stage-10-and-11-the-video-bandwidth-vbw-filter">Stage 10 and 11: The Video Bandwidth (VBW) Filter</h3>
+<p>The video bandwidth filter, or VBW, is a low-pass filter applied to each frequency bin before its amplitude is sent to the display. It averages, or smooths, the trace, which reduces the visual effect of noise. The VBW is especially useful for low-power signals sitting close to the instrument's noise floor, where a noisy trace would otherwise hide the signal you are trying to read.</p>
+<p>The effect is easy to see. Take a 20 MHz sine wave captured first at a VBW of 100 kHz and then at 1 kHz. The lower VBW setting visibly smooths the trace and makes the true signal easier to pick out from the noise riding on it. The catch is that decreasing the VBW increases sweep time, the same tradeoff we will meet again with RBW.</p>
+<p>Trace averaging offers an alternative path to the same end. Many analyzers can average several traces when an averaging detector such as RMS or voltage is selected. Averaging traces has an effect similar to lowering the VBW, but it works across successive scans, which can push up the total test time even further than a low VBW would.</p>
+<h2 id="eliminating-noise">4.4 Eliminating Noise</h2>
+<p>Every measurement carries error, and a good part of the operator's job is limiting it. We want the most accurate possible representation of the signal, which means suppressing unwanted contributions. Noise comes from outside the instrument and from inside it. The external sources are an important topic in their own right, but here we focus on the internal noise the analyzer generates on its own.</p>
+<h3 id="thermal-noise">Thermal Noise</h3>
+<p>The dominant internal source is thermal noise, generated by the circuit elements themselves. Recall that temperature is a measure of the average kinetic energy of a system. At the molecular level, higher temperatures mean more molecular vibration, and that vibration creates small fluctuating electrical potentials, in other words voltage, that ride on top of the signal and corrupt the measurement.</p>
+<p>Thermal noise, also called Johnson noise, follows a simple equation:</p>
+<blockquote>
+<p>P<sub>n</sub> = kTB</p>
+</blockquote>
+<p>where P<sub>n</sub> is noise power in watts, k is Boltzmann's constant (1.38 x 10<sup>-23</sup> joules per kelvin), T is the absolute temperature in kelvin, and B is the bandwidth in hertz.</p>
+<p>Two examples show why bandwidth matters so much. Take a system at T = 293 K (about 20 &deg;C, or 68 &deg;F, roughly room temperature) with a measurement bandwidth of 1 MHz (1 x 10<sup>6</sup> Hz):</p>
+<blockquote>
+<p>P<sub>n1</sub> = (1.38 x 10<sup>-23</sup> J/K) x (293 K) x (1 x 10<sup>6</sup> Hz) = 4 x 10<sup>-15</sup> watts</p>
+</blockquote>
+<p>Now cut the bandwidth by a factor of 10, to 100 kHz (1 x 10<sup>5</sup> Hz):</p>
+<blockquote>
+<p>P<sub>n2</sub> = (1.38 x 10<sup>-23</sup> J/K) x (293 K) x (1 x 10<sup>5</sup> Hz) = 4 x 10<sup>-16</sup> watts</p>
+</blockquote>
+<p>Comparing the two powers in decibels, using L<sub>p</sub> = 10 log<sub>10</sub>(P/P<sub>0</sub>):</p>
+<blockquote>
+<p>L<sub>p</sub> = 10 log<sub>10</sub>(P<sub>n1</sub> / P<sub>n2</sub>) = 10 log<sub>10</sub>(4 x 10<sup>-15</sup> / 4 x 10<sup>-16</sup>) = 10 dB</p>
+</blockquote>
+<p>The lesson is direct. Measurement bandwidth controls thermal noise. Cut the bandwidth by a factor of 10 and you drop the thermal noise by 10 dB. If you want more sensitivity, which is just another way of saying less noise, lower the measurement bandwidth.</p>
+<h3 id="displayed-average-noise-level-danl">Displayed Average Noise Level (DANL)</h3>
+<p>The displayed average noise level, or DANL, describes the expected noise floor of an analyzer. It sets the lowest signal level the instrument can measure, since any signal below the DANL is lost in the analyzer's own noise. DANL is the practical expression of everything in this section.</p>
+<p>DANL is heavily influenced by the frequency span of the measurement, the RBW, the VBW, the preamplifier, and the detector settings, and it is also affected by factors such as the number of trace averages in use. Of all these, RBW is the fastest lever. Decreasing the RBW by a factor of 10 lowers the DANL by about 10 dB, exactly as the thermal noise equation predicts, since RBW is the bandwidth in that equation.</p>
+<p>The relationship is clean enough to measure directly. Run the analyzer with no input signal and look only at its noise floor, scanning from 9 kHz to 1.5 GHz. A yellow trace taken at 1 MHz RBW sits highest. Drop to 100 kHz RBW for the purple trace and the floor falls about 10 dB. Drop again to 10 kHz for the light-blue trace and it falls another 10 dB. Each decade of RBW reduction buys a 10 dB drop in DANL. Lowering RBW is the single most effective knob for pulling weak signals out of the grass.</p>
+<h2 id="sweep-speed-and-the-rbw-tradeoff">4.5 Sweep Speed and the RBW Tradeoff</h2>
+<p>Lowering the RBW has a powerful effect on the noise floor, as we have just seen. It has an equally powerful effect on how long the measurement takes, and that is the tradeoff every operator has to manage.</p>
+<h3 id="why-narrower-costs-time">Why Narrower Costs Time</h3>
+<p>Narrowing the RBW lengthens the time it takes to scan a given frequency span. The reason is mechanical. By narrowing the bandwidth of each step, you increase the number of steps required to cover the span, and each step needs time for the IF stage to settle. More steps, more settling, longer sweep. The sweep time is set by the combination of span, RBW, and detector settings working together.</p>
+<p>Most analyzers offer automatic settings that pick a sweep time striking the best balance between speed and amplitude accuracy. The reason this matters is worth understanding. A sweep that runs too fast does not give the IF stage enough time to respond fully to the input. The filter never reaches its true output before the analyzer moves on, which introduces amplitude error and distorts the spectral shape.</p>
+<p>The error is easy to provoke. Take a 20 MHz sine wave at -10 dBm and let the analyzer choose automatic settings. Suppose it lands on a sweep time around 101 ms and produces a clean, accurate trace. Now force the sweep time down to 10 ms with no other change. The amplitude error grows substantially and the spectral profile looks noticeably different from the correct one. A well-designed analyzer warns you when this happens, typically by displaying an UNCAL (uncalibrated) label at the top of the screen, the instrument's way of saying it cannot vouch for the trace at that speed.</p>
+<p>The practical rule is simple. For the greatest accuracy, use the instrument's recommended automatic settings. Override them only when you understand exactly what you are trading away.</p>
+<blockquote>
+<p><strong>Tech Note - The 1/RBW-squared rule of thumb</strong></p>
+<p>For a swept analyzer, sweep time scales roughly with span divided by the square of the RBW. Halving the RBW therefore costs about four times the sweep time, and a tenfold reduction in RBW costs roughly a hundredfold in time. Halving the span, by contrast, only halves the time. When a measurement is taking too long, narrowing the span is often a gentler fix than relaxing the RBW, because it keeps your resolution intact. Verify exact scaling against the specific instrument's documentation.</p>
+</blockquote>
+<h3 id="putting-it-together">Putting It Together</h3>
+<p>The whole chapter comes down to a single balancing act. Resolution bandwidth controls three things at once: how finely you can separate signals, how low your noise floor sits, and how long the sweep takes. Narrow the RBW and the first two improve while the third gets worse. The art of using a swept superheterodyne analyzer is choosing the RBW, VBW, span, and detector that reveal what you need to see in the time you can afford to spend. The architecture has not changed in decades. The judgment of which settings to pick is what separates a clean measurement from a misleading one.</p>
+<h2 id="chapter-4-quiz">Chapter 4 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-04-swept-superheterodyne-analyzer.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>Why is an oscilloscope, even one with an FFT function, a poor tool for finding small harmonics or separating two closely spaced signals?</li>
+<li>In a superheterodyne analyzer, the local oscillator is swept while one filter stays fixed. Which filter is fixed, and why is that arrangement preferred over stepping a bank of filters to find the signal?</li>
+<li>If RFin = 50 MHz and the LO = 3 GHz, what are the downconverted and upconverted IF frequencies?</li>
+<li>Explain how decreasing the resolution bandwidth (RBW) by a factor of 10 affects the displayed average noise level (DANL), and explain the cost that comes with it.</li>
+<li>What does an UNCAL label on the display indicate, and what setting most directly causes it?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>The oscilloscope has a much higher noise floor than a spectrum analyzer, so small features sink below the grass, and it is a wideband instrument that detects many frequencies at once, which raises the effective noise floor and gives no clean way to separate signals at close frequencies.</li>
+<li>The final IF filter is fixed (a fixed center frequency), and the LO is swept to slide each input frequency, in turn, into that fixed filter's window. This is preferred because building a bank of analog filters with enough range and performance to cover gigahertz of spectrum is difficult, bulky, and costly, while one fixed filter plus a swept oscillator is simpler and cheaper.</li>
+<li>Downconverted: IF<sub>down</sub> = 3 GHz - 50 MHz = 2.95 GHz. Upconverted: IF<sub>up</sub> = 3 GHz + 50 MHz = 3.05 GHz.</li>
+<li>Because thermal noise is P<sub>n</sub> = kTB and RBW is the bandwidth B, a tenfold reduction in RBW lowers the DANL by about 10 dB, which reveals weaker signals. The cost is sweep time: narrower RBW requires more steps, each needing settling time, so the sweep takes far longer (roughly as 1/RBW squared).</li>
+<li>UNCAL means the analyzer cannot guarantee the calibration of the displayed trace, because the sweep is running too fast for the current settings. It is most directly caused by forcing a sweep time shorter than the IF stage needs to respond, often after manually overriding the automatic sweep time or narrowing the RBW without allowing more time.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] E. H. Armstrong, original development of the superheterodyne receiver architecture, 1918. Historical attribution; verify before publication.</p>
+<p>[2] Berkeley Nucleonics Corporation, spectrum analyzer product documentation, www.berkeleynucleonics.com. Refer to the current datasheet for model-specific frequency range, DANL, and phase noise figures. Verify before publication.</p>
+<p>[3] Thermal (Johnson-Nyquist) noise relation P<sub>n</sub> = kTB, with k = 1.38 x 10<sup>-23</sup> J/K. Standard physical relation; verify constant and worked values before publication.</p>
+<p>[4] CISPR / EMC measurement conventions for quasi-peak detection and 6 dB Gaussian RBW filters used in electromagnetic compliance testing. Verify current standard references before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-em-spectrum-signal-generation.html">&larr; 3. EM Spectrum</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="05-realtime-fft-analysis.html">5. Real-Time Analysis &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

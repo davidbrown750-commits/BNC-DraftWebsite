@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 2: How an Arbitrary Waveform Generator Works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-2-how-an-awg-works">Chapter 2: How an Arbitrary Waveform Generator Works</h2>
+
+<figure>
+<img src="../figures/chapter-02-opener.png" alt="Cutaway illustration of an arbitrary waveform generator showing the path from digital waveform memory through the sample clock, digital-to-analog converter, reconstruction filter, and output amplifier to the front-panel connector." />
+<figcaption><span class="fig-num">Figure 2.1</span> Inside an arbitrary waveform generator, a stored list of numbers becomes a real voltage. The digital-to-analog signal chain runs left to right: memory, clock, DAC, filter, output.</figcaption>
+</figure>
+
+<p>An arbitrary waveform generator is, at heart, a very fast and very disciplined way of reading a list of numbers out loud. You hand it a sequence of amplitude values, it pushes them through a converter at a precise rate, and a real analog voltage appears at the front panel. That is the whole trick. Everything interesting about an AWG, and everything you will eventually pay for, comes down to how cleanly and how quickly it performs that one operation.</p>
+
+<p>This chapter walks the signal from memory to connector. We will look at where the samples live, how the clock marches them out, what the converter does with them, why the raw output looks like a staircase, and how a filter turns that staircase back into the smooth waveform you asked for. Along the way we will sort out the family names that get thrown around loosely: function generator, arbitrary function generator, and true arbitrary waveform generator are not the same instrument, even though salespeople sometimes use the words as if they were.</p>
+
+<h3 id="the-signal-chain">2.1 The Signal Chain at a Glance</h3>
+
+<p>Before we dwell on any single block, it helps to see the whole chain at once. Every AWG, from a bench unit to a 20 GS/s instrument, follows the same basic topology. The differences are in clock rate, converter resolution, and memory depth, not in the order of operations.</p>
+
+<figure>
+<img src="../figures/fig-2-1-awg-block-diagram.svg" alt="Block diagram of an AWG signal chain. Waveform memory feeds the DAC, a sample clock drives the DAC update rate, a sequencer controls memory addressing, and a trigger input starts or gates playback. The DAC output passes through a reconstruction filter and an output amplifier and attenuator to the output connector. A dashed line separates the digital domain from the analog domain." />
+<figcaption><span class="fig-num">Figure 2.2</span> The end-to-end AWG block diagram. Samples flow left to right; the sequencer and trigger inputs steer when and in what order memory is read.</figcaption>
+</figure>
+
+<p><strong>Waveform memory</strong> holds the samples as integer codes. <strong>The sample clock</strong> sets the cadence, advancing the memory address and updating the converter once per tick. <strong>The DAC</strong> (digital-to-analog converter) turns each code into a voltage. <strong>The reconstruction filter</strong> removes the high-frequency images left over from sampling, smoothing the staircase into a continuous waveform. <strong>The output amplifier and attenuator</strong> scale that waveform to the requested amplitude and offset, and present a defined source impedance, usually 50 ohms. <strong>The output connector</strong> delivers it to your load. Two control paths sit above the main chain: a sequencer that decides which addresses get read and in what order, and a trigger input that decides when playback starts, stops, or repeats.</p>
+
+<p>Notice the dashed line in the figure. To its left, everything is numbers, perfectly repeatable and noise-free. To its right, everything is volts, subject to the analog realities of bandwidth, distortion, and impedance. The DAC is the border crossing, and most of an instrument's character is decided right there.</p>
+
+<h3 id="waveform-memory-and-playback">2.2 Waveform Memory and Playback</h3>
+
+<p>The waveform lives in memory as a list of integers, not as voltages. A 14-bit instrument stores each sample as a number from 0 to 16,383; a 16-bit instrument uses 0 to 65,535. These codes map linearly onto the converter's output range, so code zero might correspond to the most negative voltage and the top code to the most positive. The instrument does not store "1.2 volts." It stores the code that, after scaling, the DAC will turn into 1.2 volts.</p>
+
+<p><strong>Clocking the samples out.</strong> Playback is a metronome. On each tick of the sample clock, the instrument reads the code at the current memory address, hands it to the DAC, and advances the address by one. When the address reaches the end of the defined waveform, it wraps back to the start and the pattern repeats. That wrap-around is what makes a finite block of memory produce a continuous, periodic signal. Run a 1,000-sample sine at 100 MSa/s and the loop completes 100,000 times per second, giving you a 100 kHz tone.</p>
+
+<p><strong>Memory depth versus playback time.</strong> Two numbers get confused constantly, so it is worth nailing down. Memory depth is how many samples the instrument can store. Playback time is how long those samples last when clocked out, and it follows a simple relation:</p>
+
+<p><code>playback time = memory depth / sample rate</code></p>
+
+<p>The arithmetic is unforgiving. One million samples at 1 GS/s buys exactly one millisecond of unique signal before the waveform must repeat. Want a longer non-repeating record? You need either deeper memory or a lower sample rate, and lowering the sample rate costs you bandwidth. This tension between depth, rate, and record length is one of the central trade-offs in AWG design, and it is why high-end instruments advertise gigasample memories.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> When an AWG cannot fit your whole signal in memory, you have three honest options: increase the memory, decrease the sample rate, or break the waveform into segments and stitch them with a sequencer (Chapter 5). What you cannot do is wish the relation away. Time equals depth over rate, every time.</p></blockquote>
+
+<h3 id="direct-digital-synthesis">2.3 Direct Digital Synthesis vs True Arb</h3>
+
+<p>There are two different ways to get a periodic signal out of digital memory, and most modern instruments offer both. The distinction matters because it determines your frequency resolution and what kinds of signals you can produce.</p>
+
+<p><strong>Direct digital synthesis (DDS)</strong> is the clever method used for repetitive tones. Instead of stepping through memory one address at a time, a DDS engine keeps a <em>phase accumulator</em>, a large register that adds a fixed increment on every clock tick. The top bits of that accumulator index into a lookup table holding one period of the waveform, typically a sine. Change the increment, and you change how fast the accumulator rolls over, which changes the output frequency. Because the accumulator is often 32 or 48 bits wide, the frequency resolution is extraordinarily fine, fractions of a millihertz, even though the clock and the table are fixed. DDS also tunes frequency instantly and with continuous phase, which is exactly what you want for sweeps and modulation.</p>
+
+<p><strong>True arbitrary playback</strong> is the other method, and it is what gives the AWG its name. Here the instrument reads sequential memory addresses, one sample per clock, and plays back whatever you stored, point by point. There is no lookup table and no assumption that the signal is a simple tone. You can play a captured radar return, a distorted power-line transient, a custom pulse train, anything you can express as samples. The cost is that your frequency and timing resolution are set by the sample clock and the memory length, not by a deep phase accumulator.</p>
+
+<p><strong>When each is used.</strong> Reach for DDS when you need a clean, agile, single-frequency signal with fine tuning: a precise sine for a reference, an FSK carrier, a swept tone. Reach for true arb when the signal is not a standard shape, or when you need to reproduce a specific recorded or synthesized waveform faithfully. Many bench instruments, including the BNC Model 645, provide standard DDS shapes (sine, square, ramp, triangle, pulse, noise) alongside arbitrary memory, so you can pick the right engine for each job from one box.</p>
+
+<h3 id="the-dac">2.4 The Digital-to-Analog Converter</h3>
+
+<p>The DAC is where numbers become volts, and it is the single component that most determines output quality. Three of its properties deserve attention.</p>
+
+<p><strong>Resolution (bits).</strong> The converter's bit count sets how finely it can divide the output range. An <em>N</em>-bit DAC produces 2<sup>N</sup> distinct levels, so a 14-bit part gives 16,384 steps and a 16-bit part gives 65,536. More bits mean smaller voltage steps, a lower noise floor, and more available dynamic range. This is why a 16-bit instrument can place small signals on top of large ones without the small signal disappearing into quantization noise.</p>
+
+<p><strong>Update rate.</strong> This is how many times per second the DAC can accept a new code and settle to the corresponding voltage. It is effectively the maximum sample rate of the instrument, quoted in megasamples or gigasamples per second. A higher update rate pushes the usable bandwidth up and moves the sampling images farther away from your signal, which makes the reconstruction filter's job easier. The flagship BNC Model 686, for context, runs a 14-bit converter at a 20 GS/s update rate.</p>
+
+<p><strong>Glitch energy.</strong> Real DACs do not switch cleanly between codes. During a code transition, internal switches turn on and off with slightly different timing, and the output briefly darts to a wrong value before settling. The area of that excursion is the glitch energy or glitch impulse, and it tends to be worst at major-carry transitions, such as the midscale crossing where many bits flip at once. Glitch energy shows up as spurious tones in the spectrum and limits spurious-free dynamic range. Converter designers spend real effort taming it, which is a large part of why a good DAC costs what it does.</p>
+
+<blockquote><p><strong>Pro tip.</strong> If you are chasing spectral purity and seeing spurs you cannot explain, suspect the DAC before you blame the cables. Glitch energy, DAC nonlinearity, and clock jitter usually dominate an AWG's spurious-free dynamic range long before the analog output path becomes the limiting factor.</p></blockquote>
+
+<h3 id="reconstruction-and-output">2.5 Reconstruction Filtering and the Output Path</h3>
+
+<p>Look at the raw output of a DAC and you will not see a smooth curve. You will see a staircase. The converter holds each code's voltage constant for one full sample period, then jumps to the next, so the output is a series of flat steps. This is sample-and-hold behavior, and while the steps trace out your intended waveform, they are not yet the waveform itself.</p>
+
+<figure>
+<img src="../figures/fig-2-4-dac-staircase.svg" alt="Plot comparing a DAC staircase output against a smooth reconstructed sine wave. The orange staircase holds each sample value flat for one sample period, while the blue curve shows the continuous sine that results after the reconstruction low-pass filter removes the high-frequency image content." />
+<figcaption><span class="fig-num">Figure 2.3</span> The DAC produces a staircase (orange). The reconstruction filter removes the high-frequency images, leaving the smooth waveform you asked for (blue).</figcaption>
+</figure>
+
+<p><strong>The reconstruction filter.</strong> Those sharp steps contain energy at high frequencies, specifically copies of your signal's spectrum repeated around every multiple of the sample rate. These copies are called images, and they are an unavoidable byproduct of sampling. A low-pass reconstruction filter, sometimes called an anti-imaging filter, sits right after the DAC and removes the images while passing the signal you want. What survives is the smooth, continuous waveform of Figure 2.3. The filter's cutoff sets the practical upper edge of the instrument's usable bandwidth, which is why you will see the reconstruction filter and the rated bandwidth quoted together.</p>
+
+<p><strong>The output path.</strong> After filtering, the signal still has to be shaped to your requested amplitude, offset, and impedance. An output amplifier provides gain and adds the DC offset you dialed in. A programmable attenuator scales the level down cleanly for small-signal work, preserving resolution that a software-only volume control would throw away. The output stage presents a defined source impedance, almost always 50 ohms, so that the instrument matches standard coaxial systems and delivers a predictable level into a matched load. Get the impedance match wrong, terminate a 50-ohm source into a high-impedance scope input without accounting for it, and your amplitudes will read double. That is not a fault, it is physics, and Chapter 3 returns to it.</p>
+
+<p><strong>Single-ended versus differential.</strong> Most outputs are single-ended: one signal conductor referenced to ground, on a standard coaxial connector. Some instruments also offer differential outputs, a matched pair carrying equal and opposite signals. Differential outputs drive balanced loads directly, reject common-mode noise, and often deliver more voltage swing than a single-ended output of the same instrument, since the two phases add. High-speed instruments such as the BNC Model 685 provide differential outputs for exactly these reasons.</p>
+
+<h3 id="awg-vs-function-generator">2.6 AWG, Function Generator, and AWFG</h3>
+
+<p>The words get used loosely, so let us be precise. Three overlapping instrument classes share the same basic architecture but target different jobs.</p>
+
+<p>A <strong>function generator</strong> is the simplest member. It produces standard shapes, sine, square, triangle, ramp, pulse, almost always with a DDS engine, plus basic modulation and sweep. It is the workhorse of the bench for routine stimulus, and it is inexpensive because it does not need deep memory or a blistering DAC.</p>
+
+<p>An <strong>arbitrary function generator</strong>, sometimes written AWFG (arbitrary waveform function generator), adds modest arbitrary memory on top of the standard shapes. You get the convenience of DDS for everyday signals and the flexibility to load a custom waveform when you need one, within a limited memory budget and at a sample rate suited to bench work. The BNC Model 645 fits here: 50 MHz sine output, 10 MHz arbitrary waveforms, 14-bit resolution, 125 MSa/s, and 256K points of arbitrary memory.</p>
+
+<p>A <strong>true arbitrary waveform generator</strong> is built around deep memory and a fast DAC, with the standard shapes treated as a convenience rather than the point. This is the instrument you buy when you must reproduce complex, high-bandwidth, possibly non-repeating signals: wideband radar, multi-symbol communications, fast pulse sequences. The BNC Model 685 and Model 686 live here, with gigasample memories and multi-gigasample-per-second update rates.</p>
+
+<p>The table below sketches the three classes. Treat the figures as typical ranges for the category, not as guarantees for any specific model, and always confirm current numbers against the datasheet at berkeleynucleonics.com.</p>
+
+<table>
+<thead>
+<tr><th>Trait</th><th>Function Generator</th><th>Arbitrary Function Generator (AWFG)</th><th>True High-Speed AWG</th></tr>
+</thead>
+<tbody>
+<tr><td>Primary engine</td><td>DDS (standard shapes)</td><td>DDS plus modest arb memory</td><td>Deep sequential memory plus fast DAC</td></tr>
+<tr><td>Typical sample rate</td><td>Tens to hundreds of MSa/s</td><td>~100 to several hundred MSa/s</td><td>Multiple GSa/s, up to tens of GSa/s</td></tr>
+<tr><td>Arbitrary memory depth</td><td>Little or none</td><td>Thousands to a few hundred thousand points</td><td>Megasamples to gigasamples per channel</td></tr>
+<tr><td>Vertical resolution</td><td>Typically 12 to 14 bits</td><td>Typically 14 bits</td><td>14 to 16 bits</td></tr>
+<tr><td>Best for</td><td>Routine bench stimulus, standard shapes</td><td>Bench work needing occasional custom waveforms</td><td>Wideband, complex, or recorded signals</td></tr>
+<tr><td>Representative BNC model</td><td>Function-generator modes on bench units</td><td>Model 645</td><td>Model 685, Model 686</td></tr>
+</tbody>
+</table>
+
+<p>The practical lesson is to match the instrument class to the signal, not to the brochure. If your work is routine sines and squares, a function generator is the right tool and a high-speed AWG is wasted money. If you must replay a captured transient at full fidelity, no amount of DDS will substitute for deep memory and a fast converter. Most engineers end up owning both ends of this range, and reaching for whichever one the task in front of them actually needs.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-02.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01-signal-generation-basics.html">&larr; 1. Signal Generation Basics</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="03-key-specifications.html">3. Key Specifications &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 5: Calibration Issues</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-5-calibration-issues">Chapter 5: Calibration Issues</h2>
+<figure>
+<img src="../figures/chapter-05-opener.svg" alt="" /><figcaption>Chapter 5 — Calibration Issues</figcaption>
+</figure>
+<p>Measurements are meaningless if they are not accurate. Even with the right equipment, a valid calibration is what makes the result trustworthy. Power meters and sensors must both be calibrated so that the displayed reading agrees with the actual RF input power, regardless of instrumentation and environmental variables.</p>
+<p>This chapter covers linearity and frequency calibration, the two integral parts of the power measurement calibration process. Most modern power meters also include temperature compensation, typically handled as part of linearity correction, so it is not covered separately here.</p>
+<h3 id="factory-open-loop-calibration">5.1 Factory Open-Loop Calibration</h3>
+<p>The simplest calibration method dates back to the early days of measurement. Apply known signal levels, mark the location of the indicator needle on the face of the meter at each step, and scribe a few marks between if needed. This creates a primitive lookup table that compensates for the gain and shape (linearity) of the combined sensor and meter transfer function.</p>
+<p>As measurement evolved, meter face markings became fixed and adjustments were performed internally via analog potentiometers. Nonlinear networks of diodes and resistors provided moderately accurate correction for the curvature of the transfer function. Later, discrete digital circuitry replaced these nonlinear networks for the shaping function. In every case, the sensor and the meter were calibrated together as a unit.</p>
+<p>More recent power meter designs are equipped to handle removable sensors, so it makes sense to calibrate the meter and the sensor separately. Either can be interchanged without invalidating the calibration. To calibrate the meter, it is connected to one or more precision DC reference voltages that simulate the output of a power sensor, and the meter is adjusted to standardized gain values across its operating range. This is often called DC calibration. It ensures that a particular sensor produces the same reading on any calibrated power meter. The adjustment is sometimes a physical trim of analog potentiometers, sometimes a digital adjustment of gain and shaping coefficients through software. With modern systems, this calculation happens upstream in the power sensor itself. Because such systems do not take any DC voltage readings (the sensor outputs digital data directly), the cumbersome DC calibration step is bypassed entirely.</p>
+<p>In older designs, the output of each power sensor is different. A traditional power meter must know the precise relationship between RF input amplitude and detected output voltage from the sensor. This information ranges from one or two numbers to multi-dimensional tables of calibration data. Information about the sensor’s transfer function is characterized at the factory and stored in a nonvolatile EEPROM in the sensor. When the sensor is connected, the meter downloads the calibration data and uses it as the basis for computing the proper RF power for a given output signal from the sensor.</p>
+<p>Some sensor types are very linear.</p>
+<figure>
+<img src="../figures/image176.jpeg" alt="Signal flow from sensor to meter, with shaping and display" /><figcaption>Figure 5.1.1 Signal flow from sensor to meter, with shaping and display.</figcaption>
+</figure>
+<p>Thermocouple sensors produce an output voltage directly proportional to input RF power. CW diode sensors operating within their square-law region (below approximately -20 dBm) share that property. Linear power detectors are simple to calibrate. For some measurements, all that is needed is to store the transfer gain, a single value of microvolts per milliwatt, for moderate accuracy.</p>
+<p>As the transfer function becomes nonlinear or higher accuracy is required, more complex equations characterize the transfer function. Common techniques include polynomial curve fits over segments or over the entire function. When calibration points are spaced closely enough, even a second-order curve fit can produce excellent results.</p>
+<h3 id="single-double-and-multipoint-linearity-calibrations">5.2 Single, Double, and Multipoint Linearity Calibrations</h3>
+<p>For best accuracy in the field, many classical power meters allow fine adjustments to the factory calibration using a local reference level. There are three basic types of field adjustment.</p>
+<p><strong>Single-point adjustment at zero input.</strong> Often called a “sensor zero” or “null adjustment.” Stored data still characterizes detector and instrument gain and detector linearity (shaping). No RF reference is used. The zero adjustment is supported by nearly all instruments and is necessary for low-level power measurements. In contrast to historical sensor designs, this is the only field calibration necessary for modern USB sensors. For best accuracy, a zero is performed immediately before any measurement in the lowest 10 dB or so of a sensor’s dynamic range. This minimizes the contribution of sensor drift and other phenomena that cannot be characterized in the factory calibration. The zero adjustment typically takes a highly filtered reading over several seconds and uses the value as an offset. The stored factory transfer function is then adjusted up or down by the sensor zero.</p>
+<p><strong>Two-point adjustment.</strong> A sensor zero (offset adjustment) plus a gain adjustment using a fixed power reference. Many power meters include a built-in 1.00 mW (0 dBm) RF reference for this purpose. Adjusting the gain of the curve compensates for small attenuation variations from sensor drift, aging, and connector wear. This process is sometimes called a “fixed cal.” It affects all power values equally: by a fixed percentage in linear power (milliwatts), or by a constant number of dBm in logarithmic units. The stored factory transfer function is still used, but adjusted for both slope and offset.</p>
+<figure>
+<img src="../figures/image188.jpeg" alt="Sensor AutoCal sweep in progress" /><figcaption>Figure 5.2.1 Sensor AutoCal sweep in progress.</figcaption>
+</figure>
+<p><strong>Multi-point adjustment.</strong> A field procedure also known as a “step cal” or AutoCal in some Boonton-lineage power meters. Instruments that support step calibration replace the fixed 0 dBm power reference with a precision power-sweep calibrator that generates calibrated RF levels across a wide dynamic range. The calibrator steps through the sensor’s full dynamic range, and a series of calibration values are stored for the exact connector / sensor / cable / instrument assembly in use, at the current operating temperature.</p>
+<p>Depending on how many power steps are used, the factory transfer function is either adjusted at each point or replaced entirely. In either case, several uncertainties are reduced or eliminated by closing the loop in the field.</p>
+<p><strong>What field step calibration buys you:</strong></p>
+<ul>
+<li>Both gain and offset adjustment.</li>
+<li>Fine-tuning of the transfer function over the sensor’s entire dynamic range.</li>
+<li>An improved current-temperature calibration beyond the factory-characterized compensation tables.</li>
+<li>Compensation for detector aging and degradation. Temporary small overloads, ESD, and physical shock can cause slight changes to detector transfer functions.</li>
+<li>Compensation for changing losses from connector wear.</li>
+</ul>
+<blockquote>
+<p><strong>Engineer’s corner.</strong> Modern thermally stabilized two-path sensors (such as the Berkeley Nucleonics 12100 series) reduce the field calibration burden to almost nothing. Zero is typically not required. Reference calibration is not required. The factory multipoint calibration runs over the entire dynamic range and is stored in nonvolatile memory. Recertification annually keeps long-term drift in check, but the day-to-day operator never thinks about calibration at all.</p>
+</blockquote>
+<h3 id="field-linearity-calibration-methods">5.3 Field Linearity Calibration Methods</h3>
+<p>The field calibration methods so far rely on applying a known RF power reference to the sensor input to allow the sensor / meter combination to yield the most accurate readings possible. Looking at the sources of inaccuracy and drift, several stages sit between the input RF signal and the digitized detector value, and all of them must be accounted for during system calibration.</p>
+<p>Traditionally, power meter base units and sensors are calibrated separately as discussed in Section 5.1. Field calibration (zero, fixed cal, or step cal) is then used to calibrate out the small errors that occur when a sensor is mated to a particular meter, as discussed in Section 5.2. Historically, the basic function of a power sensor was to convert RF power to DC voltage, while the function of a power meter was to convert that DC voltage to a meaningful power reading.</p>
+<p>The power sensor is factory characterized with one or more linearity tables describing its transfer function. In some cases the tables describe deviations from a stored default transfer function. Depending on the sensor, these tables may have multiple inputs to allow compensation for temperature and frequency, both of which can strongly affect the curve. In all cases, the sensor’s calibration tables describe how its DC output (sometimes DC chopped to AC) relates to the RF input.</p>
+<p>The job of an older-style power meter is simple: measure the sensor’s DC output and use the appropriate transfer function to linearize the value into milliwatts or dBm. This requires the meter to know exactly what voltage the sensor is outputting, which is where calibration of the meter base unit comes in. That calibration is performed by connecting a precision DC source to the meter’s sensor input and calibrating at one or more voltage points. When the sensor is then connected, the entire system is in a calibrated state.</p>
+<p>This process is not perfect. Small losses occur in cables and connectors between the sensor and the meter, plus noise offset and drift in the meter’s analog stages. This drift and uncertainty is referred to as instrumentation uncertainty (see Chapter 9) and adds to the drift and uncertainty of the detector itself. Cutting-edge designs have largely eliminated this uncertainty by performing the RF power calculation and digitization inside the sensor. The Berkeley Nucleonics Model 12100 series operates this way: every reading is computed inside the sensor, and only digital data crosses the USB cable to the host.</p>
+<p>For older designs, the uncertainty can be reduced by any of three methods.</p>
+<figure>
+<img src="../figures/image189.jpeg" alt="Closed-loop calibration: RF source feeds calibrator and sensor in turn" /><figcaption>Figure 5.3.1 Closed-loop calibration: the RF source feeds the calibrator and the sensor in turn.</figcaption>
+</figure>
+<p><strong>Closed-loop field calibration with a known RF level applied to the detector input (sensor input connector).</strong> This typically uses a precision RF power reference or calibrator built into the meter. With this technique, the entire measurement path is inside the calibration loop, and overall accuracy depends on the accuracy of the RF calibrator. Connector and detector changes are calibrated out, and a faulty or blown sensor is immediately apparent. With step calibration, the entire dynamic range can be fully calibrated in the field. This usually produces the highest measurement accuracy. The chief disadvantage is that the sensor must be disconnected from the source and connected to the calibrator each time field calibration is performed, which is inconvenient in some automated systems.</p>
+<p><strong>Field calibration with a known DC level injected immediately after the detector.</strong> This bypasses and disconnects the detector and injects a precision DC level into the signal chain in place of the detector output. The input connector and detector itself are left out of the calibration loop. Generating a stable DC voltage is easier than generating an equally stable RF power level, so some uncertainty from not calibrating the entire signal chain is offset by lower uncertainty in the calibration source. The advantage is that the sensor stays connected to the device under test during calibration. The disadvantage is that drift or malfunction from connector or detector aging or damage goes unnoticed. Because factory-generated linearity data must still be used for shaping, detector linearity changes cannot be compensated. Accuracy is somewhat lower than closed-loop RF calibration.</p>
+<p><strong>Digitizing the signal immediately after the detector and transmitting digital data to the base unit.</strong> This is the method used by most modern USB sensors. There are relatively few analog stages between the detector and the digitizer. During factory calibration, the entire analog signal chain is present, and because the circuitry is in the same housing and the sensor output is digital data, the system can be characterized at the factory more accurately than a separable sensor and meter. Zero calibration is the only field calibration required, especially when measuring near the noise floor. Errors from connector and detector aging or damage can still occur, so periodic absolute power and frequency response validation or calibration is still recommended to maximize measurement accuracy.</p>
+<p>Techniques can be combined. Field linearity calibration on a digitizing sensor is supported by most software, allowing zero adjustment and often a fixed calibration using a known RF reference source. As of the publication of this guide, no digitizing sensors permit a full power-sweep field calibration, so all rely on stored factory linearity data.</p>
+<h3 id="frequency-response-correction">5.4 Frequency Response Correction</h3>
+<p>The task of a traditional, non-digitizing power sensor is straightforward: convert RF to a measurable DC level across a broad range of carrier frequencies. Detectors are not perfect, so there are always small variations in the sensor’s output as frequency changes. Most classical sensors are fairly flat at lower frequencies and begin to experience increasing response deviations as input frequency goes up. Matching at the input RF connector and within the detector assembly begin to play a role, and the output of the detector itself eventually falls off.</p>
+<p>The good news is that the variation is generally small (typically no more than a few dB). When the operating frequency is known, it is possible to compensate for the response deviations. Power sensors are factory calibrated at a series of frequency points to generate a table of correction values. These values are most commonly referred to as Effective Efficiency (in percent) or Calibration Factors (in dB), and are supplied to the user.</p>
+<p>In most modern sensor designs, the table is stored in an EEPROM within the sensor, and the meter automatically loads and applies the appropriate factor based on the user’s set frequency. If the operating frequency falls between table entries, an interpolation or curve fit is used. In some sensors, the frequency correction data is part of a multi-dimensional table that simultaneously performs linearity, frequency, and temperature compensation.</p>
+<p>Two common methods generate basic calibration factors.</p>
+<p><strong>Direct comparison with a gold-standard sensor.</strong> A leveled signal source is swept or stepped through each desired calibration frequency, and the leveled power reading from a NIST-traceable reference sensor is recorded at each calibration frequency. The reference is replaced by the sensor under calibration, and the sweep is repeated. The ratio at each frequency point between the resulting reading and the corresponding reference reading is the calibration factor.</p>
+<figure>
+<img src="../figures/image191.jpeg" alt="Power-splitter based sensor frequency calibration setup" /><figcaption>Figure 5.4.1 Power-splitter based sensor frequency calibration setup.</figcaption>
+</figure>
+<p><strong>Power-splitter method.</strong> A terminated average thermistor sensor (reference), precision power splitter, and signal source are connected together. The generator supplies a CW signal at a specific frequency to the precision splitter, and the reference power meter value corrects for any level variations from the source or splitter. The center point of the splitter is a constant-voltage point, and the SWR at the splitter output port is dominated by that side arm of the splitter. Low splitter SWR minimizes mismatch error in the transfer of calibrations. The stability of the thermistor mount means that the combination can be calibrated accurately and performs well across wide variations in generator characteristics. It supplies transfer calibration factor accuracies of 1.2% to 2.5% (RSS) across the frequency range of the system.</p>
+<p>A common mistake is assuming that the output level of a signal generator is accurate and its VSWR is good. Leveling accuracy of most generators is ±1 dB, with VSWR rarely better than 1.35:1 across a broad frequency range. RF sweepers are worse, often with leveling inaccuracies up to ±3 dB. Calibration factors cannot be checked using just the output of a generator. They must be checked by one of the methods above. Assembling and maintaining a traceable, automated sensor calibration station based on the power-splitter method is now within reach of most calibration labs.</p>
+<blockquote>
+<p><strong>Pro tip.</strong> Always tell your sensor what frequency you are measuring. A sensor told it is at 100 MHz when the signal is actually at 10 GHz will happily report a wrong number. The error in dB is typically small, but when you are chasing the last 0.5 dB of transmitter compliance, it is exactly the kind of error that keeps you at the bench all weekend.</p>
+</blockquote>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04-equipment-selection.html">&larr; 4. Equipment Selection</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="06-rf-power-analysis.html">6. RF Power Analysis &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

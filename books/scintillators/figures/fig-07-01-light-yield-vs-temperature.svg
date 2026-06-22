@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="800" height="480">
+  <rect width="800" height="480" fill="#ECEFF1"/>
+
+  <text x="400" y="32" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#003D6B">Relative light yield versus temperature, common scintillators</text>
+
+  <rect x="80" y="60" width="660" height="320" fill="#ffffff" stroke="#2C3E50" stroke-width="1.4"/>
+
+  <!-- Y axis: 0 to 2.2, 320 px tall: 2.2 -> 60, 0 -> 380 -->
+  <!-- y = 380 - val * 145.45 -->
+  <text x="30" y="220" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#003D6B" font-weight="600" transform="rotate(-90, 30, 220)">Light yield, normalized to 20°C</text>
+
+  <text x="410" y="408" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#003D6B" font-weight="600">Temperature (°C)</text>
+
+  <!-- X axis: -100 to +160 over 660 px -> 1°C = 2.54 px, x = 80 + (T+100) * 2.538 -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2C3E50">
+    <line x1="80" y1="380" x2="80" y2="385" stroke="#2C3E50"/><text x="80" y="397" text-anchor="middle">-100</text>
+    <line x1="131" y1="380" x2="131" y2="385" stroke="#2C3E50"/><text x="131" y="397" text-anchor="middle">-80</text>
+    <line x1="182" y1="380" x2="182" y2="385" stroke="#2C3E50"/><text x="182" y="397" text-anchor="middle">-60</text>
+    <line x1="232" y1="380" x2="232" y2="385" stroke="#2C3E50"/><text x="232" y="397" text-anchor="middle">-40</text>
+    <line x1="283" y1="380" x2="283" y2="385" stroke="#2C3E50"/><text x="283" y="397" text-anchor="middle">-20</text>
+    <line x1="334" y1="380" x2="334" y2="385" stroke="#2C3E50"/><text x="334" y="397" text-anchor="middle">0</text>
+    <line x1="385" y1="380" x2="385" y2="385" stroke="#2C3E50"/><text x="385" y="397" text-anchor="middle">20</text>
+    <line x1="436" y1="380" x2="436" y2="385" stroke="#2C3E50"/><text x="436" y="397" text-anchor="middle">40</text>
+    <line x1="487" y1="380" x2="487" y2="385" stroke="#2C3E50"/><text x="487" y="397" text-anchor="middle">60</text>
+    <line x1="537" y1="380" x2="537" y2="385" stroke="#2C3E50"/><text x="537" y="397" text-anchor="middle">80</text>
+    <line x1="588" y1="380" x2="588" y2="385" stroke="#2C3E50"/><text x="588" y="397" text-anchor="middle">100</text>
+    <line x1="639" y1="380" x2="639" y2="385" stroke="#2C3E50"/><text x="639" y="397" text-anchor="middle">120</text>
+    <line x1="690" y1="380" x2="690" y2="385" stroke="#2C3E50"/><text x="690" y="397" text-anchor="middle">140</text>
+    <line x1="740" y1="380" x2="740" y2="385" stroke="#2C3E50"/><text x="740" y="397" text-anchor="middle">160</text>
+  </g>
+
+  <!-- Y ticks 0 to 2.2 -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2C3E50">
+    <line x1="75" y1="380" x2="80" y2="380" stroke="#2C3E50"/><text x="70" y="383" text-anchor="end">0.0</text>
+    <line x1="75" y1="307" x2="80" y2="307" stroke="#2C3E50"/><text x="70" y="310" text-anchor="end">0.5</text>
+    <line x1="75" y1="235" x2="80" y2="235" stroke="#2C3E50"/><text x="70" y="238" text-anchor="end">1.0</text>
+    <line x1="75" y1="162" x2="80" y2="162" stroke="#2C3E50"/><text x="70" y="165" text-anchor="end">1.5</text>
+    <line x1="75" y1="89" x2="80" y2="89" stroke="#2C3E50"/><text x="70" y="92" text-anchor="end">2.0</text>
+  </g>
+
+  <!-- Reference grid -->
+  <g stroke="#d4d8db" stroke-width="0.6" stroke-dasharray="2,3">
+    <line x1="80" y1="89" x2="740" y2="89"/>
+    <line x1="80" y1="162" x2="740" y2="162"/>
+    <line x1="80" y1="235" x2="740" y2="235"/>
+    <line x1="80" y1="307" x2="740" y2="307"/>
+    <line x1="385" y1="60" x2="385" y2="380"/>
+  </g>
+  <text x="385" y="56" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2C3E50" font-style="italic">room temp</text>
+
+  <!-- BGO curve: extreme negative-T rise, sharp drop at high T -->
+  <!-- Data: (-100,2.10),(-60,1.95),(-20,1.50),(20,1.00),(60,0.55),(100,0.25),(140,0.05) -->
+  <path d="M 80,75 L 131,82 L 182,96 L 232,127 L 283,162 L 334,198 L 385,235 L 436,271 L 487,300 L 537,329 L 588,344 L 639,358 L 690,372 L 740,378"
+        fill="none" stroke="#2C3E50" stroke-width="2.4"/>
+
+  <!-- NaI(Tl): -40 -> 0.80, 20 -> 1.0, 100 -> 0.80, 160 -> 0.65 -->
+  <path d="M 232,261 L 283,242 L 334,235 L 385,235 L 436,242 L 487,249 L 537,257 L 588,264 L 639,271 L 690,279 L 740,286"
+        fill="none" stroke="#003D6B" stroke-width="2.4"/>
+
+  <!-- CsI(Tl): broad max around 40, drops -->
+  <path d="M 80,300 L 131,293 L 182,278 L 232,260 L 283,250 L 334,235 L 385,235 L 436,235 L 487,242 L 537,249 L 588,257 L 639,264 L 690,271 L 740,279"
+        fill="none" stroke="#0078B6" stroke-width="2.4"/>
+
+  <!-- CeBr3: very flat -->
+  <path d="M 283,213 L 334,242 L 385,235 L 436,242 L 487,249 L 537,257 L 588,264 L 639,271 L 690,279 L 740,286"
+        fill="none" stroke="#00ff88" stroke-width="2.4"/>
+
+  <!-- GAGG:Ce: similar flat -->
+  <path d="M 232,228 L 283,228 L 334,232 L 385,235 L 436,242 L 487,249 L 537,257 L 588,264 L 639,271 L 690,279 L 740,286"
+        fill="none" stroke="#00b4ff" stroke-width="2.4" stroke-dasharray="6,3"/>
+
+  <!-- Inline labels -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700">
+    <text x="100" y="68" fill="#2C3E50">BGO</text>
+    <text x="115" y="270" fill="#003D6B">NaI(Tl)</text>
+    <text x="115" y="295" fill="#0078B6">CsI(Tl)</text>
+    <text x="295" y="207" fill="#00ff88">CeBr₃</text>
+    <text x="225" y="223" fill="#00b4ff">GAGG:Ce</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(540, 80)" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">
+    <rect x="0" y="0" width="170" height="115" fill="#ffffff" stroke="#2C3E50" stroke-width="1" opacity="0.95"/>
+    <text x="85" y="14" text-anchor="middle" font-weight="700" fill="#003D6B">Materials</text>
+    <line x1="10" y1="28" x2="40" y2="28" stroke="#2C3E50" stroke-width="2.4"/>
+    <text x="46" y="31">BGO</text>
+    <line x1="10" y1="44" x2="40" y2="44" stroke="#003D6B" stroke-width="2.4"/>
+    <text x="46" y="47">NaI(Tl)</text>
+    <line x1="10" y1="60" x2="40" y2="60" stroke="#0078B6" stroke-width="2.4"/>
+    <text x="46" y="63">CsI(Tl)</text>
+    <line x1="10" y1="76" x2="40" y2="76" stroke="#00ff88" stroke-width="2.4"/>
+    <text x="46" y="79">CeBr₃</text>
+    <line x1="10" y1="92" x2="40" y2="92" stroke="#00b4ff" stroke-width="2.4" stroke-dasharray="6,3"/>
+    <text x="46" y="95">GAGG:Ce</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="400" y="448" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#2C3E50" font-style="italic">Figure 7.1 - Relative scintillation light yield versus temperature for representative materials. BGO swings dramatically; the Ce-doped materials are markedly flatter.</text>
+  <text x="400" y="463" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#2C3E50" font-style="italic">Down-hole well logging (100-200 °C) and outdoor monitoring (-40 to +60 °C) push the operating envelope to the edges of this plot.</text>
+</svg>

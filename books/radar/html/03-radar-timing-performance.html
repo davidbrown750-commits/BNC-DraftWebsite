@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Radar Timing Performance</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="radar-timing-performance">Radar Timing Performance</h1>
+<p class="lead">Pulsed radar lives and dies by its timing. This chapter walks through the intervals that govern a pulsed system: how often it transmits, how long it listens, what it does in the gaps, and how those choices set the power, accuracy, and detection behavior of the set.</p>
+
+<h2 id="pulse-repetition-frequency">Pulse Repetition Frequency (PRF)</h2>
+<p>Pulse repetition frequency (PRF) of the radar system is the number of pulses that are transmitted per second. Radar systems radiate each pulse at the carrier frequency during transmit time (or pulse width PW), wait for returning echoes during listening or rest time, and then radiate the next pulse, as shown in the figure. The time between the beginning of one pulse and the start of the next pulse is called pulse repetition time (PRT) and is equal to the reciprocal of PRF as follows:</p>
+<p class="equation"><em>PRT = 1 / PRF</em></p>
+<figure>
+  <img src="../figures/ch03-fig01.png" alt="Diagram of pulsed radar timing showing transmit time, listening time, and the pulse repetition time between pulses" />
+  <figcaption><span class="fig-num">Figure 3.1</span> Radar pulse relationships</figcaption>
+</figure>
+
+<h2 id="receiving-time">Receiving Time</h2>
+<p>Generally, the receiving time is the time between the transmitter pulses. The receiving time is always shorter than the difference between the pulse repetition period and the length of the transmitter pulse. It is sometimes also limited by dead time, in which the receiver is already switched off just before the next transmitting pulse.</p>
+<p>In some radar between the transmitting pulse and the receiving time, there is a short recovery time of the duplexer. This recovery time occurs when the duplexer must switch off the receiver response to the high transmitting power. At very low transmitting power, however, this can already be received during the transmit pulse also. The receiving time would therefore include the transmission time.</p>
+
+<h2 id="dead-time">Dead Time</h2>
+<p>If the receiving time ends before the next transmitting pulse, the result is dead time. During the dead time, modern radar will loop in various system tests. Radar that use a phased-array antenna require this dead time to reprogram the next beam direction. This can take up to 200 microseconds in a modern system, which means the dead time is far greater than the receiving times.</p>
+<p>During dead time, the receiver is switched off because receiving data during reprogramming could lead to confusing data. It is common for the radar design to perform internal testing procedures in its modules that make up the receiver data path. This helps verify the operational readiness of certain electronic circuits and executes any possible adjustments necessary. For this self-test, a signal with known properties is used. These signals are fed into the receiver paths and processing in the individual modules is monitored. The video processor switches off these pulses, so that they do not appear on the screen. If necessary as a result of the tests, the modules can be automatically reconfigured or adjusted, and this is often accompanied by a detailed error log entry.</p>
+<figure>
+  <img src="../figures/ch03-fig02.png" alt="Burst mode timing diagram of a pulse radar showing groups of pulses followed by a long dead time" />
+  <figcaption><span class="fig-num">Figure 3.2</span> Burst mode of a pulse radar</figcaption>
+</figure>
+
+<h2 id="burst-mode">Burst Mode</h2>
+<p>The distribution of the dead time pulses does not have to be uniform. You could have a number of pulses in rapid succession one after the other with short receive times following. For example, if several pulse periods are oriented in the same direction (as required for pulse pair processing and moving target detection), then dead time is not needed. A random unwanted change in the phase angle of the generator is not likely with short pulse intervals. Therefore, the radar will be more accurate in its distance calculations. At the same time, if the pulse repetition frequency changes during this short timeframe, the resulting speed changes of the target will be higher. The higher the pulse repetition frequency, the better the radar at unambiguous measurements of the velocity.</p>
+<p>For better illustration, see the Burst / Pulse Pattern video at <a href="/">www.berkeleynucleonics.com</a>.</p>
+<p>To illustrate, didactic radar are often in close proximity to the target. They do not require large receiving times for extremely short distances (within a training room, for instance). However, they do require a longer dead time to transfer the data of the echo signals over a relatively narrowband serial cable to the computer. For example, they transmit 10 pulses per second only, which corresponds to an average pulse repetition frequency of 10 Hz. These 10 pulses are transmitted quickly, but then a significant dead time will follow. The dead time which follows is almost a full second. During this time the data is transferred via USB using a sampling rate of up to 280 Mbit/s.</p>
+
+<h2 id="duty-cycle">Duty Cycle</h2>
+
+<h3 id="peak-and-average-power">Peak and Average Power</h3>
+<p>The energy content of a continuous-wave radar transmission may be easily figured out because the transmitter operates continuously. However, pulsed radar transmitters are switched on and off to provide range timing information with each pulse. The amount of energy in this waveform is important because maximum range is directly related to transmitter output power. The more energy the radar system transmits, the greater the target detection range will be. The energy content of the pulse is equal to the peak (maximum) power level of the pulse multiplied by the pulse width. However, meters used to measure power in a radar system do so over a period of time that is longer than the pulse width. For this reason, pulse repetition time is included in the power calculations for transmitters. Power measured over such a period of time is referred to as average power.</p>
+<p>Peak power must be calculated more often than average power. This is because most measurement instruments measure average power directly. Transposing the equation gives us a common way of calculating peak power from average power, where:</p>
+<ul>
+  <li>P<sub>avg</sub> = average power</li>
+  <li>P<sub>peak</sub> = pulsed power</li>
+  <li>PW = pulse width</li>
+  <li>PRT = pulse repetition time</li>
+</ul>
+<p>Since some power is stored in the modulator, the power supply will need to power the transmitter at a higher level.</p>
+<figure>
+  <img src="../figures/ch03-fig03.png" alt="Equation relating average power, peak power, pulse width, and pulse repetition time" />
+  <figcaption><span class="fig-num">Figure 3.3</span> Relationship between average power, peak power, pulse width, and pulse repetition time</figcaption>
+</figure>
+<p>Simulations of radar systems may use off-the-shelf peak and average power sensors. The difference between measured power and expected power will give the user an order-of-magnitude performance number. These power sensors are readily available from Berkeley Nucleonics.</p>
+<figure>
+  <img src="../figures/ch03-fig04.png" alt="Berkeley Nucleonics USB peak power sensor" />
+  <figcaption><span class="fig-num">Figure 3.4</span> Model BNC12208S 8 GHz USB Peak Power Sensor</figcaption>
+</figure>
+
+<h3 id="duty-cycle-definition">Duty Cycle</h3>
+<p>The product of pulse width (&tau;) and pulse repetition frequency (PRF), expressed as the reciprocal of the pulse period (T), is called the duty cycle of a radar system. Duty cycle is the fraction of time that a system is in an active state. It is the proportion of time during which a component, device, or system is operated. Suppose a transmitter operates for 1 microsecond, is shut off for 99 microseconds, then is run for 1 microsecond again, and so on. The transmitter runs for one out of 100 microseconds, or 1/100 of the time, and its duty cycle is therefore 1/100, or 1 percent.</p>
+<p>The duty cycle is used to calculate both the peak power and average power of a radar system.</p>
+
+<h2 id="dwell-time-hits-per-scan">Dwell Time and Hits per Scan</h2>
+<p>Most processes in pulsed radar are time dependent. Thus, terms like dwell time and hits per scan have been established to describe this time dependence.</p>
+<figure>
+  <img src="../figures/ch03-fig05.png" alt="Radar display showing a target painted by multiple hits during an antenna scan" />
+  <figcaption><span class="fig-num">Figure 3.5</span> The target on the screen is a result of hits</figcaption>
+</figure>
+
+<h3 id="dwell-time">Dwell Time</h3>
+<p>The time that an antenna beam spends on a target is called dwell time T<sub>D</sub>. The dwell time of a 2D search radar depends predominantly on:</p>
+<ul>
+  <li>the antenna's horizontal beamwidth (&Theta;<sub>AZ</sub>), and</li>
+  <li>the speed of rotation (n) of the antenna, in rotations per minute.</li>
+</ul>
+<p>The dwell time can be calculated from these two quantities.</p>
+
+<h3 id="hits-per-scan">Hits per Scan</h3>
+<p>The value of hits per scan, m, says how many echo signals per single target are received during every antenna rotation. The hit number stands, for example, for a search radar with a rotating antenna for the number of received echo pulses of a single target per antenna turn. The dwell time T<sub>D</sub> and the pulse repetition time PRT determine the value of hits per scan.</p>
+<p>In order to evaluate the target position in radar systems with sufficient accuracy, hit numbers from 1 to 20 are necessary (depending on the working principle of the radar system). The greater the number of hits per scan, the more accurate the angle measurement and the better the MTI performance.</p>
+<p>For analog displays, the size and brightness of the target character on the screen are also determined by how many hits per scan the target has received. A measurement of the accurate azimuth of the target is still defined in the center of the blip on the screen. The distance is measured at the front edge of this blip.</p>
+<p>Many radar systems use pulse integration in radar signal processing to distinguish the target signals from noise and interference pulses. If the number of hits per scan is too small, this target can be suppressed by the increased threshold values because of these disturbances.</p>
+<p>In the case of a digital plot extractor, which uses the sliding window method to determine the azimuth, a predetermined number of hits per scan must also be achieved. A radar with a monopulse antenna requires only one pulse for accurate azimuth measurement. However, monopulse radar also often require two, three, or more pulses for moving target indication.</p>
+<figure>
+  <img src="../figures/ch03-fig06.png" alt="Illustration of hits per scan as an antenna beam sweeps across a target" />
+  <figcaption><span class="fig-num">Figure 3.6</span> Hits per scan during an antenna rotation</figcaption>
+</figure>
+
+<div class="quiz-cta">
+  <h4>Test yourself</h4>
+  <p>Five quick questions on radar timing, graded instantly with your score saved on this device.</p>
+  <p><a class="btn" href="quiz-03.html">Take the interactive quiz &rarr;</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="02-fundamental-radar-principles.html">&larr; Fundamental Radar Principles</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="04-radar-equations.html">Radar Equations &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

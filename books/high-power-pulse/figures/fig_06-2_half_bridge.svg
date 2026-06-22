@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 460" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 14px; font-weight: 700; fill: #003D6B; }
+    .lbl { font-size: 11px; fill: #2C3E50; }
+    .note { font-size: 10px; fill: #2C3E50; opacity: 0.8; font-style: italic; }
+    .ann { font-size: 11px; font-weight: 600; fill: #003D6B; }
+    .wire { stroke: #2C3E50; stroke-width: 2; fill: none; }
+    .gnd { stroke: #2C3E50; stroke-width: 1.5; fill: none; }
+    .box { stroke: #003D6B; stroke-width: 1.8; fill: #d8e5f0; }
+    .stack { stroke: #003D6B; stroke-width: 1.5; fill: #fff; }
+  </style>
+
+  <text x="440" y="28" text-anchor="middle" class="title">Half-bridge HV pulser topology</text>
+
+  <!-- +V supply -->
+  <rect x="380" y="60" width="120" height="40" class="box"/>
+  <text x="440" y="84" text-anchor="middle" class="lbl">+V (HV DC supply)</text>
+
+  <line x1="440" y1="100" x2="440" y2="130" class="wire"/>
+
+  <!-- Upper MOSFET stack (M_high) -->
+  <rect x="400" y="130" width="80" height="80" class="stack"/>
+  <text x="440" y="160" text-anchor="middle" class="lbl" font-weight="700">M_high</text>
+  <text x="440" y="178" text-anchor="middle" class="note">stacked</text>
+  <text x="440" y="192" text-anchor="middle" class="note">MOSFETs</text>
+
+  <line x1="440" y1="210" x2="440" y2="250" class="wire"/>
+  <text x="490" y="232" class="ann">midpoint = output node</text>
+
+  <!-- Output to load -->
+  <line x1="440" y1="232" x2="700" y2="232" class="wire"/>
+  <circle cx="440" cy="232" r="3" fill="#2C3E50"/>
+  <rect x="700" y="216" width="80" height="36" class="stack"/>
+  <text x="740" y="238" text-anchor="middle" class="lbl">Load</text>
+
+  <!-- Lower MOSFET stack (M_low) -->
+  <rect x="400" y="250" width="80" height="80" class="stack"/>
+  <text x="440" y="280" text-anchor="middle" class="lbl" font-weight="700">M_low</text>
+  <text x="440" y="298" text-anchor="middle" class="note">stacked</text>
+  <text x="440" y="312" text-anchor="middle" class="note">MOSFETs</text>
+
+  <line x1="440" y1="330" x2="440" y2="370" class="wire"/>
+
+  <!-- Ground -->
+  <line x1="440" y1="370" x2="440" y2="385" class="gnd"/>
+  <line x1="430" y1="385" x2="450" y2="385" class="gnd"/>
+  <line x1="433" y1="390" x2="447" y2="390" class="gnd"/>
+  <line x1="436" y1="395" x2="444" y2="395" class="gnd"/>
+  <line x1="740" y1="252" x2="740" y2="385" class="wire"/>
+  <line x1="440" y1="385" x2="740" y2="385" class="wire"/>
+
+  <!-- Gate drive transformer (top half) -->
+  <rect x="200" y="140" width="160" height="60" class="stack" style="fill:#e0f0d8; stroke:#2a5a1a;"/>
+  <text x="280" y="165" text-anchor="middle" class="lbl" font-weight="700">Upper gate drive</text>
+  <text x="280" y="182" text-anchor="middle" class="note">transformer-coupled</text>
+  <text x="280" y="194" text-anchor="middle" class="note">isolated from ground</text>
+  <line x1="360" y1="170" x2="400" y2="170" class="wire"/>
+
+  <!-- Gate drive (bottom half) -->
+  <rect x="200" y="260" width="160" height="60" class="stack" style="fill:#e0f0d8; stroke:#2a5a1a;"/>
+  <text x="280" y="285" text-anchor="middle" class="lbl" font-weight="700">Lower gate drive</text>
+  <text x="280" y="302" text-anchor="middle" class="note">ground-referenced</text>
+  <line x1="360" y1="290" x2="400" y2="290" class="wire"/>
+
+  <!-- Trigger logic -->
+  <rect x="40" y="200" width="120" height="60" class="stack" style="fill:#fff; stroke:#0078B6; stroke-dasharray:4 3;"/>
+  <text x="100" y="225" text-anchor="middle" class="lbl" font-weight="700">Trigger logic</text>
+  <text x="100" y="245" text-anchor="middle" class="note">complementary outputs</text>
+  <text x="100" y="257" text-anchor="middle" class="note">with dead-time</text>
+
+  <line x1="160" y1="220" x2="200" y2="170" class="wire"/>
+  <line x1="160" y1="240" x2="200" y2="290" class="wire"/>
+
+  <!-- Operation note -->
+  <text x="700" y="315" class="ann">Operation:</text>
+  <text x="700" y="332" class="note">M_high closed, M_low open: load = +V</text>
+  <text x="700" y="346" class="note">M_high open, M_low closed: load = ground</text>
+  <text x="700" y="360" class="note">Switches alternate, dead-time in between</text>
+  <text x="700" y="380" class="note">Symmetric rise / fall times because both</text>
+  <text x="700" y="394" class="note">switches actively source and sink current</text>
+
+  <text x="100" y="335" class="note">Used in PVX-4110 (10 kV), PVX-4150 (1.5 kV),</text>
+  <text x="100" y="350" class="note">PVX-4000 series (2 kV).</text>
+
+  <text x="440" y="440" text-anchor="middle" class="note">The dominant commercial voltage-pulser topology.</text>
+</svg>

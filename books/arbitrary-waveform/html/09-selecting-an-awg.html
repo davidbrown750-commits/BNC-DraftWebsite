@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 9: Selecting an Arbitrary Waveform Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-9-selecting-an-awg">Chapter 9: Selecting an Arbitrary Waveform Generator</h2>
+
+<figure>
+<img src="../figures/chapter-09-opener.png" alt="An engineer at a test bench comparing two arbitrary waveform generators against a written requirements sheet, with a spectrum analyzer and oscilloscope showing reference signals." />
+<figcaption><span class="fig-num">Figure 9.1</span> Choosing the right instrument is mostly an exercise in honesty about what the signal demands. Write the requirements down first, derive the specifications from them, and the shortlist almost builds itself.</figcaption>
+</figure>
+
+<p>An arbitrary waveform generator is one of the more open-ended instruments on a bench, and that openness is exactly what makes it hard to buy. A power meter measures power. A counter counts. An AWG, by contrast, is asked to be almost anything, which means the specification sheet can run to two pages and every number on it looks important. The trap is to start by comparing instruments. The discipline is to start by describing your signal, then let the signal tell you which numbers actually matter and which are marketing.</p>
+
+<p>This chapter is the practical buyer's chapter. It walks the path a working engineer should take: define the signal, convert that definition into hard requirements, and only then map requirements onto specifications you can shop against. Get the order right and you avoid the two classic mistakes, buying far more instrument than the job needs, or buying an instrument that looks impressive and quietly fails the one requirement that mattered.</p>
+
+<h3 id="start-with-the-signal">9.1 Start With the Signal, Not the Instrument</h3>
+
+<p>Before you open a single datasheet, write a one-paragraph description of the worst-case signal you need to produce. Not the typical signal, the worst case, because the instrument has to cover the hardest thing you will ever ask of it. Five questions pin down almost everything that follows.</p>
+
+<p><strong>What is the highest frequency in the signal?</strong> This is the fastest sinusoidal component you must reproduce faithfully, including harmonics that carry meaning. A 100 MHz square wave is not a 100 MHz problem, because its sharp edges contain energy at several times the fundamental. Be honest about where the spectrum actually ends.</p>
+
+<p><strong>How fast are the edges?</strong> Rise and fall time is a separate question from frequency, and it often drives the requirement harder. A slow waveform with one fast transition still needs the bandwidth to render that transition. If you care about overshoot, settling, or timing measured in picoseconds, edge speed is your real specification.</p>
+
+<p><strong>What dynamic range does the signal span?</strong> Dynamic range is the ratio between the largest and smallest features you must reproduce at the same time. A small spur sitting 80 dB below a full-scale carrier is a dynamic-range requirement, and it points straight at converter resolution and spectral purity, not at speed.</p>
+
+<p><strong>How many signals run in parallel?</strong> One channel, two for in-phase and quadrature, or many for a phased array or a multi-emitter scene. The count, and how tightly the channels must stay phase-aligned, sets the channel and synchronization requirement long before you look at any single channel's specs.</p>
+
+<p><strong>How long is the scenario?</strong> A repeating tone needs almost no memory. A ten-second recorded RF environment played back sample for sample needs a great deal of it. Duration, combined with sample rate, sets the memory and sequencing requirement, which is often the spec that quietly decides the purchase.</p>
+
+<p>Answer those five and you have written your own specification sheet without realizing it. Figure 9.2 shows the mapping that turns each answer into a number you can shop against.</p>
+
+<figure>
+<img src="../figures/fig-9-1-requirements-to-specs.svg" alt="A two-column flow diagram. The left column lists signal requirements: highest frequency, edge speed, dynamic range, scenario duration, and number of emitters. Arrows map each to a derived instrument specification on the right: sample rate, analog bandwidth, DAC resolution, memory depth with sequencing, and synchronized channel count." />
+<figcaption><span class="fig-num">Figure 9.2</span> Every line on a datasheet exists to satisfy a requirement of the signal. Map left to right. Highest frequency sets sample rate, edges set bandwidth, dynamic range sets bits, duration sets memory, and the number of parallel emitters sets channel count.</figcaption>
+</figure>
+
+<h3 id="sample-rate-and-bandwidth">9.2 Match Sample Rate and Bandwidth</h3>
+
+<p>Sampling theory sets the floor for sample rate, and practical engineering sets the number you should actually buy. The Nyquist criterion says you must sample at more than twice the highest frequency in the signal to represent it at all. That is the floor, not the target. Sampling a 1 GHz signal at exactly 2 GS/s gives you two points per cycle, which is mathematically sufficient and practically useless, because the reconstruction filter has no room to work and the waveform looks like a triangle.</p>
+
+<p><strong>Aim for headroom above the Nyquist minimum.</strong> A working rule is 2.5 times the highest frequency for clean sine reconstruction, and 3 to 5 times when you care about edge fidelity or want margin for an imperfect reconstruction filter. If your highest meaningful frequency is 500 MHz, do not shop for 1 GS/s. Shop for 1.25 to 2.5 GS/s and let the extra points buy you a clean output.</p>
+
+<table>
+<thead><tr><th>Highest frequency in signal</th><th>Nyquist floor</th><th>Practical Fs (2.5x to 5x)</th><th>Why the headroom</th></tr></thead>
+<tbody>
+<tr><td>10 MHz arbitrary, slow edges</td><td>&gt; 20 MS/s</td><td>25 to 50 MS/s</td><td>Modest; filter has easy work</td></tr>
+<tr><td>100 MHz, moderate edges</td><td>&gt; 200 MS/s</td><td>250 to 500 MS/s</td><td>Clean reconstruction, low distortion</td></tr>
+<tr><td>500 MHz, fast edges</td><td>&gt; 1 GS/s</td><td>1.25 to 2.5 GS/s</td><td>Edge fidelity, filter margin</td></tr>
+<tr><td>2 GHz, very fast edges</td><td>&gt; 4 GS/s</td><td>6 to 10 GS/s</td><td>Wideband, direct synthesis</td></tr>
+</tbody>
+</table>
+
+<p><strong>Confirm analog bandwidth separately.</strong> Sample rate sets how often the DAC updates, but analog bandwidth is what the output amplifier and filters actually pass. An instrument can have a high sample rate and a bandwidth that rolls off well below it. Bandwidth is the spec that limits your fastest edge, through the familiar approximation that rise time times bandwidth is roughly 0.35. A 110 ps rise time corresponds to about 3.2 GHz of bandwidth. If you need 100 ps edges, no amount of sample rate rescues an instrument whose analog path stops at 1 GHz. Check that both numbers, sample rate and analog bandwidth, clear your requirement with margin.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> Sample rate and bandwidth fail in different ways, and the failure modes look nothing alike. Too little sample rate gives you aliasing, where energy from above Nyquist folds back into your band as spurious tones that move when you change frequency. Too little bandwidth gives you rounded edges and amplitude that sags at the top of the band. If your spurs move with frequency, suspect sample rate. If your edges are soft and your high-frequency amplitude droops, suspect bandwidth. They are different problems with different cures.</p></blockquote>
+
+<h3 id="resolution-vs-speed">9.3 Resolution vs Speed</h3>
+
+<p>The single most misunderstood line on an AWG datasheet is the relationship between vertical resolution and sample rate. Buyers want both maxed out. Physics rarely lets you have both at once, and pretending otherwise leads to either an overpriced instrument or a disappointed one. The tradeoff is real, and it lives in the converter.</p>
+
+<p><strong>Resolution is the number of vertical bits the DAC resolves.</strong> A 16-bit converter splits its output range into 65,536 levels, an 8-bit converter into 256. More bits push the quantization noise floor lower, which directly improves spurious-free dynamic range and your ability to place a small signal cleanly beside a large one. <strong>Speed is the sample rate the converter sustains.</strong> Higher sample rate buys bandwidth and edge fidelity. The catch is that building a converter that is both very deep and very fast is genuinely hard, because the settling time, glitch energy, and thermal noise that limit speed get worse exactly as you add bits.</p>
+
+<figure>
+<img src="../figures/fig-9-3-resolution-vs-speed.svg" alt="A tradeoff chart with DAC resolution in bits on the vertical axis and sample rate on a logarithmic horizontal axis. A blue high-resolution region sits at the top left for 16-bit moderate-speed converters, an amber high-speed region sits at the lower right for 8-to-14-bit very fast converters, and the top-right corner is marked as the expensive region where both bits and speed are maximized. Example operating points are plotted along the diagonal." />
+<figcaption><span class="fig-num">Figure 9.3</span> The resolution-versus-speed plane. High-resolution instruments occupy the upper left, high-speed instruments the lower right. The far upper-right corner, maximum bits and maximum speed together, is the costly frontier of converter design. Pick the corner your signal actually lives in.</figcaption>
+</figure>
+
+<p><strong>Choose 16-bit when spectral purity and low-level detail rule.</strong> Audio and ultrasound, precision instrumentation, magnetic resonance, radar receiver test where a small return hides under clutter, any signal where you must reproduce something 70 or 80 dB down from full scale: these are resolution-limited problems. The Berkeley Nucleonics Model 685 family, for instance, pairs 16-bit resolution with multi-gigasample sample rates for exactly this class of demanding, spectrally clean work. Confirm the current figures against the datasheet at berkeleynucleonics.com.</p>
+
+<p><strong>Choose higher speed at 14 or even 8-bit when edges and bandwidth rule.</strong> Fast digital edges, wideband chirps, direct synthesis of RF carriers, multi-gigahertz serial patterns: these are speed-limited problems, and the extra bits would buy you nothing your bandwidth could use. The Berkeley Nucleonics Model 686, positioned as the fastest 14-bit AWG on the market with a 20 GS/s update rate, lives squarely in this corner, trading the top two bits of an audio-grade converter for the raw speed that semiconductor and wideband work demands. The point is not that one corner is better. The point is that the corner is set by your signal, and the chart in Figure 9.3 simply names which corner you are in.</p>
+
+<table>
+<thead><tr><th>Your signal is dominated by</th><th>Lean toward</th><th>Because</th></tr></thead>
+<tbody>
+<tr><td>Small signals beside large ones, low spurs</td><td>16-bit, moderate speed</td><td>Quantization floor sets your SFDR</td></tr>
+<tr><td>Precision amplitude, slow but exact</td><td>16-bit</td><td>Every level counts; speed is spare</td></tr>
+<tr><td>Fast edges, wide bandwidth</td><td>14-bit, high speed</td><td>Bandwidth, not bits, is the limit</td></tr>
+<tr><td>Multi-GHz carriers, direct RF</td><td>14 or 8-bit, very high speed</td><td>Update rate dominates fidelity</td></tr>
+</tbody>
+</table>
+
+<h3 id="memory-sequencing-streaming">9.4 Memory, Sequencing, and Streaming</h3>
+
+<p>Memory is the spec that buyers underestimate most often, because it is easy to forget that a fast instrument burns through memory just as fast. The arithmetic is simple and worth doing before you shop. <strong>Required samples equal playback duration times sample rate.</strong> A signal you want to play for one millisecond at 6 GS/s needs six million samples per channel. Stretch that to one second and you need six billion samples, which is the kind of number that separates instrument tiers.</p>
+
+<p>Run the numbers for your worst-case scenario and you get a hard memory floor in samples, which the instrument quotes either in samples or in bytes. Watch the units. A 14-bit sample usually occupies two bytes, so a stated memory in gigasamples and a stated memory in gigabytes are not interchangeable. Convert before you compare.</p>
+
+<table>
+<thead><tr><th>Scenario duration</th><th>At 125 MS/s</th><th>At 1 GS/s</th><th>At 6 GS/s</th></tr></thead>
+<tbody>
+<tr><td>1 microsecond</td><td>125 samples</td><td>1 k samples</td><td>6 k samples</td></tr>
+<tr><td>1 millisecond</td><td>125 k samples</td><td>1 M samples</td><td>6 M samples</td></tr>
+<tr><td>1 second</td><td>125 M samples</td><td>1 G samples</td><td>6 G samples</td></tr>
+<tr><td>10 seconds</td><td>1.25 G samples</td><td>10 G samples</td><td>60 G samples</td></tr>
+</tbody>
+</table>
+
+<p><strong>Sequencing extends memory without buying more of it.</strong> If your scenario repeats, you do not need to store every repetition. You store one copy of each unique segment and a step list that replays them with loop counts, jumps, and conditional branches. A burst that repeats a thousand times costs one stored copy plus a loop count, not a thousand copies. Any scenario with structure, and most real ones have structure, shrinks dramatically once you express it as a sequence rather than a flat waveform. The Model 685 and Model 686 families both support advanced sequencing with loops, jumps, and conditional branches for exactly this reason.</p>
+
+<p><strong>Streaming handles scenarios too long for any memory.</strong> When the playback genuinely cannot be looped, a recorded multi-hour RF environment, for instance, the instrument streams samples from a host or storage system into the DAC in real time. Streaming trades a deep memory requirement for a sustained data-bandwidth requirement, and it lives or dies on the interface keeping up. If your scenario is open-ended, confirm streaming support and the real sustained throughput, not just the peak, before you commit.</p>
+
+<blockquote><p><strong>Pro tip.</strong> Size memory for your worst case, then check whether sequencing collapses it. Many buyers spec the deepest memory in the catalog to cover a long scenario that turns out to be ninety percent repetition. Express the scenario as segments and loops first. You will often find a mid-tier instrument with strong sequencing beats a top-tier instrument with flat memory, at a fraction of the cost.</p></blockquote>
+
+<h3 id="channels-form-factor-interfaces">9.5 Channels, Form Factor, and Interfaces</h3>
+
+<p><strong>Count the channels you need synchronized, not just the channels you need.</strong> Two independent channels and two phase-locked channels are different products. In-phase and quadrature generation needs two channels matched in gain, delay, and phase. A phased array or a multi-emitter scene may need four, eight, or more, all sharing a common clock and a known phase relationship. The Model 685 family supports up to four synchronized channels, and the Model 686 offers two or four fully synchronized analog channels paired with thirty-two digital lines per unit. If your application is single-channel today but headed toward arrays, buy the synchronization headroom now, because retrofitting it across chassis is painful.</p>
+
+<p><strong>Choose the form factor that matches how you work.</strong> A benchtop instrument is self-contained, quick to deploy, and ideal for a lab bench or a single-station test. A modular instrument, PXIe or a rack card, trades the front panel for density and tight multi-card synchronization, which is what large channel counts and automated test systems want. The decision is rarely about the instrument alone. It is about the system it lives in.</p>
+
+<table>
+<thead><tr><th>Consideration</th><th>Benchtop</th><th>Modular (PXIe / rack)</th></tr></thead>
+<tbody>
+<tr><td>Deployment</td><td>Standalone, fast to set up</td><td>Lives in a chassis or rack system</td></tr>
+<tr><td>Channel density</td><td>Lower, per box</td><td>High, many cards per chassis</td></tr>
+<tr><td>Multi-card sync</td><td>Via external clock and trigger</td><td>Backplane clock and trigger, tighter</td></tr>
+<tr><td>Front panel</td><td>Yes, manual operation</td><td>Software-driven, no front panel</td></tr>
+<tr><td>Best for</td><td>Bench work, R&amp;D, single station</td><td>Automated test, large arrays, production</td></tr>
+</tbody>
+</table>
+
+<p><strong>Match the control interface to your software ecosystem.</strong> Most instruments speak SCPI over USB, LAN, or GPIB, and the Model 645, for example, ships with USB and LAN standard and GPIB optional, plus a LAN web browser for remote control. The interface matters less than the driver and software stack around it. Confirm there are IVI or native drivers for your environment, whether that is Python, MATLAB, LabVIEW, or a vendor tool such as BNC's WaveCrafter for waveform creation and import. An instrument that does not integrate cleanly with your automation costs you weeks of glue code, which rarely shows up in the purchase price.</p>
+
+<p><strong>Do not skip support and calibration.</strong> An AWG is a precision source, and its specifications drift without periodic calibration. Confirm the calibration interval, whether calibration is available from the vendor or a local lab, and what the support relationship looks like. Berkeley Nucleonics has built fast-risetime sources since 1963 and supports its instruments directly, which matters more on a five-year-old instrument than on the day you unbox it.</p>
+
+<h3 id="a-selection-checklist">9.6 A Selection Checklist</h3>
+
+<p>Here is the whole chapter compressed into a sequence you can run against any candidate instrument. Work it in order. The early steps are free, and they eliminate most of the catalog before you ever talk to a salesperson.</p>
+
+<ol>
+<li><strong>Describe the worst-case signal in one paragraph.</strong> The hardest thing you will ever ask the instrument to produce, not the typical thing.</li>
+<li><strong>Find the highest meaningful frequency.</strong> Include harmonics that carry information, not just the fundamental.</li>
+<li><strong>Set the sample rate target.</strong> Take 2.5x to 5x the highest frequency, not the bare Nyquist floor.</li>
+<li><strong>Set the analog bandwidth and rise-time target.</strong> Use rise time times bandwidth near 0.35, and confirm the analog path, not just the sample rate, clears it.</li>
+<li><strong>Decide the resolution corner.</strong> 16-bit if spectral purity or low-level signals rule, 14-bit or lower if edges and bandwidth rule. You usually cannot have both maxed.</li>
+<li><strong>Compute the memory floor.</strong> Worst-case duration times sample rate, in samples, with units checked.</li>
+<li><strong>Test whether sequencing collapses it.</strong> Express the scenario as segments and loops. A mid-tier instrument with strong sequencing often beats a top-tier flat-memory one.</li>
+<li><strong>Check streaming if the scenario is open-ended.</strong> Confirm sustained throughput, not peak.</li>
+<li><strong>Count synchronized channels.</strong> Note gain, delay, and phase matching needs, and buy array headroom if you are headed that way.</li>
+<li><strong>Pick the form factor.</strong> Benchtop for bench and R&amp;D, modular for density and automated test.</li>
+<li><strong>Verify the control and software ecosystem.</strong> SCPI plus drivers for your environment, and a waveform tool that imports your data.</li>
+<li><strong>Confirm support and calibration.</strong> Interval, provider, and the support relationship over the instrument's life.</li>
+<li><strong>Shortlist and verify against the datasheet.</strong> Map your derived numbers onto real models and confirm every spec at the source before you buy.</li>
+</ol>
+
+<p>Run that list and the instrument almost selects itself. The numbers came from your signal, the shortlist came from the numbers, and the only thing left is to confirm the current specifications at the source. For Berkeley Nucleonics instruments, that source is the datasheet at berkeleynucleonics.com, and a conversation with a BNC engineer will close the gap between a spec sheet and your actual bench.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-09.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="08-applications.html">&larr; 8. Applications</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="10-performance-tips-and-reference.html">10. Performance Tips and Reference Tables &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appendix A: Glossary of RTSA Terms - Nuts and Bolts of Real-Time Spectrum Analysis</title>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .glossary-term{font-family:Helvetica,Arial,sans-serif;font-weight:700;color:var(--bnc-deep-navy)}
+  .glossary dl{margin:24px 0}
+  .glossary dt{font-family:Helvetica,Arial,sans-serif;font-weight:700;color:var(--bnc-deep-navy);margin-top:14px}
+  .glossary dd{margin:2px 0 0 0}
+</style>
+<style>
+.glossary, dl.glossary, .wrap, main, body, dd, p { text-align: left; }
+figure[style*="float"]{ float:none !important; clear:both !important; width:33% !important; max-width:340px !important; margin:1rem 0 1.2rem 0 !important; }
+figure figcaption { text-align: center; }
+@media (max-width:640px){ figure[style*="float"]{ width:auto !important; max-width:100% !important; margin:1rem 0 !important; } }
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Appendix A</div>
+<h1>Glossary of RTSA Terms</h1>
+
+<p class="lead">The working vocabulary used throughout this book. Definitions are written for the bench, not the lecture hall: enough to read a datasheet and know what a specification means for your measurement.</p>
+
+<div class="glossary">
+<dl>
+<dt>ADC (Analog-to-Digital Converter)</dt><dd>Component that samples analog voltage at periodic intervals and produces a digital number representing each sample.</dd>
+<dt>ADS-B</dt><dd>Automatic Dependent Surveillance-Broadcast. Aircraft positioning system on 1090 MHz.</dd>
+<dt>AGC (Automatic Gain Control)</dt><dd>Feedback loop that adjusts amplifier or attenuator gain based on input signal level.</dd>
+<dt>AOA (Angle of Arrival)</dt><dd>The direction from which a signal is received, typically measured in azimuth and elevation.</dd>
+<dt>Aaronia</dt><dd>German manufacturer of real-time spectrum analyzers (SPECTRAN V6 family) and direction-finding antennas (IsoLOG 3D DF).</dd>
+<dt>Aliasing</dt><dd>Spectral artifact that occurs when a signal is sampled at less than twice its highest frequency component.</dd>
+<dt>Amplitude Imbalance</dt><dd>Difference in gain between I and Q paths in a quadrature receiver, producing image artifacts.</dd>
+<dt>Analytic Signal</dt><dd>Complex-valued signal with a one-sided spectrum, constructed from a real signal via the Hilbert transform.</dd>
+<dt>ASK (Amplitude Shift Keying)</dt><dd>Digital modulation that encodes data in carrier amplitude.</dd>
+<dt>Bandwidth</dt><dd>The frequency span occupied by a signal or analyzer.</dd>
+<dt>Beamforming</dt><dd>Signal processing technique that creates a directional response pattern from a multi-element antenna array.</dd>
+<dt>BLE (Bluetooth Low Energy)</dt><dd>Low-power short-range wireless protocol using GFSK in the 2.4 GHz ISM band.</dd>
+<dt>BPSK (Binary Phase Shift Keying)</dt><dd>Digital modulation with two phase states (0 and pi).</dd>
+<dt>Carrier Aggregation</dt><dd>Cellular technique combining multiple frequency bands for higher throughput.</dd>
+<dt>Channelization</dt><dd>Splitting a wideband digitized signal into multiple narrowband sub-channels via parallel decimating filters.</dd>
+<dt>Chirp</dt><dd>Signal with frequency that changes monotonically over time. LFM (Linear Frequency Modulation) is the most common form.</dd>
+<dt>Constellation Diagram</dt><dd>Scatter plot of received I/Q symbols against ideal modulation points; reveals modulation quality.</dd>
+<dt>Counter-UAS</dt><dd>Counter-Unmanned Aircraft System. Detection, tracking, and where legal, neutralization of unauthorized drones.</dd>
+<dt>dB (Decibel)</dt><dd>Logarithmic unit of power ratio (10 log10) or amplitude ratio (20 log10).</dd>
+<dt>dBc</dt><dd>Decibels relative to the carrier; used to specify spurious or noise levels.</dd>
+<dt>dBm</dt><dd>Decibels relative to 1 milliwatt absolute power.</dd>
+<dt>DF (Direction Finding)</dt><dd>Determining the angular direction from which a signal arrives.</dd>
+<dt>DFT (Discrete Fourier Transform)</dt><dd>Mathematical operation transforming N time-domain samples into N frequency-domain values.</dd>
+<dt>DRFM (Digital Radio Frequency Memory)</dt><dd>EW jammer that captures, modifies, and retransmits incoming victim signals.</dd>
+<dt>EVM (Error Vector Magnitude)</dt><dd>RMS error between received and ideal constellation points, normalized by reference power.</dd>
+<dt>ENBW (Equivalent Noise Bandwidth)</dt><dd>The noise bandwidth equivalent to a window function's frequency response.</dd>
+<dt>ENOB (Effective Number of Bits)</dt><dd>Realistic ADC resolution after accounting for thermal and quantization noise.</dd>
+<dt>EW (Electronic Warfare)</dt><dd>RF operations to detect, characterize, jam, or otherwise affect enemy electromagnetic systems.</dd>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-photo-fourier.jpg" alt="Portrait of Joseph Fourier, French mathematician (1768-1830)." style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Joseph Fourier (1768-1830), French mathematician and physicist whose Fourier transform decomposes a time-domain signal into its constituent frequencies, expressed in Hz.</figcaption>
+</figure>
+<dt>FFT (Fast Fourier Transform)</dt><dd>Efficient O(N log N) algorithm for computing the DFT.</dd>
+<dt>FHSS (Frequency Hopping Spread Spectrum)</dt><dd>Modulation that rapidly hops the carrier across many frequencies in a pseudorandom pattern.</dd>
+<dt>FMT (Frequency Mask Trigger)</dt><dd>RTSA capability that captures I/Q whenever the spectrum exceeds a user-defined envelope.</dd>
+<dt>FSK (Frequency Shift Keying)</dt><dd>Digital modulation that encodes data in carrier frequency.</dd>
+<dt>FR1</dt><dd>5G NR Frequency Range 1 (sub-6 GHz, up to 7.125 GHz).</dd>
+<dt>FR2</dt><dd>5G NR Frequency Range 2 (mmWave, 24.25 to 71 GHz).</dd>
+<dt>Friis's Formula</dt><dd>Equation describing how the noise figure of a multi-stage receiver depends primarily on the first stage.</dd>
+<dt>GFSK (Gaussian FSK)</dt><dd>FSK with Gaussian pulse shaping for narrower spectral occupancy.</dd>
+<dt>GNSS (Global Navigation Satellite System)</dt><dd>Generic term covering GPS, Galileo, GLONASS, BeiDou, QZSS.</dd>
+<dt>GPSDO (GPS-Disciplined Oscillator)</dt><dd>Reference oscillator locked to GPS for high-precision frequency and time.</dd>
+<dt>Hilbert Transform</dt><dd>Mathematical operation that produces a 90-degree phase shift across all frequencies.</dd>
+<dt>IIP3 (Input Third-order Intercept Point)</dt><dd>Theoretical input power at which third-order intermodulation products equal the input signals.</dd>
+<dt>I/Q (In-phase and Quadrature)</dt><dd>Pair of signals representing the real and imaginary parts of a complex baseband signal.</dd>
+<dt>ISM (Industrial, Scientific, Medical)</dt><dd>Unlicensed RF bands available worldwide for general use; common bands at 2.4 GHz, 5.8 GHz, 433 MHz.</dd>
+<dt>IsoLOG 3D DF</dt><dd>Aaronia's direction-finding antenna family with sectored arrays and elevation capability.</dd>
+<dt>KML (Keyhole Markup Language)</dt><dd>XML format for geographic data, commonly used for Google Earth.</dd>
+<dt>LFM (Linear Frequency Modulation)</dt><dd>Chirp with linearly varying frequency.</dd>
+<dt>LNA (Low-Noise Amplifier)</dt><dd>First active stage in a receiver, optimized for low noise figure.</dd>
+<dt>LO (Local Oscillator)</dt><dd>Reference signal mixed with the input to translate frequency.</dd>
+<dt>LoRa</dt><dd>Low-power wide-area protocol using chirp spread spectrum.</dd>
+<dt>MIMO (Multiple Input Multiple Output)</dt><dd>Wireless technique using multiple antennas at transmitter and receiver.</dd>
+<dt>Modulation</dt><dd>Encoding information onto a carrier wave by varying amplitude, frequency, or phase.</dd>
+<dt>NF (Noise Figure)</dt><dd>Ratio of input SNR to output SNR of a stage; expressed in dB.</dd>
+<figure style="float:left;width:33%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-eq-nyquist.png" alt="Nyquist sampling theorem: sample rate f_s must be at least twice f_max." style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">The Nyquist criterion: sample rate f_s (in samples per second) must be at least twice the highest signal frequency f_max (in Hz) to reconstruct the signal without aliasing.</figcaption>
+</figure>
+<dt>Nyquist</dt><dd>Sampling theorem; minimum sample rate is twice the highest signal frequency.</dd>
+<dt>OFDM (Orthogonal Frequency Division Multiplexing)</dt><dd>Wideband modulation using many orthogonal narrowband subcarriers, each modulated with QAM.</dd>
+<dt>PDW (Pulse Descriptor Word)</dt><dd>Fixed-format record describing a single pulse: TOA, PW, frequency, amplitude.</dd>
+<dt>Phase Noise</dt><dd>Random fluctuations in oscillator phase, expressed as dBc/Hz at offset frequencies.</dd>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-diagram-poi.svg" alt="Timeline diagram showing a swept analyzer missing a brief pulse while a real-time analyzer with gap-free FFT frames captures it." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Gap-free FFT frames give a real-time analyzer a high probability of intercepting brief signals, while a swept analyzer, busy elsewhere in the band, misses the same pulse.</figcaption>
+</figure>
+<dt>POI (Probability of Intercept)</dt><dd>Minimum signal duration captured with near certainty by an analyzer. SPECTRAN V6 PLUS achieves 10 ns POI.</dd>
+<dt>PRF (Pulse Repetition Frequency)</dt><dd>Number of pulses transmitted per second by a pulsed system.</dd>
+<dt>PRI (Pulse Repetition Interval)</dt><dd>Time between consecutive pulse starts; PRI = 1/PRF.</dd>
+<dt>PSD (Power Spectral Density)</dt><dd>Power per unit bandwidth, commonly expressed in dBm/Hz.</dd>
+<dt>PSK (Phase Shift Keying)</dt><dd>Digital modulation that encodes data in carrier phase.</dd>
+<dt>QAM (Quadrature Amplitude Modulation)</dt><dd>Digital modulation combining amplitude and phase, e.g., 16-QAM, 256-QAM, 1024-QAM, 4096-QAM.</dd>
+<dt>QPSK (Quadrature Phase Shift Keying)</dt><dd>Four-state PSK encoding 2 bits per symbol.</dd>
+<dt>RBW (Resolution Bandwidth)</dt><dd>The width of one frequency bin in an FFT, equal to sample rate divided by FFT length.</dd>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-realtime-bandwidth.png" alt="Real-time bandwidth is the span an RTSA digitizes with no gaps, so brief signals are not missed." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.92rem;margin-top:0.55rem;">Real-time bandwidth is the span an RTSA digitizes with no gaps, so brief signals are not missed.</figcaption>
+</figure>
+<dt>RTBW (Real-Time Bandwidth)</dt><dd>Width of spectrum that an RTSA digitizes simultaneously with no time gaps.</dd>
+<dt>RTSA (Real-Time Spectrum Analyzer)</dt><dd>Instrument that captures wide spectrum continuously without sweeping.</dd>
+<dt>Scalloping Loss</dt><dd>Variation in measured amplitude as a tone moves between FFT bin centers.</dd>
+<dt>SDR (Software Defined Radio)</dt><dd>Radio system where most signal processing is implemented in software.</dd>
+<dt>SFDR (Spurious-Free Dynamic Range)</dt><dd>Difference between strongest signal and strongest analyzer-generated spur.</dd>
+<dt>SigMF (Signal Metadata Format)</dt><dd>Open standard for I/Q file metadata; JSON sidecar paired with a raw data file.</dd>
+<dt>SPECTRAN V6 PLUS</dt><dd>Aaronia's flagship USB real-time spectrum analyzer family (250XA, 500XA, 2000XA models).</dd>
+<dt>Spread Spectrum</dt><dd>Modulation technique that spreads signal energy across a wider bandwidth than data alone requires.</dd>
+<figure style="float:left;width:33%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-spectrogram.png" alt="A spectrogram, or waterfall, plots frequency against time with amplitude shown as color." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.92rem;margin-top:0.55rem;">A spectrogram, or waterfall, plots frequency against time with amplitude shown as color.</figcaption>
+</figure>
+<dt>Spectrogram</dt><dd>Time-frequency-amplitude plot, commonly displayed as a waterfall.</dd>
+<dt>TCXO (Temperature-Compensated Crystal Oscillator)</dt><dd>Reference oscillator with temperature compensation, typically 1-5 ppm accuracy.</dd>
+<dt>TDOA (Time Difference of Arrival)</dt><dd>Geolocation technique using arrival time differences across spatially separated sensors.</dd>
+<dt>Type Approval</dt><dd>Regulatory certification confirming a wireless device meets emissions requirements before authorization.</dd>
+<dt>UAS (Unmanned Aircraft System)</dt><dd>Drone or other unmanned aerial vehicle.</dd>
+<dt>VSG (Vector Signal Generator)</dt><dd>Test instrument that generates arbitrary modulated waveforms.</dd>
+<dt>Waterfall</dt><dd>Spectrogram display with frequency on the X-axis, time on the Y-axis, and amplitude as color.</dd>
+<dt>Window Function</dt><dd>Tapering function applied to FFT input to reduce spectral leakage.</dd>
+<dt>Wrapped Spectrum</dt><dd>Aaronia patented display that stacks the frequency axis across multiple lines for high-resolution wide-span monitoring.</dd>
+</dl>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-15.html">&larr; Ch 15. Case Studies</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="appendix-B-math-reference.html">Appendix B. Math Reference &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>
+
+

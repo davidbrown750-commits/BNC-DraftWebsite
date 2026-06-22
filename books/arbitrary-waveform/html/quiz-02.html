@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Chapter 2 Quiz</title><link rel="stylesheet" href="light-touch.css"/>  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head><body>
+<script defer src="reader-prompt.js"></script>
+<h1>Chapter 2 Quiz</h1><p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+<div id="bnc-quiz"></div>
+<script>window.QUIZ_DATA = { bookKey:"awg", chapterKey:"02", title:"Chapter 2 Quiz: How an AWG Works", questions:[
+  {
+    q: "An AWG stores a 2,000-sample waveform and clocks it out at 200 MSa/s, looping continuously. What is the output frequency of the repeating waveform?",
+    options: [
+      "10 kHz",
+      "100 kHz",
+      "400 kHz",
+      "200 MHz"
+    ],
+    answer: 1,
+    explain: "One loop lasts depth / sample rate = 2,000 / 200,000,000 = 10 microseconds. The repetition rate is 1 / 10 us = 100 kHz."
+  },
+  {
+    q: "What does the reconstruction (anti-imaging) filter remove from the DAC output?",
+    options: [
+      "DC offset added by the output amplifier",
+      "Quantization noise from the finite bit depth",
+      "The high-frequency spectral images created by sampling, leaving the smooth waveform",
+      "Glitch energy generated inside the DAC core"
+    ],
+    answer: 2,
+    explain: "Sampling produces copies (images) of the signal spectrum around multiples of the sample rate. The low-pass reconstruction filter removes those images and smooths the staircase into a continuous waveform."
+  },
+  {
+    q: "Which statement best distinguishes direct digital synthesis (DDS) from true arbitrary playback?",
+    options: [
+      "DDS uses a phase accumulator and lookup table for fine-resolution tones; true arb reads sequential memory point by point",
+      "DDS requires deeper memory than true arbitrary playback",
+      "True arb can only produce sine waves, while DDS produces any shape",
+      "DDS works only above 1 GHz, true arb only below"
+    ],
+    answer: 0,
+    explain: "DDS steps a phase accumulator into a waveform lookup table, giving very fine frequency resolution for repetitive tones. True arb reads stored samples sequentially, one per clock, reproducing any waveform you loaded."
+  },
+  {
+    q: "Why is DAC quality usually the dominant factor in an AWG's output fidelity?",
+    options: [
+      "The DAC sets the maximum memory depth of the instrument",
+      "The DAC is the digital-to-analog border, so its resolution, update rate, and glitch energy set the noise floor and spurious performance",
+      "The DAC determines the trigger latency",
+      "The DAC controls the 50-ohm output impedance"
+    ],
+    answer: 1,
+    explain: "Everything before the DAC is noise-free numbers. The DAC turns codes into volts, so its bit depth, update rate, and glitch energy largely determine dynamic range and spurious-free performance."
+  },
+  {
+    q: "A bench instrument offers standard sine, square, and ramp shapes plus 256K points of arbitrary memory at a moderate sample rate. Which family does it belong to?",
+    options: [
+      "A pure function generator with no arbitrary capability",
+      "An arbitrary function generator (AWFG)",
+      "A true high-speed AWG with gigasample memory",
+      "A digital pattern generator"
+    ],
+    answer: 1,
+    explain: "Standard DDS shapes plus modest arbitrary memory at a bench-appropriate sample rate is the arbitrary function generator (AWFG) class, the middle ground between a plain function generator and a deep-memory high-speed AWG."
+  }
+] };</script>
+<script defer src="quiz-mc.js"></script>
+<footer class="bnc-footer"><nav class="bnc-nav"><a class="prev" href="02-how-an-awg-works.html">&larr; Back to Chapter 2</a><a class="mid" href="00-front-matter.html#table-of-contents">Contents</a><a class="next" href="quiz-03.html">Chapter 3 Quiz &rarr;</a></nav><div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div></footer></body></html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appendix A: Glossary of Terms</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Justify + responsive floats */
+  .glossary, dl.glossary, .wrap, main, body, dd, p { text-align: left; }
+figure[style*="float"]{ float:none !important; clear:both !important; width:33% !important; max-width:340px !important; margin:1rem 0 1.2rem 0 !important; }
+  figure figcaption { text-align: center; }
+  @media (max-width:640px){ figure[style*="float"]{ width:auto !important; max-width:100% !important; margin:1rem 0 !important; } }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h1 id="appendix-a-glossary-of-terms">Appendix A: Glossary of Terms</h1>
+<p><strong>Albaloy.</strong> A plating finish with good electrical performance, mostly copper, tin, and zinc. Unlike silver, albaloy is extremely tarnish-resistant. It performs as well as silver in passive intermodulation (PIM) thanks to its non-magnetic nature.</p>
+<p><strong>Amplitude Balance.</strong> The greatest amplitude difference, measured in dB, between a power divider or hybrid coupler's output ports within a designated frequency range.</p>
+<p><strong>Attenuation Accuracy.</strong> The degree to which the attenuator's magnitude varies from its nominal value throughout the whole frequency range.</p>
+<p><strong>Attenuator.</strong> A passive network or device that transmits the remaining signal with the least amount of distortion after absorbing a portion of the input signal. Attenuators are used daily in lab applications to help with product design. They match circuits, reduce signal levels to detectors, and extend the dynamic range of devices like power meters and amplifiers. Transmission lines that would otherwise have uneven signal levels are balanced using attenuators.</p>
+<p><strong>Base Station.</strong> A fixed transmitter and receiver that allows a mobile radio transceiver to connect to the public switched telephone network.</p>
+<p><strong>Bias Tee.</strong> A passive component that can be added or removed from RF circuits to introduce DC voltage without changing the RF signal traveling through the primary transmission path. Common in BTS control modules to remotely power bi-directional amplifiers (BDAs), repeaters, and tower-top amplifiers (TTAs).</p>
+<p><strong>Circulator.</strong> A three-port passive ferromagnetic device that modifies the flow of signals in radio-frequency circuits.</p>
+<p><strong>Coaxial.</strong> A transmission line where the two conductors are coaxial, totally encircling each other, and continuously separated by a dielectric such as PTFE or air.</p>
+<p><strong>CW (Continuous Wave).</strong> A constant-amplitude signal used to distinguish a microwave component's performance for pulsed signals from its behavior at continuous power levels.</p>
+<p><strong>dB (Decibel).</strong> Ten times the common logarithm of the ratio between two power levels, or twenty times the common logarithm of the ratio between two voltages. The unit of gain.</p>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-eq-dbm.png" alt="Formula: P in dBm equals 10 times log base 10 of P divided by 1 milliwatt." style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Power in dBm referenced to one milliwatt.</figcaption>
+</figure>
+<p><strong>dBm.</strong> Decibels relative to 1 mW. The microwave industry's standard power level unit. 0 dBm = 1 mW, +10 dBm = 10 mW, +20 dBm = 100 mW, and so on.</p>
+<p><strong>DC Block.</strong> An in-line component used to block DC voltages in RF circuits while maintaining the integrity of the RF signal. The three fundamental kinds are: - Inner: Blocks DC voltages on the inner conductor only. - Outer: Blocks DC voltages on the outer conductor only. - Inner/Outer: Blocks DC voltages on both conductors.</p>
+<figure style="float:left;width:33%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-diagram-sensor.svg" alt="Block diagram showing an RF source feeding a directional coupler, with the coupled port going to a power sensor and then a power meter." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">A coupler taps a known fraction of the line power into a calibrated sensor.</figcaption>
+</figure>
+<p><strong>Directional Coupler.</strong> A passive device that accurately and conveniently samples incident and reflected microwave power while causing the least amount of transmission-line disturbance. Directional couplers find general use in load-source isolators, power measurements, and line monitoring.</p>
+<p><strong>Directivity.</strong> A comparison between the desired and unwanted signal strengths, calculated by subtracting the specified coupling (including all variations) from the isolation value. Directivity is comparable to a coil's Q factor and indicates how well a coupler performs.</p>
+<p><strong>EMI (Electromagnetic Interference).</strong> Unintentionally interfering signals produced by electronic devices, either internally or externally. Electromechanical switching equipment and power-line transients are common sources.</p>
+<p><strong>Frequency Range.</strong> The lowest and highest frequencies at which a given component will satisfy every guaranteed specification.</p>
+<p><strong>Frequency Sensitivity.</strong> The greatest peak-to-peak variation in a directional or hybrid coupler's coupling (measured in dB) within the designated frequency range. Also known as "flatness."</p>
+<p><strong>GHz (Gigahertz).</strong> A frequency unit equivalent to one billion hertz or 1000 megahertz (MHz).</p>
+<p><strong>Hybrid Coupler.</strong> A passive four-port device used to combine two signals with high isolation between them, or to equally split an input signal with a 90° phase shift between the output signals.</p>
+<p><strong>Impedance.</strong> Alternating-current resistance. The majority of microwave and radio systems are made to function with a characteristic 50-ohm impedance.</p>
+<p><strong>Input VSWR.</strong> With all other ports terminated in 50-ohm loads, the minimum voltage standing-wave ratio of a power divider found at the input (sum) port over the designated frequency range.</p>
+<p><strong>Insertion Loss.</strong> The variation in load power brought about by adding a specific device to a transmission system.</p>
+<p><strong>Iridite.</strong> A chemical film that acts as a barrier to stop corrosion on aluminum surfaces and improve the adhesion of later coatings like paints and primers. This film is usually clear or yellow in color.</p>
+<p><strong>Isolation.</strong> A measurement (in dB) used to express how far apart the signal levels are on a device's neighboring ports. Less interference from a signal on one port is present at the other when the isolation value is higher.</p>
+<p><strong>Isolator.</strong> A passive, two-port ferromagnetic device with an internal resistor to regulate the direction of signal flow. Usually employed to prevent excessive signal reflection on other radio-frequency components.</p>
+<p><strong>MHz (Megahertz).</strong> A frequency unit equivalent to one million hertz or one thousand kilohertz (kHz).</p>
+<p><strong>Microstrip (Microstripline).</strong> A transmission line with a thin, solid dielectric separating the solid ground-plane metallization and a metallized strip. Above 400 MHz and below 6 GHz, microstrip is commonly used because it allows precise fabrication of transmission lines on ceramic or PC-board substrates. Stripline technology is typically preferred for higher frequencies or broadband devices.</p>
+<p><strong>MTBF (Mean Time Between Failure).</strong> The useful life of the materials used to assemble a device, frequently cited as the cause of the mean (average) time between component failures. When a component fails, MTBF assumes that it can be "renewed," or repaired and put back into service promptly.</p>
+<p><strong>Non-Coherent Signals.</strong> Power dissipation is the limiting factor for most Wilkinson power dividers used as combiners. Power is lost through cancellation across the isolation resistors caused by out-of-phase, non-coherent, or amplitude-unbalanced input signals. Typical industry designs use low-power alumina surface-mount resistor chips on a thermally insulative circuit board because these devices are primarily used as dividers. The maximum input for merging non-coherent signals on neighboring ports is equal to (divider's rated input power × 5%) / N, where N is the number of input channels. The chip resistors will heat up and deteriorate if the rated power is exceeded, causing loss of VSWR and port-to-port isolation.</p>
+<p><strong>Output VSWR.</strong> Minimum voltage standing-wave ratio of a power divider at any output port, with all other ports terminated in 50-ohm loads, over the given frequency range.</p>
+<p><strong>Passivation.</strong> The direct creation of an insulated layer to shield a metal surface from impurities, moisture, or particles.</p>
+<p><strong>Phase Balance.</strong> The maximum phase difference (in degrees) between a power divider's output ports at any given frequency within a given range.</p>
+<p><strong>PIM (Passive Intermodulation).</strong> When two or more signals are present in a passive device (cable, connector, coupler, etc.) that responds nonlinearly, the result is called passive intermodulation. Usually, loose or unclean interconnects or dissimilar metals are the source of the nonlinearity. At low input signal levels, nonlinearity is usually not problematic. Desensitization will happen if PIM is generated from a high-power transmitter path to a nearby receiver channel. A typical PIM specification is -110 dBc or better.</p>
+<p><strong>Power (Average).</strong> The highest mean (average) power of a pulsed or modulated signal that a component can dissipate at room temperature without a drop in performance.</p>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-thermocouple-sensor.png" alt="A thermocouple sensor converts incident microwave power into a measured voltage, capturing peak and average alike." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.92rem;margin-top:0.55rem;">A thermocouple sensor converts incident microwave power into a measured voltage, capturing peak and average alike.</figcaption>
+</figure>
+<p><strong>Power (Peak).</strong> The amount of instantaneous power that a component can dissipate without performance degrading for a given percentage of the duty cycle (usually 2%).</p>
+<p><strong>PTFE (PolyTetraFluoroEthylene).</strong> An insulator used in RF and microwave coaxial connectors. PTFE has a low and stable dielectric constant and loss factor over a wide temperature and frequency range.</p>
+<p><strong>Reactive Splitter.</strong> A broadband passive network that distributes power from an input port equally among any number of output ports without significantly altering the phase relationship or producing distortion. Reactive splitters do not offer port isolation, which sets them apart from Wilkinson power dividers.</p>
+<figure style="float:left;width:33%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-smith-chart.png" alt="Return loss compares incident to reflected power, the quantity a Smith chart maps as impedance." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.92rem;margin-top:0.55rem;">Return loss compares incident to reflected power, the quantity a Smith chart maps as impedance.</figcaption>
+</figure>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-eq-vswr.png" alt="Formula: VSWR equals one plus the magnitude of the reflection coefficient divided by one minus the magnitude of the reflection coefficient." style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Standing wave ratio from the reflection coefficient magnitude, dimensionless.</figcaption>
+</figure>
+<p><strong>Return Loss.</strong> The ratio of incident power to reflected power, expressed in decibels. It is measured when a transmission line is terminated or connected to any kind of passive or active device. It can be converted to reflection coefficient, which in turn can be converted to VSWR.</p>
+<p><strong>RF (Radio Frequency).</strong> Generally, any frequency (usually above 50 MHz) at which electromagnetic radiation is practical. Any frequency above 1000 MHz is regarded as microwave.</p>
+<p><strong>RF Leakage.</strong> The quantity of energy that radiates or "leaks" from a device or connector. Usually measured in dB and tested at a single frequency. Very large negative numbers suggest the device emits very little energy.</p>
+<p><strong>RoHS.</strong> The European Union adopted the Restriction of Hazardous Substances Directive in February 2003, setting limits for the following substances in electrical and electronic equipment: - Lead (Pb) &lt; 0.1% - Mercury (Hg) &lt; 0.1% - Cadmium (Cd) &lt; 0.01% - Hexavalent Chromium (Cr⁶⁺) &lt; 0.1% - Polybrominated Biphenyls (PBB) &lt; 0.1% - Polybrominated Diphenyl Ethers (PBDE) &lt; 0.1%</p>
+<p><strong>Stripline.</strong> A transmission line consisting of conductors positioned above or between long conducting surfaces. Stripline is typically more advantageous for higher frequencies or broadband devices.</p>
+<p><strong>Termination (RF Loads).</strong> Used to terminate a transmission line or port in its characteristic impedance at the end of the line. Any unused port of a multi-port microwave device must be terminated to guarantee an accurate measurement.</p>
+<p><strong>Temperature.</strong> Unless otherwise stated, the lowest and highest ambient temperatures at which a particular component can function without failing to meet all guaranteed specifications.</p>
+<p><strong>Torque.</strong> Recommended mating torque for industry-standard connectors: - SMA: 7 to 10 in-lbs - Type-N: 12 to 15 in-lbs - TNC: 12 to 15 in-lbs - 7/16 DIN: 220 to 300 in-lbs</p>
+<p><strong>Transmission Line.</strong> Signal-carrying conductive connections between circuit elements. Common examples include wire, coaxial cable, microstrip and stripline traces, and waveguides.</p>
+<p><strong>VSWR (Voltage Standing-Wave Ratio).</strong> The ratio in a transmission line between incident and reflected signals. Since VSWR cannot be measured directly, the return loss between incident and reflected power is calculated and expressed in dB, then converted.</p>
+<p><strong>Wilkinson Power Divider.</strong> A passive device that combines signals into a single port or evenly divides an input into multiple outputs with port-to-port isolation. Power dissipation is the limiting factor for Wilkinson power dividers used as combiners, because out-of-phase or amplitude-imbalanced inputs cause cancellation across the internal isolation resistors.</p>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="11-berkeley-nucleonics-power-measurement-solutions.html">&larr; 11. Berkeley Nucleonics Power Measurement Solutions</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-B-quiz-questions.html">Appendix B: Chapter Quiz Questions &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>
+

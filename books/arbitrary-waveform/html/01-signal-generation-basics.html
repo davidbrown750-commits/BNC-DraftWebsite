@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 1: Signal Generation Basics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+  .section-kick{font-family:"Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:2.5px;font-size:12px;font-weight:700;color:var(--bnc-sky-blue);margin:0 0 2px;}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<p class="section-kick" id="section-1-foundations">Section 1 &middot; Foundations of Arbitrary Waveform Generation</p>
+
+<h2 id="chapter-1-signal-generation-basics">Chapter 1: Signal Generation Basics</h2>
+
+<figure>
+<img src="../figures/chapter-01-opener.png" alt="A modern signal-generation bench: an arbitrary waveform generator connected to an oscilloscope and a device under test, with probe cables and a waveform displayed on screen." />
+<figcaption><span class="fig-num">Figure 1.1</span> A modern signal-generation bench. The arbitrary waveform generator at the heart of it turns a table of numbers into a real voltage that a device under test can feel.</figcaption>
+</figure>
+
+<p>Every test starts with a stimulus. Before you can measure how a circuit, a receiver, or a whole system behaves, you have to feed it something to respond to. That something is a signal, and the instrument that produces it on demand is a signal generator. This first section builds the foundation under everything that follows in the book. We start with the basics of what a signal actually is and why an engineer would want to generate an arbitrary one rather than a textbook sine.</p>
+
+<p>Chapter 1 defines the vocabulary: amplitude, frequency, period, phase, offset, and the difference between a handful of standard shapes and a true arbitrary waveform built from samples. Chapter 2 opens the box and walks through how an arbitrary waveform generator turns stored numbers into a clean analog output, from sample memory through the digital-to-analog converter and reconstruction filter. Chapter 3 then gives you the specifications that matter when you compare instruments, so a datasheet stops being a wall of numbers and becomes a tool you can read.</p>
+
+<p>Taken together, these three chapters are the mental model. Get them right and the later material on sampling theory, sequencing, modulation, and applications will land as refinement rather than revelation. You do not need a signal processing degree to follow along. You need curiosity about where the waveform comes from and a willingness to think in both the time domain and, occasionally, the frequency domain.</p>
+
+<hr />
+
+<p>Signal generation is one of the oldest jobs in electronics, and one of the few that has only gotten more interesting with age. The first oscillators hummed out a single tone for testing telephone lines and radio receivers. Today an arbitrary waveform generator can replay a captured radar return, synthesize a 5G uplink, or stress a power rail with a glitch sequence measured in picoseconds. The underlying idea has not changed. You define a voltage that varies over time, and an instrument produces it faithfully. What has changed is how much freedom you have in defining that voltage.</p>
+
+<h3 id="what-is-a-waveform">1.1 What Is a Waveform?</h3>
+
+<p><strong>A waveform is a description of how a voltage changes over time.</strong> Plot voltage on the vertical axis and time on the horizontal axis, and the line you trace is the waveform. That line is the whole story. Everything an engineer cares about, from the pitch of an audio tone to the bit pattern in a serial link, lives in the shape of that curve.</p>
+
+<p>Most waveforms an instrument produces are periodic, meaning the same shape repeats over and over. A periodic waveform can be pinned down by a small set of parameters, and learning these is the price of admission to the rest of the field.</p>
+
+<ul>
+<li><strong>Amplitude.</strong> How far the waveform swings away from its center. It can be quoted as a peak value, a peak-to-peak value (the full distance from the lowest point to the highest), or an RMS value. Always check which one a datasheet means.</li>
+<li><strong>Frequency.</strong> How many complete cycles occur per second, measured in hertz. A 1 kHz tone completes one thousand cycles every second.</li>
+<li><strong>Period.</strong> The time for one complete cycle, equal to one divided by the frequency. The 1 kHz tone has a period of one millisecond.</li>
+<li><strong>Phase.</strong> Where in its cycle the waveform starts, expressed in degrees or radians. Phase matters most when you compare two signals, since a phase difference tells you how they line up in time.</li>
+<li><strong>DC offset.</strong> A constant voltage added to the whole waveform, shifting it up or down. A signal can swing around zero volts or around any offset you choose.</li>
+</ul>
+
+<figure>
+<img src="../figures/fig-1-2-waveform-parameters.svg" alt="A labeled sine wave showing amplitude measured from the center to a peak, peak-to-peak swing, period as the time for one cycle, DC offset shifting the waveform center away from zero volts, and a note on phase." />
+<figcaption><span class="fig-num">Figure 1.2</span> The basic parameters of a periodic waveform, drawn on a single sine. Amplitude, period, offset, and phase together specify the shape completely.</figcaption>
+</figure>
+
+<p>A short menu of <strong>standard functions</strong> covers a surprising amount of everyday work. The sine wave is the cleanest single-frequency tone and the natural test signal for anything frequency dependent. The square wave swings hard between two levels and is the workhorse for clocking and digital edges. The triangle and the ramp rise and fall in straight lines, useful for sweeps and for driving anything that wants a linear voltage. A pulse is a single excursion with a defined width, the basic unit of timing. Noise is a deliberately random signal, handy for stressing a system across a band of frequencies at once. A function generator typically offers exactly this set, and for routine bench work it is plenty.</p>
+
+<p>An <strong>arbitrary waveform</strong> throws the menu out. Instead of selecting a shape, you define one. You hand the instrument a list of voltage values, one after another, and it plays them back in order at a fixed rate. Because any curve can be approximated by a dense enough sequence of points, this means any signal a system might ever encounter can be represented as a sequence of voltage samples over time. A captured antenna signal, a deliberately distorted clock, a sensor output with a fault injected at one specific moment: all of them reduce to a table of numbers that the instrument reproduces on command. That is the core idea the rest of this book builds on.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> Amplitude confusion causes more bench mistakes than almost anything else. A generator set to "1 volt" might mean 1 volt peak, 1 volt peak-to-peak, or 1 volt RMS, and the three differ by more than a factor of two. Worse, the number assumes a load. Many generators are calibrated into 50 ohms and will deliver double the displayed amplitude into a high-impedance input. When a measurement is off by exactly 2x or 2.8x, suspect the amplitude reference before you suspect the instrument.</p></blockquote>
+
+<h3 id="why-generate-arbitrary-waveforms">1.2 Why Generate Arbitrary Waveforms?</h3>
+
+<p><strong>The value of an arbitrary waveform is that it can mimic the real world.</strong> Real signals are messy. They carry noise, drift, overshoot, and the fingerprints of whatever produced them. A clean sine from a function generator tells you how a device handles an ideal input, which is useful but incomplete. To know how a device behaves in the field, you have to feed it something that looks like the field. An arbitrary waveform generator (AWG) lets you build exactly that.</p>
+
+<p>Several recurring needs drive engineers toward arbitrary generation:</p>
+
+<ul>
+<li><strong>Replaying captured signals.</strong> Record a real-world waveform on an oscilloscope or digitizer, load the samples into an AWG, and you can reproduce that exact event on the bench as many times as you like. A field failure becomes a repeatable lab condition.</li>
+<li><strong>Generating impairments.</strong> Add jitter to a clock, dropouts to a data stream, or a precisely timed glitch to a power rail. Real systems must survive imperfect inputs, and an AWG manufactures those imperfections on demand.</li>
+<li><strong>Radar and electronic warfare emulation.</strong> Synthesize pulse trains, chirps, and complex threat scenarios to test receivers without flying anything. The same instrument can play a benign pulse or a dense, deceptive emitter environment.</li>
+<li><strong>Communications baseband.</strong> Produce the I and Q signals behind a modulated carrier so a transmitter or receiver can be exercised with realistic symbols, framing, and channel effects.</li>
+<li><strong>Sensor simulation.</strong> Stand in for a sensor that is expensive, fragile, or not yet built. The AWG plays the voltage the real sensor would produce, letting downstream electronics be developed in parallel.</li>
+<li><strong>Device stress testing.</strong> Push a part to its margins with worst-case patterns, then hold it there to find where it breaks.</li>
+<li><strong>Repeatability for automated test.</strong> A production line needs the same stimulus on every unit, every time. An AWG plays an identical waveform indefinitely, which is what makes pass/fail limits meaningful.</li>
+</ul>
+
+<figure>
+<img src="../figures/fig-1-3-function-vs-arb.svg" alt="Top row shows the fixed shapes a function generator produces: sine, square, triangle and ramp, pulse, and noise. Bottom shows an arbitrary waveform generator playing an irregular captured-looking signal built from discrete voltage samples." />
+<figcaption><span class="fig-num">Figure 1.3</span> A function generator picks from a fixed library of mathematical shapes. An arbitrary waveform generator plays any shape at all, sample by sample, from memory.</figcaption>
+</figure>
+
+<p>The contrast with a function generator is worth making sharp. A <strong>function generator</strong> builds its output from circuitry tuned to produce specific mathematical shapes. You choose sine or square or ramp, set the parameters, and that is the menu. An <strong>arbitrary waveform generator</strong> has no fixed shapes. It reads voltage samples from memory and pushes them through a fast digital-to-analog converter, so the only limit on the output is what you can store and how fast you can play it back. A good AWG can still produce all the standard functions, since a sine is just one more table of numbers, but it is not limited to them. That single architectural difference, fixed circuit versus memory playback, is the line between the two instrument classes.</p>
+
+<table>
+<thead>
+<tr><th>Attribute</th><th>Function Generator</th><th>Arbitrary Waveform Generator</th><th>Vector Signal Generator</th></tr>
+</thead>
+<tbody>
+<tr><td>Output defined by</td><td>Built-in shape circuits</td><td>Voltage samples in memory</td><td>Baseband I/Q on an RF carrier</td></tr>
+<tr><td>Available shapes</td><td>Fixed menu (sine, square, ramp, pulse, noise)</td><td>Any shape that fits in memory</td><td>Modulated carriers, digital standards</td></tr>
+<tr><td>Typical domain</td><td>Bench, audio, low RF</td><td>Baseband to wideband RF</td><td>RF and microwave carriers</td></tr>
+<tr><td>Replay a captured signal?</td><td>No</td><td>Yes</td><td>Yes, as baseband</td></tr>
+<tr><td>Best at</td><td>Quick, clean standard tones</td><td>Realistic, complex, custom stimulus</td><td>Carrier-based comms test</td></tr>
+</tbody>
+</table>
+
+<p>A vector signal generator earns its place in that table because it solves a related but different problem. It takes a baseband description, often the same kind of I/Q data an AWG would play, and impresses it onto a high-frequency carrier for radio testing. Many modern test setups pair the two: an AWG or a vector source generates the baseband, and an upconverter places it where the radio lives. Knowing which instrument owns which job saves a lot of wasted effort.</p>
+
+<h3 id="a-brief-history-of-signal-generation">1.3 A Brief History of Signal Generation</h3>
+
+<p>Signal generation is older than most of the electronics it now tests, which is another way of saying the field has had plenty of time to accumulate good ideas and a few stubborn habits. The story runs from a single hummed tone to instruments that update billions of samples per second, and the throughline is a steady trade of analog cleverness for digital flexibility.</p>
+
+<p><strong>The oscillator era.</strong> Early signal generators were oscillators, circuits that sustain a single frequency. A milestone arrived in 1939, when Bill Hewlett built a resistance-tuned audio oscillator using a light bulb to stabilize its amplitude. It was cheap, stable, and easy to tune, and it became the founding product of the company he started with David Packard. For decades the oscillator was the signal generator. If you wanted a different shape, you reached for a different circuit.</p>
+
+<p><strong>Analog function generators.</strong> By the 1950s and 1960s, engineers wanted more than a sine. Function generators answered with analog circuitry that could shape a single oscillation into a triangle, a square, or a ramp, and sweep its frequency on command. These instruments were elegant and fast, but every shape they produced had to be built from hardware. Adding a new waveform meant adding a new circuit. The flexibility ceiling was set by the parts list.</p>
+
+<p><strong>Direct digital synthesis.</strong> The first real break came in the 1970s and 1980s with direct digital synthesis, or DDS. Instead of tuning an analog oscillator, DDS steps through a stored table of sine values using a digital accumulator and feeds the result to a digital-to-analog converter. Frequency becomes a number you load into a register, so it can be set with extreme precision and changed instantly. DDS brought clean, agile tones and phase-continuous switching, and it remains the heart of many function generators today.</p>
+
+<p><strong>Memory-based AWGs.</strong> DDS still assumes a sine. The arbitrary waveform generator drops that assumption. As fast digital-to-analog converters and deep memory became affordable, it became practical to store any sequence of samples and clock them out at high speed. The shape was no longer wired into the instrument. It was data. Early AWGs were modest in speed and memory, but the principle scaled with the same semiconductor economics that drove everything else, and sample rates and memory depths climbed steadily.</p>
+
+<p><strong>The instruments of today.</strong> Modern arbitrary waveform generators reach multi-gigasample-per-second update rates with deep memory and resolution to match. They synthesize radar scenarios, drive control pulses for quantum experiments, and produce the wideband baseband behind 5G and emerging 6G research. The job is the same one Hewlett's oscillator did, define a voltage over time, but the freedom in that definition is now nearly total.</p>
+
+<blockquote><p><strong>Pro tip.</strong> When you evaluate any signal source, ask first whether you need a fixed shape generated cleanly or an arbitrary shape generated faithfully. The two goals pull instrument design in different directions. A DDS-based function generator wins on spectral purity for a pure tone. A memory-based AWG wins the moment your stimulus stops being a textbook shape. Match the tool to the signal, not to the brochure.</p></blockquote>
+
+<p><strong>Where Berkeley Nucleonics fits.</strong> BNC was founded in 1963, building fast-risetime pulse generators for nuclear research and based in San Rafael, California. That origin is more than trivia. Fast pulse generation is a discipline of precise edges and exact timing, the same precision that a high-performance arbitrary waveform generator demands when it places a transition within picoseconds. The lineage runs straight from those early pulse instruments into a modern AWG family that spans entry-level benchtop units through multi-gigasample-per-second systems. The chapters ahead use that family for concrete examples, always pointing you to the current datasheet at berkeleynucleonics.com to confirm the exact numbers.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-01.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="00-front-matter.html">&larr; Front Matter</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="02-how-an-awg-works.html">2. How an AWG Works &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

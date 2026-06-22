@@ -1,0 +1,194 @@
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+  --bnc-white: #ffffff;
+  --bnc-deep-plum: #4B2A6B;
+  --bnc-warm-amber: #C77E00;
+  --bnc-rule: #b6c2cc;
+}
+
+* { box-sizing: border-box; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--bnc-charcoal);
+  background: var(--bnc-light-steel);
+  max-width: 780px;
+  margin: 40px auto;
+  padding: 0 50px;
+}
+h1, h2, h3, h4 {
+  font-family: Helvetica, Arial, sans-serif;
+  color: var(--bnc-deep-navy);
+  margin-top: 1.6em;
+  letter-spacing: 0.2px;
+}
+h1 {
+  font-size: 28pt;
+  letter-spacing: 0.5px;
+  border-bottom: 3px solid var(--bnc-deep-navy);
+  padding-bottom: 8px;
+  box-shadow: inset 0 -6px 0 -3px var(--bnc-warm-amber);
+}
+h1.title {
+  border-bottom-color: var(--bnc-warm-amber);
+  box-shadow: inset 0 -6px 0 -3px var(--bnc-deep-plum);
+  color: var(--bnc-deep-navy);
+}
+h2 {
+  font-size: 22pt;
+  border-left: 4px solid var(--bnc-sky-blue);
+  padding-left: 14px;
+  margin-left: -18px;
+}
+h3 { font-size: 17pt; color: var(--bnc-sky-blue); }
+h4 { font-size: 14pt; color: var(--bnc-charcoal); font-weight: 700; }
+
+.sec-num { color: var(--bnc-warm-amber); font-weight: 700; margin-right: 6px; }
+
+p { text-align: justify; text-justify: inter-word; margin: 0.7em 0; }
+
+.callout, blockquote {
+  background: var(--bnc-white);
+  border-left: 4px solid var(--bnc-sky-blue);
+  padding: 14px 20px;
+  margin: 18px 0;
+  font-style: normal;
+  box-shadow: 0 1px 0 rgba(0, 61, 107, 0.06);
+}
+.callout h4, blockquote strong:first-child { color: var(--bnc-deep-navy); }
+
+blockquote {
+  background: #e6edf3;
+  border-left: 4px solid var(--bnc-charcoal);
+}
+.callout.warning { border-left-color: var(--bnc-warm-amber); background: #fff8ec; }
+.callout.note    { border-left-color: var(--bnc-deep-plum);  background: #f5f0fa; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  margin: 18px 0;
+}
+table thead th {
+  background: var(--bnc-deep-navy);
+  color: var(--bnc-white);
+  padding: 9px 11px;
+  text-align: left;
+  border-bottom: 3px solid var(--bnc-warm-amber);
+}
+table tbody tr:nth-child(odd)  { background: var(--bnc-light-steel); }
+table tbody tr:nth-child(even) { background: var(--bnc-white); }
+table tbody td { padding: 7px 11px; border-bottom: 1px solid #d4d8db; }
+
+/* Table title — auto-applied to <p><strong>Table N.M ...</strong></p> via the wrap script */
+.table-title {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--bnc-deep-plum);
+  margin: 22px 0 4px;
+  font-weight: 700;
+  padding-left: 10px;
+  border-left: 3px solid var(--bnc-deep-plum);
+}
+.table-title strong { color: var(--bnc-deep-plum); font-weight: 700; }
+
+code, pre {
+  font-family: Consolas, monospace;
+  font-size: 10pt;
+  background: #e6edf3;
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+pre { padding: 12px 14px; overflow-x: auto; }
+
+/* Figure / image caption styling — dark plum, italic, plum left bar */
+.caption,
+figcaption {
+  font-size: 9.5pt;
+  color: var(--bnc-deep-plum);
+  text-align: left;
+  margin-top: 6px;
+  font-style: italic;
+  border-left: 2px solid var(--bnc-deep-plum);
+  padding-left: 10px;
+  line-height: 1.5;
+}
+figure {
+  margin: 24px 0;
+  text-align: center;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 4px;
+  border-radius: 2px;
+}
+.caption strong, .caption b,
+figcaption strong, figcaption b {
+  font-style: normal;
+  font-family: Helvetica, Arial, sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 9pt;
+  color: var(--bnc-deep-plum);
+}
+/* Figure number prefix wrapper (added by mark_figures.py) */
+figcaption .fig-num {
+  font-style: normal;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 9pt;
+  color: var(--bnc-deep-plum);
+  background: #f5f0fa;
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+a { color: var(--bnc-sky-blue); text-decoration: none; border-bottom: 1px dotted var(--bnc-sky-blue); }
+a:hover { color: var(--bnc-deep-navy); border-bottom-style: solid; }
+
+.title-page { text-align: center; padding: 80px 0; border-bottom: 1px solid #b6c2cc; }
+.title-page .series-tag { font-family: Helvetica, Arial, sans-serif; font-size: 13pt; letter-spacing: 4px; color: var(--bnc-sky-blue); margin-bottom: 14px; }
+.title-page .title { font-family: Helvetica, "Arial Black", sans-serif; font-size: 52pt; font-weight: 900; color: var(--bnc-deep-navy); line-height: 1.05; margin: 14px 0; }
+.title-page .byline { font-family: Georgia, serif; font-style: italic; font-size: 18pt; color: var(--bnc-charcoal); margin-top: 26px; }
+.title-page .edition { font-family: Georgia, serif; font-style: italic; font-size: 13pt; letter-spacing: 2.5px; color: var(--bnc-sky-blue); margin-top: 36px; }
+
+hr { border: none; border-top: 1px solid var(--bnc-rule); margin: 32px 0; position: relative; }
+hr::after {
+  content: "\2756";
+  display: block;
+  text-align: center;
+  color: var(--bnc-warm-amber);
+  font-size: 11pt;
+  margin-top: -9px;
+  background: var(--bnc-light-steel);
+  width: 28px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media print {
+  body { max-width: none; margin: 0; padding: 1in; background: white; }
+  h1 { page-break-before: always; }
+  h1:first-of-type { page-break-before: auto; }
+  hr::after { background: white; }
+  a { color: var(--bnc-charcoal); border-bottom: none; }
+}

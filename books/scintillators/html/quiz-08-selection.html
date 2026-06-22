@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 8 Quiz: Choosing the Scintillator for Your Application</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 8 · Quiz</p>
+      <h1>Choosing the Scintillator for Your Application</h1>
+      <p class="sub">Five multiple-choice questions. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~10 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Auto-scored</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="08-selection.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="09-photodetectors.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it with a pen too.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "scintillator",
+    chapterKey: "08",
+    title: "Chapter 8 Quiz: Choosing the Scintillator for Your Application",
+    questions: [
+      {
+        q: "Which is one of the five questions to ask, in order, when selecting a scintillator?",
+        options: [
+          "What is the radiation and its energy",
+          "What color should the housing be",
+          "Which vendor has the shortest name",
+          "What firmware version ships by default"
+        ],
+        answer: 0,
+        explain: "The five are: the radiation and energy, the count rate, the environment, the size and geometry, and the budget."
+      },
+      {
+        q: "For a high-rate application above 1 MHz, which scintillator family is ruled out first?",
+        options: [
+          "The slow microsecond-decay scintillators such as NaI(Tl), CsI(Tl), and SrI2:Eu",
+          "The fast cerium-doped garnets",
+          "LYSO:Ce",
+          "Plastic scintillator"
+        ],
+        answer: 0,
+        explain: "Microsecond decay times cannot resolve adjacent events at MHz rates without pile-up."
+      },
+      {
+        q: "What is the dominant scintillator choice for a TOF-PET ring module, and why?",
+        options: [
+          "LYSO:Ce, for its high density, fast 40 ns decay, and good light yield",
+          "NaI(Tl), for its low cost",
+          "BaF2, for its deep-UV emission",
+          "Plastic, for its large area"
+        ],
+        answer: 0,
+        explain: "LYSO:Ce stops 511 keV photons in a compact pixel and is fast enough for time-of-flight; GAGG:Ce,Mg is competitive."
+      },
+      {
+        q: "A low-background dark matter experiment cannot use LaBr3:Ce. Why?",
+        options: [
+          "Intrinsic La-138 produces a continuous beta and gamma signal that overwhelms rare events",
+          "LaBr3:Ce is too slow for the trigger",
+          "LaBr3:Ce cannot be grown large enough",
+          "LaBr3:Ce emits outside the photodetector band"
+        ],
+        answer: 0,
+        explain: "The La-138 intrinsic background is fatal to rare-event searches that need an ultra-quiet detector."
+      },
+      {
+        q: "Why is plastic scintillator the right choice for a large-area neutron portal monitor despite modest light yield?",
+        options: [
+          "Cost per square meter scales economically in a way no inorganic crystal can match",
+          "Plastic has the best energy resolution available",
+          "Plastic is the densest material for stopping gammas",
+          "Plastic alone can identify specific isotopes"
+        ],
+        answer: 0,
+        explain: "Portal monitoring screens for 'is anything there,' so cheap large-area plastic beats high-resolution crystals."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

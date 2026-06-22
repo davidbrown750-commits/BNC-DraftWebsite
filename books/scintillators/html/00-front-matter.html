@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>00-front-matter</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  .bnc-fineprint{font-size:12.5px;line-height:1.5;color:#5b6b78;margin:18px 0}
+  .bnc-fineprint h2,.bnc-fineprint h3{font-size:12.5px;margin:0 0 4px;color:#5b6b78;border:none;padding:0;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+  .bnc-fineprint p{margin:4px 0}
+  .president-note{font-size:13.5px;line-height:1.6;color:#3a4a57;background:#f7fbff;border-left:3px solid #0078B6;border-radius:0 4px 4px 0;padding:14px 18px;margin:22px 0;font-family:Georgia,serif}
+  .president-note h2,.president-note h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 8px;border:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-weight:700}
+  .president-note p{margin:8px 0}
+  .president-note .sig{margin-top:12px;font-style:italic;color:#5b6b78}
+  </style>
+  <link rel="stylesheet" href="front-matter.css">
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+<div class="fm-titleblock">
+  <p class="fm-series">The Nuts and Bolts (and Crystals) of</p>
+  <h1 class="fm-title">Scintillator Technology</h1>
+  <p class="fm-byline">by <strong>David A. Brown</strong>, building on work by Paul Schotanus</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">Second Edition &middot; Expanded &amp; Updated &middot; 2026</p>
+</div>
+<hr />
+<div class="bnc-fineprint">
+<h2 id="copyright">Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. This second edition builds on the original <em>The Nuts and Bolts (and Crystals) of Scintillator Technology</em> by Paul Schotanus (2023), used and expanded with acknowledgment. Published by Berkeley Nucleonics Corporation, San Rafael, California. BNC and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+<hr />
+<section class="president-note" id="message-from-the-president">
+<h2>A Message from the President</h2>
+<p>Scintillation detectors have been around for a long time. So has the gap between what the physics textbooks say and what an engineer faces when a crystal arrives on the bench, a SiPM bias supply drifts with temperature, and a deadline is three weeks out. This book exists because that gap is real and because the people working at it deserve a resource that takes both the theory and the bench seriously. We wrote it to be useful, not impressive.</p>
+<p>What is happening in this field right now is genuinely exciting. New crystal families, silicon photomultipliers that keep getting better, and a nuclear energy buildout that is creating detector applications faster than the catalog can keep up. Berkeley Nucleonics has been building and specifying scintillation detectors for decades. We are not slowing down. We are leaning in. This second edition is part of that commitment, and we hope it earns a permanent spot in your toolkit.</p>
+<p class="sig">David Brown<br>President, Berkeley Nucleonics Corporation</p>
+</section>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This second edition stands on a long line of work that came before it. The first edition was authored by Paul Schotanus of Scionix Holland. His clear, practical voice on detector design carried that book and is the reason this second edition exists at all. Where his text remains the right way to explain something, it has been kept. Where the field has moved on, it has been expanded.</p>
+<p>Scionix Holland B.V., Berkeley Nucleonics&#x2019; partner in scintillation detector design and manufacture, supplied the configuration data, photographs, and decades of operational experience that fill the practical sections of this book. Berkeley Nucleonics has represented Scionix in the United States, and several other markets, for years. That partnership is the source of the configuration tables and worked examples presented throughout.</p>
+<p>The materials science updates draw on papers presented at the SCINT conference series and the IEEE Nuclear Science Symposium and Medical Imaging Conference. Citations point to the original work. Errors of interpretation are mine alone.</p>
+<p>James McQuaid edited the first edition. His editorial pass shaped the voice that this second edition tries to maintain.</p>
+<p>Finally, thanks to the engineers, applications scientists, and students who asked the questions that ended up driving most of the new content. If you have asked us about Cs2HfCl6, about a CsI(Tl) tile coupled to a SiPM array, about what to put inside an SMR containment monitor, you helped write this book.</p>
+<p><em>The Berkeley Nucleonics team, San Rafael, California, 2026</em></p>
+<hr />
+<section class="second-edition">
+<h2 id="why-a-second-edition">Why a Second Edition, and Why Now</h2>
+<p>A reference guide on scintillation detectors does not need to be rewritten every three years. Most of the physics is settled. NaI(Tl) was characterized in the 1940s. Photomultiplier tubes were perfected in the 1960s. The basic decision tree, do you want resolution or count rate or ruggedness, has not changed in a generation.</p>
+<p>So why a new edition.</p>
+<p>Three things changed at once.</p>
+<p>First, the materials science moved. SCINT 2022 in Santa Fe and SCINT 2024 in Milan presented results on chloride hafnates, multi-doped garnets, and elpasolite improvements that move real numbers, not just laboratory curiosities. Cs2HfCl6 reached eight times the light yield of NaI(Tl) at room temperature in measurements reported by multiple independent groups. The garnet family expanded beyond GAGG into LuAG, GYAGG, and co-doped variants that approach 30 ns decay times with light yields that compete with traditional choices. CsI(Tl) coupled to silicon photomultiplier arrays is now a default architecture in handheld instruments, not an experimental configuration. The first edition mentioned GAGG and CLLBC as new. The second edition has to treat them as standard and introduce the next wave.</p>
+<p>Second, the readout side moved faster than the materials side. Silicon photomultipliers in 2026 deliver photodetection efficiencies above 60 percent at the relevant emission wavelengths, with crosstalk and dark count rates that have dropped by an order of magnitude over the past five years. CMOS-integrated digital silicon photomultipliers, microchannel plate PMTs for picosecond timing, and timestamped network-attached pulse processors have changed what a detector chain can look like. A book that does not teach an engineer how to design with these is not telling the truth about the field today.</p>
+<p>Third, and this is the part you do not see in the IEEE proceedings yet, nuclear is back. Not as a retrofit, as a growth industry. The artificial-intelligence buildout drove power demand into the wall in 2024. Hyperscale operators signed power purchase agreements for small modular reactor capacity that did not exist on the grid yet. The first SMR designs reached US Nuclear Regulatory Commission certification. Microreactor pilots moved off paper. Fusion machines started returning fusion energy gain factors above unity in 2023, and follow-on machines are being built. Space nuclear power moved from PowerPoint to flight hardware. Every one of those programs needs scintillation detectors, often in configurations that did not exist as catalog items five years ago. The detector engineer who used to spend the morning sizing a NaI(Tl) probe for a portal monitor now spends it sizing a CLLBC array for an SMR containment skid.</p>
+<p>The first edition served a steady-state market. The second edition has to serve a market that is growing again. That is why the chapter on the Nuclear Renaissance is in here, why the appendices on standards and use cases got expanded, why a careers chapter exists at all. New people are going to enter this field for the first time in twenty years. Some of them will read this book.</p>
+</section>
+<hr />
+<section class="how-to-read">
+<h2 id="preface---how-to-read-this-book">How to Read This Book</h2>
+<p>The book divides into three natural zones. Chapters 1 through 7 build the foundation: why scintillation detection matters right now (Chapter 1), the physics from photon to count (Chapter 2), the properties of scintillation materials (Chapter 3), thermal neutrons and radiation-damaged crystals (Chapters 4 and 5), emission spectra and photodetector matching (Chapter 6), and temperature effects (Chapter 7). New to the field, or returning after years away? Read these in order. Each chapter earns the next. The &#x201c;Going Deeper&#x201d; sidebars carry the quantitative detail; skip them on a first pass and come back when the math matters.</p>
+<p>Chapters 8 through 14 turn the foundation into practice. Chapter 8 is the selection guide, the place to start if you already know the physics and need to make a choice. Chapters 9 through 13 cover photodetectors, nomenclature, detector configurations, worked examples, and electronics in that order. Chapter 14, Detectors for the Nuclear Renaissance, stands apart: it is context for where the field is going and why certain design patterns are becoming standard.</p>
+<p>The appendices are reference material, not back matter to ignore. Appendix A covers new materials in depth, including the chloride hafnates, garnets, and elpasolites reshaping what is available today. Appendix B is a cross-reference matrix of use cases to detector configurations. Appendix D covers standards and regulatory requirements. Appendix G is the glossary. An engineer specifying a detector can enter at Appendix B, confirm the configuration in Chapters 11 and 12, verify material properties in Chapter 3 or Appendix A, and check regulations in Appendix D, without reading a single page in sequence. Use the book the way the job demands.</p>
+</section>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<style>
+nav.toc { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; margin: 18px 0 26px; }
+nav.toc h3.toc-section {
+  font-family: Helvetica, "Arial Black", sans-serif;
+  font-size: 10pt;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--bnc-warm-amber);
+  border-bottom: 1px solid var(--bnc-rule);
+  padding-bottom: 4px;
+  margin: 22px 0 10px;
+}
+nav.toc ul.toc-front {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  font-style: italic;
+  color: var(--bnc-charcoal);
+  font-size: 10pt;
+}
+nav.toc ul.toc-front li {
+  margin: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+nav.toc ul.toc-front li::before {
+  content: "\2023";
+  position: absolute;
+  left: 0;
+  color: var(--bnc-deep-plum);
+}
+nav.toc .toc-row { margin: 4px 0; }
+nav.toc a.toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+  border-bottom: none;
+  color: var(--bnc-deep-navy);
+  padding: 3px 0;
+}
+nav.toc .toc-title {
+  flex: 0 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+nav.toc .toc-leader {
+  flex: 1;
+  border-bottom: 1.5px dotted var(--bnc-rule);
+  margin: 0 6px;
+  transform: translateY(-3px);
+  min-width: 18px;
+}
+nav.toc .toc-page {
+  flex: 0 0 auto;
+  color: var(--bnc-deep-plum);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: right;
+}
+nav.toc a.toc-link:hover .toc-title { color: var(--bnc-sky-blue); }
+@media print {
+  nav.toc a.toc-link { color: var(--bnc-deep-navy) !important; }
+}
+</style>
+<nav class="toc">
+<h3 class="toc-section">FRONT MATTER</h3>
+<ul class="toc-front">
+  <li>Title Page</li>
+  <li>Copyright</li>
+  <li><a href="#message-from-the-president" class="toc-front-link">A Message from the President</a></li>
+  <li>Acknowledgments</li>
+  <li><a href="#why-a-second-edition" class="toc-front-link">Why a Second Edition, and Why Now</a></li>
+  <li><a href="#preface---how-to-read-this-book" class="toc-front-link">How to Read This Book</a></li>
+  <li>Table of Contents</li>
+  <li>List of Figures</li>
+  <li>List of Tables</li>
+</ul>
+<h3 class="toc-section">CHAPTERS</h3>
+<div class="toc-row"><a href="01-why-now.html" class="toc-link"><span class="toc-title">1. Why Scintillation, Why Now</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">1</span></a></div>
+<div class="toc-row"><a href="02-scintillation-physics.html" class="toc-link"><span class="toc-title">2. Scintillation Physics: From Photon to Count</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">7</span></a></div>
+<div class="toc-row"><a href="03-materials.html" class="toc-link"><span class="toc-title">3. Properties and Use of Scintillation Materials</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">21</span></a></div>
+<div class="toc-row"><a href="04-neutrons.html" class="toc-link"><span class="toc-title">4. Thermal Neutron Detection</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">43</span></a></div>
+<div class="toc-row"><a href="05-radiation-damage.html" class="toc-link"><span class="toc-title">5. Radiation Damage</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">53</span></a></div>
+<div class="toc-row"><a href="06-emission-spectra.html" class="toc-link"><span class="toc-title">6. Emission Spectra and Photodetector Matching</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">59</span></a></div>
+<div class="toc-row"><a href="07-temperature.html" class="toc-link"><span class="toc-title">7. Temperature Influence on Scintillation Response</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">65</span></a></div>
+<div class="toc-row"><a href="08-selection.html" class="toc-link"><span class="toc-title">8. Choosing the Scintillator for Your Application</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">71</span></a></div>
+<div class="toc-row"><a href="09-photodetectors.html" class="toc-link"><span class="toc-title">9. Scintillation Light Detection Devices</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">81</span></a></div>
+<div class="toc-row"><a href="10-nomenclature.html" class="toc-link"><span class="toc-title">10. Detector Nomenclature and Type Numbering</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">103</span></a></div>
+<div class="toc-row"><a href="11-configurations.html" class="toc-link"><span class="toc-title">11. Detector Configurations</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">109</span></a></div>
+<div class="toc-row"><a href="12-examples.html" class="toc-link"><span class="toc-title">12. Examples of Standard Detector Configurations</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">125</span></a></div>
+<div class="toc-row"><a href="13-electronics.html" class="toc-link"><span class="toc-title">13. Detector Electronics</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">139</span></a></div>
+<div class="toc-row"><a href="14-nuclear-renaissance.html" class="toc-link"><span class="toc-title">14. Detectors for the Nuclear Renaissance</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">153</span></a></div>
+<h3 class="toc-section">APPENDICES</h3>
+<div class="toc-row"><a href="appendix-A-new-materials.html" class="toc-link"><span class="toc-title">Appendix A. New Materials Deep Dive</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">171</span></a></div>
+<div class="toc-row"><a href="appendix-B-use-cases.html" class="toc-link"><span class="toc-title">Appendix B. Use Cases &amp; Applications Catalog</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">193</span></a></div>
+<div class="toc-row"><a href="appendix-C-trends.html" class="toc-link"><span class="toc-title">Appendix C. Industry Trends &amp; Market Outlook</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">213</span></a></div>
+<div class="toc-row"><a href="appendix-D-standards.html" class="toc-link"><span class="toc-title">Appendix D. Standards, Regulations &amp; Certifications</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">227</span></a></div>
+<div class="toc-row"><a href="appendix-E-careers.html" class="toc-link"><span class="toc-title">Appendix E. Jobs &amp; Careers in the Field</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">241</span></a></div>
+<div class="toc-row"><a href="appendix-F-mca-reference.html" class="toc-link"><span class="toc-title">Appendix F. MCA and Reference Guide</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">253</span></a></div>
+<div class="toc-row"><a href="appendix-G-glossary.html" class="toc-link"><span class="toc-title">Appendix G. Glossary &amp; Acronym Index</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">267</span></a></div>
+<div class="toc-row"><a href="appendix-H-bibliography.html" class="toc-link"><span class="toc-title">Appendix H. Master Bibliography</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">277</span></a></div>
+<h3 class="toc-section">BACK MATTER</h3>
+<div class="toc-row"><a href="about-the-authors.html" class="toc-link"><span class="toc-title">About the Authors</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">289</span></a></div>
+</nav>
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="01-why-now.html">1. Why Now &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

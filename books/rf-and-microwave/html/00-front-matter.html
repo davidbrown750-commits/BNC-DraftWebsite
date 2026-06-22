@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>00-front-matter</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .bnc-fineprint{font-size:12.5px;line-height:1.5;color:#5b6b78;margin:18px 0}
+    .bnc-fineprint h2,.bnc-fineprint h3{font-size:12.5px;margin:0 0 4px;color:#5b6b78;border:none;padding:0;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+    .bnc-fineprint p{margin:4px 0}
+    .president-note{font-size:13.5px;line-height:1.6;color:#3a4a57;background:#f7fbff;border-left:3px solid #0078B6;border-radius:0 4px 4px 0;padding:14px 18px;margin:22px 0;font-family:Georgia,serif}
+    .president-note h2,.president-note h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 8px;border:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-weight:700}
+    .president-note p{margin:8px 0}
+    .president-note .sig{margin-top:12px;font-style:italic;color:#5b6b78}
+    .acknowledgments{font-size:13px;line-height:1.55;color:#5b6b78}
+    .acknowledgments h2{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#5b6b78;border:none;padding:0;margin:0 0 8px;font-weight:700}
+  </style>
+  <link rel="stylesheet" href="front-matter.css">
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+<div class="fm-titleblock">
+  <p class="fm-series">The Nuts and Bolts of</p>
+  <h1 class="fm-title">Radio Frequency</h1>
+  <p class="fm-byline">by <strong>David A. Brown</strong> and the Berkeley Nucleonics team</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">Second Edition &middot; 2026</p>
+</div>
+<div class="bnc-fineprint">
+<h2 id="copyright">Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. The Nuts and Bolts of Radio Frequency, Second Edition, 2026. Published by Berkeley Nucleonics Corporation, San Rafael, California. BNC and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+<hr />
+
+<section class="president-note" id="message-from-the-president">
+<h2>A Message from the President</h2>
+<p>RF measurement has a reputation for being arcane. The jargon is dense, the instruments are expensive, and the physics lives somewhere between the visible and the invisible. That reputation keeps a lot of good engineers at arm's length longer than it should. We wrote this book to close that gap. If you can follow a circuit diagram, you can follow this material. The fundamentals are not mysterious once someone explains them plainly, and that is what we have tried to do here.</p>
+<p>Berkeley Nucleonics has been building signal generators and analyzers for decades, and this is a genuinely exciting time to be in the field. 5G is real and 6G is not far off. Defense and satellite RF programs are back in full force. The demand for engineers who can measure a signal precisely, and understand what they are seeing, is higher than it has been in a generation. We are proud to be part of that moment. Read, measure, and build something worth measuring.</p>
+<p class="sig">David Brown<br/>President, Berkeley Nucleonics Corporation</p>
+</section>
+
+<hr />
+<section class="acknowledgments">
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This second edition grew out of the original Berkeley Nucleonics RF training course. That course was written as a practical introduction for engineers and technicians stepping into RF measurement, and it served its readers well for years. Where the original text remains the clearest way to explain something, it has been kept. Where the field moved on, it has been expanded.</p>
+<p>The applications engineers and field staff at Berkeley Nucleonics supplied the worked examples, the measurement setups, and the field-tested habits that fill the practical sections of this book. Much of the value in a reference like this comes from the questions customers ask before they buy and while they build. Those questions shaped the structure of every chapter.</p>
+<p>The standards and market figures draw on published material from the IEEE, the ITU, 3GPP, and CISPR, along with industry mobility and device-count reports. Citations point to the original sources. Where a figure could not be verified against a primary source in time for this edition, it is flagged for verification before publication. Errors of interpretation are mine alone.</p>
+<p>Finally, thanks to the engineers, technicians, and students who asked the questions that drove most of the new content. If you have asked us about catching a brief frequency-hopping signal, about calibrating a vector network analyzer, about what an EMI pre-compliance bench really needs, you helped write this book.</p>
+</section>
+<hr />
+<section class="second-edition">
+<h2 id="why-a-second-edition">Why a Second Edition, and Why Now</h2>
+<p>A reference guide on RF measurement does not need rewriting every few years. The physics is settled. A sine wave in 2026 behaves exactly as it did in 2022. The decibel has not changed. The superheterodyne receiver, invented more than a century ago, still sits at the heart of most spectrum analyzers. So why a new edition? Three things changed at once.</p>
+<p>First, the demand on spectrum jumped. The installed base of connected devices climbed past tens of billions, each one carrying at least one radio. Mobile data traffic on 5G networks grew by an order of magnitude and is still climbing. Spectrum is finite, so as more services crowd into the same electromagnetic real estate, interference gets harder to find and the margins engineers once relied on get thinner. When a resource becomes scarce and valuable at the same time, the people who can measure it precisely win.</p>
+<p>Second, the signals got harder to see. Modern signals are wide, brief, frequency-hopping, and often buried under other signals. A swept analyzer that served well in 2022 can miss them entirely. Real-time and FFT-based analysis moved from a specialty into a mainstream technique, because catching an agile signal is now a routine requirement rather than an exotic one. This edition gives that technique its own chapter.</p>
+<p>Third, defense and aerospace RF returned to the front of national priorities. Radar, electronic warfare, and signals intelligence pulled wideband capture and fast scanning into the standard toolkit. New engineers are entering RF for the first time in years, drawn by commercial wireless, by the space and satellite buildout, and by defense programs that did not exist on paper five years ago. Some of them will read this book.</p>
+<p>The first edition served a steady field. The second edition has to serve a field that is growing and getting harder at the same time. That is why the chapters on real-time analysis, modern wireless, and defense RF are in here, why the appendices on standards and instrument selection got expanded, and why a careers chapter exists at all.</p>
+</section>
+<hr />
+<section class="how-to-read">
+<h2 id="how-to-read-this-book">How to Read This Book</h2>
+<p>The book runs from fundamentals to applications in a deliberate order. <strong>Chapters 1 through 3</strong> are the foundation. Chapter 1 explains why RF measurement matters right now, including the spectrum-crowding and defense-RF trends driving the field. Chapters 2 and 3 cover the physics: time and frequency domains, the electromagnetic spectrum, signal generation, and the vocabulary every later chapter assumes. If any of that is unfamiliar, read these three first. They are short, and they carry everything that follows.</p>
+<p><strong>Chapters 4 through 8</strong> are the instrument core. Chapter 4 covers the swept superheterodyne analyzer that still anchors most labs. Chapter 5 adds real-time and FFT-based analysis for frequency-agile and transient signals. Chapter 6 moves to vector network analysis, Chapter 7 to noise figure, and Chapter 8 rounds out the toolkit with tracking generators, filters, and cables. Engineers who already know the basics can enter here and move between chapters as the measurement task dictates.</p>
+<p><strong>Chapters 9 through 14</strong> are the application layer: transmitter and receiver testing (9 and 10), EMI/EMC compliance (11), modern wireless through 5G and mmWave (12), defense and aerospace RF (13), and careers, standards, and where the field is heading (14). The appendices are working references. Appendix A for RF equations, B for decibel conversions, C for the Smith chart, D for instrument selection, E for connectors and cables, F for standards bodies, G for the glossary, and H for the bibliography. Mark them up. You will return to them often.</p>
+</section>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<style>
+nav.toc { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; margin: 18px 0 26px; }
+nav.toc h3.toc-section {
+  font-family: Helvetica, "Arial Black", sans-serif;
+  font-size: 10pt;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--bnc-warm-amber);
+  border-bottom: 1px solid var(--bnc-rule);
+  padding-bottom: 4px;
+  margin: 22px 0 10px;
+}
+nav.toc ul.toc-front {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  font-style: italic;
+  color: var(--bnc-charcoal);
+  font-size: 10pt;
+}
+nav.toc ul.toc-front li {
+  margin: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+nav.toc ul.toc-front li::before {
+  content: "\2023";
+  position: absolute;
+  left: 0;
+  color: var(--bnc-deep-plum);
+}
+nav.toc ul.toc-front li a {
+  color: var(--bnc-deep-navy);
+  text-decoration: none;
+  border-bottom: none;
+}
+nav.toc ul.toc-front li a:hover { color: var(--bnc-sky-blue); }
+nav.toc .toc-row { margin: 4px 0; }
+nav.toc a.toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+  border-bottom: none;
+  color: var(--bnc-deep-navy);
+  padding: 3px 0;
+}
+nav.toc .toc-title {
+  flex: 0 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+nav.toc .toc-leader {
+  flex: 1;
+  border-bottom: 1.5px dotted var(--bnc-rule);
+  margin: 0 6px;
+  transform: translateY(-3px);
+  min-width: 18px;
+}
+nav.toc .toc-page {
+  flex: 0 0 auto;
+  color: var(--bnc-deep-plum);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: right;
+}
+nav.toc a.toc-link:hover .toc-title { color: var(--bnc-sky-blue); }
+@media print {
+  nav.toc a.toc-link { color: var(--bnc-deep-navy) !important; }
+}
+</style>
+<nav class="toc">
+<h3 class="toc-section">FRONT MATTER</h3>
+<ul class="toc-front">
+  <li>Title Page</li>
+  <li>Copyright</li>
+  <li><a href="#message-from-the-president">A Message from the President</a></li>
+  <li>Acknowledgments</li>
+  <li><a href="#why-a-second-edition">Why a Second Edition, and Why Now</a></li>
+  <li><a href="#how-to-read-this-book">How to Read This Book</a></li>
+  <li>Table of Contents</li>
+</ul>
+<h3 class="toc-section">CHAPTERS</h3>
+<div class="toc-row"><a href="01-why-rf-why-now.html" class="toc-link"><span class="toc-title">1. Why RF, Why Now</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">1</span></a></div>
+<div class="toc-row"><a href="02-rf-fundamentals.html" class="toc-link"><span class="toc-title">2. RF Fundamentals: Time and Frequency Domains</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">9</span></a></div>
+<div class="toc-row"><a href="03-em-spectrum-signal-generation.html" class="toc-link"><span class="toc-title">3. The Electromagnetic Spectrum and Signal Generation</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">25</span></a></div>
+<div class="toc-row"><a href="04-swept-superheterodyne-analyzer.html" class="toc-link"><span class="toc-title">4. Spectrum Analysis: The Swept Superheterodyne Analyzer</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">41</span></a></div>
+<div class="toc-row"><a href="05-realtime-fft-analysis.html" class="toc-link"><span class="toc-title">5. Real-Time and FFT-Based Spectrum Analysis</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">63</span></a></div>
+<div class="toc-row"><a href="06-vector-network-analysis.html" class="toc-link"><span class="toc-title">6. Vector Network Analysis</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">79</span></a></div>
+<div class="toc-row"><a href="07-noise-figure.html" class="toc-link"><span class="toc-title">7. Noise Parameters and Noise Figure</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">93</span></a></div>
+<div class="toc-row"><a href="08-tracking-generators-filters-cables.html" class="toc-link"><span class="toc-title">8. Tracking Generators, Filters, and Cables</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">111</span></a></div>
+<div class="toc-row"><a href="09-transmitter-testing.html" class="toc-link"><span class="toc-title">9. Transmitter Testing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">123</span></a></div>
+<div class="toc-row"><a href="10-receiver-testing.html" class="toc-link"><span class="toc-title">10. Receiver Testing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">139</span></a></div>
+<div class="toc-row"><a href="11-emi-emc-testing.html" class="toc-link"><span class="toc-title">11. EMI/EMC Testing and Compliance</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">155</span></a></div>
+<div class="toc-row"><a href="12-modern-wireless-5g-6g.html" class="toc-link"><span class="toc-title">12. Modern Wireless: 5G, 6G, mmWave</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">173</span></a></div>
+<div class="toc-row"><a href="13-defense-aerospace-rf.html" class="toc-link"><span class="toc-title">13. Defense and Aerospace RF</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">189</span></a></div>
+<div class="toc-row"><a href="14-careers-standards-future.html" class="toc-link"><span class="toc-title">14. Careers, Standards, and the Future of RF</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">205</span></a></div>
+<h3 class="toc-section">APPENDICES</h3>
+<div class="toc-row"><a href="appendix-A-rf-equations.html" class="toc-link"><span class="toc-title">Appendix A. RF Equations and Quick Reference</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">215</span></a></div>
+<div class="toc-row"><a href="appendix-B-decibel-tables.html" class="toc-link"><span class="toc-title">Appendix B. Decibel and Unit Conversion Tables</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">221</span></a></div>
+<div class="toc-row"><a href="appendix-C-smith-chart-primer.html" class="toc-link"><span class="toc-title">Appendix C. Smith Chart Primer</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">225</span></a></div>
+<div class="toc-row"><a href="appendix-D-instrument-selection.html" class="toc-link"><span class="toc-title">Appendix D. Instrument Selection Guide</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">231</span></a></div>
+<div class="toc-row"><a href="appendix-E-connector-cable-reference.html" class="toc-link"><span class="toc-title">Appendix E. Connector and Cable Reference</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">237</span></a></div>
+<div class="toc-row"><a href="appendix-F-standards-bodies.html" class="toc-link"><span class="toc-title">Appendix F. Standards and Regulatory Bodies</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">241</span></a></div>
+<div class="toc-row"><a href="appendix-G-glossary.html" class="toc-link"><span class="toc-title">Appendix G. Glossary</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">245</span></a></div>
+<div class="toc-row"><a href="appendix-H-bibliography.html" class="toc-link"><span class="toc-title">Appendix H. Bibliography and Further Reading</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">253</span></a></div>
+<h3 class="toc-section">BACK MATTER</h3>
+<div class="toc-row"><a href="about-the-authors.html" class="toc-link"><span class="toc-title">About the Authors</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">259</span></a></div>
+</nav>
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="01-why-rf-why-now.html">1. Why RF, Why Now &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

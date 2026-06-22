@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Simplified Smith chart showing constant resistance and reactance circles">
+  <defs>
+    <style>
+      .r{stroke:#0078B6;stroke-width:1.6;fill:none;}
+      .x{stroke:#C77E00;stroke-width:1.6;fill:none;}
+      .axis{stroke:#003D6B;stroke-width:2;fill:none;}
+      .rim{stroke:#003D6B;stroke-width:2.5;fill:none;}
+      .ttl{fill:#003D6B;font-size:17px;font-weight:700;}
+      .lbl{fill:#2C3E50;font-size:13px;}
+      .lblr{fill:#0078B6;font-size:12px;font-weight:700;}
+      .lblx{fill:#C77E00;font-size:12px;font-weight:700;}
+      .pt{fill:#4B2A6B;}
+      .ptl{fill:#4B2A6B;font-size:13px;font-weight:700;}
+    </style>
+  </defs>
+
+  <text x="400" y="34" text-anchor="middle" class="ttl">Reading the Smith Chart: Normalized Impedance</text>
+
+  <!-- Chart geometry: unit circle radius 220, center (400,290).
+       Constant-R circles: center (cx,290), radius rr where for resistance value r,
+       circle center x = 400 + 220*r/(1+r), radius = 220/(1+r). -->
+
+  <!-- outer rim (r=0, pure reactance / |Gamma|=1) -->
+  <circle class="rim" cx="400" cy="290" r="220"/>
+
+  <!-- horizontal real axis -->
+  <line class="axis" x1="180" y1="290" x2="620" y2="290"/>
+
+  <!-- constant resistance circles -->
+  <!-- r=0.5: cx=400+220*0.333=473.3 r=146.7 -->
+  <circle class="r" cx="473.3" cy="290" r="146.7"/>
+  <!-- r=1: cx=400+110=510 r=110 -->
+  <circle class="r" cx="510" cy="290" r="110"/>
+  <!-- r=2: cx=400+146.7=546.7 r=73.3 -->
+  <circle class="r" cx="546.7" cy="290" r="73.3"/>
+  <!-- r=5: cx=400+183.3=583.3 r=36.7 -->
+  <circle class="r" cx="583.3" cy="290" r="36.7"/>
+
+  <!-- constant reactance arcs (clipped to unit circle).
+       For reactance x, circle centered at (620, 290 - 220/x) radius 220/|x|.
+       Use clip to unit circle. -->
+  <clipPath id="unit"><circle cx="400" cy="290" r="220"/></clipPath>
+  <g clip-path="url(#unit)">
+    <!-- x=+1 -->
+    <circle class="x" cx="620" cy="70" r="220"/>
+    <!-- x=-1 -->
+    <circle class="x" cx="620" cy="510" r="220"/>
+    <!-- x=+0.5 -->
+    <circle class="x" cx="620" cy="-150" r="440"/>
+    <!-- x=-0.5 -->
+    <circle class="x" cx="620" cy="730" r="440"/>
+    <!-- x=+2 -->
+    <circle class="x" cx="620" cy="180" r="110"/>
+    <!-- x=-2 -->
+    <circle class="x" cx="620" cy="400" r="110"/>
+  </g>
+
+  <!-- key landmark points -->
+  <!-- short circuit z=0 at left -->
+  <circle class="pt" cx="180" cy="290" r="5"/>
+  <text x="176" y="278" text-anchor="end" class="ptl">Short (0)</text>
+  <!-- open circuit z=inf at right -->
+  <circle class="pt" cx="620" cy="290" r="5"/>
+  <text x="624" y="278" class="ptl">Open (&#8734;)</text>
+  <!-- center: matched z=1 (50 ohm) -->
+  <circle class="pt" cx="400" cy="290" r="6"/>
+  <text x="400" y="320" text-anchor="middle" class="ptl">Match (1.0)</text>
+
+  <!-- example load marker z = 1 + j1 (top of r=1 / x=1 intersection ~) -->
+  <circle cx="510" cy="180" r="6" fill="#003D6B"/>
+  <text x="520" y="172" class="ptl" fill="#003D6B">z = 1 + j1</text>
+
+  <!-- region labels -->
+  <text x="400" y="500" text-anchor="middle" class="lbl">Top half: inductive ( +jX )   &#183;   Bottom half: capacitive ( &#8722;jX )</text>
+
+  <!-- legend -->
+  <rect x="30" y="430" width="170" height="74" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5"/>
+  <line x1="44" y1="452" x2="74" y2="452" class="r"/>
+  <text x="82" y="456" class="lblr">Constant resistance</text>
+  <line x1="44" y1="478" x2="74" y2="478" class="x"/>
+  <text x="82" y="482" class="lblx">Constant reactance</text>
+</svg>

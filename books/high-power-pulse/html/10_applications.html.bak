@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 10: Applications</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-10">Chapter 10</h1>
+<h2 id="applications">Applications</h2>
+<blockquote>
+<p><em>"The best way to understand a pulser is to see what people do with it. The applications drive the specs. The specs drive the products. The products drive the next round of applications."</em></p>
+</blockquote>
+<hr />
+<h3 id="101-why-this-chapter-is-so-much-longer-than-v1">10.1 Why this chapter is so much longer than V1</h3>
+<p>V1 covered three application areas: particle beams, optics, and semiconductor testing. Three pages, total. V2 needs ten times the space because the application landscape for high-power pulsers has broadened substantially since 2022. Bioelectrics, food and water processing, FMCW LiDAR, fusion drivers, plasma medicine, additive manufacturing, electric propulsion, and pulsed-microwave systems have all become serious markets, each driving distinct pulser specifications.</p>
+<p>The order in this chapter is roughly: V1 applications first (particle beams, optics, semiconductor testing), then the new areas grouped by physical mechanism (electroporation, food and water, HPM, fusion, accelerators, plasma medicine, additive manufacturing, electric propulsion, LiDAR). For each application, the structure is: what the application is, what pulser specs it demands, where the field is heading, and which BNC-DEI products are typical fits.</p>
+<hr />
+<h3 id="102-particle-beams-preserved-from-v1">10.2 Particle beams (preserved from V1)</h3>
+<p>High-voltage pulses are essential in many particle beam applications, from cathode ray tube displays through spacecraft propulsion systems. In each case, an extraction grid powered by a high-voltage pulse generator extracts and accelerates ions from a source. The pulser sets the beam energy, the modulation, and the timing.</p>
+<p><strong>Time-of-flight mass spectrometry</strong> is the canonical pulsed-power application in this domain. A sample is ionized, accelerated by a high-voltage pulse to a known kinetic energy, and allowed to drift down an evacuated tube to a detector. The flight time depends on the mass-to-charge ratio of each ion, so measuring time at the detector gives the mass spectrum. Pulser requirements are 1 to 10 kV, rise time below 100 ns (because rise-time variation translates directly into mass-resolution loss), and stability and repeatability at the 0.1% level.</p>
+<p>The PVX-4150 and PVX-4110 are typical fits, often paired with a 6040 Mainframe for multi-channel timing.</p>
+<p><strong>Particle accelerator injection.</strong> High-current pulses with precise timing inject particle bunches into accelerator rings. The Brookhaven and Fermilab linacs use kilovolt-class pulsers for this purpose, and large research accelerators use much larger systems.</p>
+<hr />
+<h3 id="103-optics-pockels-cells-and-q-switching-preserved-from-v1">10.3 Optics: Pockels cells and Q-switching (preserved from V1)</h3>
+<p>A Pockels cell is an electro-optical device whose refractive index changes with applied electric field. By placing a Pockels cell between crossed polarizers and pulsing it with a high voltage, you can switch a laser beam on and off in nanoseconds. Used as a Q-switch in a laser cavity, the Pockels cell holds off lasing while energy accumulates in the gain medium, then opens to release the stored energy as a single, intense pulse.</p>
+<p>Pockels cell drivers are the largest application by volume for the PVX-4110 and PVX-4150. Requirements: 1 to 5 kV typical, rise and fall times in the 10 to 50 ns range, and excellent pulse-shape fidelity because the optical pulse shape mirrors the electrical pulse shape.</p>
+<p>Q-switched lasers are used in industrial cutting and welding, dermatological procedures (tattoo removal, skin rejuvenation), and scientific research from spectroscopy to LIDAR.</p>
+<hr />
+<h3 id="104-semiconductor-testing-preserved-from-v1">10.4 Semiconductor testing (preserved from V1)</h3>
+<p>Pulsed I-V curve tracing characterizes a semiconductor's behavior across operating conditions without thermal self-heating. A single-pulse measurement happens fast enough that the device temperature does not change during the measurement, so the result reflects intrinsic device behavior rather than self-heated steady state. This matters for power devices, where steady-state characterization underestimates the true on-resistance and overestimates the breakdown voltage.</p>
+<p>Pulser requirements: voltages and currents matching the device under test, pulse widths from 100 ns to 10 µs (long enough for the device to settle, short enough to avoid heating), and excellent baseline stability so the measurement noise floor is below the quantity being measured.</p>
+<p>The PCX-7500 is widely used for power-device pulsed I-V at high currents. The PVX series covers the voltage-domain measurements.</p>
+<hr />
+<h3 id="105-lidar-new-in-v2">10.5 LiDAR (new in V2)</h3>
+<p>LiDAR is light detection and ranging: a pulsed-laser equivalent of radar. The transmitter sends short laser pulses, the receiver measures the time-of-flight to detect targets and reconstruct distances, and the resulting point cloud is used by autonomous vehicles, mapping systems, and topographic surveys.</p>
+<p><strong>Time-of-flight LiDAR</strong> is the simpler architecture. A short laser pulse (a few nanoseconds at most) goes out, the time until the return arrives is measured, and the distance is calculated as c × Δt / 2. Range resolution is set by the pulse width: a 5 ns pulse gives 75 cm range resolution. Sub-nanosecond pulses give sub-centimeter resolution but require fast laser drivers and fast receivers. The pulser inside the laser-diode transmitter is the rate-determining component for many ToF LiDAR designs.</p>
+<p><strong>FMCW LiDAR</strong> is the newer and more sophisticated approach. Instead of a short pulse, the transmitter sends a continuous-wave laser whose frequency is swept (chirped) over a range. The receiver mixes the return with a reference and measures the beat frequency, which corresponds to the round-trip time. Advantages: better range resolution, intrinsic Doppler measurement (velocity directly), and immunity to interference from other LiDAR systems. Pulser requirements are different: precise current modulation rather than fast pulses.</p>
+<p>For ToF LiDAR, the PCO-7125 is the canonical fit: 5 A peak current, 34 ns minimum pulse width, 865 kHz repetition rate. For higher-power LiDAR systems, the PCO-6131 (125 A) and PCX-7420 (21 A continuous, pulsed mode for QCW) cover the range.</p>
+<p>The automotive LiDAR market has become a major driver of pulser specifications since 2020. Automotive-grade qualification requires temperature ranges (−40 to +85°C operation), shock and vibration robustness, and AEC-Q100 component qualification. BNC-DEI does not currently sell automotive-qualified pulsers, but the development-bench BNC-DEI products are widely used to characterize the laser diodes that go into automotive LiDAR systems.</p>
+<hr />
+<h3 id="106-bioelectrics-electroporation-and-ire-new-in-v2">10.6 Bioelectrics: electroporation and IRE (new in V2)</h3>
+<p>Pulsed electric fields applied to biological cells temporarily open channels in the cell membrane, allowing molecules normally too large to enter to pass into the cell. Below a threshold, the channels close and the cell continues normal function: this is reversible electroporation, used to deliver drugs, genes, or markers into cells. Above the threshold, the channels do not close, the cell dies through controlled apoptosis: this is irreversible electroporation, or IRE.</p>
+<p><strong>Drug delivery (reversible electroporation).</strong> Electrochemotherapy uses pulsed electric fields to enhance the uptake of cytotoxic drugs in tumor cells. A typical protocol applies eight pulses of 100 µs duration at 1000 V/cm field strength, at 1 Hz repetition rate. The pulser drives an electrode array placed around or within the tumor.</p>
+<p><strong>Tumor ablation (IRE).</strong> The NanoKnife system, developed by AngioDynamics, applies high-amplitude pulses to ablate tumors near critical structures (nerves, blood vessels) where thermal ablation methods are dangerous. The mechanism is non-thermal cell death, which preserves the surrounding extracellular matrix. Typical pulses: 50 to 100 pulses of 70 to 90 µs duration at 1500 to 3000 V amplitude, applied between two or more electrodes.</p>
+<p><strong>Gene electrotransfer.</strong> A research and emerging clinical application: pulsed electric fields drive plasmid DNA into target cells for genetic modification. Pulse parameters depend on the cell type and the application, but typical values are 100 to 800 V/cm field strengths with millisecond pulse widths.</p>
+<p><strong>Calcium electrotransfer.</strong> A specific application of reversible electroporation that uses calcium ions as the active payload, exploiting the cell's response to high intracellular calcium to trigger apoptosis. An emerging cancer therapy.</p>
+<p>Pulser requirements for bioelectrics: kilovolt-class outputs, pulse widths of 50 µs to several milliseconds, repetition rates of fractions of a Hz to several Hz, current capability into the tens of amps depending on tissue impedance. The PVX-4150 covers the lower-amplitude reversible cases. Higher-amplitude IRE work uses purpose-built medical pulsers with regulatory approval, which is outside the BNC-DEI commercial scope.</p>
+<hr />
+<h3 id="107-food-and-water-sterilization-new-in-v2">10.7 Food and water sterilization (new in V2)</h3>
+<p>Pulsed electric field treatment kills microorganisms in liquids without the heat damage of conventional pasteurization. The mechanism is the same electroporation that bioelectrics exploits, applied at a scale and intensity that ruptures bacterial cell membranes irreversibly while leaving food chemistry largely intact.</p>
+<p><strong>Pulsed-electric-field food processing.</strong> Apple juice, milk, eggs, and other liquid foods can be pasteurized by applying pulsed electric fields of 20 to 80 kV/cm with microsecond pulses at high repetition rates. The technology is in commercial production at companies like Pulsemaster (in the EU) and is approved by various national food-safety authorities. Throughput is limited by the pulser power: a 1 kW pulser can process hundreds of liters per hour, with linear scaling to larger systems.</p>
+<p><strong>Pulsed UV water disinfection.</strong> Mercury-vapor flashlamps or xenon flashlamps driven by pulsed-power supplies produce broadband UV light that destroys microorganisms in flowing water. The pulser drives the flashlamp at high peak power for tens of microseconds, with the flashlamp acting as both load and energy converter. Used in bottled-water plants and in ballast-water treatment systems on ships (regulated by IMO since 2017).</p>
+<p>Pulser requirements: voltages of 10 to 80 kV, pulse widths of microseconds to tens of microseconds, repetition rates of hundreds to thousands of Hz, and continuous duty operation for hours or days. The duty-cycle requirement and the high peak voltage make this a domain dominated by purpose-built industrial pulsers rather than benchtop instruments. The Kumamoto University group in Japan has been a leader in this research area.</p>
+<hr />
+<h3 id="108-high-power-microwaves-new-in-v2">10.8 High-power microwaves (new in V2)</h3>
+<p>A high-power microwave (HPM) source converts pulsed electrical energy into intense microwave radiation. Used for EMP simulation (testing electronic systems for survival under nuclear or non-nuclear EMP), as a research tool in plasma physics, and as a directed-energy weapon for disabling electronic equipment at standoff distances.</p>
+<p>The pulser drives a vacuum electron device (klystron, magnetron, gyrotron, virtual cathode oscillator, or backward-wave oscillator) which converts the kilojoule-class electrical pulse into a gigawatt-class microwave pulse. The conversion efficiency is typically 10 to 40%.</p>
+<p><strong>EMP simulators.</strong> The Sandia ATLAS and similar facilities use Marx-Blumlein architectures to drive EMP simulators that test military electronics. Field strengths of 50 to 100 kV/m at the test object are typical, with pulse widths of tens of nanoseconds and rise times below 5 ns. The HPM system in this application is the load: the pulser is the upstream power source.</p>
+<p><strong>Directed-energy applications.</strong> Modern HPM weapons (the Air Force's HPMS family, for example) use compact pulser-and-source combinations to produce short bursts of microwave radiation that disable electronic targets at distances of hundreds of meters. Pulsers in this domain are integrated systems, not commercial bench products, but the underlying technology builds on the same Marx and PFN architectures discussed in Chapter 6.</p>
+<hr />
+<h3 id="109-inertial-confinement-fusion-drivers-new-in-v2">10.9 Inertial-confinement fusion drivers (new in V2)</h3>
+<p>Inertial confinement fusion compresses a small fuel target with intense energy delivered in a fraction of a nanosecond, achieving the densities and temperatures required for fusion reactions. Two driver classes exist: laser-pumped (Lawrence Livermore's National Ignition Facility, NIF, achieved laboratory ignition in December 2022) and Z-pinch (Sandia's Z Machine).</p>
+<p><strong>Z Machine.</strong> The Z facility at Sandia is the world's most powerful pulsed-radiation source. A Marx-driven, water-line-pulse-shaped, magnetically-insulated transmission-line system delivers 25 megaamperes of current to a target in 100 ns, producing temperatures and pressures relevant to weapons physics, fusion research, and basic high-energy-density science. The pulser at the heart of Z is a research-class instrument, not a commercial product, but it embodies every architectural principle in Chapter 6 at unusual scale.</p>
+<p><strong>NIF and laser drivers.</strong> The 192-beam NIF laser system delivers 1.8 megajoules of UV light to the target in less than 20 ns. The laser drivers (Pockels cells, optical switches, capacitor-bank-driven flashlamps) use pulsed-power technology throughout. The capacitor banks alone store gigajoules: a million times the energy in a typical bench pulser.</p>
+<p>For the BNC-DEI line, the connection to fusion research is in the supporting bench instrumentation. Diagnostic pulsers, calibration sources, trigger generators with fiber-optic distribution, and Pockels cell drivers for the smaller laser systems used in target characterization all draw on commercial bench products.</p>
+<hr />
+<h3 id="1010-accelerator-injection-and-kicker-magnets-new-in-v2">10.10 Accelerator injection and kicker magnets (new in V2)</h3>
+<p>Particle accelerators use pulsed magnetic fields (kicker magnets) to inject and extract particle bunches from rings. The kicker is energized for the duration of one bunch traversal, typically tens to hundreds of nanoseconds, and must be off before the next bunch arrives. The pulser drives the kicker coil with current pulses of kiloamps and rise/fall times in the tens of nanoseconds.</p>
+<p>The Fermilab Booster, the CERN PS, and the SLAC Linac all use pulsed-power kicker systems. Modern designs trend toward solid-state Marx pulsers feeding the kicker coil through pulse-forming networks, replacing the older thyratron-based systems with longer maintenance intervals and lower jitter.</p>
+<hr />
+<h3 id="1011-plasma-medicine-and-surface-treatment-new-in-v2">10.11 Plasma medicine and surface treatment (new in V2)</h3>
+<p>Cold atmospheric plasmas, generated by pulsed-power discharges in air or noble gases, have therapeutic and industrial applications.</p>
+<p><strong>Plasma medicine.</strong> Cold plasma jets and dielectric-barrier discharges treat skin conditions, accelerate wound healing, and have antimicrobial effects. The Adtec Plasma Medical System and similar devices generate kHz-class pulsed plasmas at modest power for clinical use.</p>
+<p><strong>Surface treatment.</strong> Industrial plasma processing uses pulsed-power sources to treat surfaces for adhesion, coating, sterilization, and etching. The semiconductor industry's plasma etching equipment uses RF and pulsed-DC power supplies. The packaging industry uses corona-discharge treatments to prepare polymer surfaces for printing and adhesion.</p>
+<hr />
+<h3 id="1012-additive-manufacturing-new-in-v2">10.12 Additive manufacturing (new in V2)</h3>
+<p>Selective laser sintering and selective laser melting use a focused laser to fuse powdered metal layer by layer. The laser source is often pulsed to control the energy delivered per spot, and the pulser characteristics directly affect the quality of the printed part. Pulse widths from microseconds to milliseconds, with pulse-shape control to avoid spatter and porosity, are typical requirements.</p>
+<p>Industrial additive manufacturing is dominated by integrated machine builders (EOS, SLM Solutions, Renishaw), but the underlying laser drivers draw on the same technology as the BNC-DEI PCX series.</p>
+<hr />
+<h3 id="1013-electric-propulsion-new-in-v2">10.13 Electric propulsion (new in V2)</h3>
+<p>Pulsed plasma thrusters and Hall thrusters used on satellites for station-keeping use pulsed-power supplies to generate plasma. Hall thrusters operate continuously (DC supplies) but pulsed-plasma thrusters fire millisecond pulses at low repetition rates. The pulser characteristics affect thrust efficiency and lifetime of the thruster.</p>
+<p>Commercial space companies (SpaceX, Astranis, etc.) deploy Hall thrusters in volume now, and the supporting power-supply technology has matured rapidly. Pulsed-power expertise transfers directly into electric-propulsion engineering.</p>
+<hr />
+<h3 id="1014-the-big-picture">10.14 The big picture</h3>
+<p>The application landscape for high-power pulsers as of this writing is broader and more economically significant than at any time in the field's history. The drivers vary (medical electroporation, automotive LiDAR, food safety, fusion research, defense applications), but the underlying technology is shared: kilovolt voltages, microsecond-to-nanosecond pulse widths, switching elements that do their job a billion times before failing.</p>
+<p>The BNC-DEI bench-instrument line covers the development and characterization side of every application above. The path from a benchtop pulser characterizing a laser diode to a deployed automotive LiDAR runs through the same fundamental engineering described in Chapters 2 through 8 of this book.</p>
+<p>For engineers new to the field, the way to find an application match is to start from the load. What is being driven? What does it need? Then work back to a pulser that can drive it, and to the bench infrastructure that lets you measure whether the system works. The applications in this chapter are the worked examples of that process.</p>
+<hr />
+<h3 id="1015-questions-for-review">10.15 Questions for review</h3>
+<ol>
+<li>
+<p>Time-of-flight mass spectrometry uses high-voltage pulses primarily to:
+   a. Heat the sample to ionization temperature.
+   b. Accelerate ions to a known kinetic energy so flight time correlates with mass-to-charge ratio.
+   c. Cool the detector to reduce noise.
+   d. Generate the laser used to ionize the sample.</p>
+</li>
+<li>
+<p>Irreversible electroporation (IRE) for tumor ablation kills cells via:
+   a. Heating the tissue.
+   b. Permanent electric-field-induced membrane damage and apoptosis, without thermal mechanisms.
+   c. Direct mechanical disruption.
+   d. Chemical reaction with the electrode material.</p>
+</li>
+<li>
+<p>Pulsed-electric-field food processing kills microorganisms by:
+   a. Heating the food to pasteurization temperature.
+   b. Disrupting microbial cell membranes through electroporation, without significant thermal effect.
+   c. Ionizing the water in the food.
+   d. Generating ultraviolet light at the electrodes.</p>
+</li>
+<li>
+<p>The Sandia Z Machine delivers approximately:
+   a. 25 mA in 100 ns.
+   b. 25 A in 100 ns.
+   c. 25 kA in 100 ns.
+   d. 25 MA in 100 ns.</p>
+</li>
+<li>
+<p>FMCW LiDAR differs from time-of-flight LiDAR in that:
+   a. FMCW uses a continuous-wave laser with frequency modulation; ToF uses short pulses.
+   b. FMCW measures only velocity; ToF measures only range.
+   c. FMCW does not use lasers.
+   d. ToF requires more complex pulser electronics than FMCW.</p>
+</li>
+<li>
+<p>Cold atmospheric plasma medicine uses pulsed-power discharges to:
+   a. Heat tissue for ablation.
+   b. Generate non-thermal plasma jets for wound treatment, antimicrobial action, and skin therapy.
+   c. Deliver electrons directly into target cells.
+   d. Perform non-invasive imaging.</p>
+</li>
+<li>
+<p>The application area that has driven the most BNC-DEI product development since 2020 is:
+   a. Pockels cell drivers for laser Q-switching.
+   b. Time-of-flight mass spectrometry.
+   c. LiDAR transmitter qualification and laser-diode characterization.
+   d. Particle accelerator injection.</p>
+</li>
+</ol>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="1016-further-reading">10.16 Further reading</h3>
+<ul>
+<li>
+<p><strong>Akiyama, H. and Heller, R., editors.</strong> <em>Bioelectrics.</em> Springer, 2017. The reference work on bioelectrical applications of pulsed power.</p>
+</li>
+<li>
+<p><strong>Davalos, R.V., Mir, L.M., and Rubinsky, B.</strong> "Tissue ablation with irreversible electroporation." <em>Annals of Biomedical Engineering</em>, 33(2), 2005. The foundational IRE paper.</p>
+</li>
+<li>
+<p><strong>Toepfl, S., Heinz, V., and Knorr, D.</strong> "High intensity pulsed electric fields applied for food preservation." <em>Chemical Engineering and Processing</em>, 46, 2007. Food-processing fundamentals.</p>
+</li>
+<li>
+<p><strong>Matzen, M.K., et al.</strong> "Pulsed-power-driven high-energy-density physics and inertial confinement fusion research." <em>Physics of Plasmas</em>, 12, 2005. The Z Machine in technical detail.</p>
+</li>
+<li>
+<p><strong>Benford, J., Swegle, J.A., and Schamiloglu, E.</strong> <em>High Power Microwaves.</em> CRC Press, 3rd edition. Standard reference on HPM sources, drivers, and applications.</p>
+</li>
+<li>
+<p><strong>NIF achievement of fusion ignition,</strong> Lawrence Livermore National Laboratory press materials, December 2022. Background on the laser-pumped fusion driver context.</p>
+</li>
+<li>
+<p><strong>Trends in LiDAR system architectures,</strong> various IEEE Sensors and Solid-State Circuits Conference proceedings, 2018 to present. The state of the FMCW versus ToF debate in automotive applications.</p>
+</li>
+<li>
+<p><strong>Lozneanu, E. and Sanduloviciu, M.</strong> "Cold plasmas in medicine: a review." <em>Plasma Sources Science and Technology</em>, 24, 2015. Plasma medicine fundamentals.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 10.</em></p>
+<p><em>Chapter 11 (The Future of Pulsed Power) follows.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="09_products.html">&larr; Ch 9: BNC-DEI Product Examples</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="11_future.html">Ch 11: The Future of Pulsed Power &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="460" fill="#ffffff"/>
+  <text x="24" y="34" font-size="18" font-weight="bold" fill="#003D6B">Resolution Versus Speed: A Physical Tradeoff</text>
+  <text x="24" y="56" font-size="13" fill="#2C3E50">A DAC moves up the bit axis or right along the sample-rate axis. Reaching the far corner at once is hard.</text>
+
+  <!-- Plot frame -->
+  <rect x="96" y="84" width="640" height="300" fill="#ffffff" stroke="#2C3E50" stroke-width="1.5"/>
+
+  <!-- Axis labels -->
+  <text x="416" y="424" font-size="14" font-weight="bold" fill="#003D6B" text-anchor="middle">Sample rate (log scale) &#8594;</text>
+  <text x="36" y="240" font-size="14" font-weight="bold" fill="#003D6B" text-anchor="middle" transform="rotate(-90 36 240)">DAC resolution (bits) &#8594;</text>
+
+  <!-- Y ticks -->
+  <text x="88" y="372" font-size="11" fill="#2C3E50" text-anchor="end">8</text>
+  <text x="88" y="304" font-size="11" fill="#2C3E50" text-anchor="end">12</text>
+  <text x="88" y="236" font-size="11" fill="#2C3E50" text-anchor="end">14</text>
+  <text x="88" y="168" font-size="11" fill="#2C3E50" text-anchor="end">16</text>
+  <line x1="92" y1="368" x2="96" y2="368" stroke="#2C3E50"/>
+  <line x1="92" y1="300" x2="96" y2="300" stroke="#2C3E50"/>
+  <line x1="92" y1="232" x2="96" y2="232" stroke="#2C3E50"/>
+  <line x1="92" y1="164" x2="96" y2="164" stroke="#2C3E50"/>
+
+  <!-- X ticks -->
+  <text x="176" y="400" font-size="11" fill="#2C3E50" text-anchor="middle">100 MS/s</text>
+  <text x="336" y="400" font-size="11" fill="#2C3E50" text-anchor="middle">1 GS/s</text>
+  <text x="496" y="400" font-size="11" fill="#2C3E50" text-anchor="middle">6 GS/s</text>
+  <text x="656" y="400" font-size="11" fill="#2C3E50" text-anchor="middle">20 GS/s</text>
+  <line x1="176" y1="384" x2="176" y2="388" stroke="#2C3E50"/>
+  <line x1="336" y1="384" x2="336" y2="388" stroke="#2C3E50"/>
+  <line x1="496" y1="384" x2="496" y2="388" stroke="#2C3E50"/>
+  <line x1="656" y1="384" x2="656" y2="388" stroke="#2C3E50"/>
+
+  <!-- High-resolution, lower-speed region (top-left) -->
+  <path d="M96 84 L520 84 L96 300 Z" fill="#0078B6" fill-opacity="0.12"/>
+  <text x="190" y="130" font-size="13" font-weight="bold" fill="#003D6B">HIGH RESOLUTION</text>
+  <text x="190" y="150" font-size="11.5" fill="#2C3E50">16-bit, moderate Fs</text>
+  <text x="190" y="167" font-size="11.5" fill="#2C3E50">Spectral purity, low SFDR</text>
+  <text x="190" y="184" font-size="11.5" fill="#2C3E50">floor, small signals near</text>
+  <text x="190" y="201" font-size="11.5" fill="#2C3E50">large ones</text>
+
+  <!-- Low-resolution, high-speed region (bottom-right) -->
+  <path d="M736 384 L736 130 L300 384 Z" fill="#C77E00" fill-opacity="0.14"/>
+  <text x="470" y="320" font-size="13" font-weight="bold" fill="#C77E00">HIGH SPEED</text>
+  <text x="470" y="340" font-size="11.5" fill="#2C3E50">8 to 14-bit, very high Fs</text>
+  <text x="470" y="357" font-size="11.5" fill="#2C3E50">Fast edges, wide bandwidth,</text>
+  <text x="470" y="374" font-size="11.5" fill="#2C3E50">direct-RF carriers</text>
+
+  <!-- Hard-corner note (top right) -->
+  <path d="M656 96 l-14 0 m14 0 l0 14" stroke="#4B2A6B" stroke-width="1.5" fill="none"/>
+  <circle cx="656" cy="96" r="5" fill="none" stroke="#4B2A6B" stroke-width="1.5"/>
+  <text x="640" y="120" font-size="11" fill="#4B2A6B" text-anchor="end">Most bits AND most</text>
+  <text x="640" y="135" font-size="11" fill="#4B2A6B" text-anchor="end">speed: the expensive corner</text>
+
+  <!-- Plotted example points -->
+  <circle cx="176" cy="232" r="6" fill="#003D6B"/>
+  <text x="186" y="228" font-size="10.5" fill="#003D6B">125 MS/s, 14-bit class</text>
+  <circle cx="336" cy="164" r="6" fill="#0078B6"/>
+  <text x="346" y="160" font-size="10.5" fill="#0078B6">16-bit, ~1 GS/s class</text>
+  <circle cx="496" cy="168" r="6" fill="#0078B6"/>
+  <text x="430" y="158" font-size="10.5" fill="#0078B6" text-anchor="end">16-bit, ~6 GS/s</text>
+  <circle cx="656" cy="232" r="6" fill="#C77E00"/>
+  <text x="646" y="252" font-size="10.5" fill="#C77E00" text-anchor="end">14-bit, ~20 GS/s</text>
+
+  <text x="24" y="446" font-size="11.5" fill="#2C3E50">The curve bends because converter design fights physics: pushing both bits and speed to the limit raises cost, power, and noise. Pick the corner your signal actually lives in.</text>
+</svg>

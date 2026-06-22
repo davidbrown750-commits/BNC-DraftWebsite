@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1 - The Evolution of Spectrum Analysis</title>
+<script>
+  MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+  .quiz-cta{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .quiz-cta .quiz-cta-num{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  .quiz-cta h3{color:var(--bnc-deep-navy);margin:4px 0 6px}
+  .quiz-cta p{margin:0 0 14px}
+  .quiz-cta .quiz-cta-btn{display:inline-block;font-family:Helvetica,Arial,sans-serif;
+    font-weight:700;letter-spacing:.5px;text-decoration:none;background:var(--bnc-deep-navy);
+    color:#fff;padding:11px 20px;border-radius:4px}
+  .quiz-cta .quiz-cta-btn:hover{background:var(--bnc-sky-blue)}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 1</div>
+<h1>The Evolution of Spectrum Analysis and the Birth of Real-Time RF Awareness</h1>
+
+<blockquote>
+You cannot protect what you cannot see. The history of spectrum analysis is a long argument about what it takes to actually see.
+</blockquote>
+
+<h2>1.1 The Invisible Infrastructure of Modern Civilization</h2>
+
+<p>Walk through a modern city with a wideband receiver. You will not hear silence. You will hear a chorus.</p>
+
+<p>Cellular base stations push 5G NR across sub-6 GHz and mmWave bands. Wi-Fi routers in every coffee shop chatter in 2.4, 5, and 6 GHz. Aircraft overhead paint the sky with ADS-B, radar altimeters, and weather radars. Ambulances run P25 digital voice. Drones uplink control in 2.4 GHz ISM while their video downlinks compete for the same crowded lane. Hospitals operate wireless medical telemetry on WMTS. Satellites beam GPS, Galileo, Iridium, Starlink, and weather data down through every rooftop. Industrial sensors run LoRa, NB-IoT, and Bluetooth mesh. Garage door openers click on 315 and 433 MHz. A jammer in somebody's car trunk may be blanketing the whole neighborhood.</p>
+
+<p>That is one block. One moment. One slice of the spectrum.</p>
+
+<p>Modern civilization runs on the radio frequency spectrum, yet the spectrum itself is invisible to the human senses. We feel electromagnetic radiation only when a microwave oven cooks our food or the sun burns our skin. The cognitive gap is enormous. Billions of dollars of infrastructure, and lives that depend on it, move through a channel no one can see directly.</p>
+
+<p>Unlike wired networks, the RF spectrum is shared, open, and contested. A single transmitter within range can affect every receiver within range. When that transmitter is unauthorized, malfunctioning, or malicious, the cost shows up as dropped calls, missed emergency messages, GPS spoofing near airports, drones over no-fly zones, and networks that simply stop working on the day of a major event. The stakes are real.</p>
+
+<p>Engineers need to see the spectrum. That is what spectrum analyzers are for.</p>
+
+<p>But "seeing" is not a single thing. It is a technology stack. Over the past sixty years, the way we see the RF spectrum has changed three times. Each change was forced by the signals themselves.</p>
+
+<h2>1.2 Early Spectrum Analyzers and Swept Superheterodyne Architecture</h2>
+
+<p>The first commercial spectrum analyzers were direct descendants of radio receivers. They borrowed the superheterodyne architecture from the same engineers who built military receivers in World War II, then added a swept local oscillator and a scanning display. Point the antenna at a signal, turn the knob, and watch a peak rise on a cathode ray tube.</p>
+
+<p>The architecture is elegant. An input signal mixes with a local oscillator (LO) whose frequency is being swept linearly across a chosen span. The resulting difference frequency lands in an intermediate frequency (IF) stage with a narrow filter. Whatever passes through that IF filter gets detected, log-scaled, and plotted as a dot on the screen. As the LO sweeps, so does the dot, tracing out a spectrum.</p>
+
+<p>Mathematically, the analyzer produces a time-frequency mapping:</p>
+
+<div class="math-display">
+$$f(t) = f_{\text{start}} + \frac{f_{\text{span}}}{T_{\text{sweep}}} \cdot t$$
+</div>
+
+<p>At any instant, the analyzer observes a single narrow slice of spectrum, roughly equal to the resolution bandwidth (RBW) filter in the IF stage. Everywhere else in the band is invisible during that moment.</p>
+
+<p>For a pure tone sitting still at 100 MHz, this is fine. The tone is always there. Whenever the LO sweeps past 100 MHz, the tone shows up. Job done.</p>
+
+<h3>Fundamental Limitation: Blind Time</h3>
+
+<p>But what about a signal that lives for a few microseconds and then disappears? A frequency hop, a burst, a transient? The swept analyzer sees only what is at the LO's current frequency. Everywhere else in the band is blind time.</p>
+
+<p>If a burst has duration $t_b$ and the sweep revisits the same frequency every $T_{\text{rev}}$, then the probability that the analyzer sees the burst in a given cycle is approximately:</p>
+
+<div class="math-display">
+$$P_{\text{intercept}} \approx \frac{t_b + t_{\text{dwell}}}{T_{\text{rev}}}$$
+</div>
+
+<p>Plug in realistic numbers. A 10 microsecond radar burst. A 10 millisecond sweep. POI works out to about 0.1 percent. In other words, a swept analyzer will probably miss this signal ninety-nine times out of a hundred. If you are lucky and patient, you might catch it. If you are trying to characterize a hostile emitter in combat, or a frequency-hopping drone, lucky and patient is not a strategy.</p>
+
+<p>This is not a matter of faster sweeps. You can crank sweep speed up, and many swept analyzers offer a "fast sweep" mode. But the IF filter has a finite settling time, and sweeping too fast causes amplitude errors and frequency smearing. There is a hard physical floor.</p>
+
+<p>The swept analyzer is a 60-year-old instrument that still works beautifully for what it was designed to do: look at signals that hold still. The moment signals started moving, the world needed something new.</p>
+
+<h2>1.3 The RF World Outgrew Swept Instruments</h2>
+
+<p>Look at what happened to radios over three decades.</p>
+
+<p>In 1995, most RF was narrowband FM. Cellular phones ran analog AMPS. A single FM channel was 30 kHz wide, and it stayed there. Spectrum analyzers of that era had modest bandwidth and relied on the slow-moving nature of the signals to produce clean traces.</p>
+
+<p>By 2005, GSM brought Time Division Multiple Access. Signals now appeared and disappeared in 577 microsecond timeslots. Bluetooth hopped 1600 times per second across 79 channels. Swept analyzers started to sweat.</p>
+
+<p>By 2015, LTE added Orthogonal Frequency Division Multiplexing (OFDM) across 20 MHz channels, with carrier aggregation across multiple bands. Wi-Fi went to 802.11n/ac with MIMO and 40-to-160 MHz channels. Cellular radios began beamforming. Military systems deployed agile jammers that hopped and chirped faster than any sweep could follow.</p>
+
+<p>By 2025, it was worse. 5G NR brought 400 MHz channels in FR2 mmWave bands. Wi-Fi 7 delivered 320 MHz channels with MLO. Bluetooth LE Audio added isochronous streams. Counter-UAS scenarios demanded detection of drones whose RF emissions change every few milliseconds. AI-controlled radios adapt their transmissions in real time, deliberately designed to be hard to characterize.</p>
+
+<p>The modern RF environment introduced:</p>
+<ul>
+  <li>OFDM and spread-spectrum modulations</li>
+  <li>Frequency hopping with dwell times in microseconds</li>
+  <li>Adaptive power control</li>
+  <li>Burst and pulsed transmission</li>
+  <li>MIMO and beamforming</li>
+  <li>Cognitive and AI-controlled radios</li>
+</ul>
+
+<p>Every one of these broke some assumption in the swept analyzer. Put together, they made swept analyzers statistically blind to most of what mattered.</p>
+
+<p>The instruments did not get worse. The signals got faster.</p>
+
+<h2>1.4 The Mathematical Reason Swept Analyzers Miss Signals</h2>
+
+<p>We owe engineers an honest number, not a vague "swept analyzers miss things." Let's derive exactly how bad it is.</p>
+
+<p>Assume a swept analyzer with sweep time $T_{\text{sweep}}$ covering span $\Delta f$, with an IF filter of bandwidth $B_{IF}$ (roughly equal to RBW). The time the LO spends observing any single frequency bin is:</p>
+
+<div class="math-display">
+$$t_{\text{dwell}} = \frac{B_{IF}}{\Delta f / T_{\text{sweep}}} = \frac{B_{IF} \cdot T_{\text{sweep}}}{\Delta f}$$
+</div>
+
+<p>For a target burst of duration $t_b$ at a specific frequency, the burst will be observed only if it coincides with the dwell window. Assuming uncorrelated timing, the probability of intercept per sweep is:</p>
+
+<div class="math-display">
+$$P_{\text{intercept}} = \frac{t_{\text{dwell}} + t_b}{T_{\text{sweep}}}$$
+</div>
+
+<h3>Worked Example</h3>
+
+<p>Consider a 1 GHz span with a 10 kHz RBW, 10 ms sweep time, and a 10 microsecond burst:</p>
+
+<div class="math-display">
+$$t_{\text{dwell}} = \frac{10\,\text{kHz} \cdot 10\,\text{ms}}{1\,\text{GHz}} = 0.1\,\mu s$$
+$$P_{\text{intercept}} = \frac{0.1\,\mu s + 10\,\mu s}{10\,\text{ms}} \approx 0.001$$
+</div>
+
+<p>One tenth of one percent per sweep. If the burst repeats once per second, you need on average a thousand seconds to see it once. That is seventeen minutes of staring at a screen hoping to catch a glimpse. In an intermittent interference investigation, that is game over.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: The POI Floor</h3>
+<p>The POI formula is a floor, not a ceiling. In practice, detector type (peak, quasi-peak, RMS), video bandwidth, trace averaging, and display update rate all further reduce the realized POI. We revisit the full derivation in Appendix B, including the effect of windowing and overlap when we transition to FFT-based processing.</p>
+</div>
+
+<h2>1.5 The Real-Time Architecture</h2>
+
+<p>Real-time spectrum analyzers solve the POI problem by eliminating blind time altogether. Instead of sweeping a narrow IF filter across a wide span, they digitize the entire span at once, then process it continuously in software.</p>
+
+<p>The architecture is conceptually simple and technically demanding:</p>
+<ol>
+  <li>An RF front end captures a slice of spectrum and downconverts it to an intermediate frequency or directly to baseband.</li>
+  <li>A wideband analog-to-digital converter samples that slice fast enough to satisfy Nyquist across the instantaneous bandwidth.</li>
+  <li>A digital signal processing pipeline performs overlapping Fast Fourier Transforms continuously.</li>
+  <li>Results feed a display engine that maintains waterfall, persistence, and density views.</li>
+  <li>Raw samples stream simultaneously to a capture buffer for trigger-and-replay analysis.</li>
+</ol>
+
+<p>There are no moving parts. No LO knob. No sweep. No blind time within the instantaneous bandwidth.</p>
+
+<p>Within that bandwidth, called the real-time bandwidth (RTBW), every signal is observed. Every burst is captured. Every frequency hop is tracked. The only time a signal can escape is if it lives outside the current RTBW window, which is why RTSAs are characterized by how wide that window gets.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-01-01-swept-vs-realtime.svg" style="width:100%; max-width:1100px;">
+    Figure 1-1: Swept vs Real-Time Architecture
+  </object>
+  <figcaption>Figure 1-1. Swept superheterodyne observes one narrow slice at a time with blind intervals in between. A real-time architecture digitizes the entire real-time bandwidth continuously, sending overlapping FFTs to waterfall, persistence, and streaming outputs.</figcaption>
+</figure>
+
+<p>Overlapping FFTs deserve special attention. If FFTs are taken back-to-back with no overlap, the samples near the window edges are attenuated by the window function and may appear faded. A burst that lands exactly at a window boundary could be missed. By overlapping consecutive FFTs, typically by 50 percent or more, we guarantee that every sample is weighted fully by at least one window. The result is 100 percent time coverage with no dead zones.</p>
+
+<p>Mathematically, if the FFT length is $N_{FFT}$ samples and the hop size is $N_{\text{hop}}$, the overlap ratio is:</p>
+
+<div class="math-display">
+$$R_{\text{overlap}} = 1 - \frac{N_{\text{hop}}}{N_{FFT}}$$
+</div>
+
+<p>For 50 percent overlap, $N_{\text{hop}} = N_{FFT}/2$. For 75 percent, $N_{\text{hop}} = N_{FFT}/4$. Higher overlap costs more computation but produces smoother, more continuous displays.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: The SPECTRAN V6 PLUS Signal Path</h3>
+<p>Aaronia's SPECTRAN V6 PLUS family executes this architecture across a range of form factors. The flagship V6 PLUS 2000XA-6 offers a base real-time bandwidth of 160 MHz, upgradable to 245 MHz or 490 MHz via license, and can be cascaded with additional units to create an aggregate bandwidth of 1 GHz using four SPECTRAN V6 PLUS modules. The RTSA Suite PRO software performs the overlapping FFTs, streams raw I/Q to disk continuously, and drives persistence and waterfall views at tens of frames per second. Probability of intercept drops to 10 nanoseconds, which means even a 10 ns radar pulse is captured with high confidence.</p>
+<p>Compare that to the 10 microsecond burst we just analyzed on a swept instrument. An RTSA sees it every single time, with margin to spare.</p>
+</div>
+
+<h2>1.6 Wideband ADCs and Deep Memory: The Enablers</h2>
+
+<p>Real-time spectrum analysis is not a software invention. It is a semiconductor achievement. Two physical device categories had to mature before RTSAs became commercially viable:</p>
+
+<h3>Wideband Analog-to-Digital Converters</h3>
+
+<p>To digitize hundreds of MHz of real-time bandwidth, you need an ADC sampling at gigasamples per second. Twenty years ago, such parts existed only in military oscilloscopes and cost tens of thousands of dollars each. Today, commercial RF ADCs sample at 3, 5, even 10 GS/s with 12 to 14 effective bits of resolution and spurious-free dynamic range (SFDR) above 70 dB.</p>
+
+<p>Key figures of merit for an RTSA front-end ADC:</p>
+
+<table>
+<thead><tr><th>Figure of Merit</th><th>What it Means</th><th>Typical RTSA Target</th></tr></thead>
+<tbody>
+<tr><td>Sample rate ($f_s$)</td><td>How often analog is converted to digital</td><td>500 MS/s to 5 GS/s</td></tr>
+<tr><td>ENOB</td><td>Effective number of bits after noise</td><td>10 to 12 bits</td></tr>
+<tr><td>SFDR</td><td>Spurious-free dynamic range</td><td>70 to 85 dB</td></tr>
+<tr><td>Noise floor</td><td>Broadband input-referred noise density</td><td>around -150 dBm/Hz after front end</td></tr>
+</tbody>
+</table>
+
+<p>These numbers directly set the RTBW and dynamic range of the instrument. Faster ADCs enable wider RTBW. Higher ENOB preserves weak signals in the presence of strong ones. Better SFDR means real signals are not confused with ADC self-generated spurs.</p>
+
+<h3>Deep Capture Memory and Streaming Fabrics</h3>
+
+<p>Digitizing a wide slice is only half the battle. You also need somewhere to put the samples. At 2 GS/s with 16-bit complex samples, raw data flows at 8 gigabytes per second. A one-second capture is eight gigabytes. A one-minute capture is half a terabyte.</p>
+
+<p>RTSAs solve this with a combination of on-board DDR memory for trigger-captured windows and high-speed streaming fabrics (PCIe, Thunderbolt, 10 GbE, USB4) to move data to host storage. Modern systems record continuously for hours or days with no drop, limited only by disk capacity.</p>
+
+<p>Without both ingredients, there is no RTSA. With them, everything we describe in the rest of this book becomes possible.</p>
+
+<h2>1.7 From Measurement Tool to RF Infrastructure Sensor</h2>
+
+<p>Something happens when an instrument can observe continuously. It stops being a test tool and starts being a sensor.</p>
+
+<p>The swept analyzer sits on a test bench. You point it at a signal, take a measurement, and put it back on the shelf. The RTSA does that too, but it also sits in an equipment cabinet at a cellular site monitoring twenty-four hours a day. It sits on a rooftop at a stadium watching for Wi-Fi congestion during games. It sits in a sensor pod on a military vehicle watching for hostile emissions. It sits in a data center watching hundreds of megahertz of spectrum for anomalies that trigger automated response.</p>
+
+<p>This shift, from bench instrument to always-on sensor, changes the engineering problem. Reliability over years, not minutes. Remote operability. Automated triggering and alerting. API-driven integration. Data retention and forensic replay. The RTSA becomes part of the infrastructure it measures.</p>
+
+<p>Modern RTSAs are evolving into:</p>
+<ul>
+  <li>Continuous spectrum sentinels feeding compliance dashboards</li>
+  <li>Distributed RF sensor nodes feeding a central monitoring system</li>
+  <li>AI-assisted classification engines that flag anomalies in real time</li>
+  <li>Cyber-physical infrastructure monitors correlating RF with network and control plane events</li>
+</ul>
+
+<p>The analogy that keeps showing up in engineering conversations is radar for airspace control. Radar gave us situational awareness over a volume of sky. Distributed RTSAs give us situational awareness over a volume of spectrum. The verb is the same. The medium is different.</p>
+
+<h2>1.8 Why This Matters for the Autonomous Future</h2>
+
+<p>Zoom out one more step.</p>
+
+<p>Autonomous vehicles depend on GPS, cellular V2X, radar, lidar, and Wi-Fi roadside units. Hospitals depend on wireless medical telemetry, cardiac monitors, infusion pumps, and staff radios. Smart cities depend on LoRa meter reading, Bluetooth asset tracking, cellular IoT, and Wi-Fi for emergency services. Aviation depends on GPS, ADS-B, DME, ILS, and a growing array of connected systems. Military and law enforcement depend on radios, radars, and unjammable communications.</p>
+
+<p>Every one of those systems shares spectrum with every other. Every one of them is subject to interference, spoofing, jamming, or simple congestion. The failure modes are not always loud. Sometimes the system just degrades quietly until a patient is misrouted, a plane gets a false signal, a robot misreads its environment, or a network falls offline at a critical moment.</p>
+
+<p>Real-time spectrum awareness is the physical-layer equivalent of intrusion detection in cybersecurity. You cannot protect what you cannot see. You cannot respond to what you did not record. You cannot trust what you did not verify.</p>
+
+<p>Without real-time spectrum awareness, modern infrastructure becomes fragile. With it, the spectrum becomes something we can actually manage.</p>
+
+<p>That is what this book is about. The rest of the chapters show you how.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>The RF spectrum is the shared physical layer of modern civilization, carrying cellular, aviation, medical, industrial, defense, and public safety signals simultaneously.</li>
+  <li>Swept spectrum analyzers, based on superheterodyne architecture with a swept local oscillator, observe one narrow frequency at a time and suffer from blind time between sweeps.</li>
+  <li>Modern RF signals (OFDM, frequency hopping, bursts, beamforming, cognitive radios) move faster than swept analyzers can follow, making them statistically blind to most of what matters.</li>
+  <li>Real-time spectrum analyzers eliminate blind time by digitizing the full real-time bandwidth and performing continuous overlapping FFTs.</li>
+  <li>Wideband ADCs and deep streaming memory are the semiconductor enablers that made RTSAs possible.</li>
+  <li>Aaronia SPECTRAN V6 PLUS achieves 10 ns probability of intercept and up to 490 MHz real-time bandwidth in a single unit, with cascading to 1 GHz.</li>
+  <li>RTSAs are transitioning from bench instruments to always-on infrastructure sensors across every sector that depends on RF.</li>
+</ul>
+</div>
+
+<div class="quiz-cta">
+<div class="quiz-cta-num">End-of-Chapter Quiz</div>
+<h3>Check your understanding</h3>
+<p>The Chapter 1 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<a class="quiz-cta-btn" href="quiz-chapter-01.html">Take the interactive quiz &rarr;</a>
+</div>
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 2 unpacks the vocabulary of real-time spectrum analysis. RTBW, POI, gap-free processing, FFT length, RBW, waterfalls, persistence, frequency mask triggers, and streaming capture. Each term gets a precise definition, a plain-English explanation, and a worked example. By the end of Chapter 2, you will be able to read an RTSA datasheet and know exactly what each specification means for your measurement problem.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-02.html">Ch 2. RTSA Terminology &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="#ECEFF1" rx="6"/>
+
+  <!-- Title -->
+  <text x="300" y="32" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="bold" fill="#003D6B" text-anchor="middle">Timing Diagram: Trigger, Delay, and Pulse Width</text>
+
+  <!-- ===== TRIGGER SIGNAL ===== -->
+  <text x="28" y="90" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#003D6B" font-weight="bold">TRIGGER</text>
+
+  <!-- baseline before edge -->
+  <line x1="90" y1="110" x2="150" y2="110" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- rising edge -->
+  <line x1="150" y1="110" x2="150" y2="72" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- top of trigger pulse -->
+  <line x1="150" y1="72" x2="230" y2="72" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- falling edge -->
+  <line x1="230" y1="72" x2="230" y2="110" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- baseline after -->
+  <line x1="230" y1="110" x2="520" y2="110" stroke="#003D6B" stroke-width="2.2"/>
+
+  <!-- T0 marker -->
+  <line x1="150" y1="60" x2="150" y2="130" stroke="#0078B6" stroke-width="1.4" stroke-dasharray="4,3"/>
+  <text x="154" y="58" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#0078B6" font-weight="bold">T0 (trigger leading edge)</text>
+
+  <!-- ===== OUTPUT PULSE ===== -->
+  <text x="28" y="200" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#003D6B" font-weight="bold">OUTPUT</text>
+
+  <!-- baseline before pulse -->
+  <line x1="90" y1="220" x2="280" y2="220" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- rising edge of output -->
+  <line x1="280" y1="220" x2="280" y2="182" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- pulse top -->
+  <line x1="280" y1="182" x2="420" y2="182" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- falling edge -->
+  <line x1="420" y1="182" x2="420" y2="220" stroke="#003D6B" stroke-width="2.2"/>
+  <!-- baseline after -->
+  <line x1="420" y1="220" x2="520" y2="220" stroke="#003D6B" stroke-width="2.2"/>
+
+  <!-- ===== DELAY ANNOTATION ===== -->
+  <!-- vertical dashed at output rising edge -->
+  <line x1="280" y1="130" x2="280" y2="240" stroke="#0078B6" stroke-width="1.4" stroke-dasharray="4,3"/>
+
+  <!-- Delay brace: T0 to output leading edge -->
+  <line x1="150" y1="152" x2="280" y2="152" stroke="#0078B6" stroke-width="1.8" marker-end="url(#arrowR)" marker-start="url(#arrowL)"/>
+  <text x="215" y="148" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#0078B6" text-anchor="middle" font-weight="bold">DELAY</text>
+
+  <!-- ===== WIDTH ANNOTATION ===== -->
+  <!-- vertical dashed at output falling edge -->
+  <line x1="420" y1="130" x2="420" y2="240" stroke="#0078B6" stroke-width="1.4" stroke-dasharray="4,3"/>
+
+  <!-- Width brace: leading to falling edge of output -->
+  <line x1="280" y1="270" x2="420" y2="270" stroke="#0078B6" stroke-width="1.8" marker-end="url(#arrowR)" marker-start="url(#arrowL)"/>
+  <text x="350" y="266" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#0078B6" text-anchor="middle" font-weight="bold">WIDTH</text>
+
+  <!-- ===== AMPLITUDE ANNOTATION ===== -->
+  <line x1="450" y1="182" x2="490" y2="182" stroke="#0078B6" stroke-width="1.4" stroke-dasharray="3,3"/>
+  <line x1="450" y1="220" x2="490" y2="220" stroke="#0078B6" stroke-width="1.4" stroke-dasharray="3,3"/>
+  <line x1="470" y1="182" x2="470" y2="220" stroke="#0078B6" stroke-width="1.8" marker-end="url(#arrowR)" marker-start="url(#arrowL)" transform="rotate(90,470,201)"/>
+  <text x="480" y="204" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#003D6B">AMP</text>
+
+  <!-- ===== LABELS for amplitude arrow (vertical) ===== -->
+  <!-- Re-draw amplitude arrow correctly vertical -->
+  <line x1="468" y1="182" x2="468" y2="220" stroke="#0078B6" stroke-width="1.8"/>
+  <polygon points="468,182 464,192 472,192" fill="#0078B6"/>
+  <polygon points="468,220 464,210 472,210" fill="#0078B6"/>
+
+  <!-- ===== ARROW MARKERS ===== -->
+  <defs>
+    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#0078B6"/>
+    </marker>
+    <marker id="arrowL" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto-start-reverse">
+      <path d="M0,0 L0,6 L8,3 z" fill="#0078B6"/>
+    </marker>
+  </defs>
+
+  <!-- ===== LEGEND / NOTES ===== -->
+  <rect x="40" y="305" width="520" height="72" rx="4" fill="#fff" stroke="#d0d8e0" stroke-width="1"/>
+  <text x="300" y="323" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#003D6B" text-anchor="middle" font-weight="bold">Key: Delay = T0 to output leading edge. Width = leading to falling edge at 50% amplitude.</text>
+  <text x="300" y="340" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#555" text-anchor="middle">T0 is the reference event: the leading edge of the trigger pulse entering the instrument.</text>
+  <text x="300" y="358" font-family="Arial,Helvetica,sans-serif" font-size="11" fill="#555" text-anchor="middle">Delay and Width are programmed independently. Both add to the period budget.</text>
+  <text x="300" y="376" font-family="Arial,Helvetica,sans-serif" font-size="10" fill="#888" text-anchor="middle">Berkeley Nucleonics Corporation</text>
+</svg>

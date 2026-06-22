@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>12-examples</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">12-examples</h1>
+</header>
+<h1 id="chapter-12---examples-of-standard-detector-configurations">Chapter 12 - Examples of Standard Detector Configurations</h1>
+<p>Chapter 11 walked through the design dimensions of a scintillation detector configuration. This chapter walks through specific configurations from the Scionix catalog, organized by the family they belong to. Each example shows the configuration code, the application it was designed for, and the engineering reasoning behind the choices. The point is not to memorize specific part numbers but to see the logic of how the choices combine into a usable product.</p>
+<h2 id="crystal-only-assemblies-c-style">12.1 Crystal-Only Assemblies (C-Style)</h2>
+<p>Configurations that ship without an integrated photodetector. The customer adds the photodetector downstream, or uses the crystal in a laboratory setup with multiple readout options.</p>
+<p><strong>Standard C-style</strong>: hermetically sealed crystal with optical-grade glass window on the readout face, aluminum or stainless steel canister, diffuse reflector on the non-readout faces.</p>
+<p>Typical configurations: - C-25S-25-NaI:Tl: 25 mm by 25 mm NaI(Tl) for laboratory use - C-51S-51-NaI:Tl: 51 mm by 51 mm NaI(Tl), the workhorse research crystal - C-76S-76-NaI:Tl: 76 mm by 76 mm NaI(Tl), the classical 3-by-3 inch standard - C-25S-25-CsI:Tl: 25 mm by 25 mm CsI(Tl) for SiPM readout downstream - C-51S-51-LaBr3:Ce: 51 mm by 51 mm LaBr3:Ce for high-resolution spectroscopy</p>
+<p><strong>CA-style</strong> is C-style with a thin entrance window for low-energy work. Used when the customer needs to detect 5 to 30 keV X-rays and supplies their own readout. The thin window is typically 25 to 100 micron beryllium or aluminized mylar.</p>
+<p><strong>CD-style</strong> is C-style with built-in voltage divider preamplifier, intended for direct connection to a standard PMT downstream. Less common than the plain C-style.</p>
+<h2 id="crystal-plus-pmt-assemblies-b-style-and-a-style">12.2 Crystal-Plus-PMT Assemblies (B-Style and A-Style)</h2>
+<p>The classical scintillation detectors. The crystal and PMT ship as a sealed integrated unit.</p>
+<p><strong>Standard B-style</strong>: side-viewing PMT integrated with the crystal, hermetic seal, voltage divider supplied separately or built in.</p>
+<p>Typical configurations: - B-25S-25-1-R6231-NaI:Tl: 25 mm by 25 mm NaI(Tl) with 1-inch low-background PMT. Compact spectrometer for portable use. - B-51S-51-2-R6233-NaI:Tl: 51 mm by 51 mm NaI(Tl) with 2-inch PMT. General-purpose laboratory detector. - B-76S-76-3-R6231-NaI:Tl/M: 76 mm by 76 mm NaI(Tl) with 3-inch PMT and mu-metal magnetic shield. The standard low-background gamma counter. - B-51S-51-2-R6233-CsI:Na: 51 mm by 51 mm CsI(Na) with 2-inch PMT. For ruggedized field instruments. - B-25S-100-1-9266B-CsI:Na: 25 mm by 100 mm CsI(Na) with 1-inch high-temperature PMT. Down-hole well-logging probe.</p>
+<p><strong>BA-style</strong> is B-style with a thin entrance window for low-energy X-ray work. Beryllium or thin aluminum window. Beryllium windows are typically 100 to 200 micrometers thick depending on the energy range of interest.</p>
+<p><strong>BD-style</strong> is B-style with built-in voltage divider. The dynode chain network, the high-voltage routing, and any front-end electronics are integrated into the housing. Reduces external cabling and simplifies field replacement.</p>
+<p><strong>BM-style</strong> adds a mu-metal magnetic shield. Standard for any deployment near transformers, motors, or magnetic field sources, including PET scanners and certain industrial environments.</p>
+<p><strong>A-style</strong> uses a demountable PMT, with the crystal and PMT shipping as separate components that mate together with a removable optical-coupling joint. Used in research and laboratory settings where the same crystal might be tested with multiple PMTs.</p>
+<h2 id="liquid-scintillation-detectors">12.3 Liquid Scintillation Detectors</h2>
+<p>Liquid scintillation cocktails are loaded into glass or plastic vials together with the radioactive sample, and the vials are read in a dedicated counter that monitors all sides of the vial through multiple PMTs in coincidence.</p>
+<p>The standard configuration is a multi-PMT vial counter with internal lead shielding and an automated sample changer. This is a separate product class from the configurations covered above; the vial counter is an instrument, not a single detector. Berkeley Nucleonics and Scionix offer specific liquid scintillation counters configured for the application: tritium and C-14 bioassay, environmental low-level beta counting, and rapid-screening configurations for nuclear medicine.</p>
+<p>For the engineer specifying a liquid scintillation system, the dominant choice is the cocktail formulation rather than the detector. Cocktails are formulated to dissolve the sample matrix (aqueous, organic, biological tissue), to minimize chemical and color quenching, and to provide stable counting over the assay period. The detector electronics handle the cocktail-specific calibration and quench correction.</p>
+<h2 id="solid-organic-scintillation-detectors">12.4 Solid Organic Scintillation Detectors</h2>
+<p>Plastic scintillator detectors come in three dominant formats.</p>
+<p><strong>Compact bar</strong>: a few-cm to 30-cm long plastic scintillator bar wrapped in reflector and optical grease, read out by a PMT at one end. Used for cosmic-ray muon detection, charged-particle counting, simple beta surveys.</p>
+<p><strong>Large panel</strong>: a meter-scale plastic sheet, several centimeters thick, read out by multiple PMTs at the edges. Used in neutron portal monitors and large-area gamma-monitoring panels. Typical configurations: - Plastic panel 1 m by 2 m by 5 cm with 4 to 8 PMT readout, for vehicle portal monitors. - Plastic panel 0.5 m by 1 m by 2 cm for pedestrian portal monitors.</p>
+<p><strong>Hodoscope array</strong>: multiple thin plastic bars arranged for spatial resolution. Used in physics experiments, in cosmic-ray muography, and in some specialized security applications.</p>
+<p><strong>PSD plastic</strong> formulations are used where neutron-gamma discrimination is required. The standard product specifications include the figure-of-merit at gamma-equivalent energy of 0.5 MeV and 1 MeV, the achievable count rate, and the dynamic range over which PSD remains viable.</p>
+<p><strong>Boron-loaded plastic</strong> for thermal neutron detection. The boron content (typically 1 to 5 percent by weight) lets the plastic detect thermal neutrons through the 10B(n, alpha) reaction. Used in large-area neutron monitoring where the elpasolite materials are too expensive for the area required.</p>
+<h2 id="photodiode-coupled-detectors-d-style">12.5 Photodiode-Coupled Detectors (D-Style)</h2>
+<p>Crystal coupled to one or more silicon photodiodes, with a charge-sensitive preamplifier in the housing. The crystal is typically CsI(Tl) or GAGG:Ce where the long-wavelength emission matches photodiode QE.</p>
+<p>Typical configurations: - D-25S-25-CsI:Tl: 25 mm by 25 mm CsI(Tl) on a 1 cm by 1 cm photodiode. - D-50S-50-GAGG:Ce: 50 mm by 50 mm GAGG:Ce on a tiled photodiode array. Used in CT scanner arrays and industrial gauges.</p>
+<p>The photodiode-coupled configuration’s appeal is the absence of HV and the compact form factor. Its limitation is the noise floor set by the preamplifier; with a low-noise design, energy thresholds of 30 to 50 keV are achievable, but pushing below this without SiPM gain becomes difficult.</p>
+<h2 id="silicon-photomultiplier-detectors-s-style">12.6 Silicon Photomultiplier Detectors (S-Style)</h2>
+<p>The dominant new configuration. Crystal coupled directly to one or more SiPM dies, with active temperature compensation in the integrated electronics.</p>
+<p>Typical configurations: - S-25S-25-12mm-HD-RGB-CsI:Tl/A/D: Compact handheld spectrometer with built-in alpha pulser and digital pulse processor. Standard for new-generation isotope identifiers. - S-32S-32-15mm-HD-NUV-CLLBC/A/D: Dual gamma-neutron handheld with PSD on the digital pulse processor. Replaces older PMT-based dual-mode detectors. - S-array-4mm-20mm-12x12-HD-NUV-LYSO:Ce/D: TOF-PET ring module. Each pixel has its own SiPM and is timestamped to picosecond accuracy. - S-51S-51-30mm-HD-NUV-NaI:Tl: 2 inch by 2 inch NaI(Tl) on a 30 mm SiPM array. Mid-range general-purpose SiPM-coupled detector.</p>
+<p>The S-style family has expanded rapidly between 2020 and 2026 as SiPM technology matured. The product range now spans from sub-cm pixels for PET arrays through full inch-class general-purpose detectors.</p>
+<h2 id="specials-and-customs">12.7 Specials and Customs</h2>
+<p>Beyond the standard catalog, custom configurations are designed for specific applications. Examples include:</p>
+<p><strong>Anti-coincidence shields.</strong> A primary detector (typically HPGe or NaI(Tl)) surrounded by an annular plastic or NaI(Tl) scintillator that vetoes events depositing energy in both. Used in low-background counting and Compton suppression spectrometers.</p>
+<p><strong>Position-sensitive detectors.</strong> A scintillator coupled to a position-sensitive PMT (PSPMT) or a SiPM array, with the ratio of light reaching different photodetector regions providing position information. Used in gamma cameras and in some research applications.</p>
+<p><strong>Phoswich detectors.</strong> Two scintillators with different decay times stacked optically in series, read out by a single photodetector. Pulse-shape analysis distinguishes events occurring in the first scintillator from events in the second. Used for alpha-beta-gamma discrimination in mixed-radiation environments.</p>
+<p><strong>Well counters.</strong> A scintillator with a cylindrical hole drilled into it, into which the radioactive sample is placed. Achieves nearly 4-pi solid angle. Used for low-level sample counting, especially in nuclear medicine for radioassay of pharmaceutical preparations.</p>
+<p><strong>Compton cameras.</strong> Two layers of position-sensitive scintillator with the kinematics of Compton scattering between the layers used to reconstruct source direction. An emerging technology with applications in medical imaging and in radioactive source localization.</p>
+<h2 id="modern-compact-handheld-configurations">12.8 Modern Compact Handheld Configurations</h2>
+<p>The compact handheld instrument is the largest single product category in the modern detector market and has been completely transformed by SiPM readout. The standard 2026 handheld is roughly the size of a large flashlight, weighs under a kilogram, includes a built-in display or wireless smartphone link, and runs for at least 8 hours on a single battery charge.</p>
+<p>Typical handheld configurations:</p>
+<p><strong>Gamma-only isotope identifier (low cost):</strong> - Crystal: NaI(Tl) 38 mm by 38 mm - Photodetector: 4-die SiPM array, NUV-HD - Electronics: digital pulse processor, embedded ARM microcontroller - Output: USB or Bluetooth to smartphone</p>
+<p><strong>Gamma-only isotope identifier (high resolution):</strong> - Crystal: CeBr3 38 mm by 38 mm - Photodetector: 4-die SiPM array, NUV-HD - Electronics: same as above - Performance: 4 percent FWHM at 662 keV</p>
+<p><strong>Dual gamma/neutron handheld:</strong> - Crystal: CLLBC 38 mm by 38 mm - Photodetector: 4-die SiPM array, NUV-HD - Electronics: digital pulse processor with PSD firmware - Performance: simultaneous gamma spectrum and thermal neutron count</p>
+<p><strong>Compact spectroscopic gamma detector for HALEU verification:</strong> - Crystal: LaBr3:Ce 25 mm by 25 mm or CeBr3 25 mm by 25 mm - Photodetector: single-die SiPM - Electronics: digital pulse processor - Integrated peak-search firmware identifies U-235 line at 185.7 keV</p>
+<p>The modern handheld is an integrated product where the scintillator, photodetector, electronics, and software are co-designed. The pre-2015 generation, with separate detector head and external base or cable to a computer, has been displaced by the all-in-one architecture.</p>
+<h2 id="vehicle-mounted-and-portal-configurations">12.9 Vehicle-Mounted and Portal Configurations</h2>
+<p>Vehicle-mounted and portal monitors are the other end of the size spectrum.</p>
+<p><strong>Pedestrian portal:</strong> plastic scintillator panels, typically 0.5 m by 1 m by 5 cm thick, deployed as left and right walls through which a person walks. PMTs at the panel ends. Time-correlated counting between the two panels reduces ambient gamma background. Optional thermal neutron counting via 6LiF/ZnS(Ag) screens or boron-loaded plastic at the side panels.</p>
+<p><strong>Vehicle portal:</strong> larger plastic panels, 1 m by 2 m by 10 cm thick, deployed as drive-through walls. Typically 4 to 8 PMTs per panel, with multiple panels per portal for redundancy and spatial resolution. Specialized digital pulse processors handle the high count rates and the multi-channel coincidence logic.</p>
+<p><strong>Spectroscopic portal:</strong> uses NaI(Tl) or LaBr3:Ce panels rather than plastic, allowing isotope identification of any flagged event. More expensive per unit area; deployed at higher-value locations such as port-of-entry primary screening lines.</p>
+<p><strong>Mobile vehicle systems:</strong> truck-mounted detectors that drive through an area to map gamma activity. Combinations of large plastic panels for sensitivity and smaller spectroscopic detectors for identification.</p>
+<p>The portal monitor market has been surprisingly stable in detector technology since the He-3 alternative shift around 2010. The current designs are mature; performance improvements have come more from electronics and software than from detector hardware.</p>
+<div class="callout">
+<p><strong>BNC in Practice - The configuration is what gets ordered, the calibration is what gets shipped</strong></p>
+<p>A configuration code defines what the detector is. A calibration certificate defines what the detector measured at the factory. The two ship together. The customer should never accept a detector without a calibration certificate, and the manufacturer should never ship one without one. The certificate documents the energy resolution, peak position, count rate at a stated source activity, and any other application-relevant performance parameter. Five years from now, when the detector’s performance has drifted or the customer is troubleshooting an in-service problem, the original calibration certificate is the reference point for what changed. Lose the certificate and you lose the ability to diagnose drift.</p>
+</div>
+<h2 id="the-catalog-is-finite-the-customizations-are-not">12.10 The Catalog Is Finite, the Customizations Are Not</h2>
+<p>The Scionix catalog of standard configurations runs to several hundred entries. The space of customizations runs into tens of thousands. Most production detectors fit a catalog configuration with minor adjustments. The genuinely custom designs, where the configuration code is project-specific, run perhaps 5 to 10 percent of orders by volume but a much higher fraction by engineering effort. The standard catalog is the starting point. The custom version is what the customer actually needs. The engineering work is bridging the two.</p>
+<h2 id="chapter-12-quiz">Chapter 12 Quiz</h2>
+<ol type="1">
+<li>What is the difference between a B-style and a BA-style configuration.</li>
+<li>Why are CA-style and BA-style configurations specified for low-energy X-ray detection.</li>
+<li>What is a phoswich detector and what does it allow.</li>
+<li>Why is a plastic scintillator panel the standard choice for vehicle portal monitors despite its modest energy resolution.</li>
+<li>What two documents always ship together with a delivered scintillation detector, and why does the customer need both.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>B-style is the standard PMT-coupled configuration with a normal aluminum or stainless steel entrance window. BA-style replaces the standard window with a thin entrance window (beryllium or thin aluminum) to allow detection of low-energy X-rays that would otherwise be absorbed in the window.</li>
+<li>The thin entrance window minimizes photoelectric absorption of low-energy X-rays before they reach the scintillator. Beryllium has the lowest photoelectric absorption of any practical window material below about 10 keV.</li>
+<li>Two scintillators with different decay times stacked optically in series, read out by a single photodetector. Pulse-shape analysis distinguishes which scintillator the event occurred in. This allows alpha-beta-gamma discrimination in mixed-radiation environments and is used in workforce dosimetry and in some specialized survey instruments.</li>
+<li>Cost per square meter scales economically with plastic in a way that no inorganic crystal does. The application is screening for “is anything there,” not energy-resolved isotope identification, so the modest energy resolution of plastic is acceptable.</li>
+<li>The configuration code (or part number) and the calibration certificate. The configuration code defines what the detector is; the calibration certificate defines what it measured at the factory. Both are needed to diagnose drift and to compare in-service performance to as-built performance.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] G. F. Knoll, <em>Radiation Detection and Measurement</em>, 4th ed. Hoboken, NJ: Wiley, 2010.</p>
+<p>[2] Scionix Holland B.V., “Scintillation Detector Catalog,” updated 2025.</p>
+<p>[3] R. T. Kouzes et al., “Neutron detection alternatives to 3He for national security applications,” <em>Nucl. Instrum. Methods A</em>, vol. 623, pp. 1035-1045, 2010.</p>
+<p>[4] M. Kapusta et al., “Properties of CLLBC scintillator: A combined gamma and neutron detector,” in <em>Proc. IEEE NSS-MIC 2023</em>, Vancouver, 2023.</p>
+<p>[5] S. Vandenberghe et al., “Recent developments in time-of-flight PET,” <em>EJNMMI Phys.</em>, vol. 7, p. 35, 2020.</p>
+</body>
+</html>

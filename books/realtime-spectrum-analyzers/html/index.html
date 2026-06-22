@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contents - The Nuts and Bolts of Real-Time Spectrum Analysis</title>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  .toc-list{list-style:none;padding:0;margin:24px 0}
+  .toc-list li{border-bottom:1px solid var(--bnc-rule);padding:12px 0}
+  .toc-list li a{font-family:Helvetica,Arial,sans-serif;font-weight:700;text-decoration:none;font-size:17px}
+  .toc-list li .ch-no{color:var(--bnc-warm-amber);font-weight:700;margin-right:10px}
+  .toc-sub{list-style:none;margin:8px 0 0;padding:0 0 0 26px}
+  .toc-sub li{border:none;padding:5px 0}
+  .toc-sub li a{font-size:15px;font-weight:400;color:var(--bnc-deep-plum)}
+  .toc-list li .ch-desc{display:block;font-family:Georgia,serif;font-size:15px;color:var(--bnc-charcoal);
+    font-weight:400;margin-top:3px}
+  .toc-section{font-family:Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;
+    font-size:12px;color:var(--bnc-deep-plum);font-weight:700;margin:30px 0 6px}
+  .president-note{font-size:13.5px;line-height:1.6;color:#3a4a57;background:#f7fbff;border-left:3px solid #0078B6;border-radius:0 4px 4px 0;padding:14px 18px;margin:22px 0;font-family:Georgia,serif}
+  .president-note h2,.president-note h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 8px;border:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-weight:700}
+  .president-note p{margin:8px 0}
+  .president-note .sig{margin-top:12px;font-style:italic;color:#5b6b78}
+</style>
+  <link rel="stylesheet" href="front-matter.css">
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+
+<div class="fm-titleblock">
+  <p class="fm-series">The Nuts and Bolts of</p>
+  <h1 class="fm-title">Real-Time Spectrum Analysis</h1>
+  <p class="fm-byline">by <strong>David A. Brown</strong> and the Berkeley Nucleonics team</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">First Edition &middot; 2026</p>
+</div>
+
+<p class="lead">A working engineer's guide to seeing the RF spectrum as it actually behaves: gap-free, in real time, across every band that matters. Use the contents below to jump to any chapter, or take the short reader quiz to find the path that fits how you work.</p>
+
+<div class="callout">
+  <h4>New here? Find your reading path</h4>
+  <p>Three reading paths run through this book. Answer six quick questions and we will point you to the right one, then mail you a free print copy if you want one. <a href="../web/reader-quiz.html">Take the reader quiz &rarr;</a></p>
+</div>
+
+<section class="president-note" id="message-from-the-president">
+  <h2>A Message from the President</h2>
+  <p>Spectrum analyzers have been around for decades. What changed is the gap. Traditional swept analyzers miss events that last microseconds, and those missed events are exactly the ones that matter: a frequency-hopping emitter, a radar pulse, a transient interference source no one can reproduce in the lab. We wrote this book because engineers kept asking the same question, "Why can't I see that?" and the honest answer was that their instruments were not designed to see it. Real-time spectrum analysis closes that gap, and this book explains how, without assuming you already know the answer.</p>
+  <p>Berkeley Nucleonics has been building RF test and measurement instruments for more than fifty years. The work happening now, gap-free capture, hardware-accelerated FFT engines, distributed sensing networks, genuinely excites us. The field is moving fast and the engineers who understand it deeply will build things that were not possible five years ago. That is the spirit behind this book. We hope it serves you well.</p>
+  <p class="sig">David Brown<br>President, Berkeley Nucleonics Corporation</p>
+</section>
+
+<section class="how-to-read">
+<h2 id="how-to-read-this-book">How to Read This Book</h2>
+<p><strong>Chapters 1 to 5</strong> build the foundation: why swept analyzers created blind time, the core vocabulary (RTBW, POI, frequency mask triggers, persistence), the signal chain from antenna to display, and the I/Q and FFT math underneath. New to real-time RF? Read these in order.</p>
+<p><strong>Chapters 6 to 12</strong> go deep into application domains: modulation analysis, pulse and radar, direction finding, calibration and uncertainty, field-ready form factors, mission-critical deployments, and the future of RF awareness infrastructure. They stand alone, so an experienced engineer can jump straight to the work at hand.</p>
+<p><strong>Chapters 13 to 15</strong> cover careers, hands-on labs, and eight field case studies. The appendices (A glossary through J tools and datasets) are reference material to use throughout, not just at the end.</p>
+</section>
+
+<div class="bnc-fineprint">
+<h2>Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. The Nuts and Bolts of Real-Time Spectrum Analysis, First Edition, 2026. Published by Berkeley Nucleonics Corporation, San Rafael, California. BNC and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+
+<ol class="toc-list">
+  <li><a href="index.html#top"><span class="ch-no">&bull;</span>Front Matter</a>
+    <ul class="toc-sub">
+      <li><a href="index.html#message-from-the-president">A Message from the President</a></li>
+      <li><a href="index.html#how-to-read-this-book">How to Read This Book</a></li>
+    </ul>
+  </li>
+  <li><a href="chapter-01.html"><span class="ch-no">1</span>The Evolution of Spectrum Analysis</a></li>
+  <li><a href="chapter-02.html"><span class="ch-no">2</span>RTSA Terminology and Core Concepts</a></li>
+  <li><a href="chapter-03.html"><span class="ch-no">3</span>The Signal Chain: From Antenna to Spectrogram</a></li>
+  <li><a href="chapter-04.html"><span class="ch-no">4</span>I/Q Fundamentals and Complex Baseband</a></li>
+  <li><a href="chapter-05.html"><span class="ch-no">5</span>FFT, Windowing, and Spectral Estimation</a></li>
+  <li><a href="chapter-06.html"><span class="ch-no">6</span>Modulation Analysis with an RTSA</a></li>
+  <li><a href="chapter-07.html"><span class="ch-no">7</span>Pulse, Radar, and Electronic Warfare Measurements</a></li>
+  <li><a href="chapter-08.html"><span class="ch-no">8</span>Direction Finding, Geolocation, and Distributed Sensing</a></li>
+  <li><a href="chapter-09.html"><span class="ch-no">9</span>Calibration, Accuracy, and Measurement Uncertainty</a></li>
+  <li><a href="chapter-10.html"><span class="ch-no">10</span>RTSA Form Factors, Packaging, and Environmental Engineering</a></li>
+  <li><a href="chapter-11.html"><span class="ch-no">11</span>Mission-Critical Applications</a></li>
+  <li><a href="chapter-12.html"><span class="ch-no">12</span>The Future of RF Awareness Infrastructure</a></li>
+  <li><a href="chapter-13.html"><span class="ch-no">13</span>Careers and the RF Workforce of the Future</a></li>
+  <li><a href="chapter-14.html"><span class="ch-no">14</span>Labs: Hands-On Exercises with an RTSA</a></li>
+  <li><a href="chapter-15.html"><span class="ch-no">15</span>Case Studies: Real-World RF Incidents Diagnosed with RTSAs</a></li>
+</ol>
+
+<div class="toc-section">Reference</div>
+<ol class="toc-list" style="margin-top:6px">
+  <li><a href="appendix-A-glossary.html"><span class="ch-no">A</span>Glossary of RTSA Terms</a></li>
+  <li><a href="appendix-B-math-reference.html"><span class="ch-no">B</span>Math Reference</a></li>
+  <li><a href="appendix-C-aaronia-products.html"><span class="ch-no">C</span>Aaronia Product Landscape</a></li>
+  <li><a href="appendix-D-quick-reference.html"><span class="ch-no">D</span>Quick Reference Tables</a></li>
+  <li><a href="appendix-E-quiz-answer-keys.html"><span class="ch-no">E</span>Quiz Answer Keys</a></li>
+  <li><a href="appendix-F-final-assessment.html"><span class="ch-no">F</span>Final Comprehensive Assessment</a></li>
+  <li><a href="appendix-G-education-pathways.html"><span class="ch-no">G</span>Education Pathways</a></li>
+  <li><a href="appendix-H-industry-snapshot.html"><span class="ch-no">H</span>Industry Snapshot</a></li>
+  <li><a href="appendix-I-standards-reference.html"><span class="ch-no">I</span>Standards and Regulatory Quick Reference</a></li>
+  <li><a href="appendix-J-tools-software.html"><span class="ch-no">J</span>Tools, Software, and Datasets</a></li>
+</ol>
+
+<div class="toc-section">About</div>
+<ol class="toc-list" style="margin-top:6px">
+  <li><a href="about-the-authors.html"><span class="ch-no">&bull;</span>About the Authors</a></li>
+</ol>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-01.html">Ch 1. Evolution of Spectrum Analysis &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

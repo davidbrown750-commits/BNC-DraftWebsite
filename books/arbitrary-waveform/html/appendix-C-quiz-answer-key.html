@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appendix C: Quiz Answer Key</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="appendix-c-quiz-answer-key">Appendix C: Quiz Answer Key</h2>
+
+<p>This appendix gives the correct answer for every chapter quiz, along with a one-line explanation of why it is right. Use it to check your work after Appendix B, or to settle a disagreement on the bench. Each entry lists the question number, the correct option letter and its text, and a short note on the reasoning.</p>
+
+<h3>Chapter 1: Signal Generation Basics</h3>
+<ol>
+  <li><strong>B.</strong> How voltage changes over time. Why: A waveform plots voltage on the vertical axis against time on the horizontal axis. That curve is the complete description of the signal.</li>
+  <li><strong>C.</strong> One divided by the frequency. Why: Period is the time for one complete cycle, and it equals 1 divided by the frequency. A 1 kHz tone has a 1 ms period.</li>
+  <li><strong>B.</strong> The AWG plays voltage samples from memory instead of using fixed shape circuits. Why: A function generator builds output from circuits tuned to specific shapes. An AWG reads voltage samples from memory, so it is not limited to a fixed menu.</li>
+  <li><strong>C.</strong> Replaying a real-world signal captured on an oscilloscope. Why: Replaying a captured, arbitrary signal means loading its exact samples into memory and playing them back, which only an AWG can do.</li>
+  <li><strong>B.</strong> Stepping through a stored table of sine values with a digital accumulator and a DAC. Why: DDS uses a digital accumulator to step through a stored sine table and feeds the result to a DAC, so frequency becomes a precisely settable number. It still assumes a sine, which is what the memory-based AWG later generalized.</li>
+</ol>
+
+<h3>Chapter 2: How an AWG Works</h3>
+<ol>
+  <li><strong>B.</strong> 100 kHz. Why: One loop lasts depth / sample rate = 2,000 / 200,000,000 = 10 microseconds. The repetition rate is 1 / 10 us = 100 kHz.</li>
+  <li><strong>C.</strong> The high-frequency spectral images created by sampling, leaving the smooth waveform. Why: Sampling produces copies (images) of the signal spectrum around multiples of the sample rate. The low-pass reconstruction filter removes those images and smooths the staircase into a continuous waveform.</li>
+  <li><strong>A.</strong> DDS uses a phase accumulator and lookup table for fine-resolution tones; true arb reads sequential memory point by point. Why: DDS steps a phase accumulator into a waveform lookup table, giving very fine frequency resolution for repetitive tones. True arb reads stored samples sequentially, one per clock, reproducing any waveform you loaded.</li>
+  <li><strong>B.</strong> The DAC is the digital-to-analog border, so its resolution, update rate, and glitch energy set the noise floor and spurious performance. Why: Everything before the DAC is noise-free numbers. The DAC turns codes into volts, so its bit depth, update rate, and glitch energy largely determine dynamic range and spurious-free performance.</li>
+  <li><strong>B.</strong> An arbitrary function generator (AWFG). Why: Standard DDS shapes plus modest arbitrary memory at a bench-appropriate sample rate is the arbitrary function generator (AWFG) class, the middle ground between a plain function generator and a deep-memory high-speed AWG.</li>
+</ol>
+
+<h3>Chapter 3: Key Specifications</h3>
+<ol>
+  <li><strong>B.</strong> 1 GHz, half the sample rate (the Nyquist limit). Why: Nyquist sets the theoretical maximum output frequency at half the sample rate, so 2 GSa/s gives 1 GHz. In practice the usable bandwidth sits below this once reconstruction filtering is accounted for.</li>
+  <li><strong>C.</strong> About 6 dB per bit. Why: The 6.02 coefficient means each additional bit adds roughly 6 dB of ideal SNR. That is why a 14-bit part reaches about 86 dB and a 16-bit part about 98 dB.</li>
+  <li><strong>A.</strong> 50 microseconds. Why: Playback time = memory depth / sample rate = 1e6 / 20e9 = 50 microseconds. Deep memory drains quickly at high sample rates, which is why long scenarios often rely on sequencing or streaming.</li>
+  <li><strong>B.</strong> 350 ps. Why: rise time is approximately 0.35 / bandwidth = 0.35 / 1e9 = 350 ps. Edges contain energy well above the fundamental, so fast edges need bandwidth headroom.</li>
+  <li><strong>B.</strong> The amplitude gap, in dBc, between the fundamental and the single largest spur, harmonic or not. Why: SFDR is the distance from the carrier to the worst single spectral line, expressed in dBc. That spur may be a harmonic or a non-harmonic artifact. SNR, by contrast, sums the whole noise floor.</li>
+</ol>
+
+<h3>Chapter 4: Sampling Theory and Signal Fidelity</h3>
+<ol>
+  <li><strong>A.</strong> Strictly less than Fs/2, the Nyquist frequency. Why: The theorem requires sampling at more than twice the highest frequency component, so that component must fall below Fs/2. In practice, engineers stay well under Fs/2 because of filtering and roll-off.</li>
+  <li><strong>B.</strong> It aliases to 400 MHz (Fs minus the tone). Why: 600 MHz is above Fs/2 (500 MHz), so it folds back, mirrored around Nyquist, and lands at 1000 - 600 = 400 MHz. No downstream filter can separate it from a real 400 MHz tone.</li>
+  <li><strong>C.</strong> 3.9 dB relative to DC. Why: The zero-order hold imposes a sin(x)/x amplitude envelope. At Fs/2 it costs roughly 3.9 dB, about a 36 percent amplitude loss. Inverse-sinc (sinc) correction flattens this if needed.</li>
+  <li><strong>B.</strong> It pushes the spectral images higher in frequency so a gentler reconstruction filter can be used. Why: Raising the effective update rate moves images away from the band of interest, relaxes the analog filter, and shifts the signal toward the flat part of the sin(x)/x curve. The cost is more memory, compute, and power.</li>
+  <li><strong>C.</strong> To randomize quantization error so periodic spurs spread into a smooth noise floor. Why: When a periodic signal lines up with the sample grid, rounding error becomes periodic and produces discrete spurs. Dither breaks that correlation, trading a slightly higher broadband noise floor for the removal of those spurs.</li>
+</ol>
+
+<h3>Chapter 5: Creating and Sequencing Waveforms</h3>
+<ol>
+  <li><strong>A.</strong> A data file has no inherent time axis, so the AWG plays the samples at its own clock; a mismatch shifts every frequency in the signal. Why: Samples carry values, not time. The AWG clocks them out at its own rate, so you must resample to the AWG clock or match the AWG rate to the source.</li>
+  <li><strong>B.</strong> A repeated segment is stored once and looped, so memory is reused and the scenario can react to triggers and events. Why: Loop counts replay one stored copy many times, saving memory, and conditional advance lets the playout react rather than being frozen.</li>
+  <li><strong>C.</strong> 1008 samples. Why: Length must be a multiple of the granularity N. Of the choices, only 1008 is a multiple of 16.</li>
+  <li><strong>B.</strong> The end phase does not match the start phase, so the wrap forces a step discontinuity that is wideband and repeats every loop. Why: If the buffer ends mid-cycle, wrapping to the start jumps the level and slope. That step radiates spurs locked to the loop rate.</li>
+  <li><strong>C.</strong> Apply a window that tapers the start and end toward a common value so the junction no longer takes a hard step. Why: Windowing trades a sharp discontinuity for a gentle controlled transition. Use it when integer cycles are not achievable.</li>
+</ol>
+
+<h3>Chapter 6: Modulation and Signal Scenarios</h3>
+<ol>
+  <li><strong>B.</strong> Overmodulation occurs and the envelope clips through zero, distorting the recovered message. Why: An index above 1.0 drives the envelope through zero at the troughs, which is overmodulation and distorts the demodulated message.</li>
+  <li><strong>C.</strong> Start frequency, stop frequency, and sweep duration. Why: An LFM chirp is specified by where the sweep starts, where it stops, and how long it takes, with frequency rising linearly between the endpoints.</li>
+  <li><strong>B.</strong> It mixes I and Q against a local oscillator and its 90-degree-shifted copy, then sums them into one RF output. Why: The modulator upconverts baseband I and Q by mixing each against the LO (one path shifted 90 degrees) and summing the results into a single modulated carrier.</li>
+  <li><strong>B.</strong> Gain, delay, or phase mismatch between the I and Q channels in the analog path. Why: Channel-to-channel imbalance in gain, delay, or phase distorts an otherwise perfect constellation, so calibrate channel matching before suspecting the samples.</li>
+  <li><strong>C.</strong> It makes a one-off field failure into a repeatable test case you can run against firmware revision after revision. Why: Captured I and Q samples can be replayed exactly, turning a single real-world event into a reproducible bench test, which is the quiet superpower of memory-based generation.</li>
+</ol>
+
+<h3>Chapter 7: Triggering, Synchronization, and Multi-Channel</h3>
+<ol>
+  <li><strong>B.</strong> It is a blanking interval after a valid trigger during which further triggers are ignored, preventing double-triggering on a noisy or bouncing edge. Why: Holdoff blanks out additional triggers for a set interval after a valid one, so ringing or a bouncing edge cannot fire the instrument twice. Too short risks double-triggering; too long risks missing real events.</li>
+  <li><strong>C.</strong> Triggered (single-shot) mode. Why: Single-shot mode arms the instrument, plays the record once on the trigger event, then re-arms to wait for the next event. It is the mode for one-time responses and single pulses.</li>
+  <li><strong>B.</strong> Provide a clean digital edge aligned to a precise sample position, ideal for triggering a scope or gating a device under test. Why: Because the marker is tied to a defined sample index in the record, it carries the instrument's own timing precision and lands at the same point in the analog output every play, which makes it an excellent trigger or gate.</li>
+  <li><strong>B.</strong> The reference disciplines frequency so the instruments do not drift, but each instrument's clock divider can come up in a different phase, so they may sit hundreds of picoseconds or a full sample apart at start. Why: A shared reference gives frequency coherence (no long-term drift) but says nothing about which sample each instrument plays at a given instant. Sample-level alignment needs a shared clock plus a synchronization protocol that aligns the dividers and applies a common start trigger.</li>
+  <li><strong>C.</strong> Calibrating skew: output the same signal on all channels, measure the offset on a fast scope, and apply a per-channel programmable delay until they align. Why: Phase coherence gives a fixed, stable relationship; accuracy requires measuring the residual fixed skew between channels and removing it with per-channel delay. The calibration holds until a cable or temperature change forces a redo.</li>
+</ol>
+
+<h3>Chapter 8: Applications</h3>
+<ol>
+  <li><strong>B.</strong> It supplies pulse-compression range resolution, with compression gain tied to the time-bandwidth product. Why: An LFM chirp sweeps frequency across the pulse, giving pulse-compression range resolution whose gain depends on the time-bandwidth product of the pulse.</li>
+  <li><strong>B.</strong> Because a long, dense threat environment must play without an audible repetition the receiver can lock onto. Why: Deep memory buys a longer non-repeating window, so a smart receiver under test cannot lock onto the scenario's repetition period.</li>
+  <li><strong>C.</strong> Channel-to-channel timing skew. Why: A two-qubit gate depends on two pulses arriving in a precise temporal relationship, so picosecond-level channel skew limits fidelity before noise does.</li>
+  <li><strong>B.</strong> It reveals how the receiver copes with known, deliberate impairments like IQ imbalance, phase noise, or fading. Why: Adding known impairments shows how a receiver behaves under realistic stress, exposing weaknesses a clean compliance test would never reveal.</li>
+  <li><strong>C.</strong> Waveform settling and switching time between test segments, multiplied by part volume. Why: In ATE every millisecond of test time is multiplied across millions of parts, so fast, repeatable waveform switching drives the real cost.</li>
+</ol>
+
+<h3>Chapter 9: Selecting an Arbitrary Waveform Generator</h3>
+<ol>
+  <li><strong>B.</strong> A description of the worst-case signal you must produce. Why: Start by describing the hardest signal you will ever ask the instrument to produce, then derive specifications from it. The signal is your real spec sheet.</li>
+  <li><strong>C.</strong> 1.25 to 2.5 GS/s, for headroom above Nyquist. Why: Nyquist sets a floor of just above 1 GS/s, but 2.5x to 5x the highest frequency gives the reconstruction filter room to work and the output stays clean.</li>
+  <li><strong>B.</strong> Analog bandwidth. Why: Rounded edges and high-frequency amplitude sag point to insufficient analog bandwidth. Aliasing (spurs that move with frequency) is the sample-rate failure mode instead.</li>
+  <li><strong>B.</strong> When you must reproduce a small signal cleanly beside a much larger one. Why: More bits lower the quantization noise floor, which improves spurious-free dynamic range and lets a low-level signal sit cleanly next to a full-scale one. Edge-and-bandwidth problems favor speed over bits instead.</li>
+  <li><strong>B.</strong> Most real scenarios repeat, so storing unique segments with loop counts uses far less memory than a flat waveform. Why: A scenario with structure stores one copy of each unique segment plus a step list with loop counts and jumps, so a burst repeated a thousand times costs one copy plus a counter, not a thousand copies.</li>
+</ol>
+
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-B-quiz-questions.html">&larr; Appendix B: Quiz Questions</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-D-contributors.html">Appendix D: Contributors &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

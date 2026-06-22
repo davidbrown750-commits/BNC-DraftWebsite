@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>10-the-future</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="the-future-of-quantum-computing">10. The Future of Quantum Computing</h1>
+<p>Forecasting any frontier technology is a humbling exercise, and quantum computing is no exception. The first edition of this book, written in 2021, looked ahead to a field still defined by promises and proof-of-concept demonstrations. Five years later much of that promise has hardened into roadmaps, funded national programs, and chips that correct their own errors. This chapter updates the outlook. It surveys the expected impact of quantum technology, the trends shaping the industry through 2026, the race to build a quantum-qualified workforce, the tension between global collaboration and national security, and the applications most likely to matter first.</p>
+<p>A useful frame for the whole chapter: quantum computing is no longer a question of whether the physics works. It is a question of engineering, economics, and timing. The science is largely settled. The hard problems now are scaling qubits, suppressing errors, training people, and identifying the commercial problems where a quantum machine actually pays for itself.</p>
+
+<h2 id="the-expected-impact-of-quantum-technology"><span class="sec-num">10.1</span> The expected impact of quantum technology</h2>
+<p>If there was ever doubt about the strategic weight governments place on quantum technology, the funding tells the story. In 2018 the United States passed the bipartisan National Quantum Initiative Act, which committed roughly $1.2 billion over five years, established the National Quantum Coordination Office (NQCO) inside the Office of Science and Technology Policy, created a series of Quantum Information Science Research Centers at the Department of Energy national labs, and stood up the Quantum Economic Development Consortium (QED-C) to push commercialization. That act framed quantum as a matter of national competitiveness, not just scientific curiosity.</p>
+<figure>
+<img src="../figures/img-p056-01-x208.jpeg" alt="Seal of the National Quantum Coordination Office" /><figcaption><span class="fig-num">Figure 10.1</span> The seal of the National Quantum Coordination Office.</figcaption>
+</figure>
+<p>The momentum has only accelerated. By 2025, total announced public investment in quantum technology worldwide had passed $40 billion, with the Asia-Pacific region accounting for close to half of it [1]. China established a national venture fund reported at roughly 1 trillion yuan for frontier technologies including quantum [1]. Japan committed several billion dollars, Europe advanced its Quantum Flagship and a cross-border &quot;Quantum Valley&quot; strategy, and in the United States the proposed DOE Quantum Leadership Act of 2025 sought $2.5 billion across fiscal years 2026 through 2030 [1]. Verify before publication. The exact figures move quarter to quarter, but the direction is unmistakable: quantum is being treated as critical infrastructure.</p>
+<figure>
+<img src="../figures/img-p056-01-x209.jpeg" alt="Hands typing on a laptop with green code on screen" /><figcaption><span class="fig-num">Figure 10.2</span> A user at a laptop with code-style green text on the screen, evoking the cybersecurity stakes that drive much quantum policy.</figcaption>
+</figure>
+<p>Why this intensity of spending? Part of the answer is defensive. A sufficiently large, error-corrected quantum computer could break the public-key cryptography (RSA and elliptic-curve schemes) that secures most of today's internet, banking, and government communications. That threat reshaped policy. Congress directed the Pentagon to adopt quantum-resilient practices through successive Defense Authorization Acts, and the National Institute of Standards and Technology (NIST) ran a multi-year competition to standardize post-quantum cryptography (PQC). In August 2024 NIST finalized its first three PQC standards: FIPS 203 (ML-KEM, for key establishment), FIPS 204 (ML-DSA, for digital signatures), and FIPS 205 (SLH-DSA, a hash-based signature scheme) [2]. Verify before publication. Those standards turned the abstract &quot;someday&quot; threat into a concrete migration project that organizations are starting now.</p>
+<p>The other half of the answer is offensive in the commercial sense: whoever masters quantum simulation, optimization, and machine learning may gain durable advantages in pharmaceuticals, materials, energy, logistics, and finance. The Quantum Frontiers Report, published by the NQCO in 2020, laid out community input on the national strategy and made the case that the payoff justifies the investment. Half a decade of follow-through suggests policymakers agreed.</p>
+
+<h2 id="quantum-trends"><span class="sec-num">10.2</span> Quantum trends</h2>
+<p>When the first edition was written, industry analysts were publishing lists like &quot;Top 5 Quantum Trends to Watch,&quot; touching on competition, investment, talent, and the role of quantum-enhanced security in emerging 5G networks. Several of those predictions aged well. Others have been overtaken by events. Here is the picture in 2026.</p>
+<figure>
+<img src="../figures/img-p057-01-x213.jpeg" alt="5G ecosystem infographic showing speed, signal, big data, internet of things" /><figcaption><span class="fig-num">Figure 10.3</span> The 5G ecosystem, from speed and signal to big data and the internet of things, the connected infrastructure whose security helped drive early interest in quantum key distribution.</figcaption>
+</figure>
+<p><strong>Security and the quantum-safe transition.</strong> Quantum key distribution (QKD) uses the laws of physics, rather than mathematical hardness, to let two parties share a secret key. Any eavesdropper disturbs the quantum states and reveals their presence. Verizon ran an early QKD trial on a U.S. network, and interest in QKD tracked the rollout of 5G, where stronger networks created stronger incentives to protect them. The dominant security trend, though, has shifted from QKD hardware to software-based post-quantum cryptography. PQC runs on ordinary computers and is far cheaper to deploy at scale, so with the NIST standards finalized, the practical conversation in most enterprises is now &quot;when do we migrate to PQC,&quot; not &quot;when do we install QKD.&quot; A related driver is the &quot;harvest now, decrypt later&quot; risk: adversaries can record encrypted traffic today and decrypt it once a capable quantum computer exists, which makes long-lived secrets worth protecting immediately.</p>
+<p><strong>Quantum random number generation.</strong> Qubits are genuinely better at randomness than any classical algorithm, and good randomness is the foundation of strong encryption. Quantum random number generators draw on the inherent unpredictability of quantum measurement, producing keys that are closer to truly unhackable than software pseudo-randomness can be. This is one of the earliest quantum technologies to reach real products.</p>
+<p><strong>Investment and partnerships.</strong> The early prediction that consolidation would not yet be a major factor held for several years, but that is changing. From 2012 to 2019, private investors funded at least 52 quantum-technology companies globally, many spun out of universities, with venture capital providing the bulk of the money. By the mid-2020s the pattern matured into a mix of large public listings, big-technology bets, and the beginnings of consolidation as weaker players were acquired or wound down. The enduring trend is partnership. Small specialist firms that make a single critical component team up with large integrators, universities, and national labs to move faster and reach specific applications. As QED-C leadership has noted, a large majority of its member companies have fewer than 100 employees and many have ten or fewer, yet these small companies play an outsized role by innovating and selling highly specialized parts.</p>
+<p><strong>Hardware breakthroughs.</strong> The single biggest change since 2021 is that error correction stopped being theoretical. In December 2024 Google introduced its Willow chip, a 105-qubit superconducting processor that demonstrated below-threshold error correction, meaning that adding more physical qubits to a logical qubit actually reduced the error rate rather than increasing it [3]. Verify before publication. That crossing of the error-correction threshold is the milestone the field had been chasing for two decades. IBM, IonQ, Quantinuum, and others published detailed roadmaps toward fault-tolerant machines, with IBM publicly targeting fault tolerance near the end of the decade [3]. Verify before publication. The overhead remains daunting: today's schemes can require hundreds of physical qubits to build one reliable logical qubit. But the trajectory finally points the right way.</p>
+<blockquote>
+<p><strong>Going Deeper - what &quot;below threshold&quot; means</strong></p>
+<p>Quantum error correction spreads the information of one reliable &quot;logical&quot; qubit across many imperfect physical qubits. There is a critical error rate called the threshold. Above it, adding more physical qubits introduces more noise than it removes and the logical qubit gets worse. Below it, each added layer of physical qubits suppresses errors further, so reliability improves exponentially as the system scales. Demonstrating below-threshold operation is the proof that scaling up is worth the cost, which is why the 2024 results drew so much attention.</p>
+</blockquote>
+
+<h2 id="a-quantum-qualified-workforce"><span class="sec-num">10.3</span> A quantum-qualified workforce</h2>
+<p>There is an enormous amount of work to do and far too few qualified people to do it. Industry is pulling talent away from academia, which deepens the personnel shortage inside the very university programs meant to train the next generation. The gaps span every layer of the stack: software, algorithms, and especially hardware, where the supply of trained quantum and cryogenic engineers is thinnest.</p>
+<figure>
+<img src="../figures/img-p059-01-x219.jpeg" alt="Researcher in protective gear looking through a microscope" /><figcaption><span class="fig-num">Figure 10.4</span> A researcher at a microscope, the kind of specialized laboratory expertise the quantum sector is competing to attract.</figcaption>
+</figure>
+<p>The numbers sharpened this picture over the past five years. Analyses through the mid-2020s describe roughly a three-to-one gap between open quantum positions and qualified candidates, meaning only about one suitable applicant exists for every three roles [4]. Verify before publication. Job listings requiring quantum skills rose sharply, with some trackers reporting growth on the order of 180 percent between 2020 and 2024, while the total global quantum workforce is estimated in the low tens of thousands [4]. Verify before publication. A portion of the U.S. National Quantum Initiative budget is dedicated to training, but building people takes longer than building chips.</p>
+<p>One encouraging correction to a common myth: not every quantum job needs a PhD. Studies of the industry found that a large share of roles, by some counts roughly two-thirds, require only a bachelor's degree or less, covering positions in engineering, software, manufacturing, and operations [4]. Verify before publication. That widens the recruiting pool considerably and reframes quantum as a skilled-trades and engineering opportunity, not only an academic one.</p>
+<p>QED-C has worked with its member universities to translate industry demand into curriculum, asking practical questions: Should the curriculum change? What courses should be added? What specific skills are needed? It also maintains a public listing of quantum jobs that has expanded as the industry has grown. Europe's Digital Europe program added a Quantum Digital Skills Academy, and similar national upskilling efforts have appeared elsewhere. The consensus across these efforts is that workforce development, not just qubit count, is now a gating factor for the whole field.</p>
+<div class="callout">
+<p><strong>BNC in Practice - building the people behind the instruments</strong></p>
+<p>The workforce squeeze reaches well beyond the quantum companies themselves. Every quantum lab depends on engineers fluent in precision timing, low-noise signal generation, and RF and microwave control, the same disciplines that underpin Berkeley Nucleonics test and measurement instrumentation. As universities expand quantum curricula, hands-on experience with signal generators, pulse and delay generators, and timing systems becomes part of how the next generation learns the craft. Specific BNC product fit should be confirmed against the current datasheet before any application claim.</p>
+</div>
+
+<h2 id="collaboration-vs-nationalism"><span class="sec-num">10.4</span> Collaboration vs. nationalism</h2>
+<p>Quantum technology sits on a fault line between the scientific instinct to collaborate openly and the security instinct to protect national advantage. Both pull hard.</p>
+<p>The collaborative case is strong. Research communities have always advanced fastest when ideas and people move freely across borders, and no single country holds every piece of the quantum puzzle. Allies including Britain, Australia, Canada, Japan, South Korea, India, and Israel each contribute distinct strengths in hardware, software, materials, and talent. Many in the quantum community worry that walling off research between companies and academia would slow everyone down.</p>
+<figure>
+<img src="../figures/img-p060-01-x223.jpeg" alt="Executive in a suit signing a document with a pen" /><figcaption><span class="fig-num">Figure 10.5</span> An executive signing a document, a stand-in for the agreements, treaties, and export-control decisions that govern who can collaborate with whom.</figcaption>
+</figure>
+<p>The nationalist case is equally real. Patent activity has long signaled where the competitive pressure is building. Between 2012 and 2017, more than 43 percent of patented quantum-technology innovations came from Chinese firms and universities, according to the European Commission's Joint Research Centre, and in 2018 China filed 492 quantum-technology patents to 248 in the United States. China has been especially aggressive in quantum communications. Governments and corporations counter that national security cannot be compromised in the name of openness, which undercuts collaborative efforts. The U.S. Department of Energy, for example, maintains an internal list of sensitive technologies it could restrict its researchers from sharing with counterparts in China, Russia, Iran, and North Korea.</p>
+<p>The practical resolution that has emerged is selective collaboration: deep cooperation among trusted allies, paired with export controls and research-security rules aimed at strategic rivals. It is an imperfect compromise that satisfies neither pure openness nor pure protectionism. Quantum computing will not take over the world overnight, but it will have a major global impact, and exactly how nations choose to share or guard it will shape who benefits.</p>
+
+<h2 id="most-likely-applications"><span class="sec-num">10.5</span> Most likely applications</h2>
+<p>Classical computers are not going away. The most important thing to understand about quantum machines is that they have a much narrower focus than the general-purpose computers they sit alongside. They shine where optimization, simulation, or sampling over an enormous space of possibilities is the bottleneck, and where the best answer is not obvious. A realistic near-term workflow is hybrid: a quantum processor narrows the field of candidate solutions, then classical computers finish the job with straightforward calculation.</p>
+<figure>
+<img src="../figures/img-p061-01-x226.jpeg" alt="Hands placing a vintage desktop computer on a desk" /><figcaption><span class="fig-num">Figure 10.6</span> A modern quantum processor will not replace the classical computer, it will work alongside it, much as new machines have always joined rather than erased the old.</figcaption>
+</figure>
+<p>Within that frame, certain sectors stand to benefit first. Optimization problems in manufacturing, transportation, logistics, and finance are natural early targets: airline scheduling, fleet delivery routing, portfolio and risk modeling, and supply-chain planning. Simulation of molecules and materials is the other flagship use case, with direct relevance to drug development, catalysts, batteries, and new materials, because a quantum computer naturally represents quantum systems that overwhelm classical simulation. Security cuts both ways: some organizations will adopt quantum to gain an edge, while others, especially those holding long-lived data such as aerospace, pharmaceutical, and socioeconomic records, must invest in quantum-safe cryptography to defend against future attacks.</p>
+<figure>
+<img src="../figures/img-p061-01-x227.png" alt="Three-column list of quantum application areas" /><figcaption><span class="fig-num">Figure 10.7</span> A representative map of the application space, spanning cryptography and drug development to financial models, molecular modeling, and the quantum internet.</figcaption>
+</figure>
+<p>A note of realism closes the chapter. Quantum computing is still early, and there is a long road from proof of concept to routine practical use. Commercially available systems exist, but they are not yet solving large numbers of specific real-world problems at scale. Two things must happen together. The technical community must demonstrate clear advantage on problems that matter, and potential customers must gain confidence in their choice of platform, which in turn requires shared specifications and standards to measure against. The list of industries that will eventually adopt quantum to optimize part of their business is long. The companies that move early, whether to harness quantum or to defend against it, will be the ones positioned to lead when the technology matures.</p>
+
+<h2 id="chapter-10-quiz">Chapter 10 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-10-the-future.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>The 2018 U.S. National Quantum Initiative Act created several institutions. Name two of them.</li>
+<li>In August 2024, NIST finalized its first post-quantum cryptography standards. What threat are these standards designed to defend against?</li>
+<li>Explain the difference between quantum key distribution (QKD) and post-quantum cryptography (PQC), and why PQC has become the more widely pursued near-term option.</li>
+<li>What made Google's 2024 Willow chip a significant milestone for the field?</li>
+<li>Quantum computers are described as having a &quot;narrower focus&quot; than classical computers. Describe the type of problem they are best suited to, and what a realistic hybrid workflow looks like.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Any two of the following: the National Quantum Coordination Office (NQCO) within the Office of Science and Technology Policy; the Department of Energy Quantum Information Science Research Centers; and the Quantum Economic Development Consortium (QED-C). The act also committed roughly $1.2 billion over five years.</li>
+<li>They are designed to defend against the threat that a sufficiently powerful, error-corrected quantum computer could break the public-key cryptography (such as RSA and elliptic-curve schemes) that secures most current internet, banking, and government communications. A related concern is &quot;harvest now, decrypt later,&quot; where encrypted data recorded today is decrypted once a capable quantum computer exists.</li>
+<li>QKD uses the laws of quantum physics to share a secret key, and any eavesdropper disturbs the quantum states and is detected, but it generally requires specialized hardware and infrastructure. PQC is a set of mathematical algorithms that resist quantum attack and run on ordinary computers, making it far cheaper and easier to deploy at scale. Because the NIST standards are finalized and PQC needs no new hardware, it has become the dominant near-term path for most organizations.</li>
+<li>The Willow chip (a 105-qubit superconducting processor) demonstrated below-threshold quantum error correction, meaning that adding more physical qubits to a logical qubit reduced the overall error rate rather than increasing it. Crossing that error-correction threshold was a milestone the field had pursued for roughly two decades, because it shows that scaling up can make a logical qubit more reliable, not less.</li>
+<li>Quantum computers are best suited to optimization, simulation, and sampling problems over very large possibility spaces where the best answer is not obvious, such as logistics, finance, and the simulation of molecules and materials. A realistic hybrid workflow uses the quantum processor to narrow the field of candidate solutions, then hands off to classical computers to finish the calculation, with the two working together rather than the quantum machine replacing the classical one.</li>
+</ol>
+
+<h2 id="references">References</h2>
+<p>[1] SpinQ, &quot;Quantum Computing Funding: Explosive Growth and Strategic Investment in 2025&quot;; ECIPE, &quot;Benchmarking Quantum Technology Performance&quot;; Qureca, &quot;Quantum Initiatives Worldwide.&quot; Global public investment figures, the China national venture fund, Japan and Europe commitments, and the proposed U.S. DOE Quantum Leadership Act of 2025. Verify before publication.</p>
+<p>[2] National Institute of Standards and Technology, &quot;NIST Releases First 3 Finalized Post-Quantum Encryption Standards,&quot; August 2024 (FIPS 203 ML-KEM, FIPS 204 ML-DSA, FIPS 205 SLH-DSA). Verify before publication.</p>
+<p>[3] Google, &quot;Meet Willow, our state-of-the-art quantum chip,&quot; December 2024; HPCwire, &quot;Google Debuts New Quantum Chip, Error Correction Breakthrough, and Roadmap Details&quot;; IBM quantum roadmap and fault-tolerance target. Verify before publication.</p>
+<p>[4] McKinsey and Chicago Quantum Exchange workforce analyses; IQM &quot;State of Quantum&quot; report; World Economic Forum quantum upskilling coverage. Three-to-one talent gap, listing growth, workforce size, and degree-requirement findings. Verify before publication.</p>
+<p>[5] White House National Quantum Coordination Office, &quot;Quantum Frontiers Report on Community Input to the Nation's Strategy for Quantum Information Science,&quot; October 2020. Verify before publication.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="09-algorithms-error-correction.html">&larr; 9. Algorithms &amp; QEC</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="11-accessing-quantum.html">11. Accessing QC &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

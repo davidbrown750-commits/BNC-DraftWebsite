@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>08-tracking-generators-filters-cables</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="chapter-8---tracking-generators-filters-and-cables">8. Tracking Generators, Filters, and Cables</h1>
+<p>The previous chapters covered the instruments that read RF and the math behind what they show you. This chapter puts those instruments to work on a class of measurements you will perform constantly at the bench: scalar measurements of how a component changes a signal as it passes through. The question is simple to state. You put a known signal in, you measure what comes out, and you record the difference across frequency. The answer tells you whether a filter does its job, whether a cable has gone bad, and how much loss a connector adds to your path.</p>
+<p>The key tool here is the tracking generator, a feature built into many spectrum analyzers that turns a passive receiver into a stimulus-and-response test set. With a tracking generator you can sweep a filter and watch its shape appear on screen. You can measure the insertion loss of a cable across a wide band. You can catch a worn connector before it corrupts a more important measurement somewhere downstream. None of this requires a vector network analyzer, and for scalar work the spectrum analyzer plus tracking generator is often faster to set up and easier to read.</p>
+<p>This chapter walks through using a tracking generator, testing filters, and measuring cable and connector loss, then closes with how insertion loss and return loss show up in real bench work.</p>
+<h2 id="using-a-tracking-generator">8.1 Using a Tracking Generator</h2>
+<p>Now that we have a working understanding of the instruments used to measure RF, let us put one of them to work characterizing common components. Most component-level tests share a requirement: you need an RF source that delivers a signal of known amplitude and frequency to the device under test (DUT). When you test a filter, for example, you want to present a series of known amplitudes at specific frequencies so you can see where the filter passes signal and where it rejects it.</p>
+<p>You could solve this with a separate signal generator and synchronize its output to the sweep of the spectrum analyzer. That works, but it is fussy. The two instruments have to agree on frequency at every step, and any drift between them shows up as error in your trace. Many spectrum analyzers offer a simpler path: a built-in tracking generator that handles the synchronization for you.</p>
+<p><strong>What the tracking generator does.</strong> A tracking generator is an extension of the analyzer's own sweep circuit. It is a programmable RF source whose output frequency is locked to the sweep steps of the spectrum analyzer. Because the source and the receiver step through frequency together, the signal leaving the generator is always at the exact frequency the analyzer is tuned to receive. If you set the analyzer to sweep from 1 MHz to 100 MHz, the tracking generator outputs a continuous sine wave that sweeps from 1 MHz to 100 MHz in full synchronization with the measurement.</p>
+<p>That lockstep is the whole trick. Send the tracking generator output through a DUT and back into the analyzer's RF input, and the trace on screen becomes the frequency response of whatever sits between the two ports. A flat trace means the DUT passes every frequency equally. A dip means the DUT attenuates that frequency. A peak means it favors it. You are no longer looking at the spectrum of an unknown signal. You are looking at the transfer function of a known one.</p>
+<figure>
+<img src="../figures/fig-p064-01.png" alt="Spectrum analyzer with tracking generator sweeping a DUT" /><figcaption><span class="fig-num">Figure 8.1</span> A spectrum analyzer with its tracking generator sweeping a device under test. The generator output feeds the DUT, the DUT output returns to the RF input, and the displayed trace becomes the frequency response of the path between them.</figcaption>
+</figure>
+<p>A few practical notes set you up for clean results. Match the generator output amplitude to the dynamic range of your measurement: high enough to sit well above the noise floor, low enough that you do not compress the analyzer's front end or overdrive the DUT. Keep the cabling short and consistent, because every cable and adapter in the path adds loss that you will either subtract out by normalization or carry as error. And remember that a tracking generator gives you scalar results only. It measures magnitude versus frequency. It does not measure phase, so it cannot give you the full complex picture a vector network analyzer would. For the great majority of filter and cable work, magnitude is exactly what you need.</p>
+<h2 id="testing-filters">8.2 Testing Filters</h2>
+<p>Filters are among the most common components in any RF design. Their job is to remove unwanted frequencies and pass wanted ones, and the four basic types (low-pass, high-pass, band-pass, and band-stop) each shape the spectrum in a different way. For a refresher on filter types and what they do, see the discussion in Chapter 2. Whatever the type, testing a filter answers two questions: how well does it reject the frequencies it is supposed to block, and how cleanly does it pass the frequencies it is supposed to keep.</p>
+<p>A spectrum analyzer with a tracking generator gives you both answers in a single sweep. Here is a typical procedure.</p>
+<p><strong>Required hardware:</strong> filter under test; spectrum analyzer with tracking generator; cabling and adapters to connect to the filter.</p>
+<p><strong>Step 1: Normalize the trace (optional but recommended).</strong> Many elements in an RF signal path have nonlinear or frequency-dependent behavior of their own. Cables roll off at high frequency. Adapters add a fraction of a dB. Connections vary slightly each time you make them. Normalization removes these contributions mathematically so the trace reflects the filter and not the fixture around it. Normalization is the process of subtracting the response of your cabling, adapters, and connections from the measurement, leaving the response of the DUT alone.</p>
+<ol type="1">
+<li>Connect the tracking generator output to the RF input using the same cabling and adapters you will use to test the device. This is the important part. Any element present during normalization, including every adapter, must also be present during the device measurement. If you change the signal path between the two steps, the correction no longer matches the path, and the accuracy you gained is lost.</li>
+<li>Enable the tracking generator.</li>
+<li>Store the reference trace. The analyzer captures the response of the through path with no DUT in it.</li>
+<li>Enable normalization. The displayed trace now subtracts the stored reference, so it represents the filter alone once you insert it, with cable and adapter losses removed.</li>
+</ol>
+<blockquote>
+<p><strong>Going Deeper - Clean connectors, repeatable results</strong></p>
+<p>Clean the mating surfaces of the adapters and the input connector with a lint-free cloth before you connect them. Clean connectors protect the threads from damage and make every measurement repeatable. A speck of grit or a smear of oil on a mating surface changes contact resistance and can add a fraction of a dB that drifts from sweep to sweep, which is exactly the kind of small, wandering error that normalization cannot fix.</p>
+</blockquote>
+<p><strong>Step 2: Measure the filter.</strong> Connect the tracking generator output to the filter input using the appropriate cabling and connectors, then connect the filter output to the analyzer's RF input. Configure the start and stop frequencies for the span of interest, setting the span wide enough to see the passband and a useful stretch of the stopband on either side. Set the tracking generator amplitude to a level that sits comfortably above the noise floor. If your instrument has a preamplifier, you can enable it to lower the displayed noise floor and reveal more of the filter's rejection depth. Enable the tracking generator output, and the filter's response appears on the trace. In a band-pass filter you will see a raised region (the passband) with the response falling away on both sides.</p>
+<figure>
+<img src="../figures/fig-p066-01.png" alt="Band-pass filter trace before scaling" /><figcaption><span class="fig-num">Figure 8.2</span> A band-pass filter trace as it first appears, before scaling. The raised central region is the passband. The response falls away on either side into the stopband.</figcaption>
+</figure>
+<p><strong>Step 3: Scale and read the trace.</strong> The first view is rarely the best view. Adjust the amplitude reference level and the start and stop frequencies to zoom in on the region you care about. Many analyzers include an auto-scale feature that configures the reference level and span automatically to fit the active part of the trace into the display. It is a fast way to get from a raw sweep to a readable one.</p>
+<figure>
+<img src="../figures/fig-p067-01.png" alt="Band-pass filter trace after auto scale" /><figcaption><span class="fig-num">Figure 8.3</span> The same band-pass filter after auto scale. The instrument has adjusted the reference level and span so the passband and skirts fill the screen and read cleanly.</figcaption>
+</figure>
+<p>With the trace scaled, markers turn the picture into numbers. Markers are cursors you place on the trace to read the exact frequency and amplitude at a point. Most analyzers also offer marker functions that measure bandwidth at a chosen level below the peak, which is how you read a filter's 3 dB bandwidth directly.</p>
+<p>The 3 dB bandwidth is the standard figure of merit for a band-pass filter. It is the width of the passband measured between the two points where the response has fallen 3 dB below its peak, the points where the filter passes half of its peak power. A narrow 3 dB bandwidth means a selective filter. A wide one means a filter that passes a broad range. Place one marker at the peak, set the bandwidth function to 3 dB, and the analyzer reports the width and the two edge frequencies for you.</p>
+<figure>
+<img src="../figures/fig-p067-02.png" alt="3 dB bandwidth measurement of a band-pass filter" /><figcaption><span class="fig-num">Figure 8.4</span> A 3 dB bandwidth measurement on a band-pass filter. The markers sit at the two points 3 dB below the passband peak, and the analyzer reports the bandwidth between them.</figcaption>
+</figure>
+<p>The same setup measures more than just bandwidth. The depth of the stopband tells you the filter's rejection. The flatness of the passband tells you its ripple. The steepness of the skirts tells you how sharply it transitions from pass to reject. All of it reads off a single normalized sweep.</p>
+<h2 id="measuring-cable-and-connector-loss">8.3 Measuring Cable and Connector Loss</h2>
+<p>Cables and connectors are the quiet error sources in every RF bench. They sit between your instrument and your DUT, and they have a real effect on the accuracy and validity of every measurement that passes through them. Worse, they age. Cables flex and crack, center conductors work loose, and connector surfaces oxidize and wear. That wear shows up as rising attenuation, often concentrated in particular frequency ranges, and it can corrupt a measurement long before the cable looks visibly bad. Measuring cable and connector loss directly, on a schedule, is how you keep a bad cable from quietly poisoning your results.</p>
+<p>The same tracking-generator technique used for filters measures cable loss across frequency. The setup adds a reference assembly so you can normalize out the adapters and read the cable on its own.</p>
+<p><strong>Required hardware:</strong> cable under test; two N-type to BNC adapters (Figure 8.5); a short reference cable with terminations that match your adapters and the cable under test; an adapter to join the reference cable to the cable under test, a BNC barrel connector in this procedure (Figure 8.6); and a spectrum analyzer with a tracking generator (TG).</p>
+<p>Select adapters that convert from N-type, the input and output connector found on most spectrum analyzers, to the connector type of the cable you are testing. Connector quality matters more than it looks. Higher-grade connectors with silver plating and beryllium-copper pins last longer and give more repeatable contact, which directly improves the consistency of your measurements over many connect-and-disconnect cycles. As an alternative to a single cable-to-cable adapter, you can build a short reference assembly from two adapters and a short cable, normalize the display against that assembly first, then measure the cable under test against the normalized baseline.</p>
+<figure>
+<img src="../figures/fig-p068-01.png" alt="N-type to BNC adapter" /><figcaption><span class="fig-num">Figure 8.5</span> An N-type to BNC adapter. Adapters like this convert the N-type ports common on spectrum analyzers to the connector type of the cable under test.</figcaption>
+</figure>
+<figure>
+<img src="../figures/fig-p069-01.png" alt="BNC barrel adapter" /><figcaption><span class="fig-num">Figure 8.6</span> A BNC barrel adapter, used here to join the reference cable to the cable under test so the two can be measured in the same path.</figcaption>
+</figure>
+<p><strong>Test steps.</strong> Attach the adapters to the tracking generator output and the RF input, cleaning the mating surfaces with a lint-free cloth first to prevent damage and ensure repeatability. Then connect the reference cable between the TG output and the RF input on the analyzer.</p>
+<figure>
+<img src="../figures/fig-p069-02.png" alt="Measuring the reference cable" /><figcaption><span class="fig-num">Figure 8.7</span> Measuring the reference cable. The short reference cable bridges the tracking generator output and the analyzer RF input through the adapters, establishing the baseline path.</figcaption>
+</figure>
+<p>Adjust the span of the scan to the frequency range of interest. Adjust the tracking generator output amplitude and the analyzer's display so the entire trace is visible on screen. Enable the tracking generator output. The trace shows the loss of the reference path, adapters and all, across frequency.</p>
+<figure>
+<img src="../figures/fig-p070-01.png" alt="Reference cable insertion loss before normalization" /><figcaption><span class="fig-num">Figure 8.8</span> Reference cable insertion loss before normalization. The trace includes the loss of the reference cable and both adapters. This is the baseline the instrument will subtract.</figcaption>
+</figure>
+<p>Normalize the reference insertion loss. The analyzer stores this trace automatically and subtracts it from every subsequent measurement, which flattens the reference path to a near-zero line and leaves only what you add to the path afterward.</p>
+<figure>
+<img src="../figures/fig-p070-02.png" alt="Reference cable insertion loss after normalization" /><figcaption><span class="fig-num">Figure 8.9</span> Reference cable insertion loss after normalization. With the baseline subtracted, the reference path reads close to a flat zero-dB line, ready for the cable under test.</figcaption>
+</figure>
+<p>Disconnect the reference cable from the RF input. Insert the cable-to-cable adapter (the BNC barrel, or whatever joins your two cable types) and connect the cable under test in place of the reference cable. Connect the cable under test to the RF input and enable the tracking generator.</p>
+<figure>
+<img src="../figures/fig-p071-01.png" alt="Cable under test connected" /><figcaption><span class="fig-num">Figure 8.10</span> The cable under test connected in place of the reference cable, joined through the barrel adapter. The displayed loss now belongs to the cable under test plus the small residual error of the joining adapter.</figcaption>
+</figure>
+<p>The screen now shows the loss of the cable under test plus the small added error of the cable-to-cable adapter. Because you normalized out the reference path, the bulk of what you see belongs to the cable itself. Zoom in to read the loss at the frequencies that matter for your application.</p>
+<figure>
+<img src="../figures/fig-p071-02.png" alt="Zoomed view of cable under test loss versus frequency" /><figcaption><span class="fig-num">Figure 8.11</span> A zoomed view of cable-under-test loss versus frequency. Loss rises with frequency, the signature of conductor and dielectric losses in coaxial cable, and any sharp local features point to a connector or cable fault.</figcaption>
+</figure>
+<p>Read the trace with an eye for two things. First, the overall slope. Coaxial cable loss rises with frequency because conductor and dielectric losses both grow with frequency, so a healthy cable shows a smooth upward slope across the band. Second, local features. A sudden jump, a ripple, or a notch that should not be there usually points to a damaged connector, a loose center pin, or a kink in the cable. A cable that has aged out of spec often shows extra loss bunched in a particular band rather than a uniform rise. When a measured loss exceeds the cable manufacturer's published figure for that length and frequency, the cable has degraded and should be replaced before it skews more important work.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Keep a known-good reference set</strong></p>
+<p>The cleanest cable and connector measurements come from technicians who treat their reference cable and adapters as calibration-grade hardware, not as spare parts. Berkeley Nucleonics spectrum analyzers with tracking generators are built for exactly this scalar stimulus-response work, and pairing them with a labeled, protected reference set means your normalization baseline stays trustworthy from one session to the next. Verify tracking generator availability and frequency range against the current datasheet for your model.</p>
+</div>
+<h2 id="insertion-loss-and-return-loss-in-practice">8.4 Insertion Loss and Return Loss in Practice</h2>
+<p>Two terms come up constantly in scalar component work, and it is worth being precise about what each one measures.</p>
+<p>Insertion loss is the reduction in signal power caused by inserting a component into a transmission path. It is what everything in this chapter has measured so far. You compare the power that arrives at the analyzer with the component in the path against the power with the path normalized to zero, and the difference, in dB, is the insertion loss at that frequency. For a cable or a connector, lower insertion loss is better, since you want the signal to pass with as little reduction as possible. For a filter, insertion loss has two faces: you want low insertion loss in the passband and high insertion loss (deep rejection) in the stopband.</p>
+<p>Return loss describes the same interface from the other direction. It measures how much of the incident power is reflected back toward the source because of an impedance mismatch at the component. A perfect 50-ohm match reflects nothing and has infinite return loss. A poor match reflects a large fraction of the signal and has low return loss. Return loss is closely related to VSWR, the voltage standing wave ratio, and the two are different ways of expressing the same mismatch. High return loss is good, because it means little energy bounces back. As a rough field reference, a return loss of 20 dB corresponds to a VSWR of about 1.22 to 1, which is a respectable match for most general-purpose work. [1]</p>
+<p>The practical distinction is this. Insertion loss tells you how much signal gets through. Return loss tells you how much gets reflected. A cable can have low insertion loss and still have a connector with poor return loss, and that reflected energy can cause ripple and measurement error elsewhere in the system. A tracking generator measures insertion loss directly, since it reads the transmitted signal. Measuring return loss well usually calls for a directional element such as a directional coupler or a return loss bridge, or a vector network analyzer, because you need to separate the reflected wave from the incident one. Many spectrum analyzer kits include a reflection bridge accessory for exactly this purpose.</p>
+<p>On the bench, the two measurements work together. Normalize your path, measure insertion loss across the band to confirm the component passes signal as it should, then check return loss at the connectors and interfaces to confirm the component is not throwing energy back into the system. A component that passes both is one you can trust in a larger measurement chain.</p>
+<h2 id="chapter-8-quiz">Chapter 8 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-08-tracking-generators-filters-cables.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>What does a tracking generator do, and why is its synchronization with the spectrum analyzer sweep important?</li>
+<li>Why must the cabling and adapters used during normalization be identical to those used during the actual measurement?</li>
+<li>Define the 3 dB bandwidth of a band-pass filter and explain what it tells you about the filter.</li>
+<li>When measuring cable loss with a tracking generator, why is a short reference cable normalized first before the cable under test is connected?</li>
+<li>Distinguish insertion loss from return loss, and explain why a tracking generator measures one directly but not the other.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>A tracking generator is a programmable RF source whose output frequency is locked to the spectrum analyzer's sweep, so the source is always at the exact frequency the analyzer is tuned to receive. That synchronization lets the displayed trace become the frequency response of whatever device sits in the path between the generator output and the analyzer input.</li>
+<li>Because normalization subtracts the stored response of the through path from the measurement. If the path changes between normalization and measurement, the correction no longer matches the actual path, and the error you tried to remove reappears, so any added or removed adapter invalidates the calibration.</li>
+<li>The 3 dB bandwidth is the width of the passband measured between the two frequencies where the response has fallen 3 dB below its peak, the half-power points. A narrow 3 dB bandwidth indicates a selective filter, and a wide one indicates a filter that passes a broad range of frequencies.</li>
+<li>Normalizing the reference cable and its adapters establishes a near-zero baseline that removes the loss of the fixture. When the cable under test is then connected in the same path, the trace shows mostly the cable's own loss rather than the loss of the adapters and reference fixture.</li>
+<li>Insertion loss is the reduction in transmitted signal power caused by inserting a component into the path, while return loss is the fraction of incident power reflected back toward the source due to impedance mismatch. A tracking generator reads the transmitted signal directly, so it measures insertion loss, but it cannot separate reflected from incident power, so measuring return loss requires a directional coupler, return loss bridge, or vector network analyzer.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] Standard return loss to VSWR relationship: 20 dB return loss corresponds to a VSWR of approximately 1.22:1. Verify the exact conversion table before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="07-noise-figure.html">&larr; 7. Noise Figure</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="09-transmitter-testing.html">9. Transmitter Testing &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

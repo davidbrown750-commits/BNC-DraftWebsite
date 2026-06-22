@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="460" fill="#ffffff"/>
+  <text x="410" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#003D6B">DAC Resolution: Code Levels and Ideal SNR</text>
+
+  <!-- Left panel: quantization staircases -->
+  <text x="40" y="62" font-size="13" font-weight="bold" fill="#2C3E50">Quantizing one sine cycle</text>
+
+  <!-- common baseline geometry -->
+  <!-- 8-bit staircase (coarse) -->
+  <g>
+    <text x="40" y="92" font-size="12" fill="#C77E00" font-weight="bold">8-bit  (256 levels)</text>
+    <rect x="40" y="100" width="320" height="70" fill="#ECEFF1" stroke="#d4d8db"/>
+    <!-- ideal sine -->
+    <path d="M40,135 C90,100 150,100 200,135 C250,170 310,170 360,135" fill="none" stroke="#2C3E50" stroke-width="1" stroke-dasharray="3,3"/>
+    <!-- coarse steps -->
+    <path d="M40,135 H80 V118 H120 V107 H160 V104 H200 V107 H240 V118 H280 V135 H320 V152 H360 V160"
+          fill="none" stroke="#0078B6" stroke-width="2"/>
+  </g>
+
+  <!-- 14-bit staircase (fine) -->
+  <g>
+    <text x="40" y="200" font-size="12" fill="#C77E00" font-weight="bold">14-bit  (16,384 levels)</text>
+    <rect x="40" y="208" width="320" height="70" fill="#ECEFF1" stroke="#d4d8db"/>
+    <path d="M40,243 C90,208 150,208 200,243 C250,278 310,278 360,243" fill="none" stroke="#2C3E50" stroke-width="1" stroke-dasharray="3,3"/>
+    <path d="M40,243 C90,209 150,209 200,243 C250,277 310,277 360,243" fill="none" stroke="#0078B6" stroke-width="2"/>
+  </g>
+
+  <!-- 16-bit staircase (very fine) -->
+  <g>
+    <text x="40" y="308" font-size="12" fill="#C77E00" font-weight="bold">16-bit  (65,536 levels)</text>
+    <rect x="40" y="316" width="320" height="70" fill="#ECEFF1" stroke="#d4d8db"/>
+    <path d="M40,351 C90,316 150,316 200,351 C250,386 310,386 360,351" fill="none" stroke="#00b4ff" stroke-width="2.5"/>
+  </g>
+
+  <text x="40" y="408" font-size="11" fill="#2C3E50" font-style="italic">Dashed gray = ideal analog sine. Step error shrinks as bits increase.</text>
+
+  <!-- Right panel: SNR vs bits bar chart -->
+  <text x="430" y="62" font-size="13" font-weight="bold" fill="#2C3E50">Ideal SNR = 6.02N + 1.76 dB</text>
+
+  <!-- axes -->
+  <line x1="470" y1="100" x2="470" y2="390" stroke="#2C3E50" stroke-width="1.5"/>
+  <line x1="470" y1="390" x2="790" y2="390" stroke="#2C3E50" stroke-width="1.5"/>
+  <text x="455" y="105" font-size="10" fill="#2C3E50" text-anchor="end">dB</text>
+
+  <!-- gridlines/labels -->
+  <line x1="470" y1="330" x2="790" y2="330" stroke="#e3e7ea"/>
+  <line x1="470" y1="270" x2="790" y2="270" stroke="#e3e7ea"/>
+  <line x1="470" y1="210" x2="790" y2="210" stroke="#e3e7ea"/>
+  <line x1="470" y1="150" x2="790" y2="150" stroke="#e3e7ea"/>
+  <text x="465" y="334" font-size="10" fill="#2C3E50" text-anchor="end">40</text>
+  <text x="465" y="274" font-size="10" fill="#2C3E50" text-anchor="end">60</text>
+  <text x="465" y="214" font-size="10" fill="#2C3E50" text-anchor="end">80</text>
+  <text x="465" y="154" font-size="10" fill="#2C3E50" text-anchor="end">100</text>
+
+  <!-- 8-bit bar: 49.9 dB -> height from 390 baseline, scale 3px/dB above 40 -->
+  <rect x="500" y="360.3" width="55" height="29.7" fill="#0078B6"/>
+  <text x="527" y="352" font-size="11" text-anchor="middle" fill="#2C3E50" font-weight="bold">49.9</text>
+  <text x="527" y="406" font-size="11" text-anchor="middle" fill="#003D6B" font-weight="bold">8-bit</text>
+
+  <!-- 12-bit: 74.0 dB -->
+  <rect x="585" y="288" width="55" height="102" fill="#0078B6"/>
+  <text x="612" y="280" font-size="11" text-anchor="middle" fill="#2C3E50" font-weight="bold">74.0</text>
+  <text x="612" y="406" font-size="11" text-anchor="middle" fill="#003D6B" font-weight="bold">12-bit</text>
+
+  <!-- 14-bit: 86.0 dB -->
+  <rect x="670" y="252" width="55" height="138" fill="#00b4ff"/>
+  <text x="697" y="244" font-size="11" text-anchor="middle" fill="#2C3E50" font-weight="bold">86.0</text>
+  <text x="697" y="406" font-size="11" text-anchor="middle" fill="#003D6B" font-weight="bold">14-bit</text>
+
+  <!-- 16-bit: 98.1 dB -->
+  <rect x="755" y="216.3" width="30" height="173.7" fill="#4B2A6B"/>
+  <text x="770" y="208" font-size="11" text-anchor="middle" fill="#2C3E50" font-weight="bold">98.1</text>
+  <text x="770" y="406" font-size="11" text-anchor="middle" fill="#003D6B" font-weight="bold">16-bit</text>
+
+  <text x="630" y="430" font-size="11" text-anchor="middle" fill="#2C3E50" font-style="italic">Each added bit buys about 6 dB of dynamic range (full-scale sine, ideal DAC).</text>
+</svg>

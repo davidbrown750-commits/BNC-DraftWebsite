@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="t d">
+  <title id="t">The overlap condition: intended, merged, swallowed</title>
+  <desc id="d">Three stacked timelines sharing a period boundary near the right. Row a, intended: two clean pulses with the second close to the boundary. Row b, merged: the two pulses fused into one wide pulse. Row c, swallowed: only the first pulse remains while the second is a faint dashed outline crossed out. A red conflict marker sits where delay plus width crosses the boundary.</desc>
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="36" y="40" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#003D6B">What happens when delay + width crosses the boundary</text>
+
+  <!-- shared period boundary -->
+  <line x1="560" y1="70" x2="560" y2="392" stroke="#003D6B" stroke-width="3"/>
+  <text x="560" y="64" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#003D6B" text-anchor="middle">period boundary</text>
+
+  <!-- conflict marker (starburst) at boundary near row a's second pulse -->
+  <g transform="translate(560,128)">
+    <g stroke="#c0392b" stroke-width="2.5">
+      <line x1="-12" y1="0" x2="12" y2="0"/>
+      <line x1="0" y1="-12" x2="0" y2="12"/>
+      <line x1="-9" y1="-9" x2="9" y2="9"/>
+      <line x1="-9" y1="9" x2="9" y2="-9"/>
+    </g>
+    <circle cx="0" cy="0" r="4" fill="#c0392b"/>
+  </g>
+
+  <!-- ===== Row a: Intended ===== -->
+  <text x="36" y="120" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#113163" font-weight="700">(a) Intended</text>
+  <line x1="120" y1="155" x2="600" y2="155" stroke="#b6c2cc" stroke-width="1.5"/>
+  <g stroke="#0655a3" stroke-width="2.5" fill="none">
+    <path d="M170 155 L170 110 L230 110 L230 155"/>
+    <path d="M470 155 L470 110 L545 110 L545 155"/>
+  </g>
+
+  <!-- ===== Row b: Merged ===== -->
+  <text x="36" y="232" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#113163" font-weight="700">(b) Merged</text>
+  <line x1="120" y1="267" x2="600" y2="267" stroke="#b6c2cc" stroke-width="1.5"/>
+  <path d="M170 267 L170 222 L545 222 L545 267" stroke="#0655a3" stroke-width="2.5" fill="#eaf4fb"/>
+  <text x="357" y="244" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#2C3E50" text-anchor="middle">two pulses fused into one</text>
+
+  <!-- ===== Row c: Swallowed ===== -->
+  <text x="36" y="344" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#113163" font-weight="700">(c) Swallowed</text>
+  <line x1="120" y1="379" x2="600" y2="379" stroke="#b6c2cc" stroke-width="1.5"/>
+  <!-- first pulse kept -->
+  <path d="M170 379 L170 334 L230 334 L230 379" stroke="#0655a3" stroke-width="2.5" fill="none"/>
+  <!-- second pulse dropped: faint dashed outline -->
+  <path d="M470 379 L470 334 L545 334 L545 379" stroke="#b6c2cc" stroke-width="2" fill="none" stroke-dasharray="5,4"/>
+  <!-- X over dropped pulse -->
+  <g stroke="#c0392b" stroke-width="2.5">
+    <line x1="475" y1="338" x2="540" y2="375"/>
+    <line x1="540" y1="338" x2="475" y2="375"/>
+  </g>
+</svg>

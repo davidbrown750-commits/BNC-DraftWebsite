@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Quiz Progress — Scintillator Book</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <style>
+    .progress-page { max-width: 940px; margin: 32px auto 80px; padding: 0 28px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin: 22px 0 10px;
+    }
+    .stat {
+      background: var(--bnc-white);
+      padding: 18px 20px;
+      border-left: 4px solid var(--bnc-deep-navy);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .stat .num {
+      font-family: Helvetica, "Arial Black", sans-serif;
+      font-size: 28pt;
+      font-weight: 900;
+      color: var(--bnc-deep-navy);
+      line-height: 1;
+      display: block;
+    }
+    .stat .label {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9.5pt;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--bnc-charcoal);
+      margin-top: 6px;
+    }
+    .stat.green   { border-left-color: var(--bnc-target-green); }
+    .stat.green .num { color: #009b54; }
+    .stat.amber   { border-left-color: var(--bnc-warm-amber); }
+    .stat.amber .num { color: var(--bnc-warm-amber); }
+    .stat.plum    { border-left-color: var(--bnc-deep-plum); }
+    .stat.plum .num  { color: var(--bnc-deep-plum); }
+    .stat.sky     { border-left-color: var(--bnc-sky-blue); }
+    .stat.sky .num   { color: var(--bnc-sky-blue); }
+
+    .empty-state {
+      background: var(--bnc-white);
+      padding: 40px 32px;
+      border-left: 4px solid var(--bnc-deep-plum);
+      text-align: center;
+    }
+    .empty-state h2 {
+      color: var(--bnc-deep-navy);
+      border-left: none;
+      margin: 0 0 12px;
+      padding: 0;
+    }
+    .empty-state p { color: var(--bnc-charcoal); margin: 6px 0; }
+
+    .ch-card {
+      background: var(--bnc-white);
+      margin: 16px 0;
+      padding: 0;
+      border-left: 4px solid var(--bnc-charcoal);
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .ch-head {
+      padding: 16px 22px;
+      background: linear-gradient(90deg, #f5f9fc 0%, var(--bnc-white) 60%);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .ch-head h3 {
+      flex: 1;
+      margin: 0;
+      font-size: 14pt;
+      color: var(--bnc-deep-navy);
+    }
+    .ch-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      color: var(--bnc-white);
+      text-transform: uppercase;
+    }
+    .pill.green  { background: var(--bnc-target-green); color: var(--bnc-deep-navy); }
+    .pill.amber  { background: var(--bnc-warm-amber); }
+    .pill.plum   { background: var(--bnc-deep-plum); }
+    .pill.gray   { background: #aab7c0; }
+
+    .ch-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: var(--bnc-white);
+    }
+    .ch-card.open .ch-body { max-height: 5000px; }
+    .ch-body-inner { padding: 4px 22px 18px; }
+
+    .q-row {
+      padding: 14px 0;
+      border-top: 1px solid #e6ecf0;
+    }
+    .q-row:first-child { border-top: none; }
+    .q-num {
+      font-family: Helvetica, "Arial Black", sans-serif;
+      font-weight: 900;
+      color: var(--bnc-sky-blue);
+      margin-right: 8px;
+    }
+    .q-q {
+      font-family: Georgia, serif;
+      font-size: 11pt;
+      color: var(--bnc-deep-navy);
+      font-weight: 600;
+      margin: 0 0 6px;
+    }
+    .q-attempt-box, .q-answer-box {
+      font-family: Georgia, serif;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      padding: 8px 12px;
+      border-radius: 3px;
+      margin: 4px 0;
+    }
+    .q-attempt-box {
+      background: #f5f9fc;
+      border-left: 3px solid var(--bnc-sky-blue);
+      color: var(--bnc-charcoal);
+    }
+    .q-attempt-box .label,
+    .q-answer-box .label {
+      display: block;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 8.5pt;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--bnc-charcoal);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .q-answer-box {
+      background: #fff8ec;
+      border-left: 3px solid var(--bnc-warm-amber);
+      color: var(--bnc-charcoal);
+    }
+    .q-answer-box .label { color: var(--bnc-warm-amber); }
+    .q-grade-badge {
+      display: inline-block;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .q-grade-badge.got-it { background: var(--bnc-target-green); color: var(--bnc-deep-navy); }
+    .q-grade-badge.close  { background: var(--bnc-warm-amber); color: var(--bnc-white); }
+    .q-grade-badge.missed { background: var(--bnc-deep-plum); color: var(--bnc-white); }
+
+    .actions-row {
+      margin: 24px 0 12px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .actions-row button, .actions-row a.btn-link {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      border: 2px solid var(--bnc-deep-navy);
+      color: var(--bnc-deep-navy);
+      background: var(--bnc-white);
+      cursor: pointer;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .actions-row button.primary,
+    .actions-row a.btn-link.primary {
+      background: var(--bnc-deep-navy);
+      color: var(--bnc-white);
+    }
+    .actions-row button.danger {
+      border-color: var(--bnc-deep-plum);
+      color: var(--bnc-deep-plum);
+    }
+    .actions-row button.danger:hover {
+      background: var(--bnc-deep-plum);
+      color: var(--bnc-white);
+    }
+    .actions-row button:hover, .actions-row a.btn-link:hover {
+      background: var(--bnc-warm-amber);
+      border-color: var(--bnc-warm-amber);
+      color: var(--bnc-white);
+    }
+    .recommend {
+      background: #f5f0fa;
+      border-left: 4px solid var(--bnc-deep-plum);
+      padding: 16px 20px;
+      margin: 20px 0;
+    }
+    .recommend h3 {
+      margin: 0 0 8px;
+      color: var(--bnc-deep-plum);
+      font-size: 13pt;
+    }
+    .recommend ul { margin: 6px 0 0; padding-left: 20px; }
+    .recommend li { margin: 4px 0; color: var(--bnc-charcoal); }
+
+    @media print {
+      .actions-row, .ch-head { cursor: default; }
+      .ch-card .ch-body { max-height: none !important; }
+      .ch-card { page-break-inside: avoid; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+  <main class="progress-page">
+    <header class="quiz-header" style="margin-bottom: 0;">
+      <p class="crumb">Reader Companion · Progress</p>
+      <h1>My Quiz Progress</h1>
+      <p class="sub">Everything you've attempted across the book, in one place. Saved to this browser only — clear it any time.</p>
+    </header>
+
+    <section id="content"></section>
+
+    <p class="footer-note" style="font-family: Helvetica, Arial, sans-serif; font-size: 9pt; color: var(--bnc-charcoal); text-align: center; margin-top: 30px; letter-spacing: 0.5px;">
+      © 2026 Berkeley Nucleonics Corporation · Progress is stored in your browser's localStorage on this device only.
+    </p>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "scintillator-quiz-progress-v1";
+    const CHAPTER_TITLES = {
+      "chapter-01": { title: "1. Why Scintillation, Why Now",                          file: "01-why-now.html",            quiz: "quiz-01-why-now.html" },
+      "chapter-02": { title: "2. Scintillation Physics: From Photon to Count",         file: "02-scintillation-physics.html", quiz: "quiz-02-scintillation-physics.html" },
+      "chapter-03": { title: "3. Properties and Use of Scintillation Materials",      file: "03-materials.html",          quiz: "quiz-03-materials.html" },
+      "chapter-04": { title: "4. Thermal Neutron Detection",                            file: "04-neutrons.html",           quiz: "quiz-04-neutrons.html" },
+      "chapter-05": { title: "5. Radiation Damage",                                     file: "05-radiation-damage.html",   quiz: "quiz-05-radiation-damage.html" },
+      "chapter-06": { title: "6. Emission Spectra and Photodetector Matching",         file: "06-emission-spectra.html",   quiz: "quiz-06-emission-spectra.html" },
+      "chapter-07": { title: "7. Temperature Influence on Scintillation Response",     file: "07-temperature.html",        quiz: "quiz-07-temperature.html" },
+      "chapter-08": { title: "8. Choosing the Scintillator for Your Application",      file: "08-selection.html",          quiz: "quiz-08-selection.html" },
+      "chapter-09": { title: "9. Scintillation Light Detection Devices",               file: "09-photodetectors.html",     quiz: "quiz-09-photodetectors.html" },
+      "chapter-10": { title: "10. Detector Nomenclature and Type Numbering",           file: "10-nomenclature.html",       quiz: "quiz-10-nomenclature.html" },
+      "chapter-11": { title: "11. Detector Configurations",                             file: "11-configurations.html",     quiz: "quiz-11-configurations.html" },
+      "chapter-12": { title: "12. Examples of Standard Detector Configurations",       file: "12-examples.html",           quiz: "quiz-12-examples.html" },
+      "chapter-13": { title: "13. Detector Electronics",                                file: "13-electronics.html",        quiz: "quiz-13-electronics.html" },
+      "chapter-14": { title: "14. Detectors for the Nuclear Renaissance",              file: "14-nuclear-renaissance.html", quiz: "quiz-14-nuclear-renaissance.html" }
+    };
+
+    function loadAll() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") } catch(e) { return {} }
+    }
+    function saveAll(d) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)) } catch(e) {}
+    }
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, c => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      ));
+    }
+    function gradeLabel(g) {
+      return g === "got-it" ? "Got it" : g === "close" ? "Got close" : g === "missed" ? "Missed" : "—";
+    }
+
+    function render() {
+      const all = loadAll();
+      const root = document.getElementById("content");
+
+      // tally
+      let totalAttempted = 0, totalRevealed = 0, totalGotIt = 0, totalClose = 0, totalMissed = 0;
+      let chaptersTouched = 0, chaptersCompleted = 0;
+      const chapterStats = {};
+
+      Object.entries(CHAPTER_TITLES).forEach(([key, meta]) => {
+        const ch = all[key];
+        if (!ch || !ch.questions) return;
+        const qs = Object.values(ch.questions);
+        if (qs.length === 0) return;
+        chaptersTouched++;
+        let allRevealed = qs.length >= 5;
+        qs.forEach(q => {
+          if (q.attempt && q.attempt.trim()) totalAttempted++;
+          if (q.revealed) totalRevealed++;
+          if (q.grade === "got-it")  totalGotIt++;
+          if (q.grade === "close")   totalClose++;
+          if (q.grade === "missed")  totalMissed++;
+          if (!q.revealed) allRevealed = false;
+        });
+        if (allRevealed) chaptersCompleted++;
+        chapterStats[key] = { gotIt: 0, close: 0, missed: 0, ungraded: 0, revealed: 0 };
+        qs.forEach(q => {
+          if (q.revealed) chapterStats[key].revealed++;
+          if (q.grade === "got-it") chapterStats[key].gotIt++;
+          else if (q.grade === "close") chapterStats[key].close++;
+          else if (q.grade === "missed") chapterStats[key].missed++;
+          else chapterStats[key].ungraded++;
+        });
+      });
+
+      if (chaptersTouched === 0) {
+        root.innerHTML = `
+          <div class="empty-state">
+            <h2>No quiz progress yet.</h2>
+            <p>Once you start working through any chapter quiz, your attempts and self-grades will appear here.</p>
+            <p style="margin-top:18px;"><a class="btn-link primary" style="display:inline-block; padding:10px 18px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt;" href="quiz-01-why-now.html">Start with Chapter 1 →</a></p>
+          </div>`;
+        return;
+      }
+
+      // Recommended re-reads: chapters with ≥1 missed
+      const reread = Object.entries(chapterStats)
+        .filter(([k, s]) => s.missed > 0)
+        .map(([k]) => CHAPTER_TITLES[k])
+        .filter(Boolean);
+
+      let html = `
+        <div class="stat-grid">
+          <div class="stat sky">    <span class="num">${chaptersTouched}</span>  <div class="label">Chapters touched</div></div>
+          <div class="stat">         <span class="num">${chaptersCompleted}</span><div class="label">Fully revealed</div></div>
+          <div class="stat green">  <span class="num">${totalGotIt}</span>     <div class="label">Got it</div></div>
+          <div class="stat amber">  <span class="num">${totalClose}</span>     <div class="label">Got close</div></div>
+          <div class="stat plum">   <span class="num">${totalMissed}</span>    <div class="label">Missed</div></div>
+        </div>
+        <p style="font-size:10pt; color:var(--bnc-charcoal); margin:0 0 6px;">
+          ${totalAttempted} attempts written · ${totalRevealed} answers revealed across ${chaptersTouched} chapter${chaptersTouched===1?'':'s'}.
+        </p>
+      `;
+
+      if (reread.length) {
+        html += `
+          <div class="recommend">
+            <h3>Suggested re-reads</h3>
+            <p style="margin:0;">You marked at least one question as missed in these chapters. Worth a second pass:</p>
+            <ul>
+              ${reread.map(m => `<li><a href="${m.file}">${escapeHtml(m.title)}</a> — <a href="${m.quiz}">retake the quiz</a></li>`).join("")}
+            </ul>
+          </div>`;
+      }
+
+      html += `
+        <div class="actions-row">
+          <button class="primary" onclick="window.print()">🖨 Print my progress</button>
+          <button onclick="exportJson()">⬇ Export as JSON</button>
+          <button class="danger" onclick="clearAll()">Clear all progress</button>
+        </div>
+      `;
+
+      // Per-chapter cards
+      Object.entries(CHAPTER_TITLES).forEach(([key, meta]) => {
+        const ch = all[key];
+        if (!ch || !ch.questions || Object.keys(ch.questions).length === 0) return;
+        const stats = chapterStats[key];
+        html += `
+          <article class="ch-card" data-key="${key}">
+            <div class="ch-head" onclick="this.parentElement.classList.toggle('open')">
+              <h3>${escapeHtml(meta.title)}</h3>
+              <div class="ch-pills">
+                ${stats.gotIt  ? `<span class="pill green">${stats.gotIt} got it</span>`     : ""}
+                ${stats.close  ? `<span class="pill amber">${stats.close} close</span>`      : ""}
+                ${stats.missed ? `<span class="pill plum">${stats.missed} missed</span>`     : ""}
+                ${stats.ungraded ? `<span class="pill gray">${stats.ungraded} ungraded</span>` : ""}
+              </div>
+              <a href="${meta.quiz}" style="font-size:9pt; letter-spacing:1px; text-transform:uppercase; color:var(--bnc-sky-blue); text-decoration:none; border-bottom:1px dotted var(--bnc-sky-blue);" onclick="event.stopPropagation()">retake →</a>
+            </div>
+            <div class="ch-body">
+              <div class="ch-body-inner">
+                ${Object.entries(ch.questions)
+                  .sort((a,b) => Number(a[0]) - Number(b[0]))
+                  .map(([qn, q]) => `
+                    <div class="q-row">
+                      <p class="q-q"><span class="q-num">Q${qn}.</span>${escapeHtml(q.q || '')}${q.grade ? `<span class="q-grade-badge ${q.grade}">${gradeLabel(q.grade)}</span>` : ''}</p>
+                      ${q.attempt && q.attempt.trim() ? `<div class="q-attempt-box"><span class="label">Your attempt</span>${escapeHtml(q.attempt)}</div>` : '<div class="q-attempt-box" style="color:#9aa6b0; font-style:italic;">No attempt written.</div>'}
+                      ${q.revealed ? `<div class="q-answer-box"><span class="label">Model answer</span>${escapeHtml(q.a || '')}</div>` : `<div class="q-answer-box" style="background:#f3f5f7; border-left-color:#aab7c0; color:#9aa6b0; font-style:italic;">Answer not yet revealed.</div>`}
+                    </div>
+                  `).join("")}
+              </div>
+            </div>
+          </article>
+        `;
+      });
+
+      root.innerHTML = html;
+    }
+
+    function exportJson() {
+      const data = loadAll();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "scintillator-quiz-progress.json";
+      a.click();
+    }
+
+    function clearAll() {
+      if (!confirm("Clear all your saved progress? This cannot be undone.")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>

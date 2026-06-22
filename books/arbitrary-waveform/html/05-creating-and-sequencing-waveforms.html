@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 5: Creating and Sequencing Waveforms</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-5-creating-and-sequencing-waveforms">Chapter 5: Creating and Sequencing Waveforms</h2>
+
+<figure>
+<img src="../figures/chapter-05-opener.png" alt="An engineer composing an arbitrary waveform on a laptop running waveform creation software, with the rendered shape downloading to an arbitrary waveform generator on the bench." />
+<figcaption><span class="fig-num">Figure 5.1</span> The waveform exists in software long before it exists at the output connector. Building it well is most of the job.</figcaption>
+</figure>
+
+<p>A function generator hands you a knob and a list of shapes. An arbitrary waveform generator hands you an empty buffer and asks what you want in it. That freedom is the whole point, and it is also where most of the work lives. The hardware will faithfully reproduce whatever sits in memory, glitches and all, so the quality of your output is decided well upstream of the front panel. This chapter is about that upstream work: where waveform data comes from, the software that shapes it, how to stitch segments into long dynamic scenarios without burning memory, and how to make a looped waveform repeat forever without a click at the seam.</p>
+
+<p>None of this is exotic. It is mostly arithmetic and a little discipline. But it is the difference between a clean reference signal and a waveform that looks fine on screen and sprays spurs across your spectrum analyzer the moment it loops.</p>
+
+<h3 id="ways-to-build-a-waveform">5.1 Three Ways to Build a Waveform</h3>
+
+<p>There are really only three sources for the samples that end up in waveform memory. Most projects use more than one of them, sometimes in the same waveform.</p>
+
+<p><strong>Standard library shapes.</strong> Every AWG ships with a catalog of parameterized primitives: sine, square, ramp, triangle, pulse, Gaussian, exponential, noise, DC. You pick the shape, set amplitude and timing, and the software fills the buffer for you. This is the fastest path and, for a surprising number of jobs, the only one you need. A clean sine at a known frequency, a pulse train with a defined duty cycle, a ramp for a sweep: the library covers the staples. The catch is that a library shape is only as good as the math behind it, which is why sample count and frequency still matter even when you never touch a single point by hand. We will come back to that in 5.4 and 5.5.</p>
+
+<p><strong>Point-by-point, equations, and formula entry.</strong> When the library does not have your shape, you describe it directly. Most waveform tools accept a mathematical expression, something like <code>sin(2*pi*f*t) * exp(-t/tau)</code>, and evaluate it across the sample grid for you. Others let you draw freehand and then smooth the result, or type a table of points, or paste an array. This is how you build a damped ring, a chirp with a custom envelope, a glitch deliberately injected into an otherwise clean clock, or a stimulus that exists only in your test plan. Formula entry is powerful because it is exact and repeatable. You define the waveform once as a function of time, and the tool turns it into samples at whatever rate the instrument runs.</p>
+
+<p><strong>Imported captured or simulated data.</strong> The third source is data you did not generate inside the AWG software at all. A scope capture of a real signal you want to replay. A CSV table exported from a measurement. A vector computed in MATLAB, Python, or a SPICE simulation. This is the replay-the-real-world path, and it is what turns an AWG into a stimulus for closed-loop testing: capture a fault on a live system, bring it back to the bench, and replay it on demand a thousand times. The mechanics are simple, but two details bite people on import, so they deserve their own paragraph.</p>
+
+<p><strong>Sample rate and scaling on import.</strong> A file of numbers has no inherent time axis. The AWG plays your imported samples at its own sample clock, not at whatever rate the data was captured. If your scope sampled at 2 GSa/s and your AWG plays the file at 1.25 GSa/s, the replayed signal runs at the wrong speed and every frequency in it shifts. You either resample the data to the AWG's clock before import, or set the AWG's sample rate to match the source. The second trap is amplitude. Imported data usually arrives in physical units (volts, or raw ADC codes), and the AWG wants normalized values mapped onto its DAC range. Scale it so the largest excursion uses the full converter span without clipping. Leave headroom and you waste vertical resolution. Take none and you flat-top the peaks. Get the scaling right once, in software, and it is right forever.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> The most common import bug is not a corrupt file. It is a column delimiter or a header row the parser did not expect, which silently shifts every value by one or turns your voltages into text. Plot the imported waveform inside the tool before you download it. Two seconds of looking saves an afternoon of chasing a phantom hardware fault.</p></blockquote>
+
+<table>
+<thead><tr><th>Build method</th><th>Best for</th><th>Watch out for</th></tr></thead>
+<tbody>
+<tr><td>Library shape</td><td>Standard sines, pulses, ramps, noise. Fast setup.</td><td>Non-integer cycles in the buffer (see 5.5).</td></tr>
+<tr><td>Equation / formula</td><td>Custom analytic shapes: chirps, damped rings, envelopes.</td><td>Aliasing if the math contains content above Nyquist.</td></tr>
+<tr><td>Freehand / point table</td><td>One-off shapes, deliberate glitches, hand-tuned edges.</td><td>Discontinuities and unintended high-frequency content.</td></tr>
+<tr><td>Imported capture / sim</td><td>Replaying real signals or simulation output.</td><td>Sample-rate mismatch and amplitude scaling on import.</td></tr>
+</tbody>
+</table>
+
+<h3 id="waveform-software">5.2 Waveform Creation Software</h3>
+
+<p>The buffer has to be built somewhere, and for anything past a library sine that somewhere is host software running on a PC. The instrument is the player. The software is the studio. A capable waveform editor gives you four things: a way to draw or compute shapes, a math layer to combine and transform them, file import for outside data, and a download path that moves the finished buffer into instrument memory over USB, LAN, or GPIB.</p>
+
+<p><strong>Drawing and editing.</strong> Good tools let you sketch a shape with the mouse, place control points, and then clean up the result with smoothing or interpolation. You can stretch a segment in time, scale it in amplitude, insert a flat hold, or splice two shapes together. The editor is where a rough idea becomes a defined sample sequence.</p>
+
+<p><strong>Math.</strong> Beyond drawing, the math layer is what makes the editor more than a paint program. Add two waveforms to model interference. Multiply a carrier by an envelope to shape a burst. Apply a window function to taper the ends. Filter a captured signal to remove noise you do not want to replay. These operations run on the full sample array before download, so the instrument never has to compute anything in real time.</p>
+
+<p><strong>Import and download.</strong> The same tool ingests CSV, scope-native formats, and numeric arrays, applies the resampling and scaling discussed in 5.1, and then writes the result into the AWG's waveform memory. Many tools also manage the named-waveform slots inside the instrument so you can store several shapes and recall them without re-downloading.</p>
+
+<p>Berkeley Nucleonics ships <strong>WaveCrafter</strong> software with the Model 645 arbitrary/function generator for exactly this purpose: creating and importing waveforms and downloading them to the instrument. The 645 also exposes LAN web-browser remote control, so a connected unit can be driven from a browser without installing anything locally. The 645 stores up to five arbitrary waveforms, four in nonvolatile memory plus one volatile slot, which is the kind of named-slot management a host tool is built to handle. As always, confirm current software capabilities and instrument specifics against the datasheet at berkeleynucleonics.com before you design around them.</p>
+
+<h3 id="sequencing-and-looping">5.3 Sequencing and Looping</h3>
+
+<p>Suppose your test needs ten milliseconds of quiet, then a one-microsecond burst repeated a thousand times, then a long idle, then a jump back to the burst when an external trigger fires. You could compute every sample of that entire timeline and store it as one enormous waveform. You should not. The burst is the same microsecond a thousand times over, so storing a thousand copies of it wastes memory you do not have, and it freezes the scenario into one fixed playout that cannot react to anything.</p>
+
+<p><strong>Sequencing</strong> solves both problems. Instead of one giant waveform, you store a handful of short <em>segments</em> and a <em>step list</em> that tells the instrument how to play them: which segment, how many times to loop it, how to advance to the next step, and where to go after. The burst is stored once and looped a thousand times from a single copy. The quiet and the idle are short segments looped or held. The whole timeline becomes a compact playlist over reused building blocks.</p>
+
+<figure>
+<img src="../figures/fig-5-3-sequencer-map.svg" alt="A sequence diagram showing three stored waveform segments A, B, and C on the left, and a step list table on the right with loop counts, advance conditions, and a conditional jump arrow looping step 3 back to step 1." />
+<figcaption><span class="fig-num">Figure 5.2</span> A sequence is a step list over reused segments. Segment B is stored once and looped a thousand times, and a conditional branch sends the player back to an earlier step when an event asserts.</figcaption>
+</figure>
+
+<p><strong>Loop counts</strong> repeat a segment a set number of times without storing duplicates. <strong>Jumps</strong> let the step list move non-linearly, so step three can send playback back to step one. <strong>Conditional branches</strong> make that jump depend on something: an external trigger, a digital event line, or a flag. The instrument plays one path while a condition holds and a different path when it changes. <strong>Event-driven advance</strong> ties the step transition to a hardware signal, so a segment plays until a trigger arrives and only then moves on. Together these turn a static buffer into a small state machine that reacts to the world.</p>
+
+<p>This is where high-end instruments separate themselves. The Berkeley Nucleonics Models 685 and 686 support advanced sequencing with loops, jumps, and conditional branches across their channels, which is what lets them drive long, dynamic, reactive scenarios from a finite memory rather than one monolithic waveform. The 685 carries up to 4 GSamples of memory per channel and the 686 up to 9 GSamples per channel, but even that much memory goes further when a sequencer reuses segments instead of storing every repetition. Verify the current sequencing feature set against the datasheet before committing a test design to it.</p>
+
+<table>
+<thead><tr><th>Step</th><th>Segment</th><th>Loops</th><th>Advance</th><th>Next</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>A (preamble)</td><td>1</td><td>auto</td><td>1</td></tr>
+<tr><td>1</td><td>B (burst)</td><td>1000</td><td>auto</td><td>2</td></tr>
+<tr><td>2</td><td>C (idle)</td><td>1</td><td>on trigger</td><td>3</td></tr>
+<tr><td>3</td><td>B (burst)</td><td>1</td><td>if event</td><td>jump to 1</td></tr>
+</tbody>
+</table>
+
+<p>Read that table as a program. Play the preamble once, fire the burst a thousand times, hold idle until a trigger arrives, then replay the burst and, while an event line stays asserted, loop back to step one. The same four segments cover a timeline that would take gigabytes to store flat.</p>
+
+<h3 id="memory-management-and-granularity">5.4 Memory Management and Granularity</h3>
+
+<p>Waveform memory is not infinitely flexible about length. The hardware that streams samples to the DAC reads memory in blocks, often several samples per clock, so the length of a waveform usually has to be a multiple of some number N. That N is the <strong>granularity</strong>. There is also a <strong>minimum segment length</strong>, a floor below which a segment cannot go because the streaming engine needs a minimum run to keep its pipeline fed. Both numbers are instrument-specific and both shape how you build waveforms.</p>
+
+<p><strong>Length quantization.</strong> If granularity is, say, 16 samples, your waveform length must round to a multiple of 16. You cannot store a buffer of 1000 samples on such an instrument. You store 992 or 1008. This sounds like a triviality until you are trying to fit an exact signal period into the buffer, because the period you want and the nearest legal length rarely coincide on the first try. The fix is to choose your sample rate and period together so the period lands on a granularity boundary, rather than picking a period and hoping the length is legal.</p>
+
+<p><strong>Marker and data alignment.</strong> Many AWGs carry marker or digital output bits alongside the analog samples, one or more per sample, used to flag events for a scope trigger or to drive logic in the device under test. Those markers are quantized to the same granularity as the waveform data and are aligned to it sample for sample. If you need a marker edge at a precise instant, that instant has to fall on a sample, and the surrounding segment has to obey the same length rules. Plan markers as part of the waveform, not as an afterthought bolted on later.</p>
+
+<p><strong>Fitting a period to an integer number of samples.</strong> This is the central discipline of waveform construction and it leads straight into seamless looping. The number of samples in one period of your signal is the sample rate divided by the signal frequency. If that ratio is not a whole number, one period does not fit cleanly into an integer count of samples, and any buffer you build will contain a fractional cycle somewhere. The phase at the end of the buffer will not match the phase at the start. We treat the consequences of that mismatch next, because it is the single most common cause of a looped waveform that glitches.</p>
+
+<blockquote><p><strong>Pro tip.</strong> Before you generate a single sample, compute samples-per-cycle as <code>sample_rate / frequency</code> and check whether a whole number of cycles also lands on the granularity multiple. If it does not, nudge the sample rate slightly. A tiny change in clock frequency is almost always more acceptable than a discontinuity that repeats on every loop.</p></blockquote>
+
+<h3 id="seamless-loops">5.5 Building Seamless Loops</h3>
+
+<p>A looping waveform plays its buffer end to end, then wraps instantly back to the first sample and plays it again. The output is continuous only if the last sample joins the first sample smoothly. If the value or the slope jumps at that junction, the output takes a step every time it wraps, and a step is a wideband event. It shows up as a click in audio, a glitch on a scope, and a forest of spurs across the spectrum, all locked to the loop rate. The waveform can look perfect on a single-shot view and still be broken the instant you loop it.</p>
+
+<figure>
+<img src="../figures/fig-5-5-seamless-loop.svg" alt="Two looped sine waves compared. The top trace contains an integer number of cycles and joins smoothly at the loop point with matching level and slope. The bottom trace contains a fractional cycle and shows a vertical step discontinuity at the wrap." />
+<figcaption><span class="fig-num">Figure 5.3</span> Top: an integer number of cycles in the buffer, so the wrap is invisible. Bottom: a fractional cycle, so the buffer ends mid-cycle and the loop forces a step that radiates spurs on every repeat.</figcaption>
+</figure>
+
+<p><strong>Choose an integer number of cycles.</strong> The reliable cure is to size the buffer so it holds a whole number of signal cycles. If the buffer contains exactly K complete cycles, the waveform is at the same phase at the end as at the start, so the wrap is seamless by construction. Combined with the granularity rule from 5.4, the goal is to find a buffer length that is both a multiple of N and an integer number of cycles. You get there by adjusting sample rate, cycle count, or buffer length together until all three constraints agree. This is a small constrained search, and most waveform tools will do it for you if you ask for "an integer number of cycles" rather than a fixed length.</p>
+
+<p><strong>When the math will not cooperate, window the ends.</strong> Some signals cannot be made to close perfectly, a captured transient or an aperiodic record, for instance. For those, taper the start and end of the buffer toward a common value with a window function so the junction, while not perfectly continuous in slope, no longer takes a hard step. Windowing trades a sharp glitch for a gentle, controlled transition, and for many measurements that trade is well worth making. It is a softer fix than integer cycles, not a substitute for it, so reach for integer cycles first and window only when you must.</p>
+
+<p><strong>Check the seam, do not assume it.</strong> Whatever method you use, verify it. Loop the waveform and look at the junction on a scope, or run the looped output into a spectrum analyzer and watch for the comb of loop-rate spurs that betrays a discontinuity. The seam either is clean or it is not, and two minutes of measurement settles the question that an hour of arguing about the math will not.</p>
+
+<p>Get these five things right, where the samples come from, the software that shapes them, the sequence that reuses them, the granularity that constrains them, and the loop point that closes them, and the AWG does exactly what you asked. Get them wrong and the instrument will reproduce your mistake with perfect fidelity, on every single repeat.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-05.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04-sampling-theory-and-fidelity.html">&larr; 4. Sampling Theory and Signal Fidelity</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="06-modulation-and-signal-scenarios.html">6. Modulation and Signal Scenarios &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

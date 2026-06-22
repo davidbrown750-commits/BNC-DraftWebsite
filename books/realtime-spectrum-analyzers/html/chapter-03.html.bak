@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3 - The Signal Chain: From Antenna to Spectrogram</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 3</div>
+<h1>The Signal Chain: From Antenna to Spectrogram</h1>
+
+<blockquote>An RTSA is not one machine. It is eight machines in a trench coat, each doing one job and handing off to the next. Understanding the chain is what separates a button-pusher from an engineer.</blockquote>
+
+<h2>3.1 The RF Front End</h2>
+
+<p>Every signal in this book starts the same way. A photon of electromagnetic energy hits an antenna, induces a voltage, and that voltage starts its journey through the instrument.</p>
+
+<p>The first thing it meets is the front end. This is the hardest analog block in the system, and the one that sets the floor for everything that follows. Get the front end right and the rest of the chain has a fighting chance. Get it wrong and no amount of clever DSP saves you.</p>
+
+<p>The front end has four jobs: capture and concentrate the signal with an antenna matched to the band, reject everything outside the band with preselector filters before the first active stage, amplify with low noise so weak signals are not buried by thermal noise, and stage the gain carefully so the strongest signal in the band does not drive a downstream amplifier into compression.</p>
+
+<h3>Antennas</h3>
+
+<p>Antennas are wavelength-matched. A 30 cm whip handles 200 to 500 MHz comfortably. A 5 cm patch handles 5 GHz Wi-Fi. A horn antenna feeds 18 to 40 GHz mmWave work. Get the wavelength wrong and your antenna shows the rest of the system mostly its own ohmic losses.</p>
+
+<p>Polarization matters. Cellular networks are vertically polarized in most of the world. Wi-Fi access points are mixed. Satellite downlinks are circularly polarized. A vertical antenna pointed at a circular signal loses 3 dB to polarization mismatch. Over a long path, that 3 dB matters.</p>
+
+<p>For monitoring, broadband log-periodic and discone antennas trade gain for coverage. The Aaronia HyperLOG and OmniLOG families exemplify this class: a single antenna covering 380 MHz to 18 GHz with reasonable gain across the band. For directional work, the IsoLOG 3D DF (Chapter 8) gives 16 sectors of selectable beam pattern.</p>
+
+<h3>Preselection and image rejection</h3>
+
+<p>After the antenna, the signal hits a preselector filter bank, a tunable bandpass filter that rejects out-of-band energy before any active gain stage sees it.</p>
+
+<p>Why is preselection critical? Two reasons. A strong out-of-band signal can drive a downstream LNA into compression and create intermodulation products that look like real signals in your band of interest. And in a downconverting receiver, signals at the image frequency (twice the IF away from the LO) alias into the IF and are indistinguishable from real signals.</p>
+
+<h3>Low-noise amplification</h3>
+
+<p>The first amplifier sets the noise figure of the entire receiver. This is Friis's formula in action:</p>
+
+<div class="math-display">$$F_{\text{total}} = F_1 + \frac{F_2 - 1}{G_1} + \frac{F_3 - 1}{G_1 G_2} + \cdots$$</div>
+
+<p>Where $F_n$ is the noise factor of stage $n$ and $G_n$ is the linear gain. The first stage dominates as long as its gain is high enough to mask the noise of subsequent stages. A 20 dB LNA with a 1.5 dB noise figure followed by a 6 dB NF mixer gives a system noise figure essentially equal to 1.5 dB. The same 20 dB LNA with only 5 dB of gain gives a system noise figure of about 2.4 dB. Gain matters.</p>
+
+<p>But too much gain is also a problem. Push the LNA into compression with a strong nearby signal and you get gain compression, harmonic distortion, and intermodulation. The IIP3 (third-order input intercept point) characterizes how much input the amplifier handles before its third-order products rise above the noise floor.</p>
+
+<p>This is the essence of receiver design: simultaneously achieve low noise and high linearity. Those two goals fight each other. Every gain stage is a compromise.</p>
+
+<h3>Gain staging</h3>
+
+<p>The full chain might look like: antenna feeds an attenuator (variable, 0 to 30 dB), then a preselector filter, then an LNA (15 to 25 dB gain), then a second filter, then a mixer, then an IF amplifier. Each stage is optimized for its slot. The variable attenuator handles strong signals; the LNA handles weak ones. Switching between them based on input power is automatic gain control (AGC), and modern RTSAs do it gracefully with hysteresis to prevent rapid switching when input is right at the threshold.</p>
+
+<h2>3.2 Downconversion and I/Q Demodulation</h2>
+
+<p>Once the signal is amplified and filtered, it has to be brought down in frequency to something a digitizer can handle. This is downconversion.</p>
+
+<p>In its simplest form, a downconverter mixes the input signal with a local oscillator at frequency $f_{LO}$. The mixer output contains sum and difference frequencies. The sum is filtered out, leaving the difference at the intermediate frequency:</p>
+
+<div class="math-display">$$f_{IF} = |f_{RF} - f_{LO}|$$</div>
+
+<p>The IF can be a fixed value (traditional superheterodyne) or zero (direct conversion / zero-IF). RTSAs typically use either zero-IF or a low IF that's then digitized and brought to baseband digitally.</p>
+
+<h3>The I/Q pair</h3>
+
+<p>A real-valued signal carries information only on its positive frequency axis; the negative axis is a mirror. To work with arbitrary bandwidths cleanly, modern receivers split the signal into two paths driven by quadrature local oscillators:</p>
+
+<div class="math-display">
+$$I(t) = s(t) \cos(2\pi f_{LO} t)$$
+$$Q(t) = s(t) \sin(2\pi f_{LO} t)$$
+</div>
+
+<p>The complex baseband representation is then:</p>
+
+<div class="math-display">$$z(t) = I(t) + j Q(t)$$</div>
+
+<p>Why bother? Because $z(t)$ has a one-sided spectrum. Positive frequencies in $z(t)$ correspond to signals above $f_{LO}$ in the original RF. Negative frequencies correspond to signals below. There is no ambiguity. This is the foundation of all modern wideband signal processing.</p>
+
+<p>Chapter 4 develops the I/Q math in full. For now, just know: when an RTSA datasheet talks about complex sample rate, it is talking about the rate of $z(t)$. A 1 GS/s complex rate gives you an effective 1 GHz of one-sided bandwidth, twice what the same number of real samples would give.</p>
+
+<h3>I/Q imbalance</h3>
+
+<p>Real-world I and Q paths are never perfectly matched. Amplitude imbalance and phase imbalance produce a residual image, a ghost copy of every signal mirrored across DC. Modern RTSAs apply digital corrections to suppress the image to 60, 70, even 80 dB below the carrier. The correction is calibrated at the factory and refined per measurement temperature.</p>
+
+<p>Imbalance also produces a DC offset, which appears as a spike at DC in zero-IF systems. AC coupling, careful biasing, and digital removal of the offset combine to manage this.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-03-01-signal-chain.svg" style="width:100%;">Figure 3-1</object>
+  <figcaption>Figure 3-1. The full RTSA signal chain from antenna through analog front end, ADC, FPGA processing, FFT engine, and display pipeline. The parallel branch to the rolling DDR buffer and streaming fabric supports trigger-and-replay and 24/7 forensic recording.</figcaption>
+</figure>
+
+<h2>3.3 ADC Fundamentals</h2>
+
+<p>Now the I/Q signal hits the analog-to-digital converter. This is where the analog journey ends and the digital one begins.</p>
+
+<h3>Sample rate and Nyquist</h3>
+
+<p>The sampling theorem says a signal bandlimited to $B$ Hz can be perfectly reconstructed from samples taken at any rate $f_s > 2B$. For complex baseband I/Q sampling, $B$ is the one-sided bandwidth, so $f_s = $ RTBW is sufficient in theory. In practice we add 25 to 50 percent margin for filter rolloff:</p>
+
+<div class="math-display">$$f_s \approx 1.25 \cdot \text{RTBW to } 1.5 \cdot \text{RTBW}$$</div>
+
+<p>A 245 MHz RTBW system therefore needs an ADC running at roughly 300 to 370 MS/s on each I/Q channel.</p>
+
+<p>If you violate Nyquist, the energy outside the sampling band folds back into the sampling band and appears as spurious content at incorrect frequencies. This is aliasing, and it cannot be undone after the fact. The only defense is an analog anti-alias filter ahead of the ADC that aggressively rolls off above $f_s / 2$.</p>
+
+<h3>Effective number of bits (ENOB)</h3>
+
+<p>A 14-bit ADC does not give you 14 bits of resolution. It gives you something less, because thermal noise and quantization noise combine to corrupt the lower bits. ENOB is a single number that captures the actual dynamic range:</p>
+
+<div class="math-display">$$\text{ENOB} = \frac{\text{SINAD} - 1.76}{6.02}$$</div>
+
+<p>where SINAD is the signal-to-noise-and-distortion ratio in dB at the test frequency. A 14-bit ADC with 70 dB SINAD gives an ENOB of about 11.3 bits. That's the realistic floor.</p>
+
+<p>ENOB sets the noise floor of the digitized signal. A 12-bit ENOB system has a noise floor of about 6 dB per bit times 12 bits = 72 dB below full-scale. Push a signal more than 72 dB below the strongest tone and it disappears into ADC noise.</p>
+
+<h3>Spurious-free dynamic range (SFDR)</h3>
+
+<p>ADCs do not just add noise. They add structured tones: harmonics of the input signal, intermodulation products from multiple inputs, and converter artifacts at characteristic frequencies. SFDR is the difference between the strongest signal and the strongest spurious tone.</p>
+
+<p>SFDR matters because a high spur looks identical to a real signal. If your ADC produces a spur at -75 dBc whenever a strong tone is present, you cannot trust signals weaker than -75 dBc until you prove they are not artifacts. Premium RTSA front ends achieve 80 to 95 dB of SFDR through careful ADC selection, dithering, and digital correction.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: V6 PLUS digitization architecture</h3>
+<p>The SPECTRAN V6 PLUS architecture uses parallel high-speed ADCs feeding a digital downconverter and tunable channelizer in the FPGA. The complex sample rate is configurable, the FPGA handles real-time decimation, and the resulting baseband samples stream to the host for FFT processing in RTSA Suite PRO. This separation of concerns (FPGA for high-rate streaming and decimation, host for high-flexibility analysis) is what allows the same hardware to support 80 MHz to 490 MHz of RTBW depending on configuration and license.</p>
+</div>
+
+<h2>3.4 Decimation, Filtering, and Channelization</h2>
+
+<p>Often the user does not need the full digitized bandwidth. Maybe you are looking at a 5 MHz channel inside a 245 MHz capture. Pumping all 245 MHz through every downstream stage is wasteful. Decimation solves this.</p>
+
+<p>Decimation by factor $M$ reduces the sample rate by $M$ while preserving the bandwidth of interest. The process is two-stage: first low-pass filter to limit the bandwidth to $f_s / (2M)$ to prevent aliasing when the rate drops, then throw away $M-1$ of every $M$ samples. The remaining samples have the same information content but at a lower rate.</p>
+
+<p>Common decimation chains in RTSAs include polyphase FIR filters and cascaded integrator-comb (CIC) filters. The CIC structure is mathematically elegant and runs efficiently in FPGA fabric, making it ideal for the first decimation stage where rates are highest.</p>
+
+<h3>Channelization</h3>
+
+<p>A channelizer is essentially a parallel set of decimating filters, each centered on a different sub-band. Take a 245 MHz wideband capture and feed it into a 16-channel channelizer; out come sixteen 15 MHz baseband streams, each corresponding to a different slice of the original spectrum. Now each slice can be processed independently for its own purpose: one for FM broadcast monitoring, one for cellular, one for ISM, and so on.</p>
+
+<p>Channelization is how RTSAs deliver simultaneous multi-channel monitoring without needing a separate receiver per channel. It is also how DF systems compute bearings on multiple emitters simultaneously: the channelizer feeds the bearing estimator one signal per channel.</p>
+
+<h2>3.5 The FFT Processing Engine</h2>
+
+<p>After decimation and channelization, the I/Q stream is ready for spectral analysis. The FFT engine is the heart of the RTSA.</p>
+
+<h3>How an FFT works (briefly)</h3>
+
+<p>An $N$-point FFT computes the discrete Fourier transform of $N$ consecutive complex samples:</p>
+
+<div class="math-display">$$X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j 2\pi k n / N}$$</div>
+
+<p>The output $X[k]$ has $N$ complex values, each representing the amplitude and phase of one frequency bin. Bin spacing is $f_s / N$. The Cooley-Tukey radix-2 algorithm computes this in $O(N \log N)$ multiplies instead of the naive $O(N^2)$. On modern FPGAs, an 8192-point FFT runs in single-digit microseconds.</p>
+
+<h3>Windowing</h3>
+
+<p>Each FFT window sees a finite slice of the signal. The signal is multiplied by a window function before the FFT to reduce the spectral leakage that occurs when a signal does not have an integer number of cycles in the window. The choice of window function (Hann, Hamming, Blackman, Flat-top, Kaiser, Dolph-Chebyshev) trades main lobe width against sidelobe suppression. Chapter 5 covers this in full.</p>
+
+<h3>Overlap and scalloping loss</h3>
+
+<p>If FFT windows are taken back-to-back, the signal energy near window boundaries is attenuated by the window taper. A signal that exists for one window time but lands at the boundary loses 3 to 6 dB of apparent amplitude depending on the window. This is scalloping loss.</p>
+
+<p>Overlap fixes scalloping. With 50 percent overlap, every sample is fully weighted by at least one window. With 75 percent overlap, every sample is fully weighted by at least three. Practical RTSAs use 75 to 87.5 percent overlap on the highest-priority displays.</p>
+
+<h3>FFT length selection</h3>
+
+<p>FFT length is the user's primary lever between time resolution and frequency resolution. Short FFTs (1024 points or less) give fast updates but coarse RBW. Long FFTs (65536 points and up) give fine RBW but rare updates. Modern RTSAs run multiple FFT pipelines in parallel: a short-FFT path for waterfall and trigger, a long-FFT path for high-resolution analysis. The user toggles between displays without the engine reconfiguring.</p>
+
+<h2>3.6 The Display Pipeline</h2>
+
+<p>FFT output is not what the user sees. Between the FFT and the screen lies a display pipeline that turns raw spectra into useful pictures.</p>
+
+<p>For each FFT, $N$ amplitude points are converted to dB, compared against the previous trace, and rendered as a single curve. With FFTs running at thousands per second, the display has to choose what to show: the last FFT (live trace), a peak hold across many FFTs (max hold), an averaged trace, or a min hold.</p>
+
+<p>For the waterfall, each new FFT becomes a new horizontal line at the top. Older lines scroll down. Y axis is time, color is amplitude, X axis is frequency. Persistence is a 2D histogram of (frequency, amplitude) hit count, with color encoding hit density normalized over a sliding window. Modern display engines like RTSA Suite PRO compose multiple data streams (waterfall, persistence, real-time trace, frequency mask overlay, marker readouts) GPU-accelerated for multi-monitor and high-refresh-rate output.</p>
+
+<h2>3.7 Memory and Streaming Architecture</h2>
+
+<p>The samples that produce the display also need to be available for trigger-and-replay analysis and forensic recording. This is the memory subsystem.</p>
+
+<h3>Rolling buffer</h3>
+
+<p>A rolling buffer holds the most recent N seconds of I/Q samples. When a trigger fires (frequency mask, level, external), the rolling buffer is frozen and copied to long-term storage. Pre-trigger samples are preserved, which is critical for forensic analysis of events whose start time is not known until after the fact.</p>
+
+<p>Rolling buffer depth is set by on-board DDR memory. A 4 GB DDR buffer at 1 GS/s of complex 16-bit samples holds about 1 second of data. A 64 GB buffer holds 16 seconds. Modern RTSAs ship with 16 to 64 GB of dedicated capture memory.</p>
+
+<h3>Streaming to host storage</h3>
+
+<p>For continuous recording, samples bypass the rolling buffer and stream directly to host storage over PCIe, USB4, or Ethernet. Sustained throughput is the constraint. Aaronia RTSA Suite PRO supports 24/7 streaming at up to 245 MHz of bandwidth, limited only by host disk capacity.</p>
+
+<p>The data format matters. SigMF (Signal Metadata Format) is becoming the standard for I/Q file metadata: sample rate, center frequency, hardware identification, capture timestamp. RTSA Suite PRO writes SigMF-compatible files, which are interoperable with GNU Radio, scikit-rf, and most analysis ecosystems.</p>
+
+<h3>Replay and offline analysis</h3>
+
+<p>A captured file can be replayed in RTSA Suite PRO as if the signal were live. Triggers, persistence, modulation analysis, all the same tools work on the recorded I/Q. This is how engineers diagnose intermittent problems weeks after the event: replay the file, hunt the burst, prove the cause.</p>
+
+<h2>3.8 Putting It Together: A Trace Through the SPECTRAN V6 PLUS Signal Path</h2>
+
+<p>Walk a 5G NR signal at 3.5 GHz through a SPECTRAN V6 PLUS 2000XA-6 from end to end.</p>
+
+<ol class="walkthrough">
+<li>A SPECTRAN-paired antenna captures the signal. Polarization, gain, and bandwidth all match the deployment.</li>
+<li>A switched preselector filter rejects energy below 3 GHz and above 4 GHz. Only the 5G NR n78 band passes.</li>
+<li>The variable attenuator sets input level. AGC measures the peak amplitude and dials in 5 dB of attenuation to keep the strongest signal 10 dB below the LNA's compression point.</li>
+<li>The LNA adds 20 dB of gain at 1.5 dB noise figure. The signal is now strong enough to dominate the noise of every following stage.</li>
+<li>A quadrature mixer driven by a 3.5 GHz LO downconverts to zero IF. I and Q paths split here.</li>
+<li>Anti-alias filters limit each path to 245 MHz of bandwidth.</li>
+<li>A pair of high-speed ADCs digitize I and Q at 614.4 MS/s with 12-bit nominal resolution and about 11.3 ENOB.</li>
+<li>The FPGA applies digital I/Q correction (suppressing the image to better than -70 dBc), removes DC offset, and applies a polyphase decimating filter to bring the rate to 245 MS/s complex.</li>
+<li>The decimated stream feeds a 16-way channelizer. The user has selected one channel covering 100 MHz centered on the n78 carrier; the rest are off.</li>
+<li>That 100 MHz channel feeds the FFT engine running an 8192-point FFT at 75 percent overlap, producing about 30,000 spectra per second.</li>
+<li>The display engine accumulates the spectra into waterfall, persistence, and live-trace views. The frequency mask trigger is armed for any out-of-band emission.</li>
+<li>Simultaneously, raw I/Q at the channelizer output streams over USB4 to a 4 TB NVMe array. Twenty-four hours of continuous recording is queued.</li>
+<li>A modulation analysis plugin in RTSA Suite PRO consumes the same I/Q stream, locks to the OFDM symbol clock, and produces real-time EVM, constellation diagrams, and PAPR readouts.</li>
+</ol>
+
+<p>That is one signal through one instrument. The whole journey takes microseconds.</p>
+
+<p>Every other measurement in this book is some variation on the same theme. Different signal type, different display, different trigger, but the same chain. Once you internalize the chain, every datasheet specification has a place in your mental model, and every measurement has a clear path from antenna to insight.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>The RTSA signal chain runs from antenna through preselector, LNA, variable attenuator, mixer, IF/baseband filtering, ADC, digital decimation and channelization, FFT engine, and display pipeline.</li>
+  <li>The front end sets the noise figure of the entire receiver. Friis's formula shows why the first amplifier dominates.</li>
+  <li>Gain staging balances noise figure against linearity. Variable attenuators handle strong signals; LNAs handle weak ones.</li>
+  <li>Quadrature downconversion produces complex baseband I/Q with one-sided spectra.</li>
+  <li>I/Q imbalance produces image responses; modern RTSAs digitally correct to better than -60 dBc.</li>
+  <li>ADC sample rate must exceed twice the bandwidth (Nyquist). ENOB and SFDR set the digital noise and spurious floors.</li>
+  <li>Decimation reduces sample rate after digital filtering; channelization splits a wideband capture into multiple sub-band streams.</li>
+  <li>FFT processing with windowing and overlap produces the spectra that drive every display.</li>
+  <li>The display pipeline composes waterfall, persistence, live trace, and overlay into the final image.</li>
+  <li>Rolling buffers and streaming fabrics combine to support trigger-and-replay analysis and 24/7 forensic recording.</li>
+  <li>A complete SPECTRAN V6 PLUS measurement walk-through shows how each stage hands off to the next in microseconds.</li>
+</ul>
+</div>
+
+<div class="quiz">
+<h3>End-of-Chapter Quiz</h3>
+<ol>
+<li>Which formula describes how the first amplifier dominates the noise figure of a receiver?
+  <p>A. Nyquist</p><p>B. Friis</p><p>C. Boltzmann</p><p>D. Shannon</p>
+</li>
+<li>Why does an RTSA need preselection before the LNA?
+  <p>A. To increase gain</p><p>B. To prevent strong out-of-band signals from compressing the LNA</p><p>C. To improve display brightness</p><p>D. To synchronize the ADC</p>
+</li>
+<li>What is the purpose of quadrature (I/Q) downconversion?
+  <p>A. To increase ADC bit depth</p><p>B. To produce a complex baseband signal with a one-sided spectrum</p><p>C. To raise the noise floor</p><p>D. To increase the IF frequency</p>
+</li>
+<li>The minimum complex sampling rate to capture an RTBW of B Hz is approximately:
+  <p>A. B/2</p><p>B. B</p><p>C. 2B</p><p>D. 4B</p>
+</li>
+<li>ENOB is best described as:
+  <p>A. The number of ADC bits before any noise</p><p>B. The realistic resolution of an ADC after thermal and quantization noise</p><p>C. The signal-to-noise ratio in dB</p><p>D. The dynamic range of the entire receiver</p>
+</li>
+<li>SFDR matters because:
+  <p>A. It determines the maximum sample rate</p><p>B. ADC-generated spurious tones can be confused with real signals</p><p>C. It sets the receiver's noise figure</p><p>D. It controls trace averaging speed</p>
+</li>
+<li>Decimation is performed in two stages:
+  <p>A. Amplification followed by attenuation</p><p>B. Filtering followed by sample-rate reduction</p><p>C. FFT followed by IFFT</p><p>D. A/D followed by D/A</p>
+</li>
+<li>What does a channelizer do?
+  <p>A. Combines multiple narrowband signals into one wideband stream</p><p>B. Splits a wideband stream into multiple narrower sub-band streams</p><p>C. Adjusts the gain per channel</p><p>D. Stores I/Q to disk</p>
+</li>
+<li>Scalloping loss in FFT processing is caused by:
+  <p>A. ADC quantization</p><p>B. Window taper attenuating signals near window boundaries</p><p>C. Insufficient sample rate</p><p>D. Phase noise on the LO</p>
+</li>
+<li>In the SPECTRAN V6 PLUS signal path, where does I/Q imbalance correction typically occur?
+  <p>A. In the antenna</p><p>B. In the analog mixer</p><p>C. In the FPGA, digitally</p><p>D. On the host CPU</p>
+</li>
+</ol>
+<p style="margin-top:16px; font-style:italic; color:var(--bnc-deep-plum);">Answer key in Appendix E.</p>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 4 dives into the I/Q math that this chapter introduced casually. The analytic signal, complex exponentials, sampling I/Q versus sampling RF, the Hilbert transform, file formats for raw I/Q (SigMF, complex floats, complex int16), and a worked example of decoding a burst directly from raw samples. By the end of Chapter 4, you'll be able to write code that consumes an RTSA's I/Q output and build your own analysis tool.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-02.html">&larr; Ch 2. RTSA Terminology</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-04.html">Ch 4. I/Q Fundamentals &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

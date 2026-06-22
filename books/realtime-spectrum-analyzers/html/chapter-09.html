@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 9 - Calibration, Accuracy, and Measurement Uncertainty</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+  .quiz-cta{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .quiz-cta .quiz-cta-num{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  .quiz-cta h3{color:var(--bnc-deep-navy);margin:4px 0 6px}
+  .quiz-cta p{margin:0 0 14px}
+  .quiz-cta .quiz-cta-btn{display:inline-block;font-family:Helvetica,Arial,sans-serif;
+    font-weight:700;letter-spacing:.5px;text-decoration:none;background:var(--bnc-deep-navy);
+    color:#fff;padding:11px 20px;border-radius:4px}
+  .quiz-cta .quiz-cta-btn:hover{background:var(--bnc-sky-blue)}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 9</div>
+<h1>Calibration, Accuracy, and Measurement Uncertainty</h1>
+
+<blockquote>An RF measurement without an uncertainty is an opinion. An opinion with two decimal places is no better than an opinion with one. The number that matters is how much you can defend.</blockquote>
+
+<h2>9.1 Amplitude Accuracy: Absolute and Relative</h2>
+
+<p>When an RTSA reports a signal at -47.3 dBm, what does that number actually mean?</p>
+
+<p><strong>Absolute amplitude accuracy</strong> is how close that -47.3 dBm reading is to the true power at the antenna connector, measured against a calibrated reference. Typical RTSAs achieve absolute accuracy of plus or minus 1 to 2 dB across their full frequency range, narrower (plus or minus 0.5 dB) within a defined "calibrated range" near room temperature.</p>
+
+<p><strong>Relative amplitude accuracy</strong> is how close the difference between two readings is to the true difference. If you measure two tones and report a 6.0 dB difference, the relative accuracy says how close that 6.0 dB matches reality. Relative accuracy is often much better than absolute, often plus or minus 0.1 to 0.3 dB, because most amplitude errors are common to both readings and cancel.</p>
+
+<p>Knowing which kind of accuracy applies to your measurement matters. Compliance work demands absolute accuracy because the regulator cares about absolute emission levels. Comparative work only needs relative accuracy.</p>
+
+<h3>Sources of Amplitude Error</h3>
+
+<p>Half a dozen contributors stack up to produce the published accuracy spec: reference power source uncertainty (calibrator tolerance, 0.1 to 0.5 dB), frequency response variation (gain through the analyzer's RF chain varies with frequency), temperature drift (front-end components shift gain as they warm or cool), attenuator step accuracy (when AGC switches in or out attenuators), detector linearity (FFT magnitude detection chain), and window function correction (ENBW and equivalent power normalization).</p>
+
+<p>A practical SPECTRAN V6 PLUS deployment combines factory calibration with optional field calibration against a user-supplied reference. The factory calibration covers the full frequency range; the field calibration tightens accuracy at a specific frequency or temperature to within 0.1 dB.</p>
+
+<h2>9.2 Frequency Accuracy and Reference Oscillators</h2>
+
+<p>When the RTSA tunes to 3.5000 GHz, how close is the actual measured center to that number?</p>
+
+<p>Frequency accuracy is set almost entirely by the reference oscillator. A free-running crystal oscillator drifts on the order of 10 to 100 parts per million (ppm) over temperature and time. At 3.5 GHz, 10 ppm is 35 kHz of error. A temperature-compensated crystal (TCXO) tightens this to 1 to 5 ppm. An oven-controlled crystal (OCXO) reaches 0.01 to 0.1 ppm, well under 1 kHz at 3.5 GHz.</p>
+
+<p>For demanding work, an external 10 MHz reference is locked to the analyzer. A rubidium standard gives 0.001 ppm (a few hertz at 3.5 GHz). A GPS-disciplined oscillator (GPSDO) gives similar accuracy, with the long-term stability of GPS satellites.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: External Reference Input</h3>
+<p>The SPECTRAN V6 PLUS accepts a 10 MHz external reference input, so users requiring high-precision frequency measurements can connect a rubidium standard or GPSDO. With a GPSDO locked, frequency accuracy improves from the internal TCXO's few ppm to fractional ppb (parts per billion). The same 10 MHz reference output can be daisy-chained to other equipment in the test bench, ensuring everything sees the same time base. For lab calibration, the reference oscillator is the foundation. Every other measurement traces back to it.</p>
+</div>
+
+<h2>9.3 Phase Noise and Its Consequences</h2>
+
+<p>A real oscillator does not produce a single perfect tone. Its output spectrum has a Gaussian-shaped phase noise skirt around the nominal frequency. The skirt level is published as dBc/Hz at specific offset frequencies from the carrier. Why does phase noise matter? Three concrete consequences.</p>
+
+<p><strong>Reciprocal mixing.</strong> Phase noise on the analyzer's local oscillator mixes with strong signals in the band, producing artifacts that look like real signals. A strong tone with the LO's phase noise smeared 100 Hz away appears as a smeared, lower-amplitude version of itself near the original. This limits the dynamic range for finding weak signals close to strong ones.</p>
+
+<p><strong>EVM degradation.</strong> In modulation analysis (Chapter 6), LO phase noise rotates the constellation by a small random amount per symbol. The constellation clusters smear in arcs around the origin, and EVM degrades. For 5G NR 256-QAM at 28 GHz, the LO phase noise budget is around -110 dBc/Hz at 1 MHz offset.</p>
+
+<p><strong>Spectrum analyzer dynamic range.</strong> Trying to measure a weak signal 100 kHz away from a strong carrier? The carrier's phase noise spreads to the weak signal's frequency. The weak signal's apparent amplitude is lower-bounded by the carrier's phase noise level at that offset. Cleaner LO equals better dynamic range close to carriers.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: Phase Noise Budgets</h3>
+<p>For a 5G NR 256-QAM measurement at 28 GHz mmWave, the LO phase noise budget is partitioned as: integrated phase noise contributing 1 percent to EVM, thermal noise contributing 1 percent, residual hardware impairments contributing 1 percent. The total EVM target is the root-sum-square of all three, around 1.7 percent or -35 dB. Each subsystem must hit its budget independently for the system to meet spec. RTSA Suite PRO breaks out per-subsystem contributions during EVM measurements, so the analyst sees which budget is being violated when EVM drifts.</p>
+</div>
+
+<h2>9.4 Dynamic Range: SFDR, IIP3, and Noise Floor</h2>
+
+<p>Dynamic range is the difference between the strongest and weakest signals that an analyzer can simultaneously distinguish. It has three sub-specifications.</p>
+
+<p><strong>Noise floor.</strong> The bottom of dynamic range. Below this, signals are buried in thermal and quantization noise.</p>
+
+<div class="math-display">$$N_{\text{floor}} = -174 + 10 \log_{10}(\text{RBW}) + \text{NF}_{\text{system}}\,\text{dBm}$$</div>
+
+<p>For a 1 dB system NF and 100 kHz RBW, the noise floor is about -123 dBm. Drop the RBW to 1 kHz and the noise floor drops to -143 dBm. Long FFTs (small RBW) give better sensitivity, at the cost of slower measurements.</p>
+
+<p><strong>Spurious-free dynamic range (SFDR).</strong> The difference between the strongest signal and the strongest spur generated by the analyzer itself. Premium RTSAs achieve 80 to 100 dB SFDR. SFDR is what matters when you have one strong signal and you are looking for weak signals nearby.</p>
+
+<p><strong>Third-order intercept point (IIP3).</strong> A measure of resistance to intermodulation distortion when two strong signals are present. IIP3 is the (extrapolated) input power at which third-order intermod products would equal the input signals in amplitude:</p>
+
+<div class="math-display">$$P_{\text{IM3}} = 3 \cdot P_{\text{input}} - 2 \cdot P_{\text{IIP3}}$$</div>
+
+<p>A typical RTSA front end has IIP3 of +10 to +20 dBm. A 6 dB increase in input causes an 18 dB increase in IM3 products, halving the dynamic range.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-09-01-dynamic-range.svg" style="width:100%;">Figure 9-1</object>
+  <figcaption>Figure 9-1. Dynamic range is bounded by three independent floors: thermal noise (set by NF and RBW), spurious-free dynamic range (analyzer-generated artifacts), and IIP3-driven intermod (a function of input drive). The effective measurement window is whichever is highest at any moment.</figcaption>
+</figure>
+
+<h2>9.5 Measurement Uncertainty Budgets</h2>
+
+<p>Every RF measurement has a number, an uncertainty, and a confidence interval. A measurement of "-47.3 dBm" means nothing without "+/-0.5 dB at 95 percent confidence."</p>
+
+<p>For an absolute power measurement on a SPECTRAN V6 PLUS at 3 GHz:</p>
+
+<table>
+<thead><tr><th>Source</th><th>Value</th><th>Distribution</th><th>Standard uncertainty</th></tr></thead>
+<tbody>
+<tr><td>Reference calibrator</td><td>±0.2 dB</td><td>Normal (k=2)</td><td>0.10 dB</td></tr>
+<tr><td>Frequency response</td><td>±0.5 dB</td><td>Rectangular</td><td>0.29 dB</td></tr>
+<tr><td>Temperature drift</td><td>±0.3 dB</td><td>Rectangular</td><td>0.17 dB</td></tr>
+<tr><td>Cable / connector</td><td>±0.1 dB</td><td>Rectangular</td><td>0.06 dB</td></tr>
+<tr><td>Window correction</td><td>±0.05 dB</td><td>Rectangular</td><td>0.03 dB</td></tr>
+</tbody>
+</table>
+
+<p>Combined standard uncertainty (sum in quadrature):</p>
+
+<div class="math-display">$$u_c = \sqrt{0.10^2 + 0.29^2 + 0.17^2 + 0.06^2 + 0.03^2} = 0.36\,\text{dB}$$</div>
+
+<p>Expanded uncertainty (k=2, 95 percent confidence):</p>
+
+<div class="math-display">$$U = 2 \cdot u_c = 0.72\,\text{dB}$$</div>
+
+<p>So the measurement is reported as -47.3 dBm +/- 0.72 dB at 95 percent confidence. This is the level of rigor that compliance bodies, defense laboratories, and serious R&D groups demand.</p>
+
+<h2>9.6 Calibration Workflows with SPECTRAN V6 PLUS</h2>
+
+<p>A SPECTRAN V6 PLUS arrives from the factory with a multipoint calibration covering the full frequency range and supported reference standards. Periodic recalibration (annually for general work, more often for compliance use) maintains accuracy.</p>
+
+<p><strong>Self-calibration.</strong> The analyzer can run self-tests on power-up: internal noise diodes verify the noise floor, internal frequency references verify the LO chain, and digital correction tables remap any drift.</p>
+
+<p><strong>User calibration.</strong> The user can connect a known reference signal and tune the analyzer's correction tables for their specific use case. RTSA Suite PRO supports this through a guided calibration wizard.</p>
+
+<p><strong>Factory recalibration.</strong> For traceable accuracy, periodic factory recalibration through Aaronia or an authorized lab provides full multipoint calibration with certificate. The certificate documents the accuracy at every calibrated point and references the calibration standards used (often NIST-traceable in the US, PTB-traceable in Germany).</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: Built-in Calibration Tools</h3>
+<p>RTSA Suite PRO ships with image rejection calibration, frequency response calibration, and amplitude calibration wizards. The tools accept user-supplied references and apply corrections that persist across measurement sessions. For users who need traceable accuracy, the wizards produce calibration reports that document the procedure and the resulting uncertainties. Factory calibration sets the baseline, user calibration tightens the spec for specific deployments, and software automates both processes so engineers can focus on the measurement, not the metrology.</p>
+</div>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>Amplitude accuracy comes in two flavors. Absolute (the reading versus true power) is typically plus or minus 1 to 2 dB. Relative (differences between readings) is typically plus or minus 0.1 to 0.3 dB.</li>
+  <li>Frequency accuracy depends on the reference oscillator. Internal TCXO gives a few ppm; an external GPSDO or rubidium gives fractional ppb.</li>
+  <li>Phase noise causes reciprocal mixing, EVM degradation, and limits dynamic range close to strong carriers.</li>
+  <li>Dynamic range has three components: noise floor (NF and RBW), SFDR (analyzer-generated spurs), and IIP3 (intermod from external strong signals).</li>
+  <li>An uncertainty budget enumerates error sources, assigns standard uncertainties, sums in quadrature, and reports an expanded uncertainty at a stated confidence level.</li>
+  <li>Aaronia SPECTRAN V6 PLUS supports factory calibration plus user calibration via RTSA Suite PRO wizards, with optional external 10 MHz reference for ultra-high-accuracy frequency work.</li>
+</ul>
+</div>
+
+<div class="quiz-cta">
+<div class="quiz-cta-num">End-of-Chapter Quiz</div>
+<h3>Check your understanding</h3>
+<p>The Chapter 9 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<a class="quiz-cta-btn" href="quiz-chapter-09.html">Take the interactive quiz &rarr;</a>
+</div>
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 10 covers RTSA form factors, packaging, and environmental engineering. Benchtop, rack-mount, OEM-embedded, portable, and ruggedized RTSAs each fit different deployment patterns. We close with a snapshot of the SPECTRAN V6 PLUS family at a glance: ECO 100XA, PLUS 250XA, PLUS 500XA, and PLUS 2000XA, with their target applications and pricing tiers.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-08.html">&larr; Ch 8. Direction Finding</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-10.html">Ch 10. RTSA Form Factors &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

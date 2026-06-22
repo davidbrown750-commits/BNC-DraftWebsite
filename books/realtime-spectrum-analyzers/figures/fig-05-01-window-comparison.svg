@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <text x="550" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Figure 5-1: Window Function Comparison</text>
+  <text x="550" y="48" text-anchor="middle" font-size="12" fill="#486581">Main lobe width vs sidelobe suppression. The right window is the one that fits your measurement.</text>
+
+  <!-- LEFT panel: Time-domain window shapes -->
+  <rect x="30" y="65" width="500" height="220" fill="#f0f4f8" stroke="#bcccdc" rx="6"/>
+  <text x="280" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#2C3E50">Time-Domain Shapes</text>
+
+  <g transform="translate(60,100)">
+    <!-- Axes -->
+    <line x1="0" y1="160" x2="440" y2="160" stroke="#2C3E50" stroke-width="1"/>
+    <line x1="0" y1="20" x2="0" y2="170" stroke="#2C3E50" stroke-width="1"/>
+    <text x="-5" y="20" text-anchor="end" font-size="10" fill="#486581">1.0</text>
+    <text x="-5" y="160" text-anchor="end" font-size="10" fill="#486581">0</text>
+    <text x="220" y="180" text-anchor="middle" font-size="11" fill="#486581">sample index</text>
+
+    <!-- Rectangular window (red) -->
+    <path d="M 10,160 L 10,30 L 430,30 L 430,160" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <text x="200" y="42" font-size="11" fill="#c0392b" font-weight="600">Rectangular</text>
+
+    <!-- Hann window (blue) -->
+    <path d="M 10,160 Q 70,160 110,80 Q 220,40 330,80 Q 370,160 430,160" fill="none" stroke="#0078B6" stroke-width="2"/>
+    <text x="180" y="105" font-size="11" fill="#0078B6" font-weight="600">Hann</text>
+
+    <!-- Flat-top (green) -->
+    <path d="M 10,160 C 90,160 110,140 130,90 C 160,50 180,40 220,40 C 260,40 280,50 310,90 C 330,140 350,160 430,160" fill="none" stroke="#1b5e20" stroke-width="2"/>
+    <text x="200" y="55" font-size="11" fill="#1b5e20" font-weight="600">Flat-top</text>
+
+    <!-- Blackman-Harris (orange) -->
+    <path d="M 10,160 Q 80,160 130,100 Q 180,55 220,55 Q 260,55 310,100 Q 360,160 430,160" fill="none" stroke="#003D6B" stroke-width="2"/>
+    <text x="180" y="78" font-size="11" fill="#003D6B" font-weight="600">Blackman-Harris</text>
+  </g>
+
+  <!-- RIGHT panel: Frequency response comparison -->
+  <rect x="550" y="65" width="520" height="220" fill="#f0f4f8" stroke="#bcccdc" rx="6"/>
+  <text x="810" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#2C3E50">Frequency Response (log scale)</text>
+
+  <g transform="translate(580,100)">
+    <!-- Axes -->
+    <line x1="0" y1="160" x2="460" y2="160" stroke="#2C3E50" stroke-width="1"/>
+    <line x1="230" y1="20" x2="230" y2="170" stroke="#2C3E50" stroke-width="1"/>
+
+    <!-- Y-axis labels (dB) -->
+    <text x="225" y="20" text-anchor="end" font-size="10" fill="#486581">0 dB</text>
+    <text x="225" y="55" text-anchor="end" font-size="10" fill="#486581">-30</text>
+    <text x="225" y="90" text-anchor="end" font-size="10" fill="#486581">-60</text>
+    <text x="225" y="125" text-anchor="end" font-size="10" fill="#486581">-90</text>
+    <text x="225" y="160" text-anchor="end" font-size="10" fill="#486581">-120</text>
+
+    <!-- X-axis labels (frequency bins) -->
+    <text x="230" y="180" text-anchor="middle" font-size="10" fill="#486581">0</text>
+    <text x="350" y="180" text-anchor="middle" font-size="10" fill="#486581">+5</text>
+    <text x="110" y="180" text-anchor="middle" font-size="10" fill="#486581">-5</text>
+    <text x="240" y="200" text-anchor="middle" font-size="11" fill="#486581">frequency offset (bins)</text>
+
+    <!-- Rectangular: narrow main lobe, sidelobes only -13 dB -->
+    <path d="M 30,160 L 110,160 L 130,140 L 220,38 L 230,20 L 240,38 L 330,140 L 350,160 L 430,160" fill="none" stroke="#c0392b" stroke-width="1.8" opacity="0.85"/>
+    <!-- Rectangular sidelobes -->
+    <line x1="170" y1="160" x2="170" y2="135" stroke="#c0392b" stroke-width="1.2" opacity="0.85"/>
+    <line x1="190" y1="160" x2="190" y2="120" stroke="#c0392b" stroke-width="1.2" opacity="0.85"/>
+    <line x1="290" y1="160" x2="290" y2="120" stroke="#c0392b" stroke-width="1.2" opacity="0.85"/>
+    <line x1="310" y1="160" x2="310" y2="135" stroke="#c0392b" stroke-width="1.2" opacity="0.85"/>
+
+    <!-- Hann: wider main lobe, sidelobes -32 dB -->
+    <path d="M 30,160 L 130,160 L 200,80 L 230,20 L 260,80 L 330,160 L 430,160" fill="none" stroke="#0078B6" stroke-width="1.8" opacity="0.85"/>
+    <line x1="170" y1="160" x2="170" y2="100" stroke="#0078B6" stroke-width="1" opacity="0.85"/>
+    <line x1="290" y1="160" x2="290" y2="100" stroke="#0078B6" stroke-width="1" opacity="0.85"/>
+
+    <!-- Flat-top: very wide main lobe, sidelobes -88 dB -->
+    <path d="M 30,160 L 90,160 L 165,100 L 195,20 L 230,15 L 265,20 L 295,100 L 370,160 L 430,160" fill="none" stroke="#1b5e20" stroke-width="1.8" opacity="0.85"/>
+
+    <!-- Blackman-Harris: wide main lobe, very low sidelobes -->
+    <path d="M 30,160 L 150,160 L 200,80 L 220,40 L 230,30 L 240,40 L 260,80 L 310,160 L 430,160" fill="none" stroke="#003D6B" stroke-width="1.8" opacity="0.85"/>
+  </g>
+
+  <!-- BOTTOM: Comparison table -->
+  <g transform="translate(60,320)">
+    <text x="0" y="0" font-size="14" font-weight="700" fill="#003D6B">Pick by use case:</text>
+
+    <rect x="0" y="20" width="230" height="180" fill="#fff" stroke="#c0392b" stroke-width="2" rx="4"/>
+    <text x="115" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#c0392b">Rectangular</text>
+    <text x="10" y="65" font-size="11" fill="#2C3E50">Main lobe: narrowest (0.89 bins)</text>
+    <text x="10" y="82" font-size="11" fill="#2C3E50">Sidelobes: -13 dB only</text>
+    <text x="10" y="100" font-size="11" fill="#c0392b" font-weight="600">Use: rare; only when tones</text>
+    <text x="10" y="115" font-size="11" fill="#c0392b" font-weight="600">align exactly with bins</text>
+
+    <rect x="245" y="20" width="230" height="180" fill="#fff" stroke="#0078B6" stroke-width="2" rx="4"/>
+    <text x="360" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#0078B6">Hann</text>
+    <text x="255" y="65" font-size="11" fill="#2C3E50">Main lobe: 1.44 bins</text>
+    <text x="255" y="82" font-size="11" fill="#2C3E50">Sidelobes: -32 dB</text>
+    <text x="255" y="100" font-size="11" fill="#0078B6" font-weight="600">Use: general-purpose</text>
+    <text x="255" y="115" font-size="11" fill="#0078B6" font-weight="600">spectrum monitoring</text>
+
+    <rect x="490" y="20" width="230" height="180" fill="#fff" stroke="#1b5e20" stroke-width="2" rx="4"/>
+    <text x="605" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#1b5e20">Flat-top</text>
+    <text x="500" y="65" font-size="11" fill="#2C3E50">Main lobe: 3.86 bins (wide)</text>
+    <text x="500" y="82" font-size="11" fill="#2C3E50">Sidelobes: -88 dB</text>
+    <text x="500" y="100" font-size="11" fill="#1b5e20" font-weight="600">Use: amplitude accuracy</text>
+    <text x="500" y="115" font-size="11" fill="#1b5e20" font-weight="600">(scalloping &lt; 0.01 dB)</text>
+
+    <rect x="735" y="20" width="245" height="180" fill="#fff" stroke="#003D6B" stroke-width="2" rx="4"/>
+    <text x="857" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#003D6B">Blackman-Harris</text>
+    <text x="745" y="65" font-size="11" fill="#2C3E50">Main lobe: 1.90 bins</text>
+    <text x="745" y="82" font-size="11" fill="#2C3E50">Sidelobes: -92 dB</text>
+    <text x="745" y="100" font-size="11" fill="#003D6B" font-weight="600">Use: extreme dynamic range,</text>
+    <text x="745" y="115" font-size="11" fill="#003D6B" font-weight="600">weak signals near strong ones</text>
+  </g>
+</svg>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 13 Quiz &mdash; Defense and Aerospace RF</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 13 &middot; Quiz</p>
+      <h1>Defense and Aerospace RF</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="13-defense-aerospace-rf.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="14-careers-standards-future.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "13",
+    title: "Chapter 13 Quiz: Defense and Aerospace RF",
+    questions: [
+      {
+        q: "In a pulsed radar, an echo returns after a delay t. Which relationship gives the target's range, and why the factor of two?",
+        options: [
+          "R = c x t; no factor is needed because the path is one way",
+          "R = c x t / 2; the factor of two is there because the measured time covers the wave traveling out and back, so the one-way distance is half of c x t",
+          "R = 2 x c x t; the wave travels the distance twice in each direction",
+          "R = c / t; range is inversely proportional to delay"
+        ],
+        answer: 1,
+        explain: "R = c x t / 2: the echo delay is round trip, so one-way range is half of c x t."
+      },
+      {
+        q: "Why does a short transmit pulse give better range resolution, and how does pulse compression avoid the resolution-versus-range tradeoff?",
+        options: [
+          "A long pulse resolves closer targets; pulse compression lengthens the echo",
+          "A shorter pulse resolves closer targets (R_res = c x tau / 2) but carries little energy, limiting range; pulse compression transmits a long modulated chirp and compresses the echo in processing, keeping the long pulse's energy while recovering a short pulse's resolution",
+          "Resolution does not depend on pulse width; compression only saves power",
+          "Pulse compression widens the pulse to improve detection at the cost of resolution"
+        ],
+        answer: 1,
+        explain: "Short pulses resolve close targets but lack energy; pulse compression chirps a long pulse then compresses the echo to get both."
+      },
+      {
+        q: "What are the three mission areas of electronic warfare, and what does each do?",
+        options: [
+          "Detect, decide, deliver: a generic command cycle",
+          "Electronic support (ES) detects, intercepts, locates, and identifies emitters; electronic attack (EA) jams, deceives, or spoofs to deny spectrum use; electronic protection (EP) keeps friendly systems working under attack",
+          "Encryption, encoding, and emission: the three signal stages",
+          "Early warning, engagement, and escape: a tactical sequence"
+        ],
+        answer: 1,
+        explain: "EW splits into ES (detect/identify), EA (jam/deceive/deny), and EP (protect friendly systems)."
+      },
+      {
+        q: "What is the basic distinction between COMINT and ELINT in signals intelligence?",
+        options: [
+          "COMINT handles radar; ELINT handles voice and data",
+          "COMINT handles message-bearing signals (voice or data, involving demodulation and decoding); ELINT handles non-message signals, mainly radar, characterized by parameters such as frequency, pulse width, and pulse repetition interval",
+          "COMINT and ELINT are two names for the same activity",
+          "COMINT is civilian; ELINT is the same thing for the military"
+        ],
+        answer: 1,
+        explain: "COMINT works message-bearing signals (demodulate/decode); ELINT works non-message radar emissions by technical parameters."
+      },
+      {
+        q: "Why do counter-UAS systems combine several sensors, and what advantage does passive RF detection have over radar?",
+        options: [
+          "Combining sensors is only for redundancy; passive RF is cheaper than radar",
+          "No single sensor is reliable alone (radar confuses small drones with clutter, cameras need visibility, acoustic is short range, RF fails against a silent drone), so sensors cover each other's blind spots; passive RF does not transmit, revealing nothing about its own position and often detecting a drone the moment its control link powers up",
+          "Sensors are combined to save power; passive RF detects only at night",
+          "Combining sensors is required by regulation; passive RF works only against jets"
+        ],
+        answer: 1,
+        explain: "Each sensor has blind spots, so they are fused; passive RF stays silent and can catch a drone as soon as its control link powers up."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

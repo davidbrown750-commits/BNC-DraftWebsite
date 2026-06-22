@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 470" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="470" fill="#ffffff"/>
+  <text x="410" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#003D6B">Pulsed LFM Radar Scenario from an AWG</text>
+
+  <!-- ============ PANEL 1: pulse train (PRI / pulse width) ============ -->
+  <text x="60" y="60" font-size="13" font-weight="bold" fill="#003D6B">Pulse Train</text>
+  <text x="760" y="60" font-size="11" text-anchor="end" fill="#2C3E50">amplitude vs time</text>
+  <line x1="60" y1="150" x2="780" y2="150" stroke="#2C3E50" stroke-width="1"/>
+  <line x1="60" y1="80" x2="60" y2="160" stroke="#2C3E50" stroke-width="1"/>
+  <text x="48" y="152" font-size="10" text-anchor="end" fill="#2C3E50">t</text>
+  <!-- two RF-filled pulses (envelopes) -->
+  <path d="M60,150 L170,150 L170,92 L300,92 L300,150 L470,150 L470,92 L600,92 L600,150 L780,150"
+        fill="none" stroke="#003D6B" stroke-width="1.8"/>
+  <!-- pulse width marker -->
+  <line x1="170" y1="78" x2="300" y2="78" stroke="#C77E00" stroke-width="1"/>
+  <line x1="170" y1="74" x2="170" y2="92" stroke="#C77E00" stroke-width="1"/>
+  <line x1="300" y1="74" x2="300" y2="92" stroke="#C77E00" stroke-width="1"/>
+  <text x="235" y="73" text-anchor="middle" font-size="10" fill="#C77E00">pulse width (PW) tau</text>
+  <!-- PRI marker -->
+  <line x1="170" y1="170" x2="470" y2="170" stroke="#4B2A6B" stroke-width="1"/>
+  <line x1="170" y1="166" x2="170" y2="174" stroke="#4B2A6B" stroke-width="1"/>
+  <line x1="470" y1="166" x2="470" y2="174" stroke="#4B2A6B" stroke-width="1"/>
+  <text x="320" y="185" text-anchor="middle" font-size="10" fill="#4B2A6B">pulse repetition interval (PRI) = 1 / PRF</text>
+  <text x="64" y="200" font-size="10" fill="#2C3E50">duty cycle = tau / PRI sets average power and receiver dwell</text>
+
+  <!-- ============ PANEL 2: zoom into one pulse, showing chirp ============ -->
+  <text x="60" y="248" font-size="13" font-weight="bold" fill="#003D6B">Inside One Pulse: Linear FM Chirp</text>
+  <text x="760" y="248" font-size="11" text-anchor="end" fill="#2C3E50">instantaneous frequency rises across tau</text>
+  <!-- dashed lines connecting zoom -->
+  <line x1="170" y1="92" x2="120" y2="270" stroke="#b6c2cc" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="300" y1="92" x2="720" y2="270" stroke="#b6c2cc" stroke-width="1" stroke-dasharray="3 3"/>
+  <!-- zoom box -->
+  <rect x="120" y="270" width="600" height="120" fill="#ffffff" stroke="#ECEFF1" stroke-width="1"/>
+  <line x1="120" y1="330" x2="720" y2="330" stroke="#2C3E50" stroke-width="1"/>
+  <!-- chirp waveform: frequency increasing left to right -->
+  <path d="M120,330 L132,302 L146,358 L162,300 L180,360 L200,300 L220,360 L240,302 L258,358 L274,305 L288,355
+           L300,308 L311,352 L321,310 L330,350 L338,312 L346,348 L353,314 L360,346 L366,316 L372,344 L378,317
+           L384,343 L389,318 L394,342 L399,319 L404,341 L408,320 L412,340 L416,321 L420,339 L424,322 L428,338
+           L431,323 L434,337 L437,323 L440,337 L443,324 L446,336 L449,324 L452,336 L455,325 L458,335 L461,325
+           L464,335 L467,326 L470,334 L473,326 L476,334 L479,326 L482,334 L485,327 L488,333 L491,327 L494,333
+           L497,327 L500,333 L503,327 L506,333 L509,328 L512,332 L515,328 L518,332 L521,328 L524,332 L527,328
+           L530,332 L533,328 L536,332 L539,329 L542,331 L545,329 L548,331 L551,329 L554,331 L557,329 L560,331
+           L563,329 L566,331 L569,330 L572,331 L575,330 L578,330 L720,330"
+        fill="none" stroke="#0078B6" stroke-width="1.3"/>
+  <!-- rising-frequency arrow -->
+  <line x1="180" y1="284" x2="660" y2="284" stroke="#C77E00" stroke-width="1" stroke-dasharray="4 3"/>
+  <polygon points="660,284 650,280 650,288" fill="#C77E00"/>
+  <text x="300" y="280" font-size="10" fill="#C77E00">f0 to f0 + B (chirp bandwidth B)</text>
+  <text x="126" y="384" font-size="10" fill="#2C3E50">deep memory + wide bandwidth let one AWG synthesize the full pulse, chirp and all</text>
+
+  <!-- footer note -->
+  <text x="410" y="430" text-anchor="middle" font-size="11" fill="#4B2A6B">Pulse compression gain depends on the time-bandwidth product tau x B, which the AWG sets directly in the sample data.</text>
+  <text x="410" y="452" text-anchor="middle" font-size="10" fill="#2C3E50">Multiple emitters are built by interleaving several such pulse trains, each with its own PRI, frequency, and arrival time.</text>
+</svg>

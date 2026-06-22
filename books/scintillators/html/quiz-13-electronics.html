@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 13 Quiz: Detector Electronics</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 13 · Quiz</p>
+      <h1>Detector Electronics</h1>
+      <p class="sub">Five multiple-choice questions. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~10 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Auto-scored</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="13-electronics.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="14-nuclear-renaissance.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it with a pen too.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "scintillator",
+    chapterKey: "13",
+    title: "Chapter 13 Quiz: Detector Electronics",
+    questions: [
+      {
+        q: "Why is negative high voltage at the photocathode the dominant configuration for new PMT-based detectors?",
+        options: [
+          "The signal output sits at ground, simplifying connection and enabling DC-coupled current-mode operation",
+          "It doubles the PMT gain",
+          "It eliminates the need for a voltage divider",
+          "It lets the PMT run without a photocathode"
+        ],
+        answer: 0,
+        explain: "Grounded output removes the need for high-voltage AC coupling capacitors at the signal output."
+      },
+      {
+        q: "At very high count rates, why does a standard resistive voltage divider become inadequate?",
+        options: [
+          "Average current exceeds the standing current, sagging dynode voltages and dropping gain non-linearly",
+          "The resistors overheat and open the circuit",
+          "The divider reverses polarity at high rate",
+          "It produces too much dark current"
+        ],
+        answer: 0,
+        explain: "The remedy is heavier late-stage bypass capacitance or an active divider that regulates dynode voltages."
+      },
+      {
+        q: "What is the role of a charge-sensitive preamplifier in a spectroscopy chain?",
+        options: [
+          "It integrates input charge on a feedback capacitor, giving a voltage step proportional to total pulse charge",
+          "It generates the high voltage for the PMT",
+          "It discriminates neutrons from gammas",
+          "It cools the front-end electronics"
+        ],
+        answer: 0,
+        explain: "The CSP preserves pulse-height information accurately for the downstream amplifier or DPP."
+      },
+      {
+        q: "Which is a specific advantage of digital pulse processing over analog processing?",
+        options: [
+          "Pile-up deconvolution and per-event pulse-shape discrimination",
+          "Lower power consumption in every case",
+          "Elimination of the preamplifier",
+          "Immunity to temperature drift without calibration"
+        ],
+        answer: 0,
+        explain: "DPP also enables optimal filtering, list-mode acquisition, and firmware gain correction and stabilization."
+      },
+      {
+        q: "What feature of modern detector electronics enables coincidence analysis across kilometer baselines?",
+        options: [
+          "Nanosecond-or-better timestamping with clock sync via PTP, GPS-disciplined oscillators, or atomic clocks",
+          "Higher PMT gain",
+          "Larger crystals",
+          "Faster scintillator decay times alone"
+        ],
+        answer: 0,
+        explain: "Distributed clock synchronization lets separated detectors correlate events to nanosecond precision."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

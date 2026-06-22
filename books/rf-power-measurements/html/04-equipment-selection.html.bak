@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 4: Equipment Selection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1 id="section-2-making-power-measurements">Section 2: Making Power Measurements</h1>
+<figure>
+<img src="../figures/section-2-opener.svg" alt="" /><figcaption>Section 2 — Making Measurements</figcaption>
+</figure>
+<blockquote>
+<p><em>Theory survives contact with a signal source. Barely.</em></p>
+</blockquote>
+<p>Knowing how sensors work is half the battle. Setting them up, calibrating them, triggering them, and interpreting what they report is the other half. This section walks through the working life of a power measurement from equipment selection through accuracy estimation. It is the longest section in the book because it is where the real engineering happens.</p>
+<hr />
+<h2 id="chapter-4-equipment-selection">Chapter 4: Equipment Selection</h2>
+<figure>
+<img src="../figures/chapter-04-opener.svg" alt="" /><figcaption>Chapter 4 — Equipment Selection</figcaption>
+</figure>
+<p>RF power measurement can be straightforward when the signal is simple, but the moment frequency, amplitude, or modulation get complicated, the equipment choice starts to matter. This chapter walks through the most common measurement options and shows how to align an application with the equipment available today.</p>
+<h3 id="choosing-the-right-power-meter">4.1 Choosing the Right Power Meter</h3>
+<p>You need to measure power. The first question is: what does your signal look like? A small amount of information about the signal is paramount to selecting the correct equipment.</p>
+<p><strong>Signal characteristics to nail down before you shop:</strong></p>
+<ul>
+<li><strong>Frequency range.</strong> Minimum and maximum carrier frequency. Be honest about both ends. A signal generator that nominally outputs at 10 GHz may have spurs at 100 MHz that you also care about.</li>
+<li><strong>Video bandwidth.</strong> Narrowband or wideband modulation? A 5G NR carrier needs more video bandwidth than a CW signal.</li>
+<li><strong>Risetime requirement.</strong> How fast does your pulse rise? This determines whether a peak sensor is fast enough to honestly capture the leading edge.</li>
+<li><strong>Dynamic range.</strong> What is the minimum and maximum expected power level? Include peak excursions of modulated signals, not just the steady-state mean.</li>
+<li><strong>Modulation.</strong> CW, pulse, analog modulation, digital modulation, or some combination?</li>
+<li><strong>Connection.</strong> Connector type, coaxial or waveguide, gendered correctly for your fixturing.</li>
+<li><strong>Impedance.</strong> 50 ohm, or something else? Most RF systems are 50 ohm. Most TV / video systems are 75 ohm. Custom impedances exist in research labs.</li>
+</ul>
+<p><strong>Measurement parameters to specify:</strong></p>
+<ul>
+<li>Power only, or do you also need spectral information?</li>
+<li>Average power only? (Pulse power can be computed from duty cycle if the pulse shape is known.)</li>
+<li>Limited peak information, such as peak-to-average ratio?</li>
+<li>Full time-domain measurements, including pulse profiling?</li>
+<li>Statistical power analysis (CCDF, PDF)?</li>
+</ul>
+<p>For simple CW signals, there is a wide choice of solutions. A CW power meter is usually the most economical, and it can measure average power easily and accurately. If the signal is modulated, a CW power meter can still be a reasonable choice as long as a suitable power sensor is paired with it. The first step in sensor selection is to find sensors compatible with the primary characteristics of the signal: minimum and maximum power levels, carrier frequency, and source impedance. The next section of this guide covers sensor selection in detail.</p>
+<p>The chief limitation of a power meter is that it yields only amplitude information. When spectral information is also required, other instruments may be more appropriate. Vector signal analyzers, spectrum analyzers, and measurement receivers all perform amplitude measurement while yielding information about the spectral distribution of the signal.</p>
+<p>None of those three are true power meters. They generally measure narrowband voltage amplitude rather than broadband power amplitude (heating effect). For some applications, narrowband measurement is preferable. These instruments often perform a swept measurement across a frequency band, and the sweep can miss occasional signal events that generate power peaks at specific frequencies. This happens when the analyzer’s swept filter is not aligned with the center frequency of the peak power event at the precise instant it occurs. The trade-offs between power meters and spectrum analyzers are covered in detail later in this chapter.</p>
+<p>The average power of a modulated signal can be measured by a CW or average-responding power meter with a suitable sensor. If the user needs peak information, or if the signal has a high peak-to-average ratio, a peak power meter is often a better choice. Peak power meters have several capabilities that must be aligned with the signal and application to deliver accurate measurements. Of chief importance is video bandwidth, discussed in Chapter 3. The sensor and meter must both have sufficient video bandwidth for the signal, or modulation-induced power errors will occur.</p>
+<p>Peak power meters nearly always measure average and peak power simultaneously, and usually provide the ratio between the two. Most can perform triggered waveform acquisition and pulse profiling in some form. The most advanced models offer detailed waveform analysis, sub-nanosecond time resolution, and statistical power information.</p>
+<p>Whether peak power information is necessary for modulated measurements is usually an application question. For simple go/no-go tests in which a device is being compared to a known-good reading, an average power measurement is often sufficient. The reading indicates that the device under test has an RF output at about the level expected, so it is likely functional. When trying to quantify performance parameters, however, it often becomes necessary to measure peak power parameters or perform pulse profiling.</p>
+<p>For pulse signals such as radar, average power meters were the traditional choice for decades. If the pulse is close to rectangular, its duty cycle is accurately known, and there is minimal signal bleed and noise during the off interval, a simple duty-cycle correction can yield the pulse power. In many cases those constraints cannot be guaranteed, and the waveform shape must be monitored, traditionally with an oscilloscope and crystal detector, to confirm that the pulse looks the way it is supposed to look.</p>
+<p>In those cases a peak power meter is often a more economical solution. Most can measure and display pulse waveforms with high accuracy, providing average power, pulse power, and pulse shape. More advanced instruments measure pulse parameters such as risetime, width, overshoot, and droop. Section 7.1 includes a discussion of using peak power meters for pulse measurements.</p>
+<p>The need for peak measurement has expanded as digital modulation has filled the wireless arena. These signals have high peak-to-average ratios, with the highest peaks occurring relatively infrequently. This makes amplifier headroom an important parameter, since clipping the peaks results in data loss. Because clipped peaks happen rarely, their impact on the average power can be small, which makes compression hard to detect with average-only measurement.</p>
+<p>A peak power meter measures the average power accurately and continuously measures the instantaneous power. Compression or clipping of infrequent peaks shows up as a reduction in peak power and peak-to-average ratio. Statistical methods can then quantify the impact of peak compression on the signal and help predict the system’s bit error rate. Statistical amplifier testing is discussed in Section 8.3.</p>
+<blockquote>
+<p><strong>Pro tip.</strong> Buy the sensor, test the software. A beautiful sensor with an ugly driver is a miserable purchase.</p>
+</blockquote>
+<h3 id="choosing-an-rf-power-sensor">4.2 Choosing an RF Power Sensor</h3>
+<p>The absolute or relative power of CW signals can be accurately measured using CW diode sensors, average-responding (stacked or multipath) diode sensors, thermal sensors, or peak power sensors. Which device you choose depends mainly on the power level and modulation characteristics of the signal, plus the measurement values you need to extract. Sensor technologies are covered in Chapter 2.</p>
+<p><strong>Connector first.</strong> The first practical question is how the sensor must connect to the source being measured. Below 18 GHz, nearly all power sensors use a coaxial Type-N connector. SMA shows up on some lower-cost or smaller-form-factor sensors. As frequencies increase, smaller coaxial connectors are used: 3.5 mm, 2.92 mm, 2.4 mm, and 1.85 mm are common, providing measurements above 60 GHz. Waveguide is another option from below 20 GHz to more than 100 GHz. Waveguide sensors are relatively narrow band (less than one octave), so it is important to match the sensor to the frequency band. They are more difficult to calibrate and are generally limited to CW or average power measurements.</p>
+<p><strong>CW Diode Sensors.</strong> If the signal is always unmodulated, or if the power level never exceeds the square-law threshold for diode detectors (about -20 dBm), a CW diode sensor is an excellent choice. It gives wide dynamic range, wide RF bandwidth, and true-average power detection in a small package.</p>
+<p>CW diode sensors use high-frequency semiconductor diodes to detect the RF voltage developed across a terminating load resistor. Dual diodes are typically used to detect both the positive and negative carrier cycles, making the sensor symmetrical and relatively insensitive to even harmonics.</p>
+<p>CW diode sensors typically offer a lower measurement limit of about -70 dBm, and can measure a maximum CW power of about +20 dBm before overloading. An integrated attenuator ahead of the detector is sometimes used to shift this range to higher power levels. CW diode sensors are relatively fast, with response speeds in the millisecond range at higher power levels. As the input power falls, response must slow considerably (via filtering) to yield useful results: typically around a second at -60 dBm, and longer to reach -70 dBm.</p>
+<p><strong>Thermal Power Sensors.</strong> For modulated signals with peaks exceeding -20 dBm, several options exist. Thermal sensors respond to the average power of any signal, CW or modulated. Their chief drawback is that they lack the sensitivity of diode sensors. The lower measurement limit rarely extends below -30 dBm, with a maximum average power limit around +20 dBm. They handle a fairly large crest factor and can tolerate peaks well in excess of the average power rating if the pulse width and duty cycle are short. Response speed is slower than a diode sensor: 50 ms or so at the highest power levels, and one second or longer below -20 dBm.</p>
+<p><strong>Multipath Diode Sensors.</strong> Multipath diode sensors integrate multiple diode detectors and attenuating power splitters into a single calibrated unit. They operate two or three pairs of detectors and select the output of whichever pair is operating in its square-law region. This extends the true-average response of the diode sensor to much higher power levels. The result is a device that offers nearly the dynamic range of a CW diode sensor and close to the averaging accuracy of a thermal sensor. Drawbacks include cost, slow response, occasional noise at certain power levels, and complications from frequency and temperature correction differences between detector pairs. Modern software techniques minimize the last two issues. The Berkeley Nucleonics Model 12100 series uses a thermally stabilized two-path multipath architecture that delivers true-RMS readings across more than 80 dB of dynamic range without zeroing or pre-use calibration.</p>
+<p><strong>Peak Power Sensors.</strong> Peak power sensors offer dynamic range between thermal and CW diode sensors, but with extremely fast response speeds (microseconds or less). As long as this response speed (called video bandwidth, discussed in Chapter 3) is adequate, the peak sensor’s detector can faithfully follow the signal’s envelope modulation. The output is then accurately linearized and averaged by a high-speed sampler with suitable software processing. Because peak sensors continuously yield instantaneous power, a peak power meter delivers more than the average. Burst (time-gated) power, full waveform reconstruction, pulse profile and timing, peak power, and statistical power analysis are some of the more common measurements provided.</p>
+<blockquote>
+<p><strong>Engineer’s corner.</strong> A common mistake is buying a peak sensor purely on rise-time bragging rights. If your application is communications average power, the 12100 family of true-RMS sensors will deliver more useful, more accurate, more repeatable numbers than a faster peak sensor running in average mode. Match the tool to the question.</p>
+</blockquote>
+<h3 id="selecting-a-measurement-mode">4.3 Selecting a Measurement Mode</h3>
+<p>Some power meters handle only specific sensor types. Others offer considerable flexibility. Sensors are paired with measurement modes that align with their capabilities.</p>
+<p><strong>CW or Continuous Mode.</strong> The basic continuous or free-run mode used for CW power sensors. It returns the average power of a CW signal, and will also return the average power of a modulated signal when paired with a thermal sensor or with a diode sensor operated within its square-law region.</p>
+<p><strong>Modulated Mode.</strong> A more advanced continuous or free-run mode. Similar to CW mode, but also returns limited peak information (peak, minimum, peak-to-average ratio, and dynamic range) when a peak power sensor is used. Some peak meters call this “free-run” mode.</p>
+<p><strong>Triggered or Pulse Mode.</strong> Limited to peak power sensors. Typically includes full pulse profiling and time-domain measurements. A signal waveform is usually displayed, and the user can select specific time intervals on the waveform to measure.</p>
+<p><strong>Statistical Mode.</strong> Limited to peak power sensors. Returns information about the signal’s statistical power distribution. Sometimes implemented as part of Modulated mode (continuous statistical information) or as part of Pulse mode (synchronous or gated statistical information).</p>
+<figure>
+<img src="../figures/image47.png" alt="Measurement modes: continuous, pulse-triggered, and statistical CCDF views" /><figcaption>Figure 4.3.1 Measurement modes: continuous, pulse-triggered, and statistical CCDF views.</figcaption>
+</figure>
+<p>Measurement modes are covered in more detail in Chapter 6. The following selection guide is a starting point.</p>
+<p><strong>Choose a CW Diode Sensor in CW Mode when:</strong></p>
+<ul>
+<li>The signal is at a low power level, below about -40 dBm.</li>
+<li>The signal is CW, an unmodulated RF carrier.</li>
+<li>You need the average power of a modulated signal whose peaks do not exceed the square-law threshold (about -20 dBm).</li>
+</ul>
+<p><strong>Choose a Thermal Sensor in CW Mode when:</strong></p>
+<ul>
+<li>The signal is CW or modulated and has an average power level above about -20 dBm.</li>
+<li>The signal contains a close-to-ideal pulse waveform with narrow duty cycle and peaks that would overload the square-law range of a CW diode or multipath diode sensor.</li>
+</ul>
+<p><strong>Choose a Multipath (true-RMS) Sensor in Modulated Mode when:</strong></p>
+<ul>
+<li>You want true-RMS average power on any modulation, regardless of crest factor.</li>
+<li>The signal includes 5G NR, LTE, OFDM, CDMA, multi-tone, or any other modulation with a high or variable peak-to-average ratio.</li>
+<li>You need long-term stability without zeroing interruptions.</li>
+</ul>
+<p><strong>Choose a Peak Power Sensor in Modulated Mode when:</strong></p>
+<ul>
+<li>The signal has moderate power, above about -40 dBm.</li>
+<li>The signal is continuously modulated with a video bandwidth less than about 165 MHz.</li>
+<li>Modulation may be periodic, but only non-synchronous measurements are required (overall average and peak).</li>
+<li>Noise-like digitally modulated signals, such as CDMA or OFDM, when only average and peak measurements are required. Use Statistical Mode if peak probability information is needed.</li>
+</ul>
+<p><strong>Choose a Peak Power Sensor in Pulse Mode when:</strong></p>
+<ul>
+<li>Periodic or pulse waveforms with pulse power above about -40 dBm. Pulses can be any shape.</li>
+<li>Bursted signals that need power measurement synchronized with the modulation.</li>
+<li>Any time-domain power profile or time-gated measurement.</li>
+</ul>
+<p><strong>Choose a Peak Power Sensor in Statistical Mode when:</strong></p>
+<ul>
+<li>The signal is at moderate power, above about -40 dBm.</li>
+<li>The signal is noise-like digital modulation (CDMA, OFDM, 5G NR) and probability information is helpful.</li>
+<li>The signal is modulated with random, infrequent peaks, and you need to know peak probability.</li>
+</ul>
+<h3 id="measuring-complex-modulated-rf-signals-power-meters-versus-spectrum-analyzers">4.4 Measuring Complex Modulated RF Signals: Power Meters Versus Spectrum Analyzers</h3>
+<p>A number of RF and microwave amplitude-measuring instruments have been developed for wireless communications, cellular and mobile radio, and commercial and government / military radar. For simplicity, divide them into two categories: tuned and broadband.</p>
+<p>A broadband or untuned power measurement uses a simple combination of a power detector and a display or recording instrument. A tuned measurement is performed by a super-heterodyne, receiver-type circuit consisting of an input amplifier or attenuator, local oscillator, mixer, IF filters and amplifiers, and a power detector or digitizing system. The basic receiver blocks combine to make spectrum analyzers, microwave receivers, vector signal analyzers (VSAs), and cellular radio test sets.</p>
+<p>For speed and accuracy over wide bandwidth, the power detector / recording instrument combination (the power sensor / meter pair) provides either average or modulated carrier power at the input to the sensor. Recent sensor advances combined with improved DSP let the power sensor / meter combination quickly and accurately measure parameters including average power, peak and peak-to-average ratio, and time-domain profiles of complex digital modulation formats. The power sensor / meter has no frequency selectivity, but newer instruments can provide time-slotted measurements and rich color displays for waveform inspection.</p>
+<p>For fast rise time and wide-video-bandwidth peak measurements, the RF / microwave diode detector is often the best choice. Diode detectors also excel where high sensitivity and wide dynamic range are required. Thermistor (bolometer) and thermocouple detectors provide accurate true-average power measurements of CW and wideband signals, particularly for calibration applications.</p>
+<p>Unlike power meters, super-heterodyne instruments such as spectrum analyzers offer frequency selectivity with limited bandwidth. They are designed to perform relatively narrow-band power measurements with emphasis on the spectral power distribution. Recent progress in high-speed digitizing and DSP has improved analyzer accuracy and functionality for digitally modulated signals. Some of the latest analyzers also provide time-domain and statistical power analysis.</p>
+<h4 id="uncertainty-and-error-sources">Uncertainty and Error Sources</h4>
+<p>There are many sources of error and uncertainty when measuring the power of any RF signal. The wide bandwidth and dynamic range of complex modulated signals further complicate the picture. For CW signals, RF power meters are the accepted standard for accurate power measurement. The choice is less clear once modulation is added. There is a temptation to reach for a spectrum analyzer for its frequency-domain visibility, but in addition to higher cost there are trade-offs that often reduce measurement accuracy.</p>
+<p>Items that contribute to error in the RF peak power meter include signal source mismatch, power reference and detector nonlinearity, calibration factor uncertainty, and instrument noise and drift. Source mismatch errors arise from impedance variation between the RF source and the sensor input. For most measurements, mismatch is the single largest source of error, and maintaining the best possible match between source and sensor improves accuracy.</p>
+<figure>
+<img src="../figures/fig-4-4-1-dual-diode-sensor.svg" alt="Dual-diode RF power sensor in full-wave rectifying configuration" /><figcaption>Figure 4.4.1 Dual-diode RF power sensor in a full-wave rectifying configuration.</figcaption>
+</figure>
+<p>Sensor linearity is the next largest source of error for diode-based sensors used at wide bandwidth and high dynamic range. Two diodes in a full-wave rectifying arrangement improve sensor linearity. For signals below -20 dBm down to the noise floor, the diode circuit has a linear response and requires minimal correction. Above -20 dBm the sensor must use linearity correction to compensate for diode nonlinearity. Linearity correction tables are typically programmed into the sensor at factory calibration and let the instrument display the correct power reading even when the underlying diode response is not perfectly linear.</p>
+<p>To correct for small sensor and meter response changes at the time of measurement, most high-quality power meters include a built-in traceable calibration source, often a 1 mW, 50 MHz reference. Power sensor calibration is covered in Chapter 5. The combination of factory and field calibration generally gives the best correction for sensor nonlinearities across the entire dynamic range.</p>
+<figure>
+<img src="../figures/image54.jpeg" alt="Typical front-end of a superheterodyne spectrum analyzer" /><figcaption>Figure 4.4.2 Typical front-end of a superheterodyne spectrum analyzer.</figcaption>
+</figure>
+<p>A basic analog spectrum analyzer includes a power detector and measurement circuitry, but a spectrum analyzer also requires many additional components for frequency selectivity. Variable input attenuators, oscillators, mixers, filters, and amplifiers all contribute to the uncertainty of the power measurement. Modern spectrum analyzers reduce errors by performing some of these functions digitally.</p>
+<p>The incoming RF signal is usually applied to a wideband variable input attenuator to reduce its amplitude to an acceptable level for the mixer. Variable or step attenuators rarely achieve excellent RF matching over a wide frequency range, so mismatch error is the first uncertainty seen by the incoming signal. The attenuator is calibrated for attenuation versus frequency at each setting, but uncertainty remains.</p>
+<p>Additional uncertainty arises when switching between attenuator settings, since each setting presents a different input impedance to the source. This produces a mismatch loss that is different for each setting. The mismatch losses are calibrated out only if the complex source impedance of the signal being measured is the same as that of the calibration signal used during attenuator characterization. Real-world sources rarely match the calibration source exactly, so the actual mismatch loss at each attenuation setting differs from the stored calibration value, and the power reading shifts each time the attenuator range changes.</p>
+<p>Power meters do not have a narrow-dynamic-range mixer and do not require a step-attenuator input. The RF source is applied to the power detector (and its built-in precision termination) directly, or through a single fixed attenuator. In addition to maintaining a very good match across a wide frequency range by removing the attenuator switching circuitry, the power sensor presents a fixed termination to the RF source. While this does not eliminate mismatch loss, the loss remains constant over the full dynamic range of the signal, which greatly improves measurement linearity.</p>
+<p>Power meters have additional accuracy benefits because they have no heterodyne stage. The local oscillator, mixer, and filter all contribute to spectrum-analyzer measurement uncertainty. The mixer is a nonlinear device, and like a diode detector, its transfer function must be carefully characterized for frequency, amplitude, and temperature. Typical mixers have poor RF match. Because the mixer is isolated from the RF source by the input attenuator, the poor match is only “seen” by the source at the analyzer’s most sensitive setting, but the LO, IF, and detector stages must each be characterized as well.</p>
+<p>For the classic spectrum analyzer, the input attenuator, multiple frequency bands, local oscillators, mixers, IF amplifiers and filters (including the resolution-bandwidth filter) are all analog components and contribute to uncertainty. Modern instruments implement some of these stages digitally, which reduces uncertainty. Newer digital analyzers eliminate some LO and mixer issues but add ADC quantization error and sample-and-hold jitter. Careful design minimizes or compensates for these effects.</p>
+<figure>
+<img src="../figures/image85.jpeg" alt="Modern digital FFT-type spectrum analyzer architecture" /><figcaption>Figure 4.4.3 Modern digital FFT-type spectrum analyzer architecture.</figcaption>
+</figure>
+<p>The analyzer’s resolution-bandwidth filter may be adequate for a single-frequency CW power measurement, but for wideband digitally modulated signals, portions of the channel’s spectrum, and portions of the adjacent channel, may be included or excluded by the filter, reducing accuracy.</p>
+<p>The level of measurement uncertainty is greater for a spectrum analyzer than a peak power meter because of the additional measurement stages. For many users this accuracy trade-off is offset by the additional functionality of frequency selectivity. The right choice depends on what question matters most.</p>
+<h4 id="benefits-and-limitations-of-the-power-meter">Benefits and Limitations of the Power Meter</h4>
+<p>Today’s RF peak power meter is fast and accurate while providing true power measurements of the signal in the time domain. Whether the input is a pulsed RF signal or a complex digitally modulated waveform, the peak power meter is built to measure peak and average power levels accurately.</p>
+<figure>
+<img src="../figures/image11.png" alt="Statistical occurrence of different power levels in a complex modulated signal" /><figcaption>Figure 4.4.4 Statistical occurrence of different power levels in a complex modulated signal.</figcaption>
+</figure>
+<p>Complex modulated signals like CDMA are noise-like, with random power peaks, and require a statistical approach for proper measurement. Built-in DSP lets the peak power meter perform statistical analysis on these complex signals quickly. Acquisition rates of 100 Msa/s sustained, with triggered burst rates also at 100 Msa/s, drive probability density functions (PDF), cumulative distribution functions (CDF), and complementary CDFs (CCDF) showing how often the signal sits at each power level. The CDF and CCDF illustrate the fraction of time the transmitter crest factor is above or below a chosen level, which makes amplifier compression and clipping visible. This is useful during amplifier design, when sizing power and thermal requirements, and during operation, when corrective action is needed to maintain optimum transmitter output. Section 6.3 covers statistical power analysis in depth.</p>
+<p>Modern meters offer adjustable markers to limit the area of measurement and read the power at any point across the waveform. The feature is used to identify the maximum or minimum peak power, long-term average power, and peak-to-average ratio in a specific area, usually a particular channel or time slot. Berkeley Nucleonics instruments include oscilloscope-like triggering capabilities to capture particular waveform segments. Section 6.2 discusses triggered and pulse measurements with peak power meters.</p>
+<p>Excellent input matching across the entire sensor frequency range minimizes mismatch error and improves accuracy. Combined with temperature drift compensation, modern peak power meters measure absolute power to within a fraction of a dB, and relative power to within hundredths of a dB.</p>
+<p>Unlike a tuned instrument, the power meter cannot provide carrier frequency or spectral information, and it cannot measure power within a specific channel bandwidth. The peak power meter is a cost-effective way to obtain time-domain (pulse) measurements, average and peak power, and power statistics such as the CCDF of complex modulated signals.</p>
+<h4 id="benefits-and-limitations-of-the-spectrum-analyzer">Benefits and Limitations of the Spectrum Analyzer</h4>
+<p>The primary advantage of super-heterodyne instruments such as spectrum analyzers is the ability to limit a power measurement to a desired frequency range or a specific channel in the presence of adjacent channels. With improvements in DSP, microelectronics, and linear amplifiers, DSP-based spectrum analyzers have improved measurement accuracy for many signal types, including the latest complex digital modulation formats. They display amplitude versus frequency in the band of interest, but the capability comes at a high cost, typically two to four times the price of a high-performance peak power meter.</p>
+<p>The frequency-tuning capability can also be a hindrance when measuring the power of a wideband signal. Use of an RBW filter narrower than the bandwidth of the signal causes power to be added from the adjacent channel, giving an inaccurate reading. Because the measurement is band-limited, some noise power is excluded from the area of measurement, again reducing accuracy.</p>
+<p>Three quick examples illustrate the issue:</p>
+<ol type="1">
+<li><strong>CW signal.</strong> Easily characterized with a swept or stationary center frequency and a constant RBW setting. The measurement is straightforward.</li>
+<li><strong>Wideband modulated signal narrower than RBW window.</strong> The center frequency must be swept and the power integrated to measure the total power of the signal’s full spectrum. The sweep takes much longer than the same measurement with a peak power meter.</li>
+<li><strong>Multiple adjacent channels with inadequate RBW separation.</strong> When the RBW cannot be made wide enough to encompass three channels but is not narrow enough to fully exclude the adjacent channels, a very narrow RBW and a slow sweep are required.</li>
+</ol>
+<p>Magnitude accuracy is also reduced when sweeping fast to capture transitioning signals. As a frequency-domain instrument, the spectrum analyzer lacks the wide instantaneous dynamic range needed to provide meaningful statistical data for a PDF, CDF, or CCDF, which is vital information for complex digitally modulated communication signals.</p>
+<h4 id="summary">Summary</h4>
+<p>For pulsed-power applications such as radar, the peak power meter is the clear choice for fast, accurate time-domain measurements. Fast rise time and low-duty-cycle signals demand wide dynamic range to measure large peak-to-average level differences.</p>
+<p>For communications signals, such as the noise-like modulation of CDMA or OFDM, a peak or true-RMS power meter is attractive because of wide dynamic range, wide video bandwidth, and statistical analysis capability.</p>
+<p>When frequency or spectral information is not required, the RF power meter (peak or true-RMS) provides the best combination of speed and accuracy across a wide frequency range, at a price well below most spectrum analyzers. The spectrum analyzer provides frequency content and selectivity that power meters do not.</p>
+<p>The best test benches keep both kinds of instruments on hand. They answer different questions.</p>
+<h3 id="oscilloscopes-and-detectors">4.5 Oscilloscopes and Detectors</h3>
+<p>Before modern peak power meters were available, a system that included a crystal detector, oscilloscope, average power meter, pulse generator, and assorted couplers was assembled to capture pulse waveforms from high-power amplifiers used in radar.</p>
+<p>In a typical setup, the CW input signal is connected to the pulse amplifier (DUT) input and pulse-gated by an external generator to produce a pulsed radar output. The signal passes through a directional coupler to either a dummy load or an actual antenna, and to the crystal detector system. The test signal is split between an average power meter and a crystal (envelope) detector connected to an oscilloscope. The CW power meter provides an absolute average power measurement, while the scope provides the pulse envelope shape. The duty cycle is the pulse repetition interval divided by the pulse width. Pulse power is then calculated as average power divided by duty cycle.</p>
+<p>This calculation assumes constant power during the pulse-on interval, a perfectly rectangular pulse envelope, and a constant duty cycle. In practice, errors creep into the pulse-power calculation from common pulse-waveform anomalies: overshoot, ringing, slow edge transitions, droop. None of these are exotic. They show up routinely in production radar transmitters.</p>
+<figure>
+<img src="../figures/fig-4-5-1-pulse-parameters.svg" alt="Pulse waveform parameters: rise time, overshoot, droop, and fall time" /><figcaption>Figure 4.5.1 Pulse waveform parameters: rise time, overshoot, droop, and fall time.</figcaption>
+</figure>
+<p>A modern peak power sensor and a crystal detector circuit differ in several important ways. A typical single-ended detector has limited dynamic range, a fairly high noise floor, no factory calibration of the detector itself, half-wave rectification (which cannot accurately measure asymmetrical waveforms and is sensitive to harmonic content), and difficult matching to the RF source because the parallel effect of the output load impedance affects input VSWR. The output load is needed to achieve fast pulse response. Whether it is the scope’s internal 50-ohm termination or an external resistor, a portion of that impedance appears in parallel with the detector’s input termination. The effect is small at low input levels but pronounced at high RF inputs. Calibration algorithms can improve the single-ended detector’s accuracy, but a dual-diode differential sensor has several important advantages.</p>
+<p>The differential system with two balanced diodes measures the fully rectified waveform. This improves linearity and measurement response time and cancels most waveform asymmetry for true signal-envelope detection. The differential configuration also reduces common-mode noise, lowering the sensor noise floor and increasing dynamic range. Full-wave detection significantly improves accuracy on signals with high even-harmonic content. Calibration at multiple power levels spanning the sensor’s linear range (the diode’s square-law region) sharpens the result further. Modern instruments correct for nonlinearity outside the square-law range, delivering calibrated measurements up to the detector’s power limit.</p>
+<p>A modern two-channel peak power meter offers an additional benefit: simultaneous forward and reflected power measurement. With Channel 1 monitoring the radar output (reference) and Channel 2 monitoring the antenna return (reflected), antenna efficiency (return loss, S11) can be measured directly. The extra dynamic range of a calibrated dual-diode sensor lets a single instrument capture forward and reflected power. A traditional detector feeding an oscilloscope, in conjunction with an average power meter, limits dynamic range and requires splitting the input signal to perform a single measurement. The two-channel peak power meter offers a simpler, more convenient antenna return loss measurement.</p>
+<blockquote>
+<p><strong>Pro tip.</strong> If you are still using “scope plus detector” for modulated-signal pulse work, the time saved by a modern peak sensor will pay for the sensor in a matter of weeks.</p>
+</blockquote>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-cw-average-and-peak-power.html">&larr; 3. CW, Average, and Peak Power</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="05-calibration-issues.html">5. Calibration Issues &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

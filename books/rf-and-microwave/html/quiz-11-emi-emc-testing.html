@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 11 Quiz &mdash; EMI/EMC Testing and Compliance</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 11 &middot; Quiz</p>
+      <h1>EMI/EMC Testing and Compliance</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="11-emi-emc-testing.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="12-modern-wireless-5g-6g.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "11",
+    title: "Chapter 11 Quiz: EMI/EMC Testing and Compliance",
+    questions: [
+      {
+        q: "What are the two halves of electromagnetic compatibility, and what does each measure?",
+        options: [
+          "Conducted and radiated, both measuring only emissions",
+          "Emissions, which measures how much RF a product radiates or conducts outward, and immunity (susceptibility), which measures how well a product tolerates incoming RF",
+          "Gain and noise figure, measuring amplifier performance",
+          "Frequency and power, measuring carrier accuracy"
+        ],
+        answer: 1,
+        explain: "EMC has two halves: emissions (energy out) and immunity/susceptibility (tolerance to energy in)."
+      },
+      {
+        q: "Why is a near field probe far less sensitive to ambient RF than a broadband antenna a few meters away?",
+        options: [
+          "It has a built-in filter that blocks all ambient signals",
+          "It is small and must sit within an inch of the source, so it couples mainly to local board fields and largely ignores distant signals, while a distant broadband antenna accepts a wide range of frequencies from every direction",
+          "It only works below 1 MHz, where there is no ambient RF",
+          "It is shielded in a Faraday cage during use"
+        ],
+        answer: 1,
+        explain: "A near field probe couples to local fields up close and ignores distant ambient RF that a broadband antenna readily picks up."
+      },
+      {
+        q: "What three jobs does a LISN perform in a conducted emissions test?",
+        options: [
+          "It amplifies, filters, and displays the noise",
+          "It presents a known standardized impedance for repeatability, isolates the mains so utility noise does not pollute the measurement, and couples the device's conducted noise out to the analyzer",
+          "It generates a reference tone, calibrates the probe, and logs the data",
+          "It cools the device, grounds the chassis, and times the sweep"
+        ],
+        answer: 1,
+        explain: "A LISN standardizes impedance, isolates the mains, and couples conducted noise to the analyzer."
+      },
+      {
+        q: "Why does a quasi-peak detector read a brief, infrequent spike lower than a continuous tone of the same amplitude?",
+        options: [
+          "Because it averages over an hour, smoothing spikes",
+          "Because its standardized resonant circuit has defined charge and discharge times, so a brief spike does not fully charge it; this weights emissions by how often they occur, modeling how interference annoys a human listener",
+          "Because it ignores all signals below the noise floor",
+          "Because it only measures the peak of continuous signals"
+        ],
+        answer: 1,
+        explain: "The quasi-peak detector's charge/discharge timing under-weights infrequent spikes, modeling perceived annoyance to a listener."
+      },
+      {
+        q: "In MIL-STD-461, what do the prefixes CE, CS, RE, and RS stand for?",
+        options: [
+          "Carrier emissions, carrier susceptibility, radio emissions, radio strength",
+          "Conducted emissions, conducted susceptibility, radiated emissions, and radiated susceptibility",
+          "Cable emissions, cable shielding, radiated energy, radio shielding",
+          "Compliance evaluation, compliance standard, regulatory exam, regulatory standard"
+        ],
+        answer: 1,
+        explain: "CE = conducted emissions, CS = conducted susceptibility, RE = radiated emissions, RS = radiated susceptibility."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

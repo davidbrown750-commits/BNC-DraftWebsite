@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="440" fill="#ffffff"/>
+  <text x="24" y="34" font-size="18" font-weight="bold" fill="#003D6B">Seamless vs. Glitching Loop Point</text>
+  <text x="24" y="56" font-size="13" fill="#2C3E50">The same sine, looped two ways. The junction is where the last sample meets the first sample again.</text>
+
+  <!-- ===== GOOD: integer cycles ===== -->
+  <text x="24" y="92" font-size="13" font-weight="bold" fill="#2e9e57">GOOD: integer number of cycles</text>
+  <!-- baseline -->
+  <line x1="40" y1="150" x2="780" y2="150" stroke="#cfd8df" stroke-width="1"/>
+  <!-- first playthrough (solid) 3 full cycles -->
+  <path d="M40 150
+           C 70 100, 100 100, 130 150 S 190 200, 220 150
+           S 280 100, 310 150 S 370 200, 400 150
+           S 460 100, 490 150 S 550 200, 580 150"
+        fill="none" stroke="#0078B6" stroke-width="2"/>
+  <!-- repeat starts (dashed) continues smoothly -->
+  <path d="M580 150 S 640 100, 670 150 S 730 200, 760 150"
+        fill="none" stroke="#00b4ff" stroke-width="2" stroke-dasharray="6,4"/>
+  <!-- loop point marker -->
+  <line x1="580" y1="100" x2="580" y2="200" stroke="#2e9e57" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <circle cx="580" cy="150" r="4" fill="#2e9e57"/>
+  <text x="588" y="118" font-size="11" fill="#2e9e57">loop point: slope and level match</text>
+  <text x="40" y="222" font-size="11.5" fill="#2C3E50">End sample equals the start sample in value and slope, so the wrap is invisible. No glitch.</text>
+
+  <!-- ===== BAD: fractional cycle ===== -->
+  <text x="24" y="272" font-size="13" font-weight="bold" fill="#c0392b">BAD: fractional cycle (period not an integer number of samples)</text>
+  <line x1="40" y1="340" x2="780" y2="340" stroke="#cfd8df" stroke-width="1"/>
+  <!-- first playthrough ends partway up the cycle -->
+  <path d="M40 340
+           C 70 290, 100 290, 130 340 S 190 390, 220 340
+           S 280 290, 310 340 S 370 390, 400 340
+           S 460 290, 490 340 C 520 365, 545 380, 560 384"
+        fill="none" stroke="#0078B6" stroke-width="2"/>
+  <!-- repeat snaps back to start level -> vertical jump -->
+  <line x1="560" y1="384" x2="560" y2="290" stroke="#c0392b" stroke-width="2"/>
+  <path d="M560 290 S 620 290, 650 340 S 710 390, 740 340 L 760 326"
+        fill="none" stroke="#00b4ff" stroke-width="2" stroke-dasharray="6,4"/>
+  <line x1="560" y1="290" x2="560" y2="390" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <circle cx="560" cy="384" r="4" fill="#c0392b"/>
+  <circle cx="560" cy="290" r="4" fill="#c0392b"/>
+  <text x="568" y="300" font-size="11" fill="#c0392b">step discontinuity at the wrap</text>
+  <text x="40" y="416" font-size="11.5" fill="#2C3E50">The buffer ends mid-cycle, so the wrap forces a jump. That edge radiates wideband spurs on every repeat.</text>
+</svg>

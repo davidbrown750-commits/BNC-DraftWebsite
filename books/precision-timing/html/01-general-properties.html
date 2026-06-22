@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>1. General Properties of a Timing Signal</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="general-properties-of-a-timing-signal">1. General Properties of a Timing Signal</h1>
+
+<p class="lead">A timing signal looks simple from the outside. An instrument puts out a pulse, then another, on a schedule you set. The depth lives in the details: how each edge is shaped, when a pulse fires relative to a trigger, how finely you can dial a width, and how faithfully the hardware honors the number on the screen. This book works through those details across eight chapters. This first chapter lays the foundation by defining the core vocabulary that the rest of the book reuses. Later chapters build on it: pulse shape and signal integrity (Chapter 2), gating, delaying, and clocking (Chapter 3), running a multi-channel system (Chapter 4), coordinating many signals and avoiding overlap (Chapter 5), real applications from laser timing to ranging (Chapter 6), communications and storage (Chapter 7), and where precision timing is heading next (Chapter 8). Start here, and every term that follows will already be familiar.</p>
+
+<h2 id="overview">1.1 Overview</h2>
+<p>Pulse and delay generators cover a wide range of products, from small OEM modules to benchtop instruments to timing circuits built directly into a larger design. This chapter focuses on bench instruments, because they gather most of the terminology associated with timing into one place. Berkeley Nucleonics builds across that range, from the portable Model 525 to the bench Model 575 and 577, the rack-mount 588 family, and the femtosecond-class 745T. The vocabulary is the same whatever the form factor.</p>
+<p>Bench pulsers are test equipment. They typically let you control the pulse repetition rate, the pulse width, the pulse delay from an internal or external trigger, and the pulse amplitude. Advanced instruments add rise time and fall time adjustments as well. Outputs are usually TTL electrical signals with adjustable amplitudes in volts. Some instruments also provide optical outputs that mimic the properties of the electrical output. The Model 575, for example, offers both optical and electrical I/O.</p>
+<figure>
+<img src="../figures/575front.jpg" alt="Front panel of a benchtop pulse generator." />
+<figcaption><span class="fig-num">Figure 1.1</span> A benchtop pulse generator. The front panel exposes the controls for rate, width, delay, and amplitude that the rest of this chapter describes.</figcaption>
+</figure>
+
+<h2 id="internal-and-external-clocks-rates">1.2 Internal and External Clocks, Rates</h2>
+<p>A timing instrument needs a trigger source from which to generate pulses. That source is typically an internal clock running at a set rate. The instrument then behaves as a free-running source, firing on its own schedule. When an application requires it, the instrument may provide a Clock-In port that lets it synchronize to an external clock instead. This matters whenever several instruments have to share one sense of time, or when the pulser has to follow a system reference rather than lead with its own.</p>
+<figure>
+<img src="../figures/505clock.jpg" alt="Clock In port on a pulse generator." />
+<figcaption><span class="fig-num">Figure 1.2</span> A Clock-In port. Feeding an external clock here lets the pulse generator lock to a shared system reference instead of its internal oscillator.</figcaption>
+</figure>
+<p>The repetition rate, also called the pulse repetition frequency, is simply how often the cycle repeats: pulses per second. The period is its reciprocal. You can set either the rate or the period, whichever is natural for the task. Chapter 3 returns to clocks in depth, including the 10 MHz reference, phase-locked loops, and upgraded time bases. For now, the rate is the metronome, and the trigger is the downbeat that starts each cycle.</p>
+
+<h2 id="resolution-and-accuracy">1.3 Resolution and Accuracy</h2>
+<p>Resolution is the finest setting step available for an instrument's timing properties. An instrument with 5 nanosecond resolution can set delays from the trigger, or widths from leading edge to falling edge, in increments of 5 nanoseconds:</p>
+<ul>
+<li>Pulse delays from trigger of 100 ns, 105 ns, 110 ns, and so on.</li>
+<li>Pulse widths of 50 ns, 55 ns, 60 ns, and so on.</li>
+</ul>
+<p>Accuracy is a different question. It describes the tolerance of the resolution setting, along with additional factors that grow with longer delays and widths. Resolution tells you the size of the step you can request. Accuracy tells you how close the hardware comes to delivering it. The two are independent: a high-resolution instrument can still be inaccurate if its time base drifts, and a coarse instrument can be very accurate within its larger steps.</p>
+<div class="callout">
+<h4>Example</h4>
+<p>A width accuracy specification might read: Width Accuracy = 1 ns + 0.001 x Width. The fixed term covers the instrument's baseline tolerance, and the proportional term accounts for drift that scales with the length of the interval. The Model 577 specifies accuracy in this same form, as 1 ns plus a small fraction of the setpoint.</p>
+</div>
+<p>The vocabulary here matters because resolution and accuracy headline almost every datasheet. The Model 575 and 577 offer 250 ps resolution; the Model 525 offers 4 ns resolution in a portable package; the Model 765 reaches 10 ps. Knowing the difference between the step size and the delivered value is what lets you read those numbers correctly.</p>
+
+<h2 id="triggers-delay-and-width">1.4 Triggers, Delay, and Width</h2>
+<h3 id="triggers">Triggers</h3>
+<p>Timing instruments are typically triggered from an internal or an external source. The internal trigger selects the instrument's own rep-rate generator as the source of triggers for each timing cycle, and it usually lets you set that rate directly.</p>
+<p>The external trigger selects an outside signal, normally input on a front or rear panel connector marked TRIG IN, as the source of triggers for timing cycles. When you use an external trigger, you set two things: the trigger threshold and the slope. The threshold is the discriminator level the incoming signal must cross to count as a trigger. The slope, leading edge or falling edge, selects which edge of the TRIG IN pulse starts a timing cycle. Setting the threshold correctly is what separates a real trigger event from electrical noise. Chapter 3 develops triggering further, including holdoff, arming, and gated triggering.</p>
+<h3 id="delay-and-width">Delay and Width</h3>
+<p>The programmed delay controls the time interval from the internal or external trigger to the PULSE OUT pulse. Delay is usually measured from the leading edge of the trigger pulse, the reference point called To, to the leading edge of the timed pulse. Width is the duration in the time domain from the leading edge to the falling edge, measured at half of maximum amplitude.</p>
+<figure>
+<img src="../figures/ch01-delay-width.svg" alt="Timing diagram showing the trigger, the To reference, the programmed delay, and the output pulse width." />
+<figcaption><span class="fig-num">Figure 1.3</span> A timing diagram. The trigger defines To, the programmed delay places the leading edge of the output, and the width runs from leading to falling edge at half amplitude.</figcaption>
+</figure>
+<p>To is the anchor for everything that follows. In a multi-channel instrument every channel expresses its delay as a time after To, which is how a single trigger can fan out into a coordinated set of edges. Chapter 4 shows how that scales across channels.</p>
+
+<h2 id="risetime-and-overshoot">1.5 Rise Time and Overshoot</h2>
+<p>Rise time is typically measured as the time it takes a signal to move from 10 percent of maximum amplitude to 90 percent of maximum amplitude. In some cases a 20 percent to 80 percent measurement is used instead. Many modern oscilloscopes can measure rise time accurately and directly. Chapter 2 treats rise time, fall time, and the relationship between bandwidth and edge speed in full; here it is enough to know what the number means.</p>
+<figure>
+<img src="../figures/risetime.jpg" alt="Rise time measured between the 10 percent and 90 percent amplitude points of a pulse edge." />
+<figcaption><span class="fig-num">Figure 1.4</span> Rise time. The interval for the signal to climb from 10 percent to 90 percent of its maximum amplitude on the leading edge.</figcaption>
+</figure>
+<p>Overshoot is the additional ringing at the top of the pulse before the signal settles to its final amplitude. Overshoot is generally problematic, and manufacturers take care to minimize it.</p>
+<figure>
+<img src="../figures/overshoot.jpg" alt="Overshoot ringing at the top of a pulse before it settles." />
+<figcaption><span class="fig-num">Figure 1.5</span> Overshoot. Ringing at the leading corner of the pulse before the amplitude settles at the top.</figcaption>
+</figure>
+<p>To hold the fastest possible rise time, take care with cabling and termination. Low-capacitance cable and 50 ohm termination give the fastest rise times without overshoot. Faster rise times can be coaxed out by increasing the termination resistance, but some overshoot is likely to appear when you do. Overshoot is often tied to voltage as well, as the following example shows.</p>
+<figure>
+<img src="../figures/overshootvvoltage.png" alt="Relationship between overshoot and output voltage." />
+<figcaption><span class="fig-num">Figure 1.6</span> Overshoot versus voltage. One example of how the amount of overshoot tracks with the output voltage of the pulse.</figcaption>
+</figure>
+
+<h2 id="insertion-delay-and-programming-speeds">1.6 Insertion Delay and Programming Speeds</h2>
+<p>Insertion delay is a fixed delay built into the design of the timing system. It is the delay from the Trigger In signal to the triggering of the first timing period. Good timing designs try to minimize insertion delay so the system can respond quickly to the initial input signal. Insertion delay is an inherent property of the hardware, so treat it as a known offset rather than as adjustable timing.</p>
+<p>Programming speed refers to how long a remotely controlled system takes to respond to SCPI, LabVIEW, GPIB, or other commands. Fast programming speeds let the timing system respond quickly to scripts such as sweeps and burst pulses, which matters whenever a test sequence has to step through many settings in a short window. Chapter 7 covers the command interfaces and storage features that make remote control practical.</p>
+<p>These are the core properties of a timing signal: rate, resolution, accuracy, the trigger and its To reference, delay, width, edge shape, insertion delay, and programming speed. Every chapter that follows leans on this vocabulary. The next chapter picks up where rise time and overshoot leave off, examining pulse shape and signal integrity in detail.</p>
+
+<div class="quiz-cta">
+<p><strong>Check your understanding.</strong> Five quick questions on this chapter.</p>
+<p><a class="btn" href="quiz-01.html">Take the Chapter 1 quiz</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="00-front-matter.html">&larr; Front Matter</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="02-pulse-shape-signal-integrity.html">2. Pulse Shape &amp; Signal Integrity &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

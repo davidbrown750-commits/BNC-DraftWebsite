@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 10 Quiz &mdash; Receiver Testing</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 10 &middot; Quiz</p>
+      <h1>Receiver Testing</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="10-receiver-testing.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="11-emi-emc-testing.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "10",
+    title: "Chapter 10 Quiz: Receiver Testing",
+    questions: [
+      {
+        q: "Why does this chapter recommend testing a receiver backward, from the output toward the antenna?",
+        options: [
+          "Because the antenna is the most likely fault and should be checked last",
+          "Because once the output stage is confirmed good, it serves as a live monitor for every upstream stage, so the known-good portion grows with each step and faults become immediately observable",
+          "Because the input stage is too fragile to probe first",
+          "Because test equipment only connects to the output"
+        ],
+        answer: 1,
+        explain: "A confirmed-good output stage becomes a monitor for upstream stages, growing the known-good section and speeding fault finding."
+      },
+      {
+        q: "In a superheterodyne receiver, what is the role of the local oscillator, and what symptom appears when it drifts?",
+        options: [
+          "It amplifies the IF; drift causes overload",
+          "It supplies the reference the mixer uses to convert RF down to the fixed IF, setting tuning accuracy; when it drifts the receiver tunes to the wrong frequency or loses the channel, visible as drift on a max-hold trace",
+          "It filters out noise; drift adds noise",
+          "It powers the antenna; drift cuts the signal entirely"
+        ],
+        answer: 1,
+        explain: "The LO sets tuning by feeding the mixer; drift mistunes the receiver, observable on a max-hold trace."
+      },
+      {
+        q: "Which expression gives a receiver's noise floor, and why does narrowing the channel bandwidth improve sensitivity?",
+        options: [
+          "Noise floor = -174 - 10 log10(BW) - NF; wider bandwidth lowers the floor",
+          "Noise floor (dBm) = -174 + 10 log10(BW in Hz) + NF (dB); a narrower bandwidth admits less thermal noise, lowering the floor so a signal clears it by a larger margin",
+          "Noise floor = -174 x BW x NF; bandwidth has no effect",
+          "Noise floor = NF only; bandwidth is irrelevant"
+        ],
+        answer: 1,
+        explain: "Noise floor = -174 + 10 log10(BW) + NF. Narrower bandwidth admits less noise, lowering the floor and improving sensitivity."
+      },
+      {
+        q: "What is adjacent-channel selectivity, and which receiver block primarily sets it?",
+        options: [
+          "How fast the receiver tunes; set by the local oscillator",
+          "How much stronger an adjacent-channel signal can be (in dB) before it degrades the wanted channel by a defined amount; set largely by the IF filter and its shape factor",
+          "The receiver's total gain; set by the LNA",
+          "The audio output level; set by the detector"
+        ],
+        answer: 1,
+        explain: "Adjacent-channel selectivity is the dB margin before an adjacent signal degrades the wanted channel, set mainly by the IF filter's shape factor."
+      },
+      {
+        q: "Third-order intermodulation products rise how many dB per 1 dB rise in the input tones, and why are they hard to filter?",
+        options: [
+          "About 1 dB; they fall far from the tones and filter out easily",
+          "About 3 dB; they fall at 2f1 - f2 and 2f2 - f1, very close to the original tones and often inside the wanted channel, where no filter can separate them",
+          "About 2 dB; they appear only at DC",
+          "About 6 dB; they appear at the harmonics, easily filtered"
+        ],
+        answer: 1,
+        explain: "Third-order products rise ~3 dB per 1 dB of input and land at 2f1-f2 and 2f2-f1, near the tones and inside the channel, so filtering cannot remove them."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

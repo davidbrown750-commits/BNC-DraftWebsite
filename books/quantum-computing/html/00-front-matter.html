@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>00-front-matter</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  .bnc-fineprint{font-size:12.5px;line-height:1.5;color:#5b6b78;margin:18px 0}
+  .bnc-fineprint h2,.bnc-fineprint h3{font-size:12.5px;margin:0 0 4px;color:#5b6b78;border:none;padding:0;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+  .bnc-fineprint p{margin:4px 0}
+  .president-note{font-size:13.5px;line-height:1.6;color:#3a4a57;background:#f7fbff;border-left:3px solid #0078B6;border-radius:0 4px 4px 0;padding:14px 18px;margin:22px 0;font-family:Georgia,serif}
+  .president-note h2,.president-note h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 8px;border:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-weight:700}
+  .president-note p{margin:8px 0}
+  .president-note .sig{margin-top:12px;font-style:italic;color:#5b6b78}
+  </style>
+  <link rel="stylesheet" href="front-matter.css">
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+<div class="fm-titleblock">
+  <p class="fm-series">The Nuts and Bolts (and Qubits) of</p>
+  <h1 class="fm-title">Quantum Computing</h1>
+  <p class="fm-byline">by <strong>David A. Brown</strong> and the Berkeley Nucleonics team</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">Second Edition &middot; 2026</p>
+</div>
+<hr />
+<div class="bnc-fineprint">
+<h2 id="copyright">Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. The Nuts and Bolts (and Qubits) of Quantum Computing, Second Edition, 2026. Published by Berkeley Nucleonics Corporation, San Rafael, California. BNC and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+<hr />
+<section class="president-note" id="message-from-the-president">
+<h2>A Message from the President</h2>
+<p>Quantum computing spent decades as a physicist's promise. It is now an engineer's problem. The gap this book fills is the practical one: most technical professionals need a clear, honest map of how these machines actually work, from the qubit physics up through the control electronics, the algorithms, and the cloud access points, without wading through a graduate-level derivation to get there. That is what this book is built to do.</p>
+<p>Berkeley Nucleonics has been building precision signal generation and measurement instrumentation for more than sixty years. The control and measurement layers inside a quantum computer are, in many ways, the hardest part of the hardware stack, and they sit squarely in our domain. We are genuinely excited about where this field is going, and we are investing in it. Read this book. The field is real, the timelines are compressing, and the engineers who understand it now will have the best seats for what comes next.</p>
+<p class="sig">David Brown<br>President, Berkeley Nucleonics Corporation</p>
+</section>
+<hr />
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This second edition exists because the first one found readers. The 2021 course was built for engineers, students, and curious technical professionals who wanted a plain-language map of a field that usually arrives wrapped in mathematics. That audience kept asking for more: more depth, more current numbers, more of the practical detail that turns a survey into a working reference. This edition is the answer to those questions.</p>
+<p>The first edition drew on conversations with researchers and company founders across the field, including John Levy of SeeQC, whose framing of the industry&rsquo;s core questions still opens Chapter 2. Their willingness to explain hard ideas in clear terms shaped the voice this book tries to keep.</p>
+<p>The modern chapters draw on results presented at the major venues where this field reports its progress, among them the IEEE International Conference on Quantum Computing and Engineering, the APS March Meeting, and the peer-reviewed literature in journals such as <em>Nature</em>, <em>Science</em>, and <em>Physical Review</em>. Citations point to the original work. Errors of interpretation are mine alone.</p>
+<p>Thanks finally to the engineers, applications scientists, and students who asked the questions that drove most of the new material. If you have asked us about coherence times, about whether a logical qubit is real yet, about which cloud platform to start on, or about what measurement hardware sits underneath a dilution refrigerator, you helped write this book.</p>
+<p>David A. Brown Berkeley Nucleonics Corporation San Rafael, California 2026</p>
+<hr />
+<section class="second-edition">
+<h2 id="why-a-second-edition">Why a Second Edition, and Why Now</h2>
+<p>A survey of an emerging technology has a short shelf life. The first edition went out in 2021, and within three years several of its careful hedges had become understatements. Quantum computing has moved faster since 2021 than in any comparable stretch before it.</p>
+<p>So why a new edition. Three things changed at once.</p>
+<p>First, the hardware grew up. In 2021 a state-of-the-art machine held tens of noisy qubits, and the honest answer to &ldquo;can it do anything useful&rdquo; was &ldquo;not yet.&rdquo; By 2026 the leading systems count qubits in the hundreds to low thousands, and the conversation has shifted from raw qubit count to qubit quality, connectivity, and error rates. The change is not just bigger numbers. It is a different machine.</p>
+<p>Second, error correction stopped being a thesis chapter and became a result. Between 2023 and 2025, multiple groups showed that a logical qubit, encoded across many physical qubits, can hold information better than any single physical qubit underneath it. That crossing of the break-even line is the milestone the field had been waiting on, the difference between a science experiment and a path to a machine that solves real problems. Chapter 9 is largely new because of it.</p>
+<p>Third, the field became an industry. Cloud access to real quantum processors is now routine. National programs in the United States, the European Union, China, and elsewhere have committed serious money. A workforce question that barely existed in 2021 is now urgent enough to justify its own chapter. People are entering this field who were in secondary school when the first edition shipped, and some of them will read this book.</p>
+<p>The first edition served readers who wanted to know what quantum computing was. The second edition serves readers who need to decide what to do about it. That is why the chapters on algorithms and error correction, on accessing real machines, and on the current landscape grew the most. The field is no longer only a promise. It is a set of choices.</p>
+</section>
+<hr />
+<section class="how-to-read">
+<h2 id="how-to-read-this-book">How to Read This Book</h2>
+<p>The book moves in three loose movements. <strong>Chapters 1 through 4</strong> establish the ground: why quantum computing matters now, how the field began and what it is, the vocabulary of qubits, superposition, entanglement, and coherence, and a direct comparison between quantum and classical machines. If those terms feel comfortable, move quickly. If any feel slippery, slow down, because everything later depends on them.</p>
+<p><strong>Chapters 5 through 9</strong> go into the machinery: the full hardware stack from the qubit layer up to the classical host, the major computational models, the four physical approaches (photonic, superconducting, trapped-ion, molecular), the state of the art today, and algorithms and error correction. Chapter 9 is largely new this edition because error correction crossed the break-even line between 2023 and 2025.</p>
+<p><strong>Chapters 10 through 13</strong> serve the reader who needs to act: the future and near-term trajectories, how to reach a real processor through the cloud, careers, and the commercial and geopolitical landscape. <strong>Appendix A</strong> is the glossary, <strong>Appendix B</strong> a timeline of milestones, and <strong>Appendix C</strong> a guide to further reading and online courses. Newcomers should read front to back. Practitioners evaluating the technology can start at Chapter 8 or 10 and circle back to the physics when a vendor claim needs checking.</p>
+</section>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<style>
+nav.toc { font-family: Helvetica, Arial, sans-serif; font-size: 10.5pt; margin: 18px 0 26px; }
+nav.toc h3.toc-section {
+  font-family: Helvetica, "Arial Black", sans-serif;
+  font-size: 10pt;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--bnc-warm-amber);
+  border-bottom: 1px solid var(--bnc-rule);
+  padding-bottom: 4px;
+  margin: 22px 0 10px;
+}
+nav.toc ul.toc-front {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  font-style: italic;
+  color: var(--bnc-charcoal);
+  font-size: 10pt;
+}
+nav.toc ul.toc-front li {
+  margin: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+nav.toc ul.toc-front li::before {
+  content: "\2023";
+  position: absolute;
+  left: 0;
+  color: var(--bnc-deep-plum);
+}
+nav.toc .toc-row { margin: 4px 0; }
+nav.toc a.toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+  border-bottom: none;
+  color: var(--bnc-deep-navy);
+  padding: 3px 0;
+}
+nav.toc .toc-title {
+  flex: 0 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+nav.toc .toc-leader {
+  flex: 1;
+  border-bottom: 1.5px dotted var(--bnc-rule);
+  margin: 0 6px;
+  transform: translateY(-3px);
+  min-width: 18px;
+}
+nav.toc .toc-page {
+  flex: 0 0 auto;
+  color: var(--bnc-deep-plum);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+  min-width: 28px;
+  text-align: right;
+}
+nav.toc a.toc-link:hover .toc-title { color: var(--bnc-sky-blue); }
+@media print {
+  nav.toc a.toc-link { color: var(--bnc-deep-navy) !important; }
+}
+</style>
+<nav class="toc">
+<h3 class="toc-section">FRONT MATTER</h3>
+<ul class="toc-front">
+  <li>Title Page</li>
+  <li>Copyright</li>
+  <li>Front Matter
+    <ul class="toc-front">
+      <li><a href="#message-from-the-president">A Message from the President</a></li>
+      <li><a href="#why-a-second-edition">Why a Second Edition, and Why Now</a></li>
+      <li><a href="#how-to-read-this-book">How to Read This Book</a></li>
+    </ul>
+  </li>
+  <li>Acknowledgments</li>
+  <li>Table of Contents</li>
+</ul>
+<h3 class="toc-section">CHAPTERS</h3>
+<div class="toc-row"><a href="01-why-quantum-why-now.html" class="toc-link"><span class="toc-title">1. Why Quantum Computing, Why Now</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">1</span></a></div>
+<div class="toc-row"><a href="02-introduction.html" class="toc-link"><span class="toc-title">2. Introduction: How It All Began and What QC Is</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">9</span></a></div>
+<div class="toc-row"><a href="03-key-terms.html" class="toc-link"><span class="toc-title">3. The Key Terms: Qubits, Superposition, Entanglement, Coherence</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">23</span></a></div>
+<div class="toc-row"><a href="04-quantum-vs-classical.html" class="toc-link"><span class="toc-title">4. Quantum vs Classical Computing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">39</span></a></div>
+<div class="toc-row"><a href="05-hardware-layers.html" class="toc-link"><span class="toc-title">5. The Hardware Layers of Quantum Computing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">53</span></a></div>
+<div class="toc-row"><a href="06-models.html" class="toc-link"><span class="toc-title">6. Models of Quantum Computing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">69</span></a></div>
+<div class="toc-row"><a href="07-physical-approaches.html" class="toc-link"><span class="toc-title">7. Physical Approaches: Photons, Superconducting, Trapped Ions, Molecular</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">83</span></a></div>
+<div class="toc-row"><a href="08-quantum-today.html" class="toc-link"><span class="toc-title">8. Quantum Computing Today: Players and State of the Art</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">99</span></a></div>
+<div class="toc-row"><a href="09-algorithms-error-correction.html" class="toc-link"><span class="toc-title">9. Quantum Algorithms and Error Correction</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">113</span></a></div>
+<div class="toc-row"><a href="10-the-future.html" class="toc-link"><span class="toc-title">10. The Future of Quantum Computing</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">127</span></a></div>
+<div class="toc-row"><a href="11-accessing-quantum.html" class="toc-link"><span class="toc-title">11. Accessing Quantum Computers: Cloud, Software, and the Ecosystem</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">139</span></a></div>
+<div class="toc-row"><a href="12-careers.html" class="toc-link"><span class="toc-title">12. Quantum Computing Careers</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">151</span></a></div>
+<div class="toc-row"><a href="13-landscape-now.html" class="toc-link"><span class="toc-title">13. The Quantum Landscape Now</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">161</span></a></div>
+<h3 class="toc-section">BACK MATTER &amp; APPENDICES</h3>
+<div class="toc-row"><a href="about-the-authors.html" class="toc-link"><span class="toc-title">About the Authors</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">171</span></a></div>
+<div class="toc-row"><a href="appendix-A-glossary.html" class="toc-link"><span class="toc-title">Appendix A. Glossary</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">175</span></a></div>
+<div class="toc-row"><a href="appendix-B-timeline.html" class="toc-link"><span class="toc-title">Appendix B. Quantum Computing Timeline</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">185</span></a></div>
+<div class="toc-row"><a href="appendix-C-further-reading.html" class="toc-link"><span class="toc-title">Appendix C. Further Reading and Online Courses</span><span class="toc-leader" aria-hidden="true"></span><span class="toc-page">191</span></a></div>
+</nav>
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled">&larr; Start of book</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="01-why-quantum-why-now.html">1. Why Now &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

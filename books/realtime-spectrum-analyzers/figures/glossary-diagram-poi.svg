@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 420" width="620" height="420" font-family="Arial,Helvetica,sans-serif">
+  <!-- Background -->
+  <rect width="620" height="420" fill="#ECEFF1" rx="6"/>
+
+  <!-- Title -->
+  <text x="310" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#003D6B">Probability of Intercept: Swept vs. Real-Time Analyzer</text>
+
+  <!-- --- TIME AXIS --- -->
+  <line x1="60" y1="390" x2="580" y2="390" stroke="#003D6B" stroke-width="1.5"/>
+  <text x="310" y="408" text-anchor="middle" font-size="11" fill="#003D6B">Time</text>
+  <!-- tick marks -->
+  <line x1="100" y1="388" x2="100" y2="393" stroke="#003D6B" stroke-width="1"/>
+  <line x1="200" y1="388" x2="200" y2="393" stroke="#003D6B" stroke-width="1"/>
+  <line x1="300" y1="388" x2="300" y2="393" stroke="#003D6B" stroke-width="1"/>
+  <line x1="400" y1="388" x2="400" y2="393" stroke="#003D6B" stroke-width="1"/>
+  <line x1="500" y1="388" x2="500" y2="393" stroke="#003D6B" stroke-width="1"/>
+
+  <!-- ============================================================ -->
+  <!-- LANE 1: BRIEF SIGNAL (shown in both rows) -->
+  <!-- The pulse occupies roughly x=235..265 (30px = ~3 ms pulse) -->
+  <!-- ============================================================ -->
+
+  <!-- === ROW 1: SWEPT ANALYZER === -->
+  <rect x="60" y="55" width="520" height="110" fill="white" rx="4" stroke="#b0bec5" stroke-width="1"/>
+  <text x="310" y="74" text-anchor="middle" font-size="12" font-weight="700" fill="#003D6B">Swept Spectrum Analyzer</text>
+
+  <!-- Sweep window: moves L-to-R in steps; shown as advancing colored band -->
+  <!-- Sweep window position 1 (early, before pulse) -->
+  <rect x="80" y="85" width="60" height="30" fill="#0078B6" fill-opacity="0.18" rx="2"/>
+  <text x="110" y="103" text-anchor="middle" font-size="9" fill="#0078B6">sweep</text>
+  <!-- Sweep window position 2 -->
+  <rect x="160" y="85" width="60" height="30" fill="#0078B6" fill-opacity="0.18" rx="2"/>
+  <text x="190" y="103" text-anchor="middle" font-size="9" fill="#0078B6">sweep</text>
+  <!-- Gap / missed region: pulse is HERE but sweep has passed or not arrived -->
+  <rect x="225" y="85" width="50" height="30" fill="#dc2626" fill-opacity="0.12" rx="2" stroke="#dc2626" stroke-dasharray="3,2" stroke-width="1"/>
+  <text x="250" y="103" text-anchor="middle" font-size="9" fill="#dc2626">GAP</text>
+  <!-- Sweep window position 3 (after pulse) -->
+  <rect x="300" y="85" width="60" height="30" fill="#0078B6" fill-opacity="0.18" rx="2"/>
+  <text x="330" y="103" text-anchor="middle" font-size="9" fill="#0078B6">sweep</text>
+  <!-- Sweep window position 4 -->
+  <rect x="390" y="85" width="60" height="30" fill="#0078B6" fill-opacity="0.18" rx="2"/>
+  <text x="420" y="103" text-anchor="middle" font-size="9" fill="#0078B6">sweep</text>
+  <!-- Sweep window position 5 -->
+  <rect x="475" y="85" width="60" height="30" fill="#0078B6" fill-opacity="0.18" rx="2"/>
+  <text x="505" y="103" text-anchor="middle" font-size="9" fill="#0078B6">sweep</text>
+
+  <!-- Brief pulse marker in row 1 -->
+  <rect x="235" y="125" width="30" height="26" fill="#dc2626" fill-opacity="0.85" rx="2"/>
+  <text x="250" y="141" text-anchor="middle" font-size="9" font-weight="700" fill="white">PULSE</text>
+  <text x="250" y="153" text-anchor="middle" font-size="8" fill="#dc2626">MISSED</text>
+
+  <!-- === DIVIDER === -->
+  <line x1="60" y1="182" x2="580" y2="182" stroke="#b0bec5" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- === ROW 2: REAL-TIME ANALYZER === -->
+  <rect x="60" y="192" width="520" height="150" fill="white" rx="4" stroke="#b0bec5" stroke-width="1"/>
+  <text x="310" y="211" text-anchor="middle" font-size="12" font-weight="700" fill="#003D6B">Real-Time Spectrum Analyzer (Gap-Free FFT Frames)</text>
+
+  <!-- Continuous FFT frame blocks covering full time span -->
+  <!-- Frame labels -->
+  <text x="88" y="228" text-anchor="middle" font-size="9" fill="#0078B6">FFT</text>
+  <text x="88" y="238" text-anchor="middle" font-size="9" fill="#0078B6">frame</text>
+  <text x="176" y="228" text-anchor="middle" font-size="9" fill="#0078B6">FFT</text>
+  <text x="176" y="238" text-anchor="middle" font-size="9" fill="#0078B6">frame</text>
+  <text x="250" y="228" text-anchor="middle" font-size="9" fill="#0078B6">FFT</text>
+  <text x="250" y="238" text-anchor="middle" font-size="9" fill="#0078B6">frame</text>
+  <text x="338" y="228" text-anchor="middle" font-size="9" fill="#0078B6">FFT</text>
+  <text x="338" y="238" text-anchor="middle" font-size="9" fill="#0078B6">frame</text>
+  <text x="425" y="228" text-anchor="middle" font-size="9" fill="#0078B6">FFT</text>
+  <text x="425" y="238" text-anchor="middle" font-size="9" fill="#0078B6">frame</text>
+  <text x="513" y="228" text-anchor="middle" font-size="9" fill="#0078B6">FFT</text>
+  <text x="513" y="238" text-anchor="middle" font-size="9" fill="#0078B6">frame</text>
+
+  <!-- Continuous coverage blocks (adjacent, no gaps) -->
+  <rect x="63" y="246" width="113" height="26" fill="#0078B6" fill-opacity="0.22" rx="2" stroke="#0078B6" stroke-width="1"/>
+  <rect x="176" y="246" width="113" height="26" fill="#0078B6" fill-opacity="0.22" rx="2" stroke="#0078B6" stroke-width="1"/>
+  <!-- Highlighted frame that catches the pulse -->
+  <rect x="220" y="246" width="69" height="26" fill="#16a34a" fill-opacity="0.35" rx="2" stroke="#16a34a" stroke-width="1.5"/>
+  <rect x="289" y="246" width="87" height="26" fill="#0078B6" fill-opacity="0.22" rx="2" stroke="#0078B6" stroke-width="1"/>
+  <rect x="376" y="246" width="100" height="26" fill="#0078B6" fill-opacity="0.22" rx="2" stroke="#0078B6" stroke-width="1"/>
+  <rect x="476" y="246" width="100" height="26" fill="#0078B6" fill-opacity="0.22" rx="2" stroke="#0078B6" stroke-width="1"/>
+
+  <!-- Brief pulse marker in row 2 - caught -->
+  <rect x="235" y="282" width="30" height="26" fill="#16a34a" fill-opacity="0.9" rx="2"/>
+  <text x="250" y="298" text-anchor="middle" font-size="9" font-weight="700" fill="white">PULSE</text>
+  <text x="250" y="312" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="700">CAUGHT</text>
+
+  <!-- Arrow + annotation showing no gap -->
+  <line x1="390" y1="280" x2="310" y2="275" stroke="#16a34a" stroke-width="1.2" marker-end="url(#arrowG)"/>
+  <text x="430" y="278" font-size="10" fill="#16a34a" font-weight="700">No gaps</text>
+  <text x="430" y="291" font-size="9" fill="#003D6B">every sample captured</text>
+
+  <!-- Arrow marker def -->
+  <defs>
+    <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Annotation for swept miss -->
+  <line x1="390" y1="145" x2="310" y2="147" stroke="#dc2626" stroke-width="1.2" marker-end="url(#arrowR)"/>
+  <text x="395" y="143" font-size="10" fill="#dc2626" font-weight="700">Gap: pulse lost</text>
+  <text x="395" y="156" font-size="9" fill="#003D6B">sweep was elsewhere</text>
+
+  <!-- Vertical dotted lines showing pulse alignment -->
+  <line x1="235" y1="55" x2="235" y2="390" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <line x1="265" y1="55" x2="265" y2="390" stroke="#dc2626" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <!-- POI label band at top -->
+  <rect x="225" y="38" width="50" height="16" fill="#dc2626" fill-opacity="0.15" rx="2"/>
+  <text x="250" y="50" text-anchor="middle" font-size="9" fill="#dc2626" font-weight="700">Brief pulse</text>
+
+  <!-- Legend -->
+  <rect x="63" y="355" width="14" height="10" fill="#0078B6" fill-opacity="0.3" stroke="#0078B6" stroke-width="1"/>
+  <text x="82" y="364" font-size="10" fill="#003D6B">Analyzer coverage window</text>
+  <rect x="220" y="355" width="14" height="10" fill="#16a34a" fill-opacity="0.4" stroke="#16a34a" stroke-width="1"/>
+  <text x="238" y="364" font-size="10" fill="#003D6B">Captured frame</text>
+  <rect x="350" y="355" width="14" height="10" fill="#dc2626" fill-opacity="0.3" stroke="#dc2626" stroke-width="1" stroke-dasharray="2,1"/>
+  <text x="368" y="364" font-size="10" fill="#003D6B">Missed / gap</text>
+</svg>

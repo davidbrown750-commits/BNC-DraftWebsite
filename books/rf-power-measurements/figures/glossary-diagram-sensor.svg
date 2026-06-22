@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 340" width="620" height="340" font-family="Arial,Helvetica,sans-serif">
+  <!-- Background -->
+  <rect width="620" height="340" rx="6" fill="#ECEFF1"/>
+
+  <!-- Title -->
+  <text x="310" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#003D6B" letter-spacing="0.5">RF Power Measurement Block Diagram</text>
+
+  <!-- SOURCE block -->
+  <rect x="30" y="120" width="100" height="50" rx="4" fill="#003D6B" stroke="#001f38" stroke-width="1.5"/>
+  <text x="80" y="142" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">RF</text>
+  <text x="80" y="158" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Source</text>
+
+  <!-- Line from Source to Coupler input -->
+  <line x1="130" y1="145" x2="200" y2="145" stroke="#003D6B" stroke-width="2.5"/>
+  <polygon points="196,140 206,145 196,150" fill="#003D6B"/>
+  <!-- Label: P_in -->
+  <text x="165" y="138" text-anchor="middle" font-size="11" fill="#0078B6" font-style="italic">P&#x2099;</text>
+
+  <!-- DIRECTIONAL COUPLER block -->
+  <rect x="206" y="110" width="120" height="70" rx="4" fill="#0078B6" stroke="#003D6B" stroke-width="1.5"/>
+  <text x="266" y="136" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Directional</text>
+  <text x="266" y="151" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Coupler</text>
+  <text x="266" y="168" text-anchor="middle" font-size="10" fill="#ECEFF1">(&#x2212;20 dB tap)</text>
+
+  <!-- Line from Coupler to Load (right) -->
+  <line x1="326" y1="145" x2="430" y2="145" stroke="#003D6B" stroke-width="2.5"/>
+  <polygon points="426,140 436,145 426,150" fill="#003D6B"/>
+  <!-- Label: P_fwd -->
+  <text x="378" y="138" text-anchor="middle" font-size="11" fill="#0078B6" font-style="italic">P&#x1d41f;&#x1d430;&#x1d433;</text>
+
+  <!-- LOAD block -->
+  <rect x="436" y="120" width="90" height="50" rx="4" fill="#003D6B" stroke="#001f38" stroke-width="1.5"/>
+  <text x="481" y="148" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">DUT / Load</text>
+
+  <!-- Coupled port - downward line from coupler bottom -->
+  <line x1="266" y1="180" x2="266" y2="240" stroke="#0078B6" stroke-width="2" stroke-dasharray="6,3"/>
+  <polygon points="261,236 266,248 271,236" fill="#0078B6"/>
+  <!-- Label: coupled -->
+  <text x="282" y="218" text-anchor="start" font-size="10" fill="#003D6B" font-style="italic">&#x2212;20 dB</text>
+
+  <!-- POWER SENSOR block -->
+  <rect x="186" y="248" width="110" height="48" rx="4" fill="#ECEFF1" stroke="#0078B6" stroke-width="2"/>
+  <text x="241" y="270" text-anchor="middle" font-size="11" font-weight="700" fill="#003D6B">Power</text>
+  <text x="241" y="286" text-anchor="middle" font-size="11" font-weight="700" fill="#003D6B">Sensor</text>
+
+  <!-- Line from sensor to meter -->
+  <line x1="296" y1="272" x2="370" y2="272" stroke="#003D6B" stroke-width="2"/>
+  <polygon points="366,267 376,272 366,277" fill="#003D6B"/>
+
+  <!-- POWER METER block -->
+  <rect x="376" y="248" width="110" height="48" rx="4" fill="#003D6B" stroke="#001f38" stroke-width="1.5"/>
+  <text x="431" y="270" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Power</text>
+  <text x="431" y="286" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Meter</text>
+
+  <!-- Display readout on meter -->
+  <rect x="384" y="254" width="18" height="12" rx="2" fill="#00b4ff" opacity="0.7"/>
+  <text x="393" y="263" text-anchor="middle" font-size="7" fill="#003D6B" font-weight="700">dBm</text>
+
+  <!-- Bottom caption line -->
+  <line x1="30" y1="318" x2="590" y2="318" stroke="#0078B6" stroke-width="0.8" opacity="0.5"/>
+  <text x="310" y="333" text-anchor="middle" font-size="10" fill="#4B2A6B" font-style="italic">Coupled port feeds a calibrated sensor; the meter displays power in dBm.</text>
+</svg>

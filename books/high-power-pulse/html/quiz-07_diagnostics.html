@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 7 Quiz: Diagnostics</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 7 Quiz: Diagnostics</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "hppg",
+  chapterKey: "07",
+  title: "Chapter 7 Quiz",
+  questions: [
+    {
+      q: "A capacitive divider used for pulse measurement is:",
+      options: [
+        "AC-coupled by physics, with a droop time set by the scope's input load.",
+        "DC-coupled like a resistive divider.",
+        "Insensitive to bandwidth.",
+        "Most useful at low pulser voltages."
+      ],
+      answer: 0,
+      explain: "A capacitive divider passes only changing signals, so it is inherently AC-coupled and droops with a time constant set by the scope load."
+    },
+    {
+      q: "A Rogowski coil cannot measure:",
+      options: [
+        "Pulses with rise times below 10 ns.",
+        "DC current.",
+        "Currents above 1 kA.",
+        "Pulses with widths below 100 ns."
+      ],
+      answer: 1,
+      explain: "A Rogowski coil responds to dI/dt, so it produces no output for steady DC current."
+    },
+    {
+      q: "A Pearson transformer's volt-second rating limits:",
+      options: [
+        "The maximum measurable rise time.",
+        "The product of pulse amplitude and pulse width before core saturation.",
+        "The number of pulses that can be measured per minute.",
+        "The minimum input frequency."
+      ],
+      answer: 1,
+      explain: "Volt-seconds is the integral the core can absorb before saturating, capping the amplitude-times-width product it can measure."
+    },
+    {
+      q: "To measure a 1 ns rise time within 10% of its true value, the scope's bandwidth should be at least:",
+      options: ["35 MHz", "350 MHz", "1 GHz", "10 GHz"],
+      answer: 2,
+      explain: "The 0.35/BW rule gives 350 MHz for a 1 ns edge, but a within-10% measurement needs roughly three times that, near 1 GHz."
+    },
+    {
+      q: "Which of the following is the SAFEST way to measure voltage on a floating high-voltage load?",
+      options: [
+        "Lift the scope's safety ground.",
+        "Use a high-voltage differential probe.",
+        "Connect the scope's chassis to the load chassis.",
+        "Use a passive probe with a long ground lead."
+      ],
+      answer: 1,
+      explain: "A high-voltage differential probe measures across floating nodes while leaving the scope safely grounded."
+    },
+    {
+      q: "The standard remedy for common-mode noise on a monitor cable is:",
+      options: [
+        "Lengthen the cable.",
+        "Add a ferrite choke near the pulser end.",
+        "Remove the cable shield.",
+        "Lift the scope's safety ground."
+      ],
+      answer: 1,
+      explain: "A ferrite choke raises impedance to common-mode current without affecting the differential signal, suppressing the noise."
+    },
+    {
+      q: "The 0.35 / BW rise-time approximation assumes:",
+      options: [
+        "A multi-pole Bessel response.",
+        "A single-pole Gaussian-like response, used as a rule of thumb.",
+        "Exact cancellation of higher-order harmonics.",
+        "A scope with infinite bandwidth."
+      ],
+      answer: 1,
+      explain: "The 0.35/BW figure is a rule of thumb that assumes a single-pole, Gaussian-like frequency response."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="07_diagnostics.html">&larr; Back to Chapter 7</a>
+    <a class="mid" href="../index.html">Contents</a>
+    <a class="next" href="quiz-08_emc.html">Chapter 8 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

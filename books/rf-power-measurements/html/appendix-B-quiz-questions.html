@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appendix B: Chapter Quiz Questions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h1 id="appendix-b-chapter-quiz-questions">Appendix B: Chapter Quiz Questions</h1>
+<p>Use these short quizzes to confirm your grasp of each chapter before moving on. Answers are in Appendix C.</p>
+<h3 id="quiz-1.-power-measurement-basics">Quiz 1. Power Measurement Basics</h3>
+<p><strong>1.1</strong> Too much RF power radiated from an antenna or waveguide could burn a user's body. - A. True - B. False</p>
+<p><strong>1.2</strong> Maximum transmitted power of devices is a concern for: - A. Regulatory Agencies - B. Component and Device Manufacturers - C. RF Engineers - D. All of the above</p>
+<p><strong>1.3</strong> Measuring the output power of RF circuits has been meaningful to the technical industry for over 100 years. - A. True - B. False</p>
+<h3 id="quiz-2.-key-power-measurement-technologies">Quiz 2. Key Power Measurement Technologies</h3>
+<p><strong>2.1</strong> Thermal sensors that measure RF energy produce a temperature rise in a terminating load. - A. True - B. False</p>
+<p><strong>2.2</strong> A modulation with a peak amplitude exceeding the upper boundary of the square-law region creates challenges for a diode sensor. - A. True - B. False</p>
+<p><strong>2.3</strong> Wireless devices are often expected to monitor and control transmitted power to: - A. Avoid generating a signal that dominates a composite signal seen by a base station - B. Ensure data rates stay below an established threshold - C. Increase the baud rate of wireless data transfer - D. None of the above</p>
+<h3 id="quiz-3.-cw-average-and-peak-power">Quiz 3. CW, Average, and Peak Power</h3>
+<p><strong>3.1</strong> The three classical categories of RF power measurement are: - A. CW, Average, Differential - B. Average, Peak Power, Grounded - C. Average, Peak Power, CW - D. Sub-Zero, Grounded, CW</p>
+<p><strong>3.2</strong> Measuring RF power includes measuring the peak power of a modulated signal, the instantaneous power at any moment in time, and the average power over a defined interval. - A. True - B. False</p>
+<p><strong>3.3</strong> A detector's response to risetime and to bandwidth improve or degrade together. - A. True - B. False</p>
+<h3 id="quiz-4.-making-power-measurements">Quiz 4. Making Power Measurements</h3>
+<p><strong>4.1</strong> When making power measurements, all of the following are important variables except: - A. Frequency Range - B. Dynamic Range - C. Time-of-Flight Statistics - D. Connection Type</p>
+<p><strong>4.2</strong> Below 18 GHz, most power sensors use a coaxial Type-N or SMA connector. - A. True - B. False</p>
+<p><strong>4.3</strong> Radar antenna loss is conveniently measured by two synchronized peak power sensors. - A. True - B. False</p>
+<h3 id="quiz-5.-calibration-issues">Quiz 5. Calibration Issues</h3>
+<p><strong>5.1</strong> Calibrating a power meter and power sensor separately is a reasonable way to increase the versatility of your instrument pool. - A. True - B. False</p>
+<p><strong>5.2</strong> Which is a calibration technique used for power sensors? - A. Single-Point Adjustment - B. Multi-Point Adjustment - C. Two-Point Adjustment - D. All of the above</p>
+<p><strong>5.3</strong> Calibration will require gain and offset adjustments. - A. True - B. False</p>
+<h3 id="quiz-6.-rf-power-analysis">Quiz 6. RF Power Analysis</h3>
+<p><strong>6.1</strong> Statistical power analysis is a new method of analyzing power. - A. True - B. False</p>
+<p><strong>6.2</strong> A CCDF plot shows the probability that instantaneous power exceeds a given level above average. - A. True - B. False</p>
+<p><strong>6.3</strong> Triggered pulse analysis requires a trigger source of some kind. - A. True - B. False</p>
+<h3 id="quiz-7.-power-measurement-applications">Quiz 7. Power Measurement Applications</h3>
+<p><strong>7.1</strong> A radar pulse with a 0.1% duty cycle will have a peak-to-average ratio of approximately: - A. 3 dB - B. 10 dB - C. 30 dB - D. 300 dB</p>
+<p><strong>7.2</strong> For EMC compliance testing, a power sensor can be used to verify the output of the test signal source. - A. True - B. False</p>
+<h3 id="quiz-8.-performance-tips">Quiz 8. Performance Tips</h3>
+<p><strong>8.1</strong> Averaging 100 readings reduces the noise floor by approximately: - A. 3 dB - B. 10 dB - C. 100 dB - D. None of the above</p>
+<p><strong>8.2</strong> Hardware triggering is generally faster than software triggering. - A. True - B. False</p>
+<h3 id="quiz-9.-measurement-accuracy">Quiz 9. Measurement Accuracy</h3>
+<p><strong>9.1</strong> Measurement uncertainty is usually dominated by: - A. The sensor's cosmetic color - B. The brand name on the meter - C. Mismatch between sensor and source, plus linearity and frequency response - D. The length of the USB cable</p>
+<p><strong>9.2</strong> NIST traceability is only relevant for military applications. - A. True - B. False</p>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-A-glossary.html">&larr; Appendix A: Glossary of Terms</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-C-quiz-answer-key.html">Appendix C: Quiz Answer Key &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

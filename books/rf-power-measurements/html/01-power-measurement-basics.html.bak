@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 1: Power Measurement Basics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1 id="section-1-rf-and-microwave-power-measurement-fundamentals">Section 1: RF and Microwave Power Measurement Fundamentals</h1>
+<figure>
+<img src="../figures/section-1-opener.svg" alt="" /><figcaption>Section 1 — Fundamentals</figcaption>
+</figure>
+<blockquote>
+<p><em>The nuts, the bolts, and the lightning bugs.</em></p>
+</blockquote>
+<p>RF power measurement is older than the vacuum tube and younger than the transistor, which is another way of saying it has been around long enough to accumulate a lot of clever ideas and a few bad habits. The subject matters because every wireless link, every radar return, every medical imager, every microwave oven, and every satellite downlink depends on knowing how much signal is actually there.</p>
+<p>In this first section we build the foundation. We will talk about what RF power actually is, why you should care about measuring it, and how engineers have solved the problem over the last century and a half. Then we walk through the families of sensor technology you are likely to meet on a modern bench: thermal sensors, diode detectors, receiver-based designs, monolithic ICs, and direct RF sampling. We finish by unpacking the three flavors of power that matter for modulated signals, namely CW, average, and peak, and we will show why bandwidth and dynamic range quietly decide which flavor you are actually measuring.</p>
+<p>By the end of Section 1 you should be able to look at a signal and a sensor and tell whether they belong together. That alone is worth the price of the book.</p>
+<hr />
+<h2 id="chapter-1-power-measurement-basics">Chapter 1: Power Measurement Basics</h2>
+<figure>
+<img src="../figures/chapter-01-opener.svg" alt="" /><figcaption>Chapter 1 — Power Measurement Basics</figcaption>
+</figure>
+<h3 id="what-is-power">1.1 What Is Power?</h3>
+<p>In physics terms, power is the transfer rate of energy per unit time. Just as energy comes in many flavors (kinetic, potential, heat, electrical, chemical), so does power. A mechanical definition of energy is force multiplied by distance: the force moving an object multiplied by the distance it travels.</p>
+<p><strong>Energy = Force × Distance</strong></p>
+<p>To get the power, or the rate at which that energy is transferred, we divide energy by the time taken to perform the move. Since distance per unit time is velocity, mechanical power is often expressed as force times velocity.</p>
+<p><strong>Power = Force × Distance / Time = Force × Velocity</strong></p>
+<p>In electrical terms, force equates to voltage, sometimes called Electromotive Force or EMF. Voltage describes how much “pressure” the electrons are under. Velocity is analogous to current, which is charge (number of electrons) per unit time.</p>
+<p><strong>Power (electrical) = EMF × Current</strong></p>
+<p>EMF is typically measured in volts, and current is typically measured in amperes. One ampere is one coulomb of charge (6.2 × 10^18 electrons) per second. Multiply current by voltage and you get power in watts.</p>
+<p><strong>Watts = Volts × Amps</strong></p>
+<p>When voltage and current are both steady, the average power is easy. Multiply average volts by average amps and you are done. But most real signals are not steady. Alternating current, by definition, is a moving target. To get the real average power of an AC waveform, you have to compute the instantaneous power at every point and average over one or more complete cycles.</p>
+<p>Limit the discussion to sinusoidal AC and a clean pattern emerges. Power fluctuates in step with voltage and current. For a purely resistive load, voltage and current are in phase: both positive together, both negative together. Multiplying two negatives yields a positive, so the instantaneous power is always positive. The signal is steadily delivering energy to the load (Fig. 1.1.1, top).</p>
+<p>Now shift the current with respect to the voltage. There will be moments when one is positive and the other is negative, and at those moments the instantaneous power is actually flowing <em>backward</em>, from the load to the source. This reduces the average power even though the magnitudes of voltage and current have not changed. Your load is receiving less energy than a voltmeter alone would lead you to believe (Fig. 1.1.1, bottom).</p>
+<p>This is the first reason power measurement is a science of its own. Voltage and current do not tell the whole story. A direct power measurement, in which the signal is applied to a precisely known termination that keeps voltage and current nearly in phase, is the cleanest answer. If the termination is precise enough, you can either measure the voltage across it and compute power, or you can measure the heating effect on the load directly. Both approaches show up later in this book.</p>
+<blockquote>
+<p><strong>Engineer’s corner.</strong> When a colleague says “the signal is 1 volt,” ask whether they mean peak, RMS, peak-to-peak, or average rectified. Four different numbers. Four different watts into a 50-ohm load. Same “1 volt.” This is why we measure power.</p>
+</blockquote>
+<figure>
+<img src="../figures/fig-1-1-1-instantaneous-power.svg" alt="Instantaneous and average power, in-phase versus phase-shifted" />
+<figcaption>Figure 1.1.1 Instantaneous and average power, when voltage and current are in phase with a resistive load (top), and when they are phase shifted by a complex load impedance (bottom).</figcaption>
+</figure>
+<h3 id="why-measure-power">1.2 Why Measure Power?</h3>
+<p>The obvious question: why not just measure voltage? At DC, and at low audio frequencies, you absolutely can. Current and voltage are easy to pin down. You can pull a scope out and call it a day.</p>
+<p>The moment frequencies climb above a few megahertz, life gets harder.</p>
+<p>As signals approach microwave frequencies, wavelengths in the conductor shrink to the size of your cable connector. Reflections, standing waves, and impedance mismatches all become significant error sources. A well-designed power detector fences those errors off and lets you measure amplitude repeatably. For this reason, power is the accepted amplitude currency of the RF and microwave world.</p>
+<p>There are many reasons to measure RF power. The short list is proof of design, regulatory compliance, safety, system efficiency, and component protection. The long list runs into the thousands.</p>
+<p><strong>Regulatory.</strong> In communication and wireless industries, transmitted power is almost always near the top of the specification sheet. The FCC and its international cousins place strict ceilings on radiated power in every band, because one transmitter’s gain is another receiver’s headache. The practical rule is usually a maximum power delivered to the antenna rather than a truly radiated figure, because delivered power is what you can actually measure.</p>
+<p><strong>Spectral hygiene.</strong> If two transmitters share a band and a city, their receivers have a harder job sorting them out when one overwhelms the other. Broadcast licenses pin down transmit power precisely so that neighboring stations can co-exist.</p>
+<p><strong>Cellular capacity.</strong> Modern cellular protocols rely on careful power control. Multiple handsets may be transmitting to the same base station at the same time. If one hand-held “steps on” the others, the base station cannot decode them. Every phone, constantly, is running open-loop and closed-loop power control so that all signals arrive at the base station with roughly equal amplitudes. Without that, the cell simply stops working.</p>
+<p><strong>Safety.</strong> Too much RF power is dangerous. Microwave ovens burn flesh just as well as they cook dinner. Broadcast and radar transmitters operate at power levels that can be hazardous to maintenance personnel if shielding is not respected. Even low-power devices, such as cell phones, come under periodic biological scrutiny. Safety limits exist, and the only way to verify compliance is to measure.</p>
+<p><strong>Component protection.</strong> Any active device can be overloaded. Too much steady-state power heats passive and active components alike. Too much instantaneous peak power overstresses semiconductors and can cause arcing in connectors, cables, and dielectrics. But even at levels well below the damage threshold, too much power causes clipping, distortion, and data loss. Too little power drops signals into the noise and has the same effect. Power measurement is how you stay in the Goldilocks zone.</p>
+<figure>
+<img src="../figures/image7.jpeg" alt="Transmission interference between co-located transmitters" /><figcaption>Figure 1.2.1 Transmission interference. When one transmitter overpowers another, neighboring receivers struggle to sort the signals apart.</figcaption>
+</figure>
+<blockquote>
+<p><strong>Pro tip.</strong> Before trusting any single measurement, ask yourself two questions: does my sensor bandwidth cover my signal bandwidth, and does my sensor dynamic range cover my signal’s peak-to-average ratio? Answer those first, and half the common measurement errors disappear.</p>
+</blockquote>
+<h3 id="a-brief-history-of-power-measurement">1.3 A Brief History of Power Measurement</h3>
+<p>Wireless engineering is not a new profession, and neither is the headache of measuring what comes out the end of the antenna.</p>
+<p>Since the late 1800s, when Nikola Tesla first demonstrated wireless transmission, there has been a need to characterize the output of RF circuits. Tesla himself was often operating at megawatt levels. His working “power meter” was the length of the arcs he could produce. There was little incentive to try a contact measurement, for obvious reasons.</p>
+<p>Around 1888, an Austrian physicist named Ernst Lecher developed the “wires” technique for measuring the frequency of an RF or microwave oscillator. The apparatus, often called Lecher Wires, consisted of two parallel conductors a constant distance apart with a sliding short between them. The pair formed a transmission line. By moving the short, Lecher created standing waves and a visible pattern of peaks and nulls. Measuring the physical distance between two peaks gave the wavelength, and from there the frequency.</p>
+<p>Lecher originally used an incandescent bulb as his detector. The bulb’s brightness at the peaks also gave a rough indication of amplitude. The problem was that the bulb’s low and variable filament impedance loaded the line and shifted both the resonant frequency and the oscillator’s output. This was fixed by switching to a high-impedance gas-discharge glow tube laid across the wires. The glow tube was sensitive to the electric field and perturbed the line much less. Later, neon bulbs replaced the glow tubes, though the higher striking voltage of neon blurred the null positions. Every improvement traded one problem for another. This is a pattern you will see throughout the history of measurement.</p>
+<figure>
+<img src="../figures/image8.png" alt="Tesla lightning from late 1800s wireless transmission demonstrations" /><figcaption>Figure 1.3.1 Tesla lightning, from the late 1800s wireless transmission demonstrations. The length of the arcs served as Tesla's working power meter.</figcaption>
+</figure>
+<p>In 1933, H.V. Noble, a Westinghouse engineer, refined Tesla’s research and transmitted several hundred watts at 100 MHz across ten meters. The demonstration at the Chicago World’s Fair, in the Westinghouse exhibit, caught the public imagination but the practical measurement question remained: how many watts, exactly, had actually made the trip?</p>
+<p>The steady march through the twentieth century carried power measurement through thermistor mounts, bolometers, thermocouples, schottky diode detectors, and eventually the modern microcontroller-equipped USB sensor. Each generation shaved another decibel of uncertainty. Berkeley Nucleonics, founded in 1963 as a supplier of fast-risetime pulse generators for nuclear research, watched every one of those generations evolve and has spent the last two decades building instruments that honor what the pioneers got right.</p>
+<p>Which brings us, finally, to the equipment on your bench today.</p>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="00-front-matter.html">&larr; Front Matter</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="02-power-measurement-technologies.html">2. Power Measurement Technologies &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

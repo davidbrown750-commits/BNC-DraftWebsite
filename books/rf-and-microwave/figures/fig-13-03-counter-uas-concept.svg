@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 400" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Counter-UAS detection concept showing a drone and its control and video RF links picked up by a layered sensor suite feeding a command system">
+  <defs>
+    <style>
+      .lbl{fill:#003D6B;font-size:12px;font-weight:700;}
+      .sub{fill:#2C3E50;font-size:10px;}
+      .sig{stroke:#003D6B;stroke-width:2;fill:none;}
+      .rf{stroke:#00b4ff;stroke-width:2;fill:none;stroke-dasharray:5 4;}
+      .blk{fill:#ffffff;stroke:#0078B6;stroke-width:1.6;}
+      .stage{fill:#0078B6;font-size:9px;font-weight:700;letter-spacing:.5px;}
+    </style>
+    <marker id="ac" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#003D6B"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="28" fill="#003D6B" font-size="15" font-weight="700">Counter-UAS Detection Concept (RF-centric)</text>
+
+  <!-- Drone -->
+  <g transform="translate(120,70)">
+    <ellipse cx="0" cy="18" rx="38" ry="8" fill="#4B2A6B" opacity=".18"/>
+    <rect x="-26" y="2" width="52" height="14" rx="4" fill="#4B2A6B"/>
+    <line x1="-26" y1="2" x2="-44" y2="-10" stroke="#4B2A6B" stroke-width="3"/>
+    <line x1="26" y1="2" x2="44" y2="-10" stroke="#4B2A6B" stroke-width="3"/>
+    <circle cx="-44" cy="-12" r="8" fill="none" stroke="#4B2A6B" stroke-width="2"/>
+    <circle cx="44" cy="-12" r="8" fill="none" stroke="#4B2A6B" stroke-width="2"/>
+  </g>
+  <text x="120" y="118" text-anchor="middle" class="lbl">Small UAS</text>
+
+  <!-- RF links radiating -->
+  <path class="rf" d="M150 86 C 260 110, 330 150, 360 200" marker-end="url(#ac)"/>
+  <text x="270" y="132" class="sub" fill="#0078B6">control link (uplink)</text>
+  <path class="rf" d="M150 96 C 280 150, 340 210, 360 250" marker-end="url(#ac)"/>
+  <text x="250" y="200" class="sub" fill="#0078B6">video / telemetry (downlink)</text>
+
+  <!-- Sensor suite -->
+  <text x="380" y="80" class="stage">LAYERED SENSORS</text>
+  <rect class="blk" x="380" y="96" width="150" height="40" rx="4"/>
+  <text x="455" y="121" text-anchor="middle" class="lbl">RF detection / DF</text>
+  <rect class="blk" x="380" y="146" width="150" height="40" rx="4"/>
+  <text x="455" y="171" text-anchor="middle" class="lbl">Radar</text>
+  <rect class="blk" x="380" y="196" width="150" height="40" rx="4"/>
+  <text x="455" y="221" text-anchor="middle" class="lbl">EO / IR camera</text>
+  <rect class="blk" x="380" y="246" width="150" height="40" rx="4"/>
+  <text x="455" y="271" text-anchor="middle" class="lbl">Acoustic</text>
+
+  <!-- Fusion -->
+  <line class="sig" x1="530" y1="116" x2="600" y2="180" marker-end="url(#ac)"/>
+  <line class="sig" x1="530" y1="166" x2="600" y2="186" marker-end="url(#ac)"/>
+  <line class="sig" x1="530" y1="216" x2="600" y2="196" marker-end="url(#ac)"/>
+  <line class="sig" x1="530" y1="266" x2="600" y2="206" marker-end="url(#ac)"/>
+  <rect class="blk" x="600" y="160" width="150" height="64" rx="4" fill="#003D6B" stroke="#003D6B"/>
+  <text x="675" y="186" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Sensor fusion</text>
+  <text x="675" y="204" text-anchor="middle" fill="#7fdbff" font-size="10">detect, track,</text>
+  <text x="675" y="216" text-anchor="middle" fill="#7fdbff" font-size="10">classify, alert</text>
+
+  <!-- Command -->
+  <line class="sig" x1="750" y1="192" x2="788" y2="192" marker-end="url(#ac)"/>
+  <rect class="blk" x="788" y="160" width="132" height="64" rx="4"/>
+  <text x="854" y="186" text-anchor="middle" class="lbl">Command &amp;</text>
+  <text x="854" y="202" text-anchor="middle" class="lbl">control</text>
+  <text x="854" y="216" text-anchor="middle" class="sub">decision / response</text>
+
+  <!-- note -->
+  <rect x="380" y="312" width="540" height="64" rx="6" fill="#fff4e6" stroke="#C77E00" stroke-width="1.2"/>
+  <text x="396" y="334" class="lbl">Detection vs. mitigation</text>
+  <text x="396" y="354" class="sub">Detection and tracking are widely permitted. Mitigation (jamming, spoofing) is tightly</text>
+  <text x="396" y="368" class="sub">regulated and authorized only for specific agencies under specific legal authorities.</text>
+</svg>

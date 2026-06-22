@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 7: Power Measurement Applications</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-7-power-measurement-applications">Chapter 7: Power Measurement Applications</h2>
+<figure>
+<img src="../figures/chapter-07-opener.svg" alt="" /><figcaption>Chapter 7 — Power Measurement Applications</figcaption>
+</figure>
+<p>This chapter walks through the power measurement problems that show up every day in real labs: low-duty-cycle pulse measurements, statistical analysis of modern communication signals, and EMC compliance testing. Each section explains why ordinary measurement techniques struggle, and what a peak or true-RMS power sensor brings to the problem.</p>
+<h3 id="low-duty-cycle-pulse-measurements">7.1 Low Duty-Cycle Pulse Measurements</h3>
+<p>The amplitude, quality, and stability of a transmitter's output power are critical for specialized tube amplifiers such as TWTAs, magnetrons, and klystrons. These devices are designed for high-power radar, particle accelerators, and magnetic resonance imaging (MRI). They must provide consistent pulsed linear power to a large antenna with low return loss, or to powerful magnets that create similar power transfer issues. Accurate peak power measurement matters for safety and optimum performance. A common characteristic of these applications is the use of a low duty-cycle pulse: short pulses that probe small targets at long range for radar, or that precisely position atom-scale particles for physics research.</p>
+<p>Before peak power meters were available, pulse power was computed indirectly from an average power measurement performed with an average-responding meter. Pulse power was calculated by dividing the average power by the duty cycle. The duty cycle is often a known characteristic, calculated by dividing the pulse width of the power envelope by the pulse repetition interval.</p>
+<p>This computation assumes constant peak power and does not take into consideration overshoot, ringing, or other waveform distortions. That is why it is called pulse power and not peak pulse power. The pulse must be repetitive, rectangular, and of constant duty cycle for the calculation to be accurate.</p>
+<p><strong>The dynamic-range trap.</strong> One advantage of an average power meter is the ability to measure across a wider dynamic range than a peak power meter, but this advantage assumes the signal envelope is a perfect rectangle. The advantage disappears for narrow duty-cycle signals.</p>
+<p>In a radar or MRI system, the RF or microwave carrier is sent in short bursts over long periods to provide a signal to measure across long range and small target size. Simple range-finding radars use pulse modulation. Some Doppler radars use a continuous-wave tone. Pulse modulation switches the carrier on and off in synchronization with an external pulse signal, and is not modulated like a communication signal. The envelope of the pulse waveform is extracted from the demodulated carrier in the receiver.</p>
+<p>A CW signal has the same average and peak power value and can be measured provided the value is within the sensor's dynamic range. A narrow duty-cycle pulsed signal can have a significantly lower average value outside the sensor's dynamic range, even when the peak falls within range.</p>
+<p>To accurately measure pulse power using the duty-cycle method, the signal's average power must be measured accurately. This requires keeping the average power well above the sensor's noise floor. At the same time, the sensor must be able to handle the highest power peaks while the pulse is on, or the sensor produces erroneous readings or burns out.</p>
+<p>Most average power sensors can accommodate peaks 10 to 20 dB above their maximum average power ratings, so pulse waveforms with relatively wide duty cycles can be measured without challenge. For signals with duty cycles narrower than about 1%, the dynamic range of the average-responding sensor is eroded by the need to keep both the peak power and the average power within the sensor's measurable range.</p>
+<p><strong>As the duty cycle of a power envelope decreases, typically below 1%, the average power reading moves further away from the actual peak power delivered, and larger-dynamic-range sensors are required.</strong></p>
+<p><strong>Worked example.</strong> Consider a periodic waveform with a 1 µs pulse repeating at a 10 Hz rate.</p>
+<blockquote>
+<p><em>Duty cycle = (1.0 × 10⁻⁶) / 0.1 = 0.00001, or 0.001%.</em> <em>Duty cycle in dB = 10 × log₁₀(0.00001) = -50 dB.</em></p>
+</blockquote>
+<p>Measuring the pulse power of this signal requires a power meter with at least 50 dB of dynamic range. For a typical thermal sensor with 22 dB peak headroom (+42 dBm), this means the signal's average power must remain at least 50 dB below its peak rating, or -8 dBm. These thermal sensors have a noise floor near -25 dBm, so the signal can vary by no more than 17 dB before its peak burns out the sensor or its average falls below the noise floor. For accurate measurements the signal should remain 6 to 10 dB above the noise floor, which further degrades the dynamic range.</p>
+<p>A peak power sensor with its wide dynamic range is often a better solution for several reasons.</p>
+<ol type="1">
+<li>The pulse shape is not always rectangular and contributes errors when calculated using an average-power measurement and the duty-cycle method.</li>
+<li>The dynamic range of an average power sensor is reduced in proportion to the duty cycle, because noise integrates into the measurement when the PRI is long and the pulse width is short.</li>
+<li>A fully calibrated peak sensor offers a dynamic range up to 70 dB and is capable of measuring a 50 dB peak-to-average ratio without affecting the measurement.</li>
+</ol>
+<p>A comparison of sensor types versus duty cycle reveals the trade-offs. Both thermal and average diode sensors run out of dynamic range for duty cycles narrower than about 0.003%. The thermal sensor's operating area can be extended in some applications by taking advantage of its peak-handling capability being considerably higher than its average power rating. This is dangerous, because the source may generate considerably more power than the sensor can safely handle. The user depends on the signal's duty cycle remaining narrow enough to limit the average power to a safe value. If the signal's duty cycle increases, the average power increases accordingly, and the sensor can be damaged.</p>
+<p>The peak power sensor does not suffer from duty-cycle limitations. Its operating dynamic range is wide regardless of waveform duty cycle. The true peak power is measured directly, and even single-pulse events are easily measured.</p>
+<p><strong>Typical radar pulse measurements include:</strong></p>
+<ul>
+<li>Pulse width (usually measured at 50% points, or per the radar standard at -3 dB points)</li>
+<li>Pulse rise time and fall time</li>
+<li>Overshoot and droop</li>
+<li>Pulse repetition frequency and interval</li>
+<li>Peak power within the pulse</li>
+<li>Average power over a defined window</li>
+<li>Duty cycle</li>
+</ul>
+<p>A single well-configured peak sensor measurement captures all of these simultaneously.</p>
+<p>For applications where the production line cares about average power and stability rather than pulse-shape parameters, the Berkeley Nucleonics 12100 series in time-gated mode integrates true-RMS power over the active pulse window. The result is a clean average reading for the on-time portion of the pulse, suitable for go/no-go production tests on radar transmitters. Pulse-shape parameters can then be verified separately on the development bench.</p>
+<h3 id="statistical-analysis-of-modern-communication-signals">7.2 Statistical Analysis of Modern Communication Signals</h3>
+<p>The latest wireless communication formats (DVB, DAB, WiMax, WLAN, 802.11ac WiFi, LTE-FDD, LTE-TDD, 5G NR) use OFDM modulation schemes with multiple carriers to transmit digital information. OFDM is a multi-carrier modulation scheme with a high crest factor designed to transmit large amounts of data. The introduction of digital transmission technology forced engineers to deal with power peaks up to 20 dB above the average value. RF power components must be specified to handle the expected voltage peaks and avoid breakdown or flashover.</p>
+<p>The crest factor (the ratio of the peak value to the average or RMS value) must be determined to correctly specify these components. The peak power of several interconnected transmitters can reach more than one hundred times the thermal or average power level. The selection of RF power components for the transmission system (antenna combiners, coaxial lines, antennas) cannot be based solely on thermal or average power. Short voltage spikes that occur rarely are critical when sizing components.</p>
+<p><strong>Why statistics matter for communication signals.</strong> Crest factor measurements over 12 dB (P_PEP / P_AVG) are difficult to make with repeatable results. To properly accommodate high crest factors, a single peak measurement is not adequate. Statistical analysis is required.</p>
+<p>Low-amplitude communication signals with high crest factor are important when considering BER, but the bigger concern is system damage. The high voltage associated with large power peaks can produce flashover or a standing arc in the transmitter system and destroy components. Statistics are an important tool for measuring these rare events. Because the instantaneous power values are sorted by magnitude rather than time of occurrence, they are counted and not averaged. The process can run for a very long time, limited only by available memory, or run indefinitely if decimation is applied. This is invaluable for characterizing events such as the maximum peak power of an OFDM signal that might occur once a day. Capturing pulse data using statistics provides additional insights not easily observed when capturing amplitude-versus-time measurements.</p>
+<p><strong>A real-world CCDF comparison</strong> of three reference signals illustrates the value of statistical analysis. A 100% AM-modulated sine wave shows a "squared off" CCDF with a peak-to-average ratio of 3 dB at both low and high probabilities, because of the highly predictable periodic waveform. An OFDM signal shows a peak-to-average ratio of about 15 dB and follows a Rayleigh distribution. White Gaussian noise has a theoretically infinite peak-to-average ratio, here showing about 17 dB at a probability level of 10⁻¹².</p>
+<p>For the AM-modulated signal, very few samples are needed to measure peak power. The OFDM signal has a high peak-to-average ratio with peaks that occur infrequently. For these signals the power meter must acquire many samples over a period of time to accurately characterize the power distribution.</p>
+<p><strong>The PDF, CDF, and CCDF connection.</strong> A power histogram tallies samples into bins by power level. The PDF is the smooth limit of that histogram. The CDF is the integral of the PDF, ranging from 0.0 (minimum power) to 1.0 (peak power). The CCDF is the inverse of the CDF (1 minus CDF), running from 1.0 at minimum power to 0.0 at peak. CCDF is the standard presentation in modern peak power meters because peaks are usually what stress the system.</p>
+<p>A 16 QAM modulated signal makes the structure visible. Three distinct power levels in the constellation correspond to three peaks in the PDF, each weighted by how often that level occurs.</p>
+<p><strong>Free-running versus gated CCDF.</strong> A continuous, free-running acquisition will gather samples during both active and inactive (off) signal intervals, distorting the CCDF. Power falls off quickly above about 62% probability, indicating the signal is spending more than a third of its time at low or off power levels. In a time-slotted or bursted signal such as WLAN, this is expected, since the transmitter is off between packets.</p>
+<figure>
+<img src="../figures/orig-image169.jpeg" alt="Free-running CCDF acquisition of a WLAN signal showing a low-power tail" /><figcaption><span class="fig-num">Figure 7.2.1</span> Free-running CCDF of a WLAN signal. The low-power tail at high probability reflects the off interval between packets being included in the acquisition.</figcaption>
+</figure>
+<figure>
+<img src="../figures/orig-image170.jpeg" alt="Pulse-gated CCDF acquisition of a WLAN signal with the payload time-gated" /><figcaption><span class="fig-num">Figure 7.2.2</span> Pulse-gated CCDF of the same WLAN signal. Gating the payload excludes the off interval, so the distribution reflects only the active portion of the burst.</figcaption>
+</figure>
+<p>For a more meaningful CCDF on time-synchronous signals, advanced peak power meters offer time-gated statistical mode, which performs statistical acquisition only during selected portions of a waveform. This excludes off-time and preamble, leaving a CCDF that accurately reflects the power distribution during the more random payload portion of the frame. Time-gate cursors define the region of interest. Only the WLAN payload is included in the resulting CCDF, no longer skewed by the low-crest-factor preamble or the off interval between bursts.</p>
+<figure>
+<img src="../figures/orig-image171.jpeg" alt="Time-gated CCDF with payload region shown on a 5 microsecond per division time axis" /><figcaption><span class="fig-num">Figure 7.2.3</span> Time gating the payload portion of the signal. The narrow gate (5 µs/div) captures only the active payload, and the resulting CCDF tracks the Gaussian reference closely.</figcaption>
+</figure>
+<figure>
+<img src="../figures/orig-image172.jpeg" alt="Free-running CCDF with full frame shown on a 500 microsecond per division time axis" /><figcaption><span class="fig-num">Figure 7.2.4</span> The same signal acquired free-running across the full frame (500 µs/div). Including the off interval between frames skews the statistical measurement.</figcaption>
+</figure>
+<figure>
+<img src="../figures/orig-image179.jpeg" alt="Time-gated payload acquisition repeated to confirm the improved statistical accuracy" /><figcaption><span class="fig-num">Figure 7.2.5</span> Time gating the payload improves peak power statistical measurement accuracy by excluding the off interval between frames.</figcaption>
+</figure>
+<figure>
+<img src="../figures/orig-image180.jpeg" alt="Free-running full-frame acquisition repeated to show the off-interval skew" /><figcaption><span class="fig-num">Figure 7.2.6</span> Free-running acquisition of the full frame, shown for comparison. The off interval between frames distorts the CCDF.</figcaption>
+</figure>
+<p><strong>The normalized log-log CCDF view</strong> is often more useful, as it expands the very low-probability events of interest. These are the regions where signal compression begins to affect the bit error rate of digitally modulated communication signals. Rotating the X and Y axes (log probability on Y, normalized power on X) gives the textbook presentation. The left end of the Y axis is 0 dBr, corresponding to the signal's long-term average power. The trace intersects the X axis at low probability, for example 10⁻⁶, meaning only one sample out of every million is expected to exceed the average power by that amount.</p>
+<p><strong>Dual-channel comparison.</strong> Berkeley Nucleonics peak power meters support multiple channels, enabling a dual CCDF feature that compares the input and output power distributions of an RF device such as a power amplifier. Crest-factor deviation between input and output reveals compression directly. Because the signal being amplified is an actual communication signal, it contains all the frequencies and power levels of interest and operates the amplifier across its entire dynamic range. The CCDF is more useful than a simple crest-factor measurement, because it quantifies the amount of compression at various probability levels.</p>
+<figure>
+<img src="../figures/orig-image173.png" alt="Dual CCDF chart comparing input and output power distributions of a power amplifier" /><figcaption><span class="fig-num">Figure 7.2.7</span> Dual CCDF comparing the input and output power distributions of a power amplifier. The crest-factor difference between input and output quantifies compression.</figcaption>
+</figure>
+<figure>
+<img src="../figures/orig-image174.png" alt="Dual CCDF chart with compression points marked at the 0.01 percent probability level" /><figcaption><span class="fig-num">Figure 7.2.8</span> The same dual CCDF read at a fixed probability level. The input and output traces (18.48 dBr versus 9.21 dBr at 0.01%) show the amount of compression directly.</figcaption>
+</figure>
+<p>This lets designers evaluate amplifier performance using its intended signal type rather than a CW tone, replacing simplified figures of merit such as the 1 dB compression point. If the amplifier has been built into a receiver and a baseline BER value for an operating system is known, BER and CCDF can be correlated on the physical layer before the receiver is assembled for production. Section 8.3 contains an in-depth discussion of dual-channel statistical power measurement for RF amplifier testing.</p>
+<h3 id="using-power-meters-for-emc-and-compliance-testing">7.3 Using Power Meters for EMC and Compliance Testing</h3>
+<p>The complexity of modern digital equipment has made EMI/EMC susceptibility testing increasingly important. Many EMC standards exist, including MIL-STD-461, IEC 61000, ISO 11451 Automotive, EN 50, and FCC Part 15. Each provides specific guidelines for EMC and EMI test methodologies. Early standards required a CW carrier or a single tone with constant modulation as the disturbance test signal. In January 2010 the IEC committee approved the 61000-4-4-am1 (ed. 2) amendment, allowing the use of burst testing on devices. Amendment 1 defines an impulse (spike frequency) of 100 kHz, and Edition 2 requires burst testing with either the traditional 5 kHz spike or the new 100 kHz spike frequency. The burst test emulates real-world RF interference emitted by base-station communication amplifiers and ground-based radar antennas.</p>
+<p>This section illustrates how a peak power sensor can replace a single diode detector in a field probe to measure pulse power, improve repeatability, and increase the dynamic range of the power measurement.</p>
+<p><strong>Historical background.</strong> Before the late 19th century, the primary sources of electromagnetic disturbance were lightning strikes and sunspots. The growing popularity of electrical and radio equipment in the early 20th century generated the first artificial forms of interference, from electrical-powered equipment and competing radio transmitter towers around the world. Competition led to the creation of international regulatory agencies such as the FCC. The trend continued in the 1940s with the adoption of high-power industrial switching devices that caused coal-mine explosions, automobile and airplane fueling-station fires, and electrical-grid outages. During the 1950s and 1960s, ISM (industrial, scientific, medical) unlicensed frequency bands were allocated by the FCC, permitting the generation of relatively high-power RF signals. Because emission in these bands was uncontrolled, a variety of interference issues emerged from sideband harmonics and broadband emissions. The impact created the need for new standards and laws to regulate emissions. With the advent of digital circuitry in the 1970s, faster switching speeds increased emissions and lower circuit voltages increased susceptibility. The 1980s brought increasing use of mobile communications and broadcast media channels, creating pressure on available spectrum space. Regulatory requirements for smaller band allocations demanded increasingly sophisticated EMC design methods. Although digital signals are often less susceptible to interference than analog systems, their operation at lower power levels gives up some of that immunity. Together these forces created the need for increasingly complex EMC/EMI testing.</p>
+<p><strong>Definitions.</strong> Electromagnetic Compatibility (EMC) is a branch of electrical science that studies the unintentional generation, propagation, and reception of electromagnetic energy from electromagnetic interference (EMI). An emission is intentional or unwanted electromagnetic energy produced by a source, which may couple into other devices. Susceptibility (or immunity) is the inability (or ability) of a piece of electronic equipment, the victim, to operate correctly in the presence of nearby emissions or other electromagnetic interference signals. EMC is achieved by addressing both emission and susceptibility aspects of an electronic device.</p>
+<p>Four types of electromagnetic coupling exist: radiative, inductive, capacitive, and conductive. The primary type discussed in this section is radiative, in which a signal radiates through space as an electromagnetic wave with no physical connection between source and victim.</p>
+<p>The purpose of immunity testing is to emulate real-world RF interference on an electronic device or system. One example is the automotive CANBUS system used for wired digital communication between electronic subsystems. These systems monitor and control engine operation, acceleration, braking, and steering / stability, so their ability to operate correctly under all foreseeable conditions of electrical interference is crucial to passenger safety. Rigorous RF immunity has become a mandatory part of the automotive design process and most other systems where any malfunction could result in injury or property damage.</p>
+<p><strong>Two test methods.</strong> Immunity testing is performed in a large anechoic chamber for isolation from external RF interference while testing the EUT (Equipment Under Test). One important requirement is to apply a simulated interference signal with an accurately known amplitude. RF field strength is typically measured and characterized during or prior to the test using one of two techniques: the closed-loop method or the substitution method.</p>
+<p><strong>Closed Loop Method.</strong> An RF field probe is positioned in front of, or on top of, the EUT during susceptibility testing. The signal generator's output power is adjusted at each specified frequency step across the test band to achieve the desired RF field strength in the chamber. The word "probe" can have two meanings. One is the field probe assembly inside the test chamber. The other is shorthand for an average diode detector circuit. The average diode detector is a component of the field probe assembly and measures RF power through a coaxial cable.</p>
+<p>The average diode detector in the field probe does not accurately measure the field strength of a modulated RF signal, so correction factors must be applied to the probe readings to account for the signal's dynamic behavior. A CW signal can be used to estimate the power being delivered, but an additional correction factor must be applied to account for the modulation applied during the actual testing. This correction is adequate for simple AM modulation, but is often insufficient for the narrow-duty spikes required by today's test standards.</p>
+<p>The simple diode detector can be replaced by a peak power sensor to accurately measure the interference signal's true amplitude even in the presence of modulation. A peak power sensor follows the signal's power envelope and yields the true average and peak power, provided the envelope bandwidth remains within the maximum video bandwidth of the sensor and meter. A good peak power sensor is calibrated for increased dynamic range and is temperature compensated. Using a peak power sensor eliminates the need to apply modulation corrections when a pulsed or modulated interfering signal is used rather than a CW source. When the modulating waveform is complex or a narrow-duty pulse, a peak power sensor becomes mandatory: it is impossible to accurately correct these waveforms for nonlinearity due to modulation when using a conventional diode sensor or probe.</p>
+<p><strong>Substitution Method.</strong> An RF field probe is used to characterize and calibrate the RF field strength in the anechoic chamber before the EUT is placed inside. The field strength is adjusted for each frequency step across the band. The EUT is then positioned in the test environment. This method does not require field monitoring during the test and is referenced by some EMC test standards. While not required, a probe is often used during the test run just to monitor the RF field. Direct feedback ensures good system performance.</p>
+<p>Both the closed-loop and substitution methods use a high-power signal generator connected to a radiating antenna for repeatable RF transmission while testing the EUT. The closed-loop method requires the field probe during testing. The substitution method allows it. In either case, it is beneficial to use a calibrated peak power sensor rather than the average diode detector typically found in most field-strength probes. This eliminates multiple calibrations, modulation correction factors, and the temperature compensation associated with the average diode detector. It provides both peak and average information about the interfering field's characteristics. Without these values, it is impossible to be certain that the EUT is operating in the intended interference environment.</p>
+<p><strong>Anechoic Test Chamber.</strong> Anechoic chambers line their interior walls with RF radiation absorbing material to eliminate reflections and external interference. The combination of shielded enclosure and absorber lets the test engineer apply a known field to the EUT and read the response cleanly. Both closed-loop and substitution methods rely on this isolation. Without it, multipath reflections inside the chamber would smear the field amplitude and make repeatable measurement impossible.</p>
+<p><strong>Monitoring delivered power using couplers.</strong> Another important testing requirement is the application of a simulated interference signal with accurately known amplitude. A typical setup uses a power amplifier to boost the signal from the RF generator that produces the CW and pulse-modulated signals. The generator output needs good spectral purity so that spurious signals are not fed into the PA. The PA itself must be linear and broadband. While performing the test, the signal generator's output power is adjusted at each specified frequency step across the test band to achieve the desired RF field strength in the chamber.</p>
+<p>Biconical antennas, known for broadband characteristics, are ideal for swept measurements for emissions and immunity testing, but their poor VSWR performance means large portions of the transmitted signal are reflected back to the PA. The net power radiated to the DUT is the difference between PA output power and the reflected power from the antenna. To establish the precise net power radiated to the DUT, both delivered power from the PA and reflected power from the antenna must be measured. A dual-channel power meter and a four-port directional coupler provide the best method for measuring reflected power and amplifier output power simultaneously.</p>
+<figure>
+<img src="../figures/orig-image179.png" alt="EMC immunity test setup: pulse generator, modulation generator, power amplifier, directional coupler with forward and reflected peak power sensors, anechoic chamber, antenna, and DUT" /><figcaption><span class="fig-num">Figure 7.3.1</span> Accurate monitoring of delivered power in an anechoic chamber. A four-port directional coupler routes forward and reflected power to dual peak power sensors, so the net power radiated to the DUT is known precisely.</figcaption>
+</figure>
+<blockquote>
+<p><strong>Pro tip.</strong> Keep an average power sensor taped to the output port of any EMC immunity signal source. A transmitter that quietly drifts over a weekend will stop passing compliance. You want to find that on Monday morning, not three months later. The Berkeley Nucleonics 12100 series is built for exactly this kind of unattended monitoring: real-time clock timestamps, internal logging via UOP, and zero drift between measurement sessions.</p>
+</blockquote>
+<div class="quiz-cta">
+  <h4>Check your understanding</h4>
+  <p>Two quick questions on power measurement applications. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-07.html">Take the interactive quiz &rarr;</a></p>
+</div>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="06-rf-power-analysis.html">&larr; 6. RF Power Analysis</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="08-performance-tips.html">8. Performance Tips &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

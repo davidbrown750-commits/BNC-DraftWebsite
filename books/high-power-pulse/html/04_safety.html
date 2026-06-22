@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 4: Safety</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-4">Chapter 4</h1>
+<h2 id="safety">Safety</h2>
+<blockquote>
+<p><em>"The energy in a charged 1000 µF capacitor at 1 kV is 500 joules. That is roughly the kinetic energy of a major-league fastball. Treat it that way."</em></p>
+</blockquote>
+<hr />
+<h3 id="41-why-pulser-safety-is-different">4.1 Why Pulser Safety Is Different</h3>
+<p>Working safely with high-power pulsers means thinking about three hazards that are uncommon in low-voltage instrumentation. Stored energy, fast-rise transients, and the X-ray emission that happens whenever fast electrons strike metal. None of these are exotic. All of them have killed engineers. Most of the deaths were preventable with habits the victims either never learned or stopped following.</p>
+<p>This chapter is short because safety rules are short. The chapter is also non-negotiable: skipping any of these in a real lab environment is a path toward an OSHA filing or a funeral.</p>
+<hr />
+<h3 id="42-the-cardinal-rules">4.2 The Cardinal Rules</h3>
+<p>These rules are not new. They have been in pulser manuals since the radar era. They are still in V1 of this book because they are still right.</p>
+<h4 id="1-never-touch-anything-connected-to-an-output-that-is-firing">1. Never touch anything connected to an output that is firing</h4>
+<p>Voltage pulsers driving capacitive or high-impedance loads will, given the chance, find the lower-impedance path you offer them. You are that lower-impedance path. The current that flows through you is set by Ohm's law, and the voltages involved (1 to 30 kV in commercial pulsers, higher in research) are well above the threshold where skin resistance breaks down and current flows freely through tissue.</p>
+<p>The threshold for ventricular fibrillation is roughly 50 to 100 mA across the heart. At 10 kV, it takes only a 100 kΩ path through your body to reach that threshold. Skin resistance dry, you may be there. Skin resistance wet (sweat, hand cream, a drop of water), you definitely are there.</p>
+<p>Disable triggers and discharge the storage capacitor through a bleeder resistor before any contact with the output side of the pulser. There is no exception to this rule. None.</p>
+<h4 id="2-be-wary-of-floating-electronics">2. Be wary of floating electronics</h4>
+<p>The "floating scope" trap (Chapter 3) is the most common way pulser users injure themselves. If your measurement requires the scope ground to be at the load potential, do not lift the scope's safety ground. Use a differential probe rated for the load voltage, or use an optically isolated digitizer. The cost is real (a high-voltage differential probe runs several thousand dollars). The alternative is a scope chassis at the load voltage, which sometimes is enough current and voltage to electrocute the operator on contact.</p>
+<h4 id="3-respect-the-safe-operating-area-graphs">3. Respect the safe-operating-area graphs</h4>
+<p>Every BNC-DEI product manual includes safe-operating-area (SOA) graphs that map allowed combinations of pulse width, repetition rate, and amplitude. Operating outside those graphs causes thermal stress on the switches, accelerates aging, and in pathological cases causes immediate failure. Modern devices have automatic shutdown when pushed past their SOA, but the protection circuitry is a backup, not a substitute for reading the graph.</p>
+<p>The PCX-7500 in particular is described as "destroying itself if used improperly." The SOA graph for this device is not advisory. It is the boundary between operation and warranty-voiding damage.</p>
+<h4 id="4-use-a-non-conductive-work-surface">4. Use a non-conductive work surface</h4>
+<p>Place loads on insulating surfaces (plastic, fiberglass, dry wood). Never on a metal table, metal fixture, or metal enclosure. High-voltage operation produces incidental arcing along surfaces, and a metal work surface is a current return path back to ground that includes whatever happens to be standing on it.</p>
+<p>For high-voltage work above a few kV, use a dedicated insulating mat (rubber matting rated for the voltage) and keep test fixtures elevated on insulating standoffs. If the pulser arcs to the table, the table is part of the circuit, and so is anyone in contact with it.</p>
+<hr />
+<h3 id="43-stored-energy-hazard-classification">4.3 Stored-Energy Hazard Classification</h3>
+<p>Beyond the cardinal rules, plan for stored energy. The capacitor bank inside any pulser stores joules that take fractions of a second to deliver. The energy in a charged capacitor is:</p>
+<blockquote>
+<p>E = ½ × C × V²</p>
+</blockquote>
+<p>Three example points to anchor your intuition:</p>
+<ul>
+<li><strong>PVX-4140 (3.5 kV, ~200 pF internal):</strong> E ≈ 0.001 J. Painful but not lethal.</li>
+<li><strong>PVX-4110 (10 kV, ~1 nF internal):</strong> E ≈ 0.05 J. Capable of severe burns.</li>
+<li><strong>Research-class capacitor bank (5 kV, 1 mF):</strong> E = 12.5 kJ. Routinely lethal, comparable to a small explosion.</li>
+</ul>
+<p>The safety threshold below which capacitor energy is generally not lethal is around 10 J. Above that, treat the bank as a loaded weapon. Always use a bleeder resistor sized to discharge the bank to safe levels in less than 60 seconds, and confirm with a voltmeter before touching anything. For very large banks, a dedicated discharge crowbar is standard equipment.</p>
+<p>The "hot stick" tradition from utility line work applies to research pulsers too. A long fiberglass rod with an insulated grounding clip at the end lets the operator short the bank to ground at a safe distance. Use the hot stick before assuming the bank is discharged. Always.</p>
+<hr />
+<h3 id="44-x-ray-emission">4.4 X-ray Emission</h3>
+<p>Most users of kilovolt-class pulsers do not realize that fast electrons accelerated through tens of kilovolts produce X-rays when they strike metal. This is the same phenomenon used in dental X-ray machines, just incidental rather than intentional.</p>
+<p>The dose is small in commercial pulsers (the geometry is not optimized for X-ray production), but it is not zero. For systems above 30 kV operating at high duty cycle, an exposure survey with a calibrated radiation meter is a reasonable precaution. Position the meter at the operator's normal working distance and run the device through its expected duty cycle. If the dose rate is above a few µSv/hr, add lead shielding around the high-voltage section or operate the device in a shielded enclosure.</p>
+<p>This is not paranoia. The DOE pulsed-power facilities have whole-body X-ray monitoring for staff working near the larger machines, and dose limits that constrain working hours. Commercial benchtop devices do not require that level of precaution, but a quick survey is cheap insurance.</p>
+<hr />
+<h3 id="45-capacitor-bank-discharge-protocols">4.5 Capacitor-Bank Discharge Protocols</h3>
+<p>For pulsers with significant stored energy, discharge the bank before any contact with the high-voltage section. The protocol:</p>
+<ol>
+<li><strong>Disable the trigger.</strong> No more pulses.</li>
+<li><strong>Shut off the high-voltage supply.</strong> No more charging.</li>
+<li><strong>Wait 30 seconds.</strong> Bleeder resistors do most of the work in this time on a properly designed system.</li>
+<li><strong>Connect a discharge stick (hot stick) to ground first, then to the high-voltage node.</strong> The order matters: ground first ensures the stick is at ground potential when it touches the HV node.</li>
+<li><strong>Hold for several seconds</strong> to discharge any residual charge through the stick's resistor.</li>
+<li><strong>Verify with a voltmeter.</strong> Direct measurement, not assumption.</li>
+<li><strong>Apply a shorting strap</strong> between the HV node and ground, to stay shorted while you work. Capacitors can recover voltage from dielectric absorption (the so-called "dielectric memory" effect), and a shorting strap prevents that surprise.</li>
+</ol>
+<p>The shorting strap is left in place until just before the device is reassembled and ready for re-energization. Most pulsed-power labs paint the shorting strap bright orange and have a procedure that prohibits energizing the supply until the strap is visibly off the bank.</p>
+<hr />
+<h3 id="46-lockout-tagout-for-benchtop-systems">4.6 Lockout / Tagout for Benchtop Systems</h3>
+<p>Industrial high-voltage systems use formal lockout/tagout per OSHA 29 CFR 1910.147. Benchtop research pulsers are generally not legally required to follow LOTO, but the principles still apply:</p>
+<ul>
+<li><strong>Lock the AC mains</strong> of the device when servicing it. A padlock through the unplugged power cord works for benchtop scale.</li>
+<li><strong>Tag the device</strong> with a clear "DO NOT ENERGIZE" sign during service.</li>
+<li><strong>Keep the key with the person doing the work</strong>, not in a drawer or shared.</li>
+<li><strong>Maintain a service log</strong> that records who locked it out, when, and why.</li>
+</ul>
+<p>These habits transfer cleanly from utility scale to bench scale. A formal LOTO on a 10 kV pulser is not regulatory overkill. It is a simple way to prevent the second engineer from energizing the device while the first engineer has their hands inside it.</p>
+<hr />
+<h3 id="47-standards-and-regulatory-context">4.7 Standards and Regulatory Context</h3>
+<p>Three standards govern most pulser-adjacent safety practice:</p>
+<ul>
+<li><strong>IEC 61010-1</strong> for measurement, control, and laboratory equipment safety. This is the standard most BNC-DEI products are certified to. It defines voltage classifications, insulation requirements, and protection categories.</li>
+<li><strong>IEC 60204-1</strong> for safety of machinery, electrical equipment of machines. Applicable when pulsers are integrated into larger industrial systems.</li>
+<li><strong>NFPA 70E</strong> for electrical safety in the workplace. The standard the United States OSHA enforces. Defines arc-flash boundaries, PPE categories, and the qualified-electrical-worker concept.</li>
+</ul>
+<p>For research pulsers in academic labs, NFPA 70E is the most relevant document. For commercial instruments deployed on factory floors, IEC 60204 typically dominates. For OEM module integration, IEC 61010 is the certification target.</p>
+<hr />
+<h3 id="48-ppe">4.8 PPE</h3>
+<p>Personal protective equipment for pulser work depends on the energy involved.</p>
+<ul>
+<li><strong>Below 1 kV, low duty cycle:</strong> safety glasses, no jewelry on hands or wrists, dry clothing.</li>
+<li><strong>1 to 10 kV, low duty cycle:</strong> add insulating gloves rated for the voltage class, insulating mat under the workspace.</li>
+<li><strong>Above 10 kV, or any high-energy capacitor bank:</strong> add face shield, arc-flash-rated clothing per NFPA 70E category appropriate for the available incident energy, and operate behind a shielded barrier where possible.</li>
+<li><strong>Pulsed-power physics class systems:</strong> the answer is "you should not be doing this without a trained safety officer present."</li>
+</ul>
+<p>Most BNC-DEI commercial products are in the first two categories. The cardinal rules of section 4.2 are sufficient PPE-wise for those, with a healthy respect for what the energies involved can do.</p>
+<hr />
+<h3 id="49-questions-for-review">4.9 Questions for Review</h3>
+<ol>
+<li>
+<p>The energy stored in a 100 µF capacitor charged to 2 kV is approximately:
+   a. 2 J
+   b. 20 J
+   c. 200 J
+   d. 2000 J</p>
+</li>
+<li>
+<p>Which of the following is the safest way to make a measurement on a 10 kV floating load?
+   a. Lift the scope's safety ground.
+   b. Use a high-voltage differential probe rated for the load voltage.
+   c. Use a regular passive probe with a long ground lead.
+   d. Connect the scope chassis to the load chassis.</p>
+</li>
+<li>
+<p>The threshold capacitor energy below which a discharge is generally non-lethal is approximately:
+   a. 0.1 J
+   b. 1 J
+   c. 10 J
+   d. 100 J</p>
+</li>
+<li>
+<p>When discharging a high-voltage capacitor bank with a hot stick, the correct order is:
+   a. Touch the high-voltage node first, then connect to ground.
+   b. Touch ground first, then the high-voltage node.
+   c. Order does not matter as long as you discharge.
+   d. Always use a low-resistance shorting strap with no series resistance.</p>
+</li>
+<li>
+<p>The standard most BNC-DEI products are certified to is:
+   a. NFPA 70E
+   b. IEC 60204-1
+   c. IEC 61010-1
+   d. UL 1492</p>
+</li>
+<li>
+<p>X-ray emission becomes a meaningful hazard at pulser voltages above approximately:
+   a. 1 kV
+   b. 10 kV
+   c. 30 kV
+   d. 100 kV</p>
+</li>
+<li>
+<p>The "dielectric memory" effect refers to:
+   a. Failure of capacitor markings to remain readable.
+   b. Capacitors recovering some voltage after a discharge, due to absorbed charge in the dielectric.
+   c. The capacitor's tendency to remember its operating voltage.
+   d. Loss of capacitance after repeated charge cycles.</p>
+</li>
+</ol>
+<div class="quiz-cta">
+  <h4>Test yourself</h4>
+  <p>The same seven questions, graded instantly with your score saved on this device.</p>
+  <p><a class="btn" href="quiz-04_safety.html">Take the interactive quiz &rarr;</a></p>
+</div>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="410-further-reading">4.10 Further Reading</h3>
+<ul>
+<li>
+<p><strong>NFPA 70E,</strong> Standard for Electrical Safety in the Workplace. The single most important safety document for pulser engineers in the United States.</p>
+</li>
+<li>
+<p><strong>IEC 61010-1,</strong> Safety requirements for electrical equipment for measurement, control, and laboratory use. The certification standard for most commercial laboratory pulsers.</p>
+</li>
+<li>
+<p><strong>OSHA 29 CFR 1910.147,</strong> Control of Hazardous Energy (Lockout/Tagout). Federal regulation governing energy isolation procedures.</p>
+</li>
+<li>
+<p><strong>DOE-HDBK-1092-2013,</strong> DOE Handbook on Electrical Safety. Free from the DOE Office of Scientific and Technical Information. Particularly useful for the capacitor-bank discharge protocols and the X-ray hazard treatment.</p>
+</li>
+<li>
+<p><strong>Hammond, P.H. and Walker, R.J.</strong> <em>Electrical Safety in High Voltage Pulse Power Systems.</em> IEEE Pulsed Power Conference proceedings, multiple years. Practical guidance specific to research-scale pulser operations.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 4.</em></p>
+<p><em>Chapter 5 (Switch Technologies) follows.</em></p>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03_pitfalls.html">&larr; Ch 3: Common Pitfalls</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="05_switches.html">Ch 5: Switch Technologies &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

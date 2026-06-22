@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="440" fill="#ffffff"/>
+  <text x="410" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#003D6B">Output Spectrum: SFDR, Harmonics, and Noise Floor</text>
+
+  <!-- plot frame -->
+  <!-- x axis from 70 to 790, y axis from 60 (0 dBc top) to 360 (-100 dBc bottom) -->
+  <line x1="70" y1="60" x2="70" y2="360" stroke="#2C3E50" stroke-width="1.5"/>
+  <line x1="70" y1="360" x2="790" y2="360" stroke="#2C3E50" stroke-width="1.5"/>
+
+  <!-- y gridlines and labels (0, -20, -40, -60, -80, -100 dBc) -->
+  <g font-size="11" fill="#2C3E50">
+    <line x1="70" y1="60"  x2="790" y2="60"  stroke="#e3e7ea"/>
+    <text x="64" y="64"  text-anchor="end">0</text>
+    <line x1="70" y1="120" x2="790" y2="120" stroke="#e3e7ea"/>
+    <text x="64" y="124" text-anchor="end">-20</text>
+    <line x1="70" y1="180" x2="790" y2="180" stroke="#e3e7ea"/>
+    <text x="64" y="184" text-anchor="end">-40</text>
+    <line x1="70" y1="240" x2="790" y2="240" stroke="#e3e7ea"/>
+    <text x="64" y="244" text-anchor="end">-60</text>
+    <line x1="70" y1="300" x2="790" y2="300" stroke="#e3e7ea"/>
+    <text x="64" y="304" text-anchor="end">-80</text>
+    <text x="64" y="362" text-anchor="end">-100</text>
+  </g>
+  <text x="26" y="210" font-size="12" fill="#2C3E50" font-weight="bold" transform="rotate(-90 26 210)" text-anchor="middle">Amplitude (dBc)</text>
+  <text x="430" y="398" font-size="12" fill="#2C3E50" font-weight="bold" text-anchor="middle">Frequency &#8594;</text>
+
+  <!-- noise floor (jagged baseline around -92 dBc => y ~ 336) -->
+  <polyline fill="none" stroke="#90a4ae" stroke-width="1"
+    points="70,338 100,334 130,340 160,335 190,341 220,333 250,339 280,336 310,342 340,334 370,340 400,336 430,341 460,335 490,339 520,337 550,342 580,334 610,340 640,336 670,341 700,335 730,339 760,337 790,340"/>
+  <text x="600" y="332" font-size="11" fill="#607d8b">noise floor (SNR ref)</text>
+
+  <!-- fundamental at x=170, full scale (0 dBc, top=60) -->
+  <line x1="170" y1="60" x2="170" y2="360" stroke="#0078B6" stroke-width="3"/>
+  <text x="170" y="54" font-size="11" text-anchor="middle" fill="#003D6B" font-weight="bold">Fundamental</text>
+  <text x="170" y="375" font-size="10" text-anchor="middle" fill="#2C3E50">f0</text>
+
+  <!-- worst spur (a non-harmonic spur) at x=300, -72 dBc => y = 60 + 72*3 = 276 -->
+  <line x1="300" y1="276" x2="300" y2="360" stroke="#C77E00" stroke-width="3"/>
+  <text x="300" y="270" font-size="10" text-anchor="middle" fill="#C77E00" font-weight="bold">worst spur</text>
+  <text x="300" y="375" font-size="10" text-anchor="middle" fill="#2C3E50">spur</text>
+
+  <!-- 2nd harmonic at x=400, -82 dBc => y = 60 + 82*3 = 306 -->
+  <line x1="400" y1="306" x2="400" y2="360" stroke="#4B2A6B" stroke-width="2.5"/>
+  <text x="400" y="375" font-size="10" text-anchor="middle" fill="#2C3E50">2f0</text>
+  <!-- 3rd harmonic at x=600, -88 dBc => y = 60 + 88*3 = 324 -->
+  <line x1="600" y1="324" x2="600" y2="360" stroke="#4B2A6B" stroke-width="2.5"/>
+  <text x="600" y="375" font-size="10" text-anchor="middle" fill="#2C3E50">3f0</text>
+
+  <!-- SFDR span marker: from fundamental top (60) to worst spur top (276) -->
+  <line x1="240" y1="60" x2="240" y2="276" stroke="#003D6B" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="234" y1="60" x2="246" y2="60" stroke="#003D6B" stroke-width="1.5"/>
+  <line x1="234" y1="276" x2="246" y2="276" stroke="#003D6B" stroke-width="1.5"/>
+  <rect x="150" y="150" width="86" height="36" fill="#ffffff" stroke="#003D6B"/>
+  <text x="193" y="167" font-size="12" text-anchor="middle" fill="#003D6B" font-weight="bold">SFDR</text>
+  <text x="193" y="181" font-size="12" text-anchor="middle" fill="#003D6B" font-weight="bold">72 dBc</text>
+
+  <text x="410" y="425" font-size="11" text-anchor="middle" fill="#2C3E50" font-style="italic">SFDR is the gap from the carrier to the largest spur, harmonic or not. SNR sums all the noise instead.</text>
+</svg>

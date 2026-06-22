@@ -1,0 +1,427 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 3: Key Specifications</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-3-key-specifications">Chapter 3: Key Specifications</h2>
+
+<figure>
+<img src="../figures/chapter-03-opener.png" alt="An engineer reading an arbitrary waveform generator datasheet beside a bench oscilloscope displaying a reconstructed waveform and its spectrum." />
+<figcaption><span class="fig-num">Figure 3.1</span> An AWG datasheet is a contract between what the marketing headline promises and what the instrument actually does at your test point. Reading it well is the difference between a part that fits and a part you fight.</figcaption>
+</figure>
+
+<p>Every arbitrary waveform generator is sold on a handful of headline numbers. Sample rate. Resolution. Memory. Bandwidth. Those numbers are real, but they interact, and the interactions are where engineers get surprised. A generator that looks fast on one line can look slow on another, and a spec that wins the data sheet can lose the measurement.</p>
+
+<p>This chapter is a guided tour of the specifications that actually matter, what each one governs, and the quiet tradeoffs that connect them. We will keep it quantitative. By the end you should be able to pick up an AWG datasheet, read past the bold type, and predict how the instrument will behave at the edge of your signal. The goal is spec literacy, not spec memorization.</p>
+
+<h3 id="sample-rate">3.1 Sample Rate</h3>
+
+<p><strong>Sample rate is how many points the generator emits per second,</strong> measured in samples per second (Sa/s), or more usefully for modern instruments in MSa/s and GSa/s. It is the clock that drives the digital-to-analog converter. Each tick, one stored sample becomes one analog voltage. Everything else about fidelity flows downstream from this rate.</p>
+
+<p>The sample rate sets a hard ceiling on the highest frequency the generator can represent. The Nyquist criterion says you need more than two samples per cycle of the highest frequency component, so the theoretical maximum output frequency is half the sample rate. A 1.25 GSa/s generator can in principle place energy up to 625 MHz. We say "in principle" because the practical limit sits well below Nyquist once you account for reconstruction filtering and the amplitude roll-off near the band edge. We will treat Nyquist properly in Chapter 4; for now, read sample rate as the frequency budget you are buying.</p>
+
+<p>Two numbers often hide behind one headline. The <strong>update rate</strong> is the true rate at which fresh, independent samples leave memory and reach the DAC. The <strong>interpolated</strong> or effective rate is a higher number a generator may report after on-chip interpolation, which manufactures intermediate samples to ease the reconstruction filter. Interpolation is genuinely useful, since it pushes the first image further out and relaxes the analog filter, but it does not create information that was not in the original waveform. When a datasheet quotes a large sample rate, find out whether that is the memory update rate or an interpolated output rate. For the BNC Model 686, for example, the headline 20 GS/s is a real-time update rate, which is the meaningful version of the number.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> When two AWGs quote the same sample rate but one costs twice as much, the sample rate is almost never the reason. Look at what surrounds it: the reconstruction filter, the DAC resolution, the spurious performance, and the clock. Those are where the money goes, and where your signal lives or dies.</p></blockquote>
+
+<h3 id="vertical-resolution">3.2 Vertical (DAC) Resolution</h3>
+
+<p><strong>Vertical resolution is the number of bits in the DAC,</strong> and it sets how finely the generator can divide its output voltage range. An N-bit converter has 2<sup>N</sup> distinct code levels. An 8-bit DAC offers 256 levels. A 14-bit DAC offers 16,384. A 16-bit DAC offers 65,536. More levels means each step is smaller, the staircase that approximates your waveform is finer, and the quantization error that rides on top of the signal is lower.</p>
+
+<figure>
+<img src="../figures/fig-3-2-bits-vs-levels.svg" alt="Left: a sine cycle quantized at 8, 14, and 16 bits showing progressively finer steps. Right: a bar chart of ideal SNR rising about 6 dB per added bit, from 49.9 dB at 8-bit to 98.1 dB at 16-bit." />
+<figcaption><span class="fig-num">Figure 3.2</span> Each added bit halves the step size and adds roughly 6 dB of dynamic range. The coarse 8-bit staircase visibly departs from the ideal sine; by 16 bits the steps are too small to draw.</figcaption>
+</figure>
+
+<p>The payoff shows up as dynamic range. For an ideal converter driven by a full-scale sine wave, the best achievable signal-to-noise ratio is</p>
+
+<p style="text-align:center;font-family:Consolas,monospace;color:var(--bnc-deep-navy);"><strong>SNR (dB) = 6.02 N + 1.76</strong></p>
+
+<p>where N is the number of bits. That formula is the reason every added bit is worth about 6 dB. An ideal 8-bit DAC tops out near 50 dB of SNR, a 14-bit part near 86 dB, and a 16-bit part near 98 dB. Real converters never reach the ideal, which is why the honest figure of merit is <strong>ENOB</strong>, the effective number of bits. ENOB folds in real noise and distortion by running the measured SNR-and-distortion back through the same formula: ENOB = (SINAD minus 1.76) / 6.02. A converter advertised at 14 bits might deliver 11 to 12 effective bits at high output frequency. Always ask for ENOB at a stated frequency, not just the nameplate bit count.</p>
+
+<p>Here is the tradeoff that shapes the whole market. Resolution and speed pull against each other in silicon. The fastest DAC architectures, which reach the multi-GSa/s rates, are often 8 to 14 bits because pushing more bits at those speeds is hard and power-hungry. Slower converters can comfortably reach 16 bits. This is why a 6 GSa/s instrument may be 16-bit while a 20 GSa/s instrument is 14-bit, as with the BNC Model 685 (16-bit, 6.16 GS/s) and Model 686 (14-bit, 20 GS/s). Neither is "better" in the abstract. One favors amplitude precision, the other favors raw speed and bandwidth. The right choice depends on whether your signal is amplitude-limited or frequency-limited.</p>
+
+<h3 id="memory-depth">3.3 Memory Depth</h3>
+
+<p><strong>Memory depth is how many waveform points the generator can store per channel,</strong> quoted in samples (often as 256K, 4 GSamples, and so on). It is the length of the script the DAC reads. And it sets a simple, unforgiving limit: the longest unique waveform you can play before the pattern must repeat or be refilled.</p>
+
+<p>The governing relation is one line of arithmetic:</p>
+
+<p style="text-align:center;font-family:Consolas,monospace;color:var(--bnc-deep-navy);"><strong>playback time = memory depth / sample rate</strong></p>
+
+<p>The tension is immediate. Memory depth wants to be large; sample rate wants to be large; and they divide. At 20 GSa/s, one million points lasts only 50 microseconds. To hold a full millisecond of unique signal at that rate you need 20 million points. This is why deep memory and high sample rate are both expensive, and why generators built for long or complex scenarios advertise memory in the gigasample range. The BNC Model 686 carries up to 9 GSamples per channel for exactly this reason.</p>
+
+<p>Deep memory matters most in three situations. <strong>Long records:</strong> a radar pulse train, a communications frame, or a captured real-world signal replayed for hardware-in-the-loop testing. <strong>Low-frequency content:</strong> a slow envelope or a long bit sequence needs many points even at a modest rate, because the record has to span the whole period. <strong>Complex, non-repeating waveforms:</strong> anything that cannot be looped without an audible or measurable seam.</p>
+
+<p>When you cannot afford enough memory to hold the whole signal, two techniques buy you out. <strong>Segmentation and sequencing</strong> break the waveform into reusable blocks and stitch them with loops, jumps, and conditional branches, so a short bit of memory plays a long, structured scenario. <strong>Streaming</strong> feeds samples from the host or a large external store in real time, trading memory depth for sustained bus bandwidth. Both are covered in depth in Chapter 5; the point here is that memory depth is not the only way to get length, but it is the simplest and the most deterministic.</p>
+
+<blockquote><p><strong>Pro tip.</strong> Before you pay for the deepest memory option, do the division. Multiply your required record length by your sample rate. If the answer fits in a smaller, cheaper memory plus a sequencer, you may not need the giant buffer at all. Memory you never fill is margin you overpaid for.</p></blockquote>
+
+<h3 id="analog-bandwidth-and-rise-time">3.4 Analog Bandwidth and Rise Time</h3>
+
+<p><strong>Analog bandwidth is the frequency range the generator's output stage can actually pass,</strong> measured at the connector after the DAC, the reconstruction filter, and the output amplifier. It is a separate number from sample rate, and it is usually the one that limits your fastest edges. A generator can clock at 20 GSa/s and still roll its output off at, say, 10 GHz, because the analog chain has its own frequency response independent of the digital clock.</p>
+
+<p>Bandwidth and edge speed are two views of the same physics. The standard first-order rule of thumb ties them together:</p>
+
+<p style="text-align:center;font-family:Consolas,monospace;color:var(--bnc-deep-navy);"><strong>rise time &#8776; 0.35 / bandwidth</strong></p>
+
+<p>A 1 GHz output bandwidth corresponds to roughly a 350 ps rise time. A system with a 50 ps rise time, like the BNC Model 686, implies bandwidth in the multi-GHz range, which is why that instrument quotes 10 GHz bandwidth alongside its 50 ps rise and fall times. The constant 0.35 assumes a single-pole Gaussian-like response; sharper filters shift it slightly, but it is close enough for budgeting and sanity checks.</p>
+
+<p>The practical lesson is headroom. A clean edge contains energy at frequencies far above its fundamental repetition rate, because the harmonics that square up the corners live high in the spectrum. If you want a crisp 100 MHz square wave, you need bandwidth to pass its fifth, seventh, and ninth harmonics, not just the 100 MHz fundamental. Generate a signal whose required edges sit near the instrument's bandwidth limit and you will get rounded corners, overshoot, or ringing, not because the AWG is broken but because you asked the output stage for detail it cannot deliver. Always leave bandwidth headroom above your fastest edge.</p>
+
+<h3 id="spectral-purity">3.5 Spectral Purity: SFDR, SNR, and Phase Noise</h3>
+
+<p>Resolution tells you how clean a signal could be in theory. Spectral purity tells you how clean it is in practice. Three numbers carry most of the weight here, and they are easy to confuse because they all live in the frequency domain.</p>
+
+<figure>
+<img src="../figures/fig-3-5-sfdr-spectrum.svg" alt="A spectrum plot in dBc showing a full-scale fundamental, a worst-case non-harmonic spur 72 dB down, second and third harmonics, and a noise floor. The vertical gap from carrier to worst spur is marked SFDR, 72 dBc." />
+<figcaption><span class="fig-num">Figure 3.5</span> SFDR is the distance in dBc from the fundamental to the single largest spur, whether that spur is a harmonic or not. SNR instead measures the signal against the total integrated noise floor.</figcaption>
+</figure>
+
+<p><strong>SFDR, spurious-free dynamic range,</strong> is the amplitude gap between the fundamental and the largest single unwanted spectral line, expressed in dBc (decibels relative to the carrier). A 72 dBc SFDR means the worst spur sits 72 dB below your tone. That spur might be a harmonic of the signal, or it might be a non-harmonic artifact from DAC nonlinearity, clock feedthrough, or interpolation images. SFDR is the spec to watch when you are generating a small signal that must not be masked by the generator's own junk, or testing a receiver that has to ignore everything except the wanted tone.</p>
+
+<p><strong>SNR, signal-to-noise ratio,</strong> compares the signal power to the total integrated noise across the band, excluding the discrete harmonics. Where SFDR cares about the single worst offender, SNR cares about the whole noise carpet. <strong>Harmonic and spurious content</strong> is the rest of the picture: harmonics are spurs at integer multiples of the fundamental, generated by nonlinearity in the DAC and output stage, while non-harmonic spurs come from clock coupling, power-supply tones, and digital crosstalk. A good datasheet separates these so you know whether a problem is distortion you can sometimes filter or noise you cannot.</p>
+
+<p><strong>Phase noise</strong> is the purity of the sample clock itself, and it propagates straight into your output. The clock's short-term frequency instability smears every generated tone, raising a noise skirt around it. The penalty grows with output frequency, because a fixed timing uncertainty is a larger fraction of a shorter period. A generator with a noisy clock cannot produce a clean high-frequency carrier no matter how many bits its DAC has. For anything involving frequency accuracy, modulation quality, or close-in spectral measurements, the clock's phase noise is as important as the converter.</p>
+
+<h3 id="jitter-and-timing">3.6 Jitter and Timing Stability</h3>
+
+<p><strong>Jitter is the uncertainty in when each sample actually comes out,</strong> the time-domain twin of phase noise. Every DAC update is supposed to land on a perfectly even clock grid. In reality each edge arrives a little early or a little late, and that timing error turns into amplitude error on any part of the waveform that is moving quickly.</p>
+
+<p>This is the mechanism that quietly erodes effective resolution at high frequencies. On a fast-slewing edge, a small timing error samples the wrong voltage, and the faster the signal moves the larger that voltage error becomes. So jitter caps your usable resolution: it does no harm to a slow signal, but it can pull a nominally 14-bit output down to far fewer effective bits when you push toward the top of the band. This is one reason ENOB falls off with frequency. You can have all the DAC bits in the world and still be timing-limited.</p>
+
+<p>Jitter comes in two flavors that behave differently. <strong>Random jitter</strong> is Gaussian, unbounded, and arises from thermal and shot noise in the oscillator and clock path; it is described statistically and never fully goes away. <strong>Deterministic jitter</strong> is bounded and has a cause you can often name: power-supply coupling, crosstalk, duty-cycle distortion, or data-dependent effects. Deterministic jitter can frequently be designed out or filtered; random jitter sets the noise floor you are stuck with. Total jitter is the convolution of the two, and it is what shows up at your output.</p>
+
+<p><strong>Reference inputs</strong> are the lever you have over all of this at the system level. A rear-panel 10 MHz reference input lets the generator lock its internal clock to a high-stability external source, an oven-controlled or rubidium standard, so that frequency accuracy and long-term drift are governed by a reference you trust. Reference inputs also let you discipline several instruments to a common timebase, which is the foundation of multi-channel and multi-box synchronization covered in Chapter 7. They do not fix close-in random jitter, but they anchor accuracy and let a clean external clock improve a system that would otherwise be limited by an ordinary internal oscillator.</p>
+
+<hr />
+
+<h3 id="spec-reference-table">Putting It Together: A Spec Reference Table</h3>
+
+<p>The specifications above are not a checklist to maximize line by line. They are a system, and the art is reading them against your actual signal. The table below summarizes what each governs and the trap that most often catches engineers who read only the headline.</p>
+
+<table>
+<thead>
+<tr><th>Specification</th><th>What it governs</th><th>Watch out for</th></tr>
+</thead>
+<tbody>
+<tr><td>Sample rate (Sa/s)</td><td>Highest representable frequency; sets the Nyquist ceiling at half the rate</td><td>Is the headline a true update rate or an interpolated rate? Usable bandwidth sits well below Nyquist.</td></tr>
+<tr><td>Vertical resolution (bits)</td><td>Code levels (2<sup>N</sup>), step size, and ideal SNR of 6.02N + 1.76 dB</td><td>Nameplate bits are not ENOB. The fastest DACs trade bits for speed; ask for ENOB at frequency.</td></tr>
+<tr><td>Memory depth (Sa)</td><td>Longest unique waveform; playback time = depth / sample rate</td><td>At high sample rates, deep memory drains fast. Sequencing or streaming may beat raw depth.</td></tr>
+<tr><td>Analog bandwidth (Hz)</td><td>Frequency range the output stage passes; rise time &#8776; 0.35 / BW</td><td>Independent of sample rate. Fast edges need bandwidth headroom for their high harmonics.</td></tr>
+<tr><td>SFDR (dBc)</td><td>Gap from carrier to the single worst spur</td><td>Worst spur may be non-harmonic. Critical for small-signal and receiver-test work.</td></tr>
+<tr><td>SNR / ENOB</td><td>Signal versus total integrated noise; real-world effective bits</td><td>Degrades with output frequency. A static-frequency figure can flatter the part.</td></tr>
+<tr><td>Phase noise / jitter</td><td>Clock purity and timing stability; close-in spectral quality</td><td>Penalty scales with output frequency. Caps effective resolution on fast edges regardless of DAC bits.</td></tr>
+</tbody>
+</table>
+
+<p>Read the datasheet as a whole. A 14-bit generator with excellent jitter and SFDR can outperform a 16-bit generator with a noisy clock on a high-frequency signal, even though the bit count says otherwise. Match the instrument to the part of the signal that actually constrains you, and confirm every number against the current BNC datasheet at berkeleynucleonics.com before you design it in.</p>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-03.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="02-how-an-awg-works.html">&larr; 2. How an AWG Works</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="04-sampling-theory-and-fidelity.html">4. Sampling Theory and Signal Fidelity &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

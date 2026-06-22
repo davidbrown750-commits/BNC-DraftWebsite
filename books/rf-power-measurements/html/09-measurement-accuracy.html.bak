@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 9: Measurement Accuracy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-9-measurement-accuracy">Chapter 9: Measurement Accuracy</h2>
+<figure>
+<img src="../figures/chapter-09-opener.svg" alt="" /><figcaption>Chapter 9 — Measurement Accuracy</figcaption>
+</figure>
+<p>RF power meters have long been accepted as accurate measurement standards. How accurate are the power measurements they yield? Calculating the accuracy of average and peak RF power measurements requires more than a glance at a specification sheet. Many users ask “how accurate is the meter.” The metrologist asks the better question: what is the uncertainty of this particular measurement? Uncertainty is a quantifiable measurement of where measurement errors are or, more importantly, may be present.</p>
+<p>This chapter examines the various sources of measurement uncertainty, describes how they combine to yield a single uncertainty value, and shows two sample uncertainty calculations for typical power-measurement scenarios.</p>
+<h3 id="introduction-to-uncertainty">9.1 Introduction to Uncertainty</h3>
+<p>RF power measurement accuracy depends on a variety of factors derived from the measuring instrument, the device under test (DUT), the characteristics of the signal being measured, the instrument settings, and environmental factors. Calibration, signal frequency, level, modulation, source and load mismatch, and noise all play a role in determining total uncertainty.</p>
+<p>Each factor adds its own contribution. Some contributions are large; some are negligible. The “uncertainty terms” combine mathematically to yield a single uncertainty value for a particular measurement. Many of the values vary considerably from one measurement application to the next, even with identical equipment, so there is never a single datasheet value for power-measurement accuracy.</p>
+<p><strong>Uncertainty values.</strong> When combining uncertainty values, all numbers must be in the same units. Uncertainty is typically given as a fraction or percentage, with 0.0% meaning no contribution to the reading. Sometimes uncertainty values are provided as a logarithmic value, “± x.xx dB”. The following formulas convert between percent uncertainty and dB tolerance:</p>
+<blockquote>
+<p><em>U% = (10^(UdB/10) - 1) × 100, and UdB = 10 × log₁₀(1 + (U% / 100))</em></p>
+</blockquote>
+<p><strong>Worst-case uncertainty.</strong> Uncertainty values for each term are usually specified as worst-case values: the measurement uncertainty due to that particular item will never be greater than the specification. In some cases, “typical” values are also given, useful for understanding the characteristic of that term.</p>
+<p>The combined worst-case uncertainty approach is conservative. Worst-case values of each term are added together:</p>
+<blockquote>
+<p><em>U_WorstCase = U₁ + U₂ + U₃ + … + Uₙ</em></p>
+</blockquote>
+<p>Most uncertainty terms are independent of one another, so the probability of all of them existing at worst-case conditions simultaneously is extremely small. A more realistic approach, the root-sum-of-squares (RSS) technique, combines the terms to yield a single expected uncertainty value. Each term is squared, the squares are summed, and the square root is taken:</p>
+<blockquote>
+<p><em>U_RSS = √(U₁² + U₂² + U₃² + … + Uₙ²)</em></p>
+</blockquote>
+<p><strong>Uncertainty distributions.</strong> A problem with the basic RSS method is that it does not account for the fact that the distribution of errors for each term may have a different shape within the worst-case bounds. Some types of errors vary with a normal (Gaussian) distribution, with most errors in a narrow range and fewer errors at larger values. The worst-case limits are typically several standard deviations away. Other errors vary linearly within bounds, yielding a rectangular distribution with equal probability across the range. Other shapes such as U-shaped distributions are possible, often resulting from normal distributions cut off or forced within a range by an adjustment process.</p>
+<figure>
+<img src="../figures/image112.png" alt="Three error distributions: normal, rectangular, and U-shaped, with their K multipliers" /><figcaption>Figure 9.1.1 Three error distributions: normal, rectangular, and U-shaped, with their K multipliers.</figcaption>
+</figure>
+<p>To account for these varying probabilities, the worst-case uncertainty values for each term are scaled by an appropriate constant K based on the term’s distribution shape.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Distribution</th>
+<th>K Multiplier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td>√(1/4) = 0.500</td>
+</tr>
+<tr class="even">
+<td>Rectangular</td>
+<td>√(1/3) = 0.577</td>
+</tr>
+<tr class="odd">
+<td>U-shaped</td>
+<td>√(1/2) = 0.707</td>
+</tr>
+</tbody>
+</table>
+<p>The formula for combined RSS uncertainty using worst-case values and distribution shape factors is:</p>
+<blockquote>
+<p><em>U_RSS = √[(U₁K₁)² + (U₂K₂)² + … + (UₙKₙ)²]</em></p>
+</blockquote>
+<p>This calculation yields the <strong>combined standard uncertainty</strong>, U_C, with a confidence level of approximately 68%. To gain higher confidence, the <strong>expanded uncertainty</strong> is used. A statistical coverage factor of 2 yields an expanded uncertainty with approximately 95% confidence:</p>
+<blockquote>
+<p><em>U_EXPANDED = 2 × U_C</em></p>
+</blockquote>
+<p>This is the generally accepted method within the RF power-measurement industry.</p>
+<h3 id="power-measurement-uncertainty-contributions">9.2 Power Measurement Uncertainty Contributions</h3>
+<p>There is no standard set of defined uncertainty terms, and different instrument manufacturers may group or name them differently. The following list describes the terms used for computing uncertainty for power measurements with Berkeley Nucleonics peak and CW power meters and sensors.</p>
+<p><strong>Instrument Uncertainty.</strong> Represents the amplification and digitization uncertainty in the meter, plus internal component temperature drift. Cable and connector loss between the sensor and meter may also be included. In most cases this is small, since absolute errors in the circuitry are calibrated out by field calibration processes (sensor zero, fixed calibration, AutoCal step calibration), leaving only relative linearity errors. Instrument uncertainty is typically a datasheet value.</p>
+<p><strong>Calibrator Level Uncertainty.</strong> The uncertainty in the calibrator’s output level for a given setting, for calibrators maintained in calibrated condition. Typically a single datasheet value for fixed-output (0 dBm) references; varies with level for variable-output calibrators. The value to use depends on the sensor calibration technique. For AutoCal, use the calibrator’s uncertainty at the measurement power level. For FixedCal sensors, use the calibrator’s uncertainty at the FixedCal level (0 dBm for most sensors). For sensors that are not field-calibrated, the calibrator uncertainty term may be neglected.</p>
+<p><strong>Calibrator Mismatch Uncertainty.</strong> The mismatch error from impedance differences between the calibrator output and the sensor termination. Calculated from the reflection coefficients of the calibrator (ρ_CAL) and sensor (ρ_SNSR) at the calibration frequency:</p>
+<blockquote>
+<p><em>Calibrator Mismatch Uncertainty = ±2 × ρ_CAL × ρ_SNSR × 100%</em></p>
+</blockquote>
+<p>The calibrator reflection coefficient is typically a specification for the calibrator or RF power reference output, sometimes provided as a VSWR. If so, the corresponding reflection coefficient is found in the reference table in Section 10.2 of this guide, or computed:</p>
+<blockquote>
+<p><em>ρ = (VSWR - 1) / (VSWR + 1)</em></p>
+</blockquote>
+<p>The sensor reflection coefficient ρ_SNSR is frequency dependent and is provided as a sensor datasheet value.</p>
+<p><strong>Source Mismatch Uncertainty.</strong> The mismatch error caused by impedance differences between the source output and the sensor termination. For many measurements this is the single largest error term. The source mismatch uncertainty is calculated from the reflection coefficients of the source (ρ_SRCE) and sensor (ρ_SNSR) at the measurement frequency:</p>
+<blockquote>
+<p><em>Source Mismatch Uncertainty = ±2 × ρ_SRCE × ρ_SNSR × 100%</em></p>
+</blockquote>
+<p>The source reflection coefficient is a characteristic of the source under test and varies with frequency, sometimes with level. It must be supplied, measured, or estimated.</p>
+<p><strong>Sensor Shaping Error.</strong> Sometimes called “linearity error.” The residual nonlinearity in the measurement after the sensor’s output has been linearized and scaled by the calibration and shaping processes. Calibration is typically performed at discrete level steps and extended to all levels via curve-fitting. The shaping error is close to zero at calibration points and increases between them due to imperfections in the curve-fit algorithm. An additional component is due to the sensor’s transfer function not being identical at all frequencies. The published shaping error includes terms to account for these deviations. If your measurement frequency is close to the field calibration frequency and your level is close to a field linearity calibration point, it is acceptable to use a value lower than the published uncertainty.</p>
+<p><strong>Sensor Temperature Coefficient.</strong> Error that occurs when the sensor’s temperature has changed significantly from the calibration temperature. Usually specified in dB/°C or similar. The term’s value is computed from the temperature difference and scaled to a percent uncertainty. When the measurement is performed at the same temperature as the field calibration, this term cancels to zero.</p>
+<p><strong>Sensor Noise.</strong> Uncertainty contributed by intrinsic noise that is part of every power measurement. Not necessarily generated within the sensor itself; rather, it is noise from the entire measurement chain. Specified as input-referred noise in dBm or nanowatts. Noise can be reduced by filtering or averaging (Section 8.1). The noise approximates band-limited white Gaussian noise, so its amplitude (and uncertainty contribution) decreases as measurement bandwidth narrows.</p>
+<blockquote>
+<p><em>Noise Uncertainty = ± Sensor Noise (W) / Signal Power (W) × 100%</em></p>
+</blockquote>
+<p>Noise error is usually insignificant when measuring at high levels, 25 dB or more above the sensor’s minimum power rating.</p>
+<p><strong>Sensor Zero Drift.</strong> Reading uncertainty from long-term change in the zero-power reading that is not random noise. Increasing filter or averaging will not reduce zero drift. For low-level measurements, control by zeroing the meter just before performing the measurement.</p>
+<blockquote>
+<p><em>Zero Drift Uncertainty = ± Sensor Zero Drift (W) / Signal Power (W) × 100%</em></p>
+</blockquote>
+<p>Like sensor noise, zero drift is usually insignificant at 25 dB or more above the sensor’s minimum rating. The drift specification sometimes indicates a time interval such as one hour. If the time since the last sensor zero or AutoCal is short, the zero drift is greatly reduced.</p>
+<p><strong>Sensor Frequency Calibration Factors.</strong> Calfactors correct for sensor frequency-response deviations. Characterized during factory calibration by measuring sensor output at a series of test frequencies across its operating range and storing the ratio of applied power to measured power at each frequency. During measurement, the power reading is multiplied by the calfactor for the current frequency to correct for a flat response.</p>
+<p>Calfactors (also called “efficiency factors”) are provided as a percent or dB correction. They include uncertainties from standards uncertainty and from measurement uncertainty in the calibration process. Both worst-case and RSS uncertainties are provided for the frequency range of each sensor. If the measurement frequency is between calfactor entries, use the higher of the two corresponding uncertainty figures, or estimate by linear interpolation. If the measurement frequency equals the field calibration frequency, a calfactor uncertainty value of zero may be used, since any absolute error cancels during field calibration.</p>
+<h3 id="sample-uncertainty-calculations">9.3 Sample Uncertainty Calculations</h3>
+<p>The following examples show calculations for two measurement scenarios. The first is a CW example using a general-purpose 18 GHz CW dual-diode power sensor (a Model 12118 or similar). The second example shows the same instrument performing a measurement with a peak power sensor (Model 12218 or similar), a typical choice for mid-bandwidth modulated signals such as CDMA.</p>
+<p>The figures used in these examples are illustrative and do not apply to every application. Some common-sense assumptions illustrate the fact that uncertainty calculation is not an exact science and requires understanding of specific measurement conditions. The RSS method is itself an estimation method.</p>
+<h4 id="typical-example-1-rf-power-meter-with-cw-power-sensor">Typical Example 1: RF Power Meter with CW Power Sensor</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Measurement Conditions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Source Frequency</td>
+<td>10.3 GHz</td>
+</tr>
+<tr class="even">
+<td>Source Power</td>
+<td>-55 dBm (3.16 nW)</td>
+</tr>
+<tr class="odd">
+<td>Source VSWR</td>
+<td>1.50 (reflection coefficient = 0.20) at 10.3 GHz</td>
+</tr>
+<tr class="even">
+<td>AutoCal Source</td>
+<td>Internal 50 MHz Calibrator</td>
+</tr>
+<tr class="odd">
+<td>AutoCal Temperature</td>
+<td>25 °C</td>
+</tr>
+<tr class="even">
+<td>Current Temperature</td>
+<td>25 °C</td>
+</tr>
+</tbody>
+</table>
+<p>Assume an AutoCal was performed on the sensor immediately before the measurement. This reduces certain uncertainty terms.</p>
+<p><strong>Step 1: Instrument Uncertainty.</strong> The figure for the CW series is ±0.20%. Since a portion of this includes temperature drift, instrument uncertainty is ±0.10%, half the published figure.</p>
+<blockquote>
+<p><em>U_Instrument = ±0.10%</em></p>
+</blockquote>
+<p><strong>Step 2: Calibrator Level Uncertainty.</strong> For the meter’s internal 50 MHz calibrator, the spec is ±0.105 dB, or ±2.45% at -55 dBm.</p>
+<blockquote>
+<p><em>U_CalLevel = ±2.45%</em></p>
+</blockquote>
+<p><strong>Step 3: Calibrator Mismatch Uncertainty.</strong> Calculate using the formula in Section 9.2.</p>
+<blockquote>
+<p><em>ρ_CAL = 0.024 (50 MHz)</em> <em>ρ_SNSR = (1.15 - 1) / (1.15 + 1) = 0.070 (max VSWR = 1.15 at 50 MHz)</em> <em>U_CalMismatch = ±2 × 0.024 × 0.070 × 100% = ±0.34%</em></p>
+</blockquote>
+<p><strong>Step 4: Source Mismatch Uncertainty.</strong> Calculate using the source and sensor reflection coefficients at the measurement frequency.</p>
+<blockquote>
+<p><em>ρ_SRCE = 0.20 (at 10.3 GHz)</em> <em>ρ_SNSR = (1.40 - 1) / (1.40 + 1) = 0.167 (max VSWR = 1.40 at 10.3 GHz)</em> <em>U_SourceMismatch = ±2 × 0.20 × 0.167 × 100% = ±6.68%</em></p>
+</blockquote>
+<p><strong>Step 5: Sensor Shaping Error.</strong> For a CW sensor calibrated by AutoCal, assume 1.0%.</p>
+<blockquote>
+<p><em>U_ShapingError = ±1.0%</em></p>
+</blockquote>
+<p><strong>Step 6: Sensor Temperature Drift.</strong> AutoCal just performed at 25 °C, current temperature 25 °C, so this term is zero.</p>
+<blockquote>
+<p><em>U_SnsrTempDrift = ±0.0%</em></p>
+</blockquote>
+<p><strong>Step 7: Sensor Noise.</strong> Signal level -55 dBm = 3.16 nW. RMS noise specification 30 pW.</p>
+<blockquote>
+<p><em>U_NoiseError = ±(30.0e-12 / 3.16e-9) × 100% = ±0.95%</em></p>
+</blockquote>
+<p><strong>Step 8: Sensor Zero Drift.</strong> Datasheet 100 pW. Cut to 50 pW because AutoCal was just performed.</p>
+<blockquote>
+<p><em>U_ZeroDrift = ±(50.0e-12 / 3.16e-9) × 100% = ±1.58%</em></p>
+</blockquote>
+<p><strong>Step 9: Sensor Calfactor Uncertainty.</strong> No entry for 10.3 GHz. At 10 GHz it is 4.0%. At 11 GHz it is 4.3%. Linear interpolation:</p>
+<blockquote>
+<p><em>U_CalFactor = [(10.3 - 10.0) × (4.3 - 4.0) / (11.0 - 10.0)] + 4.0 = 4.09%</em></p>
+</blockquote>
+<p><strong>Step 10: Combined uncertainty.</strong></p>
+<figure>
+<img src="../figures/fig-9-2-1-uncertainty-contributions.svg" alt="Uncertainty contributions stacked: source mismatch and calfactor dominate the CW case" /><figcaption>Figure 9.2.1 Uncertainty contributions stacked. Source mismatch and calibration factor dominate the CW case.</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>Uncertainty Term</th>
+<th>U_WorstCase (±%)</th>
+<th>K</th>
+<th>(U×K)² (%²)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Instrument</td>
+<td>0.10</td>
+<td>0.500</td>
+<td>0.0025</td>
+</tr>
+<tr class="even">
+<td>2. Calibrator level</td>
+<td>2.45</td>
+<td>0.577</td>
+<td>1.9984</td>
+</tr>
+<tr class="odd">
+<td>3. Calibrator mismatch</td>
+<td>0.34</td>
+<td>0.707</td>
+<td>0.0578</td>
+</tr>
+<tr class="even">
+<td>4. Source mismatch</td>
+<td>6.68</td>
+<td>0.707</td>
+<td>22.305</td>
+</tr>
+<tr class="odd">
+<td>5. Sensor shaping</td>
+<td>1.00</td>
+<td>0.577</td>
+<td>0.3333</td>
+</tr>
+<tr class="even">
+<td>6. Sensor temperature drift</td>
+<td>0.00</td>
+<td>0.577</td>
+<td>0.0000</td>
+</tr>
+<tr class="odd">
+<td>7. Sensor noise</td>
+<td>0.95</td>
+<td>0.500</td>
+<td>0.2256</td>
+</tr>
+<tr class="even">
+<td>8. Sensor zero drift</td>
+<td>1.58</td>
+<td>0.577</td>
+<td>0.8311</td>
+</tr>
+<tr class="odd">
+<td>9. Sensor calibration factor</td>
+<td>4.09</td>
+<td>0.500</td>
+<td>4.1820</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>Total worst-case uncertainty = 17.19%</em> <em>Sum of squares = 29.936 %²</em> <em>Combined standard RSS uncertainty U_C = ±5.47%</em> <em>Expanded RSS uncertainty (k=2) = ±10.94% (±0.45 dB)</em></p>
+</blockquote>
+<p>The two largest contributors are source mismatch and sensor calfactor. The expanded uncertainty is approximately half the worst-case value, which is expected when the majority of uncertainty comes from a few sources. If the measurement frequency were lower, those two terms would shrink, and the expanded uncertainty would be even less than half the worst-case. If one term dominated (for example, very low-level measurement with 30% noise uncertainty), the expanded uncertainty would approach the worst-case value.</p>
+<p>The expanded uncertainty for this CW measurement is <strong>0.45 dB</strong>.</p>
+<h4 id="typical-example-2-rf-power-meter-with-peak-power-sensor">Typical Example 2: RF Power Meter with Peak Power Sensor</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Measurement Conditions</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Source Frequency</td>
+<td>900 MHz</td>
+</tr>
+<tr class="even">
+<td>Source Power</td>
+<td>13 dBm (20 mW)</td>
+</tr>
+<tr class="odd">
+<td>Source VSWR</td>
+<td>1.12 (reflection coefficient = 0.057) at 900 MHz</td>
+</tr>
+<tr class="even">
+<td>AutoCal Source</td>
+<td>1 GHz Calibrator</td>
+</tr>
+<tr class="odd">
+<td>AutoCal Temperature</td>
+<td>38 °C</td>
+</tr>
+<tr class="even">
+<td>Current Temperature</td>
+<td>49 °C</td>
+</tr>
+</tbody>
+</table>
+<p>Assume AutoCal was performed earlier in the day. Time and temperature drift play a role.</p>
+<p><strong>Step 1: Instrument Uncertainty.</strong> Peak series figure is ±0.20%. Use the published figure, since AutoCal was not just performed.</p>
+<blockquote>
+<p><em>U_Instrument = ±0.20%</em></p>
+</blockquote>
+<p><strong>Step 2: Calibrator Level Uncertainty.</strong> External 1 GHz calibrator spec at 0 dBm is 0.065 dB or 1.51%. Add 0.03 dB / 0.69% per 5 dB step from 0 dBm. 13 dBm = 2.6 steps, rounded up to 3 steps. Total = 1.51% + (3 × 0.69%) = 3.58%.</p>
+<blockquote>
+<p><em>U_CalLevel = ±3.58%</em></p>
+</blockquote>
+<p><strong>Step 3: Calibrator Mismatch.</strong> ρ_CAL ≈ 0.024 at 1 GHz; ρ_SNSR ≈ 0.024 at 1 GHz from datasheet.</p>
+<blockquote>
+<p><em>U_CalMismatch = ±2 × 0.024 × 0.024 × 100% = ±0.12%</em></p>
+</blockquote>
+<p><strong>Step 4: Source Mismatch.</strong> ρ_SRCE = 0.057 at 900 MHz; ρ_SNSR ≈ 0.05 at 900 MHz.</p>
+<blockquote>
+<p><em>U_SourceMismatch = ±2 × 0.057 × 0.05 × 100% = ±0.57%</em></p>
+</blockquote>
+<p><strong>Step 5: Sensor Shaping Error.</strong> AutoCal was used. Assume ±1.0%.</p>
+<blockquote>
+<p><em>U_ShapingError = ±1.0%</em></p>
+</blockquote>
+<p><strong>Step 6: Sensor Temperature Drift.</strong> Temperature has drifted 11 °C since AutoCal. Sensor temperature coefficient is 0.05 dB/°C, or 1.16% / °C × 11 = 12.7%. This is the worst case but typical drift on a stable sensor will be far smaller. Use 4.0%.</p>
+<blockquote>
+<p><em>U_SnsrTempDrift = ±4.0%</em></p>
+</blockquote>
+<p><strong>Step 7: Sensor Noise.</strong> At 13 dBm = 20 mW with sensor noise of 50 µW (typical for peak sensors at full bandwidth):</p>
+<blockquote>
+<p><em>U_NoiseError = ±(50e-6 / 20e-3) × 100% = ±0.25%</em></p>
+</blockquote>
+<p><strong>Step 8: Sensor Zero Drift.</strong> Negligible at this signal level.</p>
+<blockquote>
+<p><em>U_ZeroDrift = ±0.0%</em></p>
+</blockquote>
+<p><strong>Step 9: Calfactor Uncertainty.</strong> At 900 MHz, calfactor uncertainty is 1.5%.</p>
+<blockquote>
+<p><em>U_CalFactor = ±1.5%</em></p>
+</blockquote>
+<p><strong>Step 10: Combined.</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>U (±%)</th>
+<th>K</th>
+<th>(U×K)² (%²)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Instrument</td>
+<td>0.20</td>
+<td>0.500</td>
+<td>0.0100</td>
+</tr>
+<tr class="even">
+<td>Calibrator level</td>
+<td>3.58</td>
+<td>0.577</td>
+<td>4.2667</td>
+</tr>
+<tr class="odd">
+<td>Calibrator mismatch</td>
+<td>0.12</td>
+<td>0.707</td>
+<td>0.0072</td>
+</tr>
+<tr class="even">
+<td>Source mismatch</td>
+<td>0.57</td>
+<td>0.707</td>
+<td>0.1622</td>
+</tr>
+<tr class="odd">
+<td>Sensor shaping</td>
+<td>1.00</td>
+<td>0.577</td>
+<td>0.3333</td>
+</tr>
+<tr class="even">
+<td>Sensor temperature drift</td>
+<td>4.00</td>
+<td>0.577</td>
+<td>5.3260</td>
+</tr>
+<tr class="odd">
+<td>Sensor noise</td>
+<td>0.25</td>
+<td>0.500</td>
+<td>0.0156</td>
+</tr>
+<tr class="even">
+<td>Sensor zero drift</td>
+<td>0.00</td>
+<td>0.577</td>
+<td>0.0000</td>
+</tr>
+<tr class="odd">
+<td>Calibration factor</td>
+<td>1.50</td>
+<td>0.500</td>
+<td>0.5625</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>Total worst-case uncertainty = 11.22%</em> <em>Sum of squares = 10.683 %²</em> <em>Combined standard RSS uncertainty U_C = ±3.27%</em> <em>Expanded RSS uncertainty (k=2) = ±6.54% (±0.28 dB)</em></p>
+</blockquote>
+<p>In this peak-sensor example, the dominant contributors are calibrator level uncertainty and sensor temperature drift. The expanded uncertainty is <strong>0.28 dB</strong>, which is reasonable for a mid-frequency communications measurement.</p>
+<blockquote>
+<p><strong>Engineer’s corner.</strong> The uncertainty budget is a document, not a feeling. If you cannot write it down, you cannot trust it. Every good measurement system has its budget on file, signed and dated. For modern thermally stabilized sensors such as the Berkeley Nucleonics 12100 series, the temperature-drift term largely vanishes, source mismatch becomes the dominant contributor on most measurements, and a typical expanded uncertainty of 0.20 to 0.25 dB is achievable across the operating range.</p>
+</blockquote>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="08-performance-tips.html">&larr; 8. Performance Tips</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="10-reference-tables.html">10. Reference Tables &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

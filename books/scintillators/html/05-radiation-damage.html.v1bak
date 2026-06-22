@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>05-radiation-damage</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">05-radiation-damage</h1>
+</header>
+<h1 id="chapter-5---radiation-damage">Chapter 5 - Radiation Damage</h1>
+<p>Radiation damage in a scintillator is the accumulated change in optical and scintillation properties that follows from prolonged exposure to ionizing radiation. The dominant manifestations are: a decrease in optical transparency at the scintillation emission wavelength, a decrease in light yield, and a degradation in energy resolution. For most applications and most materials these effects appear only after substantial integrated dose, but for high-flux applications (collider experiments, fusion plasma diagnostics, space) the damage is the binding constraint on detector lifetime.</p>
+<h2 id="what-damage-means">5.1 What “Damage” Means</h2>
+<p>A scintillator delivers a measured pulse height that is the product of three things: the number of scintillation photons produced per MeV deposited, the fraction of those photons that reaches the photodetector through the bulk of the crystal, and the photodetector’s gain. Radiation damage typically affects the second of these, the optical transparency of the bulk material. Color centers form at lattice defects produced by displacement damage, and they absorb at wavelengths that often overlap the scintillation emission band. Light produced deep in the crystal is then attenuated more strongly than it was before damage.</p>
+<p>Two consequences follow:</p>
+<ul>
+<li><strong>Effects scale with thickness.</strong> A 5 mm thick crystal may show no measurable damage after a dose that visibly degrades a 50 mm thick crystal. Industry rule-of-thumb tests are performed on crystals at least 5 cm thick to detect damage early.</li>
+<li><strong>The damage shows up as both reduced light yield and degraded energy resolution.</strong> Reduced light yield comes from average attenuation. Degraded resolution comes from position-dependent attenuation: scintillation events near the photodetector lose less light than events far from it, so the same gamma energy produces different pulse heights depending on where it interacted in the crystal.</li>
+</ul>
+<p>A material is conventionally called “radiation hard” if no measurable change occurs at an integrated dose of 10,000 Gray (10 kGy). Several Ce-doped scintillators (CeBr3, YAP:Ce, GAGG:Ce in best samples) and some specially formulated plastics meet this benchmark. Most alkali halides do not.</p>
+<h2 id="reversibility-and-annealing">5.2 Reversibility and Annealing</h2>
+<p>Radiation damage in scintillators is partially reversible. Color centers spontaneously decay over hours to days at room temperature, so a damaged crystal recovers some of its lost performance simply by sitting unirradiated. Higher temperature speeds the recovery; thermal annealing at 100 to 200 degrees Celsius for several hours can restore most of the lost transparency in many materials.</p>
+<p>A different kind of damage, the activation of trace impurities to longer-lived radionuclides, is not reversible by annealing and contributes to the detector’s intrinsic background. This matters most for low-background applications, where activation-induced background can dominate over instrumentation noise after long deployment in a high-flux environment.</p>
+<h2 id="damage-thresholds-across-materials">5.3 Damage Thresholds Across Materials</h2>
+<p>The best-characterized scintillators have known damage thresholds. The summary, drawn from the SCINT and IEEE NSS literature [1][2][3]:</p>
+<ul>
+<li><strong>CeBr3 and YAP:Ce</strong>: radiation hard up to 10 kGy with negligible loss in light output and resolution.</li>
+<li><strong>GAGG:Ce</strong>: radiation hard up to several kGy in best samples; some sample-to-sample variation.</li>
+<li><strong>LaBr3:Ce, CeBr3</strong>: degrade modestly above 1 kGy, with substantial recovery on annealing.</li>
+<li><strong>LSO:Ce, LYSO:Ce</strong>: degrade visibly above several kGy, with the damage in part due to formation of lutetium-bearing color centers.</li>
+<li><strong>NaI(Tl), CsI(Tl), CsI(Na)</strong>: relatively susceptible to radiation damage, with measurable effects starting in the few hundred Gy range and substantial degradation at 1 kGy.</li>
+<li><strong>BGO</strong>: surprisingly hard for an oxide; degradation at several kGy is typical.</li>
+<li><strong>PbWO4</strong>: extreme application-specific tuning was required to make it survive the LHC environment; standard PbWO4 is not radiation hard.</li>
+<li><strong>Plastic scintillators</strong>: degrade from both the dye component (bleaching) and the polymer matrix (browning). Standard plastics show measurable yellowing after several kGy. Specially formulated radiation-hard plastics extend this to tens of kGy.</li>
+<li><strong>Cs2HfCl6 (CHC)</strong>: characterization is ongoing as commercial production scales. Early measurements suggest moderate radiation hardness, comparable to GAGG:Ce, but not yet established at the multi-kGy level [4].</li>
+</ul>
+<p>For neutron damage, the relevant unit is displacements per atom (DPA) rather than Gray. Scintillators in fusion plasma diagnostic applications are characterized in terms of DPA exposure from 14 MeV neutrons. Values in the literature vary from sample to sample and are still being established [5]. The conclusion from the available data: any scintillator placed in direct view of a fusion plasma neutron source has a finite lifetime measured in months to a few years, and radiation-hard materials extend this but do not eliminate the limit.</p>
+<h2 id="high-flux-applications-where-damage-is-the-design-constraint">5.4 High-Flux Applications: Where Damage Is the Design Constraint</h2>
+<p>A few application areas drive scintillator damage characterization to its current state.</p>
+<p><strong>Collider physics.</strong> The CMS and ATLAS calorimeters at the Large Hadron Collider integrate doses approaching 100 kGy per year in the highest-flux regions. PbWO4 was selected for the CMS electromagnetic calorimeter in part because its radiation tolerance, after substantial development, was sufficient for the LHC environment. The high-luminosity LHC upgrade will increase doses further, and the 4D fast-timing calorimeter upgrades use materials specifically chosen for radiation tolerance.</p>
+<p><strong>Fusion diagnostics.</strong> The neutron flux at a tokamak first wall is dominated by 14 MeV neutrons from the D-T reaction, with cumulative DPA values that limit any in-vessel scintillator’s lifetime. The standard solution is to keep the scintillator out of the high-flux zone and route the optical signal to it through fibers or air-gap optics, with the electronic readout placed even further away in shielded racks.</p>
+<p><strong>Space.</strong> Cumulative galactic cosmic ray and solar particle event doses for spacecraft scintillators range from less than 1 Gy per year for low-Earth orbit to several Gy per year for interplanetary missions. Scintillator-based detectors flown for periods exceeding ten years (Cassini, the Mars rovers) show modest degradation that is consistent with the laboratory-measured damage thresholds. Mission lifetime is rarely scintillator-limited; the photodetector and electronics are usually the binding constraint.</p>
+<p><strong>Power-reactor monitoring.</strong> Accumulated doses on detectors at fixed-installation reactor monitoring positions over a 30 to 60 year reactor lifetime can reach kGy levels for the most exposed locations (in-containment area monitors near the primary loop). Detector replacement at planned maintenance intervals is the standard solution.</p>
+<blockquote>
+<p><strong>Going Deeper - Color center kinetics and the recovery curve</strong></p>
+<p>The decay of a population of color centers after irradiation follows roughly first-order kinetics, with the decay rate proportional to exp(-E_t / kT) for a trap depth E_t. A real crystal has a distribution of trap depths, so the recovery curve is a sum of exponentials with different time constants. The shallow traps decay in seconds to minutes at room temperature; the deep traps persist for hours to days. Annealing at elevated temperature multiplies the decay rates of all trap populations by the Arrhenius factor, accelerating recovery. Measurements of trap-depth distributions are made by thermoluminescence glow curves (heating the crystal in the dark and recording the emitted light as a function of temperature) and by isothermal decay curves at multiple temperatures. SCINT 2024 reported updated thermoluminescence data on Cs2HfCl6, GAGG:Ce variants, and the elpasolite family that is now informing radiation-tolerance specifications for SMR and fusion applications.</p>
+</blockquote>
+<div class="callout">
+<p><strong>BNC in Practice - Damage budgets, not damage thresholds</strong></p>
+<p>The number to put in a specification is not “10 kGy radiation hard.” It is the integrated dose the detector will see over its expected service life, plus a margin. A monitoring station outdoors at a power reactor site sees less than 10 Gy per year. A fixed monitor on the spent fuel pool wall sees more, depending on geometry. An in-vessel diagnostic on a fusion machine sees a hundred times more, in displacements per atom rather than gray. Pick the material to the budget. Plan the replacement schedule against the budget. Budgets are conservative because the cost of underestimating is a missed alarm, and the cost of replacing the detector at planned maintenance is small.</p>
+</div>
+<h2 id="why-this-chapter-matters-more-than-it-used-to">5.5 Why This Chapter Matters More than It Used To</h2>
+<p>In a steady-state market, radiation damage is a quietly tolerated effect, addressed by a maintenance schedule that nobody changes for decades. In the renaissance market, damage is a design parameter again. Fusion machines push detectors to the limits of what survives 14 MeV neutron flux. Compact reactor designs put detectors closer to the source than Generation II plants did. Space nuclear missions ask detectors to operate, unattended, through doses accumulated over years in deep space. The materials science of radiation hardness, which receded from headline detector-engineering attention for thirty years, is back at the front of the conference agenda. Engineers entering the field today will need to specify scintillators against damage thresholds that the engineers who trained them rarely had to think about.</p>
+<h2 id="chapter-5-quiz">Chapter 5 Quiz</h2>
+<ol type="1">
+<li>Radiation damage in a scintillator most commonly affects which property: light yield, optical transparency, or photodetector gain.</li>
+<li>What is the conventional dose threshold for calling a scintillator “radiation hard.”</li>
+<li>Name two scintillators considered radiation hard by the conventional threshold.</li>
+<li>Why does radiation damage degrade energy resolution as well as average light yield.</li>
+<li>What unit replaces the gray when characterizing scintillator damage from fusion-reactor neutron flux.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Optical transparency. Color centers form at lattice defects produced by displacement damage and absorb at wavelengths that overlap the emission band, attenuating light produced deep in the crystal.</li>
+<li>10 kGy (10,000 Gy) integrated dose with no measurable change in light output or energy resolution.</li>
+<li>CeBr3, YAP:Ce, GAGG:Ce in best samples, and certain specially formulated radiation-hard plastics.</li>
+<li>Position-dependent attenuation. Events near the photodetector lose less light than events far from it, so the same gamma energy produces different pulse heights depending on where it interacted.</li>
+<li>Displacements per atom (DPA), because for high-energy neutrons the relevant mechanism is lattice displacement rather than ionization-deposited energy.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] T. Yanagida, “Inorganic scintillating materials and scintillation detectors,” <em>Proc. Jpn. Acad. Ser. B</em>, vol. 94, pp. 75-97, 2018.</p>
+<p>[2] M. Nikl and A. Yoshikawa, “Recent R&amp;D trends in inorganic single-crystal scintillator materials for radiation detection,” <em>Adv. Opt. Mater.</em>, vol. 3, pp. 463-481, 2015.</p>
+<p>[3] CMS Collaboration, “Performance of the CMS electromagnetic calorimeter and its evolution after irradiation,” <em>JINST</em>, vol. 16, P05014, 2021.</p>
+<p>[4] M. Yoshikawa et al., “Cs2HfCl6 single crystal growth and scintillation properties,” in <em>Proc. SCINT 2024</em>, Milan, 2024.</p>
+<p>[5] J. Iwanowska-Hanke et al., “Radiation hardness of CLYC and CeBr3 under high-flux 14 MeV neutron irradiation,” in <em>Proc. IEEE NSS-MIC 2024</em>, Tampa, 2024.</p>
+</body>
+</html>

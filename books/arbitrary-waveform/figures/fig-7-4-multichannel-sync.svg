@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="460" fill="#ffffff"/>
+  <text x="410" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#003D6B">Multi-Instrument Synchronization: Shared Reference and Trigger Distribution</text>
+
+  <!-- ===== Master reference / clock source ===== -->
+  <rect x="40" y="70" width="150" height="70" rx="4" fill="#ECEFF1" stroke="#003D6B" stroke-width="1.6"/>
+  <text x="115" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#003D6B">Reference source</text>
+  <text x="115" y="113" text-anchor="middle" font-size="10" fill="#2C3E50">10 MHz ref out</text>
+  <text x="115" y="128" text-anchor="middle" font-size="10" fill="#2C3E50">sample clock out</text>
+
+  <!-- ===== Trigger master / distribution ===== -->
+  <rect x="40" y="280" width="150" height="70" rx="4" fill="#ECEFF1" stroke="#C77E00" stroke-width="1.6"/>
+  <text x="115" y="306" text-anchor="middle" font-size="12" font-weight="bold" fill="#C77E00">Trigger / sync</text>
+  <text x="115" y="321" text-anchor="middle" font-size="12" font-weight="bold" fill="#C77E00">distribution</text>
+  <text x="115" y="338" text-anchor="middle" font-size="10" fill="#2C3E50">fanout, matched cable lengths</text>
+
+  <!-- ===== Distribution bus verticals ===== -->
+  <!-- clock bus -->
+  <line x1="190" y1="105" x2="250" y2="105" stroke="#0078B6" stroke-width="1.6"/>
+  <line x1="250" y1="105" x2="250" y2="400" stroke="#0078B6" stroke-width="1.6"/>
+  <text x="258" y="100" font-size="11" fill="#0078B6">clock + reference bus</text>
+  <!-- trigger bus -->
+  <line x1="190" y1="315" x2="300" y2="315" stroke="#C77E00" stroke-width="1.6"/>
+  <line x1="300" y1="315" x2="300" y2="400" stroke="#C77E00" stroke-width="1.6"/>
+  <line x1="300" y1="120" x2="300" y2="315" stroke="#C77E00" stroke-width="1.6"/>
+  <text x="308" y="135" font-size="11" fill="#C77E00">deterministic start trigger</text>
+
+  <!-- ===== AWG units (3) ===== -->
+  <!-- Unit A -->
+  <rect x="360" y="80" width="400" height="96" rx="4" fill="#ffffff" stroke="#003D6B" stroke-width="1.6"/>
+  <text x="375" y="100" font-size="12" font-weight="bold" fill="#003D6B">AWG unit A</text>
+  <text x="375" y="116" font-size="11" fill="#2C3E50">clock in / ref in / trig in</text>
+  <rect x="510" y="92" width="110" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="565" y="111" text-anchor="middle" font-size="10" fill="#0078B6">Ch 1</text>
+  <rect x="640" y="92" width="110" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="695" y="111" text-anchor="middle" font-size="10" fill="#0078B6">Ch 2</text>
+  <rect x="510" y="132" width="110" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="565" y="151" text-anchor="middle" font-size="10" fill="#0078B6">Ch 3</text>
+  <rect x="640" y="132" width="110" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="695" y="151" text-anchor="middle" font-size="10" fill="#0078B6">Ch 4</text>
+  <text x="455" y="151" text-anchor="middle" font-size="11" fill="#4B2A6B">channels share one</text>
+  <text x="455" y="163" text-anchor="middle" font-size="11" fill="#4B2A6B">clock domain</text>
+
+  <!-- Unit B -->
+  <rect x="360" y="208" width="400" height="60" rx="4" fill="#ffffff" stroke="#003D6B" stroke-width="1.6"/>
+  <text x="375" y="232" font-size="12" font-weight="bold" fill="#003D6B">AWG unit B</text>
+  <text x="375" y="248" font-size="11" fill="#2C3E50">clock in / ref in / trig in</text>
+  <rect x="540" y="222" width="90" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="585" y="241" text-anchor="middle" font-size="10" fill="#0078B6">Ch 1-2</text>
+  <rect x="650" y="222" width="100" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="700" y="241" text-anchor="middle" font-size="10" fill="#0078B6">Ch 3-4</text>
+
+  <!-- Unit C -->
+  <rect x="360" y="300" width="400" height="60" rx="4" fill="#ffffff" stroke="#003D6B" stroke-width="1.6"/>
+  <text x="375" y="324" font-size="12" font-weight="bold" fill="#003D6B">AWG unit C</text>
+  <text x="375" y="340" font-size="11" fill="#2C3E50">clock in / ref in / trig in</text>
+  <rect x="540" y="314" width="90" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="585" y="333" text-anchor="middle" font-size="10" fill="#0078B6">Ch 1-2</text>
+  <rect x="650" y="314" width="100" height="30" rx="3" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.2"/>
+  <text x="700" y="333" text-anchor="middle" font-size="10" fill="#0078B6">Ch 3-4</text>
+
+  <!-- clock taps into each unit -->
+  <line x1="250" y1="128" x2="360" y2="128" stroke="#0078B6" stroke-width="1.4"/>
+  <polygon points="360,128 350,123 350,133" fill="#0078B6"/>
+  <line x1="250" y1="238" x2="360" y2="238" stroke="#0078B6" stroke-width="1.4"/>
+  <polygon points="360,238 350,233 350,243" fill="#0078B6"/>
+  <line x1="250" y1="330" x2="360" y2="330" stroke="#0078B6" stroke-width="1.4"/>
+  <polygon points="360,330 350,325 350,335" fill="#0078B6"/>
+  <!-- trigger taps into each unit -->
+  <line x1="300" y1="148" x2="360" y2="148" stroke="#C77E00" stroke-width="1.4"/>
+  <polygon points="360,148 350,143 350,153" fill="#C77E00"/>
+  <line x1="300" y1="252" x2="360" y2="252" stroke="#C77E00" stroke-width="1.4"/>
+  <polygon points="360,252 350,247 350,257" fill="#C77E00"/>
+  <line x1="300" y1="344" x2="360" y2="344" stroke="#C77E00" stroke-width="1.4"/>
+  <polygon points="360,344 350,339 350,349" fill="#C77E00"/>
+
+  <!-- skew callout -->
+  <rect x="360" y="392" width="400" height="48" rx="4" fill="#ECEFF1" stroke="#4B2A6B" stroke-width="1.3"/>
+  <text x="375" y="410" font-size="11" font-weight="bold" fill="#4B2A6B">Inter-channel and inter-unit skew</text>
+  <text x="375" y="426" font-size="10" fill="#2C3E50">Residual delay after the shared trigger. Calibrate out with per-channel delay; matched</text>
+  <text x="375" y="438" font-size="10" fill="#2C3E50">cable lengths keep it small. A shared reference aligns frequency, not sample-zero.</text>
+</svg>

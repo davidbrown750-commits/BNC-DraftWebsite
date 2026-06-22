@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Radar Equations</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="radar-equations">Radar Equations</h1>
+<p class="lead">The radar equation ties together everything a system does: how power spreads, how a target reflects it, and how much of that echo finds its way back to the receiver. This chapter builds the equation from first principles, starting with free-space path loss and ending with the classic form that predicts maximum range.</p>
+
+<h2 id="free-space-path-loss">Free-Space Path Loss</h2>
+<p>In telecommunication, free-space path loss (FSPL) is the loss in signal strength of an electromagnetic wave that would result from a line-of-sight path through free space, with no obstacles nearby to cause reflection or diffraction. The FSPL appears in vacuum under ideal conditions, for example, a radio communication between satellites. It is a criterion for the derivation of the radar equation too.</p>
+
+<h2 id="calculation-of-free-space-path-loss">Calculation of Free-Space Path Loss</h2>
+<p>If high-frequency energy is emitted by an isotropic radiator, then the energy propagates uniformly in all directions. Areas with the same power density therefore form spheres (A = 4&pi;R&sup2;) around the radiator. The same amount of energy spreads out on an incremented spherical surface at an incremented spherical radius. That means: the power density on the surface of a sphere is inversely proportional to the surface area A (or the square of the radius R) of the sphere.</p>
+<p>The expression for FSPL actually encapsulates two effects. Free-space power loss is proportional to the square of the distance between the transmitter and receiver, and also proportional to the square of the frequency of the radio signal. Firstly, the spreading out of electromagnetic energy in free space is determined by the inverse square law, for example:</p>
+<figure>
+  <img src="../figures/ch04-fig01.png" alt="Equation for power per unit area as a function of transmitted power and distance" />
+  <figcaption><span class="fig-num">Figure 4.1</span> Power density from the inverse square law</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>P<sub>t</sub></strong> = transmitted power [W]</li>
+  <li><strong>S</strong> = power per unit area at distance</li>
+  <li><strong>R</strong> = distance transmitter to receiver [m]</li>
+</ul>
+<p>The second effect is that of the receiving antenna's aperture, which describes how well an antenna can pick up power from an incoming electromagnetic wave. For an isotropic antenna, this is given by:</p>
+<figure>
+  <img src="../figures/ch04-fig02.png" alt="Equation for received power as a function of power density" />
+  <figcaption><span class="fig-num">Figure 4.2</span> Received power from the isotropic antenna aperture</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>P<sub>r</sub></strong> = received power [W]</li>
+  <li><strong>S</strong> = nondirectional power density</li>
+  <li>&lambda; = transmitted wavelength</li>
+</ul>
+<p>The total loss is given by the ratio:</p>
+<figure>
+  <img src="../figures/ch04-fig04.png" alt="Free-space path loss expressed as a ratio involving frequency and the speed of light" />
+  <figcaption><span class="fig-num">Figure 4.3</span> Total free-space path loss as a ratio</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>f<sub>r</sub></strong> = transmitted frequency</li>
+  <li><strong>c</strong> = the speed of light</li>
+</ul>
+<p>This can be found by combining the previous two expressions.</p>
+<p>We all know the sun radiates energy in all directions. The energy radiated from the sun measured at any fixed distance and from any angle will be approximately the same. Assume that a measuring device is moved around the sun and stopped at the points indicated in the figure to make a measurement of the amounts of radiation. At any point around the circle, the distance from the measuring device to the sun is the same. The measured radiation will also be the same. The sun is therefore considered an isotropic radiator.</p>
+<p>In antenna design, the isotropic radiator is a hypothetical antenna. In reality, this antenna cannot exist. But it is used to compare real antennas with each other. It is a hypothetical reference. All real antennas have a gain that is compared to this reference. This gain is a measure of the directivity of a given antenna.</p>
+
+<h2 id="derivation-of-the-radar-equation">Derivation of the Radar Equation</h2>
+<p>The radar range equation represents the physical dependencies of the transmit power, the wave propagation, and the receiving of the echo signals. The power P<sub>e</sub> returning to the receiving antenna is given by the radar equation, depending on the transmitted power P<sub>s</sub>, the slant range R, and the reflecting characteristics of the target (described as the radar cross section &sigma;). At the known sensitivity of the radar receiver, the radar equation determines the theoretically maximum range achieved by a given radar. Furthermore, one can assess the performance of the radar set with the radar range equation (or, more briefly, the radar equation).</p>
+
+<h2 id="argumentation-derivation">Argumentation and Derivation</h2>
+<p>First, we assume that electromagnetic waves propagate under ideal conditions, that is, without dispersion.</p>
+<p>Free-space power loss is proportional to the square of the distance between the transmitter and receiver, and also proportional to the square of the frequency of the radio signal.</p>
+<figure>
+  <img src="../figures/ch04-fig05.png" alt="Diagram showing nondirectional power density diminishing as it spreads over a sphere" />
+  <figcaption><span class="fig-num">Figure 4.4</span> Nondirectional power density diminishes as geometric spreading occurs</figcaption>
+</figure>
+<p>If high-frequency energy is emitted by an isotropic radiator, then the energy propagates uniformly in all directions. Areas with the same power density therefore form spheres (A = 4&pi;R&sup2;) around the radiator. The same amount of energy spreads out on an incremented spherical surface at an incremented spherical radius. That means: the power density on the surface of a sphere is inversely proportional to the square of the radius of the sphere.</p>
+<p>So we get the equation to calculate the nondirectional power density:</p>
+<figure>
+  <img src="../figures/ch04-fig06.png" alt="Equation for nondirectional power density" />
+  <figcaption><span class="fig-num">Figure 4.5</span> Nondirectional power density</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>P<sub>s</sub></strong> = transmitted power [W]</li>
+  <li><strong>S<sub>u</sub></strong> = nondirectional power density</li>
+  <li><strong>R<sub>1</sub></strong> = range from transmitter antenna to the target [m]</li>
+</ul>
+<figure>
+  <img src="../figures/ch04-fig07.png" alt="Equation showing antenna gain multiplied by nondirectional power density" />
+  <figcaption><span class="fig-num">Figure 4.6</span> The antenna gain multiplied by the undirected power density gives the directed power density</figcaption>
+</figure>
+<p>Since a spherical segment emits equal radiation in all directions at constant transmit power, if the radiated power is redistributed to provide more radiation in one direction, then this results in an increase of the power density in the direction of the radiation. This effect is called antenna gain. This gain is obtained by directional radiation of the power. So, from the definition, the directional power density is:</p>
+<figure>
+  <img src="../figures/ch04-fig08.png" alt="Equation for directional power density as the product of nondirectional power density and antenna gain" />
+  <figcaption><span class="fig-num">Figure 4.7</span> Directional power density</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>S<sub>g</sub></strong> = directional power density</li>
+  <li><strong>S<sub>u</sub></strong> = nondirectional power density</li>
+  <li><strong>G</strong> = antenna gain</li>
+</ul>
+<p>Of course, in reality, radar antennas are not partially radiating isotropic radiators. Radar antennas must have a small beamwidth and an antenna gain up to 30 or 40 dB (for example, a parabolic dish antenna or phased array antenna).</p>
+<p>The target detection is not only dependent on the power density at the target position, but also on how much power is reflected in the direction of the radar. In order to determine the useful reflected power, it is necessary to know the radar cross section &sigma;. This quantity depends on several factors. But it is true to say that a bigger area reflects more power than a smaller area. That means: an Airbus offers more radar cross section than a sporting aircraft in the same flight situation. Beyond this, the reflecting area depends on the design, surface composition, and materials used.</p>
+<p>If the previously mentioned is summarized, the reflected power P<sub>r</sub> (at the target) results from the power density S<sub>u</sub>, the antenna gain G, and the very variable reflection area &sigma;:</p>
+<figure>
+  <img src="../figures/ch04-fig09.png" alt="Equation for reflected power involving power density, antenna gain, and radar cross section" />
+  <figcaption><span class="fig-num">Figure 4.8</span> Reflected power at the target</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>P<sub>r</sub></strong> = reflected power [W]</li>
+  <li><strong>&sigma;</strong> = radar cross section</li>
+  <li><strong>R<sub>1</sub></strong> = range, distance antenna to target [m]</li>
+</ul>
+<p>Simplified, a target can be regarded as a radiator in turn due to the reflected power. In this case, the reflected power P<sub>r</sub> is the emitted power.</p>
+<p>Since the echoes encounter the same conditions as the transmitted power, the power density yielded at the receiver S<sub>e</sub> is given by:</p>
+<figure>
+  <img src="../figures/ch04-fig10.png" alt="Equation for power density at the receiver" />
+  <figcaption><span class="fig-num">Figure 4.9</span> Power density at the receiver</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>P<sub>r</sub></strong> = reflected power [W]</li>
+  <li><strong>&sigma;</strong> = radar cross section [m&sup2;]</li>
+  <li><strong>R<sub>1</sub></strong> = range, distance antenna to target [m]</li>
+</ul>
+<p>At the radar antenna, the received power P<sub>e</sub> is dependent on the power density at the receiving site S<sub>e</sub> and the effective antenna aperture A<sub>w</sub>:</p>
+<p class="equation"><em>P<sub>e</sub> = S<sub>e</sub> &middot; A<sub>w</sub></em></p>
+<p>Where:</p>
+<ul>
+  <li><strong>P<sub>e</sub></strong> = received power [W]</li>
+  <li><strong>A<sub>w</sub></strong> = effective aperture [m&sup2;]</li>
+</ul>
+<p>The effective antenna aperture arises from the fact that an antenna suffers from losses; therefore, the received power at the antenna is not equal to the input power. As a rule, the efficiency of the antenna is around 0.6 to 0.7 (efficiency K<sub>a</sub>).</p>
+<p>Applied to the geometric antenna area, the effective antenna aperture is:</p>
+<p class="equation"><em>A<sub>w</sub> = A &middot; K<sub>a</sub></em></p>
+<p>Where:</p>
+<ul>
+  <li><strong>A<sub>w</sub></strong> = effective antenna aperture [m&sup2;]</li>
+  <li><strong>A</strong> = geometric antenna area [m&sup2;]</li>
+  <li><strong>K<sub>a</sub></strong> = efficiency</li>
+</ul>
+<p>The power received, P<sub>e</sub>, is then calculated:</p>
+<figure>
+  <img src="../figures/ch04-fig11.png" alt="Equation for received power including effective aperture" />
+  <figcaption><span class="fig-num">Figure 4.10</span> Received power including effective aperture</figcaption>
+</figure>
+<p>The transmitted and reflected waves have been treated separately. The next step is to consider both transmitted and reflected power. Since R<sub>2</sub> (target to antenna) is equal to the distance R<sub>1</sub> (antenna to target), then:</p>
+<figure>
+  <img src="../figures/ch04-fig12.png" alt="Equation combining transmitted and reflected power over equal ranges" />
+  <figcaption><span class="fig-num">Figure 4.11</span> Combined transmitted and reflected power</figcaption>
+</figure>
+<p>Another equation, which will not be derived here, describes the antenna gain G in terms of the wavelength &lambda;:</p>
+<figure>
+  <img src="../figures/ch04-fig13.png" alt="Equation relating antenna gain to wavelength and antenna area" />
+  <figcaption><span class="fig-num">Figure 4.12</span> Antenna gain in terms of wavelength</figcaption>
+</figure>
+<p>Solving for A, the antenna area, and substituting back, after simplification it yields:</p>
+<figure>
+  <img src="../figures/ch04-fig14.png" alt="Simplified equation for received power after substituting antenna area" />
+  <figcaption><span class="fig-num">Figure 4.13</span> Simplified expression for received power</figcaption>
+</figure>
+<p>Solving for range R, we obtain the classic radar equation:</p>
+<figure>
+  <img src="../figures/ch04-fig15.png" alt="The classic radar range equation solved for maximum range" />
+  <figcaption><span class="fig-num">Figure 4.14</span> The classic radar equation</figcaption>
+</figure>
+<p>All quantities that influence the wave propagation of radar signals were taken into account in this equation. Before we attempt to use the radar equation in practice, for example to determine the efficiency of radar sets, some further considerations are necessary.</p>
+<p>For given radar equipment, most quantities (P<sub>s</sub>, G, &lambda;) can be regarded as constant since they are only variable in very small ranges. The radar cross section, on the other hand, varies heavily, but for practical purposes we will assume 1 m&sup2;.</p>
+<p>The smallest received power that can be detected by the radar is called P<sub>E min</sub>. Powers smaller than P<sub>E min</sub> are not usable since they are lost in the noise of the receiver. The minimum power is detected at the maximum range R<sub>max</sub>, as seen from the equation:</p>
+<figure>
+  <img src="../figures/ch04-fig16.png" alt="Radar equation expressed for maximum range at minimum detectable power" />
+  <figcaption><span class="fig-num">Figure 4.15</span> Maximum range at minimum detectable power</figcaption>
+</figure>
+<p>An application of this radar equation is to easily visualize how the performance of the radar set influences the achieved range.</p>
+
+<h3 id="influences-on-maximum-range">Influences on the Maximum Range of a Radar Set</h3>
+<p>All considerations when calculating the radar equation were made assuming that the electromagnetic waves propagate under ideal conditions without disturbing influences. In practice, a number of losses should be considered since they reduce the effectiveness of the radar considerably.</p>
+<p>First, the radar equation is extended by including the loss factor L<sub>ges</sub>. This factor includes the following losses:</p>
+<figure>
+  <img src="../figures/ch04-fig17.png" alt="Radar equation extended with a total loss factor" />
+  <figcaption><span class="fig-num">Figure 4.16</span> Radar equation extended with the total loss factor</figcaption>
+</figure>
+<ul>
+  <li><strong>L<sub>D</sub></strong> = internal attenuation factors of the radar set on the transmitting and receiving paths</li>
+  <li><strong>L<sub>f</sub></strong> = fluctuation losses during the reflection</li>
+  <li><strong>L<sub>Atm</sub></strong> = atmospheric losses during propagation of the electromagnetic waves to and from the target</li>
+</ul>
+<p>High-frequency components, such as waveguides, filters, and a radome, generate internal losses. For a given radar set this loss is relatively constant and also easily measured. Atmospheric attenuation and reflections at the earth's surface are permanent influences.</p>
+
+<h2 id="influence-of-earths-surface">Influence of the Earth's Surface</h2>
+<p>An extended but less frequently used form of the radar equation considers additional terms, like the earth's surface, but does not classify receiver sensitivity and atmospheric absorption.</p>
+<p>In this equation, in addition to the already well-known quantities, are:</p>
+<figure>
+  <img src="../figures/ch04-fig18.png" alt="Extended radar equation including earth surface terms" />
+  <figcaption><span class="fig-num">Figure 4.17</span> Extended radar equation with earth-surface terms</figcaption>
+</figure>
+<ul>
+  <li><strong>K<sub>a</sub></strong> = loss factor in place of L<sub>ges</sub></li>
+  <li><strong>A<sub>z</sub></strong> = effective reflection surface in place of &sigma;</li>
+  <li><strong>t<sub>i</sub></strong> = pulse length</li>
+  <li><strong>n<sub>R</sub></strong> = noise figure of the receiver</li>
+  <li><strong>d</strong> = clarity factor of the display</li>
+  <li><strong>R<sub>e</sub></strong> = distance of the absorbing medium</li>
+  <li><strong>K</strong> = Boltzmann's constant</li>
+  <li><strong>T<sub>0</sub></strong> = absolute temperature in K</li>
+  <li><strong>&gamma;</strong> = reflected beam angle</li>
+  <li><strong>&delta;<sub>R</sub></strong> = break-even factor</li>
+</ul>
+
+<h2 id="radar-reflections-from-flat-ground">Radar Reflections from Flat Ground</h2>
+<p>The trigonometric representation shows the influence of the earth's surface. The earth plane surrounding a radar antenna has a significant impact on the vertical polar diagram.</p>
+<p>The combination of the direct and re-reflected ground echo changes the transmitting and receiving patterns of the antenna. This is substantial in the VHF range and decreases with increasing frequency. For the detection of targets at low heights, a reflection at the earth's surface is necessary. This is possible only if the ripples of the area within the first Fresnel zone do not exceed the value 0.001 R (within a radius of 1,000 m, no obstacle may be larger than 1 m).</p>
+<p>Specialized radar at lower (VHF) frequency bands make use of the reflections at the earth's surface and lobing to maximize cover at low levels. At higher frequencies, these reflections are more disturbing. The following picture shows the lobe structure caused by ground reflections. Normally this is highly undesirable, as it introduces intermittent cover as aircraft fly through the lobes. The technique has been used in ATC ground-mounted radar to extend the range, but it is only successful at low frequencies where the broad lobe structure permits adequate cover at higher elevations.</p>
+<figure>
+  <img src="../figures/ch04-fig19.png" alt="Diagram of the detour taken by ground-reflected radar signals" />
+  <figcaption><span class="fig-num">Figure 4.18</span> Detour of ground reflections</figcaption>
+</figure>
+<figure>
+  <img src="../figures/ch04-fig20.png" alt="Vertical pattern diagram showing lobing caused by ground reflections" />
+  <figcaption><span class="fig-num">Figure 4.19</span> A vertical pattern diagram with the influence of ground reflections</figcaption>
+</figure>
+<p>Increasing the height of the antenna has the effect of making the lobing pattern sharper. A fine-grained lobing structure is often filled in by irregularities in the ground plane. Specifically, if the ground plane deviates from a flat surface, then the reinforcement and destruction pattern resulting from the ground reflections breaks down. Avoidance of lobe effects is one of the prime considerations when selecting radar location and the height of the antenna.</p>
+
+<h2 id="more-on-radar-cross-section">More on Radar Cross Section</h2>
+<p>The radar cross section &sigma; (RCS) is an aircraft-specific quantity that depends on many factors. The computational determination of RCS is only possible for simple bodies. The RCS of simple geometric bodies depends on the ratio of the structural dimensions of the body to the wavelength.</p>
+<figure>
+  <img src="../figures/ch04-fig21.png" alt="Illustration of radar cross section for an aircraft" />
+  <figcaption><span class="fig-num">Figure 4.20</span> Radar cross section</figcaption>
+</figure>
+<p>Practically, the RCS of a target depends on:</p>
+<ul>
+  <li>the physical geometry and exterior features of the target</li>
+  <li>the direction of the illuminating radar</li>
+  <li>the radar transmitter's frequency</li>
+  <li>the electrical properties of the target's surface</li>
+</ul>
+<p>Whereas in the design of passenger airplanes more attention is paid to effectiveness and safety, in the case of an aircraft used for military purposes, care is taken to ensure that this reflective surface is as small as possible. Measures to achieve this are referred to as stealth technology.</p>
+
+<h3 id="what-does-rcs-mean">What Does RCS Mean for Radar?</h3>
+<p>The RCS of any reflector can be seen as a ratio to an idealized reference reflector. The projected area of an equivalent isotropic reflector (reflecting equally in all directions) has an RCS of exactly one square meter. In practice, this is only performed by a spherical reflector with an ideally conducting surface. From a large distance, you cannot see the spherical shape; you can only see a circular area, the so-called projection, both with the same diameter. The diameter of this sphere must be approximately 1.128 m to be the size of one square meter. Such an equivalent isotropic reflector delivers the same power per unit measure of solid angle back to the radar, regardless of the aspect angle.</p>
+<p>Isotropic reflection does not mean that this sphere would distribute the power arriving from one direction equally in all directions. The shape and size of the distribution are different, but always the same relative to the aspect angle of the illuminating radar, regardless of the angle from which the radar illuminates this sphere. However, the reference reflector can re-radiate only the power it has received:</p>
+<figure>
+  <img src="../figures/ch04-fig22.png" alt="Power balance equation for the reference reflector" />
+  <figcaption><span class="fig-num">Figure 4.21</span> Power balance at the reference reflector</figcaption>
+</figure>
+<p>This equation expresses a power balance: only the power arriving at this reflecting object can be reflected, and this power is radiated in many directions. From this power, however, the radar can only receive a small fraction. This fraction depends on the effective antenna area, known as the antenna aperture.</p>
+<p>Since the power density generated by the radar transmitter and arriving at the reflection point is put into a ratio with the reflected power density arriving at the radar, all other influences, such as free-space attenuation and distance to the radar, are eliminated. It is assumed that for a monostatic radar, the propagation conditions are the same on the outbound and return paths.</p>
+<p>Let S<sub>r</sub> be the power density at the receiving point of the radar, which we now see from the perspective of the reflecting object. This power density has the unit of watts per unit area: W/m&sup2;. The receiving antenna of the radar has only one effective antenna aperture A<sub>r</sub> (this is an area and a part of the surface of a sphere). The received power of the radar antenna is then S<sub>r</sub> &middot; A<sub>r</sub>, which is the power density at the antenna multiplied by its effective aperture.</p>
+<p>However, this antenna can receive only a very small portion of the power reflected from the object in all directions, because it occupies only a small part of the surface of the sphere. This area is proportional to the solid angle &Omega; occupied by the total reflected power distributed on a spherical surface:</p>
+<p class="equation"><em>&Omega; = A<sub>r</sub> / r&sup2;</em></p>
+<p>Thus, a power density (power per solid angle) of S<sub>r</sub> &middot; A<sub>r</sub> / &Omega; arrives at the receiving antenna. The solid angle can be replaced with the expression from the equation above and leads to:</p>
+<p class="equation"><em>S<sub>r</sub> &middot; A<sub>r</sub> / &Omega; = S<sub>r</sub> &middot; A<sub>r</sub> / (A<sub>r</sub> / r&sup2;) = S<sub>r</sub> &middot; r&sup2;</em></p>
+<p>The expression S<sub>r</sub> &middot; r&sup2; thus stands for the received power per unit solid angle (in watts per steradian) and corresponds to the equation above. This can then be rearranged to the equation used below.</p>
+
+<h3 id="non-isotropic-reference-reflector">Non-Isotropic Reference Reflector</h3>
+<p>In contrast to the isotropic radiator mentioned in antenna technology, such an isotropic reference reflector can very well be constructed in reality. It would only be very unwieldy because of its dimensions. Since the direction of the radar is known in a measurement setup, a calibrated corner reflector can also be used. As usual in antenna technology, this has a gain G compared to the isotropic reflector, which, however, can be calculated out of the measurement result later.</p>
+
+<h3 id="computational-determination-reflective-area">Computational Determination of the Reflective Area</h3>
+<p>In the following formula, the radar cross section indicates an effective area that captures the incoming wave and re-radiates it into space. Thus, only a power density caused by the surface of the sphere (4&pi;r&sup2;) arrives at the receiving antenna of the radar. The radar cross section &sigma; is defined as:</p>
+<figure>
+  <img src="../figures/ch04-fig23.png" alt="Definition of radar cross section as a ratio of scattered to transmitted power density" />
+  <figcaption><span class="fig-num">Figure 4.22</span> Definition of the radar cross section</figcaption>
+</figure>
+<p>Where:</p>
+<ul>
+  <li><strong>&sigma;</strong> = apparent area in [m&sup2;], a measure of the backscattering ability</li>
+  <li><strong>S<sub>t</sub></strong> = power density of the transmitter at the radar target [W/m&sup2;]</li>
+  <li><strong>S<sub>r</sub></strong> = scattered power density at the receiving location in [W/m&sup2;]</li>
+</ul>
+<p>The following formulas for calculation of the radar cross section are valid under the condition of optical, that is, frequency-independent reflection at bodies that are much further away from the radar than the wavelength and which are much larger than the used wavelength of the radar.</p>
+<figure>
+  <img src="../figures/ch04-fig24.png" alt="Table of radar cross section formulas for simple geometric bodies" />
+  <figcaption><span class="fig-num">Figure 4.23</span> Reflection from geometric bodies</figcaption>
+</figure>
+
+<h3 id="rcs-point-like-targets">Radar Cross Sections for Point-Like Targets</h3>
+<p>In radar technology, point-like targets are targets whose geometric dimensions are smaller than the pulse volume of the radar set. In contrast to volumetric targets (occurring mainly in weather radar), they do not completely fill the pulse volume. In radar signal processing they occupy one resolution cell (a maximum of two if they are exactly on the boundary).</p>
+<p>In reality, the radar cross section is composed of the sum of many small partial powers, which are located at different points of the reflecting object. Depending on the angle from which this object is illuminated, these partial areas have more or less influence; they may be obscured, or their distance to the radar may differ by several multiples of half the wavelength so that they overlap partly constructively and partly destructively. The RCS is thus strongly dependent on the aspect angle and can no longer be easily calculated geometrically. It is usually a result of extensive practical measurements, either on the original or with a model scaled down to the wavelength currently used in the measurement.</p>
+<p>Some targets have, according to their geometrical extension, a very large RCS and therefore reflect a rather large amount of the transmitted energy. The table below gives some examples of reflective surfaces in the X-band.</p>
+<table>
+  <thead>
+    <tr><th>Target</th><th>RCS [m&sup2;]</th><th>RCS [dB]</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Bird</td><td>0.01</td><td>-20</td></tr>
+    <tr><td>Man</td><td>1</td><td>0</td></tr>
+    <tr><td>Cabin cruiser</td><td>10</td><td>10</td></tr>
+    <tr><td>Automobile</td><td>100</td><td>20</td></tr>
+    <tr><td>Truck</td><td>200</td><td>23</td></tr>
+    <tr><td>Corner reflector</td><td>20379</td><td>43.1</td></tr>
+  </tbody>
+</table>
+<p class="caption">RCS for point-like targets in the X-band.</p>
+
+<div class="quiz-cta">
+  <h4>Test yourself</h4>
+  <p>Five quick questions on the radar equation, graded instantly with your score saved on this device.</p>
+  <p><a class="btn" href="quiz-04.html">Take the interactive quiz &rarr;</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-radar-timing-performance.html">&larr; Radar Timing Performance</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="05-radar-loss.html">Radar Loss &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

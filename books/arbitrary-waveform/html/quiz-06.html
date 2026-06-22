@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Chapter 6 Quiz</title><link rel="stylesheet" href="light-touch.css"/>  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head><body>
+<script defer src="reader-prompt.js"></script>
+<h1>Chapter 6 Quiz</h1><p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+<div id="bnc-quiz"></div>
+<script>window.QUIZ_DATA = { bookKey:"awg", chapterKey:"06", title:"Chapter 6 Quiz: Modulation and Signal Scenarios", questions:[
+  {
+    q: "In amplitude modulation, what happens when the modulation index m exceeds 1.0?",
+    options: [
+      "The carrier frequency doubles",
+      "Overmodulation occurs and the envelope clips through zero, distorting the recovered message",
+      "The signal becomes a pure FM waveform",
+      "Nothing changes; the index has no upper limit"
+    ],
+    answer: 1,
+    explain: "An index above 1.0 drives the envelope through zero at the troughs, which is overmodulation and distorts the demodulated message."
+  },
+  {
+    q: "Which three parameters fully define a linear frequency modulated (LFM) chirp?",
+    options: [
+      "Amplitude, phase, and duty cycle",
+      "Modulation index, deviation, and carrier power",
+      "Start frequency, stop frequency, and sweep duration",
+      "Pulse width, rise time, and PRF"
+    ],
+    answer: 2,
+    explain: "An LFM chirp is specified by where the sweep starts, where it stops, and how long it takes, with frequency rising linearly between the endpoints."
+  },
+  {
+    q: "When using two synchronized AWG channels for IQ vector generation, what does the external IQ modulator do?",
+    options: [
+      "It computes the inverse FFT of the subcarriers",
+      "It mixes I and Q against a local oscillator and its 90-degree-shifted copy, then sums them into one RF output",
+      "It adds Gaussian noise to set the SNR",
+      "It stores the recorded RF environment for replay"
+    ],
+    answer: 1,
+    explain: "The modulator upconverts baseband I and Q by mixing each against the LO (one path shifted 90 degrees) and summing the results into a single modulated carrier."
+  },
+  {
+    q: "A 16-QAM constellation appears rotated and sheared even though the computed samples are correct. What is the most likely cause?",
+    options: [
+      "The waveform memory is too small",
+      "Gain, delay, or phase mismatch between the I and Q channels in the analog path",
+      "The modulation index is set to zero",
+      "The DAC resolution is too high"
+    ],
+    answer: 1,
+    explain: "Channel-to-channel imbalance in gain, delay, or phase distorts an otherwise perfect constellation, so calibrate channel matching before suspecting the samples."
+  },
+  {
+    q: "Why is replaying a recorded RF environment from AWG memory valuable for receiver testing?",
+    options: [
+      "It eliminates the need for any digital modulation",
+      "It lowers the required DAC sample rate to zero",
+      "It makes a one-off field failure into a repeatable test case you can run against firmware revision after revision",
+      "It automatically corrects multipath in the receiver"
+    ],
+    answer: 2,
+    explain: "Captured I and Q samples can be replayed exactly, turning a single real-world event into a reproducible bench test, which is the quiet superpower of memory-based generation."
+  }
+] };</script>
+<script defer src="quiz-mc.js"></script>
+<footer class="bnc-footer"><nav class="bnc-nav"><a class="prev" href="06-modulation-and-signal-scenarios.html">&larr; Back to Chapter 6</a><a class="mid" href="00-front-matter.html#table-of-contents">Contents</a><a class="next" href="quiz-07.html">Chapter 7 Quiz &rarr;</a></nav><div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div></footer></body></html>

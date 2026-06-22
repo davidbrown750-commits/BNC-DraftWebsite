@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Appendix G. Glossary of Timing Terms</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <style>
+.glossary, dl.glossary, .wrap, main, body, dd, p { text-align: left; }
+figure[style*="float"]{ float:none !important; clear:both !important; width:33% !important; max-width:340px !important; margin:1rem 0 1.2rem 0 !important; }
+figure figcaption { text-align: center; }
+@media (max-width:640px){ figure[style*="float"]{ width:auto !important; max-width:100% !important; margin:1rem 0 !important; } }
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="appendix-g-glossary-of-timing-terms">Appendix G. Glossary of Timing Terms</h1>
+
+<p class="lead">This glossary collects the core vocabulary of precision timing used throughout the book. Definitions are written to be read on their own. They describe how each term is used in the context of bench pulse generators and timing systems.</p>
+
+<div class="callout">
+<h4>Flagged for Review</h4>
+<p>These definitions are general descriptions, not instrument specifications. Confirm any numeric figure or tolerance against the applicable instrument's datasheet before publication.</p>
+</div>
+
+<h2 id="g.1-glossary">G.1 Glossary</h2>
+
+<h3 id="num">Numbers</h3>
+<p><strong>10-90% / 20-80% reference points.</strong> The amplitude percentages between which rise or fall time is measured. The 20-80 pair avoids the rounded corners of fast edges and reads shorter for the same edge.</p>
+<p><strong>10 MHz reference.</strong> The industry-standard shared reference frequency, exposed as an input and often an output, used to synchronize instruments to a common time base.</p>
+
+<h3 id="a">A</h3>
+<p><strong>Accuracy.</strong> The tolerance of a timing setting, describing how closely the instrument delivers the requested value. Accuracy combines a fixed term with a term that grows for longer delays and widths, often expressed in a form such as 1 ns + 0.001 x Width. Distinct from resolution, which is the size of the smallest settable step.</p>
+<p><strong>Active-high / active-low.</strong> The chosen gate polarity that defines which gate state, high or low, enables output.</p>
+<p><strong>Amplitude.</strong> The size of the voltage step from baseline to top of an output pulse, typically adjustable in volts. Some pulse generators also provide optical outputs that mimic the properties of the electrical output.</p>
+<p><strong>Arm.</strong> A preparatory state that readies the instrument to accept the next trigger before any output is launched.</p>
+<p><strong>Arm and trigger sequence.</strong> A two-step start in which an arm event enables the instrument and a separate trigger then launches the cycle.</p>
+
+<h3 id="b">B</h3>
+<p><strong>Bandwidth-rise time product.</strong> The approximate constant, about 0.35 for a 10-90 measurement and about 0.22 for 20-80, linking an edge's rise time to the frequency bandwidth needed to carry it.</p>
+<p><strong>Baseline (low level).</strong> The resting voltage the output holds between pulses.</p>
+<p><strong>Bipolar / biphasic output.</strong> An output that can produce both positive and negative excursions, or a negative excursion following a positive one.</p>
+<p><strong>Burst.</strong> An output mode that produces a preset number of pulses following a single trigger, after which the channel is inhibited. Used when a test calls for a fixed-length train of pulses per trigger.</p>
+<p><strong>Burst gating.</strong> Using a gate to frame a finite group of pulses, emitting a defined number while the gate is active.</p>
+<p><strong>Burst rate.</strong> The rate of pulses within a burst, distinct from the rate at which whole bursts repeat.</p>
+<p><strong>Burst repeat rate.</strong> The rate at which whole bursts repeat.</p>
+
+<h3 id="c">C</h3>
+<p><strong>Cavity dumping.</strong> Holding energy in a laser resonator and switching it all out in one short burst whose length is set by the cavity round-trip time.</p>
+<p><strong>CE Marking.</strong> A conformity mark declaring that a product meets the applicable European Union directives.</p>
+<p><strong>Channel.</strong> One independently programmable timing output, usually presented on its own connector. Multiple channels in a timing system share a common clock but can carry different voltages, modes, and timing.</p>
+<p><strong>Channel mode.</strong> A per-channel output setting that operates within whatever the system mode allows.</p>
+<p><strong>Characteristic impedance (Z0).</strong> The impedance a transmission line presents to a fast edge, conventionally 50 ohms.</p>
+<p><strong>Clock-In.</strong> A port that lets a pulse generator synchronize to an external clock instead of its internal oscillator, so the instrument can follow a shared system reference.</p>
+<p><strong>Coincidence timing.</strong> Counting detector clicks that fall within a narrow common window.</p>
+<p><strong>CSAC (chip-scale atomic clock).</strong> A miniaturized rubidium or cesium reference for portable and embedded use.</p>
+
+<h3 id="d">D</h3>
+<p><strong>Dead time.</strong> Deliberate gap left between events, or before the end of a period, to protect the load and to leave timing margin.</p>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-diagram-timing.svg" alt="Timing diagram showing trigger reference T0, a programmed delay interval, then an output pulse spanning the programmed width." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Delay is measured from the trigger leading edge to the pulse; width from leading to falling edge.</figcaption>
+</figure>
+<p><strong>Delay.</strong> The programmed time interval from the internal or external trigger to the output pulse. Delay is usually measured from the leading edge of the trigger pulse (To) to the leading edge of the timed pulse.</p>
+<p><strong>Delay chaining (relative timing).</strong> Referencing one channel's delay to another channel rather than to To, so moving the reference moves the dependent channel and holds their spacing.</p>
+<p><strong>Delayed extraction.</strong> The controlled wait before the extraction pulse in time-of-flight mass spectrometry that sharpens mass resolution.</p>
+<p><strong>Diode-pumped vs lamp-pumped.</strong> Pump architectures for solid-state lasers that differ in stability, speed, and achievable jitter.</p>
+<p><strong>Droop (sag, tilt).</strong> A gradual decline of the pulse top level across the pulse width, typically from AC coupling or charge-limited capacitors.</p>
+<p><strong>Duty cycle.</strong> The fraction of each period during which the output is high, expressed as a percentage. It ties pulse width to repetition rate and often limits how hard a load can be driven.</p>
+<p><strong>Duty Cycle Mode (Divide by N).</strong> An output mode that produces a preset ratio of pulse to no pulse, configured with an on cycle (number of pulses to produce) and an off cycle (number of pulses to skip).</p>
+
+<h3 id="e">E</h3>
+<p><strong>Electro-optic effect (Pockels effect).</strong> The linear change of refractive index with applied electric field.</p>
+<p><strong>Event-based timing system.</strong> An accelerator timing backbone that broadcasts codes to distributed receivers.</p>
+<p><strong>External clock input.</strong> An input that lets the instrument run on an outside clock instead of its internal oscillator.</p>
+<p><strong>External Reference.</strong> An external clock or oscillator that supplies the timing signal to the master system, usually through a front panel connector. The internal phase-locked loop locks to the external signal.</p>
+<p><strong>External Trigger.</strong> A trigger source supplied from outside the instrument, normally on a connector marked TRIG IN. The user sets the threshold and the slope (leading or falling edge) that the incoming signal must satisfy to start a timing cycle.</p>
+
+<h3 id="f">F</h3>
+<p><strong>Fall Time.</strong> The time the trailing edge takes to drop between two reference levels of the pulse amplitude, commonly 90% to 10%. Adjustable on advanced pulse generators, alongside rise time.</p>
+<p><strong>Feed-through terminator.</strong> An inline 50 ohm load placed at a high-impedance input to terminate the line.</p>
+<p><strong>Femtosecond.</strong> One quadrillionth (10^-15) of a second, the emerging regime for the best optical timing.</p>
+<p><strong>Flash lamp.</strong> A pulsed lamp used to optically pump a solid-state laser gain medium.</p>
+<p><strong>Framing camera.</strong> A camera that takes a short burst of full images at a very high frame rate.</p>
+
+<h3 id="g">G</h3>
+<p><strong>Gate (Gate In).</strong> A control input that uses a gate pulse to enable or inhibit outputs without changing the timing program. Set Active High or Active Low to define which state enables output.</p>
+<p><strong>Gate width / gate delay.</strong> The duration and placement of a detector's on-window.</p>
+<p><strong>Gated detector.</strong> A detector switched on only during a chosen window to reject unwanted light.</p>
+<p><strong>Gated triggering.</strong> Triggering allowed only while a separate gate signal is in its active state.</p>
+<p><strong>GNSS-disciplined oscillator.</strong> A local oscillator steered to match a GPS or GNSS reference so it inherits long-term atomic accuracy.</p>
+<p><strong>GPIB (General Purpose Interface Bus).</strong> A parallel instrument-control bus long used to connect test equipment to a controlling computer, alongside RS-232, USB, and Ethernet.</p>
+<p><strong>GPS-disciplined oscillator (GPSDO).</strong> A local oscillator steered to satellite time for traceable long-term accuracy.</p>
+
+<h3 id="h">H</h3>
+<p><strong>Half-wave voltage.</strong> The voltage that produces a full polarization rotation in an electro-optic modulator.</p>
+<p><strong>Hardware gate.</strong> A physical gate input that responds in real time at the speed of the electronics.</p>
+<p><strong>Holdover.</strong> The period a disciplined oscillator stays within spec after losing its reference, such as during a GNSS outage.</p>
+
+<h3 id="i">I</h3>
+<p><strong>ICCD.</strong> An intensified CCD whose intensifier can be gated to a sub-nanosecond window.</p>
+<p><strong>IEEE-1588 PTP.</strong> The Precision Time Protocol, a standard for packet-based time distribution over ordinary networks.</p>
+<p><strong>IEEE-488.2.</strong> The messaging and common-command standard that SCPI builds on, defining shared commands such as *IDN?, *RST, and *OPC? that compliant instruments answer.</p>
+<p><strong>Illegal-setting flag.</strong> An instrument's rejection or warning, at programming time, of a parameter combination that would create a conflict.</p>
+<p><strong>Impedance matching.</strong> Making source, line, and load impedances equal to suppress reflections.</p>
+<p><strong>Insertion Delay.</strong> A fixed delay built into the design of a timing system, measured from the Trigger In signal to the triggering of the first timing period. Good designs minimize it to allow fast triggering from the initial input.</p>
+<p><strong>Internal rate generator.</strong> The built-in programmable oscillator that sets the repetition rate and fires the start of each cycle when an instrument runs internally.</p>
+<p><strong>Internal Reference.</strong> The master clock internal to a timing system, typically an oscillator with a well-defined frequency that provides the start pulse for each channel.</p>
+<p><strong>Internal Trigger.</strong> A trigger source from the instrument's own rep-rate generator. The internal trigger selects this generator as the source for timing cycles and usually lets the user set the rate.</p>
+<p><strong>Intra-burst rate.</strong> The rate of pulses inside a single burst.</p>
+
+<h3 id="j">J</h3>
+<p><strong>Jitter.</strong> The cycle-to-cycle variation in when an output edge actually appears.</p>
+
+<h3 id="k">K</h3>
+<p><strong>Kicker magnet.</strong> A fast pulsed magnet that steers a beam bunch on a tightly timed trigger.</p>
+
+<h3 id="l">L</h3>
+<p><strong>Leading Edge.</strong> The rising transition that begins a pulse. Delay and width are commonly referenced to the leading edge of the relevant pulse.</p>
+<p><strong>LIDAR / range gating.</strong> Time-of-flight ranging with a detector gate set to a chosen range slice.</p>
+<p><strong>LIF (laser-induced fluorescence).</strong> Exciting a species and gating a detector to its fluorescence.</p>
+
+<p><strong>LXI (LAN eXtensions for Instrumentation).</strong> A standard for Ethernet-based test instruments that supports network discovery and browser-based configuration.</p>
+<h3 id="m">M</h3>
+<p><strong>Master clock.</strong> The single reference, internal or external, from which every channel's timing is derived.</p>
+<p><strong>Master / slave timing.</strong> An arrangement in which one reference or instrument distributes a clock that other instruments lock to.</p>
+<p><strong>Merged pulses.</strong> Two pulses fusing into one wider pulse when they touch or overlap in time.</p>
+<p><strong>Multiplex.</strong> A configuration that combines the outputs of several channels onto a single output connector as a composite timing sequence.</p>
+
+<h3 id="n">N</h3>
+<p><strong>Nd:YAG.</strong> A common neodymium-doped solid-state laser gain medium.</p>
+<p><strong>Normal Mode.</strong> An output mode that produces one output pulse per trigger.</p>
+
+<h3 id="o">O</h3>
+<p><strong>OCXO (oven-controlled crystal oscillator).</strong> A temperature-stabilized crystal reference with low phase noise and good short-term stability, commonly used to ride out holdover.</p>
+<p><strong>Offset (bias).</strong> A shift applied to the whole pulse, moving baseline and top together.</p>
+<p><strong>Optical clock.</strong> An atomic clock based on an optical transition, offering accuracy beyond traditional microwave references.</p>
+<p><strong>Optical delay line.</strong> A path-length delay, about 0.3 m per nanosecond, used for fine, jitter-free pump-probe steps.</p>
+<p><strong>Optical Output.</strong> An optical pulse output that mimics the properties of the electrical output on pulse generators that offer it.</p>
+<p><strong>Optical-to-RF distribution.</strong> Fanning out a stable optical reference over fiber and converting it to electrical or RF triggers at each endpoint.</p>
+<p><strong>Oscillator-amplifier chain.</strong> A small stable laser oscillator feeding one or more amplifier stages, each separately pump-timed.</p>
+<p><strong>Output inhibit.</strong> Gating that cuts the output immediately, truncating any pulse in progress.</p>
+<p><strong>Output mode.</strong> The rule a channel uses to turn incoming triggers into output pulses: normal, single shot, burst, duty cycle, wait, or multiplex.</p>
+<p><strong>Overlap condition.</strong> A timing program that asks a channel or a shared resource to do two incompatible things at once.</p>
+<figure style="float:left;width:33%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-rise-time.png" alt="Rise time is the interval for an edge to climb from 10 percent to 90 percent of full amplitude." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Rise time and overshoot, two of the edge-shape terms defined in this glossary.</figcaption>
+</figure>
+<p><strong>Overshoot.</strong> The amount an edge rises above its final level before settling, usually expressed as a percentage of amplitude. Generally undesirable. Minimized with low-capacitance cable and 50 ohm termination, and influenced by output voltage.</p>
+
+<h3 id="p">P</h3>
+<p><strong>Peak-to-peak jitter.</strong> The full spread of timing error. It grows with sample size and must cite its sample count.</p>
+<p><strong>Period.</strong> The time from the start of one timing cycle to the start of the next, the budget every channel must fit inside.</p>
+<p><strong>Period budget.</strong> The accounting in which the sum of all channel delays, widths, and dead time must fit inside one period with margin.</p>
+<p><strong>Phase noise.</strong> The frequency-domain description of an oscillator's timing imperfection near the carrier.</p>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-phase-locked-loop.png" alt="A phase-locked loop pulls an internal oscillator into step with an external reference clock." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">A phase-locked loop pulls an internal oscillator into step with an external reference clock.</figcaption>
+</figure>
+<p><strong>Phase-Locked Loop (PLL).</strong> A circuit that disciplines a local oscillator to track an external reference by comparing and steering phase, so the two share a common phase and frequency.</p>
+<p><strong>PIV (particle image velocimetry).</strong> Two closely timed light sheets and two exposures used to extract a velocity field.</p>
+<p><strong>PLIF (planar LIF).</strong> Laser-induced fluorescence across a light sheet for two-dimensional imaging of flames and plasmas.</p>
+<p><strong>Pockels cell.</strong> An electro-optic crystal whose birefringence varies with applied voltage, used as a fast, no-moving-parts optical switch.</p>
+<p><strong>Pockels cell driver.</strong> The high-voltage electronics that swing a Pockels cell, with fast edges and an adjustable trigger delay.</p>
+<p><strong>Polarity.</strong> The direction a pulse moves from its baseline: positive (upward) or negative (downward).</p>
+<p><strong>Preshoot.</strong> A small artifact appearing just before the main edge, often from coupling or filtering in the path.</p>
+<p><strong>Pulse build-up time.</strong> The jittery interval between a Q-switch opening and the emergence of the full optical pulse.</p>
+<figure style="float:left;width:33%;max-width:340px;margin:0.4rem 1.4rem 1rem 0;text-align:center;">
+<img src="../figures/glossary-photo-instrument.jpg" alt="A bench function generator, a real instrument used to produce controlled electrical waveforms including pulses." style="width:100%;height:auto;border-radius:4px;box-shadow:0 2px 10px rgba(0,31,56,0.18);" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">A real bench pulse generator: front panel controls set repetition rate, delay, width, and amplitude.</figcaption>
+</figure>
+<p><strong>Pulse Generator.</strong> An instrument that produces controllable output pulses. Bench pulse generators typically allow control of repetition rate, pulse width, delay from a trigger, and amplitude, with rise and fall time control on advanced models.</p>
+<p><strong>Pulse inhibit.</strong> Gating that blocks new triggers but lets an in-progress pulse finish cleanly before output stops.</p>
+<p><strong>Pulse picking.</strong> Selecting single pulses or short bursts from a high-repetition-rate pulse train.</p>
+<figure style="float:right;width:33%;max-width:340px;margin:0.4rem 0 1rem 1.4rem;text-align:center;">
+<img src="../figures/glossary-eq-prf.png" alt="Equation: PRF equals 1 divided by PRT. Pulse repetition frequency in hertz is the reciprocal of pulse repetition time in seconds." style="width:100%;height:auto;border:1px solid #d7dde3;border-radius:4px;background:#fff;" />
+<figcaption style="font-family:Georgia,serif;font-style:italic;color:#4B2A6B;font-size:0.85rem;margin-top:0.45rem;line-height:1.35;">Pulse repetition frequency in hertz is the reciprocal of the pulse repetition time in seconds.</figcaption>
+</figure>
+<p><strong>Pulse Repetition Rate / PRF (Pulse Repetition Frequency).</strong> The number of pulses per second from a periodic source, set by the internal rate generator or supplied by an external clock. The period is its reciprocal.</p>
+<p><strong>Pulse swallowing.</strong> The dropping of a pulse when a new one is demanded before the previous pulse ends.</p>
+<p><strong>Pulse-top flatness.</strong> How constant the top level stays over the pulse duration.</p>
+<p><strong>Pump-probe.</strong> A two-pulse method where a pump triggers a process and a delayed probe interrogates it.</p>
+
+<h3 id="q">Q</h3>
+<p><strong>Q-switch.</strong> A device that holds a laser cavity below threshold, then suddenly raises its Q to release a stored-energy giant pulse.</p>
+<p><strong>Q-switching (active vs passive).</strong> Active uses a controlled switch fired on a trigger; passive uses a saturable absorber that self-triggers.</p>
+
+<h3 id="r">R</h3>
+<p><strong>Radar target simulation.</strong> Returning a delayed copy of a received radar pulse to mimic a target at a chosen range.</p>
+<p><strong>Reflection.</strong> Energy that bounces back from an impedance discontinuity.</p>
+<p><strong>Reflection coefficient (Gamma).</strong> The fraction of an incident wave reflected at a junction, (Z_load - Z0) / (Z_load + Z0).</p>
+<p><strong>Regenerative amplifier.</strong> An amplifier that traps a seed pulse for many gain passes, then switches it out at peak energy.</p>
+<p><strong>Resolution.</strong> The finest settable step for a timing property. A 5 ns resolution instrument, for example, sets delays and widths in 5 ns increments. Distinct from accuracy.</p>
+<p><strong>Ringing.</strong> Damped oscillation around the final level following a fast edge.</p>
+<p><strong>Rise Time.</strong> The time an edge takes to climb between two reference levels of the pulse amplitude, commonly 10% to 90% or 20% to 80%. Preserved with careful cabling and 50 ohm termination.</p>
+<p><strong>RMS jitter.</strong> The standard deviation of timing error, a stable and convergent statistic.</p>
+<p><strong>RoHS.</strong> A restriction-of-hazardous-substances standard limiting certain materials in electronic equipment.</p>
+<p><strong>Root-sum-of-squares (rise time).</strong> The rule that cascaded, non-interacting stages combine their rise times in quadrature, t_observed &#8776; sqrt(t1&#178; + t2&#178; + ...).</p>
+<p><strong>Round-trip delay.</strong> The time an edge takes to travel to the far end of a cable and back, which sets when reflections appear.</p>
+<p><strong>Rounding.</strong> A softened corner where edge meets top, indicating limited bandwidth.</p>
+<p><strong>Rubidium reference.</strong> An atomic frequency reference with excellent long-term stability.</p>
+<p><strong>Runt pulse.</strong> A pulse that fails to reach full amplitude, often because a cycle boundary or gate arrived mid-pulse. A load may or may not recognize it.</p>
+
+<h3 id="s">S</h3>
+<p><strong>SCPI (Standard Commands for Programmable Instruments).</strong> The structured command language modern instruments use so that menu settings can be set and retrieved remotely, with the same syntax across interfaces such as RS-232, USB, Ethernet, and GPIB.</p>
+<p><strong>Seeding (injection seeding).</strong> Timing a stable seed pulse into a laser amplifier's gain window.</p>
+<p><strong>Settling time.</strong> The time for the output to enter and remain within a defined error band of its final value.</p>
+<p><strong>Shot Counter.</strong> A function that tracks the number of output pulses, or shots, the instrument has produced. Useful for confirming a known total number of pulses or that a sequence ran to completion.</p>
+<p><strong>Single Shot.</strong> An output mode that produces one output pulse on the first trigger only, after which the channel is inhibited.</p>
+<p><strong>Slew rate.</strong> The rate of voltage change of an edge, volts per unit time, the steepness of the transition at the threshold.</p>
+<p><strong>Slope.</strong> The edge of a trigger pulse, leading or falling, selected as the one that starts a timing cycle when using an external trigger.</p>
+<p><strong>Software gate.</strong> A bus command that enables or disables outputs, flexible but carrying command-path latency.</p>
+<p><strong>SPAD (single-photon avalanche diode).</strong> A gated single-photon detector biased above breakdown only during an expected-arrival window.</p>
+<p><strong>Streak camera.</strong> An instrument that sweeps an image to convert time into a spatial axis at picosecond resolution.</p>
+<p><strong>Synchronous Ethernet (SyncE).</strong> Physical-layer frequency distribution over Ethernet, often paired with PTP for full time and frequency sync.</p>
+<p><strong>System Mode.</strong> A timing parameter set above the individual channels. When applied, it can constrain or override the behavior of all channel modes at once.</p>
+
+<h3 id="t">T</h3>
+<p><strong>Termination.</strong> The impedance presented at the end of a cable, supplied by a resistor that absorbs the edge to prevent reflection. A 50 ohm load (parallel) or source (series) termination with low-capacitance cable gives the fastest rise times without overshoot. Higher termination resistance can speed the edge but tends to introduce overshoot.</p>
+<p><strong>Threshold.</strong> The discriminator level an external trigger signal must cross to count as a trigger. A pulse that fails to cross the threshold does not trigger the system.</p>
+<p><strong>Time of flight (TOF).</strong> Inferring distance or mass from elapsed time. In LIDAR ranging, the round-trip interval converts directly to distance.</p>
+<p><strong>Time-of-flight mass spectrometry (TOF-MS).</strong> A mass spectrometer that separates ions by drift-tube flight time.</p>
+<p><strong>Time-resolved spectroscopy.</strong> Spectra acquired as a function of pump-probe delay.</p>
+<p><strong>Time-tagging.</strong> Recording the precise arrival time of events such as single-photon detections.</p>
+<p><strong>Timing signal.</strong> A pulse or edge placed deliberately in time relative to a reference, characterized by its rate, delay, width, and edge shape.</p>
+<p><strong>To (Trigger Reference).</strong> The start-of-cycle marker at the leading edge of the trigger pulse, from which delay to the timed pulse is measured.</p>
+<p><strong>Transmission line.</strong> A cable treated as a distributed-impedance path once edges are fast relative to round-trip delay.</p>
+<p><strong>Trigger.</strong> The event that starts a timing cycle. Sourced internally from the rep-rate generator or externally on the TRIG IN connector.</p>
+<p><strong>Trigger holdoff.</strong> A blanking time after a trigger during which further triggers are ignored, preventing double-triggering and enforcing minimum spacing.</p>
+
+<h3 id="u">U</h3>
+<p><strong>Undershoot.</strong> The amount an edge dips below its final or baseline level before settling.</p>
+
+<h3 id="v">V</h3>
+<p><strong>VISA (Virtual Instrument Software Architecture).</strong> A standard I/O software layer that lets a control program address an instrument the same way regardless of the physical interface, used from LabVIEW, Python, MATLAB, and C.</p>
+<h3 id="w">W</h3>
+<p><strong>Wait.</strong> An output mode, or special function, that holds a channel off for a set number of pulses before it begins uninhibited output.</p>
+<p><strong>WEEE.</strong> A standard governing the collection and end-of-life handling of waste electrical and electronic equipment.</p>
+<p><strong>White Rabbit.</strong> An open, CERN-developed extension of PTP using synchronous Ethernet and phase measurement for sub-nanosecond, picosecond-class network synchronization.</p>
+<p><strong>Width.</strong> The duration of a pulse in the time domain, measured from the leading edge to the falling edge at half of maximum amplitude.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="08-industry-trends.html">&larr; 8. Industry Trends</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="about-the-authors.html">About the Authors &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

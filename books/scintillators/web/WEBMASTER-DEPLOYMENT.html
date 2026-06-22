@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scintillator Book V2 — Webmaster Deployment Notes</title>
+<style>
+:root {
+  --navy: #003D6B; --sky: #0078B6; --plum: #4B2A6B;
+  --amber: #C77E00; --steel: #ECEFF1; --rule: #b6c2cc;
+  --ink: #2C3E50;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 11pt;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--steel);
+  max-width: 820px;
+  margin: 36px auto;
+  padding: 0 30px 80px;
+}
+h1, h2, h3 { font-family: Helvetica, Arial, sans-serif; color: var(--navy); }
+h1 {
+  font-size: 24pt;
+  border-bottom: 3px solid var(--navy);
+  padding-bottom: 8px;
+  box-shadow: inset 0 -6px 0 -3px var(--amber);
+  margin-bottom: 4px;
+}
+h1 + p { color: var(--plum); font-style: italic; margin-top: 0; }
+h2 {
+  font-size: 16pt;
+  margin-top: 1.6em;
+  padding-left: 12px;
+  border-left: 4px solid var(--sky);
+  margin-left: -16px;
+}
+h3 { font-size: 12.5pt; color: var(--sky); margin-top: 1.2em; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 10pt;
+  margin: 14px 0;
+}
+th {
+  background: var(--navy);
+  color: white;
+  text-align: left;
+  padding: 8px 11px;
+  border-bottom: 3px solid var(--amber);
+}
+td { padding: 7px 11px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+tr:nth-child(odd) td { background: var(--steel); }
+code, pre {
+  font-family: Consolas, monospace;
+  font-size: 9.5pt;
+  background: #e6edf3;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+pre {
+  display: block;
+  padding: 10px 14px;
+  overflow-x: auto;
+  border-left: 3px solid var(--sky);
+  background: #f4f9fc;
+}
+.callout {
+  background: white;
+  border-left: 4px solid var(--amber);
+  padding: 14px 20px;
+  margin: 20px 0;
+  box-shadow: 0 1px 0 rgba(0, 61, 107, 0.06);
+  background: #fff8ec;
+}
+.callout strong { color: var(--navy); }
+.checklist { list-style: none; padding-left: 0; }
+.checklist li {
+  padding: 6px 0 6px 28px;
+  position: relative;
+  border-bottom: 1px dashed var(--rule);
+}
+.checklist li::before {
+  content: "\2610";
+  position: absolute;
+  left: 0;
+  font-size: 14pt;
+  color: var(--plum);
+  line-height: 1;
+}
+ul li { margin: 4px 0; }
+strong.path { color: var(--plum); }
+hr { border: none; border-top: 1px solid var(--rule); margin: 24px 0; }
+.tag {
+  display: inline-block;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: #f5f0fa;
+  color: var(--plum);
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-right: 4px;
+}
+@media print {
+  body { background: white; max-width: none; margin: 0; padding: 0.5in 0.6in; }
+  pre { page-break-inside: avoid; }
+  table { page-break-inside: avoid; }
+  h2, h3 { page-break-after: avoid; }
+}
+</style>
+</head>
+<body>
+
+<h1>Scintillator Book V2 — Webmaster Deployment Notes</h1>
+<p>How to host the digital book on the BNC website with no paywall, no login, and an opt-in reader quiz that emails leads to David Brown.</p>
+
+<div class="callout">
+<strong>Server requirements:</strong> Static file hosting only. No backend, no database, no SSL gymnastics beyond standard HTTPS. Works on any modern web host (Apache, nginx, Cloudflare Pages, Netlify, GitHub Pages, WordPress with an HTML embed, Webflow Custom Code, etc.).
+</div>
+
+<h2>What to upload</h2>
+<p>All files come from the project folder <code>book/</code>. Recommended URL structure:</p>
+
+<pre>yourdomain.com/scintillator-book/
+    ├── 00-front-matter.html  ...  14-nuclear-renaissance.html      <span style="color:var(--plum)">// 14 chapter HTML files</span>
+    ├── appendix-A-new-materials.html  ...  appendix-H-bibliography.html   <span style="color:var(--plum)">// 8 appendices</span>
+    ├── quiz-01-why-now.html  ...  quiz-14-nuclear-renaissance.html       <span style="color:var(--plum)">// 14 chapter quizzes</span>
+    ├── progress.html                                                        <span style="color:var(--plum)">// reader progress dashboard</span>
+    ├── reader-quiz.html                                                     <span style="color:var(--plum)">// the lead-capture quiz</span>
+    ├── _bnc-style.css
+    ├── _quiz-style.css
+    ├── _reader-prompt.js
+    └── figures/                                                             <span style="color:var(--plum)">// drop the figures folder in alongside</span></pre>
+
+<h3>Files to upload, by source folder</h3>
+<table>
+<thead><tr><th>Source on David's drive</th><th>Destination on server</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>book/html/*.html</code> (23 files: 00–14 + appendix-A–H)</td><td><code>/scintillator-book/</code></td><td>The book content, one HTML per chapter / appendix.</td></tr>
+<tr><td><code>book/html/quiz-*.html</code> (14 files)</td><td><code>/scintillator-book/</code></td><td>Interactive chapter quizzes.</td></tr>
+<tr><td><code>book/html/progress.html</code></td><td><code>/scintillator-book/</code></td><td>Reader progress dashboard.</td></tr>
+<tr><td><code>book/html/_bnc-style.css</code></td><td><code>/scintillator-book/</code></td><td>Shared book stylesheet.</td></tr>
+<tr><td><code>book/html/_quiz-style.css</code></td><td><code>/scintillator-book/</code></td><td>Shared quiz stylesheet.</td></tr>
+<tr><td><code>book/html/_reader-prompt.js</code></td><td><code>/scintillator-book/</code></td><td>Top banner + 30-sec reader-quiz prompt. Auto-loaded by every chapter.</td></tr>
+<tr><td><code>book/web/reader-quiz.html</code></td><td><code>/scintillator-book/</code></td><td><strong>One config change required — see below.</strong></td></tr>
+<tr><td><code>book/figures/</code> (whole folder)</td><td><code>/scintillator-book/figures/</code></td><td>Chapter figures — referenced by <code>../figures/...</code> from each chapter, so the folder must sit one level up from the HTML.</td></tr>
+</tbody>
+</table>
+
+<p><strong>Total: ~50 files.</strong> All static — just upload via FTP / SFTP / your CMS.</p>
+
+<h3>What NOT to upload</h3>
+<ul>
+<li><code>book/chapters/</code>, <code>book/appendices/</code> — markdown source, not for public site</li>
+<li><code>book/pdf/</code>, <code>book/pdf-5x8/</code>, <code>book/pdf-5x8-final/</code> — print PDFs, keep for the print run</li>
+<li><code>book/Scintillator-Book-V2-MASTER.{md,html}</code> — internal combined master</li>
+<li><code>book/cover/</code> — cover art for print only</li>
+<li>Any <code>*.bak</code> file — backups from the editing scripts</li>
+</ul>
+
+<h2>The one config change required</h2>
+<p>Open <code>reader-quiz.html</code> in any text editor. Near the top of the <code>&lt;script&gt;</code> block, find:</p>
+<pre>const FORM_ENDPOINT = "https://formspree.io/f/REPLACE_WITH_YOUR_ID";</pre>
+<p>Replace <code>REPLACE_WITH_YOUR_ID</code> with the Formspree form ID David provides (see next section). Save and re-upload <code>reader-quiz.html</code>. <strong>No build step. No server config.</strong></p>
+
+<h2>Setting up the email tool <span class="tag">David, not the webmaster</span></h2>
+<p>The quiz uses <strong>Formspree</strong> (<code>formspree.io</code>) — free tier, 50 submissions/month, no signup required for end users.</p>
+<ol>
+<li>Sign up at <code>https://formspree.io</code> with <code>davidbrown750@gmail.com</code>. (Free plan to start.)</li>
+<li>Click <strong>+ New Form</strong>, name it <em>"Scintillator Book Reader Quiz"</em>, set the destination to <code>davidbrown750@gmail.com</code>. Formspree assigns a form ID like <code>xnqebjkr</code>.</li>
+<li>The endpoint URL is <code>https://formspree.io/f/&lt;form-id&gt;</code>. Paste that into the <code>FORM_ENDPOINT</code> constant in <code>reader-quiz.html</code>.</li>
+</ol>
+<p><em>Alternatives:</em> Web3Forms (250/month free) or Basin (100/month free). All three work the same way — pick one, get the endpoint URL, paste into the HTML file.</p>
+
+<h2>What happens when a reader submits the quiz</h2>
+<ol>
+<li>Reader clicks <strong>Email me my reading roadmap</strong>.</li>
+<li>Browser POSTs the form data to your Formspree endpoint.</li>
+<li>Formspree forwards it to <code>davidbrown750@gmail.com</code> as an email with subject like:<br>
+<code>[Scintillator Quiz] Sarah → buyer path</code></li>
+<li>The email body includes:
+<ul>
+<li><strong>Name</strong> (first + last)</li>
+<li><strong>Email</strong></li>
+<li><strong>Company / Institution</strong> + <strong>Role / Title</strong> (if filled)</li>
+<li><strong>Country</strong></li>
+<li><strong class="path">reader_path</strong> — <code>student</code>, <code>buyer</code>, or <code>designer</code></li>
+<li><strong>Three opt-ins:</strong>
+<ul>
+<li><code>want_print: yes</code> → reader wants a free printed copy. Email also includes shipping address.</li>
+<li><code>want_class_pass: yes</code> → reader wants a free seat in the BNC Academy at <code>academy.berkeleynucleonics.com</code>.</li>
+</ul></li>
+<li>All quiz answers as JSON (which questions and options they chose).</li>
+</ul></li>
+</ol>
+
+<p>Act on each lead manually within two business days:</p>
+<ul>
+<li><strong>Mail the print copy</strong> if requested. Address is in the email.</li>
+<li><strong>Provision the class pass</strong> if requested. Add their email as a complimentary seat in the BNC Academy.</li>
+<li><strong>Send the personalized roadmap.</strong> Copy/paste the right path's reading roadmap from <code>reader-quiz-spec.md</code> into a reply email. (Automate with Mailchimp / ConvertKit / HubSpot once volume is ~5+ leads/week, segmenting by <code>reader_path</code>.)</li>
+</ul>
+
+<h2>How the chapter-level quizzes work</h2>
+<p>The 14 chapter quizzes don't need a backend at all. They save the reader's attempts and self-grades to <strong>localStorage in the reader's own browser</strong> — David never sees this data, and the reader can clear it or export it themselves from <code>progress.html</code>.</p>
+
+<p>The dashboard (<code>progress.html</code>) reads localStorage and shows:</p>
+<ul>
+<li>Total chapters touched, how many got each grade</li>
+<li>Per-chapter breakdown of every question, the reader's attempt, the model answer</li>
+<li>Suggested re-reads</li>
+<li>Print / Export-as-JSON / Clear-all buttons</li>
+</ul>
+<p>No webmaster action required for the chapter quizzes — they just work once the files are uploaded.</p>
+
+<h2>Privacy and consent</h2>
+<ul>
+<li>The reader quiz includes a <strong>required consent checkbox</strong> before submission.</li>
+<li>Berkeley Nucleonics is responsible for honoring opt-out requests. Use a CRM / ESP that handles unsubscribes (Mailchimp, ConvertKit, etc.) once volume justifies it.</li>
+<li>For EU/UK readers, the consent flow is the legal minimum. If meaningful volume comes from those regions, add a privacy notice link on the BNC site and a checkbox confirming GDPR consent.</li>
+<li>The success page promises follow-up within two business days for fulfillment items. Honor that.</li>
+</ul>
+
+<h2>Quick checklist for the webmaster</h2>
+<ul class="checklist">
+<li>Upload all files in the table above to <code>/scintillator-book/</code> (or whichever URL structure you prefer).</li>
+<li>Confirm <code>figures/</code> sits one level above the chapter HTML files (chapters reference <code>../figures/</code>). If you keep them in the same folder, find/replace <code>../figures/</code> with <code>figures/</code> in the chapter HTML.</li>
+<li>David provides his Formspree endpoint ID. Paste it into <code>reader-quiz.html</code> and re-upload.</li>
+<li>Test once: open <code>01-why-now.html</code>, wait 30 seconds, confirm the modal appears, click <em>Take the quiz</em>, fill it out, submit. Confirm David receives the email.</li>
+<li>Send David a working URL for <code>00-front-matter.html</code> and <code>reader-quiz.html</code>.</li>
+</ul>
+
+<p style="margin-top: 24px;">Total deploy time: ~15 minutes including the test submission.</p>
+
+<hr>
+<p style="font-size: 9.5pt; color: var(--plum); text-align: center; font-style: italic;">
+Questions? Email David at <code>davidbrown750@gmail.com</code>.
+</p>
+
+</body>
+</html>

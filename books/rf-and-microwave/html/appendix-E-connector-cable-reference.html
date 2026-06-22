@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>appendix-E-connector-cable-reference</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="appendix-e-connector-and-cable-reference">Appendix E. Connector and Cable Reference</h1>
+<p>The connector and the cable are the parts of an RF system that people notice last and blame first. A measurement is only as good as the path that carries the signal to the instrument, and that path almost always passes through a coaxial connector and a length of coax. This appendix collects the practical reference material: which connector to reach for at a given frequency, what each one is good at, and how cable choice shapes the loss you have to account for.</p>
+<p>Two ideas run through everything here. First, the upper frequency limit of a connector is set by its physics, mainly the diameter of the air-filled coaxial region, because smaller geometry pushes the onset of unwanted higher-order modes upward. Second, every interface and every meter of cable costs you signal, and that loss rises with frequency. Plan for both before you connect anything.</p>
+<h2 id="common-rf-connectors">E.1 Common RF Connectors</h2>
+<p>The table below summarizes the connectors you will meet most often on the bench and in the field. Frequency ranges are typical industry figures for the standard grade of each connector. Precision and metrology-grade versions of some types reach higher. Treat these as planning numbers, not guarantees, and check the manufacturer rating of the specific part you hold.</p>
+<p class="table-title"><strong>Table E.1</strong> Common RF coaxial connectors and their typical use.</p>
+<table>
+<thead>
+<tr><th>Connector</th><th>Typical frequency range</th><th>Coupling</th><th>Common impedance</th><th>Typical use</th></tr>
+</thead>
+<tbody>
+<tr><td>BNC</td><td>DC to about 4 GHz</td><td>Bayonet</td><td>50 and 75 ohm</td><td>Lab instruments, video, fast connect/disconnect, lower-frequency test</td></tr>
+<tr><td>TNC</td><td>DC to about 11 GHz</td><td>Threaded</td><td>50 ohm</td><td>Threaded BNC successor for vibration-prone and higher-frequency use</td></tr>
+<tr><td>N</td><td>DC to about 11 GHz (18 GHz precision)</td><td>Threaded</td><td>50 and 75 ohm</td><td>Rugged general-purpose RF, base stations, field test, antennas</td></tr>
+<tr><td>SMA</td><td>DC to about 18 GHz</td><td>Threaded</td><td>50 ohm</td><td>The workhorse small connector for modules, cables, and instruments</td></tr>
+<tr><td>3.5 mm</td><td>DC to about 26.5 GHz</td><td>Threaded</td><td>50 ohm</td><td>Precision metrology version of SMA, mates with SMA and 2.92 mm</td></tr>
+<tr><td>2.92 mm (K)</td><td>DC to about 40 GHz</td><td>Threaded</td><td>50 ohm</td><td>Microwave test, mates with SMA and 3.5 mm at the lower rating</td></tr>
+<tr><td>2.4 mm</td><td>DC to about 50 GHz</td><td>Threaded</td><td>50 ohm</td><td>mmWave test, mates with 1.85 mm, not with SMA family</td></tr>
+<tr><td>1.85 mm (V)</td><td>DC to about 65 GHz</td><td>Threaded</td><td>50 ohm</td><td>mmWave metrology, mates with 2.4 mm</td></tr>
+<tr><td>1.0 mm</td><td>DC to about 110 GHz</td><td>Threaded</td><td>50 ohm</td><td>Highest-frequency coaxial metrology, fragile and costly</td></tr>
+<tr><td>SMP / SMPM</td><td>DC to about 40 / 65 GHz</td><td>Snap-on (push)</td><td>50 ohm</td><td>Board-to-board and blind-mate inside dense assemblies</td></tr>
+<tr><td>MCX / MMCX</td><td>DC to about 6 GHz</td><td>Snap-on (push)</td><td>50 ohm</td><td>Miniature snap-on for tight consumer and embedded designs</td></tr>
+<tr><td>7/16 DIN</td><td>DC to about 7.5 GHz</td><td>Threaded</td><td>50 ohm</td><td>High-power cellular infrastructure, low passive intermodulation</td></tr>
+</tbody>
+</table>
+<p>A few notes that the table cannot hold:</p>
+<p><strong>Threaded versus push-on.</strong> Threaded couplings (SMA, N, TNC, and the precision millimeter types) give repeatable, low-reflection connections when torqued correctly, which is why they dominate test and instrumentation. Bayonet (BNC) and snap-on (SMP, MCX) couplings trade a little repeatability for speed and are common where connections are made and broken often.</p>
+<p><strong>Sex and polarity.</strong> Most types come in male and female, and several have reverse-polarity variants (RP-SMA is common on consumer Wi-Fi gear) created for regulatory reasons rather than performance. Reverse polarity moves the center pin, not the threads, so the connectors still mate mechanically while refusing standard antennas.</p>
+<p><strong>The 50 ohm and 75 ohm trap.</strong> BNC and N connectors exist in both impedances, and they look nearly identical. A 75 ohm part has a smaller or absent dielectric collar and a thinner center pin. Mating a 50 ohm plug into a 75 ohm jack can damage the jack contact and will spoil the match. Keep the two families separated and labeled.</p>
+<p><strong>Torque matters.</strong> SMA and the precision types are specified to a torque value, and a calibrated torque wrench is the difference between a clean S-parameter sweep and a noisy one. Hand-tight is fine for a quick continuity check and wrong for a real measurement.</p>
+<h2 id="reading-the-frequency-limits">E.2 Reading the Frequency Limits</h2>
+<p>The pattern in the table is not arbitrary. The smaller the air dielectric inside the connector, the higher the frequency it supports before the first non-coaxial mode can propagate and corrupt the measurement. That is why a 2.92 mm connector outperforms an SMA that it can physically mate with, and why the 1.85 mm and 1.0 mm types exist at all. As you climb in frequency you also climb in mechanical fragility and cost. Pick the lowest-frequency connector that comfortably covers your band, because it will be cheaper, more rugged, and more forgiving.</p>
+<p>Mode compatibility across the small precision types is a genuine convenience. SMA, 3.5 mm, and 2.92 mm share the same outer thread and can be mated to one another, although the assembly performs only to the lowest-rated member of the pair. The 2.4 mm and 1.85 mm family mate with each other but not with the SMA group, which prevents an expensive 1.85 mm interface from being ruined by a loose SMA pin.</p>
+<h2 id="coaxial-cable-types-and-loss">E.3 Coaxial Cable Types and Loss</h2>
+<p>Coaxial cable carries the signal between connectors, and its job is to do so with as little loss and as little reflection as possible. Loss in coax comes from two sources: the conductors, which dissipate energy as heat and dominate at lower frequencies, and the dielectric, which absorbs energy and matters more as frequency rises. The combined attenuation always increases with frequency, which is why a cable that looks lossless at 100 MHz can swallow several decibels per meter at 40 GHz.</p>
+<p>Three properties separate one cable from another:</p>
+<p><strong>Conductor and shield construction.</strong> Solid center conductors and solid copper shields give the lowest loss and the best shielding but bend poorly. Stranded centers and braided shields flex easily and cost less, at the price of higher loss and looser shielding. Many lab cables use a double or triple braid, sometimes with a foil layer, to suppress leakage.</p>
+<p><strong>Dielectric.</strong> Solid PTFE is stable and rugged. Foamed or air-spaced dielectrics lower loss by replacing some of the plastic with air, which is why low-loss cables feel light for their diameter. The dielectric also sets the velocity factor, the fraction of the speed of light at which signals travel in the cable, which matters for any time-domain or phase measurement.</p>
+<p><strong>Diameter.</strong> Larger cables have lower loss because the conductors have more surface area, but they are stiffer and more expensive. This is the central trade. For a permanent rack run where flexibility does not matter, a thick low-loss cable pays for itself. For a probe lead that gets moved a hundred times a day, a thin flexible cable wins even though it loses more.</p>
+<div class="callout"><p><strong>BNC in Practice - The cable is part of the measurement</strong></p><p>For any measurement that depends on a precise reference plane, network analysis above all, the cable is not an accessory. Phase-stable test cables exist specifically because an ordinary cable changes its electrical length as it flexes, and that change shows up directly in a phase measurement. When repeatability matters, treat cables as calibrated parts of the instrument: keep them, label them, and replace them on a schedule.</p></div>
+<h2 id="practical-rules-of-thumb">E.4 Practical Rules of Thumb</h2>
+<p>A short, opinionated checklist for the bench:</p>
+<ul>
+<li>Match the connector to the band, then stop. Do not pay for 1.85 mm hardware to test a 6 GHz radio.</li>
+<li>Keep adapters to a minimum. Every adapter is another interface, another reflection, and another decibel of uncertainty.</li>
+<li>Torque the precision connectors with a wrench, every time.</li>
+<li>Track loss budgets at the top of your band, where attenuation is worst, not at the bottom where everything looks fine.</li>
+<li>Inspect center pins before mating. A bent or recessed pin is the most common cause of a sudden, mysterious match problem.</li>
+<li>Keep 50 ohm and 75 ohm hardware physically apart.</li>
+</ul>
+<p>Get the path right and the instrument can do its job. Get it wrong and no amount of analyzer dynamic range will save the measurement.</p>
+<h2 id="references">References</h2>
+<p>[1] IEEE 287, "Standard for Precision Coaxial Connectors (DC to 110 GHz)," for precision connector definitions and reference-plane practice. Verify current revision before publication.</p>
+<p>[2] MIL-STD-348, "Interface Standard for Radio Frequency Connectors," for military connector interface dimensions. Verify current revision before publication.</p>
+<p>[3] Connector manufacturer datasheets for the specific frequency, VSWR, and torque ratings of any part used. Verify against current datasheet before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-D-instrument-selection.html">&larr; App. D: Instruments</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="appendix-F-standards-bodies.html">App. F: Standards &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

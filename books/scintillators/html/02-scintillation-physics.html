@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>02-scintillation-physics</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="chapter-2---scintillation-physics-from-photon-to-count">2. Scintillation Physics: From Photon to Count</h1>
+<p>A scintillation detector converts the energy lost by ionizing radiation into pulses of light, then converts the light into an electrical signal that can be counted, timestamped, or histogrammed. This chapter walks through the physics of that conversion, end to end. The reader new to the field should expect to come back to this chapter multiple times as later chapters refer back to it.</p>
+<h2 id="general-principle">2.1 General Principle</h2>
+<p>In most applications the ionizing radiation arrives as X-rays, gamma rays, alpha particles, or beta particles, with energies from a few keV up to several MeV. The radiation enters the scintillator, deposits energy through one of several interaction mechanisms (Section 2.2), and a fraction of that deposited energy emerges as scintillation photons in the visible or near-ultraviolet range.</p>
+<p>The scintillation photons travel through the bulk of the crystal to the photodetector. The photodetector, traditionally a photomultiplier tube (PMT) but increasingly a silicon photomultiplier (SiPM), converts photons to photoelectrons at its photocathode (or microcell) and amplifies them to produce a measurable electrical pulse.</p>
+<p>The amplitude of that pulse is proportional to the energy deposited by the original radiation event, because the number of scintillation photons produced is proportional to the deposited energy and the photodetector's response is linear in photon count over its operating range. By measuring pulse amplitude over many events, the detector builds up a pulse-height spectrum, which is the energy spectrum of the incoming radiation convolved with the detector's response function.</p>
+<p>Two design decisions follow immediately from this principle.</p>
+<p><strong>Crystal volume sets detection efficiency.</strong> A larger crystal stops more radiation. For penetrating gamma rays, large means a few centimeters thick of high-density material. For weakly penetrating alpha particles, large means a thin layer with maximum surface area. The well counter, in which the source sits inside a cylindrical hole drilled into the scintillator, achieves nearly 4-pi solid angle and is the geometry of choice for low-activity sample counting.</p>
+<p><strong>Crystal thickness can be tuned for selective energy response.</strong> A thin crystal (1 mm or less) has good sensitivity to low-energy X-rays and is nearly transparent to higher-energy gamma rays. A thick crystal (several centimeters) is the opposite. This is exploited in dual-mode detectors that use a thin front crystal and a thicker back crystal to separate energy bands.</p>
+<h2 id="interactions-in-scintillation-materials">2.2 Interactions in Scintillation Materials</h2>
+<p>Three interaction mechanisms dominate gamma-ray and X-ray interactions with the scintillator.</p>
+<p><strong>Photoelectric effect.</strong> The photon transfers all of its energy to a bound atomic electron, which is ejected from the atom. The cross section for the photoelectric effect scales roughly as Z^4 to Z^5 of the absorber and falls off rapidly with photon energy above about 100 keV. For low-energy gamma and X-rays, in materials with high atomic number, photoelectric absorption is the dominant interaction. This is why high-Z scintillators (BGO, LYSO, LSO, GAGG) are preferred for gamma spectroscopy at energies up to a few hundred keV.</p>
+<p><strong>Compton effect.</strong> The photon scatters off a quasi-free electron, transferring part of its energy and changing direction. The cross section is approximately proportional to Z and varies more slowly with energy. At energies between roughly 100 keV and a few MeV, Compton scattering is the dominant interaction in most scintillator materials. A Compton interaction in the crystal produces only a partial absorption of the photon energy unless the scattered photon undergoes further interactions before escaping.</p>
+<p><strong>Pair production.</strong> Above 1.022 MeV (twice the electron rest mass), a photon interacting with the strong electric field near a nucleus can convert into an electron-positron pair. The cross section grows roughly as Z^2 and rises rapidly above the threshold. The positron subsequently annihilates with an electron, producing two 511 keV photons that may or may not be absorbed in the crystal. In the resulting pulse height spectrum, this gives rise to single-escape and double-escape peaks.</p>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.2_Figure1.jpeg" alt="Dominant gamma interaction regions as a function of absorber Z and photon energy." />
+<figcaption><span class="fig-num">Figure 2.1</span> The dominant gamma-interaction mechanism as a function of absorber atomic number and photon energy. Photoelectric absorption dominates at low energy and high Z, Compton scattering across the middle band, and pair production above 1.022 MeV.</figcaption>
+</figure>
+<p>In a real scintillation detector all three mechanisms operate simultaneously, with their relative weights depending on photon energy and the crystal Z. Multiple interactions can chain: a Compton scatter followed by a photoelectric absorption is the most common path to full energy deposition for mid-energy gammas. Bremsstrahlung from energetic electrons, characteristic X-ray emission following photoelectric absorption, and escape of secondary radiation all add structure to the pulse height spectrum.</p>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.2_Figure2.jpeg" alt="Interaction processes inside a NaI(Tl) detector including Compton scatter, Bremsstrahlung, annihilation, and escape radiation." />
+<figcaption><span class="fig-num">Figure 2.2</span> The chain of processes inside a real NaI(Tl) detector. Compton scattering, Bremsstrahlung, annihilation radiation, characteristic X-ray escape, and lead-shield interactions all add structure to the measured spectrum.</figcaption>
+</figure>
+<p><strong>Detection efficiency</strong> depends on size, thickness, and density. The total counting efficiency is the probability that an incoming photon undergoes any interaction in the crystal and is therefore counted. The photopeak efficiency, which matters for spectroscopy, is the probability that an incoming photon deposits all of its energy in the crystal and produces a count in the photopeak; this scales approximately as Z^4 to Z^5 of the scintillator material at energies below about 100 keV.</p>
+<p>For charged particles the picture is different. Electrons can backscatter off a high-Z material without depositing significant energy, so beta particles are best detected in low-Z scintillators (plastic, CaF2:Eu, YAP:Ce). The backscatter fraction in NaI(Tl) can be as high as 30 percent. Window material and thickness also matter: an aluminized mylar window of 2 to 100 microns is the standard solution for alpha and beta detectors, with the choice driven by the energy of the particles to be detected.</p>
+<blockquote>
+<p><strong>Going Deeper - Photoelectric mass attenuation coefficient</strong></p>
+<p>The photoelectric mass attenuation coefficient mu_pe / rho can be written as</p>
+<p>mu_pe / rho = K * Z^n / E^m</p>
+<p>where K is a material-dependent constant, Z is the effective atomic number of the absorber, E is the photon energy, n is between 4 and 5 depending on energy and absorber, and m is between 3 and 3.5. This relationship is why NaI (Z_eff approximately 50) is more efficient than plastic (Z_eff approximately 6) for gamma detection at the same volume. It is also why lead shielding works: at gamma energies below 100 keV, lead's mass attenuation coefficient exceeds that of nearly any other accessible material.</p>
+</blockquote>
+<h2 id="scintillator-response-to-gamma-rays">2.3 Scintillator Response to Gamma Rays</h2>
+<h3 id="pulse-height-spectroscopy">2.3.1 Pulse Height Spectroscopy</h3>
+<!-- REPAIR FLAG (2026-06-06): the previous Figure 2.2 here used img-012-023.png, which is
+     actually a mechanical drawing of a plastic scintillator slab, not a pulse height spectrum.
+     It has been replaced by the correct curated figures below. -->
+<p>Because scintillation light is proportional to deposited energy, the standard way to characterize an unknown radiation source is to histogram measured pulse heights. The classical detector chain for this measurement is shown schematically as: scintillation detector, voltage divider (VD), preamplifier, main amplifier (or shaping amplifier), multichannel analyzer (MCA), with a high-voltage supply providing the PMT bias.</p>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure1.jpeg" alt="Block diagram of the classical detector chain: scintillation detector, voltage divider, preamplifier, main amplifier, MCA, and HV supply." />
+<figcaption><span class="fig-num">Figure 2.3</span> The classical detector chain. The scintillation detector feeds a voltage divider (VD), preamplifier, and main amplifier into a multichannel analyzer (MCA), with a high-voltage supply biasing the PMT.</figcaption>
+</figure>
+<p>In modern instruments the analog amplifier and analog MCA have largely been replaced by a digital pulse processor that digitizes the preamplifier output directly and performs digital filtering, baseline restoration, pile-up rejection, and pulse-height analysis in firmware. The classical analog chain is still used in education and in legacy installations and still has performance advantages for the highest count rate applications. Both architectures are covered in Chapter 13.</p>
+<p>A 14-pin scintillation detector mated to a "digital base" (a digital pulse processor in a PMT-base form factor) is now a common configuration for compact gamma spectrometers operated through a USB or Ethernet link. The architecture has displaced separate-MCA configurations for portable instruments.</p>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure2.jpeg" alt="A compact USB-connected digital-base scintillation detector." />
+<figcaption><span class="fig-num">Figure 2.4</span> A compact gamma spectrometer built on a digital base. A single USB link carries power and data, replacing the separate-MCA rack of the classical chain.</figcaption>
+</figure>
+<figure>
+<img src="../figures/fig-02-01-cs137-spectrum.svg" alt="" /><figcaption><span class="fig-num">Figure 2.5</span> Cs-137 pulse height spectrum in a 76 mm by 76 mm NaI(Tl) detector showing the photopeak, Compton edge, backscatter peak, and Ba K X-rays.</figcaption>
+</figure>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.2_Figure3.jpeg" alt="A measured Cs-137 pulse height spectrum with photopeak, Compton edge, backscatter peak, and Ba X-rays labeled." />
+<figcaption><span class="fig-num">Figure 2.6</span> A measured Cs-137 pulse height spectrum showing the photopeak, Compton edge, backscatter peak, and Ba X-rays.</figcaption>
+</figure>
+<h3 id="energy-resolution-and-proportionality">2.3.2 Energy Resolution and Proportionality</h3>
+<!-- REPAIR FLAG (2026-06-06): the previous Figure 2.3 here used img-019-029.jpg, which is
+     actually a Cs-137 + Radium-227 spectrum in a CeBr3 detector, not an energy-resolution
+     comparison. It has been replaced by the correct non-proportionality charts below. -->
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure4.jpeg" alt="Relative light yield per unit electron energy for alkali-halide scintillators (CsI:Na, NaI:Tl, CsI:Tl)." />
+<figcaption><span class="fig-num">Figure 2.7</span> Non-proportionality of the alkali halides. Relative light yield per unit electron energy peaks near 10 keV and falls off, which is the dominant resolution limiter above about 100 keV.</figcaption>
+</figure>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure3.jpeg" alt="Relative light yield per unit electron energy for non-alkali-halide scintillators (CaF2, LSO, YAP, BGO, GSO, BaF2, LaCl3)." />
+<figcaption><span class="fig-num">Figure 2.8</span> Non-proportionality of non-alkali-halide scintillators. The Ce-doped and other materials are markedly flatter than the alkali halides, which is part of why they reach better energy resolution.</figcaption>
+</figure>
+
+<p>The ability of a gamma spectrometer to distinguish two photons of nearly equal energy is its energy resolution, defined as the full width at half maximum (FWHM) of the photopeak divided by the peak centroid energy, expressed as a percentage. For NaI(Tl) at 662 keV (Cs-137), a typical energy resolution is 7.0 percent FWHM. At 5.9 keV (Mn K-alpha from Fe-55), a typical NaI(Tl) X-ray detector achieves 40 percent FWHM. At low energies the surface treatment of the crystal strongly influences resolution; at high energies the bulk light yield and proportionality dominate.</p>
+<p>Three contributions limit scintillation detector energy resolution:</p>
+<ul>
+<li><strong>Statistical fluctuations</strong> in the number of detected scintillation photons per event. At low energies these fluctuations dominate, and resolution scales roughly as 1/sqrt(E).</li>
+<li><strong>Non-proportionality</strong> of the scintillator's light yield as a function of energy deposited per electron. This is a material property and is the dominant resolution limiter for the alkali halides at energies above about 100 keV.</li>
+<li><strong>Inhomogeneities</strong> in the scintillator's light output across its volume and in the photodetector's response across its photocathode or microcell array.</li>
+</ul>
+<p>A useful working form of the resolution sum is</p>
+<p>R^2 = R_p^2 + R_s^2 + R_i^2</p>
+<p>where R_p is the proportionality contribution, R_s is the statistical contribution, and R_i is the inhomogeneity contribution.</p>
+<p>Light yield non-proportionality varies dramatically across materials. Tables 2.1 and 2.2 below give relative electron-energy responses for representative scintillators, normalized to the response at 500 keV. The data is from the Mengesha et al. characterization study [1] and has been corroborated by subsequent measurements.</p>
+<p class="table-title"><strong>Table 2.1 - Non-alkali halide electron responses (relative to 500 keV)</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Electron energy (keV)</th>
+<th>CaF2</th>
+<th>LSO</th>
+<th>YAP</th>
+<th>BGO</th>
+<th>GSO</th>
+<th>BaF2</th>
+<th>LaCl3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.75</td>
+<td>0.48</td>
+<td>0.72</td>
+<td>0.78</td>
+<td>0.72</td>
+<td>0.82</td>
+<td>0.72</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0.82</td>
+<td>0.58</td>
+<td>0.78</td>
+<td>0.85</td>
+<td>0.80</td>
+<td>0.88</td>
+<td>0.80</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0.92</td>
+<td>0.75</td>
+<td>0.88</td>
+<td>0.95</td>
+<td>0.90</td>
+<td>0.95</td>
+<td>0.92</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>0.98</td>
+<td>0.85</td>
+<td>0.95</td>
+<td>1.00</td>
+<td>0.98</td>
+<td>1.00</td>
+<td>0.98</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>1.02</td>
+<td>0.92</td>
+<td>1.00</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>1.02</td>
+<td>0.98</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>1.02</td>
+<td>1.00</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+</tr>
+<tr class="even">
+<td>200</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+<td>1.02</td>
+</tr>
+<tr class="odd">
+<td>500</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<td>1000</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<p class="table-title"><strong>Table 2.2 - Alkali halide electron responses (relative to 500 keV)</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Electron energy (keV)</th>
+<th>CsI:Na</th>
+<th>NaI:Tl</th>
+<th>CsI:Tl</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1.10</td>
+<td>1.10</td>
+<td>1.10</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1.15</td>
+<td>1.12</td>
+<td>1.15</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1.30</td>
+<td>1.18</td>
+<td>1.22</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1.40</td>
+<td>1.25</td>
+<td>1.25</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>1.32</td>
+<td>1.22</td>
+<td>1.20</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>1.18</td>
+<td>1.15</td>
+<td>1.12</td>
+</tr>
+<tr class="odd">
+<td>100</td>
+<td>1.10</td>
+<td>1.08</td>
+<td>1.05</td>
+</tr>
+<tr class="even">
+<td>200</td>
+<td>1.05</td>
+<td>1.02</td>
+<td>1.02</td>
+</tr>
+<tr class="odd">
+<td>500</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+<tr class="even">
+<td>1000</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<p>The qualitative pattern: alkali halides over-respond at low electron energies (the so-called "halide hump"), while non-alkali halides under-respond at low energies (light yield falls below the high-energy value). This non-proportionality, convolved with the distribution of secondary electron energies produced in a gamma interaction, is what limits energy resolution at high gamma energies.</p>
+<p>The proportional scintillators (LaBr3:Ce, CeBr3, SrI2:Eu, LBC) achieve energy resolution of 3 to 4 percent FWHM at 662 keV, substantially better than NaI(Tl), precisely because their non-proportionality curves are flatter. Cs2HfCl6, the newest entrant to this class, has been reported at sub-1 percent at 662 keV in research-grade samples [2][3], with commercial samples in the 2 to 3 percent range as crystal growth scales up. Chapter 3 and Appendix A give the full materials picture.</p>
+<h3 id="time-resolution">2.3.3 Time Resolution</h3>
+<!-- REPAIR FLAG (2026-06-06): the previous Figure 2.4 here used img-016-024.jpg, captioned
+     "Decay time signatures" but the image is actually an emission-intensity / quantum-efficiency
+     versus wavelength chart (CsI emission with window QE curves), a mismatch. It has been
+     removed. No curated decay-time figure exists in the repair set. David: source a correct
+     decay-time / pulse-shape figure for this section if one is desired. -->
+<p>The time resolution of a scintillation detector is its ability to localize an absorption event in time. It is set by the rise time and decay time of the scintillation light pulse, the transit-time spread (TTS) of the photodetector, and the timing jitter of the electronics.</p>
+<p>Best time resolution is obtained when the light pulse is short and intense. Small NaI(Tl) detectors achieve a few nanoseconds for Co-60 (1.2 MeV). Organic scintillators (plastic, liquid) and BaF2 achieve much better. BaF2 has a sub-nanosecond fast component and is the fastest known inorganic scintillator, with detector time resolutions of a few hundred picoseconds. CeBr3 and LaBr3:Ce achieve comparable performance with much higher light yield. For time-of-flight positron emission tomography (TOF-PET) the dominant materials are LSO:Ce and LYSO:Ce, which combine high density (essential for stopping 511 keV annihilation photons) with sub-40 ps coincidence timing in the latest detector modules [4].</p>
+<h3 id="peak-to-valley-ratio">2.3.4 Peak-to-Valley Ratio</h3>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure5.jpeg" alt="A measured spectrum with the photopeak and the adjacent valley marked for a peak-to-valley measurement." />
+<figcaption><span class="fig-num">Figure 2.9</span> A measured spectrum with the photopeak and the adjacent valley marked. The peak-to-valley ratio is a calibration-independent quality check.</figcaption>
+</figure>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure6.jpeg" alt="A second measured spectrum on a log scale with peak and valley marked." />
+<figcaption><span class="fig-num">Figure 2.10</span> The same peak-to-valley measurement on a logarithmic count axis, which makes the valley depth easier to read.</figcaption>
+</figure>
+<p>A useful detector quality check that does not depend on absolute calibration is the peak-to-valley (P/V) ratio in a measured spectrum. Either the ratio between two adjacent gamma peaks, or the ratio between a low-energy peak and the noise floor, can be used. A 76 mm by 76 mm NaI(Tl) crystal with 7 percent FWHM at 662 keV typically shows a P/V of 10:1 between the photopeak and the Compton valley. A high-quality NaI(Tl) X-ray detector can show P/V of 40:1 at 5.9 keV.</p>
+<h3 id="spectrum-stabilization">2.3.5 Spectrum Stabilization</h3>
+<p>Both light yield and photodetector gain depend on temperature and operating conditions. A spectrum acquired over hours can drift in centroid position by amounts comparable to the energy resolution if no stabilization is applied. PMTs additionally exhibit hysteresis effects after large count-rate or voltage changes. SiPMs are immune to hysteresis but have a strong gain dependence on temperature that requires bias compensation.</p>
+<figure>
+<img src="../figures/curated/Ch2_Sec2.3_Figure7.jpeg" alt="A NaI(Tl) spectrum showing the 662 keV gamma peak and an Am-241 pulser peak near 3 MeV used as a stabilization reference." />
+<figcaption><span class="fig-num">Figure 2.11</span> An Am-241 pulser spectrum in a NaI(Tl) detector. The pulser peak near 3 MeV gamma-equivalent sits clear of the 662 keV line and is tracked continuously to correct gain drift.</figcaption>
+</figure>
+<p>The classical solution is the <strong>Am-pulser</strong>: a small Am-241 alpha source mounted inside the detector housing. Alpha particles from the source produce scintillations in the crystal at a known average energy (around 3 MeV gamma-equivalent in NaI(Tl)) and a defined count rate (50 to 200 counts per second is typical). The pulser peak position is monitored continuously and used as a reference to correct gain drift in real time. This works well across the operating temperature range of the detector, although second-order corrections (typically a thermistor reading the housing temperature) may be needed at the extremes.</p>
+<p>LED-based stabilization is the alternative: a pulsed LED inside the housing injects calibrated light into the photodetector, providing a stable reference independent of the crystal's response. This separates photodetector drift from crystal-temperature effects, which is useful in some applications and a complication in others.</p>
+<p>A third option, used in many handheld instruments, is electronic stabilization on a known background line such as K-40 at 1460 keV or Tl-208 at 2614 keV (both ubiquitous in natural background). This requires no internal source and no LED but does require continuous spectral analysis in firmware.</p>
+<h2 id="charged-particle-detection">2.4 Charged-Particle Detection</h2>
+<p>Charged particles, electrons, alphas, beta particles, muons, lose energy by Coulomb interaction with atomic electrons in the surrounding matter. The Bethe-Bloch formula describes the energy loss per unit path length:</p>
+<p>-(dE/dx) = K * z^2 * Z/A * (1/beta^2) * [ ln(2 m_e c^2 beta^2 gamma^2 T_max / I^2) - 2 beta^2 - delta(beta) ]</p>
+<p>where K is a constant, z is the projectile charge, Z and A are the absorber atomic number and mass number, beta and gamma are the projectile relativistic factors, T_max is the maximum energy transfer in a single collision, I is the mean excitation energy of the absorber, and delta is a density correction.</p>
+<p>For practical scintillator design two regimes matter.</p>
+<h3 id="weakly-penetrating-particles">2.4.1 Weakly Penetrating Particles</h3>
+<p>Low-energy electrons, protons, alphas, and heavier ions stop within micrometers to millimeters of material. The energy loss per unit path length is high. The conversion of particle energy to scintillation light, however, is reduced compared to gamma rays because of quenching at high ionization density. The alpha-to-gamma response ratio (the alpha quenching factor) ranges from about 0.1 in organic scintillators to about 0.8 in some alkali halides.</p>
+<p>For these particles the entrance window matters. Aluminized mylar is the standard, with thicknesses from 2 to 100 microns. A 2-micron double-aluminized mylar window is not 100 percent light-tight and may need shielding from ambient light in low-noise applications.</p>
+<blockquote>
+<p><strong>Going Deeper - Birks formula and ionization quenching</strong></p>
+<p>The reduced light yield per unit energy at high ionization density is captured empirically by Birks's formula:</p>
+<p>dL/dx = S * (dE/dx) / (1 + kB * (dE/dx))</p>
+<p>where dL/dx is the light produced per unit path length, S is the absolute scintillation efficiency at low ionization density, dE/dx is the local energy loss per unit path length, and kB is Birks's constant for the material (units of g/(cm^2 MeV) or similar). For alpha particles dE/dx is large and kB * (dE/dx) &gt;&gt; 1, so dL/dx approaches S / kB, which is independent of dE/dx. This is why alpha-induced light yield in NaI(Tl) saturates with alpha energy and is much lower than gamma-induced yield at the same total energy. Measurements of kB are reported routinely in SCINT and IEEE NSS proceedings; Birks's constant for plastic scintillators is around 0.01 g/(cm^2 MeV); for NaI(Tl) it is around 0.005 g/(cm^2 MeV).</p>
+</blockquote>
+<h3 id="minimum-ionizing-particles">2.4.2 Minimum Ionizing Particles</h3>
+<!-- REPAIR FLAG (2026-06-06): curated asset Ch2_Sec2.4.2_Figure1.jpeg was NOT placed.
+     The file is a blank/partial crop (a few vertical lines on white), not a usable figure.
+     David: source a correct minimum-ionizing-particle figure if one is desired. -->
+<p>Cosmic muons and high-energy electrons fall in this group. Energy loss per unit path length is low and roughly constant over a wide energy range; a minimum-ionizing particle in a typical plastic scintillator deposits about 2 MeV per cm. Window material and thickness do not matter much because the particle passes through both window and scintillator with negligible energy loss. Applications include calorimetry, electron spectroscopy, cosmic-ray veto in low-background experiments, and muon tomography for nuclear cargo inspection.</p>
+<p>For minimum-ionizing particle detection, the figure of merit is light output per centimeter of scintillator crossed times solid angle subtended at the photodetector. This is why long, thin plastic scintillator bars wrapped in reflector and read out at both ends are the standard form factor.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Calibrate first, then trust the spectrum</strong></p>
+<p>A new scintillation detector arriving on the bench gets a Cs-137 source held to its window before it is asked to do anything else. The 662 keV photopeak appears, the resolution is measured, the gain is set so the photopeak lands on a known channel, and only then does any application work begin. Skipping this five-minute step has cost more than one engineer a long afternoon of debugging. The same step belongs in the daily startup routine of any deployed instrument. A spectrum without a known reference line is a spectrum that cannot be trusted.</p>
+</div>
+<h2 id="what-this-chapter-built-toward">2.5 What This Chapter Built Toward</h2>
+<p>The pulse height spectrum, with its photopeak, Compton edge, backscatter peak, and X-ray escape peaks, is the working artifact of the scintillation detector. Every later chapter assumes a reader who can look at one and know what is happening. The materials in Chapter 3 are sorted by what they do to that spectrum: which sharpen the photopeak, which extend the energy range, which add a neutron peak above the gamma background, which trade light yield for speed. Chapters 4 through 7 are the physics that distorts the spectrum: what neutrons add, what damage subtracts, where the emission goes, what temperature does to it. The rest of the book is the engineering of getting the spectrum from the source to the screen with the smallest possible loss along the way.</p>
+<h2 id="chapter-2-quiz">Chapter 2 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page. Pick one answer per question, then check your score. Auto-scored, and your answers are saved on this device. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-02-scintillation-physics.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz →</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>The photoelectric cross-section scales approximately as Z to the what power.</li>
+<li>Above what photon energy does pair production become possible.</li>
+<li>List the three contributions to scintillation detector energy resolution.</li>
+<li>What is the standard reference gamma line for reporting scintillator energy resolution.</li>
+<li>An Am-pulser is used inside a scintillation detector for what purpose.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Z to the 4th to 5th power.</li>
+<li>1.022 MeV (twice the electron rest mass).</li>
+<li>Statistical fluctuations in detected photons, non-proportionality of the scintillator, and inhomogeneities in the scintillator and photodetector.</li>
+<li>662 keV from Cs-137.</li>
+<li>Spectrum stabilization. The Am-241 alpha source produces a known-position pulser peak that the gain-correction algorithm tracks to compensate for temperature drift, count-rate effects, and PMT hysteresis.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] W. Mengesha, T. D. Taulbee, B. D. Rooney, and J. D. Valentine, "Light yield nonproportionality of CsI(Tl), CsI(Na), and YAP," <em>IEEE Trans. Nucl. Sci.</em>, vol. 45, no. 3, pp. 456-461, 1998.</p>
+<p>[2] M. Yoshikawa et al., "Cs2HfCl6 single crystal growth and scintillation properties," in <em>Proc. SCINT 2024</em>, Milan, 2024.</p>
+<p>[3] B. P. Kang et al., "Crystal growth and scintillation properties of Cs2HfCl6," <em>J. Cryst. Growth</em>, vol. 593, p. 126773, 2022.</p>
+<p>[4] S. Vandenberghe et al., "Recent developments in time-of-flight PET," <em>EJNMMI Phys.</em>, vol. 7, p. 35, 20</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01-why-now.html">&larr; 1. Why Now</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="03-materials.html">3. Materials &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

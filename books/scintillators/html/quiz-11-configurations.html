@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 11 Quiz: Detector Configurations</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 11 · Quiz</p>
+      <h1>Detector Configurations</h1>
+      <p class="sub">Five multiple-choice questions. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~10 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Auto-scored</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="11-configurations.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="12-examples.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it with a pen too.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "scintillator",
+    chapterKey: "11",
+    title: "Chapter 11 Quiz: Detector Configurations",
+    questions: [
+      {
+        q: "Why does a hygroscopic scintillator like NaI(Tl) require a hermetically sealed housing?",
+        options: [
+          "It absorbs atmospheric water vapor, which fogs the surface and degrades optical transmission",
+          "It off-gasses and must be vented",
+          "It is mechanically fragile and needs a stiff shell",
+          "It emits radiation that must be contained"
+        ],
+        answer: 0,
+        explain: "NaI(Tl) fogs within weeks at normal humidity, so the seal must be leak-tight for the detector's service life."
+      },
+      {
+        q: "What is the standard entrance window material for low-energy X-ray detectors, and why?",
+        options: [
+          "Beryllium, because its low Z and density give the lowest photoelectric absorption below about 10 keV",
+          "Lead, because it is dense",
+          "Stainless steel, because it is durable",
+          "Quartz, because it transmits UV"
+        ],
+        answer: 0,
+        explain: "Beryllium (Z of 4, 1.85 g/cc) lets low-energy X-rays through where heavier windows would absorb them."
+      },
+      {
+        q: "What is an Am-pulser and what does it do?",
+        options: [
+          "An internal Am-241 alpha source whose fixed peak serves as a real-time gain reference for spectrum stabilization",
+          "An external pulse generator used to test cabling",
+          "A high-voltage supply for the PMT",
+          "A neutron source for calibration"
+        ],
+        answer: 0,
+        explain: "Alpha particles from the internal Am-241 produce a known-position peak the stabilization algorithm tracks."
+      },
+      {
+        q: "Which is a source of intrinsic background in a standard scintillation detector?",
+        options: [
+          "K-40 in the PMT glass",
+          "The detector's own electronics clock",
+          "The operator's body heat",
+          "Stray light through the housing seams"
+        ],
+        answer: 0,
+        explain: "Intrinsic background sources include K-40 in PMT glass, U and Th in housings, cosmic secondaries, and radon."
+      },
+      {
+        q: "Which is one of the two main reasons SiPM-coupled assemblies are replacing PMT-coupled assemblies in handheld instruments?",
+        options: [
+          "The SiPM needs no high voltage, operating at 25 to 50 V instead of 700 to 1500 V",
+          "The SiPM has far higher gain than any PMT",
+          "The SiPM eliminates the need for a scintillator",
+          "The SiPM works only at cryogenic temperatures"
+        ],
+        answer: 0,
+        explain: "Small form factor and no high-voltage requirement, plus magnetic tolerance and CMOS integration, drive the shift."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

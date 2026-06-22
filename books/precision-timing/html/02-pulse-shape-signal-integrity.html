@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>2. Pulse Shape &amp; Signal Integrity</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="pulse-shape-and-signal-integrity">2. Pulse Shape &amp; Signal Integrity</h1>
+
+<p class="lead">Chapter 1 introduced rise time and overshoot as two of the properties a pulse generator must control. This chapter treats the whole subject in depth, because pulse shape is where a timing specification becomes a real event in the lab. A digital delay or pulse generator does one job: it places voltage edges in time. Every downstream event, the trigger that fires a laser, the gate that opens a detector, the clock that strobes a sample-and-hold, is referenced to an edge crossing a threshold. If that edge is slow, noisy, or unstable, the moment of crossing moves, and the timing accuracy you paid for leaks away. Two ideas run through everything below. Fast clean edges preserve timing. And the cable and the load are part of the instrument: a perfect pulse at the front panel can arrive at the device under test badly degraded if the path is mishandled.</p>
+
+<h2 id="rise-time-and-fall-time-in-depth">2.1 Rise Time and Fall Time in Depth</h2>
+<p>Rise time is the interval an edge takes to climb from a low reference level to a high reference level. Fall time is the same measurement on the trailing transition, from high back to low. Neither is measured between the absolute baseline and the absolute top. The very corners of a real edge are rounded and ill-defined, so the measurement is taken between two percentage points of the full amplitude.</p>
+<p>Two conventions are common, and they do not agree. The 10% to 90% convention is the traditional one, and the one most often quoted on datasheets. It captures the bulk of the transition. The 20% to 80% convention is increasingly used for high-speed work because it stays clear of the rounded corners near the baseline and the top, where overshoot and settling can corrupt the reading. For the same physical edge, the 20-80 number is smaller, roughly 0.6 to 0.7 of the 10-90 value for a simple exponential edge. The consequence is blunt: a rise time spec is meaningless without stating which reference points were used. Comparing a 10-90 figure on one sheet to a 20-80 figure on another is comparing two different measurements of the same thing.</p>
+<figure>
+<img src="../figures/ch02-risetime-1090-2080.svg" alt="A leading edge marked with both 10/90 and 20/80 reference levels." />
+<figcaption><span class="fig-num">Figure 2.1</span> Rise time measured two ways. The same leading edge marked with both the 10/90 and the 20/80 reference levels, showing how the 20-80 interval reads shorter than the 10-90 interval.</figcaption>
+</figure>
+
+<h3 id="the-035-bandwidth-rise-time-rule">The 0.35 bandwidth-rise time rule</h3>
+<p>A fast edge is rich in high-frequency content. The link between the edge and the frequency span needed to carry it is the bandwidth-rise time product:</p>
+<p><strong>Bandwidth (-3 dB) x t_rise (10-90) is approximately 0.35</strong></p>
+<p>The constant of 0.35 comes from the single-pole RC model. For the 20-80 convention the constant is about 0.22, and for a Gaussian-shaped edge it is closer to 0.34. The rule is an estimate, not a law, but it is a useful one. A 1 ns edge implies frequency content out to roughly 350 MHz. That number tells you immediately what bandwidth your cable, your scope, and your load must support to keep the edge intact. Starve any link in that chain of bandwidth and the edge slows down.</p>
+
+<h3 id="cascaded-rise-times-add-in-quadrature">Cascaded rise times add in quadrature</h3>
+<p>The rise time you observe is never the rise time of the source alone. It is the combination of the source, the cable, any fixture, and the measuring instrument. For two cascaded stages that do not interact, the rise times combine as a root-sum-of-squares:</p>
+<p><strong>t_observed is approximately sqrt( t_signal^2 + t_scope^2 )</strong></p>
+<p>This extends to any number of stages, each adding its square to the total. The practical lesson is that to measure a fast edge honestly, your measurement gear must be several times faster than the edge, or you must correct for it. The same rule explains why a fast generator can look slow on the bench: a slow scope, a high-capacitance cable, or a poorly matched fixture each adds in quadrature and can dominate the result. At the silicon level, rise time is set by how fast the output stage charges and discharges stray capacitance, approximated for a single-pole path as t_rise (10-90) is approximately 2.2 x R x C. Lower output capacitance and lower driving impedance both speed the edge.</p>
+<p>Fast edges are not a vanity number. A steeper crossing of any trigger threshold means less voltage noise translates into timing uncertainty, because timing error from amplitude noise is roughly the noise voltage divided by the edge slew rate. This is the direct link between edge speed and jitter. Where the application demands it, BNC offers fast-edge instruments built for exactly this: the Model 765 specifies a rise time under 70 ps, and the femtosecond-class Model 745T family is built for the finest edge placement BNC makes. For the exact figures on any model, see the current datasheet.</p>
+
+<h2 id="overshoot-undershoot-ringing-and-settling-time">2.2 Overshoot, Undershoot, Ringing, and Settling Time</h2>
+<p>A real edge does not stop cleanly at its final level. After a fast transition the voltage can swing past the target and oscillate around it before coming to rest. Chapter 1 introduced overshoot as ringing at the top of the pulse. Here is the full vocabulary, because each term names a distinct fault.</p>
+<p>Overshoot is the amount the leading edge rises above the final top level, usually quoted as a percentage of the pulse amplitude. Undershoot is the symmetric effect: the voltage dips below the final level before recovering, and the term is also used for a falling edge that dips below the baseline. Ringing is the damped oscillation around the final level that follows overshoot, the system resonating after being kicked by a fast edge. Preshoot is a smaller artifact appearing just before the main edge, often a sign of coupling or filtering in the path. Settling time is how long the output takes to enter and stay within a defined error band around the final value, say within 2% of the top. It is the practical measure of when the pulse top is actually usable.</p>
+<figure>
+<img src="../figures/ch02-overshoot-ringing.svg" alt="Zoom on a pulse corner showing overshoot, undershoot, ringing, and the settling band." />
+<figcaption><span class="fig-num">Figure 2.2</span> Aberrations at the leading corner. A zoom on the top-left corner of a pulse showing the overshoot peak above the final level, the undershoot dip below it, the decaying ring, and the settling band the output finally enters.</figcaption>
+</figure>
+<p>Overshoot and ringing come from two sources, and telling them apart is a routine bench diagnosis. Inside the instrument they arise from parasitic inductance and capacitance in the output stage, and from any peaking used to speed the edge. Outside the instrument they arise from impedance mismatch and reflections in the cable and load, the subject of section 2.5. The two often look identical on a scope. The way to tell which is which is to change the cable length or the termination and watch what moves: path-related ringing shifts with the cable, internal ringing does not. Excessive overshoot and slow settling matter because they delay the moment the pulse top is trustworthy, and because ringing near the threshold can cause false or double triggers downstream.</p>
+
+<h2 id="pulse-top-flatness-droop-and-aberrations">2.3 Pulse-Top Flatness, Droop, and Aberrations</h2>
+<p>Between the leading and trailing edges sits the pulse top, the flat region that is supposed to hold a constant level. A clean top is flat and quiet. A degraded one shows characteristic faults. Droop, also called sag or tilt, is a gradual decline of the top level across the width of the pulse. It is typically caused by AC coupling or by capacitors in the signal path that cannot hold charge for the full pulse duration, and it is most visible on long, wide pulses. Top aberrations are the residual ringing, ripple, and settling tails from the leading edge that have not died out by mid-pulse. Rounding is a softened corner where edge meets top, a sign of limited bandwidth. A runt pulse never reaches full amplitude at all, usually a symptom of drive or timing trouble rather than shape alone.</p>
+<figure>
+<img src="../figures/ch02-droop-flatness.svg" alt="Two pulses sharing a baseline, one with a flat top and one drooping." />
+<figcaption><span class="fig-num">Figure 2.3</span> Clean versus drooping pulse top. Two pulses sharing a baseline, one holding a flat plateau across its width, the other sloping downward from leading edge to trailing edge.</figcaption>
+</figure>
+<p>The ideal is easy to picture. The leading edge rises fast, overshoots minimally, settles quickly into a flat plateau that holds its level for the full programmed width, then falls cleanly back to baseline. This matters because any sampling or gating system that opens during the pulse top assumes the top is at a known level. Droop and ripple turn that known level into a moving target, which becomes an amplitude error in whatever measurement the instrument is driving.</p>
+<div class="callout">
+<h4>Example</h4>
+<p>A detector gate is set to integrate charge during a 10 microsecond pulse top. If the top droops 5% across that window, the charge collected late in the gate is weighted differently from the charge collected early. The result is a systematic measurement error that no amount of timing precision can fix, because the fault is in the shape of the top, not the placement of the edges.</p>
+</div>
+
+<h2 id="polarity-amplitude-baseline-and-offset">2.4 Polarity, Amplitude, Baseline, and Offset</h2>
+<p>Polarity describes the direction a pulse moves relative to its resting level. A positive pulse rests at a low baseline, often zero, and steps upward for the duration of the pulse before returning. A negative pulse rests at a higher level and steps downward. A bipolar output can produce both, or a pulse that swings from a negative level to a positive level, and some designs produce a negative excursion immediately following a positive one, a biphasic shape.</p>
+<figure>
+<img src="../figures/ch02-polarity.svg" alt="Three stacked traces showing positive, negative, and bipolar pulses." />
+<figcaption><span class="fig-num">Figure 2.4</span> Positive, negative, and bipolar pulses. Three stacked traces sharing a common baseline axis: a positive pulse stepping up, a negative pulse stepping down, and a bipolar pulse swinging through the baseline.</figcaption>
+</figure>
+<p>Polarity is selectable because downstream devices expect different things. Many logic families and trigger inputs respond to a rising edge. Some detectors, gating circuits, and physics loads expect a negative-going drive. Setting polarity per channel lets one instrument serve a mix of loads without external inverters, which would add their own delay and degrade the edge.</p>
+<p>Three separate controls together define the voltage the load sees. Amplitude is the size of the voltage step from baseline to top. Baseline, sometimes called the low level, is the resting voltage the output holds between pulses. Offset, or bias, shifts the whole pulse, baseline and top together, up or down. Offset is how you place a fixed-amplitude pulse into the voltage window a particular load needs. Polarity sets the direction, baseline sets the resting level, amplitude sets the size of the step, and offset slides the pair to where the load wants them.</p>
+
+<h2 id="termination-impedance-matching-and-the-2x-amplitude-trap">2.5 Termination, Impedance Matching, and the 2x Amplitude Trap</h2>
+<p>At slow edges a cable is just a wire. At fast edges a cable is a transmission line with a characteristic impedance, conventionally 50 ohms, and any impedance mismatch at either end causes reflections that distort the pulse. When a fast edge reaches a point where the impedance changes, part of the energy reflects back toward the source. The size and sign of the reflected wave are set by the reflection coefficient:</p>
+<p><strong>Gamma = (Z_load - Z_0) / (Z_load + Z_0)</strong></p>
+<p>A perfectly matched load, where Z_load equals Z_0, gives Gamma = 0 and no reflection. An open circuit reflects the full wave with the same sign. A short reflects it inverted. A reflected wave travels back up the cable, and if the source is also mismatched it reflects again, bouncing back to the load. Each bounce arrives delayed by the round-trip travel time of the cable. The sum of the original edge and these delayed echoes is the ringing and stair-step distortion seen on a poorly terminated line.</p>
+<figure>
+<img src="../figures/ch02-reflection.svg" alt="A fast edge launched down a cable, its reflected echo, and the summed waveform at the load." />
+<figcaption><span class="fig-num">Figure 2.5</span> Reflection on a mismatched line. A fast edge launched down a cable into an unmatched load, the reflected echo returning after the round-trip delay, and the summed waveform at the load showing stair-step distortion.</figcaption>
+</figure>
+<p>Fast edges make reflections worse. An echo only shows as visible distortion when the round-trip cable delay is comparable to or longer than the edge rise time. A slow edge smears the echoes into itself and hides them. A fast edge is short compared to the cable delay, so each reflection lands as a distinct, visible aberration. This is why a cable that is harmless at 100 ns edges produces severe ringing at sub-nanosecond edges. Two techniques control it. Load, or parallel, termination places a 50 ohm resistor at the far end so the edge is absorbed when it first arrives and no reflection is launched. This gives the cleanest single edge and is the default for high-speed work. Source, or series, termination gives the generator a 50 ohm output impedance so that any reflection returning from a mismatched far end is absorbed at the source rather than re-reflected. Use controlled-impedance 50 ohm coax with low capacitance per unit length, keep runs short, and avoid stubs, adapters, and tee connections, since each is a fresh impedance discontinuity.</p>
+
+<h3 id="the-classic-bench-trap-reading-about-2x-the-set-amplitude">The classic bench trap: reading about 2x the set amplitude</h3>
+<p>Here is the single most common bench surprise, and it deserves its own treatment. A pulse generator output is designed and specified for a 50 ohm load. The instrument's source impedance and the load form a voltage divider. With a 50 ohm back-matched output driving a matched 50 ohm load, the two halves of the divider are equal, and the load receives the specified amplitude. Drive that same output into a high-impedance input instead, for example a 1 megohm oscilloscope input, and almost none of the voltage is dropped across the source resistance. The load receives close to twice the specified amplitude.</p>
+<figure>
+<img src="../figures/ch02-2x-amplitude.svg" alt="The same pulse delivering its specified amplitude into 50 ohms and roughly double into high-Z." />
+<figcaption><span class="fig-num">Figure 2.6</span> Amplitude into 50 ohm versus high-Z. The same programmed pulse shown delivering its specified amplitude into a matched 50 ohm load and roughly double that amplitude into a high-impedance input.</figcaption>
+</figure>
+<p>This factor of two is not a fault. A reader who programs a 2 V pulse and reads about 4 V on a high-impedance scope has not found a broken instrument. They have found an unterminated line. The fix is to terminate at the load: switch the scope input to 50 ohms if it supports it, or add an inline 50 ohm feed-through terminator at the high-impedance input. The same back-matched 50 ohm source that creates this doubling is what lets the instrument tolerate an imperfect load without ringing, which is exactly why amplitude specs are stated into 50 ohms in the first place. Treat the cable and the termination as part of the timing system, not as optional housekeeping.</p>
+<div class="callout">
+<h4>Example</h4>
+<p>You program a BNC pulse generator for a 2.5 V amplitude and connect it directly to a 1 megohm scope input. The scope reads roughly 5 V and you suspect a calibration error. Before opening a support ticket, add a 50 ohm feed-through terminator at the scope, or switch the input to 50 ohm coupling. The reading drops to the programmed 2.5 V. Nothing was wrong with the instrument. The line was simply unterminated, and the back-matched source delivered its full open-circuit voltage. For the exact source impedance and amplitude ranges of a given model, see the current datasheet.</p>
+</div>
+<p>Good pulse shape is not separate from good timing. Fast edges, minimal overshoot, quiet tops, and proper termination are the preconditions for the delay and width accuracy that the rest of this book depends on. An edge that rings across its threshold can cross more than once, producing double edges and large apparent jitter, so every fault described in this chapter eventually shows up as a timing error. The next chapter turns to placing those clean edges precisely in time, through gating, delaying, and clocking.</p>
+
+<div class="quiz-cta">
+<p><strong>Check your understanding.</strong> Five quick questions on this chapter.</p>
+<p><a class="btn" href="quiz-02.html">Take the Chapter 2 quiz</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01-general-properties.html">&larr; 1. General Properties</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="03-gating-delaying-clocking.html">3. Gating, Delaying &amp; Clocking &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

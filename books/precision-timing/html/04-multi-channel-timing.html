@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>4. Operating a Multi-Channel Timing System</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="operating-a-multi-channel-timing-system">4. Operating a Multi-Channel Timing System</h1>
+
+<p class="lead">Earlier chapters covered the properties of a single pulse and the mechanics of triggering, gating, delaying, and clocking. Real instruments rarely deal in single pulses on a single line. They run several channels off one clock, each with its own mode, voltage, and timing, and they have to decide how those channels relate to a shared trigger and to each other. This chapter covers channels and output modes, the choice between an internal and an external reference, and the channel-by-channel setup that gives a multi-channel pulse generator its flexibility.</p>
+
+<h2 id="channels-and-modes">4.1 Channels and Modes</h2>
+
+<h3 id="channels">Channels</h3>
+<p>A multi-channel timing system provides several channels synchronized to a common clock. In a conventional benchtop pulse generator, each channel is represented by its own output connector. Other architectures, such as VXI, NIM, board-level OEM cards, or 19-inch rack mounts, also use one output connector per channel. The channel count is one of the first things that separates models. The portable Model 525 carries 6 channels. The bench Model 577 scales to 8. The rack-mount Model 588B reaches 24 channels in a 2U chassis, and the femtosecond-class Model 745T-20C provides 20. Whatever the form factor, the principle is the same: every channel draws its timing from one shared reference, so the outputs hold a fixed relationship to each other.</p>
+<figure>
+<img src="../figures/745T-vector.png" alt="An eight-channel benchtop pulse generator. Each channel drives its own output connector, all synchronized to a common clock." />
+<figcaption><span class="fig-num">Figure 4.1</span> An eight-channel benchtop pulse generator. Each channel drives its own output connector, all synchronized to a common clock.</figcaption>
+</figure>
+<p>Channels are usually independently selectable for properties such as on or off, output voltage, and pulse mode. Common output modes include:</p>
+<ul>
+<li><strong>Normal:</strong> one output pulse per trigger.</li>
+<li><strong>Single shot:</strong> one output pulse on the first trigger only, after which the channel is inhibited.</li>
+<li><strong>Burst:</strong> a preset number of pulses following a single trigger, after which the channel is inhibited.</li>
+<li><strong>Duty cycle (divide by N):</strong> a preset ratio of pulse to no pulse.</li>
+</ul>
+<figure>
+<img src="../figures/channel-modes.jpg" alt="Channel output modes. Normal, single shot, burst, and duty cycle each produce a different relationship between incoming triggers and output pulses." />
+<figcaption><span class="fig-num">Figure 4.2</span> Channel output modes. Normal, single shot, burst, and duty cycle each produce a different relationship between incoming triggers and output pulses.</figcaption>
+</figure>
+<p>More advanced systems add further features, such as:</p>
+<ul>
+<li><strong>Wait:</strong> wait a set number of pulses before the channel begins uninhibited output.</li>
+<li><strong>Multiplex:</strong> combine the outputs of several channels onto one output connector.</li>
+</ul>
+<figure>
+<img src="../figures/mux.jpg" alt="Multiplex. Several channels are combined onto one output connector to form a single composite timing sequence." />
+<figcaption><span class="fig-num">Figure 4.3</span> Multiplex. Several channels are combined onto one output connector to form a single composite timing sequence.</figcaption>
+</figure>
+<p>Because every channel is counted against the same clock, a single trigger can launch a coordinated set of edges spread across the period. The figure below shows the idea: one clock, one trigger, and four channels each placed at its own delay and width.</p>
+<figure>
+<img src="../figures/ch04-multichannel-timeline.svg" alt="Several channels off one clock. A single trigger defines T0, and each channel places its pulse at its own programmed delay and width along the same timeline." />
+<figcaption><span class="fig-num">Figure 4.4</span> Several channels off one clock. A single trigger defines T0, and each channel places its pulse at its own programmed delay and width along the same timeline.</figcaption>
+</figure>
+<figure>
+<img src="../figures/745-OEM-vector.png" alt="An OEM pulse generator module. The same timing architecture in a board-level form built into a larger system." />
+<figcaption><span class="fig-num">Figure 4.5</span> An OEM pulse generator module. The same timing architecture in a board-level form built into a larger system.</figcaption>
+</figure>
+
+<h3 id="system-modes-and-channel-modes">System Modes and Channel Modes</h3>
+<p>Some systems let system modes and channel modes operate concurrently. A system mode sets overall timing parameters that take precedence over individual channel modes. The two figures below show the same instrument first in normal system operation, then with a system-level parameter applied.</p>
+<figure>
+<img src="../figures/sysmode1.jpg" alt="Normal system operation. Each channel triggers according to its own mode." />
+<figcaption><span class="fig-num">Figure 4.6</span> Normal system operation. Each channel triggers according to its own mode.</figcaption>
+</figure>
+<figure>
+<img src="../figures/sysmode2.jpg" alt="A system parameter applied. The burst pulse at the system level now limits the triggers reaching every other mode, changing all outputs at once." />
+<figcaption><span class="fig-num">Figure 4.7</span> A system parameter applied. The burst pulse at the system level now limits the triggers reaching every other mode, changing all outputs at once.</figcaption>
+</figure>
+<p>The lesson is that a system mode sits above the channels. When it is set, it can constrain or override what the individual channels would otherwise do. A system burst, for example, limits the triggers that ever reach the channel layer, so every channel responds to the new envelope at once.</p>
+
+<h2 id="internal-and-external-references">4.2 Internal and External References</h2>
+<p>A timing system depends on a master clock, the reference from which all of its precision timing attributes derive. The clock is either internal to the system or external, supplied by another device. An internal clock is typically an oscillator with a well-defined frequency. It provides the start pulse for each channel, and each channel represents an independent event linked to that internal reference. Chapter 3 covered what sits inside that reference, from a standard crystal to an OCXO, a rubidium standard, or a GPS-disciplined oscillator, and why the choice sets a ceiling on every timing number the instrument can produce.</p>
+<p>External references are usually external clocks or oscillators running at one of several possible frequencies. They feed a signal to the master timing system, often through a front panel connector, and the internal phase-locked loop locks to that external signal. Locking to a shared reference, commonly 10 MHz, is how several instruments are made to agree on the meaning of one second, which matters when a Model 577 on one bench must hold phase with a Model 588B in a rack.</p>
+<figure>
+<img src="../figures/577trig.jpg" alt="A benchtop pulse generator with a front panel connector to accept an external trigger." />
+<figcaption><span class="fig-num">Figure 4.8</span> A benchtop pulse generator with a front panel connector to accept an external trigger.</figcaption>
+</figure>
+<p>An external reference also provides a trigger input that the system must interpret correctly. The level, or voltage, of the incoming trigger has to meet the system's criteria for a trigger. If the threshold is 1 V and the external source provides only a 100 mV pulse, the system will not trigger. Pulse generators that accept an external trigger typically let triggering occur on either the leading or the falling edge of the trigger pulse, a choice Chapter 3 treated as slope selection. In the diagram that follows, the top two circuits trigger on the leading edge, generating T0. The diagram also shows a trigger pulse that does not meet the threshold, so no trigger is generated.</p>
+<div class="callout">
+<h4>Reading the diagram</h4>
+<p>Red line: trigger threshold. Blue line: system baseline. Green line: trigger pulse. Where the green pulse fails to cross the red threshold, the system does not trigger.</p>
+</div>
+<figure>
+<img src="../figures/triggerthreshold.jpg" alt="Trigger threshold. The trigger pulse (green) must cross the threshold (red) above the baseline (blue) to start a timing cycle." />
+<figcaption><span class="fig-num">Figure 4.9</span> Trigger threshold. The trigger pulse (green) must cross the threshold (red) above the baseline (blue) to start a timing cycle.</figcaption>
+</figure>
+
+<h2 id="channel-specific-setup-timing-and-outputs">4.3 Channel-Specific Setup, Timing, and Outputs</h2>
+<p>Modern pulse generators allow a range of programming and output options on a channel-by-channel basis. You might want different output voltages on different channels. You might need one channel to produce much wider pulses than the rest. You might need one channel to wait five pulses while the others fire. These software-controlled settings can be configured from the front panel or from a software GUI. A few typical examples follow.</p>
+
+<h4 id="channel-duty-cycle">Channel Duty Cycle</h4>
+<p>To generate a stream of pulses that runs on for n pulses and off for m pulses, a typical setup includes:</p>
+<ul>
+<li><strong>On cycle:</strong> the number of pulses to produce during the on cycle.</li>
+<li><strong>Off cycle:</strong> the number of pulses to skip during the off cycle.</li>
+</ul>
+
+<h4 id="channel-burst-mode">Channel Burst Mode</h4>
+<p>Burst mode generates a burst of pulses every time the system is triggered, for an individual channel. A typical setup selects a channel, sets its delay and width, and sets the number of pulses to produce in the burst. Keep the two burst rates distinct: the rate of pulses within the burst, and the rate at which whole bursts repeat.</p>
+
+<h4 id="multiplex">Multiplex</h4>
+<p>Multiplex is a configuration tool that feeds several channels into a multiplexer, typically output on one connector as a complex timing sequence. It is worth noting that mapping more than one channel to a single physical output is a classic source of timing conflict. When two channels are asked for the same slot on the shared output, the result is an overlap condition, which Chapter 5 covers in detail.</p>
+<figure>
+<img src="../figures/chanmodesmux.jpg" alt="Channel multiplex setup. Several channel modes are combined through a multiplexer into one output sequence." />
+<figcaption><span class="fig-num">Figure 4.10</span> Channel multiplex setup. Several channel modes are combined through a multiplexer into one output sequence.</figcaption>
+</figure>
+
+<h4 id="channel-gating">Channel Gating</h4>
+<p>A Gate In function lets a timing system use a gate pulse to enable or disable triggering, and each channel can be gated independently. A typical setup selects a channel, adds a gate input, and selects Active High or Active Low to enable pulse inhibit. In the pulse inhibit method, the gate prevents the channel from being triggered by its own trigger source pulse, while any pulse already underway is allowed to finish cleanly. Chapter 3 covered the fundamentals here, including the difference between pulse inhibit and output inhibit and why gate polarity must be set deliberately. The point worth repeating on a multi-channel instrument is that gating can act on one channel, on a selected group, or on all outputs at once, which makes a single gate input the fastest way to silence the whole instrument during a fault or a setup change.</p>
+<figure>
+<img src="../figures/GateTrigger.jpg" alt="Channel gating. A gate input, set Active High or Active Low, enables or inhibits triggering of the channel." />
+<figcaption><span class="fig-num">Figure 4.11</span> Channel gating. A gate input, set Active High or Active Low, enables or inhibits triggering of the channel.</figcaption>
+</figure>
+
+<h2 id="special-functions-burst-duty-cycle-and-the-shot-counter">4.4 Special Functions: Burst, Duty Cycle, and the Shot Counter</h2>
+<p>The special functions of a multi-channel pulse generator build on the modes already described rather than introducing new physics. Burst and duty cycle return here at the instrument level. Burst produces a preset number of pulses for each trigger, then inhibits the source until the next trigger. Duty cycle produces a fixed ratio of pulse to no pulse, expressed either as on and off pulse counts or as a percentage of the period. Applied at the system level, both functions shape every channel at once, which is the practical reason they sit above the per-channel settings.</p>
+<p>A shot counter tracks how many output pulses, or shots, the instrument has produced. It is useful in two everyday situations. When a test calls for a known total number of pulses, the counter enforces the count instead of relying on a stopwatch. When a sequence must run to completion, the counter confirms that it did. On a multi-channel system the counter becomes a coordination aid as much as a tally, since it gives one trusted number for a run that spans many channels and modes.</p>
+<p>These functions are deliberately described here in general terms. Exact parameter ranges, the wording on the front panel, and the precise interaction between a system mode and the channel modes beneath it vary by model, so confirm them against the current datasheet and manual for the instrument on your bench, whether that is a 6-channel Model 525, an 8-channel Model 577, a 24-channel Model 588B, or a 20-channel Model 745T-20C.</p>
+
+<div class="quiz-cta">
+<p><strong>Check your understanding.</strong> Five quick questions on output modes, multiplex, system versus channel modes, channel gating, and the shot counter.</p>
+<p><a class="btn" href="quiz-04.html">Take the Chapter 4 quiz</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="03-gating-delaying-clocking.html">&larr; 3. Gating, Delaying &amp; Clocking</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="05-rep-rates-overlap.html">5. Rep Rates &amp; Overlap &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

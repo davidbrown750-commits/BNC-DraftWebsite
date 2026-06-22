@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 10: Performance Tips and Reference Tables</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-10-performance-tips-and-reference">Chapter 10: Performance Tips and Reference Tables</h2>
+
+<figure>
+<img src="../figures/chapter-10-opener.png" alt="A clean, calibrated test bench with an arbitrary waveform generator connected through short matched coaxial cables to a 50 ohm terminated load and an oscilloscope" />
+<figcaption><span class="fig-num">Figure 10.1</span> A clean bench is a measurement you can trust. Short matched cables, a known 50 ohm termination, and a warmed-up instrument remove most of the surprises before they happen.</figcaption>
+</figure>
+
+<p>Most of this book has been about what an arbitrary waveform generator does inside the box. This chapter is about what happens outside the box, on the bench, where the signal meets the cables and the load and the engineer who has been awake too long. The physics is the same as everything you have already read. The difference is that here it shows up as a measurement that looks wrong, and you have to know why.</p>
+
+<p>So this is the field manual. The first two sections are practical advice, the kind you collect over a few years of staring at a scope and muttering. The last two sections are reference: tables and formulas you can come back to without rereading the surrounding prose. Nothing here is exotic. It is just the set of things that separate a clean output from a frustrating afternoon.</p>
+
+<h3 id="getting-the-cleanest-output">10.1 Getting the Cleanest Output</h3>
+
+<p><strong>Terminate properly, and match your cables.</strong> An AWG with a 50 ohm output impedance wants to drive a 50 ohm load through a 50 ohm cable. When all three agree, energy flows out and stays out. When they disagree, part of the signal reflects back down the line, arrives late, and adds to whatever is leaving next. The result is overshoot, ringing, or a flat top that is not flat. Use a proper termination at the far end, keep cable lengths short, and use the same cable type throughout. A reflection you cannot see on a slow sine becomes obvious on a fast edge.</p>
+
+<p><strong>Stay inside the analog bandwidth.</strong> Every output stage has a frequency above which it stops keeping up. Push a signal whose harmonics live above that bandwidth and the instrument quietly rounds them off for you. A square wave loses its corners, a pulse loses its rise time, and the amplitude sags at the top of your band. Know the rated analog bandwidth and treat it as a ceiling, not a suggestion. If you need a 100 MHz square wave to look square, you need bandwidth several times higher than 100 MHz to carry the harmonics that build the edges.</p>
+
+<p><strong>Apply inverse-sinc correction.</strong> A digital-to-analog converter holds each sample until the next one arrives. That hold is useful, it fills the gaps, but it also imposes a <code>sin(x)/x</code> roll-off across the band, gently attenuating higher frequencies. The fix is to pre-emphasize the waveform by the inverse of that curve so the output comes back flat. Many AWGs offer an inverse-sinc filter you can switch on. Use it when amplitude flatness across the band matters, and verify the corrected response rather than assuming it.</p>
+
+<p><strong>Use dither where it helps.</strong> Quantization is deterministic, and deterministic error is the kind that piles up into spurs at predictable frequencies. Adding a small, controlled amount of noise (dither) before quantization breaks up that correlation. You trade a hair of broadband noise for a cleaner spectrum with lower spurs. For spectrally sensitive work, that trade is usually worth making.</p>
+
+<p><strong>Use full DAC scale.</strong> Signal-to-noise ratio is set by how far your signal sits above the converter's quantization floor. Drive the waveform at or near full scale and you use every code the DAC owns. Run it at a quarter scale and you have thrown away two bits of resolution and roughly 12 dB of dynamic range for no reason. Scale in the digital domain to fill the converter, then attenuate downstream if you need a smaller amplitude at the load.</p>
+
+<p><strong>Mind the reconstruction filter.</strong> After the DAC comes a low-pass reconstruction filter whose job is to remove the images that sampling creates above Nyquist. Choose it to pass your signal band and stop the images. Too narrow and it eats the top of your signal. Too wide and image energy leaks through and shows up as spurs. On instruments that offer a choice of filters, the right one depends on where your signal sits relative to the sample rate.</p>
+
+<blockquote><p><strong>Pro tip.</strong> Warm the instrument up before you trust a precision measurement. Oscillators and reference voltages drift while the chassis comes to temperature, and a generator pulled from a cold rack can move by a measurable amount over the first half hour. If the number you care about is small, let the box settle before you write it down.</p></blockquote>
+
+<h3 id="avoiding-common-pitfalls">10.2 Avoiding Common Pitfalls</h3>
+
+<p>The failures below are common because they are easy. None of them announces itself. The signal just looks wrong, and the cause is almost always one of these.</p>
+
+<p><strong>Aliasing from too low a sample rate.</strong> Sampling theory is unforgiving. If your sample rate is less than twice the highest frequency in the waveform, the energy above Nyquist folds back down and lands somewhere inside your band, masquerading as a real signal. It cannot be filtered out after the fact because it is now indistinguishable from a genuine tone. The fix is upstream: sample fast enough, and band-limit the waveform before it reaches the converter.</p>
+
+<p><strong>Glitchy loop points.</strong> When you loop a stored waveform, the last sample connects straight back to the first. If the segment does not contain a whole number of cycles, the level or the slope jumps at the seam, and that discontinuity radiates harmonics across the spectrum on every repeat. Build looped segments to hold an integer number of cycles so the end meets the beginning cleanly. A loop that is one sample too long will spur for as long as it runs.</p>
+
+<p><strong>DAC clipping from over scale.</strong> Filling the converter is good. Overfilling it is not. Ask for an amplitude beyond full scale, or stack modulation on top of a signal already near the rails, and the DAC simply stops at its maximum code. The peaks flatten, and flat peaks are harmonic distortion. Leave headroom when you are summing signals or adding modulation, and watch the digital level, not just the analog readout.</p>
+
+<p><strong>Ground loops.</strong> When two instruments share a signal connection and each has its own path to earth, current can circulate through the shield and add hum and noise to your measurement. Symptoms are mains-frequency pickup and a noise floor that changes when you touch a cable. Power related gear from one point, keep ground paths short, and break the loop with isolation when you have to.</p>
+
+<p><strong>Skew between channels.</strong> On a multi-channel generator, signals that should arrive together may not, because cable lengths differ or the channels carry small internal delays. A few hundred picoseconds of skew will not show on a slow sine and will absolutely show on a fast edge or a tight I/Q pair. Measure the skew, then deskew with the instrument's per-channel delay or by trimming cable lengths.</p>
+
+<p><strong>Forgetting the output load assumption.</strong> This is the one that catches everyone. A generator's amplitude setting assumes a particular load, usually 50 ohms. Connect it instead to a high-impedance input, such as a scope set to 1 megohm, and the voltage at the load doubles, because the internal source divider no longer has anything to divide against. Two volts becomes four. The generator did nothing wrong. You measured into the wrong load. Either terminate in 50 ohms or tell the instrument it is driving a high-impedance load so its amplitude readout matches reality.</p>
+
+<figure>
+<img src="../figures/fig-10-1-termination.svg" alt="Two schematic cases comparing a matched 50 ohm load that delivers half the open-circuit voltage against a high-impedance load that shows the full doubled amplitude, with the voltage divider formula" />
+<figcaption><span class="fig-num">Figure 10.2</span> Same generator, two loads. Into a matched 50 ohm load the source divider delivers half the open-circuit swing. Into a high-impedance input it delivers nearly all of it, so the displayed amplitude doubles.</figcaption>
+</figure>
+
+<blockquote><p><strong>Engineer's corner.</strong> The 2x amplitude surprise and a level that reads exactly 6 dB high are the same bug wearing two outfits. Voltage doubling is 6 dB, every time. If a measurement is off by almost precisely a factor of two, or almost precisely 6 dB, check your termination before you check anything else.</p></blockquote>
+
+<h3 id="reference-tables">10.3 Reference Tables</h3>
+
+<p>These tables are meant to be used, not read. Keep them open while you set up. The numbers are general AWG and signal engineering, accurate enough to size a measurement and decide whether a result is plausible.</p>
+
+<p><strong>(a) DAC resolution: code levels and ideal SNR.</strong> Each bit doubles the number of available codes and adds about 6 dB of dynamic range. The SNR figures assume a full-scale sine into an ideal converter, so real-world numbers run lower once you add converter noise and distortion.</p>
+
+<table>
+<thead><tr><th>Resolution</th><th>Code levels (2^N)</th><th>Ideal SNR (6.02N + 1.76 dB)</th></tr></thead>
+<tbody>
+<tr><td>8-bit</td><td>256</td><td>49.9 dB</td></tr>
+<tr><td>10-bit</td><td>1,024</td><td>62.0 dB</td></tr>
+<tr><td>12-bit</td><td>4,096</td><td>74.0 dB</td></tr>
+<tr><td>14-bit</td><td>16,384</td><td>86.0 dB</td></tr>
+<tr><td>16-bit</td><td>65,536</td><td>98.1 dB</td></tr>
+</tbody>
+</table>
+
+<p><strong>(b) Nyquist: maximum signal frequency versus sample rate.</strong> The theoretical ceiling is half the sample rate. In practice you want to stay below that, because the reconstruction filter needs room to remove the images and because amplitude flatness suffers as you approach Nyquist. A common rule of thumb is to keep the highest signal frequency below 40 to 45 percent of the sample rate.</p>
+
+<table>
+<thead><tr><th>Sample rate</th><th>Nyquist limit (Fs/2)</th><th>Practical max (~0.4 Fs)</th></tr></thead>
+<tbody>
+<tr><td>125 MSa/s</td><td>62.5 MHz</td><td>~50 MHz</td></tr>
+<tr><td>1 GSa/s</td><td>500 MHz</td><td>~400 MHz</td></tr>
+<tr><td>2.5 GSa/s</td><td>1.25 GHz</td><td>~1 GHz</td></tr>
+<tr><td>6.16 GSa/s</td><td>3.08 GHz</td><td>~2.46 GHz</td></tr>
+<tr><td>20 GSa/s</td><td>10 GHz</td><td>~8 GHz</td></tr>
+</tbody>
+</table>
+
+<p><strong>(c) Playback time: memory depth divided by sample rate.</strong> A stored waveform plays for as long as its samples last. Run a fixed memory depth at a higher sample rate and it empties faster. This table reads playback time straight off the two numbers, so you can see the trade between time span and time resolution.</p>
+
+<table>
+<thead><tr><th>Memory depth</th><th>at 125 MSa/s</th><th>at 1 GSa/s</th><th>at 20 GSa/s</th></tr></thead>
+<tbody>
+<tr><td>256 K samples</td><td>2.1 ms</td><td>262 us</td><td>13.1 us</td></tr>
+<tr><td>16 M samples</td><td>134 ms</td><td>16.8 ms</td><td>839 us</td></tr>
+<tr><td>1 G samples</td><td>8.6 s</td><td>1.07 s</td><td>53.7 ms</td></tr>
+<tr><td>9 G samples</td><td>77 s</td><td>9.66 s</td><td>483 ms</td></tr>
+</tbody>
+</table>
+
+<p><strong>(d) Decibel quick reference.</strong> The decibel is a ratio on a log scale. Power and voltage use different multipliers, which is the source of most confusion. For power, 10 dB is a factor of ten. For voltage, 20 dB is a factor of ten, and 6 dB is the all-important doubling.</p>
+
+<table>
+<thead><tr><th>dB</th><th>Power ratio</th><th>Voltage ratio</th></tr></thead>
+<tbody>
+<tr><td>3 dB</td><td>2x</td><td>1.41x</td></tr>
+<tr><td>6 dB</td><td>4x</td><td>2x (voltage doubling)</td></tr>
+<tr><td>10 dB</td><td>10x</td><td>3.16x</td></tr>
+<tr><td>20 dB</td><td>100x</td><td>10x</td></tr>
+</tbody>
+</table>
+
+<p>Two related units travel with the decibel. <strong>dBc</strong> measures a level relative to the carrier, so a spur at minus 60 dBc sits 60 dB below the main tone, useful for spectral purity. <strong>dBm</strong> measures absolute power relative to one milliwatt, so 0 dBm is 1 mW, and into 50 ohms that works out to about 0.632 volts RMS, or roughly 224 mV at the more familiar 50 ohm 0 dBm point in peak terms. When someone quotes a level in dBm they mean power. When they quote dBc they mean a ratio to the carrier.</p>
+
+<p><strong>(e) Rise time versus bandwidth.</strong> For a system with a single-pole roll-off, the 10 to 90 percent rise time and the bandwidth are tied together by a constant near 0.35. Faster edges demand more bandwidth, and the relationship is reciprocal, so halving the rise time roughly doubles the bandwidth you need to support it.</p>
+
+<table>
+<thead><tr><th>Bandwidth</th><th>Rise time (~0.35 / BW)</th></tr></thead>
+<tbody>
+<tr><td>50 MHz</td><td>7.0 ns</td></tr>
+<tr><td>100 MHz</td><td>3.5 ns</td></tr>
+<tr><td>500 MHz</td><td>700 ps</td></tr>
+<tr><td>1 GHz</td><td>350 ps</td></tr>
+<tr><td>10 GHz</td><td>35 ps</td></tr>
+</tbody>
+</table>
+
+<figure>
+<img src="../figures/fig-10-3-db-reference.svg" alt="A two-panel bench reference showing a decibel ladder from 0 to 20 dB with power and voltage ratios on the left and a rise time versus bandwidth curve on the right with annotated points" />
+<figcaption><span class="fig-num">Figure 10.3</span> Two cheat sheets in one. The dB ladder turns decibels into power and voltage ratios at a glance, and the rise-time curve shows how edge speed scales inversely with bandwidth.</figcaption>
+</figure>
+
+<h3 id="unit-cheat-sheet">10.4 Unit and Formula Cheat Sheet</h3>
+
+<p>Everything above, distilled to the formulas worth memorizing. These are the equations you will reach for most often when sizing a signal or sanity-checking a number.</p>
+
+<table>
+<thead><tr><th>Quantity</th><th>Formula</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Nyquist limit</td><td>F(max) = Fs / 2</td><td>Highest frequency you can represent. Stay well below it in practice.</td></tr>
+<tr><td>Ideal SNR</td><td>SNR = 6.02N + 1.76 dB</td><td>N = DAC bits, full-scale sine, ideal converter.</td></tr>
+<tr><td>ENOB</td><td>ENOB = (SNDR &minus; 1.76) / 6.02</td><td>Effective bits from measured signal-to-noise-and-distortion.</td></tr>
+<tr><td>Rise time</td><td>t(r) &asymp; 0.35 / BW</td><td>10% to 90%, single-pole response.</td></tr>
+<tr><td>Playback time</td><td>t = depth / Fs</td><td>Samples stored divided by sample rate.</td></tr>
+<tr><td>dB (power)</td><td>dB = 10 &middot; log10(P / P0)</td><td>10 dB is a factor of 10 in power.</td></tr>
+<tr><td>dB (voltage)</td><td>dB = 20 &middot; log10(V / V0)</td><td>6 dB is a factor of 2 in voltage.</td></tr>
+<tr><td>Loaded amplitude</td><td>V(load) = V(open) &middot; R(L) / (R(S) + R(L))</td><td>50 ohm load gives half; Hi-Z gives full open-circuit swing.</td></tr>
+</tbody>
+</table>
+
+<blockquote><p><strong>Pro tip.</strong> If you remember only two numbers from this chapter, make them 6 and 0.35. Six dB is one voltage doubling and one DAC bit, which ties amplitude, resolution, and termination together. The constant 0.35 connects every bandwidth to a rise time. With those two, you can estimate most of what a generator will do before you ever cable it up.</p></blockquote>
+
+<p>That is the working core of arbitrary waveform generation, from the first sample to the last cable. The next chapter turns from general principles to specific hardware, where these numbers stop being rules of thumb and become published specifications you can hold a real instrument against. As always, confirm any current specification against the datasheet at <a href="/">berkeleynucleonics.com</a> before you design around it.</p>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="09-selecting-an-awg.html">&larr; 9. Selecting an Arbitrary Waveform Generator</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="11-berkeley-nucleonics-awg-solutions.html">11. Berkeley Nucleonics AWG Solutions &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

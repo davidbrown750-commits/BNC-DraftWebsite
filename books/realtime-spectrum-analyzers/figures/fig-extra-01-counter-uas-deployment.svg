@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" font-family="Helvetica, Arial, sans-serif" font-size="13">
+  <defs>
+    <radialGradient id="skyGrad">
+      <stop offset="0%" stop-color="#bcccdc"/>
+      <stop offset="100%" stop-color="#486581"/>
+    </radialGradient>
+    <linearGradient id="groundGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2C3E50"/>
+      <stop offset="100%" stop-color="#003D6B"/>
+    </linearGradient>
+  </defs>
+
+  <text x="600" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Counter-UAS Deployment: SPECTRAN V6 PLUS + IsoLOG 3D DF</text>
+  <text x="600" y="48" text-anchor="middle" font-size="12" fill="#486581">Two IsoLOG arrays plus three SPECTRAN units cover an airport perimeter for 360° drone detection.</text>
+
+  <!-- Sky -->
+  <rect x="0" y="60" width="1200" height="380" fill="url(#skyGrad)"/>
+
+  <!-- Ground -->
+  <rect x="0" y="440" width="1200" height="120" fill="url(#groundGrad)"/>
+  <text x="50" y="470" font-size="11" fill="#fff" font-weight="700">AIRPORT GROUND</text>
+
+  <!-- Runway suggestion -->
+  <rect x="200" y="490" width="800" height="20" fill="#2C3E50" opacity="0.6"/>
+  <line x1="220" y1="500" x2="280" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="320" y1="500" x2="380" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="420" y1="500" x2="480" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="520" y1="500" x2="580" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="620" y1="500" x2="680" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="720" y1="500" x2="780" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="820" y1="500" x2="880" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+  <line x1="920" y1="500" x2="980" y2="500" stroke="#fff" stroke-width="2" stroke-dasharray="20,15"/>
+
+  <!-- Drone (intruder) -->
+  <g transform="translate(800,150)">
+    <circle r="12" fill="#c0392b"/>
+    <line x1="-15" y1="-8" x2="15" y2="-8" stroke="#2C3E50" stroke-width="2"/>
+    <line x1="-15" y1="8" x2="15" y2="8" stroke="#2C3E50" stroke-width="2"/>
+    <circle cx="-18" cy="-8" r="3" fill="#2C3E50"/>
+    <circle cx="18" cy="-8" r="3" fill="#2C3E50"/>
+    <circle cx="-18" cy="8" r="3" fill="#2C3E50"/>
+    <circle cx="18" cy="8" r="3" fill="#2C3E50"/>
+    <text x="25" y="3" font-size="11" fill="#c0392b" font-weight="700">UNAUTHORIZED DRONE</text>
+    <!-- RF emission rings -->
+    <circle r="35" fill="none" stroke="#c0392b" stroke-width="1.5" opacity="0.6"/>
+    <circle r="55" fill="none" stroke="#c0392b" stroke-width="1.2" opacity="0.4"/>
+    <circle r="75" fill="none" stroke="#c0392b" stroke-width="1" opacity="0.3"/>
+    <text x="-50" y="-30" font-size="9" fill="#c0392b" font-style="italic">2.4 GHz hopping</text>
+  </g>
+
+  <!-- Site 1: Northwest tower with IsoLOG -->
+  <g transform="translate(220,200)">
+    <line x1="0" y1="60" x2="0" y2="240" stroke="#003D6B" stroke-width="4"/>
+    <ellipse cx="0" cy="50" rx="35" ry="25" fill="#bcccdc" stroke="#2C3E50" stroke-width="2"/>
+    <text x="0" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#2C3E50">IsoLOG</text>
+    <text x="0" y="270" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Site 1 (NW)</text>
+    <text x="0" y="285" text-anchor="middle" font-size="9" fill="#fff">IsoLOG 3D DF</text>
+    <!-- Bearing line to drone -->
+    <line x1="0" y1="50" x2="580" y2="-50" stroke="#1b5e20" stroke-width="2" stroke-dasharray="6,3" opacity="0.85"/>
+    <text x="280" y="-15" font-size="10" fill="#1b5e20" font-weight="600">Bearing: 87° az / +18° el</text>
+  </g>
+
+  <!-- Site 2: Northeast tower -->
+  <g transform="translate(980,200)">
+    <line x1="0" y1="60" x2="0" y2="240" stroke="#003D6B" stroke-width="4"/>
+    <ellipse cx="0" cy="50" rx="35" ry="25" fill="#bcccdc" stroke="#2C3E50" stroke-width="2"/>
+    <text x="0" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#2C3E50">IsoLOG</text>
+    <text x="0" y="270" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Site 2 (NE)</text>
+    <text x="0" y="285" text-anchor="middle" font-size="9" fill="#fff">IsoLOG 3D DF</text>
+    <line x1="0" y1="50" x2="-180" y2="-50" stroke="#1b5e20" stroke-width="2" stroke-dasharray="6,3" opacity="0.85"/>
+    <text x="-110" y="-15" font-size="10" fill="#1b5e20" font-weight="600">Bearing: 269° az / +18° el</text>
+  </g>
+
+  <!-- Crossing point of bearings -->
+  <circle cx="800" cy="150" r="6" fill="none" stroke="#0078B6" stroke-width="3"/>
+  <text x="800" y="120" text-anchor="middle" font-size="11" fill="#0078B6" font-weight="700">3D POSITION FIX</text>
+
+  <!-- Operations center (building) -->
+  <g transform="translate(550,420)">
+    <rect x="0" y="0" width="100" height="40" fill="#003D6B"/>
+    <rect x="10" y="10" width="15" height="15" fill="#7fb77e"/>
+    <rect x="35" y="10" width="15" height="15" fill="#7fb77e"/>
+    <rect x="60" y="10" width="15" height="15" fill="#7fb77e"/>
+    <text x="50" y="55" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">Operations Center</text>
+    <text x="50" y="68" text-anchor="middle" font-size="9" fill="#bcccdc">RTSA Suite PRO + 3D Map</text>
+  </g>
+
+  <!-- Three SPECTRAN units in the operations center -->
+  <g transform="translate(150,420)">
+    <rect x="0" y="0" width="80" height="30" fill="#1b5e20" rx="3"/>
+    <text x="40" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">SPECTRAN A</text>
+    <text x="40" y="48" text-anchor="middle" font-size="9" fill="#fff">2.4 GHz mon</text>
+  </g>
+  <g transform="translate(350,420)">
+    <rect x="0" y="0" width="80" height="30" fill="#1b5e20" rx="3"/>
+    <text x="40" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">SPECTRAN B</text>
+    <text x="40" y="48" text-anchor="middle" font-size="9" fill="#fff">5.8 GHz mon</text>
+  </g>
+  <g transform="translate(870,420)">
+    <rect x="0" y="0" width="80" height="30" fill="#1b5e20" rx="3"/>
+    <text x="40" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">SPECTRAN C</text>
+    <text x="40" y="48" text-anchor="middle" font-size="9" fill="#fff">915 MHz mon</text>
+  </g>
+
+  <!-- Ethernet connections -->
+  <line x1="220" y1="440" x2="190" y2="450" stroke="#2C3E50" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="980" y1="440" x2="910" y2="450" stroke="#2C3E50" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="230" y1="450" x2="350" y2="450" stroke="#2C3E50" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="430" y1="450" x2="550" y2="440" stroke="#2C3E50" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <line x1="650" y1="440" x2="870" y2="450" stroke="#2C3E50" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <!-- Legend / specs -->
+  <g transform="translate(20,500)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#fff">Coverage:</text>
+    <text x="0" y="16" font-size="10" fill="#fff">2.4 / 5.8 / 0.9 GHz</text>
+    <text x="0" y="32" font-size="10" fill="#fff">DF: 1° accuracy</text>
+    <text x="0" y="48" font-size="10" fill="#fff">10 ns POI captures</text>
+  </g>
+  <g transform="translate(1080,500)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#fff">Detection:</text>
+    <text x="0" y="16" font-size="10" fill="#fff">Cross-bearing fix</text>
+    <text x="0" y="32" font-size="10" fill="#fff">3D track + alt</text>
+    <text x="0" y="48" font-size="10" fill="#fff">Real-time alert</text>
+  </g>
+</svg>

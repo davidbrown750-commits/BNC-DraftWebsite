@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 380" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Pulsed radar timing showing transmit pulse, round-trip echo delay, and range resolution set by pulse width">
+  <defs>
+    <style>
+      .lbl{fill:#003D6B;font-size:12px;font-weight:700;}
+      .sub{fill:#2C3E50;font-size:10px;}
+      .tx{stroke:#003D6B;stroke-width:2.4;fill:none;}
+      .rx{stroke:#0078B6;stroke-width:2.4;fill:none;}
+      .ech{fill:#00b4ff;opacity:.85;}
+      .axis{stroke:#b6c2cc;stroke-width:1.2;}
+      .dim{stroke:#C77E00;stroke-width:1.6;fill:none;}
+      .stage{fill:#0078B6;font-size:9px;font-weight:700;letter-spacing:.5px;}
+    </style>
+    <marker id="aa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C77E00"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="28" fill="#003D6B" font-size="15" font-weight="700">Pulsed Radar: Timing, Echo Delay, and Range Resolution</text>
+
+  <!-- Transmit timeline -->
+  <text x="20" y="78" class="stage">TRANSMIT</text>
+  <line class="axis" x1="20" y1="120" x2="900" y2="120"/>
+  <!-- pulse 1 -->
+  <path class="tx" d="M60 120 L60 80 L98 80 L98 120"/>
+  <!-- pulse 2 -->
+  <path class="tx" d="M520 120 L520 80 L558 80 L558 120"/>
+  <!-- pulse width dim -->
+  <line class="dim" x1="60" y1="64" x2="98" y2="64" marker-start="url(#aa)" marker-end="url(#aa)"/>
+  <text x="79" y="58" text-anchor="middle" class="sub">pulse width &#964;</text>
+  <!-- PRI dim -->
+  <line class="dim" x1="79" y1="140" x2="539" y2="140" marker-start="url(#aa)" marker-end="url(#aa)"/>
+  <text x="309" y="156" text-anchor="middle" class="sub">pulse repetition interval (PRI) = 1 / PRF</text>
+
+  <!-- Receive timeline -->
+  <text x="20" y="208" class="stage">RECEIVE</text>
+  <line class="axis" x1="20" y1="250" x2="900" y2="250"/>
+  <!-- echo 1 -->
+  <rect class="ech" x="206" y="214" width="30" height="36" rx="2"/>
+  <text x="221" y="276" text-anchor="middle" class="sub">echo (near)</text>
+  <!-- echo 2 -->
+  <rect class="ech" x="300" y="222" width="30" height="28" rx="2"/>
+  <text x="315" y="276" text-anchor="middle" class="sub">echo (far)</text>
+  <!-- round trip delay dim -->
+  <line class="dim" x1="79" y1="194" x2="221" y2="194" marker-start="url(#aa)" marker-end="url(#aa)"/>
+  <text x="150" y="188" text-anchor="middle" class="sub">round-trip delay t  &#8594;  R = c&#183;t / 2</text>
+
+  <!-- Range resolution box -->
+  <rect x="430" y="196" width="470" height="150" rx="6" fill="#f2f7fb" stroke="#b6c2cc" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="446" y="218" class="lbl">Range resolution</text>
+  <text x="446" y="240" class="sub">Two targets are resolved only if their echoes do not overlap.</text>
+  <text x="446" y="262" fill="#C77E00" font-size="14" font-weight="700">R&#8336;&#8341;&#8345; = c &#183; &#964; / 2</text>
+  <text x="446" y="288" class="sub">Shorter pulse &#8594; finer resolution, less energy.</text>
+  <text x="446" y="306" class="sub">Pulse compression keeps a long pulse's energy</text>
+  <text x="446" y="322" class="sub">while recovering a short pulse's resolution.</text>
+
+  <!-- legend -->
+  <path class="tx" d="M446 358 L482 358"/>
+  <text x="488" y="362" class="sub">transmit pulse</text>
+  <rect class="ech" x="610" y="350" width="20" height="14"/>
+  <text x="636" y="362" class="sub">received echo</text>
+</svg>

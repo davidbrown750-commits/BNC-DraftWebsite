@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" font-family="Helvetica, Arial, sans-serif">
+  <title>Flat pulse top versus drooping pulse top</title>
+  <desc>Two pulses on a shared baseline. The left pulse holds a flat top across its width. The right pulse has an identical leading edge but its top slopes downward from leading to trailing edge, with the ideal level marked and the droop arrowed.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="60" y="40" fill="#003D6B" font-size="16" font-weight="700">Pulse-Top Flatness vs Droop</text>
+
+  <!-- geometry: baseline y=330, top y=130 -->
+  <!-- axes -->
+  <line x1="70" y1="80" x2="70" y2="330" stroke="#b6c2cc" stroke-width="1.5"/>
+  <line x1="70" y1="330" x2="680" y2="330" stroke="#b6c2cc" stroke-width="1.5"/>
+  <text x="32" y="205" fill="#2C3E50" font-size="13" transform="rotate(-90 32 205)" text-anchor="middle">Voltage</text>
+  <text x="375" y="408" fill="#2C3E50" font-size="13" text-anchor="middle">Time &#8594;</text>
+
+  <!-- LEFT pulse: clean flat top  (x 110..320) -->
+  <path d="M 70 330 L 110 330 L 110 130 L 320 130 L 320 330 L 360 330"
+        fill="none" stroke="#0655a3" stroke-width="2.5"/>
+  <text x="215" y="115" fill="#2C3E50" font-size="13" font-weight="700" text-anchor="middle">flat top (ideal)</text>
+
+  <!-- RIGHT pulse: identical leading edge, drooping top (x 420..630) -->
+  <!-- ideal top level dashed line across the right pulse -->
+  <line x1="420" y1="130" x2="630" y2="130" stroke="#113163" stroke-width="1.2" stroke-dasharray="6 4"/>
+  <!-- drooping pulse: top slopes from y=130 at leading to y=190 at trailing -->
+  <path d="M 380 330 L 420 330 L 420 130 L 630 190 L 630 330 L 670 330"
+        fill="none" stroke="#0655a3" stroke-width="2.5"/>
+  <text x="525" y="115" fill="#2C3E50" font-size="13" font-weight="700" text-anchor="middle">droop (sag/tilt)</text>
+
+  <!-- droop arrow at trailing edge: from ideal level (130) down to drooped level (190) -->
+  <g stroke="#C77E00" stroke-width="2" fill="none">
+    <line x1="608" y1="132" x2="608" y2="188"/>
+    <path d="M 604 180 L 608 188 L 612 180"/>
+  </g>
+  <text x="598" y="165" fill="#C77E00" font-size="13" font-weight="700" text-anchor="end">droop</text>
+
+  <!-- baseline label -->
+  <text x="76" y="345" fill="#2C3E50" font-size="11">baseline</text>
+</svg>

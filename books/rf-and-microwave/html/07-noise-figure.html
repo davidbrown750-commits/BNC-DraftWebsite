@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>07-noise-figure</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="chapter-7---noise-parameters-and-noise-figure">7. Noise Parameters and Noise Figure</h1>
+<p>Every receiver adds noise. The art of a low-noise design is to add as little as possible, and the science of it begins with knowing exactly how much a device contributes and under what conditions. This chapter builds that knowledge from the ground up. It starts with the four numbers that fully describe a device's noise behavior, explains why a single noise-figure value is not enough for serious design work, and ends with how those numbers are measured on modern instruments.</p>
+<p>The reader who designs low-noise amplifiers will recognize a recurring tension here. The matching network that delivers maximum power to a device is rarely the same network that delivers minimum noise. Resolving that tension is impossible without noise parameters, so we treat them as the foundation and noise figure as a consequence.</p>
+<h2 id="introduction-to-noise-parameters">7.1 Introduction to Noise Parameters</h2>
+<p>RF designers spend a great deal of time on input power matching. The usual goal is to build a matching network between a 50-ohm signal source and the device so that the maximum achievable power reaches the device input. In practice this means optimizing the network until the reflection coefficient it presents to the source is as low as possible, often better than 10 dB return loss, across the band of interest. Power matching is a well-understood, well-tooled discipline.</p>
+<p>Designers working on low-noise amplifiers care about something else as well: minimizing the noise factor. Noise factor, F, is defined as the ratio of the signal-to-noise ratio at the input to the signal-to-noise ratio at the output.</p>
+<blockquote><p>F = SNR<sub>in</sub> / SNR<sub>out</sub></p></blockquote>
+<p>Because the device can only degrade SNR, F is always greater than or equal to 1 for a real device. Minimizing F maximizes the signal-to-noise ratio that survives the device, which in turn maximizes the sensitivity of the system. Noise figure, NF, is simply the noise factor expressed in decibels: NF = 10 log<sub>10</sub>(F). A device with F = 2 has a 3 dB noise figure.</p>
+<p>This raises the central question of the chapter. Can a single input matching network do both jobs at once: present a low input reflection coefficient and produce a low noise figure? Sometimes yes, often no. To know which, you have to know the noise parameters of the device before any matching is applied.</p>
+<p><strong>What the noise parameters are.</strong> Noise parameters describe the autocorrelation and cross-correlation between the input and output noise waves (or, equivalently, the noise voltages and currents) generated inside a device. The most general representation is the noise correlation matrix. In day-to-day work, though, engineers use a compact set of noise parameters rather than the matrix directly. The parameters carry the same information in a form that is easier to reason about.</p>
+<p>There are several equivalent formulations, but they all reduce to four real numbers. The first is the minimum noise factor, F<sub>min</sub>, sometimes given as the minimum noise figure NF<sub>min</sub> in dB, or as the minimum noise temperature T<sub>min</sub>. These are related through:</p>
+<blockquote><p>F<sub>min</sub> = 1 + T<sub>min</sub> / T<sub>0</sub>,  with T<sub>0</sub> = 290 K</p></blockquote>
+<p>T<sub>0</sub> = 290 K is a reference temperature, not necessarily the actual lab temperature. It is close to room temperature and, when multiplied by Boltzmann's constant, yields a convenient 4 x 10<sup>-21</sup> joules. That convenience mattered a great deal in the era of slide rules, and the convention has stuck.</p>
+<p>F<sub>min</sub> and NF<sub>min</sub> tell you the absolute lowest noise factor and noise figure the device can reach, but they do not tell you how to get there. That information comes from the second noise parameter, the optimum source reflection coefficient, &Gamma;<sub>opt</sub>. When the source presents &Gamma;<sub>opt</sub> to the device, the device achieves F<sub>min</sub>. &Gamma;<sub>opt</sub> can also be expressed as an optimum impedance Z<sub>opt</sub> or optimum admittance Y<sub>opt</sub>; the three are just different coordinates for the same point.</p>
+<p>So far that is three pieces of information packed into two parameters: the best achievable noise factor, and the source condition that achieves it. Two more parameters complete the picture, and the next sections introduce them in the context where they matter.</p>
+<h2 id="front-end-receiver-noise-figure">7.2 Front-End Receiver Noise Figure</h2>
+<figure>
+<img src="../figures/fig-p052-01.png" alt="Block diagram of a receiver front end" /><figcaption><span class="fig-num">Figure 7.1</span> Block diagram of a receiver front end. The signal source with output impedance Zss feeds a matching network, which transforms Zss to the source impedance Zs presented to the low-noise amplifier.</figcaption>
+</figure>
+<p>Consider the typical front end shown in Figure 7.1. The signal source has an output impedance denoted Zss. The low-noise amplifier, the LNA, is the device modeled by noise parameters, and its input impedance is Zin. Between the source and the LNA sits a passive matching network.</p>
+<p>That matching network serves different purposes in different systems. The most common job is to transform Zss into a source impedance Zs that equals the complex conjugate of Zin. When Zs is the conjugate of Zin, all of the available source power is delivered to the LNA, none is reflected, and the input is power matched. This is the classic conjugate-match condition.</p>
+<p>Now bring noise into the picture. If the LNA's Z<sub>opt</sub> is known, you can check whether the noise figure under this matching condition comes close to NF<sub>min</sub>. Two cases follow.</p>
+<p>If the matching network happens to produce Zs = Z<sub>opt</sub>, then the achieved noise figure equals NF<sub>min</sub>. In this fortunate case the LNA is both power matched and noise matched at the same time. The single network does both jobs, and the design is as good as the device allows.</p>
+<p>If instead the network produces Zs not equal to Z<sub>opt</sub>, the LNA noise figure will be larger than NF<sub>min</sub>. The LNA is power matched but not noise matched. You delivered all the power, but you paid a noise penalty for it.</p>
+<p><strong>The matching trade-off.</strong> The designer can flip the priority. A network can be built to noise match the LNA, presenting Zs = Z<sub>opt</sub>, at the cost of a power mismatch. In that case some input power reflects back toward the source and the power gain drops. The gain that results under the noise-matched condition is what datasheets call the associated gain, G<sub>ass</sub>. It is the gain you actually get when the device is set up for its best noise figure rather than its best power transfer.</p>
+<p>This trade-off is the practical heart of low-noise design. For a sensitivity-limited receiver, the first stage usually wins more from noise matching than from power matching, because the noise figure of the first stage dominates the noise figure of the whole chain (the cascade relationship, often called the Friis formula, makes this explicit). For a stage deeper in the chain, where the upstream gain has already lifted the signal well above the noise floor, power matching may be the better choice. Knowing which to favor, and by how much, requires the device noise parameters and the cascade math together.</p>
+<blockquote><p><strong>Going Deeper - Why the first stage dominates</strong></p><p>In a cascade, the Friis noise-factor formula is F<sub>total</sub> = F1 + (F2 - 1)/G1 + (F3 - 1)/(G1 G2) + ... Each later stage's noise contribution is divided by the cumulative gain ahead of it. A high-gain, low-noise first stage therefore sets the floor for the entire receiver, which is exactly why so much effort goes into noise matching that one device.</p></blockquote>
+<h2 id="noise-resistance">7.3 Noise Resistance</h2>
+<p>The question left open in Section 7.2 is quantitative. When the LNA is not noise matched, by how much does the noise factor rise above F<sub>min</sub>? The answer depends on the last noise parameter, the one that governs sensitivity to mismatch.</p>
+<p>The conventional choice for this parameter is the equivalent noise resistance, R<sub>n</sub>. With R<sub>n</sub> in hand, the full noise-factor expression for the device can be written in terms of admittances:</p>
+<blockquote><p>F = F<sub>min</sub> + (R<sub>n</sub> / G<sub>s</sub>) &middot; |Y<sub>s</sub> - Y<sub>opt</sub>|<sup>2</sup></p></blockquote>
+<p>Here Y<sub>s</sub> = 1/Z<sub>s</sub> is the source admittance presented to the device, Y<sub>opt</sub> = 1/Z<sub>opt</sub> is the optimum source admittance, and G<sub>s</sub> is the real part of Y<sub>s</sub> = G<sub>s</sub> + jB<sub>s</sub>. The structure of this equation is worth pausing on. The first term, F<sub>min</sub>, is the floor. The second term is a penalty that grows with the squared distance between the actual source admittance and the optimum source admittance, scaled by R<sub>n</sub>/G<sub>s</sub>. When Y<sub>s</sub> = Y<sub>opt</sub>, the penalty vanishes and F = F<sub>min</sub>, as it must.</p>
+<p>The same relationship can be written in reflection-coefficient coordinates, which many designers find more natural when they are already living in S-parameter space:</p>
+<blockquote><p>F = F<sub>min</sub> + (4 R<sub>n</sub> / Z<sub>0</sub>) &middot; |&Gamma;<sub>s</sub> - &Gamma;<sub>opt</sub>|<sup>2</sup> / [(1 - |&Gamma;<sub>s</sub>|<sup>2</sup>) |1 + &Gamma;<sub>opt</sub>|<sup>2</sup>]</p></blockquote>
+<p>The conversion from impedance to reflection coefficient is the conventional &Gamma; = (Z - Z<sub>0</sub>)/(Z + Z<sub>0</sub>), where Z<sub>0</sub> is the characteristic impedance, usually 50 ohms. Both forms say the same thing: noise factor rises as you move the source away from its optimum, and R<sub>n</sub> sets how steeply it rises.</p>
+<p>A small R<sub>n</sub> means the device is forgiving. The noise figure stays near F<sub>min</sub> even when the source impedance wanders, which is valuable when the source is an antenna whose impedance shifts as nearby objects move. A large R<sub>n</sub> means the device is fussy and demands a source held tightly at Y<sub>opt</sub>. R<sub>n</sub>, then, is not a noise floor but a sensitivity, the slope of the noise penalty around the optimum.</p>
+<h2 id="the-lange-invariant-parameter">7.4 The Lange Invariant Parameter</h2>
+<p>A designer steeped in traveling waves, S-parameters, and reflection coefficients may find the noise-factor expression of Section 7.3 a little foreign. The plus sign in F = F<sub>min</sub> + (R<sub>n</sub>/G<sub>s</sub>)|Y<sub>s</sub> - Y<sub>opt</sub>|<sup>2</sup> is not the multiplicative structure that S-parameter manipulation usually produces. There is a deeper problem too.</p>
+<p>Suppose you add a short, lossless transmission line at the device input and want to re-derive the noise parameters. Adjusting the phase of &Gamma;<sub>opt</sub> for the line length is straightforward, and reassuringly, F<sub>min</sub> does not change. A lossless network cannot improve or degrade the best achievable noise factor. But R<sub>n</sub> does change, and it changes in a way that is not simple to track. That makes R<sub>n</sub> awkward to carry through a design where lossless elements come and go.</p>
+<p><strong>A better noise parameter.</strong> Although R<sub>n</sub> is in common use, it is not a fundamental noise parameter. A more fundamental choice is the Lange invariant parameter, N. Four properties make N the better tool.</p>
+<p>First, like F<sub>min</sub>, N does not change when the device is embedded in a lossless passive network. In the example above, the short interconnect at the input leaves both N and F<sub>min</sub> untouched. N is invariant where R<sub>n</sub> is not, which is the source of its name.</p>
+<p>Second, N provides a built-in accuracy check on noise-parameter measurement. The literature shows that the inequality F<sub>min</sub> - 1 &le; 4N must hold for any physically valid device. If an extracted set of noise parameters violates it, the measurement contains errors. That is a rare and welcome thing: a parameter that polices its own consistency.</p>
+<p>Third, for many transistors the approximation F<sub>min</sub> - 1 &asymp; 2N holds well. That makes N convenient for back-of-the-envelope work, letting a designer estimate one quantity from the other without a full extraction.</p>
+<p>Fourth, N scales with transistor size in roughly the same way F<sub>min</sub> does, so the two track each other as a process is scaled, which helps when porting a design across device geometries.</p>
+<p>Like R<sub>n</sub>, N expresses the sensitivity of noise factor to a mismatch between Y<sub>s</sub> and Y<sub>opt</sub>. The two are directly related:</p>
+<blockquote><p>N = R<sub>n</sub> &middot; G<sub>opt</sub></p></blockquote>
+<p>where G<sub>opt</sub> is the real part of the optimum admittance Y<sub>opt</sub> = G<sub>opt</sub> + jB<sub>opt</sub>. With this relationship the noise factor can be recast in terms of N:</p>
+<blockquote><p>F = F<sub>min</sub> + (N / (G<sub>s</sub> &middot; G<sub>opt</sub>)) &middot; |Y<sub>s</sub> - Y<sub>opt</sub>|<sup>2</sup></p></blockquote>
+<p>Whether a designer adopts R<sub>n</sub> or N, and whether or not the noise-factor expression is simplified, the underlying measurement does not change. The four noise parameters can be obtained by a source-pull method using impedance tuners or impedance generators, by a long-line method, by a six-port method, or by other techniques. The choice of parameter is a choice of bookkeeping, not of physics.</p>
+<h2 id="measuring-noise-parameters-with-y-factor">7.5 Measuring Noise Parameters with Y-Factor</h2>
+<p>The challenge of measuring noise parameters is old and the approaches are varied. Some represent noise signals as power waves. Others take a single noise-figure measurement and fit it to a device noise model derived analytically or from prior characterization. The dominant approach today uses source-impedance tuners to generate several different source admittances, the Y values (Y<sub>s</sub>), at the device input, then uses a receiver to measure the resulting output noise powers. The noise parameters are extracted from those measurements by data fitting.</p>
+<p>Before getting to the multi-impedance extraction, it helps to understand the single building block on which all of it rests: the Y-factor method for measuring a single noise figure.</p>
+<p><strong>The Y-factor method.</strong> A calibrated noise source produces two known output states, a hot state at noise temperature T<sub>h</sub> and a cold state at T<sub>c</sub>. Many noise sources are noise diodes switched by a bias voltage, with the excess noise above the reference written as the excess noise ratio, ENR. The receiver measures the output noise power in each state, N<sub>hot</sub> and N<sub>cold</sub>, and forms their ratio:</p>
+<blockquote><p>Y = N<sub>hot</sub> / N<sub>cold</sub></p></blockquote>
+<p>From Y and the known ENR, the device noise factor follows. With the cold state near T<sub>0</sub>, the working relationship is:</p>
+<blockquote><p>F = ENR / (Y - 1)</p></blockquote>
+<p>A large Y means the device adds little noise of its own, so the hot and cold states stand far apart at the output. A Y near 1 means the device's own noise swamps the difference between the source states, which is the signature of a noisy device or a poorly chosen measurement. Figure 7.4 shows the basic setup.</p>
+<figure>
+<img src="../figures/fig-07-04-y-factor-setup.svg" alt="Y-factor noise-figure measurement setup" /><figcaption><span class="fig-num">Figure 7.4</span> Y-factor noise-figure measurement. A calibrated noise source drives the device under test in hot and cold states; the receiver measures the output noise power in each state and forms the ratio Y to extract the noise factor.</figcaption>
+</figure>
+<p><strong>From one noise figure to four noise parameters.</strong> A single Y-factor measurement gives one noise figure for one source impedance. Extracting all four noise parameters requires the noise figure at several different source admittances. Most extraction methods rest on manipulating Y<sub>s</sub> = 1/Z<sub>s</sub> by varying the matching network, sweeping the source admittance across the Smith chart.</p>
+<figure>
+<img src="../figures/fig-p057-01.png" alt="Four regions on the Smith chart" /><figcaption><span class="fig-num">Figure 7.2</span> Four regions (A, B, C, and D) on the Smith chart where source admittances are placed for noise-parameter extraction. Each region isolates a different part of the device noise behavior.</figcaption>
+</figure>
+<p>By generating at least four distinct admittances, Y<sub>s1</sub>, Y<sub>s2</sub>, Y<sub>s3</sub>, and Y<sub>s4</sub>, and measuring the noise factors F1, F2, F3, and F4 for each, the noise-factor expression of Section 7.3 yields a system of equations. In matrix form:</p>
+<blockquote><p>A x = F</p></blockquote>
+<p>For n &ge; 4 measured complex admittances Y<sub>s</sub> = G<sub>s</sub> + jB<sub>s</sub>, A is an n x 4 matrix computed from the admittances, x is the vector of unknown noise parameters, and F = [F1 F2 F3 F4]<sup>T</sup> is the vector of measured noise factors. The four unknowns, often labeled A, B, C, and D in the ABCD noise model, are obtained by solving the system. They map directly to the standard noise parameters.</p>
+<figure>
+<img src="../figures/fig-p058-01.png" alt="ABCD noise model of a device" /><figcaption><span class="fig-num">Figure 7.3</span> ABCD noise model of a device. The device noise is referred to the input as a noise voltage vn and a noise current in, whose correlation completes the description.</figcaption>
+</figure>
+<p>The ABCD model in Figure 7.3 refers the device noise to the input as a noise voltage v<sub>n</sub> and a noise current i<sub>n</sub>. The relationship between the extracted unknowns and the noise parameters runs through the noise-correlation matrix, which can be written in terms of the noise parameters and contains the autocorrelation of v<sub>n</sub>, the autocorrelation of i<sub>n</sub>, and their cross-correlation.</p>
+<p><strong>Why this is hard.</strong> The process looks tidy on paper, but it is demanding in practice. It depends on measuring very low noise powers that are easily corrupted by interference and instrument error. Because Y<sub>opt</sub> is complex, vector calibration is required, which makes a vector network analyzer indispensable to the setup. A small error in the measured admittances or noise powers can swing the extracted parameters, so the choice of where to place the source admittances matters a great deal.</p>
+<p><strong>Choosing the admittances.</strong> Research on noise-parameter extraction has long focused on which source admittances make the system solvable without spending excessive time taking measurements. A consistent finding is that one admittance should sit near the center of the Smith chart. For the others, a uniformly distributed pattern across the chart gives reasonable extraction from only a few points, and a deliberately non-uniform spread can improve it further.</p>
+<p>Historically, getting a well-conditioned system meant adding more admittances, sometimes well over twenty. Newer measurement theory shows that four well-chosen admittances are enough. Recent work used linear algebra to find the admittances that guarantee a diagonally dominant matrix A, which keeps the system numerically stable. Because the placement was not constrained to single points, the optimal admittances emerged as four regions on the Smith chart, the regions A, B, C, and D in Figure 7.2.</p>
+<p>Each region plays a distinct role. Region A is a well-matched region that fixes the overall noise level of the device. Region B isolates the input-referred noise voltage v<sub>n</sub>. Region C isolates the input-referred noise current i<sub>n</sub>. Region D determines the correlation between v<sub>n</sub> and i<sub>n</sub>. The regions can be reshaped by choosing different scaling factors, which lets the matching network of Figure 7.1 cover a wider frequency range.</p>
+<blockquote><p><strong>Going Deeper - From points to regions to broadband measurement</strong></p><p>The shift from a constellation of fixed admittance points to numerically tunable regions is what opens the door to true broadband noise-parameter measurement. Mechanical impedance tuners rely on long transmission lines to separate the admittances, which makes them strongly frequency dependent. Digital impedance generators are designed to hold the source admittances inside the optimal regions across wide frequency ranges, so the four states stay valid as frequency changes. That allows concurrent extraction of noise parameters over a very wide band with only four generator states.</p></blockquote>
+<h2 id="noise-parameters-vs-noise-figure">7.6 Noise Parameters vs. Noise Figure</h2>
+<p>It is worth restating the difference between a noise figure and the noise parameters, because the two are easy to conflate. For any device, the noise figure measures the degradation of signal-to-noise ratio caused by that device. But noise figure is not a fixed property of the device alone. It depends on the source impedance Zs presented by whatever circuit drives the device, such as the matching network in Figure 7.1.</p>
+<p>Change the driving impedance and the noise figure changes with it. An antenna whose impedance shifts because a hand or a metal object moves nearby will change Zs, and therefore change the noise figure of the stage it feeds. To predict how much the noise figure moves, you need the device noise parameters. They give the complete picture of the device's noise behavior, from which any specific noise figure can be computed, along with the best achievable noise figure and the source condition that reaches it.</p>
+<p><strong>Why transistor noise parameters are non-negotiable.</strong> A low-noise LNA design is simply not possible without the noise parameters of the transistors involved. Without them a designer has no way to compute the LNA noise figure under a given match, no way to find the optimum match, and no way to predict the penalty for missing it. Industry-standard simulation tools are built to accept noise parameters directly, and they produce the most accurate noise model available. Good tools and good models are what let engineers do their best work.</p>
+<p>In summary, noise parameters do the following:</p>
+<ul>
+<li>Provide a complete picture of the best noise figure possible with a given device, typically a low-noise amplifier.</li>
+<li>Give designers the information needed to design a matching network that achieves the lowest noise figure.</li>
+<li>Provide a basis for comparing devices by their noise, their ease of matching, and their sensitivity to mismatch.</li>
+<li>Predict the noise-figure penalty caused by mismatches at the input, for example when an antenna is not exactly 50 ohms.</li>
+<li>Allow proper calculation of noise figure for a cascade of system components, through the Friis relationship.</li>
+<li>Permit evaluation of how well an input matching network achieves the best noise figure.</li>
+<li>Ease the trade-off between power consumption and noise figure. Rather than sourcing a higher-power device to lower the noise figure, a better matching network may let a lower-power device meet the target.</li>
+</ul>
+<p>That last point has real bottom-line consequences. Power budget is precious in battery-operated and densely integrated systems, and a noise-parameter-driven match can buy noise-figure margin without buying watts.</p>
+<h2 id="modern-noise-figure-measurement">7.7 Modern Noise-Figure Measurement</h2>
+<p>The methods above describe what is measured. Modern instruments change how it is measured, and the change is significant for anyone characterizing devices across wide bands.</p>
+<p>The traditional path used mechanical impedance tuners. These rely on long transmission lines to separate the source admittances enough for a clean extraction, which makes them slow to set and strongly frequency dependent. A measurement tuned for one band has to be retuned for another. For a single spot frequency this is acceptable, but for broadband characterization it becomes a bottleneck.</p>
+<p>Digital impedance generators take a different approach. They are designed to hold the source admittances within the optimal Smith-chart regions across wide frequency ranges. Because the four required states stay valid as frequency changes, noise parameters can be extracted concurrently over a very wide band using only four generator states rather than a dense constellation of points. The result is a faster, broader, and more repeatable measurement.</p>
+<div class="callout"><p><strong>BNC in Practice - Instruments for noise characterization</strong></p><p>Berkeley Nucleonics builds RF and microwave test instruments used in low-noise design and device characterization, including impedance-tuning and noise-measurement equipment. Specific models, frequency ranges, and performance figures change over time, so confirm any product capability against the current BNC datasheet before relying on it for a measurement plan. Verify against current datasheet.</p></div>
+<p>The broader point is that noise-parameter measurement has moved from a slow, frequency-by-frequency exercise into a fast, broadband one. That shift matters because the devices being characterized now operate across wider bands than ever, from sub-6 GHz wireless to millimeter-wave front ends. The theory in this chapter has not changed. The speed and bandwidth over which it can be applied have.</p>
+<h2 id="chapter-7-quiz">Chapter 7 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-07-noise-figure.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>Define noise factor F in terms of signal-to-noise ratios, and explain why F is always greater than or equal to 1 for a real device.</li>
+<li>A device is power matched so that all available source power reaches it, yet its measured noise figure is higher than NF<sub>min</sub>. What condition has been violated, and what is the name for the gain measured under the noise-matched condition instead?</li>
+<li>Why is the Lange invariant parameter N considered more fundamental than the equivalent noise resistance R<sub>n</sub>? Give at least two of its properties.</li>
+<li>In the Y-factor method, a noise source is switched between hot and cold states and the receiver reads N<sub>hot</sub> and N<sub>cold</sub>. Write the expression for Y and the relationship that gives the noise factor from Y and ENR.</li>
+<li>In four-region noise-parameter extraction on the Smith chart, what does each of the regions A, B, C, and D isolate or determine?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>F = SNR<sub>in</sub> / SNR<sub>out</sub>. Because a real, passive-or-active device can only add noise and therefore degrade the signal-to-noise ratio, SNR<sub>out</sub> is always less than or equal to SNR<sub>in</sub>, which forces F to be at least 1. F = 1 would mean a perfectly noiseless device.</li>
+<li>Noise matching has been violated: the source impedance Zs is not equal to Z<sub>opt</sub>, so the noise figure rises above NF<sub>min</sub> even though the input is power matched. The gain obtained under the noise-matched condition (Zs = Z<sub>opt</sub>) is called the associated gain, G<sub>ass</sub>.</li>
+<li>N is invariant when the device is embedded in a lossless passive network, whereas R<sub>n</sub> changes (and not in a simple way). N also enforces the physical check F<sub>min</sub> - 1 &le; 4N, often satisfies F<sub>min</sub> - 1 &asymp; 2N for transistors, and scales with transistor size in step with F<sub>min</sub>. R<sub>n</sub> is related to N by N = R<sub>n</sub> &middot; G<sub>opt</sub>.</li>
+<li>Y = N<sub>hot</sub> / N<sub>cold</sub>. With the cold state near the reference temperature T<sub>0</sub>, the noise factor follows from F = ENR / (Y - 1), where ENR is the excess noise ratio of the calibrated noise source.</li>
+<li>Region A is a well-matched region that fixes the overall device noise level; region B isolates the input-referred noise voltage v<sub>n</sub>; region C isolates the input-referred noise current i<sub>n</sub>; and region D determines the correlation between v<sub>n</sub> and i<sub>n</sub>.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] D. A. Brown, "The Nuts and Bolts of Radio Frequency," Berkeley Nucleonics Corporation, first edition. Source text for this chapter. Verify before publication.</p>
+<p>[2] H. Hillbrand and P. Russer, "An efficient method for computer-aided noise analysis of linear amplifier networks," IEEE Transactions on Circuits and Systems, 1976 (noise-correlation matrix formulation). Verify before publication.</p>
+<p>[3] R. Q. Lange, on the invariant noise parameter and the relationship between F<sub>min</sub> - 1 and 4N for low-noise devices. Verify exact citation and inequality form before publication.</p>
+<p>[4] H. Fukui, "Available power gain, noise figure, and noise measure of two-ports and their graphical representations," IEEE Transactions on Circuit Theory, 1966 (F<sub>min</sub>, Gopt, Rn formulation). Verify before publication.</p>
+<p>[5] Keysight / industry application notes on noise-figure measurement and the Y-factor method, including ENR usage and cold-source techniques. Verify current edition before publication.</p>
+<p>[6] Recent literature on four-impedance noise-parameter extraction and diagonally dominant admittance selection on the Smith chart. Verify specific citation before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="06-vector-network-analysis.html">&larr; 6. Network Analysis</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="08-tracking-generators-filters-cables.html">8. Tracking Generators &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

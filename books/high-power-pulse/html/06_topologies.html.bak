@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6: Circuit Topologies</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-6">Chapter 6</h1>
+<h2 id="circuit-topologies">Circuit Topologies</h2>
+<blockquote>
+<p><em>"Topologies are like architectural styles. Brutalist, ranch, art deco. Each has attributes you can predict regardless of size or layout. So with pulsers."</em></p>
+</blockquote>
+<hr />
+<h3 id="61-why-topology-matters">6.1 Why topology matters</h3>
+<p>A pulser's topology is the wiring diagram, abstracted to the level where you can see what kind of pulser it is without knowing the component values. Two pulsers with completely different ratings can share a topology. Two pulsers with similar ratings can have completely different topologies. The topology determines what loads the pulser drives well, how the pulse is shaped, what fails first when the device is pushed past spec, and what kind of engineer you need on hand to fix it.</p>
+<p>This chapter describes the topologies in commercial and research use as of this writing. The four covered in V1 (voltage-controlled current driver, inductive-storage current driver, PID-controlled current loop, half-bridge HV pulser) are preserved here, expanded, and joined by six more (solid-state Marx, inductive voltage adder, pulse-forming networks, Blumlein lines, magnetic pulse compression, resonant charging). Each section follows the same structure: the diagram, the working principle, the strengths and weaknesses, and an example product or facility that uses it.</p>
+<hr />
+<h3 id="62-voltage-controlled-current-driver">6.2 Voltage-controlled current driver</h3>
+<p>The simplest current-pulser topology. A capacitor bank charges through a resistor, and a MOSFET switch dumps the charge through a string of resistors to set the current.</p>
+<p><strong>Working principle.</strong> The voltage on the storage capacitor sets the current that flows when the switch closes, by Ohm's law: I = V_stored / R_string. The current pulse is rectangular with rise and fall times set by the switch and the loop inductance. Pulse width is set by either the switch on-time or by the capacitor draining (whichever happens first).</p>
+<p><strong>Strengths.</strong> Compact, inexpensive, fast rise times because the resistive set-current loop is naturally low-inductance. The PCO-7110, PCO-7120, and PCO-7810 are open-board implementations of this topology, with the load (a laser diode) attached directly to the board to keep the loop area minimal.</p>
+<p><strong>Weaknesses.</strong> Power dissipation in the set resistors is significant. Pulse width is limited by the storage capacitor's energy budget. The topology is inflexible: changing the current means changing the supply voltage or the resistor string. Heat dissipation from the MOSFET is concentrated and the device can fail thermally if the user pushes the duty cycle too high.</p>
+<p><strong>Where it lives.</strong> Compact, fixed-current laser diode drivers and similar small-pulse-energy current sources where parts count and cost matter more than flexibility.</p>
+<hr />
+<h3 id="63-inductive-storage-current-driver">6.3 Inductive-storage current driver</h3>
+<p>A buck-converter-style topology where the energy is stored in an inductor's magnetic field. A MOSFET switch chops the supply voltage, the inductor smooths the current, and the load sees a pulsed current set by the duty cycle of the chop.</p>
+<p><img alt="Inductive-storage current driver in two states. On-state: the switch is closed, current flows from supply through switch and inductor to load and back. Off-state: switch is open, current continues flowing through a freewheeling diode and the inductor to load, recirculating the magnetic energy." src="../figures/fig_06-1_inductive_storage.svg" />
+<em>Figure 6.1, Inductive-storage current driver in its two states. On-state at top, off-state at bottom. The inductor is the energy reservoir, and the diode provides the freewheeling path during the off state. Output current is set by duty cycle, with the inductor smoothing ripple.</em></p>
+<p><strong>Working principle.</strong> During the on-state, the switch connects the supply to the inductor and the load. Current ramps up linearly with rate dI/dt = V_supply / L. During the off-state, the switch opens and the inductor's stored magnetic energy maintains current flow through a freewheeling diode and the load. Output current is roughly constant if the inductor is large enough and the switching frequency is high enough.</p>
+<p><strong>Strengths.</strong> Long pulse widths (multi-millisecond), even continuous-wave operation. Fast rise and fall times set by the switch, not by the inductor. Efficiency is high (no dissipation in a series resistor string). Variable current via duty-cycle modulation, controlled by a feedback loop.</p>
+<p><strong>Weaknesses.</strong> Output ripple from the switching action shows up on the current waveform, especially at low average current. This is why most inductive-storage pulsers have a minimum-current spec. The freewheeling diode has to handle the full output current and switch fast enough to follow the topology's switching frequency, which puts a real constraint on diode selection.</p>
+<p><strong>Where it lives.</strong> The PCO-6131, PCO-6141, PCX-7420, and PCX-9600 all use inductive storage as their core topology. So do most modern motor drives and power supplies, just with different scaling.</p>
+<hr />
+<h3 id="64-servo-pid-controlled-current-loop">6.4 Servo / PID controlled current loop</h3>
+<p>The high-current cousin of inductive-storage, with multiple parallel current loops feeding a common output and a microcontroller actively controlling the switch timing in each loop.</p>
+<p><strong>Working principle.</strong> Each loop is an inductive-storage stage, capable of about 40 A on its own. The output current is the parallel sum across all loops. A microcontroller measures the actual output current (via a current-viewing resistor) and adjusts each loop's duty cycle to maintain the commanded current. The PID compensator determines how aggressively the controller corrects deviations.</p>
+<p><strong>Strengths.</strong> Very high accuracy and constant-current behavior, even into varying loads. Pulse top is flat to better than 1% droop over multi-millisecond pulses. Maximum currents into the hundreds of amps because the parallel loops scale.</p>
+<p><strong>Weaknesses.</strong> Complex. Multiple high-power loops with synchronization requirements. Loop-to-loop matching matters. The PCX-7500 has 14 loops in parallel and a destruction mode if pushed past spec because the loops can crosstalk under fault conditions and damage components rapidly.</p>
+<p><strong>Where it lives.</strong> The PCX-7500 series is the definitive example. Several research-grade laser-diode test systems use similar architectures.</p>
+<hr />
+<h3 id="65-half-bridge-hv-pulser">6.5 Half-bridge HV pulser</h3>
+<p>The dominant voltage-pulser topology in commercial instruments. Two switches in series, with the load tied to the midpoint, alternately drive the load high and low.</p>
+<p><strong>Working principle.</strong> Two MOSFET stacks (or stacked devices in series) connect from V_high to ground via the load. When the upper switch closes and the lower opens, the load sees V_high. When the lower closes and the upper opens, the load sees ground. The transition between states is fast, set by the switch speed. Bipolar variants have V_high and V_low rails (positive and negative supplies) and the load swings between them.</p>
+<p><strong>Strengths.</strong> Symmetric rise and fall times because the switches actively source and sink current. Fast transitions: the PVX-4150 hits 25 ns rise and fall at 1.5 kV. Robust under load shorts because the switches have well-defined off-states even during fault transients.</p>
+<p><strong>Weaknesses.</strong> Two switch stacks instead of one, doubling the parts count. Both switches must transition cleanly without overlap (shoot-through prevention adds dead-time, which the load capacitance fills with charge). Gate-drive isolation is more demanding because the upper switch is referenced to a switching node rather than to ground.</p>
+<p><strong>Where it lives.</strong> PVX-4110 (10 kV), PVX-4150 (1.5 kV), PVX-4000 series (2 kV). The dominant topology in the BNC-DEI voltage-pulser line.</p>
+<p><img alt="Half-bridge high-voltage pulser. Two MOSFETs in series, M_high and M_low, are connected from the positive supply to ground. The load is tied to the midpoint between them. Gate drives are transformer-coupled with separate windings for the two switches. When M_high closes and M_low opens, the load sees +V. When M_low closes and M_high opens, the load sees ground." src="../figures/fig_06-2_half_bridge.svg" />
+<em>Figure 6.2, The half-bridge HV pulser topology that dominates commercial voltage-pulser design. Symmetric switches with isolated gate drives produce fast, symmetric transitions. The output network at the load tunes the pulse fidelity for the specific load type.</em></p>
+<hr />
+<h3 id="66-solid-state-marx-generator">6.6 Solid-state Marx generator</h3>
+<p>A modernization of the 1924 Marx topology, with semiconductors in place of spark gaps. Capacitors are charged in parallel and switched into series when the pulse fires, with the voltage adding across all stages.</p>
+<p><strong>Working principle.</strong> N stages, each containing a capacitor C and a semiconductor switch (typically a MOSFET or IGBT). Charging diodes connect the stages so that during charge, all capacitors charge to the same voltage from a common low-voltage supply. When the trigger arrives, all switches close simultaneously, and the capacitors are reconfigured into a series chain. Output voltage is N × V_charge.</p>
+<p><strong>Strengths.</strong> Output voltage scales with stage count, no theoretical upper limit (in practice, mechanical packaging and isolation set limits at hundreds of kV). Fast rise times if the switches are coordinated tightly (sub-100 ns at tens of kV is achievable). Modular: adding stages adds voltage capability without redesign of any single stage.</p>
+<p><strong>Weaknesses.</strong> All switches must trigger together within the desired rise time, which means tight gate-drive timing and fiber-optic distribution for triggers. Failure of any single stage propagates: a stage that fails closed shorts itself out (manageable, voltage just drops by V/N), but a stage that fails open prevents the whole pulser from firing.</p>
+<p><strong>Where it lives.</strong> Eagle Harbor Technologies builds commercial solid-state Marx pulsers in the 10 to 100 kV range. Several research pulsed-power facilities use solid-state Marx topology in the 100 to 500 kV class for klystron drivers and similar applications. The International Linear Collider was driven by a solid-state Marx topology for klystron modulator service.</p>
+<hr />
+<h3 id="67-inductive-voltage-adder">6.7 Inductive voltage adder</h3>
+<p>A modulator topology where N pulse transformers, each driven by a separate primary stage, sum their secondary voltages in series at the load. The load sees N × V_secondary.</p>
+<p><strong>Working principle.</strong> Each primary stage is a half-bridge or push-pull driver running at a moderate voltage. The secondary windings are wired in series, so the output voltage at the load is the sum across all secondaries. Triggering all primaries simultaneously produces a coherent secondary pulse with voltage N times the per-stage value.</p>
+<p><strong>Strengths.</strong> Voltage scales without a high-voltage gate-drive isolation requirement, because each primary stage operates at a manageable voltage. Pulse transformers can be designed with low parasitic inductance, so rise times can be fast (tens of nanoseconds at hundreds of kV). The topology is well-suited to long pulses where a Marx generator's capacitor droop would be a problem.</p>
+<p><strong>Weaknesses.</strong> Pulse transformer design is non-trivial and often custom. Magnetic core saturation must be designed against. The primary side has to drive substantial current to develop the secondary voltage at usable currents.</p>
+<p><strong>Where it lives.</strong> Several research pulsers in the megavolt class. The Sandia ZR upgrade used inductive voltage adders. Stangenes Industries supplies pulse transformers used in IVA designs.</p>
+<hr />
+<h3 id="68-pulse-forming-networks">6.8 Pulse-forming networks</h3>
+<p>A PFN is a ladder of inductors and capacitors that emulates a charged transmission line. When switched into a matched load, it delivers a square pulse of duration set by the network's electrical length and amplitude set by the charge voltage.</p>
+<p><strong>Working principle.</strong> A real charged transmission line of length L delivers a pulse of duration 2L/v, where v is the propagation velocity. Practical line lengths are limited by physical size, so a lumped-element approximation is used: a ladder of N sections, each containing one inductor and one capacitor, approximates the distributed line. With enough sections, the output pulse closely matches the ideal square pulse.</p>
+<p><strong>Five canonical types.</strong> Guillemin's original taxonomy identified five PFN configurations (Type A through Type E) that differ in how the inductors and capacitors are arranged. The trade-offs are between pulse flatness, parts count, and ease of charging:</p>
+<ul>
+<li><strong>Type A:</strong> Series capacitors with parallel inductors. Easy to charge but pulse top has visible ripple. Rarely used now.</li>
+<li><strong>Type B:</strong> Parallel capacitors with series inductors, with all inductors mutually coupled. Excellent pulse flatness, complex magnetic design.</li>
+<li><strong>Type C:</strong> Parallel capacitors with series inductors, no coupling. Good flatness, simpler than Type B.</li>
+<li><strong>Type D:</strong> Modification of Type C with adjusted component values for better top flatness. Often the practical choice.</li>
+<li><strong>Type E:</strong> The most common in radar modulators. Parallel capacitors with series inductors, optimized for the trade-off between parts count and pulse flatness. The default choice unless something specific drives a different selection.</li>
+</ul>
+<p><strong>Strengths.</strong> Predictable, repeatable, rugged pulse shape determined by passive component values. No active control loop. Long-pulse operation (microseconds to milliseconds) without the droop a single capacitor would have at the same energy. Energy efficiency high because there is no dissipative regulation.</p>
+<p><strong>Weaknesses.</strong> Pulse shape is fixed at design time. Changing pulse width requires building a different PFN. The thyratron or other primary switch must handle the full peak current and recover between pulses. The components have to handle the full pulse current and voltage, which means substantial physical size for high-energy applications.</p>
+<p><strong>Where it lives.</strong> Radar modulators (still in service in legacy systems and in some new builds where ruggedness matters), klystron modulators in research accelerators, and certain industrial pulsed processes where the fixed pulse shape is an asset rather than a constraint.</p>
+<hr />
+<h3 id="69-blumlein-lines">6.9 Blumlein lines</h3>
+<p>The Blumlein is a refinement of the simple charged-transmission-line pulser, designed to deliver a pulse with full charge voltage at the load (rather than half, which a single line would give).</p>
+<p><strong>Working principle.</strong> Two transmission lines of equal impedance Z are charged to the same voltage. They are connected in series with the load between them. A switch shorts the input end of one line. The voltage step propagates down both lines, and at the load they combine to produce a pulse of duration equal to twice the line's electrical length, with amplitude equal to the charge voltage.</p>
+<p><strong>Strengths.</strong> Output pulse amplitude equals the charge voltage, with no factor of 2 derating. Useful for very short, very-high-voltage pulses. The pulse shape is exceptionally clean if the impedances are well matched.</p>
+<p><strong>Weaknesses.</strong> Physical size is dominated by the transmission lines. For a 100 ns pulse at the speed of light, the line is 30 m long, and at 0.66c (typical for water-dielectric pulsed-power lines), it is 20 m. Most Blumleins are coaxial structures filled with deionized water or oil, making them physically large.</p>
+<p><strong>Where it lives.</strong> Sandia's Hermes, Saturn, and Z Machine all use Blumlein architectures. They are the standard at the megavolt, multi-MA level for short-pulse applications.</p>
+<hr />
+<h3 id="610-magnetic-pulse-compression">6.10 Magnetic pulse compression</h3>
+<p>A chain of saturable inductors, each compressing the pulse coming from the previous stage. Used to take a slow primary pulse from a thyratron and produce a much faster output pulse than the thyratron alone could deliver.</p>
+<p><strong>Working principle.</strong> Each compression stage is a saturable inductor with a parallel capacitor. Input current charges the capacitor while the inductor blocks current (high inductance, below saturation). When the capacitor reaches its operating voltage, the inductor saturates, the inductance collapses, and the energy stored in the capacitor dumps into the next stage as a sharper-edged pulse. Each stage typically reduces pulse width by a factor of 3 to 10, and chains of 4 to 6 stages are used to get from microseconds at the input to nanoseconds at the output.</p>
+<p><strong>Strengths.</strong> Reliable. The saturable cores have million-shot lifetimes when properly cooled. The output pulse rise time can be very fast (sub-100 ns at high voltage) without active switching at the output stage.</p>
+<p><strong>Weaknesses.</strong> Bulky and heavy because of the magnetic cores. Limited repetition rate because cores need time to reset between pulses (often biased with a reset winding to accelerate this). Modern semiconductor-based fast-rise pulsers have replaced magnetic compression in most applications below the 100 kV class.</p>
+<p><strong>Where it lives.</strong> Excimer laser drivers, certain industrial pulsed processes, and some legacy radar modulators. Stangenes is a primary US supplier of saturable cores for this application.</p>
+<hr />
+<h3 id="611-resonant-charging">6.11 Resonant charging</h3>
+<p>Strictly speaking not a pulser topology, but a charging topology that pulser designers have to know. A resonant charging stage replaces a slow resistive charger with a tuned LC circuit that transfers energy from a DC supply to the storage capacitor more efficiently.</p>
+<p><strong>Working principle.</strong> A series inductor between the DC supply and the storage capacitor forms an LC resonant circuit. When the storage capacitor is fully discharged, closing a switch initiates a half-cycle of LC resonance: the supply voltage drives current through the inductor into the capacitor, and the capacitor charges to roughly twice the supply voltage at the resonance peak. A blocking diode catches the capacitor at peak voltage, and the next pulse is ready to fire.</p>
+<p><strong>Strengths.</strong> Doubles the charge voltage relative to the supply (so a 5 kV supply charges a capacitor to 10 kV). High efficiency because the only loss is in the resonant inductor's resistance. Charge time is fast (fractions of the resonant period), which sets the upper limit on pulser repetition rate.</p>
+<p><strong>Weaknesses.</strong> Resonant components must be sized for the application, and changing pulse-energy requirements may require a different inductor. Switching transients during the charge stroke can couple noise into adjacent circuits.</p>
+<p><strong>Where it lives.</strong> Almost every commercial pulser with a fast charge time uses resonant charging. The PVX series, the PCX series, and most research-grade pulsers use this topology to reach high repetition rates.</p>
+<hr />
+<h3 id="612-choosing-a-topology">6.12 Choosing a topology</h3>
+<p>Six considerations drive the selection of a pulser topology:</p>
+<ol>
+<li><strong>Voltage class.</strong> Half-bridge for 1 to 30 kV. Solid-state Marx for 30 kV to several hundred kV. Marx-Blumlein and IVA above that.</li>
+<li><strong>Pulse width.</strong> Inductive storage for microseconds to milliseconds. Half-bridge for hundreds of nanoseconds to microseconds. PFN or Blumlein for shorter, square pulses.</li>
+<li><strong>Rise time target.</strong> GaN half-bridge for sub-nanosecond. SiC half-bridge for low-nanosecond at kilovolts. DSRD or magnetic compression for sub-nanosecond at multi-kilovolt.</li>
+<li><strong>Repetition rate.</strong> Solid-state topologies for high PRF. Spark-gap-based topologies for low PRF or single-shot.</li>
+<li><strong>Pulse shape requirements.</strong> Active control (PID loop) for arbitrary or precise shapes. PFN for fixed rectangular pulses with high fidelity. Marx for general-purpose work.</li>
+<li><strong>Cost and complexity targets.</strong> Voltage-controlled current driver for the simplest case. Half-bridge for general-purpose voltage pulsing. Multi-loop PID for high-current laser-diode work. Custom designs for everything else.</li>
+</ol>
+<p>The matching from these targets to the right topology is mostly mechanical, but pulser engineering is a craft and the experienced practitioner often spots non-obvious matches. SiC half-bridge for what looks like a Marx job, because the modular packaging and gate-drive simplicity of half-bridge wins over the voltage-stacking advantage of Marx in the 10 to 30 kV range. Inductive storage for what looks like a half-bridge job, because the load is a laser diode with forward voltage that varies with operating point and the constant-current behavior matters more than the rise time. Etc. The catalog above is a starting point, not a deterministic answer.</p>
+<hr />
+<h3 id="613-questions-for-review">6.13 Questions for review</h3>
+<ol>
+<li>
+<p>The half-bridge topology achieves symmetric rise and fall times because:
+   a. Both switches turn on at the same instant.
+   b. The load is tied to the midpoint between two switches that actively source and sink current.
+   c. The output capacitor balances the rise and fall.
+   d. The supply voltage is symmetric around ground.</p>
+</li>
+<li>
+<p>A solid-state Marx generator's output voltage equals:
+   a. The charge voltage of one stage.
+   b. The charge voltage divided by the number of stages.
+   c. N times the charge voltage, where N is the number of stages.
+   d. The charge voltage doubled.</p>
+</li>
+<li>
+<p>A PFN's pulse shape is determined by:
+   a. The trigger waveform applied to the switch.
+   b. The L and C values of the network sections, fixed at design time.
+   c. The supply voltage of the charger.
+   d. A microcontroller running a control algorithm.</p>
+</li>
+<li>
+<p>The PCX-7500 maintains constant output current to better than 1% droop over multi-millisecond pulses by using:
+   a. A single very large storage capacitor.
+   b. Multiple parallel inductive-storage current loops with PID control.
+   c. A single MOSFET with gate-drive feedback.
+   d. A spark-gap switch with millisecond hold-off.</p>
+</li>
+<li>
+<p>Magnetic pulse compression chains are used to:
+   a. Generate the initial pulse from a DC supply.
+   b. Sharpen the rise time of a slow pulse from a primary switch using saturable inductors.
+   c. Step up the pulse voltage with magnetic transformers.
+   d. Filter noise from the output pulse.</p>
+</li>
+<li>
+<p>A Blumlein line delivers a pulse with amplitude equal to:
+   a. Half the charge voltage.
+   b. The charge voltage.
+   c. Twice the charge voltage.
+   d. Four times the charge voltage.</p>
+</li>
+<li>
+<p>Resonant charging provides what advantage over resistive charging?
+   a. Faster charge time and charge voltage equal to roughly twice the supply voltage.
+   b. Slower charge time but better stability.
+   c. Lower component cost.
+   d. Simpler triggering.</p>
+</li>
+</ol>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="614-further-reading">6.14 Further reading</h3>
+<ul>
+<li>
+<p><strong>Glasoe, G.N. and Lebacqz, J.V.</strong> <em>Pulse Generators.</em> MIT Radiation Laboratory Series, Volume 5. The original treatment of PFNs. Guillemin's taxonomy is in Chapter 6 of the Glasoe-Lebacqz volume.</p>
+</li>
+<li>
+<p><strong>Bluhm, H.</strong> <em>Pulsed Power Systems.</em> Springer, 2006. Modern textbook treatment of Marx, Blumlein, and inductive voltage adder architectures.</p>
+</li>
+<li>
+<p><strong>Akiyama, H. and Heller, R., editors.</strong> <em>Bioelectrics.</em> Springer. Includes practical PFN and pulser-topology discussions specific to biomedical pulsed-power applications.</p>
+</li>
+<li>
+<p><strong>Mankowski, J. and Kristiansen, M.</strong> "A review of short pulse generator technology." <em>IEEE Transactions on Plasma Science,</em> April 2000. Survey of pulse-forming and pulse-sharpening techniques.</p>
+</li>
+<li>
+<p><strong>IEEE Pulsed Power Conference Proceedings,</strong> any recent year. The biennial gathering of practitioners. Solid-state Marx, IVA, and DSRD-driven systems are heavily represented in current proceedings.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 6.</em></p>
+<p><em>Chapter 7 (Diagnostics and Measurement) follows.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="05_switches.html">&larr; Ch 5: Switch Technologies</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="07_diagnostics.html">Ch 7: Diagnostics and Measurement &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

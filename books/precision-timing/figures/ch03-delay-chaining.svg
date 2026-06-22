@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+  <title id="title">Delay from trigger versus delay from channel</title>
+  <desc id="desc">To sits at the left edge. Channel A is delayed from To; channel B is chained to A by a fixed offset. An arrow shows A sliding later in time while B follows, keeping the A-to-B spacing constant.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="36" y="36" fill="#003D6B" font-size="16" font-weight="700">Delay Chaining (Relative Timing)</text>
+
+  <!-- To at left edge -->
+  <line x1="120" y1="70" x2="120" y2="370" stroke="#C77E00" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="104" y="62" fill="#C77E00" font-size="13" font-weight="700">To</text>
+
+  <!-- Channel A lane -->
+  <text x="36" y="150" fill="#2C3E50" font-size="13" font-weight="700">Ch A</text>
+  <line x1="120" y1="160" x2="660" y2="160" stroke="#b6c2cc" stroke-width="1"/>
+  <!-- A pulse at x=250 -->
+  <path d="M250,160 L250,116 L300,116 L300,160" fill="none" stroke="#003D6B" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- ghosted slid position of A -->
+  <path d="M400,160 L400,116 L450,116 L450,160" fill="none" stroke="#003D6B" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
+
+  <!-- delay from To bracket -->
+  <line x1="120" y1="185" x2="250" y2="185" stroke="#2C3E50" stroke-width="1"/>
+  <line x1="120" y1="180" x2="120" y2="190" stroke="#2C3E50" stroke-width="1"/>
+  <line x1="250" y1="180" x2="250" y2="190" stroke="#2C3E50" stroke-width="1"/>
+  <text x="135" y="202" fill="#2C3E50" font-size="12">delay from To</text>
+
+  <!-- Channel B lane -->
+  <text x="36" y="280" fill="#2C3E50" font-size="13" font-weight="700">Ch B</text>
+  <line x1="120" y1="290" x2="660" y2="290" stroke="#b6c2cc" stroke-width="1"/>
+  <!-- B pulse at x=380 (offset from A=250) -->
+  <path d="M380,290 L380,246 L430,246 L430,290" fill="none" stroke="#0078B6" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- ghosted slid position of B (offset from A's slid 400) = 530 -->
+  <path d="M530,290 L530,246 L580,246 L580,290" fill="none" stroke="#0078B6" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
+
+  <!-- fixed offset bracket A->B (original positions, leading edges 250 -> 380) -->
+  <line x1="250" y1="225" x2="380" y2="225" stroke="#C77E00" stroke-width="1.5"/>
+  <line x1="250" y1="220" x2="250" y2="230" stroke="#C77E00" stroke-width="1.5"/>
+  <line x1="380" y1="220" x2="380" y2="230" stroke="#C77E00" stroke-width="1.5"/>
+  <text x="248" y="242" fill="#C77E00" font-size="12">fixed offset, delay from channel A</text>
+
+  <!-- slide arrows showing A and B move together -->
+  <path d="M300,135 C340,108 360,108 396,128" fill="none" stroke="#C77E00" stroke-width="2"/>
+  <path d="M396,128 l-9,-3 l3,9 z" fill="#C77E00"/>
+  <path d="M430,265 C470,238 490,238 526,258" fill="none" stroke="#C77E00" stroke-width="2"/>
+  <path d="M526,258 l-9,-3 l3,9 z" fill="#C77E00"/>
+
+  <!-- spacing held constant note (slid positions 400 -> 530) -->
+  <line x1="400" y1="340" x2="530" y2="340" stroke="#C77E00" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <line x1="400" y1="335" x2="400" y2="345" stroke="#C77E00" stroke-width="1.5"/>
+  <line x1="530" y1="335" x2="530" y2="345" stroke="#C77E00" stroke-width="1.5"/>
+  <text x="392" y="360" fill="#2C3E50" font-size="12">spacing held constant as A slides</text>
+</svg>

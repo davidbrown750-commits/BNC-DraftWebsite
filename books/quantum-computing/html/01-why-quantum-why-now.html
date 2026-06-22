@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>01-why-quantum-why-now</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="why-quantum-computing-why-now">1. Why Quantum Computing, Why Now</h1>
+<p>There is a version of the quantum computing story that has been told for decades. In that version, quantum computers are perpetually twenty years away, fascinating to physicists and irrelevant to everyone else. That version is now out of date. Something changed over the last several years, and the change is concrete enough that governments, chip makers, and investors have reorganized their plans around it.</p>
+<p>This chapter makes the case for why the subject deserves your attention in 2026 rather than at some vague future date. It does not promise that a quantum computer will sit on your desk soon, because it will not. The claim is narrower and more defensible: the field crossed a set of technical and economic thresholds that move it from open scientific question to engineering program. The questions have shifted from &ldquo;can this work at all&rdquo; to &ldquo;how fast can we scale it and what will it cost.&rdquo; That shift is the whole reason this book exists, and it is the reason an instrumentation company like Berkeley Nucleonics has a role to play.</p>
+<figure>
+<img src="../figures/fig-01-01-why-quantum-now.svg" alt="A 2021 to 2026 timeline of quantum computing milestones with three driving forces and a control-layer band" /><figcaption><span class="fig-num">Figure 1.1</span> A 2021 to 2026 milestone timeline. Three forces, error correction crossing threshold, national programs and capital, and credible vendor roadmaps, converge to drive momentum, while the control and characterization layer of stable clocks, clean signals, and synchronized triggers runs beneath every milestone.</figcaption>
+</figure>
+<p>We will look at what actually got built, what changed since 2021, why precise measurement and control sit at the center of the whole enterprise, what this book covers, and how to read it depending on what you came here to do.</p>
+
+<h2 id="the-decade-quantum-computing-got-real">1.1 The Decade Quantum Computing Got Real</h2>
+<p>For most of its history, quantum computing lived in the conditional tense. It was a field of proofs, proposals, and small demonstrations. The theory was beautiful and the hardware was fragile. A handful of qubits would hold their state for a fraction of a second, errors would pile up faster than useful work could be done, and the honest assessment from inside the field was that nobody knew whether the approach could ever scale.</p>
+<p>The single hardest problem was error. Qubits are delicate. The slightest interaction with their environment, a stray vibration, a thermal fluctuation, an electromagnetic whisper, knocks them off course. This is called decoherence, and it has been the central obstacle since the beginning. The proposed answer, worked out theoretically in the 1990s, was quantum error correction: spread the information of one reliable &ldquo;logical&rdquo; qubit across many imperfect &ldquo;physical&rdquo; qubits, so that errors can be detected and fixed faster than they accumulate. The theory predicted a threshold. If the physical error rate dropped below a certain level, then adding more physical qubits would make the logical qubit better rather than worse. Below the threshold, scaling helps. Above it, scaling only adds noise.</p>
+<p>For roughly three decades that threshold was a target nobody had hit at scale. In December 2024, Google reported that its Willow processor had crossed it. Their published result showed that as they increased the size of the error-correcting code, the logical error rate fell rather than rose, with the error rate suppressed by a factor of roughly two each time the code distance grew by two [1][2]. The logical qubit outlived its best individual physical qubit. That is the behavior the threshold theorem predicted, observed in hardware at a meaningful scale. It does not mean the problem is solved. It means the central question that haunted the field for thirty years now has an affirmative, experimental answer.</p>
+<p>That is the headline, but it sits on top of a broader pattern. Qubit counts climbed from tens to hundreds and, on some platforms, past a thousand physical qubits. Multiple competing hardware approaches, superconducting circuits, trapped ions, neutral atoms, photonics, each posted real progress rather than promises. Demonstrations of small numbers of entangled logical qubits appeared across several groups. None of this makes a useful, general-purpose quantum computer exist today. Taken together, it marks the decade in which quantum computing stopped being purely a question of physics and became, in large part, a question of engineering and scale.</p>
+
+<h2 id="what-changed-since-2021">1.2 What Changed Since 2021</h2>
+<p>Why pick 2021 as the dividing line? Because the years since cluster into a recognizable phase shift, and tracing the milestones makes the change tangible.</p>
+<p>In 2021, a trapped-ion group demonstrated a fully error-corrected logical qubit and kept it alive through repeated correction cycles [3]. This was an early proof that the error-correction machinery worked in practice on a small scale, not just on paper. Over the following years, several threads advanced at once.</p>
+<p><strong>Hardware scaled.</strong> Superconducting processors pushed past 400 qubits, and by late 2023 a neutral-atom platform fielded an array of more than a thousand physical qubit sites, the first universal platform to cross that line [4]. Raw qubit count is a crude measure, but the trend was unmistakable.</p>
+<p><strong>Logical qubits multiplied.</strong> Where 2021 had a single corrected logical qubit, later demonstrations entangled tens of logical qubits encoded across larger numbers of physical ones [4]. The unit of progress shifted from physical qubits to logical ones, which is the unit that actually matters for running algorithms.</p>
+<p><strong>Error correction crossed the threshold.</strong> The 2024 Willow result discussed above turned a thirty-year theoretical target into an experimental fact [1][2].</p>
+<p><strong>Roadmaps became specific and falsifiable.</strong> In 2025, IBM published a detailed, year-by-year plan to a large-scale fault-tolerant machine, naming intermediate systems and a target of roughly 200 logical qubits executing on the order of 100 million quantum operations by the end of the decade [5][6]. Other vendors published comparably concrete timelines toward thousands and then millions of physical qubits [7]. The plans may slip, as ambitious hardware plans usually do, but their specificity is itself the signal. You do not publish a falsifiable schedule for something you believe is impossible.</p>
+<p><strong>Capital and national strategy followed the science.</strong> By 2025, public investment in quantum technologies worldwide had climbed into the tens of billions of dollars, with several governments committing multibillion-dollar national programs and large public-private funds aimed squarely at quantum [8][9]. In the United States, new legislation and agency programs directed hundreds of millions to quantum research centers, instrumentation, and network infrastructure [9][10]. (Specific figures move quickly and should be verified before publication.) When national governments treat a technology as strategic infrastructure, the timeline assumptions of the entire field change.</p>
+<p>The pattern across all of these is the same. The work moved from &ldquo;is the physics sound&rdquo; to &ldquo;can we build and scale the system.&rdquo; That is what changed since 2021.</p>
+
+<h2 id="why-measurement-and-instrumentation-matter">1.3 Why Measurement and Instrumentation Matter</h2>
+<p>It is tempting to think of a quantum computer as the qubits and nothing else. The qubits get the headlines. But a working quantum computer is a tightly integrated stack, and the largest part of that stack by component count is not the qubits at all. It is the apparatus that prepares them, controls them, and reads them out. This is where measurement and instrumentation move from supporting cast to leading role.</p>
+<p>Consider what controlling a qubit actually requires. The qubit must be initialized into a known state, manipulated through a precisely timed sequence of operations, and then measured. Each of those steps is a physical signal. For superconducting qubits, operations are driven by carefully shaped microwave pulses whose frequency, amplitude, phase, and duration must be controlled to exquisite tolerance. For trapped ions and neutral atoms, lasers and radiofrequency fields play the analogous role. In every platform, many control channels must fire in tight synchronization, referenced to a common, stable clock, because the relative timing between operations is as important as the operations themselves. A pulse that arrives slightly early, slightly late, or slightly off frequency is not a small error. It is the kind of error the entire error-correction apparatus then has to spend resources cleaning up.</p>
+<p>This is why noise is the enemy at every layer. Phase noise on a clock, jitter on a trigger, spurious tones on a microwave source, drift in a signal generator: each of these degrades qubit fidelity directly. Better error correction helps, but error correction is far easier when the underlying physical operations are cleaner to begin with. There is a direct line from the quality of the control and timing hardware to the number of physical qubits required per logical qubit, and therefore to how soon a useful machine becomes practical. Improving the instrumentation is not a side quest. It is on the critical path.</p>
+<blockquote>
+<p><strong>Going Deeper - Why timing precision compounds</strong></p>
+<p>Errors in a quantum computer do not stay local. Because the machine works by orchestrating interference and entanglement across many qubits, a timing or phase error on one control channel can corrupt a result that depends on the coordinated state of the whole register. As algorithms grow longer and involve more qubits, the tolerances on timing and signal purity get tighter, not looser. This is the opposite of much of classical electronics, where margins often relax as you integrate. In quantum control, scale demands more precision, not less, which is precisely why high-performance timing and signal-generation hardware becomes more valuable as the field matures.</p>
+</blockquote>
+<p>This is the layer where an instrumentation company has a natural role. Berkeley Nucleonics has spent decades on exactly these problems in test, measurement, and timing: stable clocks and frequency references, low-noise signal generation, precisely shaped and synchronized pulses, and accurate triggering and delay generation. The control and characterization layer of a quantum computer is built from this kind of engineering. As the field moves from one-off physics demonstrations to repeatable, engineered systems, the demand for reliable, low-noise, high-precision control and timing hardware grows in step.</p>
+<div class="callout">
+<p><strong>BNC in Practice - The control and timing layer</strong></p>
+<p>The relevance here is concrete rather than abstract. Quantum systems are sensitive to their environment in a way few other systems are, and characterizing and controlling them depends on clean timing and clean signals. Stable references, low phase noise, accurate pulse shaping, and tightly synchronized triggers are the recurring requirements across hardware platforms. These are the same engineering problems instrumentation companies have worked on for decades in adjacent fields, which is why that experience transfers directly into the quantum control stack. Any specific BNC product fit for a given quantum control or characterization task should be verified against the current datasheet and confirmed with BNC engineering before it is cited.</p>
+</div>
+<p>The broader point is that quantum computing is not only a story about qubits. It is a story about the instruments that make qubits behave. Keep that lens in mind throughout the book, because it reframes a great deal of what follows.</p>
+
+<h2 id="what-this-book-covers">1.4 What This Book Covers</h2>
+<p>This book is a guided tour of quantum computing for people who need a real working understanding without a graduate course in physics. It favors clarity over completeness and intuition over formalism, while staying honest about where the hard parts are.</p>
+<p>The path runs roughly as follows. After this chapter, the introduction lays out where quantum computing came from and what it fundamentally is, including the century-plus of physics it rests on. From there the book builds up the vocabulary and the core concepts: the key terms you need, how quantum computation differs from classical computation, and the strange but learnable ideas of superposition, interference, and entanglement.</p>
+<p>The middle of the book gets into the machinery. It covers the layers of a quantum computing system from the qubits up through control and software, the different computational models such as gate-based, measurement-based, topological, and analog approaches, and the competing physical hardware platforms with their respective strengths and weaknesses. Throughout, the role of error and error correction recurs, because it is the thread that connects almost every design decision in the field.</p>
+<p>The later chapters turn to the present and the future: where quantum computing stands today, how you can actually access and experiment with real machines, what a career in the field looks like, and how the landscape is likely to evolve. The book closes with appendices and reference material, including a glossary for the terminology that quantum computing throws at newcomers in heavy doses.</p>
+<p>Two commitments run through all of it. First, accuracy over hype. The field is exciting enough without inflation, and this book tries to mark clearly where something is demonstrated, where it is promised, and where it is still uncertain. Second, the instrumentation lens. Because this is a Berkeley Nucleonics book, it pays particular attention to the control, timing, and measurement layer that most general introductions skip, and which turns out to be one of the most practical and underappreciated parts of the whole story.</p>
+
+<h2 id="find-your-reading-path">1.5 Find Your Reading Path</h2>
+<p>Readers arrive at this subject for different reasons, and the book is built to serve at least three of them. You do not have to read every chapter in order. Pick the path that matches your goal and follow it.</p>
+<p><strong>If you are learning quantum computing for its own sake</strong>, read straight through. Start with the introduction and the key terms, take your time with the chapters on how quantum differs from classical computing and the core concepts of superposition, interference, and entanglement, then continue through the models and hardware platforms. Do the chapter quizzes as you go; they are short, self-graded, and designed to confirm that the ideas actually landed before you build on them. The glossary in the appendix is your friend when a term feels slippery.</p>
+<p><strong>If you are evaluating quantum computing for a project or an organization</strong>, weight your attention toward the chapters on where quantum computing stands today, the physical hardware approaches and their trade-offs, how to access real machines, and the landscape and future chapters. You still want the conceptual chapters for vocabulary and for separating real capability from marketing, but your decisions will hinge on the state of the art, the maturity of each platform, and the honest distance between today&rsquo;s demonstrations and a useful production system. Pay particular attention to the discussions of error correction and logical qubits, because those determine when, not whether, the technology becomes practical for a given problem.</p>
+<p><strong>If you are building or researching quantum systems</strong>, you likely have the conceptual foundation already, so use the early chapters as a shared-vocabulary reference and spend your time on the system-layer, hardware, and control chapters. The instrumentation lens running through this book is aimed especially at you. The sections on timing, signal generation, pulse shaping, and synchronization connect directly to the daily reality of getting qubits to behave, and the discussion of how control quality affects error-correction overhead is meant to be practically useful, not just descriptive. When a control or characterization need maps to specific instrumentation, treat the book as a starting point and verify exact product fit against current datasheets and with engineering.</p>
+<p>Whichever path you take, the goal is the same: to leave you with an accurate, durable mental model of what quantum computing is, why it matters now, and where the real engineering work lies. The next chapter begins at the beginning, with how it all started and what a quantum computer actually is.</p>
+
+<h2 id="chapter-1-quiz">Chapter 1 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-01-why-quantum-why-now.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>What is the &ldquo;error-correction threshold,&rdquo; and why was crossing it considered such a significant milestone?</li>
+<li>Identify two distinct developments since 2021 that signal quantum computing&rsquo;s shift from open scientific question to engineering program.</li>
+<li>Why does the quality of control and timing hardware directly affect how soon a useful quantum computer becomes practical?</li>
+<li>Counterintuitively, what happens to timing and signal-purity tolerances as a quantum computation grows in size, and why?</li>
+<li>The book describes three reading paths. Which chapters should someone evaluating quantum computing for an organization prioritize, and why?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>The error-correction threshold is the physical error rate below which adding more physical qubits to a logical qubit makes that logical qubit more reliable rather than less. Below the threshold, scaling helps; above it, scaling only adds noise. Crossing it matters because it was a theoretical target proposed in the 1990s that went unmet at scale for about three decades. Google&rsquo;s 2024 Willow result demonstrated below-threshold behavior in hardware, turning a long-standing open question into an experimental fact and indicating that error correction can in principle be scaled.</li>
+<li>Acceptable answers include any two of: a fully error-corrected logical qubit kept alive through repeated cycles (2021); qubit counts scaling past hundreds and, on neutral-atom platforms, past a thousand physical sites (by 2023); demonstrations entangling tens of logical qubits; below-threshold error correction (2024); detailed, falsifiable vendor roadmaps to fault-tolerant systems (2025); and tens of billions of dollars in public investment plus multibillion-dollar national programs.</li>
+<li>Every qubit operation is a physical signal that must be precisely timed, shaped, and synchronized. Noise, jitter, drift, and timing errors in the control and timing hardware degrade qubit fidelity directly. Cleaner physical operations mean fewer physical qubits are needed per logical qubit, which lowers the overhead of error correction and brings a useful machine closer. Control quality is therefore on the critical path, not a side concern.</li>
+<li>The tolerances get tighter, not looser. Because the machine works by coordinating interference and entanglement across many qubits, a timing or phase error on one channel can corrupt results that depend on the whole register. As algorithms involve more qubits and longer sequences, the demand for timing precision and signal purity increases, which is the opposite of the relaxing margins common in much classical electronics.</li>
+<li>They should prioritize the chapters on where quantum computing stands today, the physical hardware approaches and their trade-offs, how to access real machines, and the landscape and future chapters, while still using the conceptual chapters for vocabulary. The reason is that organizational decisions hinge on the maturity of each platform, the state of the art, and the honest distance between current demonstrations and a useful production system, with error correction and logical qubits determining when the technology becomes practical for a given problem.</li>
+</ol>
+
+<h2 id="references">References</h2>
+<p>[1] Google Quantum AI, &ldquo;Quantum error correction below the surface code threshold,&rdquo; Nature, December 2024. Verify before publication.</p>
+<p>[2] Google Quantum AI announcement of the Willow processor (105-qubit superconducting chip; logical error rate suppressed as code distance increases), December 9, 2024. Verify before publication.</p>
+<p>[3] Quantinuum (formerly Honeywell Quantum Solutions), demonstration of a fault-tolerant logical qubit using the Steane code, 2021. Verify before publication.</p>
+<p>[4] Atom Computing and Microsoft, neutral-atom array exceeding 1,000 physical qubit sites (2023) and demonstrations entangling multiple logical qubits. Verify before publication.</p>
+<p>[5] IBM, &ldquo;IBM lays out clear path to fault-tolerant quantum computing,&rdquo; IBM Quantum blog, June 2025. Verify before publication.</p>
+<p>[6] IBM Quantum Starling roadmap: target of approximately 200 logical qubits and on the order of 100 million quantum operations by 2029, IBM Quantum Data Center, Poughkeepsie, NY. Verify before publication.</p>
+<p>[7] IonQ and other vendor roadmaps projecting scaling to thousands and then millions of physical qubits later this decade. Verify before publication.</p>
+<p>[8] Global public investment in quantum technologies reaching tens of billions of dollars by 2025, including multibillion-dollar national commitments. Verify before publication.</p>
+<p>[9] U.S. national quantum funding programs, including Department of Energy and National Quantum Initiative research centers, instrumentation, and network infrastructure. Specific figures should be verified before publication.</p>
+<p>[10] U.S. Department of Commerce / NIST quantum computing leadership initiatives, 2025 to 2026. Verify before publication.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="00-front-matter.html">&larr; Front Matter</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="02-introduction.html">2. Introduction &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

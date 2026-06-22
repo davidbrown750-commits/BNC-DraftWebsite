@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 4 Quiz &mdash; Spectrum Analysis: The Swept Superheterodyne Analyzer</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 4 &middot; Quiz</p>
+      <h1>Spectrum Analysis: The Swept Superheterodyne Analyzer</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="04-swept-superheterodyne-analyzer.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="05-realtime-fft-analysis.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "04",
+    title: "Chapter 4 Quiz: The Swept Superheterodyne Analyzer",
+    questions: [
+      {
+        q: "Why is an oscilloscope, even one with an FFT function, a poor tool for finding small harmonics or separating two closely spaced signals?",
+        options: [
+          "It samples too slowly to see any RF signal at all",
+          "It has a much higher noise floor than a spectrum analyzer and is wideband, so small features sink below the grass and close signals cannot be cleanly separated",
+          "It can only display one frequency at a time, missing everything else",
+          "It cannot display amplitude, only phase"
+        ],
+        answer: 1,
+        explain: "The scope's high noise floor hides small features, and its wideband nature offers no clean way to separate close signals."
+      },
+      {
+        q: "In a superheterodyne analyzer, which filter is fixed while the LO is swept, and why is that preferred over a bank of filters?",
+        options: [
+          "The input filter is fixed, because input filters are cheap to build across gigahertz",
+          "The final IF filter is fixed and the LO is swept to slide each frequency into it, because one fixed filter plus a swept oscillator is simpler and cheaper than a wideband filter bank",
+          "No filter is fixed; both the IF filter and the LO sweep together",
+          "The video filter is fixed, because it sets the sweep speed"
+        ],
+        answer: 1,
+        explain: "A fixed IF filter plus a swept LO avoids building a costly, bulky filter bank to cover gigahertz of spectrum."
+      },
+      {
+        q: "If RFin = 50 MHz and the LO = 3 GHz, what are the downconverted and upconverted IF frequencies?",
+        options: [
+          "Down: 3.05 GHz; Up: 2.95 GHz",
+          "Down: 2.95 GHz; Up: 3.05 GHz",
+          "Down: 150 MHz; Up: 6 GHz",
+          "Down: 50 MHz; Up: 3 GHz"
+        ],
+        answer: 1,
+        explain: "IFdown = 3 GHz - 50 MHz = 2.95 GHz; IFup = 3 GHz + 50 MHz = 3.05 GHz."
+      },
+      {
+        q: "How does decreasing the resolution bandwidth (RBW) by a factor of 10 affect the DANL, and what is the cost?",
+        options: [
+          "DANL rises about 10 dB, revealing fewer signals, at no cost",
+          "DANL drops about 10 dB, revealing weaker signals, but sweep time grows sharply (roughly as 1/RBW squared)",
+          "DANL is unchanged; only the trace color changes",
+          "DANL drops 100 dB instantly with faster sweeps"
+        ],
+        answer: 1,
+        explain: "Since noise power Pn = kTB, a tenfold narrower RBW lowers DANL about 10 dB, but sweep time grows roughly as 1/RBW^2."
+      },
+      {
+        q: "What does an UNCAL label indicate, and what setting most directly causes it?",
+        options: [
+          "The analyzer needs a factory recalibration; caused by an expired cal certificate",
+          "The displayed trace cannot be guaranteed because the sweep is too fast for the settings; caused most directly by a sweep time shorter than the IF stage needs",
+          "The input is overloaded; caused by too much input power",
+          "The reference oscillator has failed; caused by a dead battery"
+        ],
+        answer: 1,
+        explain: "UNCAL means the sweep is too fast for the IF to respond, often from overriding auto sweep time or narrowing RBW without more time."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7: Diagnostics and Measurement</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-7">Chapter 7</h1>
+<h2 id="diagnostics-and-measurement">Diagnostics and Measurement</h2>
+<blockquote>
+<p><em>"You cannot trust a pulse you cannot measure. Half the failures I have seen on returned-from-the-field pulsers were instrumentation errors, not pulser problems."</em></p>
+</blockquote>
+<hr />
+<h3 id="71-the-measurement-problem">7.1 The measurement problem</h3>
+<p>Pulsed-power signals are hard to measure. The voltages are high. The currents are large. The rise times are fast. Each of these alone strains conventional bench instrumentation. Together they require a deliberate measurement chain that respects every link.</p>
+<p>A 5 kV, 100 A, 10 ns rise time pulse cannot be measured directly with the typical bench scope and probe. The probe will arc over, the scope will saturate, the ground loop will inject common-mode noise that masks the signal, and the operator will look at the resulting trace and conclude (incorrectly) that the pulse looks weird.</p>
+<p>This chapter is about measuring pulses correctly. Voltage measurement, current measurement, timing measurement, and the auxiliary infrastructure that supports them. The order of priority is always: protect the operator first, protect the instruments second, capture the signal third.</p>
+<hr />
+<h3 id="72-voltage-measurement">7.2 Voltage measurement</h3>
+<p>Three families of voltage probe cover almost all pulser measurement work.</p>
+<h4 id="resistive-dividers">Resistive dividers</h4>
+<p>A resistive divider is the simplest high-voltage probe: a high-value resistor in series with a low-value resistor, with the scope measuring across the low-value end. Division ratio = (R1 + R2) / R2.</p>
+<p><strong>Strengths.</strong> Simple, broadband (DC to high frequency, set by the parasitic capacitance of R1). Calibrated easily with a known voltage source. Robust under fault conditions if the resistors are rated for the full pulse voltage.</p>
+<p><strong>Weaknesses.</strong> The ratio is fixed at design time. The capacitance of R1 forms a low-pass filter with the scope's input, limiting bandwidth. For probes above 1 kV, R1 is physically large and air-spaced, with implications for pickup of nearby fields.</p>
+<p><strong>Where they live.</strong> Bench measurement up to a few kV. The Tek P5100A and similar high-voltage probes are resistive dividers internally, with passive compensation networks to flatten the frequency response.</p>
+<h4 id="capacitive-dividers">Capacitive dividers</h4>
+<p>A capacitive divider replaces the resistors with capacitors. Division ratio = C2 / (C1 + C2). The advantage is that capacitors do not dissipate energy at DC, so the divider does not load the source. The downside is that capacitors do not pass DC at all, so the probe is AC-coupled by definition.</p>
+<p><strong>Strengths.</strong> Very fast (capacitor parasitic inductance is the only limit, often into the GHz range). No DC loading on the source. Simple geometry: typically two coaxial cylinders separated by a dielectric.</p>
+<p><strong>Weaknesses.</strong> AC-coupled, so the trace droops over long pulses. Requires a calibrated load resistor at the scope to set the time constant. The ratio depends on the ratio of two capacitors, which can drift with humidity and temperature.</p>
+<p><strong>Where they live.</strong> Fast measurements above a few kV. Most research-grade pulsed-power facilities have custom-built capacitive dividers with carefully characterized response.</p>
+<h4 id="optical-isolators-pockels-cell-sensors">Optical isolators (Pockels-cell sensors)</h4>
+<p>A Pockels cell modulates a polarized light beam in proportion to the applied electric field. By measuring the change in transmitted light power with a photodiode, the voltage on the cell is recovered.</p>
+<p><strong>Strengths.</strong> Galvanic isolation between the high-voltage circuit and the measurement system. Bandwidth into the GHz. Tolerates very high voltages (50 kV and above is routine).</p>
+<p><strong>Weaknesses.</strong> Expensive. Requires a stable laser source and careful optical alignment. Calibration is sensitive to temperature and to light source drift.</p>
+<p><strong>Where they live.</strong> Specialty pulsed-power physics. Not common on commercial bench systems but routine in research facilities where conventional probes are inadequate.</p>
+<hr />
+<h3 id="73-current-measurement">7.3 Current measurement</h3>
+<p>Three families dominate current measurement, with very different bandwidth and amplitude trade-offs.</p>
+<h4 id="current-viewing-resistors-cvrs">Current-viewing resistors (CVRs)</h4>
+<p>The simplest current sensor: a low-value, low-inductance resistor in the current path, with the scope measuring the voltage across it. I = V / R.</p>
+<p><strong>Strengths.</strong> Broadband (DC to many MHz, depending on the resistor). Easy to calibrate. Inexpensive.</p>
+<p><strong>Weaknesses.</strong> The resistor sits in series with the load and carries the full pulse current. It must be rated for the peak current and for the dissipation. Pearson Electronics, T&amp;M Research Products, and a few others specialize in low-inductance CVRs designed for pulsed-power use.</p>
+<p><strong>Where they live.</strong> The standard sensor on most BNC-DEI pulser monitor outputs. The PCO-6131 and similar OEM modules ship with an internal CVR feeding a buffered monitor BNC.</p>
+<h4 id="rogowski-coils">Rogowski coils</h4>
+<p>A Rogowski coil is a flexible toroidal coil that wraps around a current-carrying conductor without breaking the circuit. The coil's output is proportional to dI/dt. Integrating the output gives the current.</p>
+<p><strong>Strengths.</strong> Non-invasive: clamp around any conductor without modifying the circuit. Galvanic isolation from the measured current. No upper amplitude limit (the coil does not saturate at any current). Excellent at high frequencies (MHz to GHz with proper integrators).</p>
+<p><strong>Weaknesses.</strong> AC-coupled by physics: cannot measure DC current. Requires an integrator, which adds noise and drift. Small coils have low sensitivity; large coils have low bandwidth. The trade-off is determined by the coil geometry.</p>
+<p><strong>Where they live.</strong> Pearson Electronics and Powertek build commercial Rogowski coils for current measurement from kHz into GHz. Almost every pulsed-power test bench has at least one.</p>
+<h4 id="pearson-transformers">Pearson transformers</h4>
+<p>A current transformer specifically designed for pulsed measurement, with a single-turn primary (the conductor passing through a hole in the transformer) and a many-turn secondary feeding a calibrated load resistor.</p>
+<p><strong>Strengths.</strong> Very fast (rise times of nanoseconds), accurate, easy to use. Calibration is determined by the turns ratio and the load resistor, both stable.</p>
+<p><strong>Weaknesses.</strong> The transformer core saturates at a flux limit set by V × t (volt-seconds). Long pulses or high currents can saturate the core, and the output signal collapses when this happens. Pulse-amplitude × pulse-width must stay under the transformer's rating.</p>
+<p><strong>Where they live.</strong> The Pearson 411 and 110 are workhorse current monitors in pulsed-power benches everywhere. Their volt-second ratings are published and the user is expected to size the transformer to the pulse.</p>
+<h4 id="b-dot-and-d-dot-probes">B-dot and D-dot probes</h4>
+<p>For very fast, very high amplitude work, the standard sensors are B-dot probes (small loops that pick up dB/dt) and D-dot probes (small electrodes that pick up dD/dt = dE/dt). Integrating gives B or E. These are research-grade tools, not commercial bench items, but they appear in any serious pulsed-power physics lab.</p>
+<hr />
+<h3 id="74-timing-measurements">7.4 Timing measurements</h3>
+<p>Pulser timing parameters, jitter, latency, repetition stability, are measured with the scope in trigger-stable mode and a careful eye on the trigger source.</p>
+<p><strong>Jitter.</strong> Defined as the standard deviation of the time between trigger and pulse-edge over many shots. Modern scopes measure this directly with a math channel that tracks edge crossings. Pulser specs typically quote jitter at 10 ns to 1 ns levels for commercial instruments and sub-100 ps for precision-timing pulsers.</p>
+<p><strong>Trigger-to-output latency.</strong> The deterministic delay from trigger arrival to pulse start. Important when synchronizing multiple pulsers or coordinating with other lab instruments.</p>
+<p><strong>Repetition stability.</strong> The variation in pulse amplitude and width from pulse to pulse. Quoted as a percentage of the nominal value. Modern pulsers with active control achieve 0.1% or better.</p>
+<p>For all timing measurements, the scope's own jitter contribution should be subtracted in quadrature. A scope with 5 ps internal jitter measuring a pulse with 10 ps intrinsic jitter will display sqrt(5² + 10²) = 11.2 ps. Knowing this is the difference between trusting the data and writing a paper that cannot be reproduced.</p>
+<hr />
+<h3 id="75-oscilloscope-selection-for-pulsed-power">7.5 Oscilloscope selection for pulsed power</h3>
+<p>Scope choice is governed by four parameters: bandwidth, sample rate, vertical resolution, and protective margin.</p>
+<p><strong>Bandwidth.</strong> Set by the rise time you want to measure. For a 1 ns pulse, bandwidth ≥ 350 MHz; 1 GHz is comfortable. For a 100 ps pulse, you need a 4 GHz scope at minimum.</p>
+<p><strong>Sample rate.</strong> The rule of thumb is 5x the bandwidth, so a 1 GHz scope wants 5 GS/s. Most modern scopes meet this criterion natively; older models may not.</p>
+<p><strong>Vertical resolution.</strong> Conventional scopes are 8-bit. Modern high-resolution scopes (HiRes, 12-bit, or 14-bit modes) trade bandwidth for vertical resolution. For pulse-fidelity measurements where 1% droop matters, a 12-bit scope is worth the cost. For raw pulse capture where 5% precision is fine, an 8-bit scope is enough.</p>
+<p><strong>Protective margin.</strong> Pulser outputs sometimes glitch in unexpected ways. The scope's input attenuator should have margin against the worst-case spike, not just the nominal pulse amplitude. A 200 V scope channel attempting to measure a 5 kV pulse through a 50:1 divider sees 100 V nominal but might see 500 V on a fault transient. Front-end protection devices (TVS diodes, gas tubes) preserve the scope when the worst happens.</p>
+<hr />
+<h3 id="76-probe-and-cable-connections">7.6 Probe and cable connections</h3>
+<p>The connection from probe to scope is where most "weird trace" problems originate. Three rules cover the common cases.</p>
+<p><strong>Keep the ground lead short.</strong> A long ground lead between the probe tip and the probe's ground reference forms an inductive loop that resonates with the probe's input capacitance. The result is overshoot and ringing on the trace that has nothing to do with the actual signal. For probes used above 100 MHz, replace the standard alligator-clip ground lead with a "ground spring" or solder-on ground tip that gets the loop area down to single-digit millimeters.</p>
+<p><strong>Use the right probe for the bandwidth.</strong> A 100 MHz probe will show you a 1 ns rise time as something like 4 ns. If your scope is 1 GHz but your probe is 100 MHz, the probe is the limit. Match probe bandwidth to scope bandwidth and to the signal you intend to measure.</p>
+<p><strong>Single-ended vs differential.</strong> Single-ended probes assume the source ground is the same as the scope ground. For pulser measurements where the source is referenced to the load (not to scope ground), use differential probes or isolation amplifiers. The Tek P5202A series and similar high-voltage differential probes are designed for exactly this case.</p>
+<hr />
+<h3 id="77-emc-friendly-cabling-for-monitor-outputs">7.7 EMC-friendly cabling for monitor outputs</h3>
+<p>Most pulsers ship with low-voltage monitor outputs (typically BNC connectors carrying scaled-down voltage and current signals). These outputs are vulnerable to common-mode noise pickup if the cabling is not done well.</p>
+<p><strong>Use proper coaxial cable.</strong> RG-58 or RG-223 with intact shields, not random hookup wire. Shield continuity matters at high frequencies.</p>
+<p><strong>Ferrite chokes on monitor cables.</strong> A snap-on ferrite near the pulser end of the cable adds common-mode impedance that suppresses pickup. Most pulsed-power benches have a stash of these for routine use.</p>
+<p><strong>Keep monitor cables away from the high-voltage cable.</strong> Even though the monitor is low-voltage, capacitive coupling from a parallel high-voltage cable can inject pickup that swamps the signal. 12 inches of separation is usually enough; 24 inches is better.</p>
+<p><strong>Star grounding at the scope.</strong> All monitor cable shields connect at one point on the scope chassis. Avoid creating ground loops by grounding shields at multiple points along their length.</p>
+<hr />
+<h3 id="78-what-to-buy-first-in-priority-order">7.8 What to buy first, in priority order</h3>
+<p>A bench equipped to do pulser diagnostics from scratch needs these items, in roughly this priority:</p>
+<ol>
+<li>
+<p><strong>A scope with bandwidth at least 5x your fastest expected rise time.</strong> For most BNC-DEI products, a 1 GHz scope is comfortable. Tek MSO 5 series, Keysight DSOX 6000, R&amp;S RTO are all good choices.</p>
+</li>
+<li>
+<p><strong>A high-voltage differential probe.</strong> Tek P5202A or HVD3206A class. Rated for the highest pulser voltage you expect to measure.</p>
+</li>
+<li>
+<p><strong>A Rogowski coil and integrator.</strong> Pearson Electronics 411 or Powertek CWT class. The bandwidth should match the rise time of your fastest pulses.</p>
+</li>
+<li>
+<p><strong>A current-viewing resistor.</strong> T&amp;M Research SDN-001 or similar, with appropriate amplitude rating.</p>
+</li>
+<li>
+<p><strong>A signal generator for triggering.</strong> The BNC Model 645 or 6040 are ideal because they were designed for this. A general-purpose function generator works, but the specialty pulse-and-delay generators have lower jitter and more useful trigger features.</p>
+</li>
+<li>
+<p><strong>Ferrite chokes, in assorted sizes.</strong> Routine consumable for noise control.</p>
+</li>
+<li>
+<p><strong>A digital multimeter rated for the highest expected voltage.</strong> Bench measurements of capacitor-bank voltages, supply voltages, and divider calibrations.</p>
+</li>
+</ol>
+<p>The total bench cost for this list runs roughly $30,000 to $80,000 depending on the specific instruments. For a serious pulsed-power lab, the investment is paid back in time saved on debugging within the first few months.</p>
+<hr />
+<h3 id="79-calibration-and-verification">7.9 Calibration and verification</h3>
+<p>Three habits separate good measurements from bad ones.</p>
+<p><strong>Calibrate divider ratios with a known voltage.</strong> Use a calibrated DC source up to the divider's rated voltage and verify the ratio at multiple points. Once a year is reasonable for working bench dividers; before any critical measurement is required for high-stakes work.</p>
+<p><strong>Verify current sensors with a known current.</strong> A defined current (from a calibrated source or a known resistor at known voltage) lets you check that the current sensor reads correctly. For Pearson transformers, verify against the volt-second rating to confirm no saturation.</p>
+<p><strong>Cross-check multiple sensors when possible.</strong> A pulse measured by both a CVR and a Rogowski coil should agree to within a few percent. Disagreement points to a problem with one of the sensors. Triangulating with multiple measurement methods is the best defense against systematic errors.</p>
+<hr />
+<h3 id="710-questions-for-review">7.10 Questions for review</h3>
+<ol>
+<li>
+<p>A capacitive divider used for pulse measurement is:
+   a. AC-coupled by physics, with a droop time set by the scope's input load.
+   b. DC-coupled like a resistive divider.
+   c. Insensitive to bandwidth.
+   d. Most useful at low pulser voltages.</p>
+</li>
+<li>
+<p>A Rogowski coil cannot measure:
+   a. Pulses with rise times below 10 ns.
+   b. DC current.
+   c. Currents above 1 kA.
+   d. Pulses with widths below 100 ns.</p>
+</li>
+<li>
+<p>A Pearson transformer's volt-second rating limits:
+   a. The maximum measurable rise time.
+   b. The product of pulse amplitude and pulse width before core saturation.
+   c. The number of pulses that can be measured per minute.
+   d. The minimum input frequency.</p>
+</li>
+<li>
+<p>To measure a 1 ns rise time within 10% of its true value, the scope's bandwidth should be at least:
+   a. 35 MHz
+   b. 350 MHz
+   c. 1 GHz
+   d. 10 GHz</p>
+</li>
+<li>
+<p>Which of the following is the SAFEST way to measure voltage on a floating high-voltage load?
+   a. Lift the scope's safety ground.
+   b. Use a high-voltage differential probe.
+   c. Connect the scope's chassis to the load chassis.
+   d. Use a passive probe with a long ground lead.</p>
+</li>
+<li>
+<p>The standard remedy for common-mode noise on a monitor cable is:
+   a. Lengthen the cable.
+   b. Add a ferrite choke near the pulser end.
+   c. Remove the cable shield.
+   d. Lift the scope's safety ground.</p>
+</li>
+<li>
+<p>The 0.35 / BW rise-time approximation assumes:
+   a. A multi-pole Bessel response.
+   b. A single-pole Gaussian-like response, used as a rule of thumb.
+   c. Exact cancellation of higher-order harmonics.
+   d. A scope with infinite bandwidth.</p>
+</li>
+</ol>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="711-further-reading">7.11 Further reading</h3>
+<ul>
+<li>
+<p><strong>Tektronix Application Note 55W-15839,</strong> <em>Bandwidth and Rise Time.</em> Free PDF on the Tek website. Practical guidance on bandwidth selection.</p>
+</li>
+<li>
+<p><strong>Pearson Electronics technical notes</strong> on Rogowski coil and current transformer use. Available at pearsonelectronics.com.</p>
+</li>
+<li>
+<p><strong>T&amp;M Research Products application notes</strong> on current-viewing resistor selection and use in pulsed-power applications.</p>
+</li>
+<li>
+<p><strong>Smith, P.W.</strong> <em>Transient Electronics: Pulsed Circuit Technology.</em> Wiley, 2002. Chapter 8 on diagnostic techniques.</p>
+</li>
+<li>
+<p><strong>Stoltz, P.H., et al.</strong> "B-dot and D-dot probe design for pulsed-power applications." <em>Review of Scientific Instruments,</em> multiple years. Specifically on field-derivative probe design.</p>
+</li>
+<li>
+<p><strong>IEEE Standard for High Voltage Test Techniques (IEEE Std 4-2013).</strong> Standardizes voltage measurement practice in high-voltage testing, including divider design and calibration.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 7.</em></p>
+<p><em>Chapter 8 (System Integration and EMC) follows.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="06_topologies.html">&larr; Ch 6: Pulser Topologies</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="08_emc.html">Ch 8: System Integration and EMC &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

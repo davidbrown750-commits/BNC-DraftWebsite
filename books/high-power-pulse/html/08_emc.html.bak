@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8: System Integration and EMC</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-8">Chapter 8</h1>
+<h2 id="system-integration-and-emc">System Integration and EMC</h2>
+<blockquote>
+<p><em>"A pulser by itself is a building block. A pulser inside a real experiment is an EMC problem. The difference is what gets debugged on the bench versus what gets debugged in the field."</em></p>
+</blockquote>
+<hr />
+<h3 id="81-the-integration-problem">8.1 The integration problem</h3>
+<p>A pulser shipped from the factory has been characterized, calibrated, and verified into resistive dummy loads. The application sees a different pulser, embedded in a system that includes a real load (often complex), other instruments (often sensitive), trigger sources, monitor cables, control computers, and an environment that may include nearby radio transmitters, fluorescent lighting, and other pulsed sources. The pulser does not change but its observed performance does, sometimes dramatically.</p>
+<p>This chapter covers the system-integration questions that lie between the pulser data sheet and the working experiment. Grounding, shielding, common-mode current management, fiber-optic trigger distribution, and the practical steps that keep instruments alive when pulsers fire near them.</p>
+<hr />
+<h3 id="82-grounding-strategies">8.2 Grounding strategies</h3>
+<p>Ground is not a place. Ground is a network of impedances, mostly low at DC and increasingly significant at high frequency. The pulsed-power engineer's ground is the same wire that the digital engineer treats as zero impedance, but at the rise times pulsers care about, that wire has nanohenries of inductance per inch and ohms of impedance at 100 MHz.</p>
+<p>Three grounding strategies cover most pulser-bench layouts.</p>
+<p><strong>Single-point ground.</strong> All grounds in the bench connect to one location, typically a copper bus bar or a single chassis screw. Currents flowing through any portion of the system return to that single point. Strengths: deterministic, no ground loops. Weaknesses: at high frequency, the path back to the single point can be inductive enough that the local "ground" is not actually at the single-point voltage.</p>
+<p><strong>Star ground at the pulser.</strong> The pulser is the center, and every other instrument grounds to the pulser chassis directly. Strengths: keeps the high-frequency reference point at the pulser, where the high-frequency currents originate. Weaknesses: cabling is awkward for racks of instruments, and ground loops form if any instrument has its own connection back to mains earth.</p>
+<p><strong>Plane-and-bond.</strong> A copper plane (a sheet on the bench top) serves as the local ground reference, with all instruments bonded to the plane via short, fat straps. Strengths: low impedance even at GHz, robust against ground loops because the plane is too low-impedance to support significant voltage gradients. Weaknesses: physically demanding (you need a conductive bench top) and not always practical in a shared lab.</p>
+<p>For most BNC-DEI commercial pulser deployments, a star-ground-at-the-pulser approach with monitor cables routed to a common scope works fine up to a few hundred MHz of bandwidth. For sub-nanosecond rise time work, the copper-plane approach becomes the standard, often combined with shielded enclosures for the most sensitive instruments.</p>
+<p><strong>The single-point-ground myth.</strong> A common pulsed-power belief is that single-point ground is always best, because it eliminates ground loops. The truth is more nuanced. Single-point ground works well at low frequencies where the wire impedance is small. At pulser-relevant frequencies, the wire impedance from any node back to the single point can be tens of ohms, and transient currents flowing through that impedance create local voltage gradients. The plane-and-bond approach beats single-point at high frequencies because the plane has low impedance everywhere, not just at one point.</p>
+<p>When to break single-point grounding: any time the rise time is faster than 10 ns and the bench is more than 1 m across. Past those numbers, plane-and-bond is the right answer.</p>
+<hr />
+<h3 id="83-shielded-enclosures-at-the-bench-scale">8.3 Shielded enclosures at the bench scale</h3>
+<p>For sensitive measurements near a firing pulser, a Faraday-cage-style shielded enclosure protects the instruments from radiated pickup. Two grades of shielding are typical at the bench:</p>
+<p><strong>Light shielding.</strong> Copper-mesh or aluminum-foil enclosures around individual sensitive instruments (a scope, a controller, a sensor amplifier). Effective at attenuating radiated fields above 30 MHz by 20 to 40 dB. Easy to build, inexpensive, sufficient for most commercial pulser environments.</p>
+<p><strong>Heavy shielding.</strong> Solid-wall metallic enclosures with gasketed seams, RF-suppressing power line filters, and feed-throughs for cables. Attenuation of 60 to 100 dB across a wide frequency range. Required for very sensitive measurements (low-noise sensor amplifiers, single-photon counting, high-resolution oscilloscope work) near research-class pulsers.</p>
+<p>The decision rule: if your scope shows pickup that scales with pulser activity and you cannot eliminate it through cabling and grounding, you need a shielded enclosure. The pickup will be a deterministic spike on the scope trace synchronized to the pulser's trigger, often visible as a glitch even when nothing is connected to the scope's input.</p>
+<hr />
+<h3 id="84-common-mode-chokes-and-ferrite-selection">8.4 Common-mode chokes and ferrite selection</h3>
+<p>A common-mode choke is a ferrite ring with one or more turns of cable through it. The ferrite presents high impedance to common-mode currents (where the conductor and shield carry current in the same direction) and low impedance to differential-mode currents (where they carry opposite-direction currents). The differential signal passes through unaffected; the common-mode noise is suppressed.</p>
+<p>Three things matter when selecting a common-mode choke:</p>
+<p><strong>Material.</strong> Different ferrite materials have different impedance-versus-frequency curves. Type 31 material (Fair-Rite) is the standard at 1 to 100 MHz. Type 43 covers 100 MHz to 1 GHz. Type 61 extends higher. For pulser-relevant ranges (10 MHz to 1 GHz), Type 31 plus Type 43 in series covers most common situations.</p>
+<p><strong>Number of turns.</strong> More turns of cable through the choke increase the impedance presented to common-mode current. The trade-off is that more turns also add more parasitic capacitance, which limits high-frequency effectiveness. Two to four turns is the typical sweet spot.</p>
+<p><strong>Saturation.</strong> A common-mode choke can saturate if the differential-mode current is high enough to magnetize the core. For monitor cables carrying signal-level currents, this is rarely a concern. For high-current sensor cables (where the cable carries amperes of differential current), the choke must be sized accordingly.</p>
+<p>Common-mode chokes are routine on pulser monitor cables, control cables, and trigger cables. They are inexpensive insurance against the most common form of pulser-induced noise pickup.</p>
+<hr />
+<h3 id="85-fiber-optic-trigger-distribution">8.5 Fiber-optic trigger distribution</h3>
+<p>For research-grade pulsers and for any system with rise times below a few nanoseconds, electrical trigger distribution becomes a liability. The ground-bounce and common-mode pickup on copper trigger cables couple noise into the trigger and produce timing jitter, missed triggers, and false triggers. The standard remedy is fiber-optic trigger distribution.</p>
+<p><strong>The architecture.</strong> A laser diode (or LED) at the trigger source converts the electrical trigger pulse into a light pulse. Multimode fiber carries the light to a photodiode receiver at the pulser's trigger input. The photodiode output drives the pulser's trigger logic. The galvanic isolation between source and pulser is complete.</p>
+<p><strong>Latency and jitter.</strong> Fiber adds a few nanoseconds of latency (5 ns per meter) and a few hundred picoseconds of jitter (driver and receiver electronics). Both are usually acceptable, but they need to be characterized for any precision-timing application.</p>
+<p><strong>Cable management.</strong> Fiber is fragile compared to copper coax. Avoid sharp bends, foot traffic, and sun exposure. Use armored fiber for permanent installations.</p>
+<p><strong>Standard interfaces.</strong> ST and LC connectors are the common choices. Avalanche photodiodes (APDs) have lower noise but higher cost than PIN diodes; for non-precision applications, a PIN diode and a comparator-based receiver are sufficient.</p>
+<p>The BNC Model 645 and 6040 both offer fiber-optic trigger options as add-ons. For any pulser firing near sensitive instruments, fiber distribution is the right answer.</p>
+<hr />
+<h3 id="86-keeping-the-scope-alive">8.6 Keeping the scope alive</h3>
+<p>The scope is the most fragile and most expensive instrument on the bench. A pulser fault (output short, load failure, accidental disconnect) can present voltages well above the scope's input rating to the probe tip, with damaging consequences if the protective elements do not engage in time.</p>
+<p>Three layers of protection apply:</p>
+<p><strong>Probe rating.</strong> Use a probe rated for the worst case, not the nominal pulse. A 5 kV pulser with 50 V monitor output should still see a probe rated for at least the unscaled pulser voltage at the input side, in case the divider fails.</p>
+<p><strong>Front-end protection.</strong> Many scopes have built-in TVS diodes that clamp inputs to safe levels. These are last-resort protection: they will save the scope from a brief overvoltage but they are not designed to withstand sustained or repeated events.</p>
+<p><strong>External protection.</strong> A series resistor (10 to 100 Ω) at the scope input limits fault current. A gas-discharge tube (GDT) clamps voltage spikes above a threshold (typically 90 V for scope inputs). The combination protects the scope front-end from typical pulser fault scenarios with negligible impact on signal fidelity.</p>
+<p>For high-stakes measurements where the scope itself is expensive (a $50,000 R&amp;S RTO), the cost of front-end protection components is trivial relative to the cost of replacement.</p>
+<p><strong>Practical advice.</strong> Most modern scopes survive pulser-bench fault events better than older instruments because their input topology is more tolerant. A 20-year-old Tek with discrete input attenuators is more vulnerable than a current-generation Keysight with integrated front-end protection. If you are working with vintage scope hardware, add the external protection. If you are working with new instruments, the protection is mostly built in but external clamps are still cheap insurance.</p>
+<hr />
+<h3 id="87-lab-layout-and-routing">8.7 Lab layout and routing</h3>
+<p>A few practical rules for laying out a pulsed-power bench.</p>
+<p><strong>Keep high-voltage cables short and straight.</strong> No coiling, no excess length, no kinks. The shortest practical cable is the best practical cable.</p>
+<p><strong>Separate high-voltage and low-voltage routing.</strong> A 6-inch separation between a 10 kV pulser cable and a monitor cable cuts coupling by orders of magnitude. A 2-foot separation cuts it further still.</p>
+<p><strong>Route trigger cables independently.</strong> Trigger cables should not be bundled with monitor or load cables. The high dV/dt on the load cable couples into the trigger if they run parallel for any distance.</p>
+<p><strong>Bond shield connections at one point.</strong> Each cable shield grounds at one end (usually the source end), not both. Shields grounded at both ends create ground loops that pick up everything.</p>
+<p><strong>Use the right cable in the right place.</strong> RG-58 for monitor BNC. Coaxial cable for any signal that includes high-frequency content. Twisted pair only for low-frequency control signals. Triax for very-high-rejection differential measurements.</p>
+<hr />
+<h3 id="88-sample-bench-layout">8.8 Sample bench layout</h3>
+<p>For a typical BNC-DEI pulser bench, the layout that works:</p>
+<ol>
+<li><strong>Pulser</strong> on a non-conductive bench mat, with high-voltage output connected to the load via the supplied cable, kept short.</li>
+<li><strong>Load</strong> on an insulating standoff, with no metal in proximity to the high-voltage section.</li>
+<li><strong>Scope</strong> at least 3 ft from the pulser, on the same bench plane (so the ground impedance to the scope is low).</li>
+<li><strong>Differential probe</strong> from the load test points to the scope, with the probe's compensation set per the manufacturer's procedure.</li>
+<li><strong>Rogowski coil</strong> clamped around the load cable, output running through a ferrite choke to a separate scope channel.</li>
+<li><strong>Trigger source</strong> (BNC Model 645 or similar) feeding the pulser's trigger input via a short BNC cable, with a ferrite choke near the pulser end.</li>
+<li><strong>Control computer</strong> on the same bench but with all data cables ferrite-protected and routed away from the pulser.</li>
+<li><strong>Power filtering</strong> on the AC mains feeding the bench, ideally a dedicated isolation transformer for the pulser to keep mains noise from coupling into other instruments.</li>
+</ol>
+<p>This layout, with reasonable cable management and the noise-control habits in this chapter, supports clean measurements on most commercial pulser products. For research-class fast-rise systems, the additions are fiber-optic trigger distribution and a shielded enclosure around the most sensitive measurement equipment.</p>
+<hr />
+<h3 id="89-questions-for-review">8.9 Questions for review</h3>
+<ol>
+<li>
+<p>The "single-point ground" approach works well at:
+   a. All frequencies, in all bench geometries.
+   b. Low frequencies and small bench geometries, where wire impedance back to the ground point is small.
+   c. Only above 100 MHz.
+   d. Only with copper plane construction.</p>
+</li>
+<li>
+<p>A common-mode choke on a monitor cable suppresses:
+   a. Differential-mode signal currents.
+   b. Common-mode noise currents flowing in the same direction on the conductor and shield.
+   c. DC offsets on the signal.
+   d. Low-frequency drift.</p>
+</li>
+<li>
+<p>Fiber-optic trigger distribution provides what advantage over electrical trigger distribution?
+   a. Lower latency.
+   b. Galvanic isolation between trigger source and pulser, eliminating common-mode pickup.
+   c. Cheaper cable cost.
+   d. Lower jitter under all conditions.</p>
+</li>
+<li>
+<p>The most important external protection for a scope front-end measuring near a high-power pulser is:
+   a. A high-input-impedance buffer.
+   b. A series resistor and a gas-discharge tube at the scope input.
+   c. A bandpass filter.
+   d. A fiber-optic isolator on the trigger.</p>
+</li>
+<li>
+<p>Two cables grounded at both ends are most likely to:
+   a. Reduce signal pickup.
+   b. Form a ground loop that picks up environmental noise.
+   c. Improve impedance matching.
+   d. Add useful damping.</p>
+</li>
+<li>
+<p>A copper-plane ground reference is preferred over single-point ground when:
+   a. Signal frequencies are below 1 kHz.
+   b. Rise times are below 10 ns and the bench is large enough that single-point ground impedances become significant.
+   c. The bench is portable.
+   d. Cost is the primary concern.</p>
+</li>
+<li>
+<p>The "plane-and-bond" grounding approach achieves low impedance at high frequencies because:
+   a. The plane has zero resistance.
+   b. The plane has so much surface area that current spreads out and impedance everywhere is small.
+   c. The plane only conducts at the surface.
+   d. The plane is electrically isolated from earth.</p>
+</li>
+</ol>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="810-further-reading">8.10 Further reading</h3>
+<ul>
+<li>
+<p><strong>Williams, T.</strong> <em>EMC for Product Designers.</em> Newnes, multiple editions. The standard practical reference on common-mode currents, ferrite selection, and shielding.</p>
+</li>
+<li>
+<p><strong>Ott, H.W.</strong> <em>Electromagnetic Compatibility Engineering.</em> Wiley, 2009. The textbook on EMC. Chapters 3 and 5 are particularly relevant to pulser-bench layout.</p>
+</li>
+<li>
+<p><strong>Paul, C.R.</strong> <em>Introduction to Electromagnetic Compatibility.</em> Wiley, 2nd edition. Strong on the theory and on grounding in particular.</p>
+</li>
+<li>
+<p><strong>Fair-Rite Products application notes</strong> on ferrite material selection and common-mode choke design. The data sheets are technical references in their own right.</p>
+</li>
+<li>
+<p><strong>MIL-STD-188-125,</strong> Standard for high-altitude electromagnetic pulse (HEMP) protection. The military's playbook for hardened systems, with general principles applicable to bench EMC.</p>
+</li>
+<li>
+<p><strong>Tektronix Application Note 51W-12108,</strong> <em>Effective Measurements for Oscilloscope Probes.</em> On probe-and-cable practice.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 8.</em></p>
+<p><em>Chapter 9 (BNC-DEI Product Examples) follows.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="07_diagnostics.html">&larr; Ch 7: Diagnostics and Measurement</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="09_products.html">Ch 9: BNC-DEI Product Examples &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

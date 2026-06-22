@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 460" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .title { font-size: 14px; font-weight: 700; fill: #003D6B; }
+    .sub { font-size: 12px; font-weight: 600; fill: #003D6B; }
+    .lbl { font-size: 11px; fill: #2C3E50; }
+    .note { font-size: 10px; fill: #2C3E50; opacity: 0.8; font-style: italic; }
+    .wire { stroke: #2C3E50; stroke-width: 1.8; fill: none; }
+    .active { stroke: #00b4ff; stroke-width: 3; fill: none; }
+    .inactive { stroke: #2C3E50; stroke-width: 1.5; fill: none; opacity: 0.4; stroke-dasharray: 4 3; }
+    .gnd { stroke: #2C3E50; stroke-width: 1.5; fill: none; }
+    .box { stroke: #003D6B; stroke-width: 1.5; fill: #fff; }
+    .box-active { stroke: #003D6B; stroke-width: 1.8; fill: #d8e5f0; }
+  </style>
+
+  <text x="440" y="24" text-anchor="middle" class="title">Inductive-storage current driver, two states</text>
+
+  <!-- ON STATE (top) -->
+  <text x="220" y="58" text-anchor="middle" class="sub">On-state: switch closed, current ramps in inductor</text>
+
+  <rect x="50" y="80" width="60" height="38" class="box"/>
+  <text x="80" y="103" text-anchor="middle" class="lbl">+V</text>
+  <text x="80" y="135" text-anchor="middle" class="note">supply</text>
+
+  <line x1="110" y1="99" x2="160" y2="99" class="active"/>
+
+  <!-- Switch closed (drawn as small rect with line through) -->
+  <rect x="160" y="84" width="40" height="30" class="box-active"/>
+  <text x="180" y="103" text-anchor="middle" class="lbl">SW</text>
+  <text x="180" y="128" text-anchor="middle" class="note">closed</text>
+
+  <line x1="200" y1="99" x2="240" y2="99" class="active"/>
+
+  <!-- Inductor (top) -->
+  <path d="M 240 99 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0" stroke="#00b4ff" stroke-width="3" fill="none"/>
+  <text x="276" y="80" text-anchor="middle" class="note">L (energy store, charging)</text>
+
+  <line x1="312" y1="99" x2="360" y2="99" class="active"/>
+
+  <!-- Load -->
+  <rect x="360" y="84" width="60" height="30" class="box"/>
+  <text x="390" y="103" text-anchor="middle" class="lbl">Load</text>
+
+  <line x1="420" y1="99" x2="460" y2="99" class="active"/>
+  <line x1="460" y1="99" x2="460" y2="170" class="active"/>
+  <line x1="460" y1="170" x2="80" y2="170" class="active"/>
+  <line x1="80" y1="118" x2="80" y2="170" class="active"/>
+
+  <!-- Diode (drawn as triangle pointing down, blocked) -->
+  <line x1="295" y1="120" x2="295" y2="155" class="inactive"/>
+  <polygon points="289,140 301,140 295,150" stroke="#2C3E50" stroke-width="1" fill="#fff" opacity="0.5"/>
+  <text x="295" y="180" text-anchor="middle" class="note">D (off, reverse-biased)</text>
+
+  <!-- Active arrow indicator -->
+  <text x="276" y="113" text-anchor="middle" class="note" fill="#00b4ff" font-weight="700">i ramping →</text>
+
+  <!-- OFF STATE (bottom) -->
+  <text x="220" y="270" text-anchor="middle" class="sub">Off-state: switch open, current freewheels through diode</text>
+
+  <rect x="50" y="290" width="60" height="38" class="box"/>
+  <text x="80" y="313" text-anchor="middle" class="lbl">+V</text>
+
+  <line x1="110" y1="309" x2="160" y2="309" class="inactive"/>
+
+  <rect x="160" y="294" width="40" height="30" class="box"/>
+  <text x="180" y="313" text-anchor="middle" class="lbl">SW</text>
+  <text x="180" y="338" text-anchor="middle" class="note">open</text>
+
+  <line x1="200" y1="309" x2="240" y2="309" class="inactive"/>
+
+  <!-- Inductor (bottom) -->
+  <path d="M 240 309 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0 q 6 -8 12 0 q 6 8 12 0" stroke="#00b4ff" stroke-width="3" fill="none"/>
+  <text x="276" y="290" text-anchor="middle" class="note">L (delivering energy)</text>
+
+  <line x1="312" y1="309" x2="360" y2="309" class="active"/>
+
+  <rect x="360" y="294" width="60" height="30" class="box"/>
+  <text x="390" y="313" text-anchor="middle" class="lbl">Load</text>
+
+  <line x1="420" y1="309" x2="460" y2="309" class="active"/>
+  <line x1="460" y1="309" x2="460" y2="380" class="active"/>
+  <line x1="460" y1="380" x2="295" y2="380" class="active"/>
+
+  <!-- Diode (forward conducting) -->
+  <line x1="295" y1="380" x2="295" y2="350" class="active"/>
+  <polygon points="289,355 301,355 295,345" fill="#00b4ff" stroke="#003D6B" stroke-width="1"/>
+  <line x1="289" y1="345" x2="301" y2="345" stroke="#003D6B" stroke-width="1.5"/>
+  <line x1="295" y1="345" x2="295" y2="320" class="active"/>
+  <text x="295" y="400" text-anchor="middle" class="note">D (freewheeling)</text>
+
+  <text x="276" y="324" text-anchor="middle" class="note" fill="#00b4ff" font-weight="700">i recirculating →</text>
+
+  <text x="700" y="200" text-anchor="middle" class="note">Output current is set by the duty cycle of the switch.</text>
+  <text x="700" y="216" text-anchor="middle" class="note">Inductor smooths ripple. Diode handles full output current.</text>
+  <text x="700" y="232" text-anchor="middle" class="note">Used in PCO-6131, PCX-7420, PCX-9600, and most</text>
+  <text x="700" y="248" text-anchor="middle" class="note">long-pulse / high-current laser-diode drivers.</text>
+
+  <text x="700" y="430" text-anchor="middle" class="note">Active path = bright cyan. Inactive path = grey dashed.</text>
+</svg>

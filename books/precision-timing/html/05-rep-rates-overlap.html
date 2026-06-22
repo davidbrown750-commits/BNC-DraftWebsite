@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>5. Multi-Signal Timing: Rep Rates & Overlap</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="multi-signal-timing-rep-rates-and-overlap">5. Multi-Signal Timing: Rep Rates & Overlap</h1>
+
+<p class="lead">Chapter 4 set up the channels. This chapter sets the clock that drives them all and shows what happens when too much timing is asked to fit inside too little time. Every channel in a multi-channel instrument lives inside one repeating cycle. The length of that cycle is the time budget, and every delay, every width, and every gap between events has to be paid for out of it. When the budget runs short, channels start to collide. Those collisions are overlap conditions, and they are the central hazard of multi-signal work. This chapter covers how the repetition rate sets the budget, how to plan many signals so they all fit, and how to recognize and avoid overlap before it ruins a measurement.</p>
+
+<h2 id="repetition-rate-and-prf">5.1 Repetition Rate and PRF</h2>
+<p>A free-running pulse generator does not wait for the outside world. It triggers itself, over and over, at a rate it generates internally. That rate is the pulse repetition rate, also called the pulse repetition frequency, or PRF. Rate and frequency describe the same thing for a periodic source: how often the cycle repeats. PRF is the number of pulses per second. The period is its reciprocal, the time from the start of one cycle to the start of the next. An operator sets either the rate or the period, whichever is natural for the task. A laser that wants 10 kHz is set by rate. A measurement that wants a 1 ms window between shots is set by period. They are two ways of writing the same number.</p>
+<p>The piece of the instrument that produces this rate is the internal rate generator. It is a programmable oscillator that fires the start of every cycle. When the instrument runs internally, the rate generator is the master timekeeper that defines T0 for each cycle, and every channel hangs its delay off that T0. When the instrument runs externally, the rate generator steps aside and an outside trigger sets the rhythm instead. Either way, the period is what every channel has to live inside.</p>
+<figure>
+<img src="../figures/ch05-prf-period.svg" alt="Repetition rate sets the period, the reciprocal relationship between PRF and the time available for one cycle." />
+<figcaption><span class="fig-num">Figure 5.1</span> Repetition rate sets the period. PRF and period are reciprocals, so the rate you choose decides the time available for one cycle.</figcaption>
+</figure>
+
+<h3 id="duty-cycle">Duty Cycle</h3>
+<p>Duty cycle ties pulse width to period. It is the fraction of each period during which the output is high, written as a percentage. A 100 ns pulse repeating every 1 ms has a duty cycle of one hundredth of one percent. The same 100 ns pulse repeating every 200 ns has a duty cycle of fifty percent. Nothing about the pulse changed. The period did. Duty cycle is the number that usually decides how hard a load can be driven, because average power scales with it. A high duty cycle on a load that dissipates heat is often the first thing that limits how fast an instrument can be run, well before the timing electronics run out of room.</p>
+
+<h3 id="burst-rate">Burst Rate</h3>
+<p>Burst mode adds a second rate to keep straight. In a burst, the instrument emits a defined number of pulses, then waits. Two rates are in play. The first is the rate of pulses inside the burst, the intra-burst rate. The second is the rate at which whole bursts repeat. They are different numbers, and confusing them is a common programming mistake. A burst of five pulses at 1 MHz, repeating every 10 ms, has a 1 MHz intra-burst rate and a 100 Hz burst repeat rate. Both have to fit their own budget: the five pulses have to fit inside the burst, and the burst has to fit inside the repeat period.</p>
+
+<h2 id="coordinating-many-signals">5.2 Coordinating Many Signals</h2>
+<p>A single channel inside a period is easy. The trouble starts when six or eight or twenty-four channels share that one period, each with its own delay and width, some of them gated, some chained to others. The job becomes one of budgeting. The rule is simple to state and easy to violate: the sum of what every channel needs has to fit inside the period, with margin.</p>
+<p>Think of the period as a fixed-length bar. Each channel claims a slice of it, starting at its delay after T0 and running for its width. Add dead time where the load needs to recover or settle between events. Lay all of those slices into the bar. If they fit with room to spare, the program is healthy. If the last event runs past the right edge of the bar, it has run past the end of the period, and it collides with the next cycle. That collision is the overlap condition that the next section is built around.</p>
+<figure>
+<img src="../figures/ch05-period-budget.svg" alt="A period budget timeline showing channel delays and widths stacked inside one period, with healthy margin versus an overrun that crosses the boundary." />
+<figcaption><span class="fig-num">Figure 5.2</span> A period budget. Channel delays and widths stack inside one period. A healthy program leaves dead time at the right edge; an overrun crosses the boundary into the next cycle.</figcaption>
+</figure>
+<p>Dead time deserves its own line in the budget. It is the deliberate gap left between events, or between the last event and the end of the period. Some of it protects the load, giving a detector time to reset or a driver time to settle. Some of it protects the timing itself, leaving margin so that jitter and small parameter changes do not push an edge across a boundary. A program that fills the period to the last nanosecond has no dead time, and it has no defense against the next small edit.</p>
+<p>The hard part is that raising the rate shrinks the budget. PRF and period are reciprocals, so doubling the rate halves the period. Every delay and width that fit comfortably at the old rate now has half the room. An operator who pushes the rate up to gather data faster is quietly shrinking the bar that all the channels have to fit inside. At some rate, the longest delay-plus-width on any channel no longer fits, and the program that worked yesterday produces overlap today. The rate is not free. It is spent out of the same budget as everything else.</p>
+<figure>
+<img src="../figures/ch05-rate-vs-budget.svg" alt="Rep rate versus available budget, showing the same set of channel events at a low rate fitting easily and at a high rate overrunning the shortened period." />
+<figcaption><span class="fig-num">Figure 5.3</span> Rate versus budget. The same channel events fit easily at a low rate but overrun the shortened period when the rate is raised.</figcaption>
+</figure>
+<p>Planning a multi-channel timeline, then, is the discipline of laying out all of the events against one period and confirming the longest one fits with margin before committing to a rate. Map each channel's delay and width. Add the dead time. Find the channel whose delay-plus-width reaches furthest into the period. Make sure that furthest reach lands inside the period with room left over. Only then set the rate. Do it in the other order, rate first, and the collisions find you instead.</p>
+
+<h2 id="overlap-conditions">5.3 Overlap Conditions</h2>
+<p>Overlap is where well-formed timing programs quietly go wrong. The numbers all look reasonable on their own. The conflict appears only when they are combined, and the instrument is handed a program it cannot satisfy literally. This section is the heart of the chapter, because recognizing overlap on a bench is a skill that separates a clean multi-channel setup from a mystifying one.</p>
+
+<h3 id="what-an-overlap-condition-is">What an Overlap Condition Is</h3>
+<p>An overlap condition occurs when the programmed timing asks a channel, or a shared resource, to do two incompatible things at once. It takes two classic forms.</p>
+<p>The first form is a single channel asked to fire again before its current pulse has ended. The channel's delay plus its width runs past the start of the next cycle, or past the next external trigger. The pulse from this cycle has not finished when the instrument is told to begin the next one. The channel cannot be both high for the rest of the old pulse and starting a new pulse at the same instant. The program is internally inconsistent.</p>
+<p>The second form is two events colliding on a shared resource or the same time slot. Two channels mapped to one physical output, as in a multiplex configuration, are told to drive that output at the same time. Or two timing requests collide inside a shared logic block. The resource can only do one thing at that instant, and it has been asked for two. Again the program cannot be honored as written.</p>
+<figure>
+<img src="../figures/ch05-overlap-condition.svg" alt="Three stacked timelines of the same program: the intended two separate pulses, the two merged into one wide pulse, and one pulse swallowed entirely, with a conflict marker where delay-plus-width crosses the period boundary." />
+<figcaption><span class="fig-num">Figure 5.4</span> The overlap condition. Three views of the same program: the intended two separate pulses, the two merged into one wide pulse, and one pulse swallowed entirely, with a conflict marker where delay-plus-width crosses the period boundary.</figcaption>
+</figure>
+
+<h3 id="why-overlap-happens">Why Overlap Happens</h3>
+<p>Overlap is rarely a typo. It emerges from parameters that interact. An operator widens a pulse and forgets that the channel's delay already places it late in the period, so the wider pulse now runs off the end. An operator raises the rate to collect more shots and shrinks the period below the longest delay-plus-width on the instrument. An operator chains one channel to another, then slides the reference channel, and the dependent channel rides along until it crosses the boundary. Each edit is sensible by itself. The conflict is born from the combination, which is exactly why it is easy to miss.</p>
+
+<h3 id="what-can-happen">What Can Happen</h3>
+<p>The guidance here is deliberate: do not expect one single behavior. Different instruments, and different settings on the same instrument, resolve overlap in different ways. What matters is knowing the full range of outcomes so they can be recognized. They fall into two groups, by where the conflict is handled.</p>
+<p>At the hardware level, the instrument produces whatever the electronics do when handed an impossible request, and the result shows up on a scope.</p>
+<ul>
+<li><strong>Merged pulses.</strong> Two pulses that should be separate but that touch or overlap in time can fuse into one wider pulse. The downstream system sees a single long event where two short ones were intended. Any logic that counts edges or measures widths is fooled, and the error can pass unnoticed because the output still looks like a valid pulse, just the wrong one.</li>
+<li><strong>Swallowed pulses.</strong> When a new pulse is demanded before the previous one has finished, the instrument may drop one of them entirely. The output then shows fewer pulses than the program implies. This is one of the most confusing symptoms, because the program reads as correct while pulses go missing on the bench. If the overlap is marginal, the swallowing can be intermittent, appearing on some cycles and not others, which is harder still to chase.</li>
+<li><strong>Runt or truncated pulses.</strong> When a cycle boundary or a gate arrives mid-pulse, the pulse can be cut short, producing a runt. A runt is a pulse that started normally but ended early, and a load may or may not recognize it as a real event. A detector might trigger on it, or might ignore it, and which one happens can change from shot to shot.</li>
+</ul>
+<p>At the programming level, the instrument never lets the conflict reach the hardware at all.</p>
+<ul>
+<li><strong>Flag or reject before it runs.</strong> Many instruments validate the timing program when it is entered and refuse a setting that would create a conflict. The instrument raises an error, marks a parameter out of range, or otherwise tells the operator that the requested combination cannot be produced. Nothing illegal ever reaches the output, because the instrument caught it first. This is the safest behavior, and it is why an error flag on a setting change is information, not an annoyance.</li>
+</ul>
+<p>Because the same conflicting program can give different visible results depending on which rule an instrument follows, the operator's job is to know which behavior is in play for the instrument on the bench. A program that gets quietly swallowed on one path might be flatly rejected on another. Neither outcome is the program the operator wanted. Both are signs that the budget was overrun.</p>
+
+<h3 id="how-to-detect-and-avoid-overlap">How to Detect and Avoid Overlap</h3>
+<p>The discipline is straightforward once the failure mode is understood. Most of it is the budgeting from Section 5.2, applied with intent.</p>
+<ul>
+<li><strong>Budget the period first.</strong> Before raising the rate, confirm that the longest delay-plus-width across all channels fits inside one period with margin. This single habit prevents the most common overlap, the one born of pushing the rate too high.</li>
+<li><strong>Re-check the whole chain after any edit.</strong> When channels reference each other, moving one reference moves every dependent channel. A change that looks local is not local. After any edit to a chained channel, walk the entire chain and confirm nothing crossed a boundary.</li>
+<li><strong>Choose the inhibit behavior deliberately.</strong> The gating modes from the previous chapter decide what happens at the edges. Output inhibit cuts immediately and can truncate a pulse in progress. Pulse inhibit blocks a new trigger but lets the current pulse finish cleanly. Choose output inhibit when a hard, immediate cutoff is required and a runt is acceptable. Choose pulse inhibit when every emitted pulse must be complete. Mixing the two assumptions across channels is itself a way to create ambiguous timing.</li>
+<li><strong>Use holdoff to enforce minimum spacing.</strong> On an irregular external trigger, holdoff blocks new triggers for a set time after each one, which keeps a fast or bouncing source from packing pulses closer than the budget allows.</li>
+<li><strong>Watch for the warnings, and trust them.</strong> When an instrument rejects a setting as illegal or flags a parameter out of range, the right response is to find the conflict, not to work around the message. The instrument has done the budgeting that the operator skipped. On instruments that pass overlap through to hardware, the warning is the scope itself: missing pulses, fused pulses, and runts are all telling the same story.</li>
+</ul>
+<p>Setting up a complex multi-channel experiment comes down to this. Lay the events inside the period, leave dead time, confirm the longest reach fits with margin, set the rate last, and after every change walk the timeline again. Overlap is not bad luck. It is a budget that was overspent, and the budget is always visible if it is checked.</p>
+
+<div class="quiz-cta">
+<p><strong>Check your understanding.</strong> Five quick questions on PRF and period, duty cycle, the period budget, overlap conditions, and how overlap shows up on the bench.</p>
+<p><a class="btn" href="quiz-05.html">Take the Chapter 5 quiz</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="04-multi-channel-timing.html">&larr; 4. Multi-Channel Timing System</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="06-applications.html">6. Applications of Precision Timing &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

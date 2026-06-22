@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>10-nomenclature</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">10-nomenclature</h1>
+</header>
+<h1 id="chapter-10---detector-nomenclature-and-type-numbering">Chapter 10 - Detector nomenclature and type numbering</h1>
+<p>A detector ordered from a catalog is a configuration: a specific scintillator, in a specific size and shape, mounted in a specific housing, coupled to a specific photodetector, with specific options. The configuration nomenclature lets the engineer specifying the detector and the engineer building it agree on what is being ordered. This chapter is the reference for the Scionix configuration nomenclature carried through the rest of the book.</p>
+<h2 id="why-a-structured-nomenclature">10.1 Why a structured nomenclature</h2>
+<p>A fully custom detector built once for one application can be specified on a drawing. A catalog detector ordered hundreds of times needs a structured part number that compresses the configuration into a few characters. The Scionix nomenclature, used throughout this book, encodes nine attributes:</p>
+<ol type="1">
+<li>Crystal style code (housing geometry)</li>
+<li>Crystal diameter or width in millimeters</li>
+<li>Crystal height or length in millimeters</li>
+<li>Photodetector type</li>
+<li>Photodetector size and quantity</li>
+<li>PMT or SiPM features (dynode structure, divider type)</li>
+<li>Scintillation material</li>
+<li>Optional features (light pulser, magnetic shield, low-background, etc.)</li>
+<li>Voltage divider or base style</li>
+</ol>
+<p>A typical part number might read: <code>B-51S-3-5410-NaI/2</code>, which decoded reads: B-style crystal housing, 51 mm diameter, 51 mm length, 3-inch PMT, Hamamatsu R5410 tube, NaI(Tl) crystal, voltage divider option 2.</p>
+<p>The full encoding is in Section 10.2 below. The point of this chapter is not to memorize the codes but to know that a structured nomenclature exists and where to look it up.</p>
+<h2 id="reading-a-scionix-part-number">10.2 Reading a Scionix part number</h2>
+<p>The Scionix part number reads left to right.</p>
+<p><strong>Field 1: Crystal style code.</strong> A letter or letter-pair indicating the housing geometry.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Geometry</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>Demountable PMT, separate crystal-housing and PMT</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>Standard PMT integrated, side viewing</td>
+</tr>
+<tr class="odd">
+<td>BA</td>
+<td>B-style with thin entrance window for X-ray work</td>
+</tr>
+<tr class="even">
+<td>BD</td>
+<td>B-style with built-in voltage divider</td>
+</tr>
+<tr class="odd">
+<td>BM</td>
+<td>B-style with magnetic shield</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>Crystal only, no PMT</td>
+</tr>
+<tr class="odd">
+<td>CA</td>
+<td>C-style with thin window</td>
+</tr>
+<tr class="even">
+<td>CD</td>
+<td>C-style with built-in divider preamp</td>
+</tr>
+<tr class="odd">
+<td>D</td>
+<td>Crystal with photodiode readout</td>
+</tr>
+<tr class="even">
+<td>S</td>
+<td>Crystal with SiPM array readout</td>
+</tr>
+<tr class="odd">
+<td>SA</td>
+<td>S-style with thin window</td>
+</tr>
+<tr class="even">
+<td>SP</td>
+<td>S-style for specific custom configurations</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Field 2: Crystal diameter.</strong> Millimeters. For square crystals, the side length is given (with a square indicator symbol on drawings).</p>
+<p><strong>Field 3: Crystal height or length.</strong> Millimeters. For wells, the well dimensions are appended in parentheses.</p>
+<p><strong>Field 4: Light detector size.</strong> Inches diameter for round PMTs and SiPM modules. For arrays, the format is “N x size” (e.g., 4x16mm for a 4-die SiPM array of 16 mm modules).</p>
+<p><strong>Field 5: Quantity of light detectors.</strong> Default 1. For dual-end readout (long bars, large crystals), 2.</p>
+<p><strong>Field 6: PMT or SiPM type and features.</strong> Manufacturer plus model number (Hamamatsu R5410, ETL 9266, etc.) for PMTs. SiPM family code for SiPM arrays (HD-NUV, HD-RGB, etc.).</p>
+<p><strong>Field 7: Scintillation material.</strong> Standard chemical formula plus activator. NaI(Tl), CsI(Tl), LaBr3:Ce, GAGG:Ce, CLLBC, etc.</p>
+<p><strong>Field 8: Extra features.</strong> Optional codes:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Feature</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>/M</td>
+<td>Mu-metal magnetic shield</td>
+</tr>
+<tr class="even">
+<td>/T</td>
+<td>Temperature stabilization</td>
+</tr>
+<tr class="odd">
+<td>/L</td>
+<td>Built-in LED pulser</td>
+</tr>
+<tr class="even">
+<td>/A</td>
+<td>Built-in Am-241 alpha pulser</td>
+</tr>
+<tr class="odd">
+<td>/LBG</td>
+<td>Low-background construction</td>
+</tr>
+<tr class="even">
+<td>/Q</td>
+<td>Quartz window</td>
+</tr>
+<tr class="odd">
+<td>/TW</td>
+<td>Thin window</td>
+</tr>
+<tr class="even">
+<td>/HV</td>
+<td>Built-in HV supply</td>
+</tr>
+<tr class="odd">
+<td>/D</td>
+<td>Built-in digital pulse processor</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Field 9: Voltage divider style.</strong> Numeric code referring to a specific divider design (1, 2, 3, etc.) tied to particular tube types and performance optimizations.</p>
+<h2 id="worked-examples">10.3 Worked examples</h2>
+<p>A few examples to make the encoding concrete.</p>
+<p><strong>Example 1: Handheld gamma spectrometer.</strong></p>
+<p>Part number: <code>S-25S-25-12mm-HD-RGB-CsI:Tl/A/D</code></p>
+<p>Decoded: S-style (SiPM-coupled crystal), 25 mm diameter, 25 mm length, 12 mm SiPM array, HD-RGB SiPM family, CsI(Tl) scintillator, with built-in Am-241 alpha pulser and built-in digital pulse processor. This is a typical compact spectrometer for portable instruments.</p>
+<p><strong>Example 2: Down-hole well-logging probe.</strong></p>
+<p>Part number: <code>BD-25S-100-2-9266B-CsI:Na/T/HV</code></p>
+<p>Decoded: BD-style (B-style with built-in divider), 25 mm diameter, 100 mm length, 2-inch PMT, ETL 9266B (high-temperature tube), CsI(Na) scintillator, with temperature stabilization and built-in HV supply. Suitable for the 175 C operating environment described in Chapter 8.</p>
+<p><strong>Example 3: Low-background environmental counter.</strong></p>
+<p>Part number: <code>B-76S-76-3-R6231-NaI:Tl/M/LBG/A</code></p>
+<p>Decoded: B-style, 76 mm diameter, 76 mm length, 3-inch PMT, Hamamatsu R6231 (low-background tube), NaI(Tl), with mu-metal shield, low-background construction, and Am-241 pulser. The standard 3-inch by 3-inch low-background gamma counter.</p>
+<p><strong>Example 4: TOF-PET module.</strong></p>
+<p>Part number: <code>S-array-4mm-20mm-12x12-HD-NUV-LYSO:Ce/D</code></p>
+<p>Decoded: S-style array, 4 mm by 4 mm by 20 mm pixels, 12x12 array, HD-NUV digital SiPM family, LYSO:Ce scintillator, with built-in digital pulse processor. The standard PET ring module.</p>
+<p><strong>Example 5: Dual gamma-neutron handheld.</strong></p>
+<p>Part number: <code>S-32S-32-15mm-HD-NUV-CLLBC/A/D</code></p>
+<p>Decoded: S-style, 32 mm diameter, 32 mm length, 15 mm SiPM, HD-NUV array, CLLBC scintillator, with Am-241 pulser and digital pulse processor (which performs the pulse-shape discrimination for n-gamma separation).</p>
+<h2 id="custom-designations">10.4 Custom designations</h2>
+<p>Most production detectors fit catalog designations. Custom configurations get extended part numbers with appended descriptors. The customer requirements document and the manufacturing drawing carry the full specification; the part number is a shorthand for filing, ordering, and tracking.</p>
+<p>For one-off detectors with no catalog equivalent, a project-specific designator (often “SP-” prefix followed by a project code) is assigned. The Scionix history of custom designs runs into the thousands of unique configurations, and the ability to specify a part number that compresses the right information is what allows the catalog to scale.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Always quote the full part number, never just the crystal</strong></p>
+<p>A customer who asks for “a 3-inch by 3-inch NaI(Tl) detector” has not specified the deliverable. The same crystal in three different housings, with three different PMTs, with three different divider designs, is three different products with three different prices, three different lead times, and three different operating envelopes. The discipline that prevents misunderstanding is to confirm the full part number in writing before quoting. Five minutes of disambiguation prevents weeks of remake work. Customers who know detectors expect this discipline. Customers who do not know detectors will appreciate that you walked them through it.</p>
+</div>
+<h2 id="what-the-part-number-cannot-capture">10.5 What the part number cannot capture</h2>
+<p>Two things never fit in a part number and always have to be specified separately: the calibration certificate (each detector ships with measured energy resolution, peak position, count rate at a stated activity) and the optical surface treatment of the crystal (polished, matte, custom reflector). Both materially affect performance. Both are agreed in writing before manufacturing starts.</p>
+<p>The part number is a label. The complete agreement is the manufacturing drawing plus the calibration specification plus the test record. The next chapter is about what goes into those three documents.</p>
+<h2 id="chapter-10-quiz">Chapter 10 Quiz</h2>
+<ol type="1">
+<li>In the Scionix nomenclature, what does the prefix “B” indicate.</li>
+<li>What does the suffix “/M” indicate.</li>
+<li>What does the suffix “/LBG” indicate, and where would such a configuration be used.</li>
+<li>Why is “a 3-inch by 3-inch NaI(Tl) detector” not a complete specification.</li>
+<li>What two pieces of information that materially affect detector performance never appear in the part number.</li>
+</ol>
+<h3 id="quiz-answers">Quiz answers</h3>
+<ol type="1">
+<li>Standard PMT integrated, side viewing. The crystal and PMT ship as a single sealed assembly.</li>
+<li>Mu-metal magnetic shield around the PMT, for use in environments with ambient magnetic field above the Earth’s natural field.</li>
+<li>Low-background construction. Used in environmental monitoring, low-background counting, and rare-event physics applications where the detector’s intrinsic radioactivity must be minimized.</li>
+<li>The same crystal can ship in different housings (B-style, BA-style, BD-style, etc.), with different PMTs (different manufacturers and tube types), with different voltage dividers, and with optional features (magnetic shield, low-background construction, alpha pulser). Each combination is a different product with different performance and price.</li>
+<li>The calibration certificate (measured energy resolution, peak position, count rate at stated activity) and the optical surface treatment of the crystal (polished, matte, custom reflector).</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] Scionix Holland B.V., “Scintillation Detector Catalog,” updated 2025.</p>
+<p>[2] G. F. Knoll, <em>Radiation Detection and Measurement</em>, 4th ed. Hoboken, NJ: Wiley, 2010.</p>
+</body>
+</html>

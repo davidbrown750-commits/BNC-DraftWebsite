@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>11-configurations</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">11-configurations</h1>
+</header>
+<h1 id="chapter-11---detector-configurations">Chapter 11 - Detector configurations</h1>
+<p>A scintillation detector in production is rarely a bare crystal. It is a configuration: the crystal mounted in a housing, surrounded by a reflector and shielding, optically coupled to one or more photodetectors, packaged with mechanical protection appropriate to the application. This chapter walks through the standard configurations: what each is for, what choices distinguish them, and where the trade-offs land.</p>
+<h2 id="crystal-only-assemblies">11.1 Crystal-only assemblies</h2>
+<p>The simplest configuration is a hermetically sealed crystal with no integrated photodetector. The crystal is mounted inside a thin metal canister (aluminum, stainless steel, or in some cases titanium) with an optical-grade glass or quartz window on one face. The opposite face and side walls are surrounded by a diffuse reflector, typically magnesium oxide powder, polytetrafluoroethylene (PTFE) tape, or a structured ESR-style mirror. The window face is the only optical exit; the rest of the crystal is wrapped to maximize light collection at the window.</p>
+<p>Crystal-only assemblies are used when the photodetector is selected separately: in laboratory systems where the same crystal might be tested with multiple readout options, in custom configurations where the photodetector is integrated downstream by the system builder, and in applications where the detector chain is built into a larger instrument that includes its own optical-coupling architecture.</p>
+<p>The hermetic seal is critical for hygroscopic crystals. A 1-micron leak in a NaI(Tl) housing fogs the crystal surface within weeks. The seal is typically welded for stainless steel canisters and laser-welded or epoxy-bonded for aluminum canisters. Helium leak testing is the standard quality-control step.</p>
+<h2 id="crystal-plus-pmt-assemblies">11.2 Crystal-plus-PMT assemblies</h2>
+<p>The classical scintillation detector. The crystal is mounted directly to the entrance window of a PMT, with optical grease or optical cement providing index-matched coupling. The PMT and the crystal share a single sealed housing, with the photocathode protected from ambient light by the PMT’s own envelope and by the housing walls.</p>
+<p>Configuration choices within the PMT-coupled family:</p>
+<ul>
+<li><strong>PMT diameter relative to crystal face.</strong> Typically the PMT photocathode area at least matches the crystal face. For larger crystals, multiple PMTs can be tiled, although this is now rare; modern large-area detectors use SiPM arrays.</li>
+<li><strong>Integrated voltage divider versus external.</strong> Plug-on dividers (covered in Chapter 13) connect to the PMT pins through a socket. Integrated dividers are built into the housing and reduce cabling complexity at the cost of in-field divider maintenance.</li>
+<li><strong>High voltage routed in or generated locally.</strong> Standard configurations route HV in via a coaxial cable. Configurations with built-in HV (the /HV suffix in Section 10.3) include a small DC-DC converter inside the housing and accept low-voltage power instead.</li>
+<li><strong>Magnetic shielding.</strong> Mu-metal cylinders around the PMT mitigate stray fields. Required for any application near transformers, motors, or strong magnets.</li>
+</ul>
+<p>PMT-coupled assemblies remain the dominant configuration for large-volume gamma detectors (above 3 inches in any dimension), for low-background counters where intrinsic photodetector activity must be controlled, and for high-rate timing applications where PMT TTS still wins.</p>
+<h2 id="photodiode-coupled-assemblies">11.3 Photodiode-coupled assemblies</h2>
+<p>The crystal is optically coupled to a silicon photodiode rather than a PMT. The photodiode is much smaller than a PMT photocathode, so photodiode-coupled designs work best with crystals that emit at long wavelengths (CsI(Tl), GAGG:Ce) where the photodiode QE is high.</p>
+<p>The signal level out of a photodiode-coupled scintillator is much smaller than out of a PMT-coupled scintillator (no internal multiplication), so a low-noise charge-sensitive preamplifier is mounted directly on the photodiode within the housing. The preamplifier’s input-referred noise sets the system’s noise floor. Photodiode-coupled detectors are used in applications where the high-light-yield emission and the absence of HV requirement matter: CT scanner arrays, some industrial gauges, certain compact gamma cameras.</p>
+<h2 id="sipm-coupled-assemblies">11.4 SiPM-coupled assemblies</h2>
+<p>The dominant new configuration for compact and handheld instruments. The crystal is optically coupled to one or more SiPM dies tiled across the crystal face. The SiPM produces a signal comparable in size to a PMT (10^5 to 10^6 internal gain), with much smaller form factor, no high-voltage requirement, magnetic-field tolerance, and direct CMOS integration of the readout electronics.</p>
+<p>Within the SiPM-coupled family, the design questions are:</p>
+<ul>
+<li><strong>Cell pitch.</strong> 25 to 50 micrometers for typical gamma spectroscopy. Smaller cells for high-dynamic-range applications including PET.</li>
+<li><strong>Spectral matching.</strong> NUV-optimized for blue-emission scintillators (NaI, LSO, LYSO, BGO, LaBr3, CeBr3); RGB-optimized for green-emission scintillators (CsI(Tl), GAGG:Ce).</li>
+<li><strong>Tiling architecture.</strong> Single die for crystals up to about 1 cm by 1 cm. 4-die or 16-die arrays for crystals up to about 1 inch. Larger arrays for crystals up to about 2 inches. Above 2 inches, the SiPM array cost relative to a PMT becomes the binding constraint.</li>
+<li><strong>Front-end ASIC.</strong> Dedicated chips (TOFPET2, PETIROC, MUSIC, MAROC) handle multi-channel readout with picosecond timestamps. For single-channel applications, a discrete amplifier and digital pulse processor suffice.</li>
+<li><strong>Bias compensation.</strong> Active temperature-compensated bias supply, integrated into the housing or nearby.</li>
+</ul>
+<p>Modern SiPM-coupled detectors achieve 6 to 7 percent FWHM at 662 keV with optimized CsI(Tl) crystals of 1 inch by 1 inch dimension, comparable to the best PMT-coupled NaI(Tl) detectors of the same volume. The form factor advantage is dramatic: a SiPM-coupled assembly fits in a fraction of the volume of a PMT-coupled equivalent.</p>
+<figure>
+<img src="../figures/fig-11-01-detector-configurations.svg" alt="" /><figcaption>Figure 11.1 - Side-by-side cross-sections of the classical PMT-coupled B-style configuration and the modern SiPM-coupled S-style configuration.</figcaption>
+</figure>
+<h2 id="detector-entrance-windows-and-light-coupling">11.5 Detector entrance windows and light coupling</h2>
+<p>The entrance window separates the radiation from the scintillator and lets the radiation through with minimal absorption. The choice of window material depends on the radiation type and energy.</p>
+<p><strong>Aluminum</strong> is the standard for gamma and high-energy beta. Thicknesses from 0.5 mm to 5 mm depending on the energy range and the desired ruggedness. Aluminum effectively eliminates ambient light contamination and provides mechanical protection.</p>
+<p><strong>Beryllium</strong> is used for low-energy X-ray detection (below about 10 keV), where aluminum’s photoelectric absorption would be unacceptable. Beryllium has the lowest photoelectric absorption of any reasonable window material, with a Z of 4 and density of 1.85 g/cc.</p>
+<p><strong>Aluminized mylar</strong> is used for alpha and beta detection where minimal absorption matters and the detector does not need to survive mechanical abuse. Thicknesses from 2 to 100 micrometers. The 2-micron versions are not 100 percent light-tight and may need ambient-light shielding.</p>
+<p><strong>Glass or quartz</strong> is the standard for the photodetector-side window of the housing. Glass for visible-light scintillators. Quartz for UV scintillators (BaF2 fast component, undoped CsI). Borosilicate glass cuts off below 300 nm; quartz transmits to 180 nm.</p>
+<p><strong>Optical coupling</strong> between the crystal and the window or the photodetector is silicone-based grease (refractive index 1.4 to 1.5) for routine work, optical cement for permanent bonds, or air gap where the loss is tolerable. Index-matched coupling reduces Fresnel reflection from each interface from 4 to 5 percent down to less than 1 percent.</p>
+<h2 id="crystal-dimensions-and-housing-materials">11.6 Crystal dimensions and housing materials</h2>
+<p>For gamma spectroscopy, crystal volume scales detection efficiency. Common standard sizes:</p>
+<ul>
+<li>1 inch by 1 inch (25 mm by 25 mm). Compact; widely used in handheld instruments.</li>
+<li>2 inch by 2 inch (51 mm by 51 mm). Mid-range general purpose.</li>
+<li>3 inch by 3 inch (76 mm by 76 mm). The classical low-background gamma counter.</li>
+<li>4 inch by 4 inch (102 mm by 102 mm). Larger general purpose.</li>
+<li>5 inch by 5 inch (127 mm by 127 mm) and above. Specialty.</li>
+</ul>
+<p>Cylindrical is the most common geometry. Rectangular slabs are used in arrays. Wells are used for sample counting at near 4-pi solid angle. Custom geometries (annular, hemispherical, segmented) are made on order.</p>
+<p>Housing materials are chosen for cost, ruggedness, and intrinsic radioactivity. Stainless steel is standard for harsh environments. Aluminum is standard for general purpose. Titanium is specialty for low background and weight-sensitive applications. Copper is used in low-background counters where the gamma background of standard housing materials would be problematic.</p>
+<h2 id="light-pulsers">11.7 Light pulsers</h2>
+<p>A light pulser is a small built-in light source mounted inside the detector housing, used for stability monitoring and gain calibration. Two types are common.</p>
+<p><strong>LED pulsers.</strong> A pulsed LED, controlled by an external trigger or by the detector’s onboard electronics, injects a known light pulse into the photodetector. The resulting electrical pulse provides a reference for gain calibration that is independent of the scintillator’s response. LED pulsers are useful for monitoring photodetector drift and for confirming the detector is alive when no radiation source is available.</p>
+<p><strong>Alpha pulsers.</strong> A small Am-241 source (typically 100 to 500 nanocuries activity) is mounted inside the housing such that its alpha emissions reach the scintillator but its low-energy gamma is absorbed. The alpha-induced scintillation produces a peak at gamma-equivalent energy of 1.5 to 3.5 MeV in NaI(Tl). The peak position is monitored continuously and used as a real-time gain reference. Alpha pulsers are the standard solution for spectrum stabilization in deployed instruments where temperature drift and PMT hysteresis must be corrected.</p>
+<p>The Am-241 alpha pulser is referred to as an “Am-pulser” throughout the literature and in this book. It is one of the simplest and most reliable spectrum-stabilization techniques and should be specified by default for any deployed instrument that needs gain stability over hours or days.</p>
+<h2 id="low-background-detectors">11.8 Low-background detectors</h2>
+<p>Low-background detectors are configurations engineered to minimize the detector’s intrinsic radioactivity, so that very low external activities can be measured without being swamped by the detector’s own background. Applications include environmental monitoring, food and water radioactivity testing, medical sample counting, and rare-event physics experiments.</p>
+<p>The dominant background sources in a standard scintillation detector:</p>
+<ul>
+<li><strong>K-40 in glass.</strong> PMT envelopes contain trace K-40, contributing the 1461 keV gamma line plus a beta continuum.</li>
+<li><strong>U and Th decay chain in housing materials.</strong> Stainless steel, aluminum, and most metals contain trace uranium and thorium.</li>
+<li><strong>Cosmic ray secondaries.</strong> Muons and their electromagnetic showers contribute a continuous background.</li>
+<li><strong>Environmental radon.</strong> Rn-222 and its daughters in ambient air diffuse into any unsealed volume.</li>
+</ul>
+<p>Low-background designs address each of these:</p>
+<ul>
+<li><strong>Low-K glass PMTs.</strong> Specially formulated glass with reduced K-40 content. Available from major PMT vendors at premium pricing.</li>
+<li><strong>Selected-purity housing materials.</strong> Copper, electroformed copper, ancient lead (lead recovered from sunken Roman ships and similar sources, with the Pb-210 decayed away over centuries) are used in the most demanding designs.</li>
+<li><strong>Active and passive shielding.</strong> A passive shield of low-background lead and copper surrounds the detector. An active anticoincidence shield (a separate scintillator surrounding the detector and vetoing events that fire both) suppresses cosmic-ray secondaries.</li>
+<li><strong>Hermetic radon-tight enclosures.</strong> The detector volume is purged with radon-free gas (boil-off nitrogen from a liquid nitrogen tank, after the radon has decayed in the gas phase) and sealed.</li>
+</ul>
+<p>A well-engineered low-background NaI(Tl) detector, 3 inches by 3 inches in copper-lined shielding, achieves a background count rate two to three orders of magnitude below an unshielded standard detector at the same volume.</p>
+<h2 id="ruggedized-configurations">11.9 Ruggedized configurations</h2>
+<p>For field deployment, the standard catalog detector is augmented with mechanical and environmental protection.</p>
+<p><strong>Down-hole tools</strong> package the detector in a sealed pressure housing rated to 20,000 psi or more, with shock-mounting between the detector and the housing wall. The PMT or SiPM is rated for the operating temperature (175 C is typical). The crystal is selected for the temperature regime. The housing is typically stainless steel.</p>
+<p><strong>MIL-spec drop-tested</strong> housings are used for handheld instruments expected to survive drops onto hard surfaces, exposure to dust and rain, and temperature cycling from -40 C to +60 C. Shock mounts for the crystal and the photodetector are integrated into the housing design.</p>
+<p><strong>Vacuum-rated</strong> housings for space applications eliminate any organic outgassing material from the detector volume. Optical coupling uses cured silicone rather than grease. The housing is hermetically sealed and pressure-tested.</p>
+<p><strong>Submersible</strong> housings for underwater monitoring use double-O-ring seals and corrosion-resistant materials (titanium or specialized stainless steel). Cable penetrators are pressure-rated.</p>
+<blockquote>
+<p><strong>Going Deeper - Light extraction efficiency in a sealed assembly</strong></p>
+<p>The fraction of scintillation photons that reach the photodetector face is the light extraction efficiency. It depends on the crystal refractive index n_c, the refractive index of the optical coupling n_g, the photodetector window refractive index n_w, the surface finish of the crystal, the choice of reflector, and the geometry of the housing.</p>
+<p>For a CsI(Tl) crystal (n_c = 1.79) coupled with silicone optical grease (n_g = 1.45) to a glass window (n_w = 1.5) on a PMT, the Fresnel reflection at each interface is 1 to 2 percent if index-matching is good. The total optical loss in the coupling stack is therefore 3 to 6 percent, leaving roughly 94 to 97 percent of light incident on the window to reach the photocathode (or photodiode). The light extraction from the crystal interior to the window face is set by surface finish, reflector quality, and geometry; for a 1 inch by 1 inch crystal with PTFE diffuse reflector, the typical light collection efficiency at the window is 80 to 90 percent. Multiplying gives 75 to 85 percent of scintillation photons reaching the photodetector face. Each percent point matters at low energy where photon statistics dominates resolution.</p>
+</blockquote>
+<div class="callout">
+<p><strong>BNC in Practice - Configuration drift over the lifetime of a product</strong></p>
+<p>A standard catalog detector configuration is rarely the same product five years apart. PMT vendors update their catalogs and discontinue older tube types. SiPM vendors release new generations every two to three years with improved PDE. Reflector materials, optical coupling compounds, and housing fabrication techniques evolve. The configuration code (Chapter 10 nomenclature) stays the same; the product behind it improves. The applications engineer who specifies a detector against an old datasheet and the manufacturing engineer who builds it with current components both expect the calibration certificate to reflect the as-built performance, not the catalog-page promise. Periodic re-qualification of standard configurations is part of running a serious detector business.</p>
+</div>
+<h2 id="the-configuration-is-the-product">11.10 The configuration is the product</h2>
+<p>A scintillator material is not a product. A configuration is a product. The configuration carries the engineering trade-offs, the manufacturing knowledge, the calibration history, and the failure modes that make a detector usable in a specific application. The next chapter walks through specific named configurations from the Scionix catalog as worked examples of how the choices in this chapter combine in practice.</p>
+<h2 id="chapter-11-quiz">Chapter 11 Quiz</h2>
+<ol type="1">
+<li>Why does a hygroscopic scintillator like NaI(Tl) require a hermetically sealed housing.</li>
+<li>What is the standard entrance window material for low-energy X-ray detectors, and why.</li>
+<li>What is an Am-pulser and what does it do.</li>
+<li>Name three sources of intrinsic background in a standard scintillation detector.</li>
+<li>What are the two main reasons a SiPM-coupled assembly is replacing PMT-coupled assemblies in handheld instruments.</li>
+</ol>
+<h3 id="quiz-answers">Quiz answers</h3>
+<ol type="1">
+<li>Hygroscopic crystals absorb water vapor from the atmosphere, fogging the surface and degrading optical transmission. NaI(Tl) shows visible fogging within weeks at normal humidity if not sealed. The hermetic seal must be welded or otherwise leak-tight to prevent moisture ingress over the detector’s service life.</li>
+<li>Beryllium. With Z of 4 and density of 1.85 g/cc, beryllium has the lowest photoelectric absorption of any practical window material below about 10 keV.</li>
+<li>A small Am-241 alpha source mounted inside the detector housing. Alpha particles produce scintillations at a known gamma-equivalent energy and at a controlled count rate. The position of the resulting alpha peak in the spectrum serves as a real-time gain reference for spectrum stabilization.</li>
+<li>K-40 in PMT glass; U and Th decay chain in housing materials; cosmic ray secondaries; environmental radon. Any three.</li>
+<li>Form factor (SiPM is much smaller than a PMT photocathode of equivalent area) and absence of high-voltage requirement (SiPM operates at 25 to 50 V versus PMT 700 to 1500 V), with the additional benefits of magnetic-field tolerance and direct CMOS integration of readout electronics.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] G. F. Knoll, <em>Radiation Detection and Measurement</em>, 4th ed. Hoboken, NJ: Wiley, 2010.</p>
+<p>[2] Scionix Holland B.V., “Scintillation Detector Catalog,” updated 2025.</p>
+<p>[3] H. T. van Dam et al., “SiPM array readout of CsI(Tl) for compact gamma spectroscopy,” in <em>Proc. SCINT 2022</em>, Santa Fe, 2022.</p>
+<p>[4] J. Heffner et al., “Low-background gamma spectroscopy systems for environmental monitoring,”</p>
+</body>
+</html>

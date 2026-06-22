@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2. Radiation in 6 Pages: What Operators Must Know | RIIDs in the Field</title>
+<meta name="description" content="Berkeley Nucleonics field handbook for using the SAM family of radioisotope identifiers and RD-120 backpack and vehicle systems in radiological response.">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* ====== BNC Book Series Style Guide tokens ====== */
+  :root {
+    --bnc-deep-navy:   #003D6B;
+    --bnc-sky-blue:    #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal:    #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan:  #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan:  #00d4ff;
+    --bnc-target-green:#00ff88;
+    --bnc-white:       #ffffff;
+    --bnc-rule:        #b6c2cc;
+
+    --bnc-sans:  "Helvetica Neue", "Arial", sans-serif;
+    --bnc-black: "Helvetica Neue", "Arial Black", "Helvetica", "Arial", sans-serif;
+    --bnc-serif: "Georgia", "Iowan Old Style", serif;
+    --bnc-mono:  "Consolas", "SFMono-Regular", "Menlo", monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bnc-light-steel);
+    color: var(--bnc-charcoal);
+    font-family: var(--bnc-serif);
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .shell {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 96px 24px;
+  }
+
+  /* ====== cover panel (screen view) ====== */
+  .cover {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    border-radius: 4px;
+    padding: 56px 36px 48px 36px;
+    margin: 0 0 36px 0;
+    box-shadow: 0 12px 40px rgba(0, 31, 56, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover .kicker {
+    font-family: var(--bnc-sans);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--bnc-light-cyan);
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: var(--bnc-black);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1.02;
+    margin: 14px 0 12px 0;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: none;
+  }
+  .cover h2 {
+    font-family: var(--bnc-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0 0 24px 0;
+    color: #cfdce6;
+    text-transform: none;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .cover .meta {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: #cfdce6;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 18px;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+  .cover .meta strong { color: #fff; }
+
+  /* ====== headings (interior) ====== */
+  h1, h2, h3, h4 {
+    font-family: var(--bnc-sans);
+    line-height: 1.2;
+  }
+  h1 {
+    font-size: 28pt;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 56px 0 18px 0;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  h1:first-of-type { margin-top: 32px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    margin: 44px 0 14px 0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--bnc-sky-blue);
+    margin: 28px 0 10px 0;
+  }
+  h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bnc-charcoal);
+    margin: 22px 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ====== body text ====== */
+  p { margin: 0 0 14px 0; }
+  ul, ol { margin: 0 0 16px 24px; padding: 0; }
+  li { margin: 4px 0; }
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+
+  /* ====== tables ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: var(--bnc-sans);
+    font-size: 14px;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    text-align: left;
+    padding: 8px 10px;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+
+  /* ====== blockquotes / callouts ====== */
+  blockquote {
+    margin: 18px 0;
+    padding: 14px 18px;
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    border-radius: 0 4px 4px 0;
+    color: var(--bnc-charcoal);
+  }
+  blockquote p { margin: 0; }
+  blockquote strong { color: var(--bnc-deep-navy); }
+
+  /* ====== code / checklists ====== */
+  code, pre { font-family: var(--bnc-mono); }
+  code {
+    background: var(--bnc-light-steel);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  pre {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-left: 4px solid var(--bnc-deep-navy);
+    padding: 16px 18px;
+    line-height: 1.5;
+    font-size: 14px;
+    border-radius: 0 4px 4px 0;
+    white-space: pre-wrap;
+  }
+  pre code { background: transparent; padding: 0; }
+
+  /* ====== rules ====== */
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--bnc-rule);
+    margin: 36px 0;
+  }
+  hr + h1, hr + h2 { margin-top: 28px; }
+
+  /* ====== TOC and isotope cards ====== */
+  .toc {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    padding: 22px 26px;
+    margin: 24px 0 36px 0;
+  }
+  h3[id^="card-a-"] {
+    background: var(--bnc-light-steel);
+    padding: 8px 14px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    color: var(--bnc-deep-navy);
+    margin-top: 24px;
+  }
+
+  /* ====== links ====== */
+  a {
+    color: var(--bnc-sky-blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--bnc-sky-blue);
+  }
+  a:hover { border-bottom-style: solid; }
+
+  /* ====== sticky top bar (screen only) ====== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bnc-deep-navy);
+    color: #fff;
+    padding: 8px 18px;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--bnc-sky-blue);
+  }
+  .topbar a {
+    color: var(--bnc-light-cyan);
+    border-bottom: none;
+    font-weight: 700;
+  }
+  .topbar .brand {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ====== figures ====== */
+  figure {
+    margin: 24px 0;
+    text-align: center;
+  }
+  figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 31, 56, 0.08);
+  }
+  figcaption {
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* ====== mobile ====== */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .shell { padding: 18px 14px 64px 14px; }
+    .cover { padding: 36px 22px 32px 22px; }
+    .cover h1 { font-size: 32px; }
+    .cover h2 { font-size: 17px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 19px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 9px; }
+  }
+
+  /* ====== print: 5x8 trim, BNC interior spec ====== */
+  @media print {
+    @page {
+      size: 5in 8in;
+      margin: 0.45in 0.45in 0.5in 0.45in;
+    }
+    body {
+      background: #fff;
+      font-size: 8.5pt;
+      line-height: 1.32;
+      color: var(--bnc-charcoal);
+    }
+    .topbar { display: none; }
+    .shell { max-width: 100%; padding: 0; margin: 0; }
+    .cover {
+      padding: 0.5in 0.4in;
+      page-break-after: always;
+      min-height: 6.4in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .cover h1 { font-size: 28pt; color: #fff !important; border-bottom: none !important; }
+    .cover h2 { font-size: 14pt; color: #cfdce6 !important; }
+    .cover .kicker { color: var(--bnc-light-cyan) !important; }
+    .cover .meta, .cover .meta strong, .cover p { color: #fff !important; }
+
+    h1 {
+      font-family: var(--bnc-sans);
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--bnc-deep-navy) !important;
+      page-break-before: always;
+      margin: 0 0 12pt 0;
+      padding-bottom: 4pt;
+      border-bottom: 2pt solid var(--bnc-sky-blue);
+      letter-spacing: 0.5pt;
+    }
+    h1:first-of-type { page-break-before: avoid; }
+    h2 { font-family: var(--bnc-sans); font-size: 13pt; font-weight: 700; color: var(--bnc-deep-navy) !important; page-break-after: avoid; margin-top: 14pt; margin-bottom: 6pt; }
+    h3 { font-family: var(--bnc-sans); font-size: 11pt; font-weight: 700; color: var(--bnc-sky-blue) !important; page-break-after: avoid; margin-top: 10pt; margin-bottom: 4pt; }
+    h4 { font-family: var(--bnc-sans); font-size: 9pt; font-weight: 700; color: var(--bnc-charcoal) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+    p, li { orphans: 3; widows: 3; margin-bottom: 4pt; }
+    ul, ol { margin: 4pt 0 4pt 18pt; }
+
+    table, blockquote, pre { page-break-inside: avoid; margin: 6pt 0; }
+    pre { font-size: 7pt; line-height: 1.25; padding: 6pt 8pt; background: #fff; border-color: var(--bnc-rule); border-left-color: var(--bnc-deep-navy); }
+    table { font-size: 7.5pt; }
+    thead th { background: var(--bnc-deep-navy) !important; color: #fff !important; padding: 4pt 5pt; }
+    tbody td { padding: 3pt 5pt; }
+    tbody tr:nth-child(odd) td { background: var(--bnc-light-steel); }
+    blockquote { background: var(--bnc-light-steel); border-left: 4pt solid var(--bnc-sky-blue); padding: 6pt 10pt; }
+    a { color: var(--bnc-charcoal); border-bottom: none; }
+
+    figure { page-break-inside: avoid; margin: 6pt 0; text-align: center; }
+    figure img {
+      max-width: 100%;
+      max-height: 1.9in;
+      width: auto; height: auto;
+      object-fit: contain;
+      box-shadow: none;
+      padding: 2pt;
+      border-color: var(--bnc-rule);
+    }
+    figcaption { font-size: 7.5pt; margin-top: 3pt; line-height: 1.3; color: var(--bnc-charcoal); }
+  }
+
+  /* Cover image full-bleed in print */
+  @media print {
+    .cover {
+      padding: 0 !important;
+      background: none !important;
+      page-break-after: always;
+      min-height: auto;
+      display: block !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    .cover img {
+      width: 5in !important;
+      height: 8in !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: cover;
+      display: block;
+    }
+    @page :first {
+      margin: 0;
+    }
+  }
+
+  /* ====== Callouts and sidebars (BNC style guide section 6) ====== */
+  .callout {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  .sidebar-deeper {
+    background: #e6edf3;
+    border: 1px solid #b6c2cc;
+    border-left: 4px solid var(--bnc-charcoal);
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .sidebar-deeper h4 {
+    color: var(--bnc-charcoal);
+    margin: 0 0 6px 0;
+    font-family: var(--bnc-sans);
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .sidebar-deeper p { margin: 0; font-size: 14px; }
+
+  @media print {
+    .callout, .sidebar-deeper {
+      page-break-inside: avoid;
+      margin: 6pt 0;
+      padding: 6pt 10pt;
+      font-size: 8pt;
+    }
+    .callout h4, .sidebar-deeper h4 { font-size: 9pt; margin-bottom: 3pt; }
+    .callout p, .sidebar-deeper p { font-size: 8pt; }
+  }
+
+  /* Quiz block */
+  .quiz {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 24px 0;
+    border-radius: 0 0 4px 4px;
+  }
+  .quiz h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+  }
+  .quiz ol { margin: 0 0 0 22px; padding: 0; }
+  .quiz ol > li { margin-bottom: 10px; font-size: 14px; }
+  .quiz ol[type="a"] { margin-top: 6px; margin-bottom: 0; }
+  .quiz ol[type="a"] > li { margin-bottom: 2px; font-size: 13px; }
+  @media print {
+    .quiz { page-break-inside: avoid; padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .quiz h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .quiz ol > li { font-size: 8pt; margin-bottom: 4pt; }
+    .quiz ol[type="a"] > li { font-size: 7.5pt; }
+  }
+
+  .checklist, .form-block {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-top: 6px solid var(--bnc-sky-blue);
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 0 0 4px 4px;
+    page-break-inside: avoid;
+  }
+  .checklist h4, .form-block h4 {
+    color: var(--bnc-deep-navy);
+    margin: 0 0 10px 0;
+    font-family: var(--bnc-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+  }
+  .checklist pre, .form-block pre {
+    margin: 0; border: none; background: transparent; padding: 0;
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 11px; line-height: 1.55; color: var(--bnc-charcoal);
+  }
+  @media print {
+    .checklist, .form-block { padding: 6pt 10pt; margin: 8pt 0; border-top-width: 4pt; }
+    .checklist h4, .form-block h4 { font-size: 9pt; margin-bottom: 5pt; }
+    .checklist pre, .form-block pre { font-size: 7pt; }
+  }
+
+  /* ====== Refined component system (BNC v2) ====== */
+
+  /* SVG icons: inherit color, baseline-aligned */
+  .bnc-icon, .bnc-cb {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--bnc-sky-blue);
+  }
+
+  /* Card pattern shared by checklist + form */
+  .bnc-card {
+    background: #fff;
+    border: 1px solid var(--bnc-rule);
+    border-radius: 6px;
+    margin: 22px 0;
+    overflow: hidden;
+    page-break-inside: avoid;
+    box-shadow: 0 1px 3px rgba(0, 31, 56, 0.06);
+  }
+  .bnc-card-head {
+    background: linear-gradient(90deg, #003D6B 0%, #0078B6 100%);
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-card-icon { color: #7fdbff; display: flex; align-items: center; }
+  .bnc-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bnc-card-body {
+    padding: 14px 18px;
+    background: #fff;
+  }
+  .bnc-card-subhead {
+    font-family: var(--bnc-sans);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 12px 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed var(--bnc-rule);
+  }
+  .bnc-card-subhead:first-child { margin-top: 0; }
+  .bnc-card-note {
+    font-family: var(--bnc-serif);
+    font-size: 12px;
+    color: var(--bnc-charcoal);
+    margin: 6px 0;
+    line-height: 1.45;
+    font-style: italic;
+  }
+
+  /* Checklist items */
+  .bnc-cb-list {
+    list-style: none;
+    margin: 0 0 4px 0;
+    padding: 0;
+  }
+  .bnc-cb-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding: 4px 0;
+    font-family: var(--bnc-serif);
+    font-size: 13px;
+    color: var(--bnc-charcoal);
+    line-height: 1.45;
+  }
+  .bnc-cb-list li .bnc-cb { margin-top: 1px; color: var(--bnc-sky-blue); }
+  .bnc-cb-list li.done { color: #5b6770; }
+  .bnc-cb-list li.done .bnc-cb { color: var(--bnc-target-green); }
+
+  /* Fill-in form fields */
+  .bnc-field {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 5px 0;
+    font-family: var(--bnc-sans);
+  }
+  .bnc-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bnc-deep-navy);
+    flex: 0 0 auto;
+    min-width: 130px;
+    letter-spacing: 0.02em;
+  }
+  .bnc-field-line {
+    flex: 1 1 auto;
+    border-bottom: 1px solid #b6c2cc;
+    height: 16px;
+    margin-bottom: 2px;
+  }
+  .bnc-field-spacer { height: 6px; }
+
+  /* Icon-decorated callouts (overrides earlier .callout / .sidebar-deeper / .quiz) */
+  .callout, .sidebar-deeper {
+    position: relative;
+    padding-left: 46px;
+  }
+  .callout::before, .sidebar-deeper::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+  }
+  .callout::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230078B6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z'/></svg>");
+  }
+  .sidebar-deeper::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232C3E50' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>");
+  }
+
+  .quiz { position: relative; padding-left: 46px; }
+  .quiz::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    width: 22px; height: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 22px 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003D6B' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3'/><circle cx='12' cy='17' r='0.8' fill='%23003D6B'/></svg>");
+  }
+
+  /* Warm-charcoal body text (subtle warmth) */
+  body { color: #2c3540; }
+
+  /* Sky-blue dotted underline rule on H2 (lighter than before) */
+  h2 {
+    border-bottom: 2px solid var(--bnc-sky-blue);
+    padding-bottom: 6px;
+  }
+
+  @media print {
+    .bnc-card { margin: 8pt 0; box-shadow: none; }
+    .bnc-card-head { padding: 4pt 8pt; }
+    .bnc-card-title { font-size: 8.5pt; }
+    .bnc-card-body { padding: 6pt 10pt; }
+    .bnc-card-subhead { font-size: 7.5pt; margin: 6pt 0 3pt 0; }
+    .bnc-cb-list li { font-size: 7.5pt; padding: 1.5pt 0; gap: 5pt; }
+    .bnc-field label { font-size: 7pt; min-width: 90pt; }
+    .bnc-field { padding: 2pt 0; }
+    .callout, .sidebar-deeper, .quiz { padding-left: 28pt !important; }
+    .callout::before, .sidebar-deeper::before, .quiz::before {
+      width: 14pt; height: 14pt; background-size: 14pt 14pt;
+      left: 7pt; top: 7pt;
+    }
+  }
+
+  body { background: #f5f7f9; }
+  .shell { background: #ffffff; box-shadow: 0 0 0 1px var(--bnc-rule); border-radius: 4px; }
+  h1::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--bnc-sky-blue);
+    margin-bottom: 10px;
+    border-radius: 2px;
+  }
+  h2 { position: relative; }
+  code {
+    background: #eef3f6;
+    color: var(--bnc-deep-navy);
+    border: 1px solid #dde5ea;
+    font-size: 13px;
+  }
+  thead tr:first-child th { border-top: 3px solid var(--bnc-sky-blue); }
+  figcaption { color: #4a5763; font-size: 13.5px; font-style: italic; }
+  @media print {
+    body { background: #fff; }
+    .shell { box-shadow: none; }
+  }
+
+  /* ====== Page numbers + running header (CSS Paged Media) ====== */
+  @media print {
+    /* Capture current chapter title from each h1 */
+    h1 { string-set: chapter content(); }
+    /* Suppress h1 string capture on the cover-only page (cover has no h1) */
+
+    @page {
+      size: 5in 8in;
+      margin: 0.5in 0.45in 0.55in 0.45in;
+      @bottom-center {
+        content: counter(page);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 8pt;
+        color: #003D6B;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @bottom-left {
+        content: "";
+        background: #0078B6;
+        height: 1pt;
+        width: 0.6in;
+        margin-bottom: 12pt;
+      }
+      @bottom-right {
+        content: "BNC";
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #7fdbff;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-top: 6pt;
+      }
+      @top-right {
+        content: string(chapter);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 7pt;
+        color: #5b6770;
+        font-style: italic;
+        margin-bottom: 6pt;
+      }
+    }
+
+    /* Cover page: no headers, no numbers, no margins */
+    @page :first {
+      margin: 0;
+      @bottom-center { content: ""; }
+      @bottom-left { content: ""; }
+      @bottom-right { content: ""; }
+      @top-right { content: ""; }
+    }
+
+    /* Suppress running header on the very first page after the cover (front-matter title) */
+    @page :nth(2) {
+      @top-right { content: ""; }
+    }
+  }
+
+  /* ====== light-touch reconciliation additions ====== */
+  /* clean signature line (replaces the old stripped-attribution comma) */
+  p.signature {
+    text-align: right;
+    color: var(--bnc-deep-navy);
+    font-family: var(--bnc-serif);
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  p.signature em { font-style: italic; }
+
+  /* real Contents list (replaces run-together paragraphs) */
+  nav.toc { margin: 8px 0 0 0; }
+  nav.toc .toc-group {
+    font-family: var(--bnc-sans);
+    color: var(--bnc-deep-navy);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 14px;
+    margin: 22px 0 6px 0;
+  }
+  nav.toc ul, nav.toc ol { margin: 0 0 6px 0; padding-left: 26px; }
+  nav.toc li { margin: 3px 0; line-height: 1.4; }
+  nav.toc a { color: var(--bnc-sky-blue); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  nav.toc ol.toc-alpha { list-style: upper-alpha; }
+
+  /* ====== shared footer (single-file adaptation) ====== */
+  footer.bnc-footer {
+    font-family: var(--bnc-sans); margin-top: 54px;
+    border-top: 2px solid var(--bnc-deep-navy); padding-top: 16px;
+    font-size: 13px; color: var(--bnc-charcoal);
+  }
+  footer.bnc-footer .bnc-nav { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  footer.bnc-footer .bnc-nav a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-nav a:hover { text-decoration: underline; }
+  footer.bnc-footer .bnc-nav a.disabled { color: #9aa7b2; pointer-events: none; font-weight: 400; }
+  footer.bnc-footer .bnc-nav .mid { text-align: center; flex: 0 0 auto; }
+  footer.bnc-footer .bnc-nav .next { text-align: right; }
+  footer.bnc-footer .bnc-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+    padding-top: 10px; border-top: 1px solid var(--bnc-rule); opacity: .92; }
+  footer.bnc-footer .bnc-meta a { color: var(--bnc-sky-blue); text-decoration: none; font-weight: 700; }
+  footer.bnc-footer .bnc-meta .spacer { margin-left: auto; font-weight: 400; opacity: .75; }
+
+  @media print {
+    /* keep footer from fighting the 5x8 print layout: hide screen nav, show compact copyright only */
+    footer.bnc-footer .bnc-nav { display: none; }
+    footer.bnc-footer .bnc-meta a { color: #000; }
+    footer.bnc-footer { margin-top: 18px; border-top: 1px solid #000; font-size: 7.5pt; page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body id="top">
+<div class="topbar">
+  <span class="brand">BNC · RIIDs in the Field</span>
+  <a href="00-front-matter.html#contents">Contents</a>
+</div>
+
+<div class="shell">
+
+<h2 id="2-radiation-in-6-pages-what-operators-must-know">2. Radiation in 6 Pages: What Operators Must Know</h2>
+<p>You don't need a physics degree to run a RIID. You need a working operator's grasp of where radiation comes from, how it interacts with you and the instrument, and what the screen is actually telling you. That's this chapter.</p>
+<h3 id="21-radiation-is-energy">2.1 Radiation Is Energy</h3>
+<p>Radiation is energy in motion. It is given off by unstable atoms, ones whose nuclei are not happy with the number of protons and neutrons they're carrying, and by certain machines like X-ray tubes and accelerators.</p>
+<p>For first-response work we focus on <strong>ionizing</strong> radiation: energy strong enough to knock electrons loose from atoms and break chemical bonds. That's what causes biological damage, and that's what your instruments detect.</p>
+<p>Non-ionizing radiation (radio, microwave, visible light, most lasers) is not what we're discussing in this book.</p>
+<h3 id="22-the-four-forms-you-will-encounter">2.2 The Four Forms You Will Encounter</h3>
+<table>
+<thead>
+<tr>
+<th>Form</th>
+<th>What it is</th>
+<th>Range in air</th>
+<th>External hazard?</th>
+<th>Detected by RIID?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alpha (α)</strong></td>
+<td>Helium nucleus, 2 protons + 2 neutrons</td>
+<td>1–3 inches</td>
+<td>No (skin stops it). Inhalation/ingestion is the danger.</td>
+<td>Indirectly, via gammas from associated isotopes</td>
+</tr>
+<tr>
+<td><strong>Beta (β)</strong></td>
+<td>Fast electron (or positron)</td>
+<td>A few feet to 20 feet</td>
+<td>Skin/eye hazard at high activity</td>
+<td>Indirectly via bremsstrahlung; some via direct interaction</td>
+</tr>
+<tr>
+<td><strong>Gamma (γ)</strong></td>
+<td>High-energy photon (electromagnetic)</td>
+<td>Hundreds of feet</td>
+<td><strong>Yes, penetrating</strong></td>
+<td><strong>Yes, primary RIID target</strong></td>
+</tr>
+<tr>
+<td><strong>Neutron (n)</strong></td>
+<td>Neutral particle from heavy nuclei (Pu, Cf, U fission)</td>
+<td>Long; only stopped by hydrogen-rich shielding</td>
+<td>Yes, and a strong indicator of SNM</td>
+<td>Yes, on RIIDs equipped with neutron detectors (RD-150 and select SAM configurations)</td>
+</tr>
+</tbody>
+</table>
+<p>The two that matter most in the first ten minutes of an incident are <strong>gamma</strong> and, for special-nuclear-material (SNM) screening, <strong>neutron</strong>.</p>
+<h3 id="23-naturally-occurring-radioactivity-norm">2.3 Naturally Occurring Radioactivity (NORM)</h3>
+<p>Radioactive material is not exotic. It is in your blood (potassium-40), in your concrete walls (thorium and uranium daughters), in granite countertops, in cat litter, in fertilizer, in oilfield pipe scale, in bananas, in glow-in-the-dark exit signs, and in the air you exhale (radon).</p>
+<p>A typical person in the United States receives about <strong>300 mrem per year</strong> in background dose. Most of that comes from radon, cosmic rays, naturally radioactive elements in the ground and in our food, and medical procedures. A cross-country flight at 35,000 ft adds a few mrem. Smoke detectors contain americium-241. Lantern mantles contain thorium. Antique uranium glass actually glows.</p>
+<p>This matters operationally because the most common RIID alarm in the field is not an SNM event, it is <strong>NORM</strong>. Granite shipments, ceramic tiles, fertilizer, pottery, and freshly-paved roads will set off sensitive instruments. A trained operator distinguishes NORM from threat material in seconds; an untrained one calls a Tier-1 response.</p>
+<blockquote>
+<p><strong>Operator rule:</strong> Before you call up the chain, ask: <em>is this NORM consistent with the cargo, the location, or the patient?</em> The answer is "yes" far more often than the answer is "Cs-137 in a duffel bag."</p>
+<div class="callout"><h4>BNC in Practice: Reading a NORM Cargo</h4><p>Granite slabs, ceramic tile, oilfield pipe scale, phosphate fertilizer, monazite sand. Each has a signature your SAM identifies in seconds. Build a small reference of the manifests you actually see on your route, and compare what the SAM reports against the bill of lading before you escalate. Most NORM events resolve at the operator level once context and instrument agree.</p></div>
+</blockquote>
+<h3 id="24-how-much-is-too-much-dose-units">2.4 How Much Is Too Much: Dose Units</h3>
+<p>You will see two kinds of numbers on a RIID display: <strong>count rate</strong> (counts per second, cps) and <strong>dose rate</strong>. Dose is the one that matters for your safety.</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Unit (US)</th>
+<th>Unit (SI)</th>
+<th>What it tells you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activity</td>
+<td>curie (Ci)</td>
+<td>becquerel (Bq)</td>
+<td>How "hot" the source is at the source</td>
+</tr>
+<tr>
+<td>Exposure</td>
+<td>roentgen (R)</td>
+<td>coulomb/kg</td>
+<td>Air ionization (legacy)</td>
+</tr>
+<tr>
+<td>Absorbed dose</td>
+<td>rad</td>
+<td>gray (Gy)</td>
+<td>Energy deposited in tissue</td>
+</tr>
+<tr>
+<td>Equivalent dose</td>
+<td>rem</td>
+<td>sievert (Sv)</td>
+<td>Tissue dose adjusted for biological impact</td>
+</tr>
+<tr>
+<td>Dose rate</td>
+<td>mrem/hr, R/hr</td>
+<td>µSv/hr, mSv/hr</td>
+<td>Equivalent dose per unit time</td>
+</tr>
+</tbody>
+</table>
+<p>Conversions you should memorize:</p>
+<ul>
+<li>1 R ≈ 1 rad ≈ 1 rem (for gamma, close enough for field work)</li>
+<li>1 rem = 10 mSv = 1,000 mrem</li>
+<li>1 Sv = 100 rem</li>
+<li>1 µSv/hr ≈ 0.1 mrem/hr</li>
+</ul>
+<p>Background dose rate at sea level is roughly <strong>5–15 µR/hr</strong> (≈ 0.05–0.15 µSv/hr). When your RIID reads 100 µR/hr, you are at roughly 10× background, not yet dangerous, but worth investigating. When it reads 10 mR/hr, you are 1,000× background, back off and report.</p>
+<h3 id="25-alara-and-the-tds-triangle">2.5 ALARA and the TDS Triangle</h3>
+<p>ALARA, <strong>As Low As Reasonably Achievable.</strong> is the foundational principle of radiation safety. You reduce dose with three levers, often called the <strong>TDS triangle</strong>:</p>
+<ul>
+<li><strong>Time.</strong> less time near the source means less dose. Halving exposure time halves the dose.</li>
+<li><strong>Distance.</strong> the inverse-square law is your best friend. Doubling your distance from a point source cuts your dose to <strong>one-quarter</strong>. Tripling it cuts to <strong>one-ninth</strong>. (See §2.6.)</li>
+<li><strong>Shielding.</strong> mass between you and the source absorbs radiation. Lead is great for gammas. Water and concrete work too. Your vehicle door provides meaningful shielding for low-energy gammas.</li>
+</ul>
+<p>Whenever you can pick <em>distance</em> over <em>time</em> over <em>shielding</em>, do so, distance is free and immediate.</p>
+<h3 id="26-the-inverse-square-law-in-practice">2.6 The Inverse Square Law in Practice</h3>
+<p>For a point source, dose rate falls off as <strong>1 / r²</strong>:</p>
+<blockquote>
+<p>If at 1 m you read 100 mR/hr, then at 2 m you read 25 mR/hr; at 4 m you read 6.25 mR/hr; at 10 m you read 1 mR/hr.</p>
+</blockquote>
+<p>This is the single most useful field calculation in radiological response. You can take a reading, step back, and predict where a safe perimeter sits.</p>
+<table>
+<thead>
+<tr>
+<th>Distance ×</th>
+<th>Dose rate ×</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1×</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2×</td>
+<td>1/4</td>
+</tr>
+<tr>
+<td>3×</td>
+<td>1/9</td>
+</tr>
+<tr>
+<td>5×</td>
+<td>1/25</td>
+</tr>
+<tr>
+<td>10×</td>
+<td>1/100</td>
+</tr>
+</tbody>
+</table>
+<p>Caveat: the inverse square law assumes a point source in open air. Distributed sources, line sources (e.g., a contaminated drain), and shielded sources don't follow it cleanly, but it's still the right first guess.</p>
+<div class="sidebar-deeper"><h4>Going Deeper: Inverse-Square Math You Can Do in Your Head</h4><p>For a point source, exposure rate at distance r is X = X_0 (r_0 / r)^2. To halve the dose, multiply distance by sqrt(2) which is about 1.41. To cut to a tenth, multiply distance by sqrt(10) which is about 3.16. To cut to a hundredth, multiply by 10. Practical operator math: every 3.16x in distance is about a 10 dB drop in dose rate.</p></div>
+<h3 id="27-half-value-layer-shielding-math-youll-actually-use">2.7 Half-Value Layer (Shielding Math You'll Actually Use)</h3>
+<p>The <strong>half-value layer (HVL)</strong> is the thickness of a given material that cuts dose rate in half. Two HVLs cut it to one-quarter, three HVLs to one-eighth, and so on.</p>
+<table>
+<thead>
+<tr>
+<th>Isotope (gamma energy)</th>
+<th>HVL in Lead</th>
+<th>HVL in Concrete</th>
+<th>HVL in Steel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cs-137 (662 keV)</td>
+<td>~0.65 cm</td>
+<td>~4.8 cm</td>
+<td>~1.8 cm</td>
+</tr>
+<tr>
+<td>Co-60 (1.17/1.33 MeV)</td>
+<td>~1.2 cm</td>
+<td>~6.2 cm</td>
+<td>~2.5 cm</td>
+</tr>
+<tr>
+<td>Ir-192 (~380 keV avg)</td>
+<td>~0.5 cm</td>
+<td>~4.4 cm</td>
+<td>~1.5 cm</td>
+</tr>
+<tr>
+<td>Am-241 (60 keV)</td>
+<td>~0.012 cm</td>
+<td>~0.5 cm</td>
+<td>~0.04 cm</td>
+</tr>
+<tr>
+<td>I-131 (364 keV)</td>
+<td>~0.3 cm</td>
+<td>~3.9 cm</td>
+<td>~1.3 cm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Operator takeaway:</strong> A vehicle door is roughly 1–2 mm of steel. That's not nothing for low-energy gammas, but it's almost transparent to Co-60. Lead aprons are designed for diagnostic X-ray (low keV) and are not a high-energy gamma shield.</p>
+<h3 id="28-the-atom-that-matters-half-life">2.8 The Atom That Matters: Half-Life</h3>
+<p>Radioactive isotopes decay. Each isotope has a characteristic <strong>half-life.</strong> the time required for half of the atoms to decay. Half-lives range from microseconds to billions of years. A few half-lives that are operationally relevant:</p>
+<table>
+<thead>
+<tr>
+<th>Isotope</th>
+<th>Half-life</th>
+<th>Common context</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-18</td>
+<td>110 minutes</td>
+<td>PET imaging</td>
+</tr>
+<tr>
+<td>Tc-99m</td>
+<td>6 hours</td>
+<td>Nuclear medicine (most common medical isotope)</td>
+</tr>
+<tr>
+<td>I-131</td>
+<td>8 days</td>
+<td>Thyroid therapy/diagnosis</td>
+</tr>
+<tr>
+<td>Ir-192</td>
+<td>74 days</td>
+<td>Industrial radiography</td>
+</tr>
+<tr>
+<td>Cs-137</td>
+<td>30 years</td>
+<td>Industrial gauges, food irradiators, RDD threat</td>
+</tr>
+<tr>
+<td>Co-60</td>
+<td>5.3 years</td>
+<td>Industrial radiography, medical sterilization</td>
+</tr>
+<tr>
+<td>Am-241</td>
+<td>432 years</td>
+<td>Smoke detectors, density gauges</td>
+</tr>
+<tr>
+<td>Ra-226</td>
+<td>1,600 years</td>
+<td>Legacy luminous dials, NORM</td>
+</tr>
+<tr>
+<td>U-238</td>
+<td>4.5 billion years</td>
+<td>Natural uranium, depleted uranium</td>
+</tr>
+<tr>
+<td>Pu-239</td>
+<td>24,100 years</td>
+<td>SNM</td>
+</tr>
+</tbody>
+</table>
+<p>Why this matters: a hospital patient who received Tc-99m at 8 a.m. will not alarm a sensitive instrument by 8 p.m., it has run through several half-lives and decayed away. A Cs-137 source in a stolen industrial gauge will still be hot in your grandchildren's lifetime.</p>
+<h3 id="29-the-detector-heart-scintillators-and-why-cebr-labr-matter">2.9 The Detector Heart: Scintillators and Why CeBr / LaBr Matter</h3>
+<p>Inside the SAM family RIIDs sits a <strong>scintillator crystal.</strong> a material that flashes a tiny pulse of light every time a gamma ray deposits energy in it. Each pulse is converted to an electrical signal whose height is proportional to the gamma's energy. A multichannel analyzer (MCA) sorts those pulses by energy and builds a <strong>spectrum.</strong> a histogram of "how many photons at each energy." That spectrum is the fingerprint of the source.</p>
+<p>There are several common scintillator families:</p>
+<ul>
+<li><strong>NaI(Tl), sodium iodide.</strong> Workhorse since the 1950s. Cheap, rugged, but modest energy resolution (~6–7% FWHM at 662 keV). Many legacy RIIDs use it.</li>
+<li><strong>LaBr₃(Ce), lanthanum bromide.</strong> Much better resolution (~3% FWHM at 662 keV). Faster timing. Distinguishes closely-spaced peaks where NaI smears them together. Has a small intrinsic background from natural La-138, your spectrum will show it. Operators learn to ignore it.</li>
+<li><strong>CeBr₃, cerium bromide.</strong> Resolution comparable to LaBr but <strong>without</strong> the intrinsic background. Excellent stability with temperature. Increasingly preferred for response work.</li>
+<li><strong>HPGe, high-purity germanium.</strong> Lab-grade resolution (~0.2% FWHM at 1.33 MeV). Requires cooling (electrical or LN₂). Heavy, fragile, expensive, and slow to start. Used in laboratories and in some specialized field units.</li>
+<div class="sidebar-deeper"><h4>Going Deeper: FWHM and Photopeak Resolution</h4><p>FWHM (full width at half maximum) is the photopeak width measured at half its peak height. A NaI crystal at 662 keV typically reads about 7 percent FWHM, meaning the peak spans about 46 keV. CeBr at the same energy reads about 4 percent, about 26 keV wide. HPGe reads about 0.2 percent, less than 2 keV wide. Two adjacent gamma lines closer than the FWHM blur into one peak; that is why CeBr resolves the U-235 / Ra-226 ambiguity at 186 keV that NaI cannot.</p></div>
+</ul>
+<p>The SAM family is built around <strong>CeBr</strong> and <strong>LaBr</strong> crystals. The practical effect for you, the operator, is that your instrument will identify isotopes that a NaI-based RIID would mash together, for example, distinguishing radium-226 daughters from a true Co-60 line, or telling Tc-99m from a low-energy SNM signature. You get HPGe-class field decisions without HPGe's weight, cost, or cooling.</p>
+<h3 id="210-what-identification-actually-means">2.10 What "Identification" Actually Means</h3>
+<p>When the screen says "Cs-137, high confidence," what happened?</p>
+<ol>
+<li>The crystal flashed pulses; the MCA built a spectrum.</li>
+<li>Software located peaks (local maxima above noise).</li>
+<li>The peak energies were compared to a <strong>library</strong> of known isotope signatures.</li>
+<li>A confidence score was computed. Above a threshold, the isotope is declared.</li>
+</ol>
+<p>Confidence is based on energy match, peak ratios, and statistics. <strong>Low confidence does not mean "wrong", it means "more counts needed."</strong> Your job, when you see low confidence, is to give the instrument more time, get closer (within ALARA), or reduce background interference.</p>
+<div class="sidebar-deeper"><h4>Going Deeper: How Confidence Is Computed</h4><p>The identification engine fits expected photopeaks from each library entry against the measured spectrum. For each candidate isotope, it computes a chi-squared between observed and expected, weighted by counting statistics (Poisson). The engine also checks peak ratios; Co-60's 1173 and 1333 keV peaks should appear in nearly equal heights, and a deviation flags a fit problem. Confidence is reported on a normalized scale; treat 'low' as 'give it more counts,' not 'wrong answer.'</p></div>
+<h3 id="211-six-things-to-take-forward">2.11 Six Things to Take Forward</h3>
+<ol>
+<li>The most common alarm cause is NORM.</li>
+<li>Distance is your fastest, cheapest dose-reduction tool.</li>
+<li>The display gives you count rate <strong>and</strong> dose rate, read both.</li>
+<li>CeBr and LaBr give field-grade resolution close to a lab unit.</li>
+<li>Half-life context tells you whether a source is decaying away or staying.</li>
+<li>Confidence &lt; threshold = give it more time, not less.</li>
+</ol>
+<hr />
+<div class="quiz"><h4>Chapter 2 Quick Check</h4><ol><li><strong>Background dose rate at sea level is approximately:</strong><ol type="a"><li>0.05 µSv/hr (5 µR/hr)</li><li>5 µSv/hr (500 µR/hr)</li><li>50 µSv/hr (5 mR/hr)</li><li>0.5 mSv/hr</li></ol></li><li><strong>If at 1 m a point source reads 100 mR/hr, at 4 m the dose rate is approximately:</strong><ol type="a"><li>50 mR/hr</li><li>25 mR/hr</li><li>12.5 mR/hr</li><li>6.25 mR/hr</li></ol></li><li><strong>The most common alarm cause in field operations is:</strong><ol type="a"><li>Special Nuclear Material</li><li>Industrial source theft</li><li>NORM</li><li>Cosmic-ray-induced events</li></ol></li><li><strong>CeBr scintillator's main advantage over LaBr is:</strong><ol type="a"><li>Higher density</li><li>No intrinsic background line</li><li>Lower cost</li><li>Longer shelf life</li></ol></li><li><strong>Half-Value Layer is the thickness of material that reduces dose rate by:</strong><ol type="a"><li>10 percent</li><li>25 percent</li><li>50 percent</li><li>90 percent</li></ol></li></ol></div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01-mission-audience-and-scope.html">&larr; 1. Mission, Audience, and Scope</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="03-the-detection-ladder.html">3. The Detection Ladder &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+
+</div>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

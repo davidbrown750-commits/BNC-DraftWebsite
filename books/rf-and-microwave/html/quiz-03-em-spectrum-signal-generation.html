@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 3 Quiz &mdash; The EM Spectrum and Signal Generation</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 3 &middot; Quiz</p>
+      <h1>The EM Spectrum and Signal Generation</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="03-em-spectrum-signal-generation.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="04-swept-superheterodyne-analyzer.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "03",
+    title: "Chapter 3 Quiz: The EM Spectrum and Signal Generation",
+    questions: [
+      {
+        q: "What makes electromagnetic radiation different from ocean waves and sound waves, and how fast does it travel in a vacuum?",
+        options: [
+          "It needs a denser medium than water, and travels at the speed of sound",
+          "It needs no medium to propagate, so it can travel through a vacuum, moving at the speed of light (about 3 x 10^8 m/s)",
+          "It travels only through metal conductors, at about 3 x 10^6 m/s",
+          "It requires air like sound and stops in a vacuum"
+        ],
+        answer: 1,
+        explain: "EM radiation needs no medium and travels through vacuum at the speed of light, roughly 3 x 10^8 m/s."
+      },
+      {
+        q: "Which row correctly pairs an ITU band with its frequency range?",
+        options: [
+          "HF: 300 MHz to 3 GHz",
+          "VHF: 3 to 30 MHz",
+          "UHF: 300 MHz to 3 GHz",
+          "SHF: 30 to 300 MHz"
+        ],
+        answer: 2,
+        explain: "UHF spans 300 MHz to 3 GHz (cellular, Wi-Fi, GPS). HF is 3-30 MHz, VHF 30-300 MHz, SHF 3-30 GHz."
+      },
+      {
+        q: "A signal has a frequency of 2.4 GHz. What is its approximate wavelength?",
+        options: [
+          "About 1.25 meters",
+          "About 12.5 centimeters, using wavelength (m) = 300 / frequency (MHz)",
+          "About 2.4 centimeters",
+          "About 30 centimeters"
+        ],
+        answer: 1,
+        explain: "Using wavelength (m) = 300 / f(MHz): 300 / 2400 = 0.125 m, about 12.5 cm."
+      },
+      {
+        q: "What two stages does a vector signal generator add beyond an analog generator?",
+        options: [
+          "A second power amplifier and a cooling fan",
+          "A baseband section (DAC plus waveform memory producing I and Q streams) and an I/Q modulator that mixes those streams onto the carrier",
+          "A larger reference oscillator and a wider output attenuator only",
+          "A spectrum analyzer and a tracking generator"
+        ],
+        answer: 1,
+        explain: "A vector generator adds an I/Q baseband section and an I/Q modulator, enabling complex digital modulation."
+      },
+      {
+        q: "Which instrument produces a CW tone with simple analog modulation using only reference, synthesizer, and output stages?",
+        options: [
+          "A vector signal generator",
+          "An analog signal generator",
+          "A spectrum analyzer",
+          "A vector network analyzer"
+        ],
+        answer: 1,
+        explain: "An analog generator makes a CW tone with AM/FM/phase/pulse modulation from reference, synthesizer, and output stages."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

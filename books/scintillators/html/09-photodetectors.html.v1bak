@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>09-photodetectors</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">09-photodetectors</h1>
+</header>
+<h1 id="chapter-9---scintillation-light-detection-devices">Chapter 9 - Scintillation Light Detection Devices</h1>
+<p>The scintillator converts ionizing radiation into pulses of light. The photodetector converts the light into an electrical signal that the rest of the chain can measure. The choice of photodetector is the second-most consequential decision in the detector chain, after the scintillator itself. This chapter covers the four families that dominate practical use: photomultiplier tubes (PMTs), silicon photodiodes, silicon photomultipliers (SiPMs), and microchannel plate PMTs, along with newer alternatives that are entering the catalog.</p>
+<p>This chapter is heavily updated for the second edition. The most consequential change since the first edition is that silicon photomultipliers have matured enough to be the default rather than the exception in many product categories.</p>
+<h2 id="photomultiplier-tubes">9.1 Photomultiplier Tubes</h2>
+<p>A photomultiplier tube converts incident photons into photoelectrons at a thin photocathode, then amplifies the photoelectrons through a series of dynodes operated at successively higher voltages. The net amplification of a 10-stage PMT is on the order of 10^5 to 10^6. Each scintillation pulse produces a charge pulse at the anode that can be measured directly or processed further.</p>
+<h3 id="architecture">9.1.1 Architecture</h3>
+<p>The photocathode is a thin semi-transparent layer evaporated onto the inside of the tube’s entrance window. Standard bialkali photocathodes use a Cs-Sb-K mixture and peak at 25 to 30 percent quantum efficiency in the 400 to 420 nm range. Multi-alkali (S20) photocathodes extend the useful response into the red. UV-extended photocathodes paired with quartz windows extend useful response down to 180 nm.</p>
+<p>A photoelectron emitted from the cathode is electrostatically focused onto the first dynode. Each dynode multiplies incident electrons by a factor of 3 to 4 in standard designs. The cascade through 10 to 14 dynodes builds the gain to the necessary level. Voltage divider networks bias the dynode chain from a single high-voltage supply.</p>
+<p>The dynode structure determines key characteristics. Linear-focused dynode chains optimize for fast timing. Box-and-grid structures favor uniformity at the cost of speed. Mesh dynodes offer some magnetic field tolerance. Channel-PMT structures (such as channel photomultipliers from Burle and Photonis) replace discrete dynodes with continuous channel walls.</p>
+<figure>
+<img src="../figures/fig-09-01-pmt-cutaway.svg" alt="" /><figcaption>Figure 9.1 - Photomultiplier tube schematic. Photoelectrons emitted at the photocathode are focused onto the first dynode and multiplied through a 10-stage cascade.</figcaption>
+</figure>
+<h3 id="operating-modes">9.1.2 Operating Modes</h3>
+<p>PMTs can be operated in two modes. <strong>Pulse mode</strong>, the standard for spectroscopy, treats each scintillation event as a discrete charge pulse and measures pulse height. <strong>Current mode</strong> measures the average anode current and is used in high-rate applications where individual pulse counting is impossible. Pulse mode preserves spectroscopic information; current mode loses it but enables continuous operation in radiation fields that would saturate a pulse-mode detector.</p>
+<h3 id="key-parameters">9.1.3 Key Parameters</h3>
+<p>Important PMT parameters for the detector engineer:</p>
+<ul>
+<li><strong>Quantum efficiency</strong> at the scintillator emission peak. A NaI(Tl)-PMT system needs bialkali QE at 415 nm. A CsI(Tl)-PMT system, if it must be PMT, needs multi-alkali QE at 550 nm.</li>
+<li><strong>Gain stability</strong> as a function of temperature. Typical drift is 0.2 to 0.3 percent per degree Celsius.</li>
+<li><strong>Dark current</strong> from thermionic emission at the photocathode. Sets the noise floor at low signal.</li>
+<li><strong>Rise time and transit-time spread (TTS).</strong> Limits time resolution. Sub-nanosecond TTS is achievable in fast linear-focused tubes.</li>
+<li><strong>Photocathode uniformity.</strong> Spatial variation in QE across the photocathode degrades energy resolution in large-area detectors.</li>
+<li><strong>Magnetic field sensitivity.</strong> Standard PMTs are sensitive to fields above a few microtesla. Mu-metal shielding handles the Earth’s field. Strong fields require specially designed magnetic-field-immune tubes.</li>
+<li><strong>Radiological background.</strong> Glass envelopes contain trace K-40, contributing to the detector’s intrinsic background. Low-K glass and cleaner photocathode materials reduce this for low-background applications.</li>
+</ul>
+<h3 id="advantages-and-disadvantages">9.1.4 Advantages and Disadvantages</h3>
+<p>PMTs have dominated scintillation readout for over half a century. Their advantages are large active areas at moderate cost (a 3-inch PMT is a standard product), large signals that simplify the front-end electronics, fast rise times in the right tube types, and a long history of characterization.</p>
+<p>Their disadvantages are physical bulk (a 3-inch PMT is several inches long), high voltage operation (700 to 1500 V typical), gain instability with temperature, magnetic field sensitivity, and intrinsic radioactive background from the glass envelope.</p>
+<p>In 2026, PMTs remain dominant in fixed-installation low-background counting, in any large-area detector where SiPM array cost would be prohibitive, and in legacy applications that have not migrated. They are giving ground to SiPM arrays in handheld instruments, compact configurations, and any application where the form factor or magnetic environment penalizes the PMT.</p>
+<h2 id="silicon-photodiodes">9.2 Silicon Photodiodes</h2>
+<p>A photodiode is a reverse-biased semiconductor junction that produces electron-hole pairs when scintillation photons are absorbed. Each absorbed photon produces approximately one electron-hole pair (no internal multiplication). The collected charge is proportional to the absorbed light, and a charge-sensitive preamplifier converts it to a voltage pulse.</p>
+<p>PIN photodiodes are the standard choice. Their wide intrinsic region maximizes the active volume for photon absorption while keeping capacitance and leakage current low.</p>
+<h3 id="where-photodiodes-win">9.2.1 Where Photodiodes Win</h3>
+<p>Photodiode quantum efficiency exceeds 80 percent in the 500 to 900 nm range, much higher than PMT peak QE. For scintillators that emit in the green-to-red band (CsI(Tl) at 550 nm, GAGG:Ce at 520 nm), photodiode readout delivers more measured signal per scintillation photon than PMT readout. The trade-off is that photodiodes have unity gain, so the few-thousand-photon scintillation signal has to be amplified by a low-noise charge-sensitive preamplifier rather than by the photodetector itself. Electronic noise becomes the limiting factor at low signal levels.</p>
+<p>Photodiodes are used in CT scanners (where the high signal level overwhelms the noise concern), in some specialized gamma cameras, and in applications where compact form factor and absence of high-voltage requirement matter more than ultimate noise floor.</p>
+<h3 id="avalanche-photodiodes-apds">9.2.2 Avalanche Photodiodes (APDs)</h3>
+<p>APDs operate at higher reverse bias, where impact ionization in the depletion region produces internal multiplication of 50 to several hundred. This raises the signal above amplifier noise without requiring the kilovolts of a PMT. APDs were briefly the standard solid-state photodetector for scintillation readout in the 1990s and 2000s before being displaced by SiPMs.</p>
+<p>APDs survive in some specialized applications: PET arrays where the linear gain and good spatial uniformity matter, and physics experiments where radiation hardness arguments favor APDs over SiPMs. But for most new designs, SiPMs have replaced APDs.</p>
+<h2 id="silicon-photomultipliers-sipms">9.3 Silicon Photomultipliers (SiPMs)</h2>
+<p>A silicon photomultiplier is an array of avalanche photodiode microcells operated above breakdown (Geiger mode). Each microcell that absorbs a photon produces a Geiger discharge with internal gain of 10^5 to 10^6, comparable to a PMT. The microcells are connected in parallel, so the SiPM output is the sum of the discharges from all cells fired. The output is approximately proportional to the number of photons absorbed across the array, up to saturation.</p>
+<p>This is the most consequential photodetector development for scintillation readout in the past 25 years. The second edition of this book exists in part because SiPMs reached the level of maturity that justified rewriting the photodetector chapter.</p>
+<h3 id="architecture-and-key-parameters">9.3.1 Architecture and Key Parameters</h3>
+<p>A SiPM is fabricated as a CMOS-compatible silicon chip with thousands of identical microcells. Each microcell is an avalanche photodiode plus a quenching resistor that terminates the Geiger discharge. The cell pitch is typically 10 to 50 micrometers; smaller cells give higher dynamic range (more cells means less saturation per scintillation event) and smaller fill factor; larger cells give higher fill factor and PDE but saturate sooner.</p>
+<p>Key parameters for the applications engineer:</p>
+<ul>
+<li><strong>Photodetection efficiency (PDE).</strong> The product of geometric fill factor (the fraction of the array’s area that is photoactive), quantum efficiency at the emission wavelength, and Geiger-discharge probability. Modern devices reach PDE of 50 to 65 percent at the emission wavelengths of optimized scintillators.</li>
+<li><strong>Cell pitch.</strong> 10, 15, 25, 35, or 50 micrometers depending on the product family. Pick by application: small cells for high dynamic range, large cells for low-light applications.</li>
+<li><strong>Spectral response.</strong> NUV-optimized products peak around 400 nm for blue scintillators. RGB-optimized products peak around 500 to 550 nm for green and red scintillators (CsI(Tl), GAGG:Ce).</li>
+<li><strong>Dark count rate (DCR).</strong> Spontaneous Geiger discharges in the absence of light. Driven by thermal generation in the depletion region. Typical room-temperature DCR is 50 to 200 kHz per square millimeter, doubling approximately every 10 degrees Celsius.</li>
+<li><strong>Crosstalk.</strong> Optical photons emitted during a Geiger discharge can trigger neighboring cells. Modern designs include trench isolation between cells to reduce crosstalk to a few percent.</li>
+<li><strong>Afterpulsing.</strong> Charge trapped in the depletion region during a discharge can re-trigger the cell after the quenching time. Driven by trap density in the silicon. Typical afterpulsing probability is 1 to 5 percent.</li>
+<li><strong>Operating bias.</strong> 25 to 50 V for modern devices, well below PMT levels. The breakdown voltage shifts with temperature at 25 to 50 mV per degree Celsius, requiring active bias compensation in deployed instruments.</li>
+</ul>
+<figure>
+<img src="../figures/fig-09-02-sipm-architecture.svg" alt="" /><figcaption>Figure 9.2 - SiPM architecture from array (left) to die (middle) to microcell (right). Each microcell is a Geiger-mode avalanche photodiode with a quenching resistor.</figcaption>
+</figure>
+<h3 id="generations-and-progress">9.3.2 Generations and Progress</h3>
+<p>Reported progress in SiPM performance between 2018 and 2026 [1][2]:</p>
+<ul>
+<li>Peak PDE improved from 40 to 65 percent at 400 nm for NUV products, and from 35 to 55 percent at 550 nm for RGB products.</li>
+<li>Crosstalk dropped from 15 to 30 percent in pre-2018 devices to 5 to 10 percent in current devices.</li>
+<li>Dark count rate fell by a factor of 3 to 5 at the same temperature, through better silicon processing.</li>
+<li>Cell pitches below 15 micrometers became available, enabling SiPM-based PET with very high dynamic range.</li>
+<li>CMOS-integrated digital silicon photomultipliers (dSiPMs) reached commercial availability, eliminating the analog summing electronics that previous-generation SiPM arrays required.</li>
+</ul>
+<h3 id="tiling-and-arrays">9.3.3 Tiling and Arrays</h3>
+<p>For larger crystal faces, multiple SiPM dies are tiled into arrays. Standard formats are 4x4, 8x8, and 16x16 dies, with 1, 3, or 6 mm cell sizes per die. Front-end ASICs (such as TOFPET2, PETIROC, MUSIC, MAROC) read out tens to thousands of channels with picosecond-accuracy timestamps.</p>
+<p>The dead space between tiles is the binding limit on light extraction. Modern designs minimize this through butted die packaging and through ASIC choices that handle very small inter-die gaps. For a CsI(Tl) crystal with a typical 1-inch face, the loss to inter-tile dead space is 5 to 15 percent depending on the array design.</p>
+<blockquote>
+<p><strong>Going Deeper - SiPM dark count, crosstalk, and afterpulsing models</strong></p>
+<p>The total dark count rate at the SiPM output is:</p>
+<p>DCR_obs = DCR_primary * (1 + p_xt + p_ap) / (1 - p_xt - p_ap)</p>
+<p>where DCR_primary is the rate of primary Geiger discharges from thermal generation, p_xt is the optical crosstalk probability per discharge, and p_ap is the afterpulsing probability per discharge. The denominator captures cascading: a primary discharge can trigger a crosstalk event, which can itself trigger another crosstalk event, etc. For modern devices with p_xt around 0.05 and p_ap around 0.02, DCR_obs is roughly 10 percent above DCR_primary. For older devices with p_xt around 0.20, the inflation can exceed 50 percent. The detector engineer running pulse-height-versus-threshold scans on a SiPM-based detector will see the DCR contribution clearly at the lowest thresholds and should subtract it before drawing conclusions about the scintillation events. Dedicated SCINT 2024 sessions on SiPM characterization reported updated values for all these parameters across the major product lines [2].</p>
+</blockquote>
+<h2 id="microchannel-plate-pmts-and-digital-silicon-pmts">9.4 Microchannel Plate PMTs and Digital Silicon PMTs</h2>
+<p>Two newer photodetector technologies are entering the scintillation-readout space.</p>
+<p><strong>Microchannel plate PMTs (MCP-PMTs)</strong> replace the dynode chain with a microchannel plate, a glass disk with millions of micrometer-scale channels coated with a secondary-emission material. Each channel acts as a continuous-dynode multiplier. The result is sub-100-picosecond TTS, much faster than any conventional PMT, with comparable gain. MCP-PMTs are used in time-of-flight applications including PET, in particle physics, and in fast-timing fusion diagnostics. They are expensive (several to tens of thousands of dollars per tube) and have shorter operational lifetimes than standard PMTs because of channel aging.</p>
+<p><strong>Digital silicon photomultipliers (dSiPMs)</strong> integrate Geiger-mode microcells with CMOS readout circuitry on the same die. Each cell has its own digital counter and timestamping logic, eliminating the analog summing of conventional SiPMs. The output is a digital stream of timestamped photon counts. The technology is dominated by a few specialized vendors (Philips Digital Photon Counting until its acquisition; emerging products from semiconductor foundries). dSiPMs are the modern choice for the most demanding TOF-PET designs and for any application where per-photon timestamps simplify downstream analysis.</p>
+<h2 id="alternative-readout-ccds-cmos-imagers-fiber-coupled">9.5 Alternative Readout: CCDs, CMOS Imagers, Fiber-Coupled</h2>
+<p>For some scintillation applications, the photodetector is not a single device but an imaging sensor.</p>
+<p><strong>CCDs</strong> (charge-coupled devices) and <strong>CMOS imagers</strong> read out scintillation light from imaging detectors used in X-ray and gamma imaging. The scintillator (typically CsI(Tl) or GAGG:Ce) is structured into pixels or columnar geometries that preserve spatial information, and the imager records the spatial distribution of scintillation. Used in dental and medical X-ray panels, in industrial radiography, and in security cargo imaging.</p>
+<p><strong>Fiber-coupled readout</strong> uses optical fibers to transport scintillation light from the crystal to a remote photodetector. This separates the photodetector from a hostile environment (high temperature, high radiation, vacuum) and is the standard solution for in-vessel diagnostics on fusion machines and for some down-hole tools.</p>
+<h2 id="electronics-noise-budget-end-to-end">9.6 Electronics Noise Budget End to End</h2>
+<p>The noise floor of the complete detector is the quadrature sum of:</p>
+<ul>
+<li>Photon statistics (sqrt(N_photons))</li>
+<li>Photodetector contribution: dark count, gain fluctuation, crosstalk, afterpulsing</li>
+<li>Front-end amplifier noise (input-referred)</li>
+<li>Digitization quantization (for digital pulse processors)</li>
+<li>Pickup and EMI</li>
+</ul>
+<p>For most well-designed scintillation detectors, photon statistics dominates at low energy and scintillator non-proportionality dominates at high energy. The photodetector contribution is rarely the limit in modern systems with PMT or SiPM readout. With photodiode readout, the front-end amplifier noise can become the limit at low signal levels, which is why photodiode readout is reserved for high-light-yield scintillators.</p>
+<div class="callout">
+<p><strong>BNC in Practice - Specify the photodetector with the scintillator, not after</strong></p>
+<p>Customer requirements often arrive specifying a scintillator, with the photodetector left as “TBD” or “any standard option.” This is the most common source of detector-design rework. The scintillator and photodetector are a system, not two independent choices. A NaI(Tl) crystal with a bialkali PMT and a NaI(Tl) crystal with a NUV-HD SiPM array are different products with different performance, different cost, different form factor, and different operating envelopes. The first conversation with the customer should pin down both choices simultaneously, or commit to a clear evaluation of both before any other design decisions are made.</p>
+</div>
+<h2 id="the-transition-that-defines-this-chapter">9.7 The Transition That Defines This Chapter</h2>
+<p>The first edition of this book treated PMTs as the default and SiPMs as an emerging alternative. This second edition treats them as comparable choices, with the right answer depending on the application. The transition took roughly 15 years, started in the late 2000s, and is still incomplete in some product categories. By 2030, SiPM-based detectors are likely to dominate handheld and compact instruments completely, while PMTs hold the line in large-area, fixed-installation, and low-background applications. The third edition of this book, if it is written, will probably treat SiPMs as the default and PMTs as the niche choice. The catalog moves.</p>
+<h2 id="chapter-9-quiz">Chapter 9 Quiz</h2>
+<ol type="1">
+<li>A standard 10-stage bialkali PMT has approximately what overall gain.</li>
+<li>Why is a silicon photodiode a poor match for a NaI(Tl) crystal but a good match for a CsI(Tl) crystal.</li>
+<li>The breakdown voltage of a typical SiPM shifts with temperature at approximately what rate.</li>
+<li>What is the dominant noise source in a SiPM at low light levels and at room temperature.</li>
+<li>Why do microchannel plate PMTs achieve better timing than conventional PMTs, and what is the cost.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Approximately 10^5 to 10^6, depending on the per-dynode multiplication and the operating voltage.</li>
+<li>NaI(Tl) emits at 415 nm, where silicon photodiode QE is much lower than its red-band peak. CsI(Tl) emits at 550 nm, where photodiode QE exceeds 85 percent. The photodiode therefore captures a much higher fraction of CsI(Tl) emission than NaI(Tl) emission, despite the lack of internal gain.</li>
+<li>25 to 50 millivolts per degree Celsius.</li>
+<li>Dark count rate (DCR), the spontaneous Geiger discharges from thermal generation in the depletion region. Typical values are 50 to 200 kHz per square millimeter at room temperature.</li>
+<li>The microchannel plate replaces discrete dynodes with continuous channel multipliers, eliminating the geometric variation in electron transit time that limits conventional PMT TTS. Sub-100 ps TTS is routine. The cost is shorter operational lifetime due to channel aging and substantially higher unit price (several to tens of thousands of dollars per tube versus hundreds for standard PMTs).</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] N. Otte et al., “Characterization of three high-efficiency and blue-sensitive silicon photomultipliers,” <em>Nucl. Instrum. Methods A</em>, vol. 846, pp. 106-125, 2017.</p>
+<p>[2] M. Mazzillo et al., “Recent advances in NUV-HD SiPM technology,” in <em>Proc. SCINT 2024</em>, Milan, 2024.</p>
+<p>[3] J. Hellma, “Temperature dependence of SiPM gain and breakdown voltage,” in <em>Proc. IEEE NSS-MIC 2024</em>, Tampa, 2024.</p>
+<p>[4] T. Frach et al., "The digital silicon photomultiplier: principle of operation and intrinsic</p>
+</body>
+</html>

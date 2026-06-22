@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 6 Quiz - Modulation Analysis with an RTSA</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 6 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "rtsa",
+  chapterKey: "06",
+  title: "Chapter 6 Quiz",
+  questions: [
+    {
+      q: "The first stage of the demodulation chain in an RTSA is:",
+      options: [
+        "Symbol decision",
+        "Channel selection",
+        "EVM computation",
+        "Equalization"
+      ],
+      answer: 1,
+      explain: "Demodulation starts by selecting the channel of interest before any symbol-level processing."
+    },
+    {
+      q: "Which modulation family encodes data in carrier phase only?",
+      options: [
+        "FSK",
+        "ASK",
+        "PSK",
+        "OFDM"
+      ],
+      answer: 2,
+      explain: "Phase shift keying carries data purely in the phase of the carrier."
+    },
+    {
+      q: "OFDM is best described as:",
+      options: [
+        "A single carrier with very high QAM order",
+        "A multiplexing scheme using many orthogonal narrowband subcarriers each carrying QAM",
+        "A spread-spectrum coding technique",
+        "A multipath equalization algorithm"
+      ],
+      answer: 1,
+      explain: "OFDM spreads data across many orthogonal narrowband subcarriers, each typically carrying QAM."
+    },
+    {
+      q: "Error Vector Magnitude (EVM) is:",
+      options: [
+        "The RMS of the complex difference between received and ideal symbols, normalized by reference power",
+        "The peak signal amplitude",
+        "The signal-to-noise ratio",
+        "The carrier-to-noise ratio"
+      ],
+      answer: 0,
+      explain: "EVM is the RMS error between received and ideal symbol points, normalized to a reference power."
+    },
+    {
+      q: "A 5G NR 256-QAM transmitter typically requires EVM better than approximately:",
+      options: [
+        "30 percent",
+        "10 percent",
+        "3.5 percent",
+        "0.1 percent"
+      ],
+      answer: 2,
+      explain: "256-QAM packs symbols tightly, so 5G NR requires EVM around 3.5 percent or better."
+    },
+    {
+      q: "A constellation rotated as a whole indicates:",
+      options: [
+        "PA compression",
+        "Residual carrier frequency offset",
+        "Thermal noise only",
+        "Antenna damage"
+      ],
+      answer: 1,
+      explain: "A uniform rotation of the whole constellation points to a residual carrier frequency or phase offset."
+    },
+    {
+      q: "Which standard uses chirp spread spectrum with spreading factors 7 to 12?",
+      options: [
+        "Wi-Fi 7",
+        "Bluetooth Low Energy",
+        "LoRa",
+        "Zigbee"
+      ],
+      answer: 2,
+      explain: "LoRa uses chirp spread spectrum with spreading factors from 7 to 12 to trade data rate for range."
+    },
+    {
+      q: "Wi-Fi 7 channel bandwidth maxes at:",
+      options: [
+        "80 MHz",
+        "160 MHz",
+        "320 MHz",
+        "1 GHz"
+      ],
+      answer: 2,
+      explain: "Wi-Fi 7 extends the maximum channel bandwidth to 320 MHz."
+    },
+    {
+      q: "The RTSA Suite PRO modulation library covers up to which QAM order?",
+      options: [
+        "64-QAM",
+        "256-QAM",
+        "1024-QAM",
+        "4096-QAM"
+      ],
+      answer: 3,
+      explain: "The modulation library covers up to 4096-QAM."
+    },
+    {
+      q: "In the worked Python EVM example, the matched filter applied is:",
+      options: [
+        "Hann window",
+        "Root raised cosine with beta = 0.35",
+        "Flat-top window",
+        "Median filter"
+      ],
+      answer: 1,
+      explain: "The worked example uses a root raised cosine matched filter with a roll-off of 0.35."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-06.html">&larr; Back to Chapter 6</a>
+    <a class="mid" href="index.html">Contents</a>
+    <a class="next" href="quiz-chapter-07.html">Chapter 7 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

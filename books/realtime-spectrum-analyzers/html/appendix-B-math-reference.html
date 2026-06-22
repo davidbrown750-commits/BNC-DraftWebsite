@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appendix B: Math Reference - Nuts and Bolts of Real-Time Spectrum Analysis</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Appendix B</div>
+<h1>Math Reference</h1>
+
+<p class="lead">The formulas behind the display, collected in one place. Fourier transform, window functions, probability of intercept, phase noise, decibels, Friis noise, EVM, and intermodulation.</p>
+
+<h2>Fourier Transform Cheat Sheet</h2>
+
+<p><strong>Continuous Fourier Transform:</strong></p>
+<div class="math-display">$$X(f) = \int_{-\infty}^{\infty} x(t) e^{-j 2\pi f t} dt$$</div>
+
+<p><strong>Discrete Fourier Transform:</strong></p>
+<div class="math-display">$$X[k] = \sum_{n=0}^{N-1} x[n] e^{-j 2\pi k n / N}, \quad k = 0, 1, \ldots, N-1$$</div>
+
+<p><strong>Inverse DFT:</strong></p>
+<div class="math-display">$$x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] e^{j 2\pi k n / N}$$</div>
+
+<p><strong>Bin frequency:</strong> $f_k = k \cdot f_s / N$. &nbsp; <strong>Resolution bandwidth:</strong> $\text{RBW} = f_s / N$.</p>
+
+<h2>Window Function Formulas</h2>
+
+<p><strong>Hann (Hanning):</strong></p>
+<div class="math-display">$$w[n] = 0.5 \left(1 - \cos\left(\frac{2\pi n}{N-1}\right)\right)$$</div>
+
+<p><strong>Hamming:</strong></p>
+<div class="math-display">$$w[n] = 0.54 - 0.46 \cos\left(\frac{2\pi n}{N-1}\right)$$</div>
+
+<p><strong>Blackman:</strong></p>
+<div class="math-display">$$w[n] = 0.42 - 0.5 \cos\left(\frac{2\pi n}{N-1}\right) + 0.08 \cos\left(\frac{4\pi n}{N-1}\right)$$</div>
+
+<p><strong>Blackman-Harris (4-term):</strong></p>
+<div class="math-display">$$w[n] = 0.35875 - 0.48829 \cos\theta + 0.14128 \cos 2\theta - 0.01168 \cos 3\theta$$</div>
+<p>where $\theta = 2\pi n / (N-1)$.</p>
+
+<p><strong>Equivalent Noise Bandwidth (ENBW):</strong></p>
+<div class="math-display">$$\text{ENBW} = \frac{N \sum_n w[n]^2}{(\sum_n w[n])^2} \cdot \Delta f$$</div>
+
+<table>
+<thead><tr><th>Window</th><th>ENBW factor</th><th>Highest sidelobe (dB)</th><th>Main lobe -3 dB (bins)</th></tr></thead>
+<tbody>
+<tr><td>Rectangular</td><td>1.00</td><td>-13</td><td>0.89</td></tr>
+<tr><td>Hann</td><td>1.50</td><td>-32</td><td>1.44</td></tr>
+<tr><td>Hamming</td><td>1.36</td><td>-43</td><td>1.30</td></tr>
+<tr><td>Blackman</td><td>1.73</td><td>-58</td><td>1.68</td></tr>
+<tr><td>Blackman-Harris</td><td>2.00</td><td>-92</td><td>1.90</td></tr>
+<tr><td>Flat-top</td><td>3.77</td><td>-88</td><td>3.86</td></tr>
+</tbody>
+</table>
+
+<h2>Probability of Intercept (Swept Analyzer) Derivation</h2>
+
+<p>Given sweep time $T_{\text{sweep}}$, span $\Delta f$, IF filter bandwidth $B_{IF}$ (roughly equal to RBW), and burst duration $t_b$, the dwell time at any single frequency bin is:</p>
+<div class="math-display">$$t_{\text{dwell}} = \frac{B_{IF} \cdot T_{\text{sweep}}}{\Delta f}$$</div>
+
+<p>The probability of intercept per sweep (assuming uncorrelated burst timing) is:</p>
+<div class="math-display">$$P_{\text{intercept}} = \frac{t_{\text{dwell}} + t_b}{T_{\text{sweep}}}$$</div>
+
+<p>For an RTSA with overlapping FFTs, $P_{\text{intercept}} \approx 1$ for any burst longer than the POI floor, which is set by FFT length, overlap ratio, and hardware peak detection.</p>
+
+<h2>Phase Noise Math</h2>
+
+<p>Phase noise as dBc/Hz at offset $f$ is written $L(f)$. Single-sideband phase noise is what is typically published. Total integrated phase noise over a frequency band is:</p>
+<div class="math-display">$$\sigma_\phi = \sqrt{2 \int_{f_1}^{f_2} 10^{L(f)/10} df}$$</div>
+<p><strong>Reciprocal mixing:</strong> a signal at offset $\Delta f$ from a strong carrier appears at amplitude reduced by $L(\Delta f) \cdot \text{ENBW}$ from phase noise alone.</p>
+
+<h2>Decibel Tables</h2>
+
+<p><strong>Power ratios:</strong></p>
+<table>
+<thead><tr><th>Linear</th><th>dB</th></tr></thead>
+<tbody>
+<tr><td>0.001</td><td>-30</td></tr>
+<tr><td>0.01</td><td>-20</td></tr>
+<tr><td>0.1</td><td>-10</td></tr>
+<tr><td>0.5</td><td>-3</td></tr>
+<tr><td>1</td><td>0</td></tr>
+<tr><td>2</td><td>+3</td></tr>
+<tr><td>10</td><td>+10</td></tr>
+<tr><td>100</td><td>+20</td></tr>
+<tr><td>1000</td><td>+30</td></tr>
+<tr><td>1,000,000</td><td>+60</td></tr>
+</tbody>
+</table>
+
+<p><strong>dBm to milliwatts:</strong></p>
+<table>
+<thead><tr><th>dBm</th><th>mW</th></tr></thead>
+<tbody>
+<tr><td>-100</td><td>1e-13</td></tr>
+<tr><td>-50</td><td>1e-8</td></tr>
+<tr><td>-30</td><td>0.001</td></tr>
+<tr><td>0</td><td>1</td></tr>
+<tr><td>+10</td><td>10</td></tr>
+<tr><td>+30</td><td>1000</td></tr>
+</tbody>
+</table>
+
+<p><strong>Conversion formulas:</strong></p>
+<ul>
+<li>Power ratio: $\text{dB} = 10 \log_{10}(P_2 / P_1)$</li>
+<li>Voltage/amplitude ratio: $\text{dB} = 20 \log_{10}(V_2 / V_1)$</li>
+<li>dBm to watts: $W = 10^{(\text{dBm}-30)/10}$</li>
+<li>dBm to mW: $\text{mW} = 10^{\text{dBm}/10}$</li>
+</ul>
+
+<h2>Friis Noise Formula</h2>
+
+<p>For a cascade of stages with noise factors $F_n$ and gains $G_n$ (linear):</p>
+<div class="math-display">$$F_{\text{total}} = F_1 + \frac{F_2 - 1}{G_1} + \frac{F_3 - 1}{G_1 G_2} + \cdots$$</div>
+<p>Noise figure in dB: $\text{NF} = 10 \log_{10}(F)$.</p>
+
+<h2>EVM Math</h2>
+
+<div class="math-display">$$\text{EVM}_{rms} = \sqrt{\frac{\frac{1}{N} \sum_n |\vec{e}[n]|^2}{P_{\text{ref}}}}$$</div>
+<div class="math-display">$$\text{EVM}_{dB} = 20 \log_{10}(\text{EVM}_{rms}) \qquad \text{MER}_{dB} = -\text{EVM}_{dB}$$</div>
+
+<h2>IIP3 and Intermodulation</h2>
+
+<p>For two equal-amplitude tones at input power $P$:</p>
+<div class="math-display">$$P_{IM3} = 3P - 2 \cdot P_{IIP3}$$</div>
+<p>A 6 dB increase in input causes an 18 dB increase in IM3 products.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-A-glossary.html">&larr; Appendix A. Glossary</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="appendix-C-aaronia-products.html">Appendix C. Aaronia Products &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Massive MIMO base station forming directed beams to multiple users">
+  <defs>
+    <linearGradient id="bs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#003D6B"/>
+      <stop offset="1" stop-color="#0078B6"/>
+    </linearGradient>
+    <radialGradient id="beamA" cx="0" cy="0.5" r="1">
+      <stop offset="0" stop-color="#00b4ff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#00b4ff" stop-opacity="0.05"/>
+    </radialGradient>
+    <radialGradient id="beamB" cx="0" cy="0.5" r="1">
+      <stop offset="0" stop-color="#4B2A6B" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#4B2A6B" stop-opacity="0.05"/>
+    </radialGradient>
+    <radialGradient id="beamC" cx="0" cy="0.5" r="1">
+      <stop offset="0" stop-color="#C77E00" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#C77E00" stop-opacity="0.05"/>
+    </radialGradient>
+    <style>
+      .ttl{fill:#003D6B;font-size:17px;font-weight:700;}
+      .lbl{fill:#2C3E50;font-size:12px;}
+      .tag{fill:#4B2A6B;font-size:12px;font-weight:700;}
+      .note{fill:#C77E00;font-size:11px;font-weight:700;}
+      .el{fill:#00b4ff;}
+    </style>
+  </defs>
+
+  <text x="430" y="30" text-anchor="middle" class="ttl">Massive MIMO: One Array, Many Steered Beams</text>
+
+  <!-- beams (drawn first, behind) -->
+  <path d="M150 210 L780 90 L780 150 Z" fill="url(#beamA)"/>
+  <path d="M150 210 L780 200 L780 250 Z" fill="url(#beamB)"/>
+  <path d="M150 210 L780 330 L780 390 Z" fill="url(#beamC)"/>
+
+  <!-- base station array panel -->
+  <rect x="90" y="120" width="64" height="180" rx="6" fill="url(#bs)" stroke="#003D6B"/>
+  <!-- 8x4 element grid -->
+  <g>
+    <!-- generate dots -->
+    <g fill="#7fdbff">
+      <circle cx="106" cy="138" r="3"/><circle cx="122" cy="138" r="3"/><circle cx="138" cy="138" r="3"/>
+      <circle cx="106" cy="158" r="3"/><circle cx="122" cy="158" r="3"/><circle cx="138" cy="158" r="3"/>
+      <circle cx="106" cy="178" r="3"/><circle cx="122" cy="178" r="3"/><circle cx="138" cy="178" r="3"/>
+      <circle cx="106" cy="198" r="3"/><circle cx="122" cy="198" r="3"/><circle cx="138" cy="198" r="3"/>
+      <circle cx="106" cy="218" r="3"/><circle cx="122" cy="218" r="3"/><circle cx="138" cy="218" r="3"/>
+      <circle cx="106" cy="238" r="3"/><circle cx="122" cy="238" r="3"/><circle cx="138" cy="238" r="3"/>
+      <circle cx="106" cy="258" r="3"/><circle cx="122" cy="258" r="3"/><circle cx="138" cy="258" r="3"/>
+      <circle cx="106" cy="278" r="3"/><circle cx="122" cy="278" r="3"/><circle cx="138" cy="278" r="3"/>
+    </g>
+  </g>
+  <text x="122" y="330" text-anchor="middle" class="lbl" font-weight="700">gNB array</text>
+  <text x="122" y="348" text-anchor="middle" class="lbl">e.g. 64T64R</text>
+  <text x="122" y="364" text-anchor="middle" class="lbl">(128 elements)</text>
+
+  <!-- users -->
+  <g>
+    <circle cx="790" cy="120" r="14" fill="#003D6B"/><text x="790" y="125" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">A</text>
+    <circle cx="790" cy="225" r="14" fill="#4B2A6B"/><text x="790" y="230" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">B</text>
+    <circle cx="790" cy="360" r="14" fill="#C77E00"/><text x="790" y="365" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">C</text>
+  </g>
+  <text x="430" y="120" text-anchor="middle" class="tag">Beamforming gain steers energy at each user</text>
+  <text x="430" y="245" text-anchor="middle" class="tag">Spatial multiplexing: reuse the same frequency</text>
+
+  <text x="430" y="405" text-anchor="middle" class="note">Each element has its own RF chain; phase weights aim independent beams. Verify before publication.</text>
+</svg>

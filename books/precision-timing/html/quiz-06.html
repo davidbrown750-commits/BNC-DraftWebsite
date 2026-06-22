@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 6 Quiz</title>
+<link rel="stylesheet" href="light-touch.css"/>
+<script defer src="reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1>Chapter 6 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "tmi",
+  chapterKey: "06",
+  title: "Chapter 6 Quiz: Applications of Precision Timing",
+  questions: [
+    {
+      q: "What makes a Pockels cell useful as a fast optical switch in a delay-generator-driven setup?",
+      options: [
+        "A motor rotates the crystal between open and closed positions",
+        "An applied voltage changes the crystal's birefringence, rotating polarization with no moving parts",
+        "The crystal heats up to block or pass light",
+        "A mechanical shutter opens in step with the laser"
+      ],
+      answer: 1,
+      explain: "A Pockels cell exploits the linear electro-optic effect: an applied field makes the crystal birefringent, rotating polarization between crossed polarizers so the path turns from blocking to transmitting in nanoseconds, with no moving parts."
+    },
+    {
+      q: "In active Q-switching, the flash-lamp-to-Q-switch delay is tuned to do what?",
+      options: [
+        "Fire the Q-switch at the instant the lamp turns on",
+        "Open the Q-switch at the moment of maximum stored inversion for peak output energy",
+        "Keep the Q-switch closed for the entire pump cycle",
+        "Match the cavity round-trip time exactly"
+      ],
+      answer: 1,
+      explain: "Set the delay to the peak of stored inversion. Too early and the medium has not finished storing energy; too late and spontaneous emission has bled the inversion away. There is a sharp optimum."
+    },
+    {
+      q: "How does an ICCD camera capture a nanosecond-scale event while rejecting unwanted light?",
+      options: [
+        "It runs a very long exposure and subtracts the background later",
+        "The delay generator opens a gated intensifier window placed precisely on the event after a tuned delay",
+        "It uses a mechanical shutter timed to the trigger",
+        "It cools the sensor to freeze the motion"
+      ],
+      answer: 1,
+      explain: "The delay generator fires the light source, then opens the camera gate after a delay tuned to when the light of interest arrives, holding it open just long enough to catch the signal while rejecting everything before and after."
+    },
+    {
+      q: "In a pump-probe experiment, why does the delay axis define the buying requirement for the timing instrument?",
+      options: [
+        "The amplitude of the pulses sets the time resolution",
+        "Stepping the pump-probe delay films the process frame by frame, so the science lives in the delay axis",
+        "The probe always arrives before the pump",
+        "Only one channel is ever needed"
+      ],
+      answer: 1,
+      explain: "A pump pulse starts a process and a probe interrogates it a controlled time later. Stepping the delay across a range films the process in time, so the instrument that owns the delay axis must be fine, stable, and multi-channel."
+    },
+    {
+      q: "What is delayed extraction in time-of-flight mass spectrometry, and why does it matter?",
+      options: [
+        "Delaying the detector readout to reduce noise",
+        "Waiting a controlled interval after ionization before firing the extraction pulse, so same-mass ions reach the detector together and resolution sharpens",
+        "Extracting ions slowly to avoid damaging the drift tube",
+        "Adding a fixed cable delay to every channel"
+      ],
+      answer: 1,
+      explain: "Instead of pulsing the field at the instant of ionization, the system waits a few hundred nanoseconds to a few microseconds, lets the ion cloud settle predictably, then fires the extraction edge so same-mass ions of different starting positions and velocities arrive together. That delay directly sets resolving power."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="06-applications.html">&larr; Back to Chapter 6</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="07-communications-storage-safety.html">7. Communications, Storage &amp; Safety &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

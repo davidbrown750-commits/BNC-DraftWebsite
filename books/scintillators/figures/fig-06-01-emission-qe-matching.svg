@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540">
+  <rect width="900" height="540" fill="#ECEFF1"/>
+
+  <text x="450" y="32" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#003D6B">Scintillator emission spectra and photodetector quantum efficiency / PDE</text>
+
+  <!-- Plot area -->
+  <rect x="80" y="60" width="740" height="370" fill="#ffffff" stroke="#2C3E50" stroke-width="1.4"/>
+
+  <!-- Y axis label -->
+  <text x="30" y="245" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#003D6B" font-weight="600" transform="rotate(-90, 30, 245)">Normalized intensity / PDE (%)</text>
+  <!-- X axis label -->
+  <text x="450" y="458" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#003D6B" font-weight="600">Wavelength (nm)</text>
+
+  <!-- X axis: 200 to 800 nm, 740 px wide -> 100 nm = ~123 px, x = 80 + (lambda - 200) * 123/100 -->
+  <!-- 200 -> 80, 300 -> 203, 400 -> 327, 500 -> 450, 600 -> 573, 700 -> 697, 800 -> 820 -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2C3E50">
+    <line x1="80" y1="430" x2="80" y2="435" stroke="#2C3E50"/><text x="80" y="447" text-anchor="middle">200</text>
+    <line x1="203" y1="430" x2="203" y2="435" stroke="#2C3E50"/><text x="203" y="447" text-anchor="middle">300</text>
+    <line x1="327" y1="430" x2="327" y2="435" stroke="#2C3E50"/><text x="327" y="447" text-anchor="middle">400</text>
+    <line x1="450" y1="430" x2="450" y2="435" stroke="#2C3E50"/><text x="450" y="447" text-anchor="middle">500</text>
+    <line x1="573" y1="430" x2="573" y2="435" stroke="#2C3E50"/><text x="573" y="447" text-anchor="middle">600</text>
+    <line x1="697" y1="430" x2="697" y2="435" stroke="#2C3E50"/><text x="697" y="447" text-anchor="middle">700</text>
+    <line x1="820" y1="430" x2="820" y2="435" stroke="#2C3E50"/><text x="820" y="447" text-anchor="middle">800</text>
+  </g>
+
+  <!-- Y axis: 0 to 100, 370 px tall -> 0 -> 430, 100 -> 60, y = 430 - val * 3.7 -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#2C3E50">
+    <line x1="75" y1="60" x2="80" y2="60" stroke="#2C3E50"/><text x="70" y="63" text-anchor="end">100</text>
+    <line x1="75" y1="134" x2="80" y2="134" stroke="#2C3E50"/><text x="70" y="137" text-anchor="end">80</text>
+    <line x1="75" y1="208" x2="80" y2="208" stroke="#2C3E50"/><text x="70" y="211" text-anchor="end">60</text>
+    <line x1="75" y1="282" x2="80" y2="282" stroke="#2C3E50"/><text x="70" y="285" text-anchor="end">40</text>
+    <line x1="75" y1="356" x2="80" y2="356" stroke="#2C3E50"/><text x="70" y="359" text-anchor="end">20</text>
+    <line x1="75" y1="430" x2="80" y2="430" stroke="#2C3E50"/><text x="70" y="433" text-anchor="end">0</text>
+  </g>
+
+  <!-- Gridlines -->
+  <g stroke="#d4d8db" stroke-width="0.6" stroke-dasharray="2,3">
+    <line x1="80" y1="134" x2="820" y2="134"/>
+    <line x1="80" y1="208" x2="820" y2="208"/>
+    <line x1="80" y1="282" x2="820" y2="282"/>
+    <line x1="80" y1="356" x2="820" y2="356"/>
+    <line x1="203" y1="60" x2="203" y2="430"/>
+    <line x1="327" y1="60" x2="327" y2="430"/>
+    <line x1="450" y1="60" x2="450" y2="430"/>
+    <line x1="573" y1="60" x2="573" y2="430"/>
+    <line x1="697" y1="60" x2="697" y2="430"/>
+  </g>
+
+  <!-- Photodetector QE curves (background) -->
+  <!-- Bialkali PMT QE: peaks 25% at 410, falls off rapidly above 500 -->
+  <!-- Y formula: y = 430 - val * 3.7. So 25% -> 337, 0% -> 430 -->
+  <path d="M 80,415 Q 130,395 175,372 Q 220,355 275,343 Q 327,338 360,344 Q 400,360 450,388 Q 500,408 540,420 Q 600,427 660,430"
+        fill="none" stroke="#2C3E50" stroke-width="2.0" stroke-dasharray="6,3" opacity="0.85"/>
+
+  <!-- SiPM NUV-HD: peaks 60% around 400, falls off in red -->
+  <!-- 60% -> y = 430 - 60*3.7 = 208 -->
+  <path d="M 80,430 Q 145,410 200,335 Q 260,260 327,210 Q 380,213 420,240 Q 470,275 530,310 Q 600,355 670,390 Q 750,415 820,425"
+        fill="none" stroke="#003D6B" stroke-width="2.4"/>
+
+  <!-- SiPM RGB-HD: peaks 55% around 530 -->
+  <path d="M 80,430 Q 150,425 200,395 Q 270,355 327,318 Q 380,290 425,260 Q 475,228 510,221 Q 540,225 580,250 Q 630,290 690,335 Q 750,380 820,408"
+        fill="none" stroke="#0078B6" stroke-width="2.4"/>
+
+  <!-- Si photodiode: very high red QE -->
+  <path d="M 80,430 Q 140,425 200,375 Q 270,290 327,210 Q 380,160 450,110 Q 530,75 610,67 Q 700,75 760,130 Q 800,180 820,225"
+        fill="none" stroke="#7fdbff" stroke-width="1.6" stroke-dasharray="3,2" opacity="0.7"/>
+
+  <!-- Scintillator emission curves -->
+  <!-- BaF2 fast at 220, narrow gaussian -->
+  <path d="M 100,400 L 105,380 L 108,330 L 110,260 L 112,200 L 114,180 L 116,200 L 118,260 L 120,330 L 124,380 L 128,400"
+        fill="none" stroke="#00b4ff" stroke-width="1.4" opacity="0.85"/>
+
+  <!-- LaBr3:Ce at 380 -->
+  <!-- 380 -> x = 80 + (380-200)*1.23 = 301 -->
+  <path d="M 270,400 L 280,360 L 290,300 L 295,235 L 301,200 L 307,235 L 312,300 L 322,360 L 332,400"
+        fill="none" stroke="#00d4ff" stroke-width="1.6" opacity="0.85"/>
+
+  <!-- NaI(Tl) at 415 -->
+  <!-- 415 -> x = 80 + 215*1.23 = 344 -->
+  <path d="M 295,400 L 312,355 L 325,290 L 337,220 L 344,180 L 352,200 L 362,260 L 380,330 L 405,395 L 430,400"
+        fill="none" stroke="#003D6B" stroke-width="1.8"/>
+
+  <!-- LYSO/LSO at 420 -- close to NaI, lighter shade -->
+  <!-- skip for clarity -->
+
+  <!-- BGO at 480 -->
+  <!-- 480 -> x = 80 + 280*1.23 = 424 -->
+  <path d="M 380,400 L 396,370 L 410,330 L 419,290 L 424,275 L 432,295 L 446,335 L 462,375 L 478,400"
+        fill="none" stroke="#2C3E50" stroke-width="1.6"/>
+
+  <!-- GAGG:Ce at 520 -->
+  <!-- 520 -> x = 80 + 320*1.23 = 474 -->
+  <path d="M 425,400 L 442,360 L 458,300 L 470,240 L 474,210 L 482,235 L 495,295 L 515,355 L 540,395 L 560,400"
+        fill="none" stroke="#0078B6" stroke-width="1.8"/>
+
+  <!-- CsI(Tl) at 550 -->
+  <!-- 550 -> x = 80 + 350*1.23 = 510 -->
+  <path d="M 460,400 L 480,355 L 495,290 L 505,225 L 510,195 L 518,215 L 530,275 L 550,335 L 575,385 L 600,400"
+        fill="none" stroke="#00ff88" stroke-width="2.0" filter="url(#glow6)"/>
+
+  <defs>
+    <filter id="glow6" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Inline labels on emission peaks -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" text-anchor="middle">
+    <text x="113" y="170" fill="#00b4ff">BaF₂ fast</text>
+    <text x="113" y="182" fill="#00b4ff" font-size="8" font-weight="400">220 nm</text>
+
+    <text x="301" y="190" fill="#00d4ff">LaBr₃:Ce</text>
+    <text x="301" y="202" fill="#00d4ff" font-size="8" font-weight="400">380 nm</text>
+
+    <text x="344" y="170" fill="#003D6B">NaI(Tl)</text>
+    <text x="344" y="182" fill="#003D6B" font-size="8" font-weight="400">415 nm</text>
+
+    <text x="424" y="265" fill="#2C3E50">BGO</text>
+    <text x="424" y="277" fill="#2C3E50" font-size="8" font-weight="400">480 nm</text>
+
+    <text x="474" y="200" fill="#0078B6">GAGG:Ce</text>
+    <text x="474" y="212" fill="#0078B6" font-size="8" font-weight="400">520 nm</text>
+
+    <text x="510" y="185" fill="#00ff88">CsI(Tl)</text>
+    <text x="510" y="197" fill="#00ff88" font-size="8" font-weight="400">550 nm</text>
+  </g>
+
+  <!-- Legend (photodetectors) -->
+  <g transform="translate(610, 70)" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">
+    <rect x="0" y="0" width="195" height="92" fill="#ffffff" stroke="#2C3E50" stroke-width="1" opacity="0.95"/>
+    <text x="97" y="14" text-anchor="middle" font-weight="700" fill="#003D6B">Photodetectors</text>
+    <line x1="10" y1="28" x2="40" y2="28" stroke="#2C3E50" stroke-width="2.0" stroke-dasharray="6,3"/>
+    <text x="46" y="31">Bialkali PMT QE</text>
+    <line x1="10" y1="44" x2="40" y2="44" stroke="#003D6B" stroke-width="2.4"/>
+    <text x="46" y="47">SiPM NUV-HD PDE</text>
+    <line x1="10" y1="60" x2="40" y2="60" stroke="#0078B6" stroke-width="2.4"/>
+    <text x="46" y="63">SiPM RGB-HD PDE</text>
+    <line x1="10" y1="76" x2="40" y2="76" stroke="#7fdbff" stroke-width="1.6" stroke-dasharray="3,2"/>
+    <text x="46" y="79">Si photodiode QE</text>
+  </g>
+
+  <!-- Caption -->
+  <text x="450" y="495" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#2C3E50" font-style="italic">Figure 6.1 - Emission spectra of major scintillators (solid lines) overlaid on photodetector quantum efficiency / photodetection efficiency curves.</text>
+  <text x="450" y="510" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#2C3E50" font-style="italic">CsI(Tl) and GAGG:Ce match SiPM RGB-HD or silicon photodiode well; NaI(Tl), LaBr3:Ce, and BGO match SiPM NUV-HD or bialkali PMT.</text>
+</svg>

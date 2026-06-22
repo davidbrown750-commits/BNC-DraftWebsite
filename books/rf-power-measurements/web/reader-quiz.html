@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Interactive Reference Guide - Find Your Reading Path</title>
+<style>
+:root{
+  --navy:#003D6B;--sky:#0078B6;--shadow:#001f38;--charcoal:#2C3E50;
+  --steel:#ECEFF1;--plum:#4B2A6B;--amber:#C77E00;--rule:#b6c2cc;--paper:#fbfcfd;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--steel);color:var(--charcoal);
+  font-family:Georgia,serif;font-size:17px;line-height:1.6}
+.shell{max-width:760px;margin:0 auto;background:var(--paper);min-height:100vh;
+  box-shadow:0 0 40px rgba(0,40,80,.10)}
+.qhead{background:var(--navy);color:#fff;padding:34px 40px;border-bottom:5px solid var(--amber)}
+.qhead .kick{font-family:Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:3px;
+  text-transform:uppercase;opacity:.85}
+.qhead h1{font-family:Helvetica,Arial,sans-serif;font-size:27px;margin:8px 0 0;border:0;box-shadow:none;color:#fff}
+.qhead p{margin:10px 0 0;font-size:15px;opacity:.9}
+.wrap{padding:28px 40px 50px}
+.progress-wrap{height:8px;background:#dde6ee;border-radius:5px;overflow:hidden;margin-bottom:24px}
+#progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--sky),var(--navy));transition:width .3s}
+.card{background:#fff;border:1px solid var(--rule);border-radius:6px;padding:22px 24px;margin:0 0 18px}
+.card .qnum{font-family:Helvetica,Arial,sans-serif;color:var(--amber);font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;font-size:12px}
+.card h2{font-family:Helvetica,Arial,sans-serif;color:var(--navy);font-size:20px;border:0;padding:0;margin:6px 0 16px}
+.option{display:block;border:1px solid var(--rule);border-radius:5px;padding:12px 14px;margin:8px 0;
+  cursor:pointer;font-size:16px;transition:border-color .12s,background .12s}
+.option:hover{border-color:var(--sky);background:#f3f9fd}
+.option input{margin-right:10px}
+.option.sel{border-color:var(--navy);background:#eaf4fb}
+.controls{display:flex;justify-content:space-between;margin-top:18px}
+.btn{font-family:Helvetica,Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+  font-size:12px;padding:11px 20px;border-radius:4px;border:1px solid var(--navy);cursor:pointer;
+  background:var(--navy);color:#fff}
+.btn.ghost{background:#fff;color:var(--navy)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.hidden{display:none}
+/* result */
+.result-banner{background:var(--navy);color:#fff;border-radius:6px;padding:22px 24px;margin-bottom:20px}
+.result-banner .tag{font-family:Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:2px;
+  text-transform:uppercase;color:#9fd0ee}
+.result-banner h2{color:#fff;border:0;padding:0;margin:6px 0 10px;font-size:23px;font-family:Helvetica,Arial,sans-serif}
+.result-banner p{margin:0;font-size:16px;opacity:.95}
+.roadmap{list-style:none;padding:0;margin:0 0 24px;counter-reset:step}
+.roadmap li{position:relative;padding:12px 0 12px 44px;border-bottom:1px solid var(--rule)}
+.roadmap li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:12px;
+  width:30px;height:30px;border-radius:50%;background:var(--sky);color:#fff;font-family:Helvetica,Arial,sans-serif;
+  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.roadmap li b{color:var(--navy)}
+.pen{font-style:italic;color:var(--plum);margin:0 0 26px}
+/* form */
+form fieldset{border:1px solid var(--rule);border-radius:6px;padding:18px 20px;margin:0 0 16px}
+form legend{font-family:Helvetica,Arial,sans-serif;font-weight:700;color:var(--navy);padding:0 6px}
+.field{margin:10px 0}
+.field label{display:block;font-family:Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;
+  color:var(--charcoal);margin-bottom:4px}
+.field input,.field select{width:100%;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;font-size:15px;font-family:inherit}
+.row{display:flex;gap:12px}.row .field{flex:1}
+.check{display:flex;gap:9px;align-items:flex-start;margin:10px 0;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+.check input{margin-top:3px}
+.footer-note{font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#7a8893;text-align:center;
+  padding:18px 0 30px}
+.footer-note a{color:var(--sky)}
+.success{background:#eef7f0;border:1px solid #b9dcc3;border-left:5px solid #2e9e57;border-radius:6px;padding:24px}
+.success h2{color:#1f7a42;border:0;padding:0;margin:0 0 8px}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="qhead">
+    <div class="kick">Berkeley Nucleonics &middot; Interactive Reference Guide</div>
+    <h1 id="book-title">BOOK_TITLE</h1>
+    <p>Answer six quick questions. We will point you to the right reading path and email you a personalized roadmap (plus a free print copy if you want one).</p>
+  </header>
+  <div class="wrap">
+    <div class="progress-wrap" id="progress-wrap"><div id="progress-bar"></div></div>
+    <section id="quiz-section"></section>
+    <section id="result-section" class="hidden"></section>
+    <section id="success-section" class="hidden"></section>
+    <div class="footer-note">
+      &copy; Berkeley Nucleonics Corporation &middot;
+      <a href="/">berkeleynucleonics.com</a> &middot;
+      <a href="/contact.html">Chat with an engineer</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PER-BOOK CONFIG  -  EDIT THIS BLOCK ONLY
+   ------------------------------------------------------------
+   1. BOOK_TITLE / BOOK_SHORT  - shown in header + email subject
+   2. FORM_ENDPOINT            - Formspree/Web3Forms id (leave the
+        REPLACE placeholder to use the built-in console dev-fallback)
+   3. QUESTIONS  - 6 single-select questions. Each option scores the
+        three personas (pathA/pathB/pathC). Rename personas to suit.
+   4. RESULTS    - one entry per persona: tag, title, why, roadmap[],
+        pen line. Roadmap entries are [bold-lead, detail].
+   5. CONTENTS_HREF / deep links in showSuccess()
+   Read this book's chapters + its "How to Read This Book" section to
+   author accurate questions, personas, and chapter roadmaps.
+   ============================================================ */
+var BOOK_TITLE  = "The Nuts and Bolts of RF and Microwave Power Measurement";
+var BOOK_SHORT  = "RFPower";
+/* Per-chapter book: the contents page is the front matter, and each chapter
+   and appendix is its own file in ../html/ (this quiz lives in book/web/). */
+var HTML_DIR      = "../html/";
+var CONTENTS_HREF = HTML_DIR + "00-front-matter.html#table-of-contents";
+var FORM_ENDPOINT = "https://formspree.io/f/xeewaglw";
+var ACADEMY_URL   = "https://academy.berkeleynucleonics.com";
+
+/* Maps a monolith-era anchor id to its per-chapter file in ../html/. */
+var CHAPTER_FILES = {
+  "chapter-1-power-measurement-basics": "01-power-measurement-basics.html",
+  "chapter-2-power-measurement-technologies": "02-power-measurement-technologies.html",
+  "chapter-3-cw-average-and-peak-power": "03-cw-average-and-peak-power.html",
+  "chapter-4-equipment-selection": "04-equipment-selection.html",
+  "chapter-5-calibration-issues": "05-calibration-issues.html",
+  "chapter-6-rf-power-analysis": "06-rf-power-analysis.html",
+  "chapter-7-power-measurement-applications": "07-power-measurement-applications.html",
+  "chapter-8-performance-tips": "08-performance-tips.html",
+  "chapter-9-measurement-accuracy": "09-measurement-accuracy.html",
+  "chapter-10-reference-tables": "10-reference-tables.html",
+  "chapter-11-berkeley-nucleonics-power-measurement-solutions": "11-berkeley-nucleonics-power-measurement-solutions.html",
+  "appendix-a-glossary-of-terms": "appendix-A-glossary.html",
+  "appendix-b-chapter-quiz-questions": "appendix-B-quiz-questions.html",
+  "appendix-c-quiz-answer-key": "appendix-C-quiz-answer-key.html",
+  "appendix-d-about-the-contributors": "appendix-D-contributors.html"
+};
+
+/* in-page anchor helper, so roadmap detail lines deep-link into the book */
+function L(id, text){
+  var file = CHAPTER_FILES[id] || ("00-front-matter.html#" + id);
+  return '<a href="' + HTML_DIR + file + '">' + text + '</a>';
+}
+
+/* three personas:
+   pathA = newcomer / learner   (wants the physics and the vocabulary)
+   pathB = test-and-measurement buyer (wants to pick the right instrument)
+   pathC = RF measurement engineer    (wants accuracy, pulse, and statistics) */
+var QUESTIONS = [
+  { id:"q1", prompt:"What best describes you right now?",
+    options:[
+      {label:"I am new to RF power and want to understand the fundamentals.", scores:{pathA:3}},
+      {label:"I need to choose or specify a power meter or sensor for a job.", scores:{pathB:3}},
+      {label:"I make RF power measurements and want tighter, more defensible numbers.", scores:{pathC:3}}
+    ]},
+  { id:"q2", prompt:"Which sentence sounds most like your week?",
+    options:[
+      {label:"I am still learning why power, not voltage, is the RF currency.", scores:{pathA:3}},
+      {label:"I am comparing sensor datasheets and connector options.", scores:{pathB:3}},
+      {label:"I am chasing the last half-decibel on a transmitter or amplifier.", scores:{pathC:3}}
+    ]},
+  { id:"q3", prompt:"What kind of signal do you work with most?",
+    options:[
+      {label:"Mostly simple CW tones, or I am not sure yet.", scores:{pathA:2,pathB:1}},
+      {label:"A mix, and I need help matching the sensor to the signal.", scores:{pathB:3}},
+      {label:"Pulsed radar, 5G NR, OFDM, or other high crest-factor signals.", scores:{pathC:3}}
+    ]},
+  { id:"q4", prompt:"Which question matters most to you today?",
+    options:[
+      {label:"What is RF power and how has it been measured over time?", scores:{pathA:3}},
+      {label:"Power meter or spectrum analyzer, and which sensor type?", scores:{pathB:3}},
+      {label:"How do I quantify and reduce my measurement uncertainty?", scores:{pathC:3}}
+    ]},
+  { id:"q5", prompt:"How deep do you need to go on pulse and statistics?",
+    options:[
+      {label:"Just the concepts, in plain language.", scores:{pathA:3}},
+      {label:"Enough to know which mode and instrument to buy.", scores:{pathB:2,pathC:1}},
+      {label:"Full pulse profiling, CCDF, and amplifier characterization.", scores:{pathC:3}}
+    ]},
+  { id:"q6", prompt:"What would make this book worth your time?",
+    options:[
+      {label:"I finish able to read a sensor and a signal and tell if they belong together.", scores:{pathA:3}},
+      {label:"I leave with a defensible shortlist for my application.", scores:{pathB:3}},
+      {label:"I tighten my bench accuracy and shorten my test cycles.", scores:{pathC:3}}
+    ]}
+];
+
+var RESULTS = {
+  pathA:{ tag:"Path 1 of 3", title:"The Newcomer Path",
+    why:"Start with the physics and the vocabulary, then build up to real measurements at your own pace.",
+    roadmap:[
+      ["Chapter 1 - Power Measurement Basics", "What power is, why we measure it, and a short history. "+L("chapter-1-power-measurement-basics","Start here.")],
+      ["Chapter 2 - Power Measurement Technologies", "The five sensor families you will meet on a bench. "+L("chapter-2-power-measurement-technologies","Read Chapter 2.")],
+      ["Chapter 3 - CW, Average, and Peak Power", "The three flavors of power and why they differ. "+L("chapter-3-cw-average-and-peak-power","Read Chapter 3.")],
+      ["Appendix A - Glossary", "Keep this open as you read. "+L("appendix-a-glossary-of-terms","Open the glossary.")]
+    ],
+    pen:"Take it slowly. By the end of Section 1 you will look at a signal and a sensor and know whether they belong together." },
+  pathB:{ tag:"Path 2 of 3", title:"The Buyer Path",
+    why:"Cut straight to selection: matching the instrument and sensor to your signal and your budget.",
+    roadmap:[
+      ["Chapter 4 - Equipment Selection", "Choosing the right meter, sensor, and measurement mode. "+L("chapter-4-equipment-selection","Start here.")],
+      ["Chapter 2 - Power Measurement Technologies", "Background on each sensor type, so the trade-offs make sense. "+L("chapter-2-power-measurement-technologies","Skim Chapter 2.")],
+      ["Chapter 3 - CW, Average, and Peak Power", "Bandwidth and dynamic range decide what you can buy. "+L("chapter-3-cw-average-and-peak-power","Read Chapter 3.")],
+      ["Chapter 11 - Berkeley Nucleonics Solutions", "The 12100 series and a selection guide. "+L("chapter-11-berkeley-nucleonics-power-measurement-solutions","See Chapter 11.")]
+    ],
+    pen:"Buy enough bandwidth and dynamic range margin. Your future self will thank you." },
+  pathC:{ tag:"Path 3 of 3", title:"The Engineer Path",
+    why:"Go deep on accuracy, pulse profiling, and statistical analysis to make every reading defensible.",
+    roadmap:[
+      ["Chapter 9 - Measurement Accuracy", "Uncertainty, RSS, and worked calculations. "+L("chapter-9-measurement-accuracy","Start here.")],
+      ["Chapter 6 - RF Power Analysis", "Continuous, triggered, and statistical measurement. "+L("chapter-6-rf-power-analysis","Read Chapter 6.")],
+      ["Chapter 7 - Power Measurement Applications", "Low duty-cycle pulse, CCDF, and EMC testing. "+L("chapter-7-power-measurement-applications","Read Chapter 7.")],
+      ["Chapter 8 - Performance Tips", "Noise reduction, ATE throughput, and amplifier testing. "+L("chapter-8-performance-tips","Read Chapter 8.")],
+      ["Chapter 5 - Calibration Issues", "Linearity and frequency response correction. "+L("chapter-5-calibration-issues","Read Chapter 5.")]
+    ],
+    pen:"The metrologist does not ask how accurate the meter is. The metrologist asks what the uncertainty of this measurement is." }
+};
+var TIE_ORDER = ["pathC","pathB","pathA"]; /* most-specific signal wins ties */
+/* ===================== END CONFIG ===================== */
+
+var state={i:0,answers:{},totals:{}};
+Object.keys(RESULTS).forEach(function(k){state.totals[k]=0;});
+var quizEl=document.getElementById("quiz-section");
+var bar=document.getElementById("progress-bar");
+
+function render(){
+  var q=QUESTIONS[state.i];
+  var chosen=state.answers[q.id];
+  var html='<div class="card"><div class="qnum">Question '+(state.i+1)+' of '+QUESTIONS.length+'</div>'
+    +'<h2>'+q.prompt+'</h2>';
+  q.options.forEach(function(o,idx){
+    var sel=(chosen===idx)?" sel":"";
+    html+='<label class="option'+sel+'"><input type="radio" name="'+q.id+'" value="'+idx+'"'
+      +(chosen===idx?" checked":"")+'>'+o.label+'</label>';
+  });
+  html+='<div class="controls">'
+    +'<button class="btn ghost" id="back"'+(state.i===0?" disabled":"")+'>Back</button>'
+    +'<button class="btn" id="next"'+(chosen==null?" disabled":"")+'>'
+    +(state.i===QUESTIONS.length-1?"See my path":"Next")+'</button></div></div>';
+  quizEl.innerHTML=html;
+  bar.style.width=Math.round((state.i)/QUESTIONS.length*100)+"%";
+  Array.prototype.forEach.call(quizEl.querySelectorAll(".option"),function(op){
+    op.addEventListener("click",function(){
+      state.answers[q.id]=parseInt(op.querySelector("input").value,10);
+      render();
+    });
+  });
+  document.getElementById("back").onclick=function(){ if(state.i>0){state.i--;render();} };
+  document.getElementById("next").onclick=function(){
+    if(state.answers[q.id]==null) return;
+    if(state.i<QUESTIONS.length-1){state.i++;render();} else finish();
+  };
+}
+function finish(){
+  Object.keys(state.totals).forEach(function(k){state.totals[k]=0;});
+  QUESTIONS.forEach(function(q){
+    var pick=state.answers[q.id]; if(pick==null) return;
+    var sc=q.options[pick].scores||{};
+    Object.keys(sc).forEach(function(k){ state.totals[k]=(state.totals[k]||0)+sc[k]; });
+  });
+  var max=Math.max.apply(null,Object.values(state.totals));
+  var winners=TIE_ORDER.filter(function(k){return state.totals[k]===max;});
+  state.path=winners[0]||Object.keys(RESULTS)[0];
+  showResult();
+}
+function showResult(){
+  bar.style.width="100%";
+  quizEl.classList.add("hidden");
+  var r=RESULTS[state.path];
+  var sec=document.getElementById("result-section");
+  var html='<div class="result-banner"><div class="tag">'+r.tag+'</div><h2>'+r.title+'</h2><p>'+r.why+'</p></div>'
+    +'<ol class="roadmap">';
+  r.roadmap.forEach(function(it){ html+='<li><b>'+it[0]+'</b> '+it[1]+'</li>'; });
+  html+='</ol><p class="pen">'+r.pen+'</p>'+leadFormHTML();
+  sec.innerHTML=html; sec.classList.remove("hidden");
+  wireForm();
+}
+function leadFormHTML(){
+  return '<form id="lead-form" novalidate>'
+   +'<fieldset><legend>Email me my roadmap</legend>'
+   +'<div class="row"><div class="field"><label>First name *</label><input name="first_name" required></div>'
+   +'<div class="field"><label>Last name *</label><input name="last_name" required></div></div>'
+   +'<div class="field"><label>Email *</label><input type="email" name="email" required></div>'
+   +'<div class="row"><div class="field"><label>Company / institution</label><input name="company"></div>'
+   +'<div class="field"><label>Role / title</label><input name="role"></div></div>'
+   +'<label class="check"><input type="checkbox" id="want_print" name="want_print" value="yes">'
+   +'<span>Send me a free printed copy of the book</span></label>'
+   +'<div id="address-block" class="hidden">'
+   +'<div class="field"><label>Street address</label><input name="ship_street"></div>'
+   +'<div class="row"><div class="field"><label>City</label><input name="ship_city"></div>'
+   +'<div class="field"><label>State / region</label><input name="ship_state"></div></div>'
+   +'<div class="row"><div class="field"><label>Postal code</label><input name="ship_postal"></div>'
+   +'<div class="field"><label>Country</label><input name="ship_country"></div></div></div>'
+   +'<label class="check"><input type="checkbox" name="want_class_pass" value="yes">'
+   +'<span>Send me a free class pass to the Berkeley Nucleonics Academy course</span></label>'
+   +'<label class="check"><input type="checkbox" name="consent" value="yes" required>'
+   +'<span>I agree to receive occasional emails from Berkeley Nucleonics *</span></label>'
+   +'<div class="controls"><span></span><button type="submit" class="btn">Email me my roadmap</button></div>'
+   +'</fieldset></form>';
+}
+function wireForm(){
+  var form=document.getElementById("lead-form");
+  var print=document.getElementById("want_print");
+  var addr=document.getElementById("address-block");
+  print.addEventListener("change",function(){ addr.classList.toggle("hidden",!print.checked); });
+  form.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    var data=new FormData(form);
+    data.append("reader_path",state.path);
+    data.append("quiz_answers",JSON.stringify(state.answers));
+    data.append("path_scores",JSON.stringify(state.totals));
+    data.append("_subject","["+BOOK_SHORT+" Reader Quiz] "+(data.get("first_name")||"")+" -> "+state.path);
+    data.append("submitted_from","reader-quiz-"+BOOK_SHORT);
+    if(FORM_ENDPOINT.indexOf("REPLACE_WITH_YOUR_ID")>-1){
+      console.log("[reader-quiz dev fallback] payload:",Object.fromEntries(data.entries()));
+      showSuccess(data); return;
+    }
+    fetch(FORM_ENDPOINT,{method:"POST",body:data,headers:{"Accept":"application/json"}})
+      .then(function(res){ if(res.ok) showSuccess(data); else throw new Error("post failed"); })
+      .catch(function(){ alert("Something went wrong. Email davidbrown750@gmail.com and we will sort it out."); });
+  });
+}
+function showSuccess(data){
+  document.getElementById("result-section").classList.add("hidden");
+  var first=data.get("first_name")||"there";
+  var email=data.get("email")||"your inbox";
+  var extra="";
+  if(data.get("want_print")) extra+=" We will be in touch about your print copy within 2 business days.";
+  if(data.get("want_class_pass")) extra+=" Your Academy class pass is on the way.";
+  var sec=document.getElementById("success-section");
+  sec.innerHTML='<div class="success"><h2>Thanks, '+first+'.</h2>'
+    +'<p>Your reading roadmap is on its way to '+email+'.'+extra+'</p>'
+    +'<p style="margin-top:14px"><a class="btn" href="'+CONTENTS_HREF+'">Start reading &rarr;</a></p></div>';
+  sec.classList.remove("hidden");
+  document.getElementById("book-title").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("book-title").textContent=BOOK_TITLE;
+render();
+</script>
+</body>
+</html>

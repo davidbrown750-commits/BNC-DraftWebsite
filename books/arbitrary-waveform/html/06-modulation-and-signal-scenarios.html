@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 6: Modulation and Signal Scenarios</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-6-modulation-and-signal-scenarios">Chapter 6: Modulation and Signal Scenarios</h2>
+
+<figure>
+<img src="../figures/chapter-06-opener.png" alt="A laboratory bench showing an arbitrary waveform generator driving a modulated RF signal into a spectrum analyzer and an IQ modulator, with constellation and spectrum displays visible." />
+<figcaption><span class="fig-num">Figure 6.1</span> Modulation is where an AWG stops being a fancy tone generator and starts being a signal source. Once you can shape amplitude, frequency, phase, and the in-phase and quadrature components on demand, almost any real-world signal becomes something you can build in memory and play back on command.</figcaption>
+</figure>
+
+<p>A plain sine wave is a useful thing, but the world does not communicate in plain sine waves. It communicates in signals that carry information, and information lives in the way a signal changes. Modulation is the controlled changing of a carrier so that it carries something more than its own frequency. An arbitrary waveform generator is unusually good at this, because it can either modulate a carrier with a dedicated engine or, more powerfully, compute the entire finished signal in software and simply play the samples back. This chapter walks through both paths, from textbook AM and FM up to wideband multi-emitter scenarios that would have required a rack of equipment a generation ago.</p>
+
+<p>The mental shift worth making early is this. On a traditional signal generator, modulation is a feature bolted onto a carrier. On an AWG, modulation is often just arithmetic done before the samples reach the DAC. That distinction shapes everything about how flexible the instrument is, and it is the reason an AWG can reproduce signals that no dedicated modulator was ever designed to make.</p>
+
+<h3 id="analog-modulation">6.1 Analog Modulation: AM, FM, and PM</h3>
+
+<p><strong>Amplitude modulation</strong> varies the carrier amplitude in step with a message signal. The classic form multiplies the carrier by <code>(1 + m&middot;cos(2&pi;f_m t))</code>, where <code>m</code> is the modulation index and <code>f_m</code> is the modulating frequency. An index of 0.5 means the envelope swings to plus and minus 50 percent of the carrier amplitude. Push the index to 1.0 and the envelope just touches zero at the troughs. Push past 1.0 and you get overmodulation, where the envelope clips through zero and the recovered message distorts. An AWG handles AM in one of two ways: a built-in modulation engine that takes a carrier setting and a modulating source, or direct synthesis where you compute every output sample as the product of carrier and envelope and load the result into waveform memory.</p>
+
+<p><strong>Frequency modulation</strong> varies the instantaneous frequency of the carrier around its center value. The key parameter is the frequency deviation, the maximum swing away from center. A deviation of 75 kHz, the broadcast FM standard, means the carrier moves up to 75 kHz above and below its nominal frequency at the peaks of the message. The ratio of deviation to the highest modulating frequency gives the modulation index for FM, which in turn sets how much bandwidth the signal occupies. Carson's rule is the quick estimate engineers reach for: bandwidth is roughly twice the sum of the peak deviation and the highest message frequency.</p>
+
+<p><strong>Phase modulation</strong> is FM's close cousin. Instead of shifting the instantaneous frequency, it shifts the instantaneous phase in proportion to the message. The two are mathematically linked, since frequency is the time derivative of phase, and many systems treat them as a single capability. On an AWG that computes samples directly, AM, FM, and PM are all just different ways of filling the same array of numbers. You decide, sample by sample, what amplitude and phase the output should have, and the DAC does the rest.</p>
+
+<figure>
+<img src="../figures/fig-6-1-am-fm-chirp.svg" alt="Three stacked plots: an amplitude-modulated carrier with its envelope, a linear frequency chirp whose oscillation tightens left to right, and a pair of rectangular pulses with width and period markers." />
+<figcaption><span class="fig-num">Figure 6.2</span> Three everyday AWG outputs. The amplitude envelope (top) sets AM depth through the modulation index. The frequency sweep (middle) is a linear FM chirp defined by start frequency, stop frequency, and duration. The pulse (bottom) is set by width, edge shape, and pulse repetition frequency.</figcaption>
+</figure>
+
+<blockquote><p><strong>Engineer's corner.</strong> The direct-synthesis approach has a quiet advantage that catches people by surprise. Because you compute the whole waveform before it plays, you can apply corrections that a real-time modulator cannot. Predistortion for a known amplifier nonlinearity, a precise phase relationship between two tones, an envelope that follows an arbitrary curve rather than a sine: all of it is just a different formula in the sample-generation step. The DAC never knows the difference.</p></blockquote>
+
+<h3 id="pulse-and-chirp">6.2 Pulse and Chirp Generation</h3>
+
+<p><strong>Precise pulses</strong> are the bread and butter of radar, ranging, and timing work. An AWG gives you direct control over the three things that matter most: pulse width, edge shape, and pulse repetition frequency. Width sets how long the pulse stays high. Edge shape, the rise and fall time, controls the spectral content, since fast edges spread energy across a wider band. Pulse repetition frequency, or PRF, sets how often the pulse repeats, and its inverse is the pulse repetition interval. Because the AWG builds the pulse from samples, you are not limited to rectangles. Gaussian pulses, raised-cosine shapes, and custom envelopes that suppress spectral splatter are all within reach.</p>
+
+<p><strong>Frequency chirps</strong> sweep the carrier frequency across the duration of a pulse. The linear frequency modulated chirp, or LFM, is the workhorse of pulse-compression radar. You define it with three numbers: a start frequency, a stop frequency, and a sweep duration. The instantaneous frequency rises (or falls) linearly between the two endpoints over the sweep time. The appeal of the chirp is that it lets a radar transmit a long pulse for energy but resolve targets as if it sent a short one, by compressing the echo in a matched filter. Nonlinear chirps, where the frequency follows a curve rather than a straight line, trade some compression efficiency for lower range sidelobes, and an AWG generates them as easily as the linear case because it is, again, just a different formula per sample.</p>
+
+<p>The sample-rate budget is where chirps get demanding. A chirp that sweeps to a high stop frequency needs enough samples per cycle at that highest frequency to avoid aliasing, which means the sweep bandwidth, not just the center frequency, drives the required sample rate. Wide, fast chirps are exactly why high sample-rate AWGs exist. Berkeley Nucleonics positions its high-speed models, such as the Model 685 family and the flagship Model 686, for this kind of demanding wideband work. Confirm the current sweep and bandwidth figures against the datasheet at berkeleynucleonics.com before you commit a design to them.</p>
+
+<h3 id="iq-and-vector">6.3 IQ and Vector Signal Generation</h3>
+
+<p>Any modulated signal can be written as a carrier whose amplitude and phase change over time. There is a tidier way to express that, and it underpins almost all modern radio. <strong>In-phase and quadrature representation</strong> splits the signal into two baseband components: I, the part in phase with a reference carrier, and Q, the part shifted ninety degrees from it. The transmitted signal is <code>I&middot;cos(2&pi;f_c t) - Q&middot;sin(2&pi;f_c t)</code>. Any combination of amplitude and phase reduces to a pair of I and Q values, which is why this representation is so general. Amplitude is the length of the I and Q vector, phase is its angle.</p>
+
+<p>This is where an AWG with two synchronized channels earns its keep. You drive the <strong>I component out of one channel and the Q component out of the other</strong>, then feed both into an external IQ modulator that mixes them against a local oscillator and its ninety-degree-shifted copy. The modulator sums the two mixer outputs and produces a single modulated RF signal at the carrier frequency. The AWG generates only the baseband I and Q, which keeps the sample rate manageable, while the upconversion to RF happens in analog hardware downstream.</p>
+
+<figure>
+<img src="../figures/fig-6-3-iq-modulator.svg" alt="Block diagram: AWG channel 1 carries I baseband and channel 2 carries Q baseband, each feeding a mixer; a local oscillator splits into a zero-degree path and a ninety-degree path; the two mixer outputs are summed into an RF output, with a 16-QAM constellation shown alongside." />
+<figcaption><span class="fig-num">Figure 6.3</span> Two synchronized AWG channels supply baseband I and Q. An external IQ modulator mixes them against a local oscillator and its ninety-degree-shifted copy, then sums the results into a single modulated RF output. Each constellation point is one symbol, defined by an I and Q pair.</figcaption>
+</figure>
+
+<p><strong>Baseband versus RF</strong> is the practical fork in the road. A baseband IQ approach keeps the AWG running at modest sample rates and pushes the carrier frequency into an external modulator, which is efficient and flexible. A direct-RF approach skips the external modulator entirely and synthesizes the modulated carrier at full frequency inside the AWG, which demands a very high sample rate but removes the analog imperfections of an external mixer. High sample-rate instruments make direct RF generation possible for carriers that used to require upconversion.</p>
+
+<p>The <strong>constellation</strong> is the picture that ties it together. Plot Q against I and each valid symbol becomes a point. A 16-QAM signal has sixteen points in a four-by-four grid, each encoding four bits. The job of the AWG and modulator is to land the signal on those points cleanly. Gain imbalance between the I and Q channels skews the constellation. A phase error between them rotates and shears it. Timing skew smears the symbols. This is why channel-to-channel matching, in gain, delay, and phase, is the quality that separates a good vector source from a mediocre one.</p>
+
+<blockquote><p><strong>Pro tip.</strong> When a constellation looks rotated or lopsided and the math is right, suspect the analog path before the waveform. A few tens of picoseconds of skew between the I and Q channels, or a fraction of a decibel of gain mismatch, will distort an otherwise perfect signal. Calibrate the channel matching first, then trust your samples.</p></blockquote>
+
+<h3 id="digital-modulation">6.4 Digital Modulation and Wideband Scenarios</h3>
+
+<p>Digital modulation maps bits onto discrete states of the carrier. The four foundational families each vary a different property. <strong>ASK</strong> (amplitude-shift keying) switches amplitude between levels, on-off keying being the simplest case. <strong>FSK</strong> (frequency-shift keying) hops between discrete frequencies. <strong>PSK</strong> (phase-shift keying) selects among fixed phase states, with QPSK using four phases to carry two bits per symbol. <strong>QAM</strong> (quadrature amplitude modulation) varies both amplitude and phase together, packing more bits per symbol as the constellation grows from 16-QAM to 64, 256, and beyond. The trade is always the same: denser constellations carry more bits but demand a cleaner signal and a higher signal-to-noise ratio to keep the points distinct.</p>
+
+<p>Modern communications stack these schemes into wideband waveforms. <strong>OFDM</strong> (orthogonal frequency-division multiplexing) spreads data across hundreds or thousands of closely spaced subcarriers, each carrying its own QAM symbol, which is the backbone of Wi-Fi, LTE, and 5G NR. Generating an OFDM symbol means computing an inverse FFT of the subcarrier values, which produces a baseband waveform with a high peak-to-average power ratio and a wide instantaneous bandwidth. An AWG handles this naturally because the whole point of the instrument is to play back arbitrary computed samples. You build the 5G NR or Wi-Fi baseband frame in software, load it into memory, and play it out as I and Q.</p>
+
+<p>The same memory-playback model scales to scenarios that have nothing to do with a single transmitter. <strong>Multi-emitter and electronic warfare scenarios</strong> combine many signals (radar pulses from several directions, communication links, jammers, and interferers) into one composite waveform computed directly in memory. Because every emitter is just more arithmetic added to the same sample stream, an AWG can play back a dense, realistic RF environment from a single pair of channels. Deep waveform memory and sequencing, covered in the previous chapter, are what make long scenario playback practical without running out of room.</p>
+
+<table>
+<thead>
+<tr><th>Modulation type</th><th>What it varies</th><th>Typical use</th><th>What it tests in a receiver</th></tr>
+</thead>
+<tbody>
+<tr><td>AM</td><td>Amplitude</td><td>Broadcast, telemetry</td><td>Envelope detection, linearity</td></tr>
+<tr><td>FM / PM</td><td>Frequency or phase</td><td>Broadcast, analog radio</td><td>Discriminator response, capture effect</td></tr>
+<tr><td>ASK / OOK</td><td>Amplitude (discrete)</td><td>Simple data links, RFID</td><td>Threshold detection, AGC</td></tr>
+<tr><td>FSK</td><td>Frequency (discrete)</td><td>Low-rate telemetry, paging</td><td>Frequency discrimination, drift tolerance</td></tr>
+<tr><td>PSK / QPSK</td><td>Phase (discrete)</td><td>Satellite, deep-space links</td><td>Carrier and phase recovery</td></tr>
+<tr><td>QAM (16 to 256+)</td><td>Amplitude and phase</td><td>Cable, Wi-Fi, cellular</td><td>SNR margin, EVM, equalization</td></tr>
+<tr><td>OFDM</td><td>Many subcarriers, each QAM</td><td>5G NR, Wi-Fi, LTE</td><td>Channel estimation, PAPR handling</td></tr>
+</tbody>
+</table>
+
+<h3 id="building-scenarios">6.5 Building Realistic Scenarios</h3>
+
+<p>A clean signal proves a receiver works in a laboratory. A realistic signal proves it works in the world, and the world is messy. The value of computing waveforms in memory is that you can add impairments deliberately, in known and repeatable amounts, to find exactly where a receiver starts to fail. This turns the AWG into a controlled stress source rather than a tidy reference.</p>
+
+<p><strong>Additive noise</strong> is the first impairment most engineers reach for. Summing band-limited Gaussian noise onto a signal at a known power level sets a precise signal-to-noise ratio, which lets you sweep a receiver's bit-error rate against SNR and plot the curve that defines its sensitivity. <strong>Interference</strong> goes a step further: a second signal, an adjacent-channel emitter, or a continuous-wave tone parked near the band edge reveals how well the receiver's filtering and dynamic range hold up. <strong>Multipath</strong> models the reflections of a real propagation channel by adding delayed, attenuated, and phase-shifted copies of the signal, which is how you reproduce fading and the intersymbol interference that an equalizer has to fight.</p>
+
+<p>Other impairments target specific failure modes. Phase noise smeared onto the carrier tests carrier-recovery loops. Frequency offset checks the acquisition range of a demodulator. Amplitude and phase imbalance, deliberately injected, confirms that an IQ receiver can correct what an imperfect transmitter sends. Because each impairment is a known formula applied to known samples, you can dial it up until the receiver breaks, then back off to find its true margin.</p>
+
+<p><strong>Replaying recorded RF environments</strong> closes the loop with reality. Capture a real signal environment with a wideband receiver or digitizer, store the I and Q samples, and load them into the AWG to replay the exact same environment on the bench, as many times as you like. A field problem that happened once, at an awkward location, becomes a repeatable test case you can run against firmware revision after firmware revision. That repeatability is the quiet superpower of memory-based generation. The hard part of testing is usually not creating a failure, it is creating the same failure twice.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> Keep a small library of impairment recipes alongside your waveforms: a fixed-seed noise file at several SNR points, a two-ray and a five-ray multipath profile, a phase-noise mask, and a couple of recorded captures from the field. Reusing the same impairments across projects makes results comparable over time, and a fixed random seed means your noise is reproducible rather than merely random.</p></blockquote>
+
+<div class="quiz-cta">
+  <h4>Check Your Understanding</h4>
+  <p>Five quick questions on this chapter. Your answers save on this device.</p>
+  <p><a class="btn" href="quiz-06.html">Take the Interactive Quiz &rarr;</a></p>
+</div>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="05-creating-and-sequencing-waveforms.html">&larr; 5. Creating and Sequencing Waveforms</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="07-triggering-synchronization-multichannel.html">7. Triggering, Synchronization, and Multi-Channel &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

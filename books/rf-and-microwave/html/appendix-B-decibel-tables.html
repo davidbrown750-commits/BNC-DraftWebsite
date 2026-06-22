@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>appendix-B-decibel-tables</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body><h1 id="appendix-b-decibel-and-unit-conversion-tables">Appendix B. Decibel and Unit Conversion Tables</h1>
+<p>The decibel is the working currency of RF, and like any currency it trips up people who do not keep the units straight. This appendix gathers the definitions and the lookup tables that turn a decibel value into a ratio, a power, or a voltage without a calculator. Use it to sanity-check a measurement, to convert between the absolute scales (dBm, dBW, dBuV), or to add up a link budget in your head.</p>
+<p>The first thing to fix in your mind: decibels are always a ratio. A plain dB compares two quantities. The absolute scales (dBm, dBW, dBuV) pin that ratio to a fixed reference, which is what makes them absolute units of power or voltage rather than a comparison.</p>
+<h2 id="b1-the-absolute-decibel-scales">B.1 The Absolute Decibel Scales</h2>
+<p>Four absolute scales cover almost everything you will meet on an RF bench. Each one names a reference and applies either the 10 log power rule or the 20 log voltage rule.</p>
+<table>
+<thead>
+<tr><th>Unit</th><th>Reference</th><th>Definition</th><th>Typical use</th></tr>
+</thead>
+<tbody>
+<tr><td>dBm</td><td>1 milliwatt</td><td>dBm = 10 log10(P / 1 mW)</td><td>Signal and analyzer levels</td></tr>
+<tr><td>dBW</td><td>1 watt</td><td>dBW = 10 log10(P / 1 W)</td><td>Transmitter and radar power</td></tr>
+<tr><td>dBuV</td><td>1 microvolt</td><td>dBuV = 20 log10(V / 1 uV)</td><td>EMI and receiver inputs</td></tr>
+<tr><td>dBuV/m</td><td>1 microvolt per meter</td><td>dBuV/m = 20 log10(E / 1 uV/m)</td><td>Radiated field strength</td></tr>
+</tbody>
+</table>
+<p>The fixed offsets between scales save time. In any system, dBW = dBm minus 30, because a watt is a thousand milliwatts and 10 log10(1000) is 30. In a 50 ohm system specifically, dBuV = dBm + 107. That single offset connects the power world (dBm) to the voltage world (dBuV) that EMI engineers live in.</p>
+<h2 id="b2-decibel-to-power-ratio">B.2 Decibel to Power Ratio</h2>
+<p>This table converts a plain dB value into the power ratio it represents, using the 10 log rule. Negative decibels are simply the reciprocals: -3 dB is a power ratio of 0.501, -10 dB is 0.1, and so on.</p>
+<table>
+<thead>
+<tr><th>dB</th><th>Power ratio</th><th>dB</th><th>Power ratio</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>1.000</td><td>10</td><td>10.00</td></tr>
+<tr><td>1</td><td>1.259</td><td>13</td><td>19.95</td></tr>
+<tr><td>2</td><td>1.585</td><td>15</td><td>31.62</td></tr>
+<tr><td>3</td><td>1.995</td><td>20</td><td>100.0</td></tr>
+<tr><td>4</td><td>2.512</td><td>23</td><td>199.5</td></tr>
+<tr><td>5</td><td>3.162</td><td>30</td><td>1,000</td></tr>
+<tr><td>6</td><td>3.981</td><td>40</td><td>10,000</td></tr>
+<tr><td>7</td><td>5.012</td><td>50</td><td>100,000</td></tr>
+<tr><td>8</td><td>6.310</td><td>60</td><td>1,000,000</td></tr>
+<tr><td>9</td><td>7.943</td><td>100</td><td>10^10</td></tr>
+</tbody>
+</table>
+<p>The shortcuts worth memorizing live in this table. 3 dB doubles power (1.995, near enough to 2), 10 dB is a clean factor of 10, and each additional 10 dB is another factor of 10. Because decibels add while ratios multiply, you can build any value: 23 dB is 20 dB plus 3 dB, so the ratio is 100 times 2, which is 200 (the table reads 199.5).</p>
+<h2 id="b3-decibel-to-voltage-ratio">B.3 Decibel to Voltage Ratio</h2>
+<p>This table uses the 20 log rule, which applies to voltage, current, and field strength at a constant impedance. The same decibel value gives a smaller ratio here than in the power table, because voltage relates to the square root of power.</p>
+<table>
+<thead>
+<tr><th>dB</th><th>Voltage ratio</th><th>dB</th><th>Voltage ratio</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>1.000</td><td>12</td><td>3.981</td></tr>
+<tr><td>1</td><td>1.122</td><td>14</td><td>5.012</td></tr>
+<tr><td>2</td><td>1.259</td><td>16</td><td>6.310</td></tr>
+<tr><td>3</td><td>1.413</td><td>18</td><td>7.943</td></tr>
+<tr><td>4</td><td>1.585</td><td>20</td><td>10.00</td></tr>
+<tr><td>6</td><td>1.995</td><td>26</td><td>19.95</td></tr>
+<tr><td>8</td><td>2.512</td><td>40</td><td>100.0</td></tr>
+<tr><td>10</td><td>3.162</td><td>60</td><td>1,000</td></tr>
+</tbody>
+</table>
+<p>The voltage anchors mirror the power ones. 6 dB doubles voltage (because doubling voltage quadruples power, and 6 dB is a power factor of 4), and 20 dB is a clean factor of 10 in voltage.</p>
+<h2 id="b4-dbm-to-watts">B.4 dBm to Watts</h2>
+<p>This is the conversion engineers reach for most: turning an analyzer reading in dBm into an actual power. The pattern is regular. Every 10 dBm step changes the power by a factor of 10, and 0 dBm is exactly 1 mW.</p>
+<table>
+<thead>
+<tr><th>dBm</th><th>Power</th><th>dBm</th><th>Power</th></tr>
+</thead>
+<tbody>
+<tr><td>-90</td><td>1 pW</td><td>10</td><td>10 mW</td></tr>
+<tr><td>-60</td><td>1 nW</td><td>13</td><td>20 mW</td></tr>
+<tr><td>-30</td><td>1 uW</td><td>20</td><td>100 mW</td></tr>
+<tr><td>-10</td><td>100 uW</td><td>23</td><td>200 mW</td></tr>
+<tr><td>-3</td><td>0.5 mW</td><td>30</td><td>1 W</td></tr>
+<tr><td>0</td><td>1 mW</td><td>33</td><td>2 W</td></tr>
+<tr><td>3</td><td>2 mW</td><td>40</td><td>10 W</td></tr>
+<tr><td>6</td><td>4 mW</td><td>50</td><td>100 W</td></tr>
+<tr><td>7</td><td>5 mW</td><td>60</td><td>1,000 W</td></tr>
+</tbody>
+</table>
+<p>Read this together with the dB-to-ratio table and the additive trick handles any value. 43 dBm is 40 dBm plus 3 dBm, so 10 W times 2, which is 20 W.</p>
+<h2 id="b5-common-reference-levels">B.5 Common Reference Levels</h2>
+<p>These are the values worth recognizing on sight, because they show up across the trade.</p>
+<table>
+<thead>
+<tr><th>Level</th><th>Meaning</th></tr>
+</thead>
+<tbody>
+<tr><td>-174 dBm/Hz</td><td>Thermal noise floor at 290 K, per hertz of bandwidth</td></tr>
+<tr><td>-114 dBm</td><td>Thermal noise in a 1 MHz bandwidth at 290 K</td></tr>
+<tr><td>-107 dBm</td><td>Approximate noise floor of a typical receiver in 1 MHz</td></tr>
+<tr><td>0 dBm</td><td>1 mW, the universal reference, 224 mV RMS in 50 ohms</td></tr>
+<tr><td>+30 dBm</td><td>1 W</td></tr>
+<tr><td>+13 dBm</td><td>20 mW, a common signal generator default</td></tr>
+</tbody>
+</table>
+<p><strong>Worked example.</strong> A spectrum analyzer reads a carrier at -43 dBm and its noise floor at -103 dBm in the same resolution bandwidth. The signal-to-noise ratio is the difference, 60 dB, which is a power ratio of one million. To convert the carrier to watts, -43 dBm is -40 dBm minus 3 dB, so 100 nW divided by 2, which is 50 nW.</p>
+<h2 id="references">References</h2>
+<p>[1] IEEE Std 100, The Authoritative Dictionary of IEEE Standards Terms, for decibel and reference-unit definitions. Verify current edition before publication.</p>
+<p>[2] ANSI C63.4 and CISPR 16, for dBuV and dBuV/m usage in EMI measurement. Verify current editions before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-A-rf-equations.html">&larr; App. A: Equations</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="appendix-C-smith-chart-primer.html">App. C: Smith Chart &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

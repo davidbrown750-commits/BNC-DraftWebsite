@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 430" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="430" fill="#ffffff"/>
+  <text x="24" y="34" font-size="18" font-weight="bold" fill="#003D6B">Sequence as a Memory Map</text>
+  <text x="24" y="56" font-size="13" fill="#2C3E50">Three stored segments replayed by a step list with loop counts and a conditional jump.</text>
+
+  <!-- Waveform memory bank -->
+  <text x="24" y="92" font-size="13" font-weight="bold" fill="#4B2A6B">WAVEFORM MEMORY</text>
+
+  <!-- Segment A -->
+  <rect x="24" y="104" width="200" height="64" rx="4" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.5"/>
+  <text x="36" y="124" font-size="13" font-weight="bold" fill="#003D6B">Segment A</text>
+  <text x="36" y="142" font-size="11" fill="#2C3E50">Pre-amble / settle</text>
+  <polyline points="36,160 60,160 70,148 90,148 100,160 130,160 140,150 160,150 170,160 210,160" fill="none" stroke="#00b4ff" stroke-width="1.5"/>
+
+  <!-- Segment B -->
+  <rect x="24" y="180" width="200" height="64" rx="4" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.5"/>
+  <text x="36" y="200" font-size="13" font-weight="bold" fill="#003D6B">Segment B</text>
+  <text x="36" y="218" font-size="11" fill="#2C3E50">Burst payload</text>
+  <path d="M36 236 Q56 210 76 236 T116 236 T156 236 T196 236" fill="none" stroke="#C77E00" stroke-width="1.5"/>
+
+  <!-- Segment C -->
+  <rect x="24" y="256" width="200" height="64" rx="4" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.5"/>
+  <text x="36" y="276" font-size="13" font-weight="bold" fill="#003D6B">Segment C</text>
+  <text x="36" y="294" font-size="11" fill="#2C3E50">Idle / hold-off</text>
+  <line x1="36" y1="312" x2="210" y2="312" stroke="#4B2A6B" stroke-width="1.5"/>
+
+  <!-- Step list / sequence table -->
+  <text x="300" y="92" font-size="13" font-weight="bold" fill="#4B2A6B">SEQUENCE STEP LIST</text>
+
+  <!-- table header -->
+  <rect x="300" y="104" width="496" height="28" fill="#003D6B"/>
+  <text x="312" y="123" font-size="12" font-weight="bold" fill="#ffffff">Step</text>
+  <text x="372" y="123" font-size="12" font-weight="bold" fill="#ffffff">Segment</text>
+  <text x="486" y="123" font-size="12" font-weight="bold" fill="#ffffff">Loops</text>
+  <text x="566" y="123" font-size="12" font-weight="bold" fill="#ffffff">Advance</text>
+  <text x="676" y="123" font-size="12" font-weight="bold" fill="#ffffff">Next</text>
+
+  <!-- rows -->
+  <rect x="300" y="132" width="496" height="34" fill="#ECEFF1"/>
+  <text x="312" y="154" font-size="12" fill="#2C3E50">0</text>
+  <text x="372" y="154" font-size="12" fill="#2C3E50">A</text>
+  <text x="486" y="154" font-size="12" fill="#2C3E50">1</text>
+  <text x="566" y="154" font-size="12" fill="#2C3E50">auto</text>
+  <text x="676" y="154" font-size="12" fill="#2C3E50">1</text>
+
+  <rect x="300" y="166" width="496" height="34" fill="#ffffff"/>
+  <text x="312" y="188" font-size="12" fill="#2C3E50">1</text>
+  <text x="372" y="188" font-size="12" fill="#2C3E50">B</text>
+  <text x="486" y="188" font-size="12" fill="#2C3E50">1000</text>
+  <text x="566" y="188" font-size="12" fill="#2C3E50">auto</text>
+  <text x="676" y="188" font-size="12" fill="#2C3E50">2</text>
+
+  <rect x="300" y="200" width="496" height="34" fill="#ECEFF1"/>
+  <text x="312" y="222" font-size="12" fill="#2C3E50">2</text>
+  <text x="372" y="222" font-size="12" fill="#2C3E50">C</text>
+  <text x="486" y="222" font-size="12" fill="#2C3E50">1</text>
+  <text x="566" y="222" font-size="12" fill="#C77E00" font-weight="bold">on TRIG</text>
+  <text x="676" y="222" font-size="12" fill="#2C3E50">3</text>
+
+  <rect x="300" y="234" width="496" height="34" fill="#ffffff"/>
+  <text x="312" y="256" font-size="12" fill="#2C3E50">3</text>
+  <text x="372" y="256" font-size="12" fill="#2C3E50">B</text>
+  <text x="486" y="256" font-size="12" fill="#2C3E50">1</text>
+  <text x="566" y="256" font-size="12" fill="#4B2A6B" font-weight="bold">if EVENT</text>
+  <text x="676" y="256" font-size="12" fill="#2C3E50">jump 1</text>
+
+  <!-- conditional jump arrow -->
+  <path d="M788 251 q22 -6 22 -48 0 -42 -22 -47" fill="none" stroke="#4B2A6B" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0 0 L9 4.5 L0 9 z" fill="#4B2A6B"/>
+    </marker>
+  </defs>
+  <text x="640" y="300" font-size="11" fill="#4B2A6B">Conditional branch: step 3 loops back to step 1 while EVENT is asserted.</text>
+
+  <!-- legend -->
+  <rect x="300" y="324" width="496" height="78" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1"/>
+  <text x="314" y="346" font-size="12" font-weight="bold" fill="#003D6B">Why a step list, not one long waveform</text>
+  <text x="314" y="366" font-size="11.5" fill="#2C3E50">Segment B plays 1000 times from a single stored copy, so memory is reused, not multiplied.</text>
+  <text x="314" y="384" font-size="11.5" fill="#2C3E50">Advance can be automatic, trigger-gated, or condition-driven, so the scenario stays dynamic.</text>
+</svg>

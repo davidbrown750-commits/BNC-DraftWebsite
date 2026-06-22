@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 360" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Block diagram of a swept superheterodyne spectrum analyzer signal chain">
+  <defs>
+    <linearGradient id="mix" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#003D6B"/>
+      <stop offset="1" stop-color="#0078B6"/>
+    </linearGradient>
+    <style>
+      .blk{fill:#ffffff;stroke:#0078B6;stroke-width:1.6;}
+      .lbl{fill:#003D6B;font-size:12px;font-weight:700;}
+      .sub{fill:#2C3E50;font-size:10px;}
+      .sig{stroke:#003D6B;stroke-width:2.2;fill:none;}
+      .lo{stroke:#C77E00;stroke-width:2.2;fill:none;stroke-dasharray:6 4;}
+      .stage{fill:#0078B6;font-size:9px;font-weight:700;letter-spacing:.5px;}
+    </style>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#003D6B"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="28" fill="#003D6B" font-size="15" font-weight="700">The Swept Superheterodyne Signal Chain</text>
+
+  <!-- RF input -->
+  <line class="sig" x1="20" y1="100" x2="58" y2="100" marker-end="url(#a)"/>
+  <text x="14" y="86" class="sub">RF in</text>
+
+  <!-- Stage 1: Attenuator -->
+  <rect class="blk" x="58" y="78" width="86" height="44" rx="4"/>
+  <text x="101" y="98" text-anchor="middle" class="lbl">Attenuator</text>
+  <text x="101" y="112" text-anchor="middle" class="sub">+ DC block</text>
+
+  <!-- Stage 2: Preamp -->
+  <line class="sig" x1="144" y1="100" x2="172" y2="100" marker-end="url(#a)"/>
+  <polygon class="blk" points="172,78 222,100 172,122"/>
+  <text x="186" y="103" text-anchor="middle" class="lbl">PA</text>
+
+  <!-- Stage 3: Preselector / LPF -->
+  <line class="sig" x1="222" y1="100" x2="252" y2="100" marker-end="url(#a)"/>
+  <rect class="blk" x="252" y="78" width="92" height="44" rx="4"/>
+  <text x="298" y="96" text-anchor="middle" class="lbl">Preselector</text>
+  <text x="298" y="112" text-anchor="middle" class="sub">low-pass filter</text>
+
+  <!-- Stage 4: Mixer -->
+  <line class="sig" x1="344" y1="100" x2="378" y2="100" marker-end="url(#a)"/>
+  <circle cx="404" cy="100" r="26" fill="url(#mix)"/>
+  <path d="M386 82 L422 118 M422 82 L386 118" stroke="#ffffff" stroke-width="2"/>
+  <text x="404" y="148" text-anchor="middle" class="lbl">Mixer</text>
+
+  <!-- Stage 5: LO -->
+  <rect class="blk" x="356" y="222" width="96" height="48" rx="4" stroke="#C77E00"/>
+  <text x="404" y="242" text-anchor="middle" class="lbl">Swept LO</text>
+  <text x="404" y="258" text-anchor="middle" class="sub">phase noise</text>
+  <line class="lo" x1="404" y1="222" x2="404" y2="130" marker-end="url(#a)"/>
+
+  <!-- Stage 6: IF filter -->
+  <line class="sig" x1="430" y1="100" x2="462" y2="100" marker-end="url(#a)"/>
+  <rect class="blk" x="462" y="78" width="78" height="44" rx="4"/>
+  <text x="501" y="96" text-anchor="middle" class="lbl">IF Filter</text>
+  <text x="501" y="112" text-anchor="middle" class="sub">fixed IF</text>
+
+  <!-- Stage 7: ADC -->
+  <line class="sig" x1="540" y1="100" x2="570" y2="100" marker-end="url(#a)"/>
+  <rect class="blk" x="570" y="78" width="64" height="44" rx="4"/>
+  <text x="602" y="96" text-anchor="middle" class="lbl">ADC</text>
+  <text x="602" y="112" text-anchor="middle" class="sub">digitize</text>
+
+  <!-- DSP dashed boundary -->
+  <rect x="650" y="60" width="270" height="120" rx="6" fill="#f2f7fb" stroke="#b6c2cc" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="660" y="76" class="stage">DIGITAL SIGNAL PROCESSING</text>
+
+  <!-- Stage 8: RBW filter -->
+  <line class="sig" x1="634" y1="100" x2="664" y2="100" marker-end="url(#a)"/>
+  <rect class="blk" x="664" y="84" width="74" height="40" rx="4"/>
+  <text x="701" y="100" text-anchor="middle" class="lbl">RBW</text>
+  <text x="701" y="114" text-anchor="middle" class="sub">Gaussian BPF</text>
+
+  <!-- Stage 9: Envelope detector -->
+  <line class="sig" x1="738" y1="104" x2="760" y2="104" marker-end="url(#a)"/>
+  <rect class="blk" x="760" y="84" width="74" height="40" rx="4"/>
+  <text x="797" y="100" text-anchor="middle" class="lbl">Envelope</text>
+  <text x="797" y="114" text-anchor="middle" class="sub">detector</text>
+
+  <!-- Stage 10: VBW filter -->
+  <line class="sig" x1="701" y1="124" x2="701" y2="142" marker-end="url(#a)"/>
+  <rect class="blk" x="664" y="142" width="74" height="32" rx="4"/>
+  <text x="701" y="162" text-anchor="middle" class="lbl">VBW filter</text>
+
+  <!-- Stage 11: Display -->
+  <line class="sig" x1="797" y1="124" x2="797" y2="200" marker-end="url(#a)"/>
+  <line class="sig" x1="738" y1="158" x2="797" y2="158" marker-end="url(#a)"/>
+  <rect class="blk" x="744" y="200" width="106" height="56" rx="4" fill="#003D6B" stroke="#003D6B"/>
+  <text x="797" y="222" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="700">Display</text>
+  <text x="797" y="238" text-anchor="middle" fill="#7fdbff" font-size="10">amplitude vs frequency</text>
+  <text x="797" y="250" text-anchor="middle" fill="#7fdbff" font-size="10">+ detector select</text>
+
+  <!-- legend -->
+  <line x1="20" y1="320" x2="56" y2="320" class="sig"/>
+  <text x="62" y="324" class="sub">RF / IF signal path</text>
+  <line x1="200" y1="320" x2="236" y2="320" class="lo"/>
+  <text x="242" y="324" class="sub">swept local oscillator</text>
+</svg>

@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>The Nuts and Bolts of Radar Systems</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <style>
+    .title-block{margin:10px 0 28px;padding:28px 0 22px;border-bottom:3px solid var(--bnc-warm-amber)}
+    .title-block .series{font-family:Helvetica,Arial,sans-serif;text-transform:uppercase;
+      letter-spacing:3px;font-size:11px;color:var(--bnc-sky-blue);font-weight:700}
+    .title-block h1{border:0;margin:8px 0 6px}
+    .title-block .subtitle{font-family:Georgia,serif;font-style:italic;color:#26323d;font-size:19px;margin:0 0 14px}
+    .title-block .byline{font-family:Helvetica,Arial,sans-serif;font-size:14px;color:var(--bnc-charcoal)}
+    .toc{list-style:none;margin:14px 0 0;padding:0}
+    .toc li{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid var(--bnc-rule);
+      font-family:Helvetica,Arial,sans-serif;font-size:15px}
+    .toc li .num{color:var(--bnc-warm-amber);font-weight:700;min-width:34px}
+    .toc li a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+    .toc li a:hover{text-decoration:underline}
+    .toc li.section{border-bottom:0;margin-top:18px;text-transform:uppercase;letter-spacing:1px;
+      font-size:12px;color:var(--bnc-deep-navy);font-weight:700}
+    .president-note{font-size:13.5px;line-height:1.6;color:#3a4a57;background:#f7fbff;border-left:3px solid #0078B6;border-radius:0 4px 4px 0;padding:14px 18px;margin:22px 0;font-family:Georgia,serif}
+    .president-note h2,.president-note h3{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 8px;border:none;padding:0;font-family:Helvetica,Arial,sans-serif;font-weight:700}
+    .president-note p{margin:8px 0}
+    .president-note .sig{margin-top:12px;font-style:italic;color:#5b6b78}
+  </style>
+  <link rel="stylesheet" href="front-matter.css">
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="bnc-top-banner" id="top">
+  <span class="bnc-mark" aria-hidden="true">
+    <svg viewBox="0 0 120 96" width="50" height="30" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="miter"><circle cx="48" cy="48" r="38"/><path d="M4 52 H36 V30 H60 V52 H116" stroke-linecap="square"/></svg>
+  </span>
+  <span class="bnc-wm">Berkeley Nucleonics<small>Corporation</small></span>
+</div>
+
+<div class="fm-titleblock">
+  <p class="fm-series">The Nuts and Bolts of</p>
+  <h1 class="fm-title" id="front-matter">Radar Systems</h1>
+  <p class="fm-byline">by <strong>David A. Brown</strong> and the Berkeley Nucleonics team</p>
+  <p class="fm-org">Berkeley Nucleonics Corporation</p>
+  <p class="fm-edition">First Edition &middot; 2026</p>
+</div>
+
+<p class="lead">This handbook walks through radar from the ground up: the history, the core principles and timing, the equations and losses that set performance, the frequency bands and radar types, real-world applications, antennas, and the transmitter technologies that generate the power. Use the contents below to jump to any chapter. A short interactive quiz closes most chapters, and a reader-path quiz will point you to the right starting place.</p>
+
+<section class="president-note" id="message-from-the-president">
+  <h2>A Message from the President</h2>
+  <p>Radar is one of the most consequential technologies ever built, yet most of the literature either stays at a surface level or dives straight into graduate-level signal processing. Working engineers need something in the middle: a clear treatment that starts from first principles, builds through the math that actually governs performance, and arrives at the transmitter hardware that makes it all happen. That is what this book is.</p>
+  <p>At Berkeley Nucleonics we spend a lot of time thinking about the signal sources, pulse generators, and power electronics that sit at the heart of radar transmitters. Watching solid-state and vacuum-tube technologies converge, seeing phased arrays move from defense labs into commercial platforms, tracking what modern test instrumentation can now resolve in the time domain, it is a genuinely exciting moment to be working in this space. We hope this book reflects that energy and gives you a foundation worth building on.</p>
+  <p class="sig">David Brown<br>President, Berkeley Nucleonics Corporation</p>
+</section>
+
+<section class="how-to-read">
+<h2 id="how-to-read-this-book">How to Read This Book</h2>
+<p>The book runs in three layers. <strong>Chapters 1 to 3</strong> lay the foundation: a historical overview of why radar developed as it did, the fundamental principles of pulse transmission and echo detection, and the timing that sets range, resolution, and duty cycle. New to radar? Start here and read straight through. Already have a background? Skim Chapter 2 to lock in the vocabulary the rest of the book uses.</p>
+<p><strong>Chapters 4 to 8</strong> are the analytical core. Chapters 4 and 5 work through the radar range equation and the loss budget that erodes it. Chapter 6 maps the frequency bands and their tradeoffs. Chapter 7 surveys the major radar types, from CW and FMCW through pulse-Doppler and synthetic-aperture systems. Chapter 8 ties those types to real applications. Experienced readers can treat this group as a reference and jump to the chapter that matches the problem on the bench.</p>
+<p><strong>Chapters 9 to 12</strong> turn to hardware. Chapter 9 covers antenna types and the beam-forming that sets coverage and resolution. Chapters 10 through 12 go deep on transmitters: solid-state and tube-based power amplifiers, velocity-modulated tubes such as klystrons and TWTs, and magnetrons. Chapter 13 closes with where the field is heading. The two appendices, a supplementary glossary and a full glossary, are a lookup layer you can reach from any chapter.</p>
+</section>
+
+<div class="bnc-fineprint">
+<h2>Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved. No part of this book may be reproduced or transmitted in any form without prior written permission, except brief quotations in reviews. The Nuts and Bolts of Radar Systems, First Edition, 2026. Published by Berkeley Nucleonics Corporation, San Rafael, California. BNC and the Berkeley Nucleonics logo are trademarks of Berkeley Nucleonics Corporation; specifications are subject to change, consult the current datasheet for authoritative figures.</p>
+</div>
+
+<h2 id="contents">Contents</h2>
+<ul class="toc">
+  <li><span class="num">&middot;</span><a href="00-front-matter.html#top">Front Matter</a></li>
+  <li style="padding-left:22px"><span class="num">&middot;</span><a href="00-front-matter.html#message-from-the-president">A Message from the President</a></li>
+  <li style="padding-left:22px"><span class="num">&middot;</span><a href="00-front-matter.html#how-to-read-this-book">How to Read This Book</a></li>
+  <li class="section">Chapters</li>
+  <li><span class="num">1</span><a href="01-historical-overview.html">Historical Overview</a></li>
+  <li><span class="num">2</span><a href="02-fundamental-radar-principles.html">Fundamental Radar Principles</a></li>
+  <li><span class="num">3</span><a href="03-radar-timing-performance.html">Radar Timing Performance</a></li>
+  <li><span class="num">4</span><a href="04-radar-equations.html">Radar Equations</a></li>
+  <li><span class="num">5</span><a href="05-radar-loss.html">Radar Loss</a></li>
+  <li><span class="num">6</span><a href="06-radar-frequency-bands.html">Radar Frequency Bands</a></li>
+  <li><span class="num">7</span><a href="07-types-of-radar.html">Types of Radar</a></li>
+  <li><span class="num">8</span><a href="08-radar-applications.html">Radar Applications</a></li>
+  <li><span class="num">9</span><a href="09-antenna-types.html">Antenna Types</a></li>
+  <li><span class="num">10</span><a href="10-radar-transmitters.html">Radar Transmitters</a></li>
+  <li><span class="num">11</span><a href="11-velocity-modulated-tubes.html">Velocity-Modulated Tubes</a></li>
+  <li><span class="num">12</span><a href="12-magnetrons.html">Magnetrons</a></li>
+  <li><span class="num">13</span><a href="13-concluding-remarks.html">Concluding Remarks</a></li>
+
+  <li class="section">Reference</li>
+  <li><span class="num">A</span><a href="appendix-A-supplementary.html">Appendix A: Supplementary Glossary</a></li>
+  <li><span class="num">G</span><a href="appendix-G-glossary.html">Appendix G: Glossary</a></li>
+  <li><span class="num">&middot;</span><a href="about-the-authors.html">About the Authors</a></li>
+</ul>
+
+<div class="quiz-cta">
+  <p><strong>Not sure where to start?</strong> A short reader-path quiz will give you a personalized roadmap through the book and a free print copy if you want one.</p>
+  <p><a class="btn" href="../web/reader-quiz.html">Find your reading path &rarr;</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev disabled" href="#">&larr; Front Matter</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="01-historical-overview.html">1. Historical Overview &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 8 - Direction Finding, Geolocation, and Distributed Sensing</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 8</div>
+<h1>Direction Finding, Geolocation, and Distributed Sensing</h1>
+
+<blockquote>Spectrum tells you what was transmitted. Direction finding tells you where it came from. Geolocation tells you exactly who. Each step adds a dimension that changes what you can do with the data.</blockquote>
+
+<h2>8.1 Direction Finding Fundamentals</h2>
+
+<p>Direction finding (DF) is the art of measuring where a radio signal came from. It is older than radio itself in concept (lighthouses use the same trick) and has been engineered into modern hardware in four major flavors.</p>
+
+<p><strong>Amplitude DF</strong> is the simplest. Use a directional antenna, rotate it, and find the angle at which the received signal is strongest. Slow, ambiguous, and limited in accuracy, but it works for the basics.</p>
+
+<p><strong>Phase DF (interferometry)</strong> compares the phase of a signal arriving at two antennas separated by a known distance. The phase difference encodes the angle of arrival via simple geometry:</p>
+
+<div class="math-display">$$\Delta\phi = \frac{2\pi d \sin\theta}{\lambda}$$</div>
+
+<p>where $d$ is the antenna spacing, $\theta$ is the angle of arrival, $\lambda$ is the wavelength, and $\Delta\phi$ is the measured phase difference. Phase DF is fast (one capture, no rotation), accurate (sub-degree with multi-element arrays), and unambiguous over a range that depends on antenna spacing. The challenge is phase calibration: cable lengths, RF connectors, and front-end electronics all introduce phase shifts that vary with temperature and frequency.</p>
+
+<p><strong>Time-difference-of-arrival (TDOA)</strong> uses multiple receivers spaced apart, each with a synchronized clock. Measure the time at which the same signal arrives at each receiver. The differences in arrival time, combined with known receiver positions, give a hyperbolic constraint on the source position. Three or more receivers triangulate to a point. TDOA is the workhorse of large-scale geolocation. It scales to city-sized deployments. Its accuracy depends on clock synchronization (typically GPS-disciplined oscillators give tens of nanoseconds) and on signal bandwidth (wider signals give better timing resolution).</p>
+
+<p><strong>Angle-of-arrival (AOA) with arrays</strong> combines phase DF and amplitude DF in multi-element antenna arrays. With many elements (16, 32, 64), the array can form multiple narrow beams simultaneously, each pointing in a different direction. With element-level phase information, the array can reach sub-degree accuracy. This is the architecture used by the Aaronia IsoLOG 3D DF system.</p>
+
+<h2>8.2 IsoLOG 3D DF Array Architecture</h2>
+
+<p>The IsoLOG 3D DF antenna family is Aaronia's flagship direction-finding hardware.</p>
+
+<p><strong>Sectored design.</strong> Rather than a single rotating antenna or a fully active array, IsoLOG 3D DF uses 16 sectors, each containing 2 antennas (32 antennas total in flagship configurations). Each sector covers approximately 22.5 degrees of azimuth. The advantage is robustness: a failure in one sector affects only that 22.5-degree slice, not the whole system.</p>
+
+<p><strong>Frequency coverage.</strong> 400 MHz to 40 GHz across the family. This single span covers every cellular allocation, every Wi-Fi band, every commercial drone control link, every consumer ISM band, and most defense and EW bands of interest.</p>
+
+<p><strong>Bearing speed.</strong> 8 microseconds per sector bearing. Across all 16 sectors, a complete azimuth scan is on the order of 130 microseconds. For frequency-hopping signals, this matters: a drone hopping every 10 ms has 10,000 microseconds of dwell time at each frequency. The IsoLOG resolves bearing in less than 1 percent of that time, so every hop produces a fresh bearing without ambiguity.</p>
+
+<p><strong>Tracking accuracy.</strong> 1 to 3 degrees angular accuracy across the operating range, dropping to 1 degree when paired with SPECTRAN V6 PLUS RTSAs. At a target range of 1 km, 1 degree corresponds to 17 meters of position uncertainty. Combined with elevation and cross-bearings from a second site, this drops to a few meters in practice.</p>
+
+<p><strong>Integration.</strong> Ethernet plus power. That is it. The radome is watertight, shock-resistant, and heat-resistant, so installation is "bolt to a mast and run two cables."</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-08-01-isolog-3d-df-array.svg" style="width:100%;">Figure 8-1</object>
+  <figcaption>Figure 8-1. The IsoLOG 3D DF array: 16 sectors of 22.5 degrees azimuth each, with two antennas per sector (32 total) stacked at different elevations. The geometry produces both azimuth and elevation in a single capture, with elevation distinguishing airborne emitters from the dense ground RF noise.</figcaption>
+</figure>
+
+<h2>8.3 Real-Time 3D Bearing with Elevation</h2>
+
+<p>The "3D" in IsoLOG 3D DF means it measures both azimuth (compass direction) and elevation (angle above the horizon). This is the feature that distinguishes it from older 2D-only DF antennas.</p>
+
+<p><strong>Why elevation matters.</strong> A signal arriving at 1 degree above the horizon is probably a distant ground emitter. A signal arriving at 30 degrees is probably a drone or aircraft. A signal at 80 degrees is probably directly overhead, perhaps a satellite or a balloon. Without elevation, every signal looks like it is at horizon level. With elevation, the analyst sees the threat picture as it actually exists in three dimensions.</p>
+
+<p><strong>How the array measures elevation.</strong> The two antennas in each sector are stacked vertically and tilted at different elevation angles. The relative amplitudes and phases across the pair encode the arrival elevation, similar to how azimuth is encoded across sectors.</p>
+
+<p><strong>Counter-UAS at airports.</strong> The killer application for 3D DF is drone detection at airports. Ground-based RF signals (cellular, Wi-Fi, taxi radios, ground service vehicles) are everywhere. They arrive at low elevation. Drones, by definition, fly. They arrive at elevation greater than zero. A 3D DF system can immediately filter out the entire ground RF noise floor and focus on airborne emitters.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: the math behind the bearing</h3>
+<p>The IsoLOG 3D DF system delivers bearing accuracy of less than 1 degree when paired with SPECTRAN V6 PLUS analyzers. Combined with the 8 microsecond per-sector tracking speed, this produces effectively real-time 3D direction finding suitable for tracking moving targets at high update rates. RTSA Suite PRO renders the bearings on a 3D map view that includes topography, building models, and RF propagation simulation, so the analyst sees exactly where the emitter is located in geographic terms.</p>
+</div>
+
+<h2>8.4 Cross-Bearings, Mobile Trucks, and GPS Position Solving</h2>
+
+<p>A single DF site gives a bearing, which is a line in space. Two or more sites give intersecting lines, which converge to a point. This is geolocation by triangulation.</p>
+
+<p><strong>Two-site cross-bearing.</strong> Two IsoLOG 3D DF sites at known positions each measure a bearing to the same emitter. The emitter sits at the intersection of the two lines. Position accuracy depends on bearing accuracy and the geometry. Two sites that are far apart produce more accurate intersections than two sites that are close together. A "good" cross-bearing geometry has the two sites spaced at roughly the range to the target, giving 90-degree intersection angles.</p>
+
+<p><strong>Three or more sites.</strong> Adding a third site provides a redundant cross-check and dramatically improves accuracy. With three or more bearings, a least-squares solver finds the position that minimizes the residual error across all bearings.</p>
+
+<p><strong>Mobile DF trucks.</strong> A radio direction-finding truck is a vehicle equipped with an IsoLOG 3D DF antenna and a SPECTRAN V6 PLUS, plus a GPS receiver and a network link. As the truck drives around, it produces a sequence of timestamped bearings from different positions. These bearings combine to triangulate a stationary emitter, or to track a moving emitter. This is the classic counter-spectrum-pirate workflow.</p>
+
+<p><strong>GPS position solving for the emitter.</strong> When the IsoLOG 3D DF measures a bearing to an emitter, and the truck's GPS knows where the truck is, the system can solve for the emitter's GPS coordinates directly. Output is decimal degrees latitude/longitude/altitude, plotted on any map system. RTSA Suite PRO supports this end-to-end.</p>
+
+<h2>8.5 Distributed RTSA Sensor Grids</h2>
+
+<p>The natural extension of multi-site DF is a distributed sensor grid. Place SPECTRAN V6 PLUS units at fixed locations throughout an area of interest, network them together, and operate them as one virtual instrument.</p>
+
+<p><strong>Grid architectures.</strong> Three common topologies: <em>star</em> (many sensors, one central server that aggregates data and computes positions), <em>hierarchical</em> (sensors → regional aggregators → central; scales to thousands of sensors), and <em>peer-to-peer</em> (sensors share data with neighbors and compute positions collaboratively; robust against single-point failures). For most deployments, the star topology is simplest and adequate.</p>
+
+<p><strong>Time synchronization.</strong> For TDOA-based geolocation across a grid, the sensors need clock sync to nanoseconds. GPS-disciplined oscillators (GPSDO) give roughly 10 to 30 nanoseconds of synchronization, which translates to 3 to 10 meters of position accuracy. Higher-precision deployments use Precision Time Protocol (PTP) over Ethernet for picosecond-class sync.</p>
+
+<p><strong>Coverage planning.</strong> Sensor placement determines what the grid can see. Sensors on tall structures see further (line-of-sight propagation). Sensors should be placed in geometric variety so that any position in the coverage area has good cross-bearing geometry. Sensitive bands (drone control, jammer frequencies) should have sensor density high enough that no spot in the coverage area is more than a few kilometers from the nearest sensor.</p>
+
+<p><strong>Use cases.</strong> Distributed grids appear at airports, prisons, military installations, large industrial campuses, broadcasting protection zones, and major urban centers. The cost scales with sensor count, so grid size is set by the value of the protected area, not by technology limits.</p>
+
+<h2>8.6 Integration Patterns</h2>
+
+<p>How does an IsoLOG 3D DF and SPECTRAN V6 PLUS deployment fit into a larger system? Three integration patterns dominate.</p>
+
+<p><strong>Ethernet and power.</strong> The simplest. The hardware connects via Ethernet to a switch and to a power source. Software runs on a host computer (Windows, Linux, or macOS, all supported). Configuration is via web interface or RTSA Suite PRO. This is the right choice for fixed installations.</p>
+
+<p><strong>Map overlays.</strong> The bearings and positions need to land on a geographic map. Common formats: <em>KML / KMZ</em> for Google Earth and other GIS tools, <em>GeoJSON</em> for web-based maps (Leaflet, Mapbox, OpenStreetMap), <em>NMEA 0183</em> for legacy navigation systems, <em>MQTT</em> for streaming position updates to dashboards and IoT platforms. RTSA Suite PRO writes all of these.</p>
+
+<p><strong>Higher-level integration.</strong> Counter-UAS, EW, and spectrum monitoring systems often consume IsoLOG/SPECTRAN data as one input among many. A complete drone detection system might combine RF DF with optical cameras, radar tracking, acoustic sensors, and a command-and-control GUI. The RTSA Suite PRO data feeds the C2 system over MQTT or REST APIs, and the C2 system fuses inputs to make decisions. This is the modern pattern: best-of-breed sensors at the edge, data fusion at the center, presentation and decision at the top.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>Direction finding measures angle of arrival; geolocation determines a 3D position. Each adds a dimension to spectrum data.</li>
+  <li>The four main DF families are amplitude (rotate-and-find-peak), phase interferometry (compare phase across spaced antennas), time-difference-of-arrival (multi-site clock-synchronized), and array AOA (multi-element with beamforming).</li>
+  <li>Aaronia IsoLOG 3D DF uses a 16-sector, 32-antenna sectored array covering 400 MHz to 40 GHz with 8 microsecond per-sector bearing speed and 1 to 3 degree angular accuracy (1 degree paired with SPECTRAN V6 PLUS).</li>
+  <li>3D bearing includes elevation, distinguishing airborne from ground emitters and dramatically improving counter-UAS performance.</li>
+  <li>Cross-bearings from two or more sites triangulate to an emitter position. Mobile DF trucks add bearings from moving positions for tracking pirates and unauthorized transmitters.</li>
+  <li>Distributed RTSA sensor grids extend DF to city-scale deployments with star, hierarchical, or peer-to-peer topologies.</li>
+  <li>Time synchronization for TDOA grids uses GPSDO (tens of nanoseconds) or PTP (picoseconds) depending on accuracy requirements.</li>
+  <li>Integration patterns include Ethernet+power for the hardware, KML/GeoJSON/NMEA/MQTT for data export, and REST/MQTT APIs for higher-level C2 systems.</li>
+</ul>
+</div>
+
+<div class="quiz">
+<h3>End-of-Chapter Quiz</h3>
+<ol>
+<li>Which DF method uses phase differences across spaced antennas?
+  <p>A. Amplitude DF</p><p>B. Phase interferometry</p><p>C. TDOA only</p><p>D. Frequency hopping</p>
+</li>
+<li>The Aaronia IsoLOG 3D DF antenna covers:
+  <p>A. 100 MHz to 1 GHz</p><p>B. 400 MHz to 40 GHz</p><p>C. 1 GHz to 6 GHz</p><p>D. mmWave only</p>
+</li>
+<li>The flagship IsoLOG 3D DF has how many sectors and antennas?
+  <p>A. 8 sectors, 16 antennas</p><p>B. 12 sectors, 24 antennas</p><p>C. 16 sectors, 32 antennas</p><p>D. 24 sectors, 48 antennas</p>
+</li>
+<li>The angular accuracy of the IsoLOG 3D DF when paired with SPECTRAN V6 PLUS is approximately:
+  <p>A. 10 degrees</p><p>B. 5 degrees</p><p>C. 1 degree</p><p>D. 0.01 degree</p>
+</li>
+<li>Why does 3D direction finding (with elevation) improve counter-UAS performance?
+  <p>A. Drones produce different colors on the waterfall.</p><p>B. Elevation distinguishes airborne emitters from ground RF noise.</p><p>C. Elevation lowers the noise figure.</p><p>D. It does not.</p>
+</li>
+<li>Two-site cross-bearing geometry is most accurate when:
+  <p>A. The two sites are very close together.</p><p>B. The two sites are spaced at roughly the range to the target, with bearings near 90 degrees.</p><p>C. The bearing angles are nearly parallel.</p><p>D. The target is very far away.</p>
+</li>
+<li>TDOA geolocation requires synchronized clocks. GPS-disciplined oscillators provide approximately:
+  <p>A. 1 millisecond</p><p>B. 1 microsecond</p><p>C. 10 to 30 nanoseconds</p><p>D. 1 femtosecond</p>
+</li>
+<li>A typical RTSA Suite PRO map overlay format for Google Earth integration is:
+  <p>A. CSV</p><p>B. KML / KMZ</p><p>C. SQL</p><p>D. PDF</p>
+</li>
+<li>The integration interface for an IsoLOG 3D DF antenna is:
+  <p>A. Ethernet plus power only</p><p>B. USB and HDMI</p><p>C. Coaxial cable to each sector individually</p><p>D. Wireless link to a base station</p>
+</li>
+<li>The mobile DF truck workflow is classically used for:
+  <p>A. Building Wi-Fi networks</p><p>B. Tracking pirate radio stations and unauthorized transmitters</p><p>C. Repairing cellular towers</p><p>D. Programming radios</p>
+</li>
+</ol>
+<p style="margin-top:16px; font-style:italic; color:var(--bnc-deep-plum);">Answer key in Appendix E.</p>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 9 covers calibration, accuracy, and measurement uncertainty. Amplitude and frequency accuracy, reference oscillators, phase noise, dynamic range (SFDR, IIP3, noise floor), measurement uncertainty budgets, and SPECTRAN V6 PLUS calibration workflows. By the end of Chapter 9, you'll be able to defend any RTSA measurement with a quantitative uncertainty number, which is what serious metrology actually requires.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-07.html">&larr; Ch 7. Pulse, Radar, and EW</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-09.html">Ch 9. Calibration and Accuracy &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

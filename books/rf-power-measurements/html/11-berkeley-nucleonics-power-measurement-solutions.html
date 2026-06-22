@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 11: Berkeley Nucleonics Power Measurement Solutions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-11-berkeley-nucleonics-power-measurement-solutions">Chapter 11: Berkeley Nucleonics Power Measurement Solutions</h2>
+<figure>
+<img src="../figures/chapter-11-opener.svg" alt="" /><figcaption>Chapter 11 — Berkeley Nucleonics Solutions</figcaption>
+</figure>
+<p>Berkeley Nucleonics has been building precision electronic instrumentation since 1963. We started in pulse generation for nuclear research, expanded into RF and microwave, and have spent the last decade building a USB power sensor line that we think stands at the top of the industry. This chapter is the closest thing to a product tour you will find in a reference book, and we make no apologies for it. If you are reading this, you are probably trying to pick a sensor. Here is what we would pick, and why.</p>
+<h3 id="a-word-on-our-design-philosophy">11.1 A Word on Our Design Philosophy</h3>
+<p>We believe a power sensor should have three properties.</p>
+<p><strong>It should be fast to set up.</strong> A sensor that needs to be zeroed, reference-checked, and warmed up before every measurement steals an hour from every working day. Our sensors use a thermally stabilized, two-path square-law diode architecture that requires no zeroing and no pre-use calibration. Plug it in. Measure. Move on.</p>
+<p><strong>It should be honest about what it measures.</strong> Specifications should hold across real signals, not just the one sine wave that looks best in the marketing brochure. Our dynamic range, video bandwidth, and rise time numbers are all tested against representative modulated signals, and the test conditions are on every datasheet.</p>
+<p><strong>It should be boring to integrate.</strong> The best sensor in the world is useless if it fights your test framework. Every Berkeley Nucleonics sensor supports USB 2.0 with standard USBTMC, standard SCPI commands, free PowerEye software for interactive use, and optional SPI or I²C for embedded applications. Linux works. Python works. LabVIEW works. Your ATE rack will not notice the sensor is there, which is exactly the point.</p>
+<p>Now to the hardware.</p>
+<figure>
+<img src="../figures/orig-image226.png" alt="Berkeley Nucleonics Model 12200 Series USB peak power sensor" /><figcaption><span class="fig-num">Figure 11.1</span> Berkeley Nucleonics Model 12200 Series USB peak power sensor, with Type-N RF input.</figcaption>
+</figure>
+<h3 id="model-12100-series-usb-average-power-sensors">11.2 Model 12100 Series USB Average Power Sensors</h3>
+<p><em>True-RMS USB average power sensors with no zeroing and no calibration before use.</em></p>
+<p>The Model 12100 series is the heart of the Berkeley Nucleonics power measurement product line. It is the sensor we recommend for the overwhelming majority of RF and microwave power measurements you are likely to encounter, from 9 kHz to 67 GHz, in any modulation format the wireless and radar industries care about. We designed the 12100 around a simple observation: most engineers making power measurements do not need the time-domain envelope trace. They need the <em>number</em>, accurate, fast, and without procedural headaches.</p>
+<p>The 12100 delivers exactly that. Plug it in. Read the number. Move on.</p>
+<figure>
+<img src="../figures/orig-image227.png" alt="Berkeley Nucleonics Model 12100 series True-RMS USB power sensor" /><figcaption><span class="fig-num">Figure 11.2</span> Berkeley Nucleonics Model 12100 series True-RMS USB power sensor.</figcaption>
+</figure>
+<p><strong>Architecture.</strong> Each 12100 sensor uses a thermally stabilized, two-path square-law diode detection scheme. Two parallel diode paths cover different power ranges, and the sensor's internal microcontroller stitches them together to deliver a single true-RMS reading across more than 80 dB of dynamic range. Thermal compensation runs continuously, which is why the sensor never needs zeroing and never needs a reference calibration before use. You can connect a 12100 to a live signal and have an accurate reading in milliseconds.</p>
+<p><strong>Headline specifications.</strong></p>
+<figure>
+<img src="../figures/orig-image228.png" alt="Berkeley Nucleonics Model 12000 RF power meter benchtop instrument" /><figcaption><span class="fig-num">Figure 11.3</span> Berkeley Nucleonics Model 12000 RF power meter, the benchtop platform with multi-channel inputs and color display.</figcaption>
+</figure>
+<ul>
+<li><strong>Frequency range:</strong> 9 kHz to 67 GHz (model dependent)</li>
+<li><strong>Dynamic range:</strong> -60 dBm to +26 dBm (86 dB total) on most variants</li>
+<li><strong>Modulation response:</strong> true-RMS on any signal, including CW, AM, FM, QAM, OFDM, multi-tone, 802.11ac / ax / be, LTE, LTE-Advanced, 5G NR, CDMA2000, IS-95, TDMA, and pulsed waveforms</li>
+<li><strong>No zeroing required.</strong> No reference calibration required before use.</li>
+<li><strong>Measurement speed:</strong> up to 2,000 true-RMS readings per second</li>
+<li><strong>Data logging:</strong> tens of millions of timestamped readings in internal memory</li>
+<li><strong>Real-time clock:</strong> built in, with battery backup, for autonomous operation</li>
+<li><strong>Triggering:</strong> internal, external TTL, time-gated, with programmable gate width and offset</li>
+<li><strong>Unattended Operation Mode (UOP):</strong> sensor logs measurements stand-alone without a connected host</li>
+<li><strong>Interface:</strong> USB 2.0 (USBTMC and USB HID), with optional SPI, I²C, and LAN</li>
+<li><strong>OS support:</strong> Windows, Linux, macOS, with native Python, MATLAB, LabVIEW, and C/C++ drivers</li>
+<li><strong>Connector:</strong> Type-N up to 18 GHz, 3.5 mm to 26.5 GHz, 2.92 mm to 40 GHz, 1.85 mm above 40 GHz</li>
+</ul>
+<p><strong>The "no zeroing" story, told properly.</strong> Traditional power sensors need to be disconnected from the signal, zeroed against an internal reference (sometimes for a minute or more), and reconnected before each session. This costs time, introduces uncertainty, and forces automated test stations to add coaxial switches that can run thousands of dollars per station. The 12100's two-path thermally stabilized diode architecture eliminates the procedure entirely. The sensor knows its own zero, knows its own reference, and knows its own temperature, all in real time. In an automated test environment, this single design choice removes the switching subsystem and recovers tens of seconds per measurement.</p>
+<p><strong>True-RMS on anything.</strong> Most diode sensors are honest in their square-law region and dishonest above it. The 12100's two-path architecture keeps both paths in their accurate operating regions across the full dynamic range, which is why the sensor delivers true-RMS readings on any modulation, regardless of crest factor. A 12 dB peak-to-average OFDM signal reads the same true average as a CW signal of equal mean power. So does a TDMA burst. So does a chirp. So does a noisy environmental signal. This matters: it is the property that lets you trust a single measurement on any waveform you encounter.</p>
+<p><strong>Time-gated triggering.</strong> The 12100 supports gated measurements relative to an internal or external trigger edge. Set a gate offset, set a gate width, and the sensor reports the true average power within that time window. This is how you measure the average power of a single LTE slot, a TDMA burst, a radar inter-pulse interval, or a specific portion of a switching transient. You get a clean, true-RMS number for exactly the part of the signal you care about, without needing a full pulse-profiling sensor.</p>
+<p><strong>Buffered sweep mode.</strong> For automated test applications, the 12100 can be armed in buffered mode to capture a sequence of triggered measurements into internal memory, then return them all in a single bulk transfer. Sweeping a signal generator across 1,000 frequencies and reading the power at each one takes milliseconds rather than seconds.</p>
+<p><strong>Linux, by design.</strong> Every 12100 ships with native Linux support. The sensor presents as a USBTMC and USB HID device, drivers are open and documented, and our Python and C/C++ libraries are tested on Ubuntu, Debian, and CentOS. Production engineers running headless test controllers love this. So do field service teams using Raspberry Pis as portable measurement platforms.</p>
+<p><strong>Embedded integration.</strong> The 12100 series offers optional SPI and I²C interfaces alongside the standard USB. With these options, the sensor becomes a drop-in amplitude reference inside an embedded product, with no need for an intermediate USB host. UOP mode lets the sensor accumulate readings autonomously and download them later. This combination is rare in the industry and has made the 12100 the sensor of choice for OEM applications in test instruments, satellite ground stations, and unattended remote monitoring.</p>
+<p><strong>Ideal applications</strong> include signal generator calibration, transmitter power monitoring, base-station EVM and ACLR support measurements, satellite uplink and downlink power verification, regulatory compliance testing, EMC pre-compliance and final compliance, production-line transmit-power verification, antenna gain and pattern measurement, network-element installation and maintenance, military and aerospace radio acceptance testing, medical RF transmitter qualification, broadcast transmitter monitoring, and any embedded amplitude reference where size, integration, and traceability all matter.</p>
+<blockquote>
+<p><strong>The practical win.</strong> Engineers who switch to the 12100 series routinely tell us that they reclaim 15 to 30 minutes per day that used to disappear into zeroing and referencing. Across a year, that is more than a full work-week of recovered engineering time per person. Across a production line of twenty stations, it is the difference between making and missing a quarterly throughput target.</p>
+</blockquote>
+<h3 id="the-12100-variants-at-a-glance">11.3 The 12100 Variants at a Glance</h3>
+<p>The 12100 series ships as a family of frequency-rated variants. All variants share the same architecture, the same accuracy, the same software, the same SCPI command set, and the same embedded options. They differ only in their frequency range and connector. Pick the variant whose top frequency comfortably covers your application, and you are done.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Variant</th>
+<th>Frequency Range</th>
+<th>Top Power</th>
+<th>Bottom Power</th>
+<th>Typical Connector</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>12100-6</td>
+<td>9 kHz to 6 GHz</td>
+<td>+26 dBm</td>
+<td>-60 dBm</td>
+<td>Type-N</td>
+</tr>
+<tr class="even">
+<td>12100-12</td>
+<td>9 kHz to 12.5 GHz</td>
+<td>+26 dBm</td>
+<td>-60 dBm</td>
+<td>Type-N</td>
+</tr>
+<tr class="odd">
+<td>12100-18</td>
+<td>9 kHz to 18 GHz</td>
+<td>+26 dBm</td>
+<td>-60 dBm</td>
+<td>Type-N</td>
+</tr>
+<tr class="even">
+<td>12100-26</td>
+<td>9 kHz to 26.5 GHz</td>
+<td>+26 dBm</td>
+<td>-60 dBm</td>
+<td>3.5 mm</td>
+</tr>
+<tr class="odd">
+<td>12100-40</td>
+<td>9 kHz to 40 GHz</td>
+<td>+26 dBm</td>
+<td>-55 dBm</td>
+<td>2.92 mm</td>
+</tr>
+<tr class="even">
+<td>12100-50</td>
+<td>9 kHz to 50 GHz</td>
+<td>+20 dBm</td>
+<td>-50 dBm</td>
+<td>2.4 mm</td>
+</tr>
+<tr class="odd">
+<td>12100-67</td>
+<td>9 kHz to 67 GHz</td>
+<td>+20 dBm</td>
+<td>-45 dBm</td>
+<td>1.85 mm</td>
+</tr>
+</tbody>
+</table>
+<p>All variants are factory multipoint-calibrated, NIST-traceable, and ship with frequency-response correction loaded into nonvolatile memory. Recertification is recommended every 12 months and is available with a two-week turnaround through any Berkeley Nucleonics service center.</p>
+<p><strong>Common features across the variants:</strong></p>
+<ul>
+<li>True-RMS measurement on any modulation</li>
+<li>86 dB dynamic range (slightly reduced on the 50 and 67 GHz models due to connector and detector physics)</li>
+<li>2,000 readings per second</li>
+<li>Time-gated triggering</li>
+<li>Buffered sweep mode</li>
+<li>Internal real-time clock and unattended-operation mode</li>
+<li>USB 2.0, with optional SPI, I²C, and LAN</li>
+<li>Linux, Windows, and macOS support</li>
+<li>PowerEye software included</li>
+<li>Three-year standard warranty</li>
+</ul>
+<h3 id="application-case-studies">11.4 Application Case Studies</h3>
+<p>Six real problems, six real 12100 selections, and the reasoning behind each.</p>
+<p><strong>Case Study 1: 5G NR Base Station Power Amplifier Average Power Characterization</strong></p>
+<p><em>Problem.</em> A small-cell 5G NR base station manufacturer needs to verify mean output power across the 3.5 GHz n78 band on every shipped unit, against a calibrated reference. Measurements must be reproducible in production and repeatable in the field, and they must complete in under 5 seconds per band point.</p>
+<p><em>Solution.</em> A Model 12100-6 sensor at the amplifier output, controlled over USB by the production test controller. Time-gated triggering captures the true-RMS power inside a defined slot of the 5G frame; PowerEye scripting automates the band sweep and logs results to the QC database. Time to full characterization per unit: 2.5 seconds.</p>
+<p><em>Why it works.</em> The 12100's true-RMS architecture delivers an honest mean-power reading on a 100 MHz 5G NR channel without crest-factor errors. The same SCPI script runs in the lab and on the production line, so the lab and the line agree to better than 0.1 dB.</p>
+<p><strong>Case Study 2: Pulsed Radar Average Power and Duty-Cycle Verification</strong></p>
+<p><em>Problem.</em> A radar transmitter manufacturer needs to verify that the time-averaged output power and duty cycle of every shipped unit match the specification, with traceable accuracy. Pulse-shape parameters are verified separately on a development bench; the production line cares about average power and stability over a thousand-pulse window.</p>
+<p><em>Solution.</em> A Model 12100-26 sensor at the radar output, time-gated from the radar's transmit-gate signal to integrate true-RMS power over the active pulse window. PowerEye averages 1,000 gated readings per unit and produces a single pass/fail value plus a duty-cycle figure. Test time: 3 seconds per unit.</p>
+<p><em>Why it works.</em> Time-gated triggering on the 12100 is exactly the right tool for "what is the average power of the active pulse, ignoring the off-time?" The sensor thermal stability holds calibration across the long production day, so consecutive units measure consistently without intervention.</p>
+<p><strong>Case Study 3: EMC Compliance Testing</strong></p>
+<p><em>Problem.</em> An EMC test lab needs to verify that the immunity test signal applied to devices under test holds its specified amplitude over the full two-hour test sweep. Drift of more than 0.5 dB triggers a retest.</p>
+<p><em>Solution.</em> A Model 12100-26 sensor permanently installed at the output of the immunity source, reading every 10 seconds and logging to the lab's QC database. Time-gated measurements confirm amplitude during each step of the sweep. Built-in real-time clock timestamps every reading.</p>
+<p><em>Why it works.</em> The 12100's long-term stability and its built-in clock give the lab a continuous, auditable record. No zeroing interruptions. No thermal drift. The same sensor doubles as a calibration check at the start of every test session.</p>
+<p><strong>Case Study 4: High-Volume Manufacturing Test</strong></p>
+<p><em>Problem.</em> A wireless module manufacturer runs 20,000 modules per day through a production line. Each module needs a transmit-power verification at four frequencies and three power levels. The entire measurement must complete in under 500 ms per module.</p>
+<p><em>Solution.</em> A Model 12100-18 sensor on each test station, integrated over the station's local Ethernet LAN to a central test controller. Hardware triggering, buffered sweep mode, and zero setup time between readings. Per-module test time: 180 ms.</p>
+<p><em>Why it works.</em> No zeroing, no calibration between measurements, and buffered-sweep support deliver the throughput the production line needs. The small form factor means the sensor fits in cramped fixturing. Linux support means the test controller can run whichever distribution the plant standardized on.</p>
+<p><strong>Case Study 5: Satellite Uplink Monitoring</strong></p>
+<p><em>Problem.</em> A satellite operator must monitor the transmitted power of every uplink amplifier to hold signal strength within a 0.2 dB tolerance across a day-night temperature swing.</p>
+<p><em>Solution.</em> A Model 12100-40 sensor at the output of each amplifier, reading into a monitoring system every second. Automatic alerts on deviations. Real-time clock timestamps every reading. UOP mode keeps the sensor logging if the host monitoring system goes offline for service.</p>
+<p><em>Why it works.</em> The sensor's thermal stability holds the reading within tolerance even as the equipment rack cycles 20 °C across a day. Continuous logging without zeroing interruption means no gaps in the record. The integrated real-time clock provides the audit trail satellite operators need for regulatory compliance.</p>
+<p><strong>Case Study 6: Embedded Amplitude Reference in an OEM Test Instrument</strong></p>
+<p><em>Problem.</em> A test-equipment manufacturer is designing a next-generation network analyzer and needs an embedded amplitude reference accurate to 0.2 dB from 9 kHz to 26.5 GHz. The reference must integrate with the instrument's microcontroller, run from the instrument's main power supply, and require no factory recalibration over the instrument's three-year warranty.</p>
+<p><em>Solution.</em> A Model 12100-26 sensor integrated via the SPI option, reporting amplitude readings to the host microcontroller as part of the instrument's internal measurement chain. UOP mode is enabled on power-up so the sensor is immediately operational. The 12100's NIST-traceable factory calibration is incorporated into the instrument's overall calibration certificate.</p>
+<p><em>Why it works.</em> SPI integration eliminates the need for a USB host inside the instrument, simplifying the design. The 12100's no-zero, no-cal architecture means the embedded reference is always ready, with no warm-up procedure required at instrument power-up. Long-term thermal stability matches the instrument's three-year recertification interval.</p>
+<h3 id="selection-guide-picking-the-right-12100">11.5 Selection Guide: Picking the Right 12100</h3>
+<p>Work through these four questions in order.</p>
+<p><strong>1. What is the top frequency I need to support?</strong> - <em>Up to 6 GHz:</em> 12100-6 (Type-N, lowest cost). - <em>Up to 12.5 GHz:</em> 12100-12 (Type-N). - <em>Up to 18 GHz:</em> 12100-18 (Type-N, the most popular variant for cellular and satellite work). - <em>Up to 26.5 GHz:</em> 12100-26 (3.5 mm). - <em>Up to 40 GHz:</em> 12100-40 (2.92 mm). - <em>Up to 50 or 67 GHz:</em> 12100-50 or 12100-67 (2.4 mm or 1.85 mm).</p>
+<p>Pick the lowest-frequency variant that comfortably covers your application. Higher-frequency variants cost more and use connectors that are mechanically less forgiving in everyday lab use.</p>
+<p><strong>2. What is my minimum signal level?</strong> - <em>Down to -40 dBm:</em> any variant. - <em>Down to -60 dBm:</em> any variant up to 40 GHz. - <em>Below -50 dBm at mmWave:</em> specify the 12100-50 or 12100-67 with the extended-low-range option.</p>
+<p><strong>3. How will I trigger it?</strong> - <em>Free-running average measurements:</em> default mode, no extra hardware required. - <em>Time-gated bursts (TDMA, LTE, radar inter-pulse):</em> use external TTL trigger plus the gate offset and width settings. - <em>Synchronized to a system clock:</em> use the LAN option for IEEE 1588 PTP timestamping.</p>
+<p><strong>4. How will I integrate it?</strong> - <em>Bench, interactive:</em> any 12100 plus the included PowerEye software. - <em>Automated test with SCPI scripts:</em> any 12100 over USB; the SCPI command set is compatible with most legacy power-meter automation. - <em>Embedded in a product:</em> 12100 with the SPI or I²C option. - <em>Networked test rack:</em> 12100 with the LAN option. - <em>Long-term unattended logging:</em> enable UOP mode on any 12100.</p>
+<p>When in doubt, call us. A five-minute conversation with an application engineer saves weeks of trial and error. Our support number, our live chat, and our response email are listed on the back cover, and we answer all of them.</p>
+<h3 id="integration-software-and-support">11.6 Integration, Software, and Support</h3>
+<p><strong>PowerEye Software.</strong> Free, full-featured, and updated continuously. Runs on Windows, Linux, and macOS. Supports every Berkeley Nucleonics sensor, with interactive configuration, live traces, logging, statistical analysis, and pass/fail evaluation. Includes SCPI terminal for scripting development and export to CSV, Excel, and MATLAB.</p>
+<p><strong>SCPI Command Set.</strong> Standard SCPI with a superset compatible with most legacy power meter automation scripts. Migration from older benchtop meters is typically a matter of hours, not weeks.</p>
+<p><strong>SPI and I²C Integration.</strong> For OEM applications, the 12100 series offers optional SPI and I²C interfaces alongside the standard USB. This makes the sensor a drop-in amplitude reference inside an embedded product, with no need for an intermediate USB host. Unattended Operation Mode (UOP) lets the sensor stand-alone log tens of millions of measurements without a connected host.</p>
+<p><strong>Software is always free.</strong> We do not charge licensing fees for instrument software, now or ever. Updates are free. Feature additions are free. If we add a new measurement mode, existing sensors get it.</p>
+<p><strong>Support.</strong> Live application support, phone and email, Monday through Friday, worldwide business hours. Our application engineers have an average of 15 years in RF measurement and can talk intelligently about anything from basic connections to multi-sensor synchronization schemes. We also offer no-cost remote support sessions for complex integrations.</p>
+<p><strong>Training.</strong> The Berkeley Nucleonics Academy offers short, focused online courses on RF power measurement, many based on material in this book. Many courses include CEU credit and completion certificates. If your team needs a standardized baseline of training, start there.</p>
+<p><strong>Warranty.</strong> Three years standard, extendable to five. Calibration is traceable to NIST. Annual recertification is available through our service centers with a two-week turnaround.</p>
+<p><strong>Getting started.</strong> Visit <a href="/">www.berkeleynucleonics.com</a> or call <strong>800-234-7858</strong>. We are happy to talk.</p>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="10-reference-tables.html">&larr; 10. Reference Tables</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-A-glossary.html">Appendix A: Glossary of Terms &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

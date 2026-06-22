@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Chapter 5 Quiz</title><link rel="stylesheet" href="light-touch.css"/>  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head><body>
+<script defer src="reader-prompt.js"></script>
+<h1>Chapter 5 Quiz</h1><p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+<div id="bnc-quiz"></div>
+<script>window.QUIZ_DATA = { bookKey:"awg", chapterKey:"05", title:"Chapter 5 Quiz: Creating and Sequencing Waveforms", questions:[
+  { q: "When you import a scope capture into an AWG and play it back, why does setting the sample rate correctly matter?",
+    options: [
+      "A data file has no inherent time axis, so the AWG plays the samples at its own clock; a mismatch shifts every frequency in the signal.",
+      "Imported files always replay at exactly the capture rate regardless of the AWG clock.",
+      "Sample rate only affects amplitude, not timing.",
+      "The AWG automatically detects the capture rate from the file contents."
+    ],
+    answer: 0,
+    explain: "Samples carry values, not time. The AWG clocks them out at its own rate, so you must resample to the AWG clock or match the AWG rate to the source." },
+  { q: "What is the main advantage of sequencing segments over storing one giant waveform?",
+    options: [
+      "It increases the DAC's vertical resolution.",
+      "A repeated segment is stored once and looped, so memory is reused and the scenario can react to triggers and events.",
+      "It removes the need to set a sample rate.",
+      "It guarantees seamless loop points automatically."
+    ],
+    answer: 1,
+    explain: "Loop counts replay one stored copy many times, saving memory, and conditional advance lets the playout react rather than being frozen." },
+  { q: "An instrument has a waveform granularity of 16 samples. Which buffer length is legal?",
+    options: [
+      "1000 samples",
+      "1004 samples",
+      "1008 samples",
+      "1010 samples"
+    ],
+    answer: 2,
+    explain: "Length must be a multiple of the granularity N. Of the choices, only 1008 is a multiple of 16." },
+  { q: "Why does a looped waveform with a fractional number of cycles in the buffer produce spurs?",
+    options: [
+      "Fractional cycles raise the average power of the signal.",
+      "The end phase does not match the start phase, so the wrap forces a step discontinuity that is wideband and repeats every loop.",
+      "Fractional cycles cause the DAC to clip.",
+      "The instrument refuses to loop and outputs DC instead."
+    ],
+    answer: 1,
+    explain: "If the buffer ends mid-cycle, wrapping to the start jumps the level and slope. That step radiates spurs locked to the loop rate." },
+  { q: "A captured transient cannot be made to hold an integer number of cycles. What is the practical fix to reduce the loop glitch?",
+    options: [
+      "Increase the amplitude until the step disappears.",
+      "Lower the sample rate until the file fits.",
+      "Apply a window that tapers the start and end toward a common value so the junction no longer takes a hard step.",
+      "Store the waveform twice back to back."
+    ],
+    answer: 2,
+    explain: "Windowing trades a sharp discontinuity for a gentle controlled transition. Use it when integer cycles are not achievable." }
+] };</script>
+<script defer src="quiz-mc.js"></script>
+<footer class="bnc-footer"><nav class="bnc-nav"><a class="prev" href="05-creating-and-sequencing-waveforms.html">&larr; Back to Chapter 5</a><a class="mid" href="00-front-matter.html#table-of-contents">Contents</a><a class="next" href="quiz-06.html">Chapter 6 Quiz &rarr;</a></nav><div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div></footer></body></html>

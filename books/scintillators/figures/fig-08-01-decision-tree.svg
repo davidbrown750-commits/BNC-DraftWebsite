@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" width="1000" height="720">
+  <defs>
+    <marker id="ar8" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#003D6B"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="720" fill="#ECEFF1"/>
+
+  <text x="500" y="32" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#003D6B">Scintillator selection decision tree</text>
+
+  <!-- Root -->
+  <g>
+    <rect x="430" y="60" width="140" height="50" fill="#003D6B" rx="6"/>
+    <text x="500" y="80" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">START</text>
+    <text x="500" y="96" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#7fdbff">What is the radiation?</text>
+  </g>
+
+  <!-- Level 1: branches by radiation type -->
+  <g stroke="#003D6B" stroke-width="1.6" fill="none" marker-end="url(#ar8)">
+    <line x1="500" y1="110" x2="180" y2="155"/>
+    <line x1="500" y1="110" x2="380" y2="155"/>
+    <line x1="500" y1="110" x2="620" y2="155"/>
+    <line x1="500" y1="110" x2="820" y2="155"/>
+  </g>
+
+  <!-- Gamma -->
+  <g>
+    <rect x="120" y="160" width="120" height="50" fill="#0078B6" rx="6"/>
+    <text x="180" y="180" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Gamma</text>
+    <text x="180" y="196" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#7fdbff">energy?</text>
+  </g>
+
+  <!-- Charged particles -->
+  <g>
+    <rect x="320" y="160" width="120" height="50" fill="#0078B6" rx="6"/>
+    <text x="380" y="180" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Charged particle</text>
+    <text x="380" y="196" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#7fdbff">α, β, MIP?</text>
+  </g>
+
+  <!-- Neutrons -->
+  <g>
+    <rect x="560" y="160" width="120" height="50" fill="#0078B6" rx="6"/>
+    <text x="620" y="180" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Neutron</text>
+    <text x="620" y="196" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#7fdbff">thermal or fast?</text>
+  </g>
+
+  <!-- Mixed/HEP -->
+  <g>
+    <rect x="760" y="160" width="120" height="50" fill="#0078B6" rx="6"/>
+    <text x="820" y="180" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Mixed / HEP</text>
+    <text x="820" y="196" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#7fdbff">pulsed beam?</text>
+  </g>
+
+  <!-- Level 2 (gamma branch): energy and rate -->
+  <g stroke="#003D6B" stroke-width="1.4" fill="none" marker-end="url(#ar8)">
+    <line x1="180" y1="210" x2="80" y2="265"/>
+    <line x1="180" y1="210" x2="180" y2="265"/>
+    <line x1="180" y1="210" x2="280" y2="265"/>
+  </g>
+
+  <g>
+    <rect x="20" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="80" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">&lt; 100 keV</text>
+    <text x="80" y="302" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#003D6B">low energy X-ray</text>
+  </g>
+
+  <g>
+    <rect x="120" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="180" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">100 keV–1 MeV</text>
+    <text x="180" y="302" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#003D6B">general gamma</text>
+  </g>
+
+  <g>
+    <rect x="220" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="280" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">&gt; 1 MeV</text>
+    <text x="280" y="302" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#003D6B">high energy</text>
+  </g>
+
+  <!-- Material recommendations under gamma branches -->
+  <g stroke="#003D6B" stroke-width="1.2" fill="none" marker-end="url(#ar8)">
+    <line x1="80" y1="310" x2="80" y2="350"/>
+    <line x1="180" y1="310" x2="180" y2="350"/>
+    <line x1="280" y1="310" x2="280" y2="350"/>
+  </g>
+
+  <g>
+    <rect x="20" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="80" y="373" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">Thin NaI(Tl)</text>
+    <text x="80" y="385" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">CsI(Tl), CdTe</text>
+    <text x="80" y="397" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#7fdbff">+ Be window</text>
+    <text x="80" y="408" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#7fdbff">CZT semiconductor</text>
+  </g>
+
+  <g>
+    <rect x="120" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="180" y="370" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">Std: NaI(Tl), CsI(Tl)</text>
+    <text x="180" y="382" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">High res: LaBr₃:Ce</text>
+    <text x="180" y="394" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">CeBr₃, Cs₂HfCl₆</text>
+    <text x="180" y="406" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#7fdbff">SrI₂:Eu (slow)</text>
+  </g>
+
+  <g>
+    <rect x="220" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="280" y="373" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">High Z, dense</text>
+    <text x="280" y="385" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">BGO, LYSO:Ce</text>
+    <text x="280" y="397" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">GAGG:Ce, CdWO₄</text>
+  </g>
+
+  <!-- Charged particle branch -->
+  <g stroke="#003D6B" stroke-width="1.4" fill="none" marker-end="url(#ar8)">
+    <line x1="380" y1="210" x2="380" y2="265"/>
+  </g>
+
+  <g>
+    <rect x="320" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="380" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">low Z preferred</text>
+    <text x="380" y="302" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#003D6B">thin entrance window</text>
+  </g>
+
+  <g stroke="#003D6B" stroke-width="1.2" fill="none" marker-end="url(#ar8)">
+    <line x1="380" y1="310" x2="380" y2="350"/>
+  </g>
+
+  <g>
+    <rect x="320" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="380" y="373" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">Plastic (PVT)</text>
+    <text x="380" y="385" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">CaF₂(Eu), YAP:Ce</text>
+    <text x="380" y="397" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">ZnS(Ag) screen for α</text>
+  </g>
+
+  <!-- Neutron branch -->
+  <g stroke="#003D6B" stroke-width="1.4" fill="none" marker-end="url(#ar8)">
+    <line x1="620" y1="210" x2="540" y2="265"/>
+    <line x1="620" y1="210" x2="620" y2="265"/>
+    <line x1="620" y1="210" x2="700" y2="265"/>
+  </g>
+
+  <g>
+    <rect x="480" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="540" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">thermal only</text>
+  </g>
+
+  <g>
+    <rect x="560" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="620" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">γ + n combined</text>
+  </g>
+
+  <g>
+    <rect x="640" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="700" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">fast neutron</text>
+  </g>
+
+  <g stroke="#003D6B" stroke-width="1.2" fill="none" marker-end="url(#ar8)">
+    <line x1="540" y1="310" x2="540" y2="350"/>
+    <line x1="620" y1="310" x2="620" y2="350"/>
+    <line x1="700" y1="310" x2="700" y2="350"/>
+  </g>
+
+  <g>
+    <rect x="480" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="540" y="370" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">⁶LiI(Eu)</text>
+    <text x="540" y="382" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">⁶Li-glass</text>
+    <text x="540" y="394" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">⁶LiF/ZnS(Ag)</text>
+    <text x="540" y="406" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#7fdbff">B-loaded plastic (area)</text>
+  </g>
+
+  <g>
+    <rect x="560" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="620" y="375" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">CLLBC, CLYC</text>
+    <text x="620" y="387" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">CLLB</text>
+    <text x="620" y="402" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="8" fill="#7fdbff">elpasolite + PSD</text>
+  </g>
+
+  <g>
+    <rect x="640" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="700" y="375" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">PSD plastic</text>
+    <text x="700" y="387" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">Liquid (BC-501A)</text>
+    <text x="700" y="402" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">Stilbene</text>
+  </g>
+
+  <!-- HEP branch -->
+  <g stroke="#003D6B" stroke-width="1.4" fill="none" marker-end="url(#ar8)">
+    <line x1="820" y1="210" x2="820" y2="265"/>
+  </g>
+
+  <g>
+    <rect x="760" y="270" width="120" height="40" fill="#7fdbff" rx="4"/>
+    <text x="820" y="287" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">very high rate</text>
+    <text x="820" y="302" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#003D6B">timing critical</text>
+  </g>
+
+  <g stroke="#003D6B" stroke-width="1.2" fill="none" marker-end="url(#ar8)">
+    <line x1="820" y1="310" x2="820" y2="350"/>
+  </g>
+
+  <g>
+    <rect x="760" y="355" width="120" height="60" fill="#003D6B" rx="4"/>
+    <text x="820" y="373" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">LYSO:Ce, GAGG:Ce,Mg</text>
+    <text x="820" y="385" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">PbWO₄ (calorimetry)</text>
+    <text x="820" y="397" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="700" fill="#ffffff">BaF₂ (sub-ns)</text>
+  </g>
+
+  <!-- Bottom: cross-cutting questions -->
+  <g transform="translate(80, 470)">
+    <rect x="0" y="0" width="840" height="170" fill="#ffffff" stroke="#003D6B" stroke-width="1.6" rx="6"/>
+    <text x="420" y="22" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#003D6B">Cross-cutting questions to ask before finalizing</text>
+
+    <text x="20" y="48" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#0078B6">2. Count rate</text>
+    <text x="20" y="62" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">&lt; 100 kHz: any decay time OK</text>
+    <text x="20" y="76" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">100 kHz–1 MHz: rule out µs decay</text>
+    <text x="20" y="90" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">&gt; 1 MHz: only fast (LYSO, BaF₂)</text>
+
+    <text x="220" y="48" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#0078B6">3. Environment</text>
+    <text x="220" y="62" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">High temp: Ce-doped, CsI(Na)</text>
+    <text x="220" y="76" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Vibration: CsI(Tl), GAGG:Ce</text>
+    <text x="220" y="90" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Radiation hard: CeBr₃, YAP:Ce</text>
+    <text x="220" y="104" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Magnetic field: SiPM not PMT</text>
+
+    <text x="440" y="48" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#0078B6">4. Size &amp; geometry</text>
+    <text x="440" y="62" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Large: NaI(Tl), CsI, BGO, plastic</text>
+    <text x="440" y="76" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Compact custom: GAGG, LaBr₃</text>
+    <text x="440" y="90" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Pixel array: LYSO, garnets, ceramic</text>
+    <text x="440" y="104" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Cs₂HfCl₆ &lt; 30 mm currently</text>
+
+    <text x="660" y="48" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#0078B6">5. Budget</text>
+    <text x="660" y="62" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Lowest: plastic</text>
+    <text x="660" y="76" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Modest: NaI, CsI, BGO</text>
+    <text x="660" y="90" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">High: LaBr₃, CeBr₃, CLLBC</text>
+    <text x="660" y="104" font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#2C3E50">Premium: SrI₂, Cs₂HfCl₆</text>
+
+    <text x="20" y="135" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">→ Match the chosen scintillator with the right photodetector (Ch 6, 9): bialkali PMT, NUV-HD SiPM, RGB-HD SiPM, or photodiode.</text>
+    <text x="20" y="151" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#003D6B">→ Specify the housing (Ch 11): hermetic seal, entrance window, reflector, mu-metal shield, ruggedization, low-background construction as needed.</text>
+  </g>
+
+  <text x="500" y="685" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#2C3E50" font-style="italic">Figure 8.1 - The selection decision tree. Question 1 (radiation type) is at the top; questions 2–5 (rate, environment, size, budget) cut across the candidates.</text>
+</svg>

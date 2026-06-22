@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 2 Quiz</title>
+<link rel="stylesheet" href="light-touch.css"/>
+<script defer src="reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1>Chapter 2 Quiz</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "tmi",
+  chapterKey: "02",
+  title: "Chapter 2 Quiz: Pulse Shape & Signal Integrity",
+  questions: [
+    {
+      q: "For the same physical edge, how does a 20-80 percent rise time compare to a 10-90 percent rise time?",
+      options: [
+        "It reads larger, because it spans a wider portion of the edge",
+        "It reads about the same, since both measure the same edge",
+        "It reads smaller, roughly 0.6 to 0.7 of the 10-90 value",
+        "It reads exactly half of the 10-90 value"
+      ],
+      answer: 2,
+      explain: "The 20-80 convention stays clear of the rounded corners and spans less of the transition, so it reads shorter, roughly 0.6 to 0.7 of the 10-90 figure for a simple exponential edge. A rise time spec is meaningless without stating which reference points were used."
+    },
+    {
+      q: "Using the bandwidth-rise time rule, what frequency content does a 1 ns (10-90) edge roughly imply?",
+      options: [
+        "About 35 MHz",
+        "About 350 MHz",
+        "About 3.5 GHz",
+        "About 35 kHz"
+      ],
+      answer: 1,
+      explain: "Bandwidth times rise time is approximately 0.35, so 0.35 divided by 1 ns gives roughly 350 MHz. The cable, scope, and load must all support that bandwidth to keep the edge intact."
+    },
+    {
+      q: "Which term names the time the output takes to enter and stay within a defined error band around its final level?",
+      options: [
+        "Overshoot",
+        "Ringing",
+        "Preshoot",
+        "Settling time"
+      ],
+      answer: 3,
+      explain: "Settling time is how long the output takes to enter and remain within a defined error band, such as within 2 percent of the top. Overshoot, ringing, and preshoot are distinct aberrations of the edge."
+    },
+    {
+      q: "Droop, also called sag or tilt, is best described as:",
+      options: [
+        "A gradual decline of the pulse top level across the pulse width",
+        "Damped oscillation around the final level after a fast edge",
+        "A pulse that never reaches full amplitude",
+        "A softened corner where the edge meets the top"
+      ],
+      answer: 0,
+      explain: "Droop is a gradual decline of the top level across the width, typically from AC coupling or charge-limited capacitors, and is most visible on long, wide pulses. The other options describe ringing, a runt pulse, and rounding."
+    },
+    {
+      q: "You program a 2.5 V pulse and connect the output directly to a 1 megohm scope input, where it reads about 5 V. What is happening?",
+      options: [
+        "The instrument is out of calibration and needs service",
+        "The line is unterminated, so the back-matched source delivers nearly its full open-circuit voltage",
+        "The scope is doubling the input internally",
+        "The pulse polarity is inverted"
+      ],
+      answer: 1,
+      explain: "Specs are stated into 50 ohms. Driving a high-impedance input drops almost no voltage across the source resistance, so the load sees close to twice the set amplitude. Add a 50 ohm feed-through terminator or switch the scope to 50 ohm coupling and the reading returns to 2.5 V."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="02-pulse-shape-signal-integrity.html">&larr; Back to Chapter 2</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="03-gating-delaying-clocking.html">3. Gating, Delaying &amp; Clocking &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

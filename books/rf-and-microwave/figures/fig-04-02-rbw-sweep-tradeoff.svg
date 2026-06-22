@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="The resolution bandwidth tradeoff: narrower RBW lowers the noise floor and resolves close signals but lengthens sweep time">
+  <defs>
+    <style>
+      .axis{stroke:#2C3E50;stroke-width:1.4;}
+      .tick{fill:#2C3E50;font-size:10px;}
+      .ttl{fill:#003D6B;font-size:13px;font-weight:700;}
+      .note{fill:#2C3E50;font-size:11px;}
+      .floorW{stroke:#C77E00;stroke-width:2;fill:none;}
+      .floorN{stroke:#0078B6;stroke-width:2;fill:none;}
+      .traceW{stroke:#C77E00;stroke-width:2.4;fill:none;}
+      .traceN{stroke:#0078B6;stroke-width:2.4;fill:none;}
+    </style>
+  </defs>
+
+  <text x="20" y="28" fill="#003D6B" font-size="15" font-weight="700">The RBW Tradeoff: Resolution, Noise Floor, and Sweep Time</text>
+
+  <!-- LEFT panel: wide RBW -->
+  <text x="40" y="62" class="ttl">Wide RBW (e.g. 1 MHz)</text>
+  <line class="axis" x1="50" y1="80" x2="50" y2="230"/>
+  <line class="axis" x1="50" y1="230" x2="360" y2="230"/>
+  <text x="20" y="155" class="tick" transform="rotate(-90 20 155)">Amplitude</text>
+  <text x="190" y="248" class="tick" text-anchor="middle">Frequency</text>
+  <!-- high noise floor -->
+  <path class="floorW" d="M60 188 Q120 182 180 190 T300 184 T350 188"/>
+  <!-- single merged bump -->
+  <path class="traceW" d="M60 188 L150 186 Q205 110 260 186 L350 188"/>
+  <text x="205" y="100" class="note" text-anchor="middle">two tones blur into one</text>
+  <text x="60" y="206" class="note">noise floor high</text>
+
+  <!-- RIGHT panel: narrow RBW -->
+  <text x="440" y="62" class="ttl">Narrow RBW (e.g. 10 kHz)</text>
+  <line class="axis" x1="450" y1="80" x2="450" y2="230"/>
+  <line class="axis" x1="450" y1="230" x2="760" y2="230"/>
+  <text x="590" y="248" class="tick" text-anchor="middle">Frequency</text>
+  <!-- low noise floor -->
+  <path class="floorN" d="M460 214 Q520 210 580 215 T700 211 T750 214"/>
+  <!-- two resolved peaks -->
+  <path class="traceN" d="M460 214 L545 213 Q560 96 575 213 L615 213 Q630 96 645 213 L750 214"/>
+  <text x="600" y="86" class="note" text-anchor="middle">two tones resolved</text>
+  <text x="460" y="226" class="note">noise floor 20 dB lower</text>
+
+  <!-- bottom: sweep-time bars -->
+  <text x="40" y="300" class="ttl">Cost: sweep time scales as 1/RBW squared</text>
+  <text x="40" y="326" class="note">1 MHz RBW</text>
+  <rect x="170" y="316" width="60" height="14" fill="#C77E00"/>
+  <text x="238" y="327" class="note">fast</text>
+
+  <text x="40" y="352" class="note">100 kHz RBW</text>
+  <rect x="170" y="342" width="180" height="14" fill="#0078B6"/>
+  <text x="358" y="353" class="note">~100x slower</text>
+
+  <text x="40" y="378" class="note">10 kHz RBW</text>
+  <rect x="170" y="368" width="560" height="14" fill="#003D6B"/>
+  <text x="738" y="379" class="note" text-anchor="end" fill="#ffffff" font-weight="700">~10000x slower</text>
+
+  <line x1="20" y1="396" x2="800" y2="396" stroke="#b6c2cc" stroke-width="1"/>
+  <text x="40" y="412" class="note">Narrower RBW buys resolution and sensitivity, paid for in time. Halving span halves the time.</text>
+</svg>

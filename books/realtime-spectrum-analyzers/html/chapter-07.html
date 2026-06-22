@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 7 - Pulse, Radar, and Electronic Warfare Measurements</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+  .quiz-cta{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .quiz-cta .quiz-cta-num{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  .quiz-cta h3{color:var(--bnc-deep-navy);margin:4px 0 6px}
+  .quiz-cta p{margin:0 0 14px}
+  .quiz-cta .quiz-cta-btn{display:inline-block;font-family:Helvetica,Arial,sans-serif;
+    font-weight:700;letter-spacing:.5px;text-decoration:none;background:var(--bnc-deep-navy);
+    color:#fff;padding:11px 20px;border-radius:4px}
+  .quiz-cta .quiz-cta-btn:hover{background:var(--bnc-sky-blue)}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 7</div>
+<h1>Pulse, Radar, and Electronic Warfare Measurements</h1>
+
+<blockquote>Communications signals want to be understood. Radar and EW signals want to hide. The instrument that finds them is the one that justifies its existence in nanoseconds.</blockquote>
+
+<h2>7.1 Pulse Fundamentals</h2>
+
+<p>A pulse is a transmission whose amplitude rises from zero, holds, and falls back to zero. Five parameters describe it: <strong>pulse width (PW)</strong> is the duration the pulse is on; <strong>rise time and fall time</strong> are the leading and trailing edge transitions; <strong>pulse repetition frequency (PRF)</strong> is how many pulses per second; <strong>pulse repetition interval (PRI)</strong> is the inverse of PRF; <strong>duty cycle</strong> is the fraction of time the transmitter is on.</p>
+
+<p>For an air traffic control radar, typical numbers are: pulse width 1 microsecond, PRF 1 kHz, duty cycle 0.1 percent. For a high-PRF military radar, pulse width might be 100 nanoseconds, PRF 100 kHz, duty cycle 1 percent. For a marine navigation radar, pulse width can stretch to 1 millisecond at very low PRF.</p>
+
+<p>Each pulse in spectrum is a sinc-shaped envelope around the carrier. The first nulls of the sinc are at $f \pm 1/\text{PW}$ from the carrier. A 1 microsecond pulse has nulls at +/- 1 MHz. A 100 nanosecond pulse has nulls at +/- 10 MHz. A 1 nanosecond pulse has nulls at +/- 1 GHz. The pulse width and the spectrum width are tied together by Fourier mathematics: short in time means wide in frequency.</p>
+
+<p>This is why high-PRF, narrow-pulse radars demand wide RTBW. To capture a 100 nanosecond pulse without spectral truncation, you need at least 20 MHz of RTBW. To capture and analyze the leading edge of a 10 nanosecond pulse, you need at least 200 MHz.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: Pulse Compression</h3>
+<p>Modern radars rarely transmit simple square pulses. Instead they transmit long, frequency-modulated chirps and apply matched filtering on receive to compress them in time. A 100 microsecond chirp with 100 MHz of frequency sweep, after pulse compression, has the resolution of a 10 nanosecond pulse but the energy of a 100 microsecond pulse. This is how radars achieve both long range and fine resolution simultaneously. RTSAs that capture chirps unmodified can reproduce the matched filter offline, recovering the same compressed pulse the radar's own receiver sees.</p>
+</div>
+
+<h2>7.2 Pulse Descriptor Words and Deinterleaving</h2>
+
+<p>A pulse descriptor word (PDW) is a fixed-format record that captures everything an analyst needs to know about a single pulse. A typical PDW contains time of arrival (TOA, often to nanosecond resolution), pulse width, peak amplitude, center frequency at the pulse start, modulation type if known, and optional angle of arrival, polarization, and intra-pulse modulation parameters.</p>
+
+<p>For each pulse the RTSA detects, it emits a PDW. A typical EW receiver sees thousands to millions of PDWs per second from a dense electromagnetic environment.</p>
+
+<h3>Deinterleaving</h3>
+
+<p>In a real environment, multiple emitters share the spectrum. The PDW stream is interleaved: pulse from emitter A, pulse from emitter B, pulse from A, pulse from C, pulse from B, and so on. Deinterleaving is the process of sorting PDWs back into per-emitter streams.</p>
+
+<p>Classical deinterleaving uses time-of-arrival differences. If emitter A has PRI 1 millisecond and emitter B has PRI 1.7 milliseconds, the two streams have characteristic differential time signatures that an algorithm can separate. Modern systems combine TOA with frequency, amplitude, and angle of arrival for robust separation even in dense environments.</p>
+
+<p>Once deinterleaved, each emitter's PDW stream becomes a fingerprint. PRI, PW, and frequency-agility patterns characterize the radar type. A library of known radars matches incoming fingerprints to identifications.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: PDW Extraction</h3>
+<p>RTSA Suite PRO includes a PDW extraction block that consumes the wideband I/Q stream and emits a PDW table in real time. Each row contains TOA, PW, frequency, amplitude, and modulation indicator. The block is configurable for sensitivity and pulse model. Output streams to disk in CSV or to downstream blocks for deinterleaving and classification.</p>
+<p>For long-term EW collection, RTSA Suite PRO can record both the PDW stream and the underlying I/Q. The PDW is searchable in seconds; the I/Q is available for any pulse the analyst wants to examine in detail. This dual recording is the modern standard in tactical EW systems.</p>
+</div>
+
+<h2>7.3 Chirp and Frequency-Agile Radars</h2>
+
+<p>Modern radars do not stand still in frequency. They chirp, hop, and stagger to evade detection and resist jamming.</p>
+
+<p><strong>Linear frequency modulation (LFM)</strong> is the most common chirp. Frequency rises linearly across the pulse:</p>
+
+<div class="math-display">$$f(t) = f_0 + \frac{B}{T} \cdot t, \quad 0 \leq t \leq T$$</div>
+
+<p>where $B$ is the chirp bandwidth and $T$ is the pulse duration. On a waterfall display, an LFM pulse appears as a diagonal stripe whose slope encodes the chirp rate. LFM enables pulse compression: the radar's receiver applies a matched filter that compresses the long, low-power pulse into a short, high-amplitude peak with the same energy. Range resolution becomes $c / (2B)$. A 100 MHz chirp gives 1.5 meters of range resolution.</p>
+
+<p><strong>Nonlinear frequency modulation (NLFM)</strong> shapes the frequency curve to reduce sidelobes after compression. NLFM is harder to characterize on a waterfall because the diagonal becomes a curve. RTSAs with persistence displays expose the curvature.</p>
+
+<p><strong>Frequency hopping</strong> jumps to a new frequency for each pulse, drawn from a pseudorandom sequence. Hopping is anti-jam: a jammer that spot-jams one frequency misses every other pulse. RTSAs see hopping as a sequence of pulses scattered across the band.</p>
+
+<p><strong>Pulse stagger</strong> varies the PRI from pulse to pulse, deliberately, to confuse range-ambiguity exploitation by countermeasures.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-07-01-radar-ew-waterfall.svg" style="width:100%;">Figure 7-1</object>
+  <figcaption>Figure 7-1. A wideband waterfall capture from a SPECTRAN V6 PLUS shows multiple radar and EW signatures simultaneously. CW carriers are vertical stripes. LFM chirps are diagonals. FHSS hoppers scatter across the band. Spot jammers are tall narrow stripes. Barrage jammers fill wide regions with elevated noise. High-PRF radars produce dense vertical pulse trains.</figcaption>
+</figure>
+
+<h2>7.4 Jammer Characterization</h2>
+
+<p>A jammer is a transmitter designed to disrupt a victim receiver's ability to extract information. There are four main families.</p>
+
+<p><strong>Barrage jamming</strong> is a wide-bandwidth noise transmission that covers the victim band entirely. Easy to identify: very high noise floor across the band of interest. Defeats unsophisticated receivers but inefficient because the jammer's power is spread thin.</p>
+
+<p><strong>Spot jamming</strong> is a narrowband jammer focused on a single victim frequency. Efficient (concentrates power) but vulnerable to frequency hopping by the victim. RTSAs identify spot jamming as a tall, narrow tone in a band that should be quiet.</p>
+
+<p><strong>Swept jamming</strong> is a narrowband signal swept across the victim band. Compromise between barrage and spot. On a waterfall, swept jammers paint diagonal lines whose slope encodes the sweep rate.</p>
+
+<p><strong>DRFM jamming (digital radio frequency memory)</strong> is the sophisticated end. The DRFM receiver captures incoming victim signals, modifies them in real time, and retransmits them as deceptive signals. Against a radar, DRFM creates phantom targets that look real to the radar's processor.</p>
+
+<p>DRFM is the hardest to characterize because its signal is, by design, indistinguishable from a real return at first glance. RTSAs catch DRFM by comparing transmitted radar pulses against received returns (the DRFM has a characteristic processing latency that real targets do not), spectral analysis of the DRFM's local memory artifacts, and tracking phantom targets across multiple beam positions to confirm they are not physical objects. This is bleeding-edge work, and RTSAs with high POI and long streaming capture are essential to the analysis.</p>
+
+<h2>7.5 POI and Nanosecond-Scale Capture</h2>
+
+<p>Why does an RTSA need a 10 nanosecond probability of intercept? Because that is the timescale of modern threats.</p>
+
+<p>A high-PRF radar might emit 100 nanosecond pulses at 100 kHz PRF. Each pulse is observable for only a tenth of a millionth of a second. A POI worse than the pulse width misses the pulse entirely. A POI of 10 nanoseconds catches even the leading edge of every pulse.</p>
+
+<p>Counter-UAS work is similar. A drone uplink burst on a 2.4 GHz spread-spectrum link might be 30 microseconds long, but the burst's leading edge contains the synchronization preamble that identifies the protocol. Capturing only the body of the burst loses the protocol fingerprint. Catching the leading edge requires fast POI.</p>
+
+<p>EW range testing puts even tighter constraints. A jammer-versus-victim simulation might involve overlapping pulses from multiple emitters, each microseconds long, separated by nanoseconds. POI worse than the inter-pulse gap merges adjacent pulses into a single corrupted PDW.</p>
+
+<p>Aaronia's published 10 nanosecond POI in RTSA Suite PRO is achieved through hardware peak detection in the SPECTRAN V6 PLUS front end, complemented by deep parallel FFT processing. The hardware catches transient energy between FFT windows; the FFT confirms identity and parameters. Combined, the system catches every pulse longer than 10 nanoseconds with high confidence.</p>
+
+<p>This is the chapter that justifies the 10 ns POI specification in earlier chapters. Without it, modern radar and EW work is statistical at best, blind at worst. With it, the analyst has the same situational awareness that the radar designer had when they built the system.</p>
+
+<h2>7.6 Counter-UAS and Drone RF Signatures</h2>
+
+<p>Drones are the fastest-growing surveillance and threat category in 2026. Every police department, airport security team, prison administration, and military installation needs the ability to detect and locate unauthorized drones in real time.</p>
+
+<h3>What Drones Look Like in RF</h3>
+
+<p>Most consumer and prosumer drones use one or more of these protocols: <strong>2.4 GHz ISM</strong> for control link (proprietary FHSS in DJI's Lightbridge, OcuSync, OcuSync 2.0/3.0; Wi-Fi-based control in cheaper drones), <strong>5.8 GHz ISM</strong> for video downlink (FHSS or wideband digital video), <strong>915 MHz / 868 MHz</strong> for some long-range telemetry (LoRa-like CSS modulation), <strong>GPS L1/L2</strong> for position (received only), and <strong>Cellular LTE/5G</strong> for command-and-control over carrier networks (in some industrial drones).</p>
+
+<p>Each protocol has a characteristic spectral signature. DJI OcuSync 3 hops across 30 MHz of 2.4 GHz with 10 ms hop dwells. WiFi-based hobby drones produce continuous Wi-Fi-style OFDMA. LoRa drones produce diagonal chirps in the waterfall.</p>
+
+<h3>Detection Workflow</h3>
+
+<p>A counter-UAS system using RTSAs and IsoLOG 3D DF antennas typically continuously monitors 2.4 GHz, 5.8 GHz, and 915 MHz ISM bands using one or more SPECTRAN V6 PLUS units, triggers on energy in suspicious patterns (hopping in 2.4 GHz, FHSS in 5.8 GHz, chirp signatures in 915 MHz), classifies the captured signal against a library of known drone protocols, locates the drone using IsoLOG 3D DF bearings (with elevation distinguishing legitimate radio activity from airborne emitters), tracks the drone over time building a 3D path with timestamps, and alerts operators or, in higher-tier systems, triggers a kinetic or RF countermeasure.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: Drone Detection Systems</h3>
+<p>Aaronia ships drone detection systems built around SPECTRAN V6 PLUS analyzers and IsoLOG 3D DF antennas. The systems are deployed at airports, prisons, and high-value installations worldwide. A typical setup uses one or two IsoLOG 3D DF arrays for omnidirectional coverage, multiple SPECTRAN units for parallel band monitoring, and RTSA Suite PRO for classification and tracking.</p>
+<p>The IsoLOG 3D DF antenna's 400 MHz to 40 GHz frequency range covers every drone control and downlink band in production. Its 8 microsecond per-sector tracking means a hopping drone is followed across hops without losing the track. Its 1 to 3 degree angular accuracy localizes the drone to a few meters at typical engagement ranges.</p>
+<p>This is the chapter where the IsoLOG 3D DF and SPECTRAN V6 PLUS pairing earns its keep. Static spectrum monitoring is solved. The hard problem is dynamic, agile, hostile spectrum, and that is what this product family targets.</p>
+</div>
+
+<h2>7.7 IsoLOG 3D DF + SPECTRAN for EW</h2>
+
+<p>The complete EW deployment pulls together every concept in this chapter.</p>
+
+<p>A SPECTRAN V6 PLUS 2000XA-6 with 490 MHz of RTBW captures the wideband electromagnetic environment continuously. Hardware peak detection ensures 10 ns POI. RTSA Suite PRO runs PDW extraction and classification in real time, producing a stream of timestamped, parameterized pulses.</p>
+
+<p>An IsoLOG 3D DF 80-8 antenna covers 680 MHz to 8 GHz with 16 sectors and 32 antennas. Its array geometry produces 1 to 3 degree bearing on every detected pulse, with elevation distinguishing airborne from ground emitters. Sector-to-sector switching at 8 microseconds means even rapidly hopping emitters track without loss.</p>
+
+<p>Combining the two: every pulse the system detects gets a PDW with bearing and elevation. The result is a 3D map of the electromagnetic battlefield, updated continuously, with the resolution to distinguish individual emitters even when they overlap in time and frequency.</p>
+
+<p>This data feeds higher-level EW workflows: emitter classification (matching PDW patterns to known radar types), threat prioritization (which emitters represent the highest risk to friendly platforms), countermeasure selection (which jamming or maneuver tactic best defeats each threat), and intelligence collection (logging what was emitted, by whom, and when).</p>
+
+<p>For a research scientist, the same hardware supports radar-design verification, EW vulnerability testing, and protocol reverse-engineering. The data formats are open (SigMF for I/Q, CSV for PDWs, KML for tracks), so downstream tools can consume the output without proprietary lock-in.</p>
+
+<p>The pricing tier is appropriate. A full deployment runs into the hundreds of thousands of dollars. The threat it addresses runs into the millions of dollars per incident, or worse. For airports, prisons, or critical infrastructure, the math works.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>A pulse is described by width, rise/fall time, PRF, PRI, and duty cycle. The pulse-spectrum relationship dictates that short pulses occupy wide bandwidth.</li>
+  <li>Pulse descriptor words capture pulse parameters in a fixed format. Deinterleaving sorts mixed PDW streams back into per-emitter sequences.</li>
+  <li>Modern radars use chirps (LFM, NLFM), frequency hopping, and pulse stagger to evade jammers and improve range resolution. RTSAs with sufficient RTBW and POI capture all of these.</li>
+  <li>Jammer families include barrage, spot, sweep, and DRFM. DRFM jammers are the hardest to characterize and require careful analysis of timing and replay artifacts.</li>
+  <li>POI of 10 nanoseconds (Aaronia RTSA Suite PRO specification) is the threshold for capturing high-PRF radar pulses, EW transient bursts, and drone synchronization preambles.</li>
+  <li>Counter-UAS work uses RTSAs and IsoLOG 3D DF antennas to detect, classify, locate, and track drones across multiple control and video downlink bands.</li>
+  <li>The combination of SPECTRAN V6 PLUS and IsoLOG 3D DF produces a 3D electromagnetic battlefield map with bearing, elevation, frequency, time, and modulation type for every detected emitter.</li>
+  <li>Open data formats (SigMF, CSV PDWs, KML) enable downstream analysis without proprietary lock-in.</li>
+</ul>
+</div>
+
+<div class="quiz-cta">
+<div class="quiz-cta-num">End-of-Chapter Quiz</div>
+<h3>Check your understanding</h3>
+<p>The Chapter 7 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<a class="quiz-cta-btn" href="quiz-chapter-07.html">Take the interactive quiz &rarr;</a>
+</div>
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 8 unpacks direction finding, geolocation, and distributed sensing in detail. The math of bearing estimation, IsoLOG 3D DF array architecture (16 sectors, 32 antennas, sub-microsecond bearing), real-time 3D bearing with elevation, cross-bearings from mobile trucks, distributed RTSA sensor grids, and integration patterns. By the end of Chapter 8, you'll know exactly how an RTSA-plus-DF-array converts RF emissions into geographic positions.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-06.html">&larr; Ch 6. Modulation Analysis</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-08.html">Ch 8. Direction Finding &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

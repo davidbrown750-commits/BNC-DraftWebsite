@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>06-emission-spectra</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">06-emission-spectra</h1>
+</header>
+<h1 id="chapter-6---emission-spectra-and-photodetector-matching">Chapter 6 - Emission Spectra and Photodetector Matching</h1>
+<p>A scintillation detector cannot perform better than the worst link in the chain that converts incident radiation to a measured pulse height. One of the most overlooked links is the spectral overlap between the scintillator’s emission and the photodetector’s quantum efficiency. A high-light-yield scintillator coupled to a photodetector that does not see its emission well is wasted potential. This chapter is the spectral-overlap reference for the rest of the book.</p>
+<h2 id="the-matching-problem">6.1 The Matching Problem</h2>
+<p>Every scintillator emits light over some wavelength range, characterized by an emission peak wavelength and a spectral width that depends on the material. Every photodetector has a spectral quantum efficiency (QE) curve, the probability that an incident photon at a given wavelength produces a measurable photoelectron or photocurrent contribution. The integrated product of the emission spectrum and the QE curve, normalized by the emission spectrum, gives the effective photodetection efficiency of the system.</p>
+<p>The classical mismatch case is CsI(Tl) with a bialkali PMT. CsI(Tl) emits at 550 nm. A standard bialkali PMT’s QE peaks at around 400 nm and falls off rapidly above 500 nm. The result is that CsI(Tl) coupled to a bialkali PMT delivers only about 45 percent of the measured pulse height of NaI(Tl) at the same gamma energy, even though the absolute scintillation light yield of CsI(Tl) is comparable to NaI(Tl). Pair the same CsI(Tl) crystal with a silicon photodetector (photodiode or SiPM), and the relative pulse height jumps to 165 percent of NaI(Tl).</p>
+<p>The matching problem is why the same scintillator material can have dramatically different “light yield” numbers in different vendor specifications. Always check the photodetector type when reading a light-yield number.</p>
+<h2 id="emission-spectra-of-common-scintillators">6.2 Emission Spectra of Common Scintillators</h2>
+<p>Scintillator emission peak wavelengths span from the deep UV (BaF2 at 220 nm fast component) to the green-yellow region (CsI(Tl) at 550 nm and GAGG:Ce at 520 nm). Most modern materials emit in the blue-green band (350 to 500 nm), which historically was driven by the spectral response of bialkali PMTs and is now driven by the response of silicon photodetectors.</p>
+<p>The reference table:</p>
+<p><strong>Table 6.1 - Emission peak and spectral character of representative scintillators</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Material</th>
+<th>Emission peak (nm)</th>
+<th>FWHM (nm, approx)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BaF2 (fast)</td>
+<td>220</td>
+<td>30</td>
+<td>Sub-ns; quartz window required</td>
+</tr>
+<tr class="even">
+<td>BaF2 (slow)</td>
+<td>315</td>
+<td>40</td>
+<td>Microsecond, weaker</td>
+</tr>
+<tr class="odd">
+<td>CsI (undoped)</td>
+<td>315</td>
+<td>50</td>
+<td>Fast, low yield</td>
+</tr>
+<tr class="even">
+<td>LaCl3:Ce</td>
+<td>350</td>
+<td>30</td>
+<td>High resolution</td>
+</tr>
+<tr class="odd">
+<td>LuAG:Pr</td>
+<td>305</td>
+<td>25</td>
+<td>Very fast</td>
+</tr>
+<tr class="even">
+<td>CeBr3</td>
+<td>370</td>
+<td>30</td>
+<td>High yield, low background</td>
+</tr>
+<tr class="odd">
+<td>LaBr3:Ce</td>
+<td>380</td>
+<td>40</td>
+<td>High yield, La-138 BG</td>
+</tr>
+<tr class="even">
+<td>CsI(Na)</td>
+<td>420</td>
+<td>70</td>
+<td>Hygroscopic, PMT match</td>
+</tr>
+<tr class="odd">
+<td>NaI(Tl)</td>
+<td>415</td>
+<td>70</td>
+<td>Workhorse, PMT match</td>
+</tr>
+<tr class="even">
+<td>LYSO:Ce, LSO:Ce</td>
+<td>420</td>
+<td>60</td>
+<td>TOF-PET standard</td>
+</tr>
+<tr class="odd">
+<td>BGO</td>
+<td>480</td>
+<td>80</td>
+<td>Slow, low yield</td>
+</tr>
+<tr class="even">
+<td>GAGG:Ce</td>
+<td>520</td>
+<td>80</td>
+<td>SiPM-optimized</td>
+</tr>
+<tr class="odd">
+<td>CsI(Tl)</td>
+<td>550</td>
+<td>100</td>
+<td>SiPM-optimized</td>
+</tr>
+<tr class="even">
+<td>Plastic (typical PVT)</td>
+<td>380-450</td>
+<td>100</td>
+<td>Tunable by dye choice</td>
+</tr>
+<tr class="odd">
+<td>ZnS(Ag)</td>
+<td>450</td>
+<td>80</td>
+<td>High yield, opaque</td>
+</tr>
+<tr class="even">
+<td>6Li-glass (GS-20)</td>
+<td>390</td>
+<td>60</td>
+<td>Ce-activated</td>
+</tr>
+</tbody>
+</table>
+<p>Emission spectra are usually reported as relative intensity versus wavelength normalized to the peak. Real measurements include fine structure, secondary peaks, and slow tails that the table cannot capture; consult the vendor or the original characterization paper for shape data.</p>
+<h2 id="quantum-efficiency-curves-of-common-photodetectors">6.3 Quantum Efficiency Curves of Common Photodetectors</h2>
+<p>The four photodetector families and their characteristic QE peaks:</p>
+<p><strong>Bialkali photomultiplier tubes</strong> peak around 400 to 420 nm, with roughly 25 to 30 percent peak QE in modern tubes. Falls off rapidly above 500 nm. Standard borosilicate windows cut off sharply below 300 nm; quartz windows extend useful response down to about 180 nm at the cost of higher transmission at all wavelengths.</p>
+<p><strong>Multi-alkali (S20) photomultipliers</strong> extend the response further into the red, peaking around 400 to 450 nm with measurable QE out to 700 nm. Slightly lower peak QE than bialkali. Useful for matching CsI(Tl) and other red-emitting scintillators when SiPM is not an option.</p>
+<p><strong>Silicon photodiodes</strong> peak around 700 to 900 nm, with QE above 80 percent in the 500 to 900 nm range. The response extends from about 350 nm (limited by the front-surface dead layer) to about 1100 nm (limited by silicon bandgap). Long-wavelength scintillators including CsI(Tl) and GAGG:Ce match silicon photodiodes well. Photodiodes have unity gain (no internal multiplication), so they need a low-noise preamplifier to recover the pulse from a few-thousand-photon scintillation event; this limits photodiode use to high-light-yield scintillators and modest energy thresholds.</p>
+<p><strong>Silicon photomultipliers (SiPMs)</strong> are arrays of avalanche photodiode microcells operated above breakdown, with internal gain of 10^5 to 10^6. The QE of the underlying photodiode is multiplied by the geometric fill factor of the microcell array to give the photodetection efficiency (PDE) of the SiPM. Modern SiPMs achieve PDE peaks of 50 to 65 percent in the 400 to 500 nm range with cells optimized for the blue-green band [1][2]. Red-extended SiPM variants extend useful PDE to 700 nm or beyond. SiPMs are the dominant solid-state photodetector for scintillation applications introduced after 2015.</p>
+<p>Table 6.2 gives typical QE values across the wavelength range that matters for scintillation.</p>
+<p><strong>Table 6.2 - Photodetector QE/PDE versus wavelength (typical values, percent)</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Wavelength (nm)</th>
+<th>Bialkali PMT QE</th>
+<th>Multi-alkali PMT QE</th>
+<th>Si Photodiode QE</th>
+<th>SiPM PDE (NUV)</th>
+<th>SiPM PDE (RGB)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>200</td>
+<td>18 (quartz)</td>
+<td>18 (quartz)</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>250</td>
+<td>24</td>
+<td>22</td>
+<td>5</td>
+<td>30</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>300</td>
+<td>28</td>
+<td>26</td>
+<td>30</td>
+<td>45</td>
+<td>18</td>
+</tr>
+<tr class="even">
+<td>350</td>
+<td>27</td>
+<td>26</td>
+<td>50</td>
+<td>55</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>400</td>
+<td>25</td>
+<td>24</td>
+<td>65</td>
+<td>60</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>450</td>
+<td>22</td>
+<td>23</td>
+<td>75</td>
+<td>55</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>500</td>
+<td>16</td>
+<td>20</td>
+<td>80</td>
+<td>45</td>
+<td>60</td>
+</tr>
+<tr class="even">
+<td>550</td>
+<td>10</td>
+<td>15</td>
+<td>85</td>
+<td>35</td>
+<td>55</td>
+</tr>
+<tr class="odd">
+<td>600</td>
+<td>5</td>
+<td>12</td>
+<td>88</td>
+<td>25</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td>650</td>
+<td>2</td>
+<td>8</td>
+<td>90</td>
+<td>18</td>
+<td>42</td>
+</tr>
+<tr class="odd">
+<td>700</td>
+<td>1</td>
+<td>5</td>
+<td>88</td>
+<td>12</td>
+<td>35</td>
+</tr>
+<tr class="even">
+<td>800</td>
+<td>0</td>
+<td>2</td>
+<td>82</td>
+<td>6</td>
+<td>22</td>
+</tr>
+<tr class="odd">
+<td>900</td>
+<td>0</td>
+<td>1</td>
+<td>60</td>
+<td>2</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the SiPM columns are split between “NUV” (near-ultraviolet optimized) and “RGB” (red-green-blue optimized) variants. The NUV products optimize for blue and near-UV scintillators (LaBr3, LSO, LYSO, BGO, NaI). The RGB products optimize for green and red scintillators (CsI(Tl), GAGG:Ce). Picking the right SiPM variant for the scintillator can move the system PDE by 15 to 20 percentage points.</p>
+<figure>
+<img src="../figures/fig-06-01-emission-qe-matching.svg" alt="" /><figcaption>Figure 6.1 - Scintillator emission spectra overlaid on photodetector quantum efficiency / PDE curves. The match between scintillator emission and photodetector response sets the effective photodetection efficiency of the system.</figcaption>
+</figure>
+<h2 id="why-csitl-plus-sipm-is-the-modern-handheld-default">6.4 Why CsI(Tl) Plus SiPM Is the Modern Handheld Default</h2>
+<p>The combination of CsI(Tl) with an RGB-optimized SiPM array delivers:</p>
+<ul>
+<li>High effective photodetection at the 550 nm CsI(Tl) emission peak (around 55 percent PDE, versus 12 percent QE on a bialkali PMT)</li>
+<li>High light yield at the photodetector output (about 165 percent of NaI(Tl) on a PMT, in equivalent measured pulse height)</li>
+<li>Compact form factor (SiPMs are flat silicon devices with no high-voltage requirement above 50 volts)</li>
+<li>Mechanical robustness (CsI(Tl) does not crack under stress, SiPMs do not break under shock)</li>
+<li>Modest hygroscopicity (CsI(Tl) tolerates normal handling for limited periods)</li>
+<li>Single-photoelectron resolution at the SiPM output (no PMT TTS jitter)</li>
+</ul>
+<p>The trade-offs: SiPMs have temperature-dependent gain (1 to 2 percent per degree Celsius) that requires bias compensation, dark count rates higher than a PMT, and crosstalk between microcells that complicates very low-energy thresholds. None of these defeat the architecture for handheld and compact instrument use; the main effect is that the design has to include digital temperature compensation in firmware.</p>
+<p>For larger crystals (above 3 inches) or very low-rate applications (low-background counting), PMTs still win on photocathode area per dollar and on integrated dark current. Chapter 9 covers the full picture.</p>
+<h2 id="matching-for-naitl-cebr3-labr3ce-gaggce">6.5 Matching for NaI(Tl), CeBr3, LaBr3:Ce, GAGG:Ce</h2>
+<p>A short reference for common matchings:</p>
+<ul>
+<li><strong>NaI(Tl)</strong> (415 nm) plus bialkali PMT remains the standard for spectroscopy. SiPM-NUV is competitive at small sizes; SiPM-RGB is a poor match.</li>
+<li><strong>CeBr3</strong> (370 nm) plus bialkali PMT, or SiPM-NUV. Quartz-window PMT is not necessary because the emission is above 350 nm.</li>
+<li><strong>LaBr3:Ce</strong> (380 nm) plus bialkali PMT or SiPM-NUV. Same story as CeBr3.</li>
+<li><strong>LSO:Ce, LYSO:Ce</strong> (420 nm) plus bialkali PMT or SiPM-NUV. Standard PET pairing is LYSO with NUV-HD SiPM arrays.</li>
+<li><strong>GAGG:Ce</strong> (520 nm) plus SiPM-RGB, or silicon photodiode for high-volume readout. Bialkali PMT loses substantial light here.</li>
+<li><strong>BGO</strong> (480 nm) plus bialkali PMT or SiPM-NUV. Modest light yield is the limiting factor regardless of photodetector choice.</li>
+</ul>
+<h2 id="window-materials-and-absorption">6.6 Window Materials and Absorption</h2>
+<p>The window between the scintillator and the photodetector matters at short wavelengths. Borosilicate glass cuts off sharply below about 300 nm. Quartz (fused silica) extends transmission to about 180 nm. UV-transmitting glass (UVT) is intermediate. For BaF2 fast-component readout, quartz is required. For most other scintillators, borosilicate is fine.</p>
+<p>Optical coupling between the scintillator and the photodetector is done with optical grease (silicone-based, refractive index 1.4 to 1.5) for routine applications, optical cement (cured epoxy or silicone) for permanent bonds, or air gaps where mechanical separation is required and the resulting transmission loss can be tolerated. Index-matching in optical contact reduces Fresnel reflection losses, which can otherwise total 10 to 20 percent at each interface.</p>
+<div class="callout">
+<p><strong>BNC in Practice - The PDE check before the order</strong></p>
+<p>Two minutes with a calculator before placing an order saves a lot of regret afterward. Pull the scintillator emission spectrum from the manufacturer datasheet. Pull the photodetector PDE curve. Multiply them point by point and integrate. The number that drops out is the effective photodetection efficiency, which is what determines pulse height and energy resolution at the system level. A high-yield scintillator paired with the wrong photodetector can deliver less measured signal than a modest scintillator paired correctly. The spectral overlap matters more than either component’s headline number.</p>
+</div>
+<h2 id="the-matching-that-disappears-when-you-get-it-right">6.7 The Matching That Disappears When You Get It Right</h2>
+<p>A correctly matched scintillator and photodetector deliver a pulse height that the engineer can stop thinking about. An incorrectly matched pair shows up as marginal energy resolution that nobody can quite explain, light yield numbers that disagree with the datasheet, and an instrument that almost works. Most of the practical complaints about scintillation detectors trace to spectral mismatch somewhere in the chain. The chapters that follow assume the matching has been done. Chapter 9 details how the photodetectors themselves work, and Chapter 11 puts them inside actual housings.</p>
+<h2 id="chapter-6-quiz">Chapter 6 Quiz</h2>
+<ol type="1">
+<li>CsI(Tl) emits at 550 nm. A bialkali PMT has approximately what QE at 550 nm.</li>
+<li>The same CsI(Tl) crystal coupled to an RGB-optimized SiPM array shows what relative pulse height compared to NaI(Tl).</li>
+<li>Why is a quartz window required for the BaF2 fast component but not for NaI(Tl).</li>
+<li>What is the typical refractive index range of optical grease used for scintillator-photodetector coupling.</li>
+<li>Index-matched optical contact reduces what specific loss mechanism.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Approximately 12 percent.</li>
+<li>Approximately 165 percent of NaI(Tl), substantially better than NaI(Tl) on a PMT.</li>
+<li>The BaF2 fast component emits at 220 nm, in the deep UV. Borosilicate glass cuts off sharply below 300 nm. Quartz transmits down to about 180 nm. NaI(Tl) emits at 415 nm, well above the borosilicate cutoff.</li>
+<li>1.4 to 1.5.</li>
+<li>Fresnel reflection at the scintillator-window and window-photodetector interfaces, which can total 10 to 20 percent at each interface without index-matching.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] M. Mazzillo et al., “Silicon photomultiplier technology at STMicroelectronics,” <em>IEEE Trans. Nucl. Sci.</em>, vol. 56, no. 4, pp. 2434-2442, 2009.</p>
+<p>[2] N. Otte et al., "Characterization of three high-efficiency and blue-sensitive silicon photomultipliers,</p>
+</body>
+</html>

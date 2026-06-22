@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 560" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Annotated Smith chart primer showing constant resistance circles, constant reactance arcs, key landmarks, and a matching example">
+  <defs>
+    <style>
+      .r{stroke:#0078B6;stroke-width:1.6;fill:none;}
+      .x{stroke:#C77E00;stroke-width:1.6;fill:none;}
+      .axis{stroke:#003D6B;stroke-width:2;fill:none;}
+      .rim{stroke:#003D6B;stroke-width:2.5;fill:none;}
+      .ttl{fill:#003D6B;font-size:18px;font-weight:700;}
+      .lbl{fill:#2C3E50;font-size:13px;}
+      .lblr{fill:#0078B6;font-size:12px;font-weight:700;}
+      .lblx{fill:#C77E00;font-size:12px;font-weight:700;}
+      .pt{fill:#4B2A6B;}
+      .ptl{fill:#4B2A6B;font-size:13px;font-weight:700;}
+      .navy{fill:#003D6B;font-size:13px;font-weight:700;}
+      .vswr{stroke:#4B2A6B;stroke-width:1.6;stroke-dasharray:5 4;fill:none;}
+    </style>
+  </defs>
+
+  <text x="410" y="32" text-anchor="middle" class="ttl">Smith Chart Primer: Normalized Impedance Plane</text>
+
+  <!-- Chart geometry: unit circle radius 220, center (410,300).
+       Constant-R circles: center x = 410 + 220*r/(1+r), radius = 220/(1+r).
+       Constant-X arcs: center (630, 300 - 220/x), radius 220/|x|, clipped to unit circle. -->
+
+  <!-- outer rim (r=0, pure reactance, |Gamma|=1) -->
+  <circle class="rim" cx="410" cy="300" r="220"/>
+
+  <!-- horizontal real axis -->
+  <line class="axis" x1="190" y1="300" x2="630" y2="300"/>
+
+  <!-- constant resistance circles -->
+  <!-- r=0.2: cx=410+36.7=446.7 r=183.3 -->
+  <circle class="r" cx="446.7" cy="300" r="183.3"/>
+  <!-- r=0.5: cx=410+73.3=483.3 r=146.7 -->
+  <circle class="r" cx="483.3" cy="300" r="146.7"/>
+  <!-- r=1: cx=410+110=520 r=110 -->
+  <circle class="r" cx="520" cy="300" r="110"/>
+  <!-- r=2: cx=410+146.7=556.7 r=73.3 -->
+  <circle class="r" cx="556.7" cy="300" r="73.3"/>
+  <!-- r=5: cx=410+183.3=593.3 r=36.7 -->
+  <circle class="r" cx="593.3" cy="300" r="36.7"/>
+
+  <!-- constant reactance arcs, clipped to unit circle -->
+  <clipPath id="unit"><circle cx="410" cy="300" r="220"/></clipPath>
+  <g clip-path="url(#unit)">
+    <!-- x=+1 -->
+    <circle class="x" cx="630" cy="80" r="220"/>
+    <!-- x=-1 -->
+    <circle class="x" cx="630" cy="520" r="220"/>
+    <!-- x=+0.5 -->
+    <circle class="x" cx="630" cy="-140" r="440"/>
+    <!-- x=-0.5 -->
+    <circle class="x" cx="630" cy="740" r="440"/>
+    <!-- x=+2 -->
+    <circle class="x" cx="630" cy="190" r="110"/>
+    <!-- x=-2 -->
+    <circle class="x" cx="630" cy="410" r="110"/>
+    <!-- VSWR = 2 circle, centered at match, radius = |Gamma|*220 = 0.333*220 = 73.3 -->
+    <circle class="vswr" cx="410" cy="300" r="73.3"/>
+  </g>
+
+  <!-- key landmark points -->
+  <!-- short circuit z=0 at left -->
+  <circle class="pt" cx="190" cy="300" r="5"/>
+  <text x="186" y="288" text-anchor="end" class="ptl">Short (z = 0)</text>
+  <!-- open circuit z=inf at right -->
+  <circle class="pt" cx="630" cy="300" r="5"/>
+  <text x="634" y="288" class="ptl">Open (z = &#8734;)</text>
+  <!-- center: matched z=1 (50 ohm) -->
+  <circle class="pt" cx="410" cy="300" r="6"/>
+  <text x="410" y="332" text-anchor="middle" class="ptl">Match (z = 1.0)</text>
+
+  <!-- example load marker z = 0.5 + j1 -->
+  <!-- on r=0.5 circle and x=+1 arc; place near intersection -->
+  <circle cx="463" cy="205" r="6" fill="#003D6B"/>
+  <text x="473" y="198" class="navy">Load z = 0.5 + j1</text>
+
+  <!-- VSWR label -->
+  <text x="410" y="240" text-anchor="middle" class="ptl" font-size="11px">VSWR = 2 circle</text>
+
+  <!-- region labels -->
+  <text x="410" y="546" text-anchor="middle" class="lbl">Upper half: inductive ( +jX )    &#183;    Lower half: capacitive ( &#8722;jX )</text>
+
+  <!-- legend -->
+  <rect x="30" y="455" width="190" height="96" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5"/>
+  <line x1="44" y1="478" x2="74" y2="478" class="r"/>
+  <text x="82" y="482" class="lblr">Constant resistance</text>
+  <line x1="44" y1="504" x2="74" y2="504" class="x"/>
+  <text x="82" y="508" class="lblx">Constant reactance</text>
+  <line x1="44" y1="530" x2="74" y2="530" class="vswr"/>
+  <text x="82" y="534" class="ptl" font-size="12px">Constant VSWR</text>
+</svg>

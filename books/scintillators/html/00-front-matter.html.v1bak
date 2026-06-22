@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>00-front-matter</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">00-front-matter</h1>
+</header>
+<h1 id="the-nuts-and-bolts-and-crystals-of">THE NUTS AND BOLTS (AND CRYSTALS) OF</h1>
+<h1 id="scintillator-technology">SCINTILLATOR TECHNOLOGY</h1>
+<p><em>by <strong>David Brown</strong></em> <em>building on work by Paul Schotanus</em></p>
+<p><strong>Berkeley Nucleonics Corporation</strong></p>
+<p><em>SECOND EDITION - EXPANDED &amp; UPDATED</em></p>
+<hr />
+<h2 id="copyright">Copyright</h2>
+<p>Copyright (c) 2026 Berkeley Nucleonics Corporation. All rights reserved.</p>
+<p>This book builds on the original <em>The Nuts and Bolts (and Crystals) of Scintillator Technology</em> by Paul Schotanus, copyright (c) 2023, used and expanded with acknowledgment.</p>
+<p>No part of this book may be reproduced, stored, or transmitted by any means, whether auditory, graphic, mechanical, or electronic, without written permission of the publisher, except in the case of brief excerpts used in critical articles and reviews.</p>
+<p>Trademarks are the property of their respective owners. Reference to specific products in this book is for educational purposes and does not imply endorsement.</p>
+<p>Berkeley Nucleonics Corporation 2955 Kerner Boulevard San Rafael, California 94901 United States www.berkeleynucleonics.com</p>
+<p>ISBN (print): TBD ISBN (electronic): TBD</p>
+<p>First edition: 2023 (Schotanus) Second edition: 2026 (Brown)</p>
+<hr />
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This second edition stands on a long line of work that came before it. The first edition was authored by Paul Schotanus of Scionix Holland. His clear, practical voice on detector design carried that book and is the reason this second edition exists at all. Where his text remains the right way to explain something, it has been kept. Where the field has moved on, it has been expanded.</p>
+<p>Scionix Holland B.V., Berkeley Nucleonics’ partner in scintillation detector design and manufacture, supplied the configuration data, photographs, and decades of operational experience that fill the practical sections of this book. Berkeley Nucleonics has represented Scionix in the United States, and several other markets, for years. That partnership is the source of the configuration tables and worked examples presented throughout.</p>
+<p>The materials science updates draw on papers presented at the SCINT conference series and the IEEE Nuclear Science Symposium and Medical Imaging Conference. Citations point to the original work. Errors of interpretation are mine alone.</p>
+<p>James McQuaid edited the first edition. His editorial pass shaped the voice that this second edition tries to maintain.</p>
+<p>Finally, thanks to the engineers, applications scientists, and students who asked the questions that ended up driving most of the new content. If you have asked us about Cs2HfCl6, about a CsI(Tl) tile coupled to a SiPM array, about what to put inside an SMR containment monitor, you helped write this book.</p>
+<p>David Brown Berkeley Nucleonics Corporation San Rafael, California 2026</p>
+<hr />
+<h2 id="foreword---why-a-second-edition-and-why-now">Foreword - Why a Second Edition, and Why Now</h2>
+<p>A reference guide on scintillation detectors does not need to be rewritten every three years. Most of the physics is settled. NaI(Tl) was characterized in the 1940s. Photomultiplier tubes were perfected in the 1960s. The basic decision tree, do you want resolution or count rate or ruggedness, has not changed in a generation.</p>
+<p>So why a new edition.</p>
+<p>Three things changed at once.</p>
+<p>First, the materials science moved. SCINT 2022 in Santa Fe and SCINT 2024 in Milan presented results on chloride hafnates, multi-doped garnets, and elpasolite improvements that move real numbers, not just laboratory curiosities. Cs2HfCl6 reached eight times the light yield of NaI(Tl) at room temperature in measurements reported by multiple independent groups. The garnet family expanded beyond GAGG into LuAG, GYAGG, and co-doped variants that approach 30 ns decay times with light yields that compete with traditional choices. CsI(Tl) coupled to silicon photomultiplier arrays is now a default architecture in handheld instruments, not an experimental configuration. The first edition mentioned GAGG and CLLBC as new. The second edition has to treat them as standard and introduce the next wave.</p>
+<p>Second, the readout side moved faster than the materials side. Silicon photomultipliers in 2026 deliver photodetection efficiencies above 60 percent at the relevant emission wavelengths, with crosstalk and dark count rates that have dropped by an order of magnitude over the past five years. CMOS-integrated digital silicon photomultipliers, microchannel plate PMTs for picosecond timing, and timestamped network-attached pulse processors have changed what a detector chain can look like. A book that does not teach an engineer how to design with these is not telling the truth about the field today.</p>
+<p>Third, and this is the part you do not see in the IEEE proceedings yet, nuclear is back. Not as a retrofit, as a growth industry. The artificial-intelligence buildout drove power demand into the wall in 2024. Hyperscale operators signed power purchase agreements for small modular reactor capacity that did not exist on the grid yet. The first SMR designs reached US Nuclear Regulatory Commission certification. Microreactor pilots moved off paper. Fusion machines started returning fusion energy gain factors above unity in 2023, and follow-on machines are being built. Space nuclear power moved from PowerPoint to flight hardware. Every one of those programs needs scintillation detectors, often in configurations that did not exist as catalog items five years ago. The detector engineer who used to spend the morning sizing a NaI(Tl) probe for a portal monitor now spends it sizing a CLLBC array for an SMR containment skid.</p>
+<p>The first edition served a steady-state market. The second edition has to serve a market that is growing again. That is why the chapter on the Nuclear Renaissance is in here, why the appendices on standards and use cases got expanded, why a careers chapter exists at all. New people are going to enter this field for the first time in twenty years. Some of them will read this book.</p>
+<p>David Brown</p>
+<hr />
+<h2 id="preface---how-to-read-this-book">Preface - How to Read This Book</h2>
+<p>This is a reference book, but it is also a tutorial. The first edition was largely a working document, written by an experienced detector engineer for other experienced detector engineers. That voice is still here. What is added is more pedagogy, more decision frameworks, more worked examples, more pointers to the deeper literature for readers who are entering the field rather than living in it.</p>
+<p>Three reading paths.</p>
+<p><strong>If you are a graduate student or new hire</strong>, read straight through. Chapters 1 through 9 build the foundation. Chapter 10 onwards gets practical. The “Going Deeper” sidebars carry the math; skip them on a first read and come back when you need them. The Glossary in Appendix G is your friend.</p>
+<p><strong>If you are a technical buyer or applications engineer specifying a detector</strong>, start with Chapter 8 (selection), use the cross-reference matrix in Appendix B (use cases) to find your application, then jump back into Chapters 3 (materials) and 11 (configurations) as needed. Appendix D (standards) tells you what the regulators will require.</p>
+<p><strong>If you are a designer building or specifying a custom detector</strong>, the order is Chapters 9 (photodetectors), 11 (configurations), 13 (electronics). Appendix A (new materials) tells you what is on the shelf today and what is shipping in 18 months.</p>
+<p>A note on what the book does not do. It does not catalog every vendor in the industry. Berkeley Nucleonics Corporation represents Scionix Holland B.V. in the United States and other regions, and the configurations shown in the practical chapters reflect that partnership. Other detector manufacturers exist and do good work. The choice not to name them in a reference book published by their competitor is a deliberate one. Where neutrality matters, the book references the original materials-science literature directly so the reader can form their own opinion.</p>
+<p>A note on units. SI throughout, except where industry convention is so strong that the convention wins. So gram per cubic centimeter for density, electron-volt for energies, nanosecond for decay times, percent FWHM at 662 keV for energy resolution. Photons per MeV for light yield. Counts per second per becquerel for efficiency.</p>
+<p>A note on citations. References use the IEEE numbered style: bracketed numbers in text, full reference list at the end of each chapter, master bibliography in Appendix H. SCINT and IEEE NSS papers are cited by their published conference record where one exists, by IEEE Transactions on Nuclear Science where the paper progressed to journal form, and by author plus year and venue where neither has been published yet.</p>
+<p>The book is meant to be marked up. Read it with a pen.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<p><strong>Front Matter</strong> - Title page - Copyright - Acknowledgments - Foreword - Why a second edition, and why now - Preface - How to read this book - Table of Contents - List of Figures - List of Tables</p>
+<p><strong>Chapter 1 - Why scintillation, why now</strong> ……………………………………… 1 <strong>Chapter 2 - Scintillation physics: from photon to count</strong> ……………………… 7 <strong>Chapter 3 - Properties and use of scintillation materials</strong> ……………………. 21 <strong>Chapter 4 - Thermal neutron detection</strong> …………………………………….. 43 <strong>Chapter 5 - Radiation damage</strong> …………………………………………….. 53 <strong>Chapter 6 - Emission spectra and photodetector matching</strong> …………………….. 59 <strong>Chapter 7 - Temperature influence on scintillation response</strong> …………………. 65 <strong>Chapter 8 - Choosing the scintillator for your application</strong> ………………….. 71 <strong>Chapter 9 - Scintillation light detection devices</strong> ………………………….. 81 <strong>Chapter 10 - Detector nomenclature and type numbering</strong> ……………………… 103 <strong>Chapter 11 - Detector configurations</strong> …………………………………….. 109 <strong>Chapter 12 - Examples of standard detector configurations</strong> ………………….. 125 <strong>Chapter 13 - Detector electronics</strong> ……………………………………….. 139 <strong>Chapter 14 - Detectors for the Nuclear Renaissance</strong> ………………………… 153</p>
+<p><strong>Appendix A - New Materials Deep Dive</strong> …………………………………….. 171 <strong>Appendix B - Use Cases &amp; Applications Catalog</strong> …………………………….. 193 <strong>Appendix C - Industry Trends &amp; Market Outlook</strong> …………………………….. 213 <strong>Appendix D - Standards, Regulations &amp; Certifications</strong> ………………………. 227 <strong>Appendix E - Jobs &amp; Careers in the Field</strong> …………………………………. 241 <strong>Appendix F - MCA &amp; Reference Guide</strong> ………………………………………. 253 <strong>Appendix G - Glossary &amp; Acronym Index</strong> ……………………………………. 267 <strong>Appendix H - Master Bibliography</strong> ………………………………………… 277</p>
+<hr />
+</body>
+</html>

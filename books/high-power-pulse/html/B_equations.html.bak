@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appendix B: Equations Reference</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-companion.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="appendix-b">Appendix B</h1>
+<h2 id="quick-reference-equations-and-tables">Quick-Reference Equations and Tables</h2>
+<p>A single-page reference of the equations and constants that recur throughout pulser engineering.</p>
+<hr />
+<h3 id="b1-fundamental-relationships">B.1 Fundamental relationships</h3>
+<p><strong>Ohm's law.</strong> V = I × R</p>
+<p><strong>Power.</strong> P = V × I</p>
+<p><strong>Capacitor energy.</strong> E = ½ × C × V²</p>
+<p><strong>Inductor energy.</strong> E = ½ × L × I²</p>
+<p><strong>Capacitor current.</strong> I = C × dV/dt</p>
+<p><strong>Inductor voltage.</strong> V = L × dI/dt</p>
+<p><strong>RC time constant.</strong> τ = R × C</p>
+<p><strong>LR time constant.</strong> τ = L / R</p>
+<hr />
+<h3 id="b2-pulse-shape-relationships">B.2 Pulse-shape relationships</h3>
+<p><strong>Rise time, bandwidth.</strong> t_rise ≈ 0.35 / BW (for single-pole Gaussian-like response)</p>
+<p><strong>Combined rise time.</strong> t_observed = sqrt(t_signal² + t_scope²) (for measurement chain analysis)</p>
+<p><strong>Capacitive load power.</strong> P = C × V² × F (for periodic pulses into capacitive loads)</p>
+<p><strong>Droop on flat top.</strong> ΔV = (I × Δt) / C (for capacitive energy store)</p>
+<p><strong>Compliance voltage required for inductive load.</strong> V = L × dI/dt + R × I</p>
+<hr />
+<h3 id="b3-transmission-line-constants">B.3 Transmission line constants</h3>
+<p><strong>Characteristic impedance.</strong> Z = sqrt(L / C) where L and C are per-unit-length</p>
+<p><strong>Propagation velocity.</strong> v = 1 / sqrt(L × C) ≈ 0.66c for typical coaxial cable with PE dielectric</p>
+<p><strong>Round-trip delay.</strong> t_RT = 2 × length / v</p>
+<p><strong>Reflection coefficient at load.</strong> Γ = (Z_load − Z_cable) / (Z_load + Z_cable)</p>
+<table>
+<thead><tr><th>Cable</th><th>Impedance</th><th>Velocity</th><th>Capacitance per ft</th></tr></thead>
+<tbody>
+<tr><td>RG-58</td><td>50 Ω</td><td>0.66c</td><td>28.5 pF</td></tr>
+<tr><td>RG-59</td><td>75 Ω</td><td>0.66c</td><td>21 pF</td></tr>
+<tr><td>RG-62</td><td>93 Ω</td><td>0.84c</td><td>13.5 pF</td></tr>
+<tr><td>RG-11</td><td>75 Ω</td><td>0.66c</td><td>17 pF</td></tr>
+<tr><td>RG-213</td><td>50 Ω</td><td>0.66c</td><td>30.8 pF</td></tr>
+</tbody>
+</table>
+<hr />
+<h3 id="b4-switch-parameters">B.4 Switch parameters</h3>
+<table>
+<thead><tr><th>Technology</th><th>Voltage class</th><th>Rise time</th><th>Repetition rate</th></tr></thead>
+<tbody>
+<tr><td>Silicon MOSFET</td><td>30 V to 1.7 kV</td><td>10 to 100 ns</td><td>to MHz</td></tr>
+<tr><td>IGBT</td><td>600 V to 6.5 kV</td><td>100 ns to 1 µs</td><td>to 100 kHz</td></tr>
+<tr><td>SiC MOSFET</td><td>600 V to 3.3 kV</td><td>5 to 30 ns</td><td>to MHz</td></tr>
+<tr><td>GaN HEMT</td><td>100 V to 900 V</td><td>sub-1 ns</td><td>to 10 MHz</td></tr>
+<tr><td>Thyratron</td><td>5 to 50 kV</td><td>10 to 100 ns</td><td>to 10 kHz</td></tr>
+<tr><td>Spark gap</td><td>10 kV to MV</td><td>1 to 100 ns</td><td>to 1 kHz</td></tr>
+<tr><td>Pseudospark</td><td>10 to 50 kV</td><td>5 to 50 ns</td><td>to 10 kHz</td></tr>
+<tr><td>DSRD</td><td>1 to 30 kV</td><td>sub-1 ns</td><td>to 100 kHz</td></tr>
+<tr><td>PCSS (GaAs)</td><td>1 to 100 kV</td><td>sub-100 ps</td><td>low (lifetime limited)</td></tr>
+</tbody>
+</table>
+<hr />
+<h3 id="b5-dielectric-strengths">B.5 Dielectric strengths</h3>
+<table>
+<thead><tr><th>Medium</th><th>Breakdown field</th></tr></thead>
+<tbody>
+<tr><td>Air at sea level</td><td>30 kV/cm</td></tr>
+<tr><td>SF6 at 1 atm</td><td>80 kV/cm</td></tr>
+<tr><td>Mineral oil</td><td>200 kV/cm</td></tr>
+<tr><td>Deionized water (microsecond pulse)</td><td>250 kV/cm</td></tr>
+<tr><td>Polyethylene</td><td>200 kV/cm</td></tr>
+<tr><td>Mylar</td><td>280 kV/cm</td></tr>
+<tr><td>Glass</td><td>100 to 400 kV/cm</td></tr>
+<tr><td>Polyimide (Kapton)</td><td>250 kV/cm</td></tr>
+</tbody>
+</table>
+<hr />
+<h3 id="b6-spark-gap-breakdown-paschens-law">B.6 Spark-gap breakdown (Paschen's law)</h3>
+<p>For uniform-field gaps in air, breakdown voltage as a function of pressure-distance product (p × d):</p>
+<table>
+<thead><tr><th>p × d (Torr·cm)</th><th>Approximate breakdown voltage</th></tr></thead>
+<tbody>
+<tr><td>1 (Paschen minimum)</td><td>330 V</td></tr>
+<tr><td>10</td><td>750 V</td></tr>
+<tr><td>100</td><td>4 kV</td></tr>
+<tr><td>760 (1 atm × 1 cm)</td><td>30 kV</td></tr>
+<tr><td>7600 (1 atm × 10 cm)</td><td>250 kV</td></tr>
+</tbody>
+</table>
+<p>The Paschen curve has a minimum near p × d = 1 Torr·cm. Below the minimum, breakdown voltage rises again because the gas density is too low for collision ionization.</p>
+<hr />
+<h3 id="b7-common-pulse-width-rise-time-conventions">B.7 Common pulse-width / rise-time conventions</h3>
+<table>
+<thead><tr><th>Convention</th><th>Definition</th><th>Industries</th></tr></thead>
+<tbody>
+<tr><td>Rise time 10%-90%</td><td>Time from 10% to 90% of amplitude</td><td>Most engineering, default in this book</td></tr>
+<tr><td>Rise time 20%-80%</td><td>Time from 20% to 80% of amplitude</td><td>Some EMC standards</td></tr>
+<tr><td>Rise time 0%-90%</td><td>Time from baseline to 90% of amplitude</td><td>Less common</td></tr>
+<tr><td>Pulse width FWHM</td><td>Width at 50% of peak amplitude</td><td>Laser, medical</td></tr>
+<tr><td>Pulse width 90%-90%</td><td>Width between 90% points on rising and falling edges</td><td>Some EMC and pulsed-power</td></tr>
+</tbody>
+</table>
+<p>When in doubt, document which convention you are using. Disagreements between scope vendor defaults and instrument data sheets are a common source of measurement confusion.</p>
+<hr />
+<h3 id="b8-useful-constants">B.8 Useful constants</h3>
+<table>
+<thead><tr><th>Constant</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Speed of light, vacuum</td><td>3 × 10^8 m/s</td></tr>
+<tr><td>Speed of light in PE-dielectric coax</td><td>2 × 10^8 m/s</td></tr>
+<tr><td>Permittivity of vacuum, ε₀</td><td>8.85 × 10^−12 F/m</td></tr>
+<tr><td>Permeability of vacuum, µ₀</td><td>1.26 × 10^−6 H/m</td></tr>
+<tr><td>Boltzmann constant, k</td><td>1.38 × 10^−23 J/K</td></tr>
+<tr><td>Charge of electron, e</td><td>1.60 × 10^−19 C</td></tr>
+</tbody>
+</table>
+<hr />
+<p><em>End of Appendix B.</em></p>
+<footer>The Nuts and Bolts of High Power Pulse Generators &middot; David A. Brown &middot; Berkeley Nucleonics Corporation</footer>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="A_glossary.html">&larr; Appendix A: Glossary</a>
+    <a class="mid"  href="../index.html">Contents</a>
+    <a class="next" href="C_vendors_standards.html">Appendix C: Vendors and Standards &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</body>
+</html>

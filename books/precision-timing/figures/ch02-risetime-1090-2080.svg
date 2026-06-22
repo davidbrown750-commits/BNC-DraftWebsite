@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" font-family="Helvetica, Arial, sans-serif">
+  <title>Rise time measured 10/90 versus 20/80</title>
+  <desc>One rising leading edge drawn as a smooth exponential curve from 0 to 100 percent. Dashed reference levels at 10, 20, 80 and 90 percent. Nested brackets show the 10-90 rise-time interval and the shorter 20-80 interval.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="60" y="40" fill="#003D6B" font-size="16" font-weight="700">Rise Time: 10/90 vs 20/80</text>
+
+  <!-- Plot geometry: baseline(0%) y=320, top(100%) y=80, x from 90..660 -->
+  <!-- Levels: 0%->320, 10%->296, 20%->272, 80%->128, 90%->104, 100%->80 -->
+
+  <!-- axes -->
+  <line x1="90" y1="80" x2="90" y2="320" stroke="#b6c2cc" stroke-width="1.5"/>
+  <line x1="90" y1="320" x2="660" y2="320" stroke="#b6c2cc" stroke-width="1.5"/>
+  <text x="34" y="200" fill="#2C3E50" font-size="13" transform="rotate(-90 34 200)" text-anchor="middle">Voltage</text>
+  <text x="375" y="408" fill="#2C3E50" font-size="13" text-anchor="middle">Time &#8594;</text>
+
+  <!-- reference dashed level lines -->
+  <g stroke="#113163" stroke-width="1.2" stroke-dasharray="5 4">
+    <line x1="90" y1="296" x2="600" y2="296"/>
+    <line x1="90" y1="272" x2="600" y2="272"/>
+    <line x1="90" y1="128" x2="600" y2="128"/>
+    <line x1="90" y1="104" x2="600" y2="104"/>
+  </g>
+  <!-- 0% and 100% reference (lighter) -->
+  <g stroke="#b6c2cc" stroke-width="1" stroke-dasharray="3 3">
+    <line x1="90" y1="320" x2="600" y2="320"/>
+    <line x1="90" y1="80" x2="600" y2="80"/>
+  </g>
+
+  <g fill="#2C3E50" font-size="12" text-anchor="end">
+    <text x="84" y="324">0%</text>
+    <text x="84" y="300">10%</text>
+    <text x="84" y="276">20%</text>
+    <text x="84" y="132">80%</text>
+    <text x="84" y="108">90%</text>
+    <text x="84" y="84">100%</text>
+  </g>
+
+  <!-- rising edge: smooth exponential-style S curve from baseline to top -->
+  <!-- starts at (120,320), settles near (470,80) -->
+  <path d="M 120 320 C 210 320 235 90 470 80 L 600 80"
+        fill="none" stroke="#0655a3" stroke-width="2.5"/>
+  <!-- baseline tail before edge -->
+  <line x1="90" y1="320" x2="120" y2="320" stroke="#0655a3" stroke-width="2.5"/>
+
+  <!-- Approximate crossing x positions on the modeled curve -->
+  <!-- 10% (y296) ~ x=210 ; 20% (y272) ~ x=232 ; 80% (y128) ~ x=320 ; 90% (y104) ~ x=348 -->
+  <!-- vertical drop lines from crossings -->
+  <g stroke="#C77E00" stroke-width="1.3" stroke-dasharray="4 3">
+    <line x1="210" y1="296" x2="210" y2="385"/>
+    <line x1="232" y1="272" x2="232" y2="360"/>
+    <line x1="320" y1="128" x2="320" y2="360"/>
+    <line x1="348" y1="104" x2="348" y2="385"/>
+  </g>
+  <!-- crossing dots -->
+  <g fill="#0655a3">
+    <circle cx="210" cy="296" r="3"/>
+    <circle cx="232" cy="272" r="3"/>
+    <circle cx="320" cy="128" r="3"/>
+    <circle cx="348" cy="104" r="3"/>
+  </g>
+
+  <!-- 20-80 bracket (narrower, nested, upper) -->
+  <g stroke="#C77E00" stroke-width="2" fill="none">
+    <line x1="232" y1="352" x2="320" y2="352"/>
+    <line x1="232" y1="347" x2="232" y2="357"/>
+    <line x1="320" y1="347" x2="320" y2="357"/>
+    <path d="M 240 348 L 232 352 L 240 356"/>
+    <path d="M 312 348 L 320 352 L 312 356"/>
+  </g>
+  <text x="276" y="345" fill="#C77E00" font-size="13" font-weight="700" text-anchor="middle">t_rise (20-80)</text>
+
+  <!-- 10-90 bracket (wider, lower) -->
+  <g stroke="#C77E00" stroke-width="2" fill="none">
+    <line x1="210" y1="378" x2="348" y2="378"/>
+    <line x1="210" y1="373" x2="210" y2="383"/>
+    <line x1="348" y1="373" x2="348" y2="383"/>
+    <path d="M 218 374 L 210 378 L 218 382"/>
+    <path d="M 340 374 L 348 378 L 340 382"/>
+  </g>
+  <text x="279" y="372" fill="#C77E00" font-size="13" font-weight="700" text-anchor="middle">t_rise (10-90)</text>
+
+  <!-- note -->
+  <text x="600" y="200" fill="#2C3E50" font-size="12" text-anchor="end">20-80 &#8776; 0.6&#8211;0.7 &#215; 10-90</text>
+</svg>

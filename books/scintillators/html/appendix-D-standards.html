@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>D-standards</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="appendix-d---standards-regulations-certifications">Appendix D. Standards, Regulations &amp; Certifications</h1>
+<p>A scintillation detector deployed for any regulated purpose, from nuclear medicine to homeland security to power-reactor monitoring, has to meet specific performance and quality standards. This appendix walks through the standards an applications engineer working in radiation detection in 2026 should know, organized by application area, with cross-references to the chapters where the underlying technology is covered.</p>
+<p>The full text of the standards is not reproduced here; the appendix is a navigation guide and a summary of what each standard covers and when it applies. The standards documents themselves should be obtained from the issuing bodies for any work that requires compliance.</p>
+<h2 id="d.1-ansi-n42-series-radiation-detection">D.1 ANSI N42 Series (Radiation Detection)</h2>
+<p>The American National Standards Institute N42 series is the dominant set of performance standards for radiation detection instruments in homeland security and CBRN response. Maintained by the IEEE Nuclear and Plasma Sciences Society (NPSS) Standards Committee. Most of the series has been adopted internationally as IEC standards as well.</p>
+<p>Key standards in the series.</p>
+<p><strong>ANSI N42.32</strong> - Performance criteria for handheld radiation detectors used as personal radiation detectors (PRDs). Covers wearable instruments providing simple alarm functions. Sensitivity, dose-rate accuracy, energy response.</p>
+<p><strong>ANSI N42.33</strong> - Portable monitoring instruments for detection and identification of medical and industrial isotopes. Covers gamma-only handheld instruments and the energy-resolution and isotope-identification performance they must meet.</p>
+<p><strong>ANSI N42.34</strong> - Radioisotope identification devices (RIIDs). Covers isotope-identifying handheld instruments. Includes specific test procedures and isotope libraries that the device must successfully identify.</p>
+<p><strong>ANSI N42.35</strong> - Radiation portal monitors for use in homeland security. Covers vehicle and pedestrian portal monitors. Detection sensitivity, false alarm rate, occupancy detection.</p>
+<p><strong>ANSI N42.38</strong> - Spectroscopic radiation portal monitors. Covers spectroscopic portal monitors with identification capability. Stricter than N42.35.</p>
+<p><strong>ANSI N42.42</strong> - Data format standard for radiation detectors used for homeland security. Defines the N42 XML file format for spectrum and event data. Universal export format expected from any modern handheld or fixed instrument.</p>
+<p><strong>ANSI N42.43</strong> - Performance criteria for mobile and transportable radiation monitoring systems. Covers vehicle-mounted detector systems used for area survey.</p>
+<p><strong>ANSI N42.48</strong> - Performance criteria for spectroscopic personal radiation detectors (SPRDs). Covers spectroscopic versions of the wearable detectors covered by N42.32.</p>
+<p><strong>ANSI N42.49A and B</strong> - Performance criteria for alarming personal radiation detectors. Two parts covering different operational modes.</p>
+<p><strong>ANSI N42.53</strong> - Performance criteria for personal emergency radiation detectors used in emergency response. Covers responder-specific instruments with high dose-rate range.</p>
+<p><strong>ANSI N42.55</strong> - Performance criteria for backpack-based radiation detection systems. Covers wearable backpack systems combining gamma and neutron detection with GPS tracking.</p>
+<p>For the engineer specifying a detector for a homeland-security application, ANSI N42.34 (RIID) and N42.42 (data format) are the two most-referenced standards. New US Department of Homeland Security procurements typically reference one or more of the N42 series in the requirements specification.</p>
+<p>Cross-reference: Chapters 8 and 12 (handheld and portal configurations); Appendix B Section B.1 (homeland security applications).</p>
+<h2 id="d.2-iec-61577-series-radon">D.2 IEC 61577 Series (Radon)</h2>
+<p>The International Electrotechnical Commission's 61577 series covers radon and radon-decay-product measurement instruments. Used in environmental radon monitoring and in workplace radon-protection programs.</p>
+<p><strong>IEC 61577-1</strong> - General specifications for radon and radon decay product measurement instruments.</p>
+<p><strong>IEC 61577-2</strong> - Specific requirements for radon-only measurement instruments.</p>
+<p><strong>IEC 61577-3</strong> - Specific requirements for radon-decay-product measurement instruments.</p>
+<p><strong>IEC 61577-4</strong> - Performance test procedures.</p>
+<p>Radon monitoring uses scintillation detectors in some configurations (alpha scintillation cells, ZnS:Ag screens) but is dominated by other technologies (electret ionization chambers, charcoal absorption, semiconductor detectors). Scintillation has a niche where continuous monitoring is required.</p>
+<h2 id="d.3-iec-61526-personal-dosimetry">D.3 IEC 61526 (Personal Dosimetry)</h2>
+<p>Personal dosimetry covers wearable dose-measurement instruments worn by radiation workers. The classical badges (TLD, OSL) are not scintillation-based; some modern electronic personal dosimeters use scintillation, particularly for energy-discriminating dose measurement.</p>
+<p><strong>IEC 61526</strong> - Performance requirements for direct-reading personal dose-rate equivalent meters and personal dose-rate equivalent meters for X, gamma, neutron, and beta radiations.</p>
+<p>Cross-reference: Appendix B Section B.4 (environmental and radiological monitoring).</p>
+<h2 id="d.4-iaea-standards-and-safeguards">D.4 IAEA Standards and Safeguards</h2>
+<p>The International Atomic Energy Agency publishes safety standards (IAEA Safety Series) and safeguards documents (INFCIRC and similar) that apply to nuclear materials accountancy and to radiation safety at nuclear facilities. Relevant to scintillation detection are:</p>
+<p><strong>IAEA Safety Standards Series GSR Part 3</strong> - Radiation protection and safety of radiation sources: international basic safety standards.</p>
+<p><strong>IAEA Safety Reports Series and Technical Reports Series</strong> - Various reports covering specific application areas and methodologies.</p>
+<p><strong>IAEA Nuclear Security Series</strong> - Documents covering radiation detection in security contexts, including ITDB (Incident and Trafficking Database) reporting and detector performance recommendations for border control.</p>
+<p>For SMR and microreactor deployments, IAEA reports on advanced reactor instrumentation (the IAEA SMR Technology Catalog and supporting documents) drive specifications for monitoring detector requirements at facilities under safeguards.</p>
+<p>Cross-reference: Chapter 14 (nuclear renaissance applications); Appendix B Sections B.4 and B.6 (environmental monitoring, defense).</p>
+<h2 id="d.5-us-nuclear-regulatory-commission-framework">D.5 US Nuclear Regulatory Commission Framework</h2>
+<p>The US NRC's regulatory framework affects detectors used at NRC-licensed facilities (commercial nuclear power plants, research reactors, fuel-cycle facilities, medical facilities using by-product material).</p>
+<p><strong>10 CFR Part 20</strong> - Standards for protection against radiation. Sets dose limits and required monitoring.</p>
+<p><strong>10 CFR Part 50</strong> - Domestic licensing of production and utilization facilities. Covers commercial nuclear power plants. Detector requirements for radiation monitoring are referenced in plant technical specifications.</p>
+<p><strong>10 CFR Part 52</strong> - Licenses, certifications, and approvals for nuclear power plants. Covers SMR design certification (the path NuScale used to receive its 2023 design certification).</p>
+<p><strong>Regulatory Guide 1.97</strong> - Criteria for accident monitoring instrumentation. Drives specifications for in-containment area monitors.</p>
+<p><strong>Regulatory Guide 4.15</strong> - Quality assurance for radiological monitoring programs. Drives detector calibration and QC procedures.</p>
+<p>For SMR-specific deployments, the NRC's licensing documents for each certified design include specific detector and monitoring requirements that the licensee must meet.</p>
+<p>Cross-reference: Chapter 14 Section 14.2 (SMR monitoring); Appendix B Section B.4.</p>
+<h2 id="d.6-european-basic-safety-standards">D.6 European Basic Safety Standards</h2>
+<p>The European Union's Council Directive 2013/59/EURATOM (the Basic Safety Standards Directive) sets the framework for radiation protection across EU member states. Detector specifications for environmental monitoring, workforce dosimetry, and nuclear facility instrumentation are derived from member-state implementations of this directive.</p>
+<p>National implementations vary. Germany's StrlSchG (Strahlenschutzgesetz), France's regulations under ASN (Autorité de sûreté nucléaire), and the UK's framework under ONR (Office for Nuclear Regulation) are the principal references for installations in those countries.</p>
+<p>For multi-country deployments, the IEC standards (Section D.2 above) are the lingua franca that any national framework can reference.</p>
+<h2 id="d.7-itrap10-and-international-detector-testing">D.7 ITRAP+10 and International Detector Testing</h2>
+<p>The International Technical Working Group on Radiation Detection's ITRAP+10 (Illicit Trafficking Radiation Assessment Program plus 10) test program is the principal international comparative test of homeland-security radiation detectors. The 2010 program tested handheld and portal instruments from major vendors against a standardized set of source scenarios. Results published by the European Commission Joint Research Centre.</p>
+<p>ITRAP+10 successor programs and equivalent national-level tests (US DHS DNDO Long Range Test Bed, UK Centre for Applied Science and Technology) continue to publish comparative test results that influence procurement decisions globally.</p>
+<p>For an applications engineer specifying a detector for homeland-security procurement, ITRAP+10 results and successor tests are the public benchmarks against which competing offerings are compared.</p>
+<h2 id="d.8-dot-and-shipping-classifications">D.8 DOT and Shipping Classifications</h2>
+<p>Sealed radioactive sources and instruments containing them are subject to transportation regulations. In the US, these are administered by the Department of Transportation under 49 CFR. International shipments fall under IATA and IMDG codes.</p>
+<p><strong>49 CFR 173 (subpart I)</strong> - Class 7 (radioactive) materials. Specifies packaging, labeling, and shipping documentation for radioactive materials including sealed sources used in detectors.</p>
+<p><strong>IAEA SSR-6</strong> - Regulations for the safe transport of radioactive material. The international equivalent.</p>
+<p>For detectors containing built-in calibration sources (such as Am-241 alpha pulsers, Section 11.7), the shipping classification depends on the activity and the device packaging. Most catalog detectors with standard pulser activities ship as exempt packages, with minimal regulatory burden, but the manufacturer documentation should always be consulted.</p>
+<h2 id="d.9-calibration-traceability">D.9 Calibration Traceability</h2>
+<p>Quantitative radiation measurement requires calibration traceable to national or international standards. Three major metrology institutes:</p>
+<p><strong>NIST</strong> (National Institute of Standards and Technology, USA) - Primary US calibration source for radioactivity measurement standards. NIST-traceable calibration certificates are the US standard.</p>
+<p><strong>NPL</strong> (National Physical Laboratory, UK) - Primary UK metrology institute. NPL-traceable calibration is the UK and (post-Brexit) often the European standard.</p>
+<p><strong>PTB</strong> (Physikalisch-Technische Bundesanstalt, Germany) - Primary German metrology institute. PTB traceability is widely accepted in Europe.</p>
+<p>Other major institutes include LNHB (France), KRISS (South Korea), NMIJ (Japan), and NIM (China). Detector calibrations performed against any of these are mutually recognized through the CIPM Mutual Recognition Arrangement.</p>
+<p>For an applications engineer specifying a calibration requirement, traceability to one of the major institutes is typically sufficient. The specific institute is a customer preference issue rather than a technical issue.</p>
+<div class="callout">
+<p><strong>BNC in Practice - The standards conversation in the procurement document</strong></p>
+<p>A procurement document that says "compliant with applicable standards" is incomplete. Specific standards numbers (ANSI N42.34, IEC 61577-2, etc.) and specific traceability requirements (NIST traceability, accredited calibration laboratory) must be in writing. The supplier reads these as binding requirements and prices the detector and calibration accordingly. The customer needs them on record for audit. The omission of specific standards is a procurement problem that surfaces during commissioning, not at procurement, when it is harder to fix.</p>
+</div>
+<h2 id="d.10-where-the-standards-landscape-is-moving">D.10 Where the Standards Landscape Is Moving</h2>
+<p>Three trends in standards over the past five years are worth tracking.</p>
+<p><strong>Convergence on N42.42 as the universal data format.</strong> The XML-based N42.42 has displaced vendor-specific formats in most new instrument designs. By 2030, requiring N42.42 export is likely to be a default in any detector procurement document.</p>
+<p><strong>Integration of cybersecurity requirements.</strong> Network-attached detectors are subject to cybersecurity requirements (IEC 62443 for industrial control systems, IEC 81001 for healthcare, NRC cybersecurity rules for nuclear facilities) in addition to the radiation-detection performance standards. The cybersecurity layer is not yet mature in detector standards but is rapidly becoming one.</p>
+<p><strong>Specific standards for advanced reactors.</strong> As SMR and microreactor deployments accelerate, regulatory bodies are issuing reactor-specific guidance for instrumentation. The IAEA and several national regulators have ongoing work on this. By 2030, advanced-reactor-specific monitoring standards are likely to be a standard reference for SMR-related procurements.</p>
+<p>For an engineer entering the field today, the standards landscape is wide and constantly evolving. The strategy that has worked for working engineers is to know the principal standards in the application area of focus deeply, and to keep a finder index of the rest. This appendix is structured to support that strategy.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="appendix-C-trends.html">&larr; Appendix C. Trends</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="appendix-E-careers.html">Appendix E. Careers &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

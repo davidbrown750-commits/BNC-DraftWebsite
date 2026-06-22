@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+  <title id="title">Gate polarity and inhibit</title>
+  <desc id="desc">Two stacked timelines share one gate signal. The active-high panel enables a pulse train while the gate is high; the active-low panel enables it while the gate is low. Inhibited intervals are shaded.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="36" y="36" fill="#003D6B" font-size="16" font-weight="700">Gate Polarity and Inhibit</text>
+
+  <!-- ===== Shared gate signal ===== -->
+  <text x="36" y="78" fill="#2C3E50" font-size="13" font-weight="700">Gate</text>
+  <!-- gate: low(80-220) high(220-440) low(440-660) -->
+  <line x1="80" y1="90" x2="80" y2="70"/>
+  <path d="M80,90 L220,90 L220,70 L440,70 L440,90 L660,90" fill="none" stroke="#0078B6" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="300" y="64" fill="#2C3E50" font-size="11">HIGH</text>
+  <text x="135" y="104" fill="#2C3E50" font-size="11">LOW</text>
+  <text x="535" y="104" fill="#2C3E50" font-size="11">LOW</text>
+
+  <!-- ===== Panel 1: Active-high ===== -->
+  <text x="36" y="158" fill="#003D6B" font-size="13" font-weight="700">Active-high</text>
+  <text x="36" y="174" fill="#2C3E50" font-size="11">enabled while HIGH</text>
+  <!-- inhibited shaded regions: where gate is LOW (80-220, 440-660) -->
+  <rect x="80" y="180" width="140" height="70" fill="#e6edf3"/>
+  <rect x="440" y="180" width="220" height="70" fill="#e6edf3"/>
+  <line x1="80" y1="245" x2="660" y2="245" stroke="#b6c2cc" stroke-width="1"/>
+  <!-- pulse train present only 220-440 -->
+  <path d="M240,245 L240,195 L260,195 L260,245 M290,245 L290,195 L310,195 L310,245 M340,245 L340,195 L360,195 L360,245 M390,245 L390,195 L410,195 L410,245" fill="none" stroke="#003D6B" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="118" y="218" fill="#2C3E50" font-size="11">inhibited</text>
+  <text x="510" y="218" fill="#2C3E50" font-size="11">inhibited</text>
+
+  <!-- ===== Panel 2: Active-low ===== -->
+  <text x="36" y="300" fill="#003D6B" font-size="13" font-weight="700">Active-low</text>
+  <text x="36" y="316" fill="#2C3E50" font-size="11">enabled while LOW</text>
+  <!-- inhibited shaded where gate is HIGH (220-440) -->
+  <rect x="220" y="322" width="220" height="70" fill="#e6edf3"/>
+  <line x1="80" y1="387" x2="660" y2="387" stroke="#b6c2cc" stroke-width="1"/>
+  <!-- pulse train present 80-220 and 440-660 -->
+  <path d="M95,387 L95,337 L115,337 L115,387 M145,387 L145,337 L165,337 L165,387 M195,387 L195,337 L215,337 L215,387" fill="none" stroke="#003D6B" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M455,387 L455,337 L475,337 L475,387 M505,387 L505,337 L525,337 L525,387 M555,387 L555,337 L575,337 L575,387 M605,387 L605,337 L625,337 L625,387" fill="none" stroke="#003D6B" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="298" y="360" fill="#2C3E50" font-size="11">inhibited</text>
+</svg>

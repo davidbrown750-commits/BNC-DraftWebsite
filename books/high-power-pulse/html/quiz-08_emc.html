@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chapter 8 Quiz: Grounding and EMC</title>
+<link rel="stylesheet" href="light-touch.css"/>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<script defer src="reader-prompt.js"></script>
+
+<h1>Chapter 8 Quiz: Grounding and EMC</h1>
+<p class="lead">Pick one answer per question, then check your score. Your answers are saved on this device, so you can come back to them.</p>
+
+<div id="bnc-quiz"></div>
+
+<script>
+window.QUIZ_DATA = {
+  bookKey: "hppg",
+  chapterKey: "08",
+  title: "Chapter 8 Quiz",
+  questions: [
+    {
+      q: "The \"single-point ground\" approach works well at:",
+      options: [
+        "All frequencies, in all bench geometries.",
+        "Low frequencies and small bench geometries, where wire impedance back to the ground point is small.",
+        "Only above 100 MHz.",
+        "Only with copper plane construction."
+      ],
+      answer: 1,
+      explain: "Single-point ground works while the wire impedance to the star point stays small, which holds at low frequency on a small bench."
+    },
+    {
+      q: "A common-mode choke on a monitor cable suppresses:",
+      options: [
+        "Differential-mode signal currents.",
+        "Common-mode noise currents flowing in the same direction on the conductor and shield.",
+        "DC offsets on the signal.",
+        "Low-frequency drift."
+      ],
+      answer: 1,
+      explain: "A common-mode choke presents high impedance to currents flowing the same way on both conductors, leaving the signal untouched."
+    },
+    {
+      q: "Fiber-optic trigger distribution provides what advantage over electrical trigger distribution?",
+      options: [
+        "Lower latency.",
+        "Galvanic isolation between trigger source and pulser, eliminating common-mode pickup.",
+        "Cheaper cable cost.",
+        "Lower jitter under all conditions."
+      ],
+      answer: 1,
+      explain: "Fiber carries no current, so it galvanically isolates the trigger source from the pulser and breaks the common-mode path."
+    },
+    {
+      q: "The most important external protection for a scope front-end measuring near a high-power pulser is:",
+      options: [
+        "A high-input-impedance buffer.",
+        "A series resistor and a gas-discharge tube at the scope input.",
+        "A bandpass filter.",
+        "A fiber-optic isolator on the trigger."
+      ],
+      answer: 1,
+      explain: "A series resistor limits surge current and a gas-discharge tube clamps overvoltage, protecting the sensitive scope front-end."
+    },
+    {
+      q: "Two cables grounded at both ends are most likely to:",
+      options: [
+        "Reduce signal pickup.",
+        "Form a ground loop that picks up environmental noise.",
+        "Improve impedance matching.",
+        "Add useful damping."
+      ],
+      answer: 1,
+      explain: "Grounding a cable at both ends closes a loop that couples environmental fields, the classic ground-loop noise source."
+    },
+    {
+      q: "A copper-plane ground reference is preferred over single-point ground when:",
+      options: [
+        "Signal frequencies are below 1 kHz.",
+        "Rise times are below 10 ns and the bench is large enough that single-point ground impedances become significant.",
+        "The bench is portable.",
+        "Cost is the primary concern."
+      ],
+      answer: 1,
+      explain: "Fast edges and a large bench make wire ground impedances matter, so a low-impedance copper plane outperforms a star ground."
+    },
+    {
+      q: "The \"plane-and-bond\" grounding approach achieves low impedance at high frequencies because:",
+      options: [
+        "The plane has zero resistance.",
+        "The plane has so much surface area that current spreads out and impedance everywhere is small.",
+        "The plane only conducts at the surface.",
+        "The plane is electrically isolated from earth."
+      ],
+      answer: 1,
+      explain: "A broad plane lets return current spread out, so the inductance and impedance between any two points stay low at high frequency."
+    }
+  ]
+};
+</script>
+<script defer src="quiz-mc.js"></script>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="08_emc.html">&larr; Back to Chapter 8</a>
+    <a class="mid" href="../index.html">Contents</a>
+    <a class="next" href="quiz-09_products.html">Chapter 9 Quiz &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

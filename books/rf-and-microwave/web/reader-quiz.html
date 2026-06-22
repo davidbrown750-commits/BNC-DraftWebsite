@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Read This Book — RF Reader Quiz | Berkeley Nucleonics</title>
+  <meta name="description" content="A 60-second quiz that builds your personalized reading roadmap for The Nuts and Bolts of Radio Frequency, 2nd Edition." />
+  <style>
+    /* ---------- BNC palette (mirrors _bnc-style.css) ---------- */
+    :root {
+      --bnc-deep-navy: #003D6B;
+      --bnc-sky-blue: #0078B6;
+      --bnc-navy-shadow: #001f38;
+      --bnc-charcoal: #2C3E50;
+      --bnc-light-steel: #ECEFF1;
+      --bnc-light-cyan: #7fdbff;
+      --bnc-bright-cyan: #00b4ff;
+      --bnc-vivid-cyan: #00d4ff;
+      --bnc-target-green: #00ff88;
+      --bnc-white: #ffffff;
+      --bnc-rule: #b6c2cc;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 12pt;
+      line-height: 1.55;
+      color: var(--bnc-charcoal);
+      background: var(--bnc-light-steel);
+    }
+
+    .quiz-shell {
+      max-width: 780px;
+      margin: 40px auto;
+      padding: 0 24px 64px;
+    }
+
+    /* ---------- Header / brand band ---------- */
+    .brand {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--bnc-sky-blue);
+      margin: 0 0 6px;
+    }
+    .quiz-title {
+      font-family: Helvetica, "Arial Black", sans-serif;
+      font-size: 30pt;
+      line-height: 1.08;
+      color: var(--bnc-deep-navy);
+      margin: 0 0 8px;
+      border-bottom: 3px solid var(--bnc-deep-navy);
+      padding-bottom: 12px;
+    }
+    .quiz-sub {
+      font-style: italic;
+      color: var(--bnc-charcoal);
+      margin: 8px 0 24px;
+    }
+
+    /* ---------- Progress ---------- */
+    .progress-wrap {
+      margin: 20px 0 28px;
+    }
+    .progress-meta {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      color: var(--bnc-charcoal);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar {
+      height: 6px;
+      background: var(--bnc-white);
+      border: 1px solid var(--bnc-rule);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--bnc-sky-blue), var(--bnc-vivid-cyan));
+      transition: width 0.35s ease;
+    }
+
+    /* ---------- Cards / questions ---------- */
+    .card {
+      background: var(--bnc-white);
+      border-left: 4px solid var(--bnc-sky-blue);
+      padding: 24px 28px;
+      margin: 18px 0;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+    .card h2 {
+      font-family: Helvetica, Arial, sans-serif;
+      color: var(--bnc-deep-navy);
+      font-size: 18pt;
+      margin: 0 0 16px;
+      line-height: 1.3;
+    }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--bnc-rule);
+      border-radius: 4px;
+      background: var(--bnc-white);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.05s;
+      font-family: Georgia, serif;
+      font-size: 12pt;
+      line-height: 1.45;
+    }
+    .option:hover {
+      border-color: var(--bnc-sky-blue);
+      background: #f6fbff;
+    }
+    .option.selected {
+      border-color: var(--bnc-deep-navy);
+      background: #eaf4fb;
+    }
+    .option input { margin-top: 4px; }
+
+    /* ---------- Buttons ---------- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 22px;
+    }
+    button.btn {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+    button.primary {
+      background: var(--bnc-deep-navy);
+      color: var(--bnc-white);
+    }
+    button.primary:hover { background: var(--bnc-navy-shadow); }
+    button.primary:disabled {
+      background: #aab7c0;
+      cursor: not-allowed;
+    }
+    button.ghost {
+      background: transparent;
+      color: var(--bnc-sky-blue);
+      border: 1px solid var(--bnc-rule);
+    }
+    button.ghost:hover {
+      background: var(--bnc-white);
+      border-color: var(--bnc-sky-blue);
+    }
+
+    /* ---------- Result page ---------- */
+    .result-banner {
+      background: var(--bnc-deep-navy);
+      color: var(--bnc-white);
+      padding: 28px 28px;
+      margin: 18px 0 0;
+      border-left: 4px solid var(--bnc-vivid-cyan);
+    }
+    .result-banner .path-tag {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--bnc-light-cyan);
+      margin: 0 0 6px;
+    }
+    .result-banner h2 {
+      font-family: Helvetica, "Arial Black", sans-serif;
+      font-size: 22pt;
+      margin: 0 0 10px;
+      color: var(--bnc-white);
+    }
+    .result-banner p { margin: 0; color: #d6e6f1; }
+
+    .roadmap {
+      background: var(--bnc-white);
+      padding: 22px 28px;
+      border-left: 4px solid var(--bnc-charcoal);
+      margin: 0 0 24px;
+    }
+    .roadmap h3 {
+      font-family: Helvetica, Arial, sans-serif;
+      color: var(--bnc-deep-navy);
+      font-size: 14pt;
+      margin: 0 0 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .roadmap ol { padding-left: 22px; margin: 0; }
+    .roadmap li { margin: 8px 0; line-height: 1.5; }
+    .roadmap li b { color: var(--bnc-deep-navy); }
+    .pen-line {
+      font-style: italic;
+      color: var(--bnc-sky-blue);
+      margin-top: 18px;
+      border-top: 1px solid var(--bnc-rule);
+      padding-top: 14px;
+    }
+
+    /* ---------- Lead form ---------- */
+    .form-card {
+      background: var(--bnc-white);
+      padding: 26px 28px;
+      border-left: 4px solid var(--bnc-sky-blue);
+    }
+    .form-card h3 {
+      font-family: Helvetica, Arial, sans-serif;
+      color: var(--bnc-deep-navy);
+      font-size: 18pt;
+      margin: 0 0 6px;
+    }
+    .form-card .small {
+      font-size: 10pt;
+      color: var(--bnc-charcoal);
+      margin: 0 0 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 14px;
+    }
+    .grid .full { grid-column: 1 / -1; }
+    label.field {
+      display: flex;
+      flex-direction: column;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      letter-spacing: 0.5px;
+      color: var(--bnc-charcoal);
+    }
+    label.field span.lbl {
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 9pt;
+      margin-bottom: 4px;
+      color: var(--bnc-deep-navy);
+    }
+    input[type="text"],
+    input[type="email"],
+    select {
+      font-family: Georgia, serif;
+      font-size: 12pt;
+      padding: 10px 12px;
+      border: 1px solid var(--bnc-rule);
+      border-radius: 3px;
+      background: var(--bnc-white);
+      color: var(--bnc-charcoal);
+      width: 100%;
+    }
+    input:focus, select:focus {
+      outline: 2px solid var(--bnc-sky-blue);
+      outline-offset: 1px;
+    }
+
+    .opt-row {
+      margin: 14px 0 4px;
+      padding: 14px;
+      background: #f6fbff;
+      border: 1px dashed var(--bnc-sky-blue);
+      border-radius: 3px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 11pt;
+    }
+    .opt-row input { margin-top: 4px; }
+    .address-block {
+      display: none;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--bnc-rule);
+    }
+    .address-block.show { display: block; }
+    .consent {
+      margin-top: 16px;
+      font-size: 10pt;
+      color: var(--bnc-charcoal);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .submit-row {
+      margin-top: 22px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .form-error {
+      color: #c62828;
+      font-size: 10pt;
+      margin-top: 10px;
+      min-height: 14px;
+    }
+
+    /* ---------- Success state ---------- */
+    .success {
+      background: var(--bnc-white);
+      border-left: 4px solid var(--bnc-target-green);
+      padding: 30px 28px;
+      text-align: center;
+    }
+    .success h2 {
+      font-family: Helvetica, Arial, sans-serif;
+      color: var(--bnc-deep-navy);
+      font-size: 22pt;
+      margin: 0 0 12px;
+    }
+    .success p { margin: 6px 0; }
+    .success .links {
+      margin-top: 22px;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 11pt;
+    }
+    .success a { color: var(--bnc-sky-blue); text-decoration: none; border-bottom: 1px solid var(--bnc-sky-blue); }
+
+    /* ---------- Footer ---------- */
+    .footer-note {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 9pt;
+      color: var(--bnc-charcoal);
+      text-align: center;
+      margin-top: 36px;
+      letter-spacing: 0.5px;
+    }
+    .footer-note a { color: var(--bnc-sky-blue); }
+
+    /* ---------- Mobile ---------- */
+    @media (max-width: 600px) {
+      .quiz-shell { padding: 0 16px 48px; margin: 24px auto; }
+      .quiz-title { font-size: 24pt; }
+      .grid { grid-template-columns: 1fr; }
+      .card, .form-card, .roadmap, .result-banner, .success { padding: 20px 18px; }
+    }
+
+    /* ---------- Visibility helpers ---------- */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <main class="quiz-shell">
+
+    <p class="brand">Berkeley Nucleonics &nbsp;·&nbsp; Interactive Reference Guide</p>
+    <h1 class="quiz-title">How to Read This Book</h1>
+    <p class="quiz-sub">A 60-second quiz that builds a personalized reading roadmap for <em>The Nuts and Bolts of Radio Frequency</em>, Second Edition. The book has three reading paths. Let's find yours.</p>
+
+    <!-- Progress -->
+    <div class="progress-wrap" id="progress-wrap">
+      <div class="progress-meta">
+        <span id="progress-label">Question 1 of 6</span>
+        <span id="progress-pct">17%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <!-- Quiz container -->
+    <section id="quiz-section"></section>
+
+    <!-- Result + form (built dynamically) -->
+    <section id="result-section" class="hidden"></section>
+
+    <!-- Success -->
+    <section id="success-section" class="hidden"></section>
+
+    <p class="footer-note">
+      © 2026 Berkeley Nucleonics Corporation · San Rafael, California ·
+      <a href="/" target="_blank" rel="noopener">berkeleynucleonics.com</a>
+    </p>
+
+  </main>
+
+  <script>
+    /* =========================================================
+       CONFIG — David, swap these two values when going live
+       ========================================================= */
+    const FORM_ENDPOINT = "https://formspree.io/f/xeewaglw";
+    // Recommended: Formspree free plan or Web3Forms — both email
+    // davidbrown750@gmail.com (or any BNC alias) on submit.
+    // No backend code needed.
+
+    const ACADEMY_URL = "https://academy.berkeleynucleonics.com";
+
+    /* =========================================================
+       QUIZ DEFINITION
+       ========================================================= */
+    const QUESTIONS = [
+      {
+        id: "q1_persona",
+        prompt: "What best describes you right now?",
+        options: [
+          { label: "Student or new technician learning RF measurement",                          scores: { student: 3 } },
+          { label: "New hire at a test lab, manufacturer, or instrument vendor",                  scores: { student: 3, operator: 1 } },
+          { label: "Test engineer or buyer choosing instruments for a specific project",          scores: { operator: 3 } },
+          { label: "RF or hardware engineer designing and validating circuits or systems",        scores: { designer: 3 } },
+          { label: "Technical writer, manager, or lead who wants context on the field",           scores: { student: 2, operator: 1 } }
+        ]
+      },
+      {
+        id: "q2_intent",
+        prompt: "What problem brought you to the book today?",
+        options: [
+          { label: "I want to understand how RF measurement works, end to end",                              scores: { student: 3 } },
+          { label: "I need to pick the right instrument for a specific test I have to run",                  scores: { operator: 3 } },
+          { label: "I'm designing or validating RF hardware and need measurement-grade detail",             scores: { designer: 3 } },
+          { label: "I'm doing market or competitive research on RF test equipment",                         scores: { student: 1, operator: 2 } },
+          { label: "I'm preparing for an interview, exam, or a new role in the field",                       scores: { student: 3 } }
+        ]
+      },
+      {
+        id: "q3_familiarity",
+        prompt: "Which of these terms feels most familiar?",
+        options: [
+          { label: "I'm new to most of these — I'd need a glossary",                                scores: { student: 3 } },
+          { label: "dBm, sine wave, frequency vs time domain, the 50-ohm world",                    scores: { student: 1, operator: 2, designer: 1 } },
+          { label: "RBW, VBW, noise figure, S-parameters, ACPR",                                    scores: { operator: 1, designer: 2 } },
+          { label: "Probability of intercept, TRL calibration, EVM, real-time bandwidth",           scores: { designer: 3 } }
+        ]
+      },
+      {
+        id: "q4_application",
+        prompt: "Which kind of work is closest to what you actually do?",
+        options: [
+          { label: "Spectrum monitoring, interference hunting, or signal capture",          scores: { operator: 2, designer: 1 }, appNote: "Ch 4, 5 + App D" },
+          { label: "Transmitter or receiver bring-up and characterization",                 scores: { operator: 2, designer: 1 }, appNote: "Ch 9, 10" },
+          { label: "Component and network measurement (filters, amps, cables, matching)",   scores: { operator: 1, designer: 2 }, appNote: "Ch 6, 8 + App C" },
+          { label: "EMI/EMC pre-compliance and compliance testing",                         scores: { operator: 2, designer: 1 }, appNote: "Ch 11 + App F" },
+          { label: "Modern wireless (5G, 6G, mmWave) or massive-MIMO/OTA test",             scores: { operator: 1, designer: 2 }, appNote: "Ch 12" },
+          { label: "Defense and aerospace RF (radar, EW, SIGINT)",                          scores: { operator: 1, designer: 2 }, appNote: "Ch 13" },
+          { label: "Not sure yet — I'm exploring",                                          scores: { student: 3 },               appNote: "start with Ch 1-3" }
+        ]
+      },
+      {
+        id: "q5_time",
+        prompt: "How much time do you have for this book in the next two weeks?",
+        options: [
+          { label: "30 minutes — I just need answers to a specific question", scores: { operator: 3, designer: 1 } },
+          { label: "Two or three hours over the next week",                  scores: { student: 1, operator: 2, designer: 2 } },
+          { label: "Five-plus hours — I want to read it properly",            scores: { student: 3, designer: 1 } }
+        ]
+      },
+      {
+        id: "q6_outcome",
+        prompt: "What would the book have to do for you to call it useful?",
+        options: [
+          { label: "Teach me RF measurement from first principles",                                       scores: { student: 3 } },
+          { label: "Help me confidently pick an instrument and defend the choice to a boss or customer",  scores: { operator: 3 } },
+          { label: "Give me decision-grade detail for the RF hardware I'm designing or validating",       scores: { designer: 3 } },
+          { label: "Help me hire, onboard, or manage someone in this field",                              scores: { student: 1, operator: 2, designer: 1 } }
+        ]
+      }
+    ];
+
+    /* =========================================================
+       RESULT DEFINITIONS
+       ========================================================= */
+    const RESULTS = {
+      student: {
+        tag: "Path 1 of 3",
+        title: "You're on the foundation track — read straight through.",
+        why: "You said you want to learn RF measurement, you have time, or some of the terminology is still new. The book was structured for this. Don't skip the early chapters; the fundamentals carry everything that follows.",
+        roadmap: [
+          ["Ch 1 — Why RF, Why Now.", "A short orientation to the field and the three reading paths."],
+          ["Ch 2 — RF Fundamentals: time and frequency domains.", "Sine waves, decibels, impedance, the 50-ohm world. The spine of the whole book."],
+          ["Ch 3 — The EM spectrum and signal generation.", "Bands, allocation, propagation, and how signals are made."],
+          ["Ch 4 — Spectrum analysis: the swept superheterodyne analyzer.", "The single most important instrument to understand. Take your time here."],
+          ["Ch 5 — Real-time and FFT-based analysis.", "Where the swept analyzer runs out, and what replaces it."],
+          ["Ch 6, 7 — Network analysis and noise figure.", "The two core component-level measurements."],
+          ["Ch 8-11 get practical.", "Tracking generators, transmitter, receiver, and EMI testing."],
+          ["Ch 12-14.", "Modern wireless, defense RF, and where the field is going."],
+          ["Appendix A — RF Equations and Quick Reference.", "Keep it open in another tab for the formulas and worked examples."],
+          ["A note.", "Skip the \"Going Deeper\" sidebars on a first pass — come back to them when you need the math."]
+        ],
+        pen: "The book is meant to be marked up. Read it with a pen."
+      },
+      operator: {
+        tag: "Path 2 of 3",
+        title: "You're on the instrument track — start with the measurement that matches your test.",
+        why: "You have a test to run and need the right instrument and the right technique. Jump to the chapter for your measurement, then use the selection guide to match the instrument to the job and defend the choice.",
+        roadmap: [
+          ["Ch 4 — The swept superheterodyne analyzer.", "Start here for any spectrum or power measurement. Settings, RBW/VBW, sweep-speed tradeoffs."],
+          ["Ch 7 — Noise parameters and noise figure.", "If sensitivity or front-end performance is on the line."],
+          ["Ch 9, 10 — Transmitter and receiver testing.", "Harmonics, spurs, ACPR, EVM, sensitivity, selectivity, intermodulation."],
+          ["Ch 11 — EMI/EMC testing and compliance.", "Pre-compliance and compliance benches; what each one needs."],
+          ["Appendix D — Instrument Selection Guide.", "Match the measurement to the instrument. This is your decision page."],
+          ["Ch 5 — Real-time and FFT analysis.", "If your signal is brief, hopping, or hard to catch on a swept sweep."],
+          ["Appendix B — Decibel and unit conversion tables.", "For the math you'll do at the bench."]
+        ],
+        pen: "Appendix D is the most consequential page in this book for a buyer. Spend twenty minutes there before you spec anything."
+      },
+      designer: {
+        tag: "Path 3 of 3",
+        title: "You're on the design track — start with network analysis and noise.",
+        why: "You're building or validating hardware. You don't need a tutorial on what a sine wave is. You need S-parameters, calibration, noise, and the system context your hardware lands in.",
+        roadmap: [
+          ["Ch 6 — Vector network analysis.", "S-parameters, calibration (SOLT, TRL), error correction, the Smith chart."],
+          ["Ch 7 — Noise parameters and noise figure.", "Front-end noise, Y-factor, and modern noise-figure measurement."],
+          ["Ch 11 — EMI/EMC testing and compliance.", "Design for compliance before the pre-scan catches you."],
+          ["Ch 12 — Modern wireless: 5G, 6G, mmWave.", "FR2, massive MIMO, beamforming, OTA. The systems your hardware serves."],
+          ["Appendix C — Smith Chart Primer.", "Reading the chart and a matching walkthrough."],
+          ["Appendix A — RF Equations and Quick Reference.", "Core formulas and worked examples, kept on the bench."],
+          ["Ch 4, 5 — Spectrum and real-time analysis.", "Cross-check your design with the right capture technique."]
+        ],
+        pen: "The signals got harder to see since the first edition. If you haven't validated against a real-time analyzer yet, Chapter 5 will change how you bring up hardware."
+      }
+    };
+
+    /* =========================================================
+       STATE
+       ========================================================= */
+    const state = {
+      idx: 0,
+      answers: {},   // question id -> { choiceIndex, label, scores, appNote }
+      path: null,
+      totals: { student: 0, operator: 0, designer: 0 }
+    };
+
+    /* =========================================================
+       RENDER QUESTION
+       ========================================================= */
+    const quizSection = document.getElementById("quiz-section");
+    const resultSection = document.getElementById("result-section");
+    const successSection = document.getElementById("success-section");
+    const progressFill = document.getElementById("progress-fill");
+    const progressLabel = document.getElementById("progress-label");
+    const progressPct = document.getElementById("progress-pct");
+    const progressWrap = document.getElementById("progress-wrap");
+
+    function renderQuestion() {
+      const q = QUESTIONS[state.idx];
+      const selected = state.answers[q.id]?.choiceIndex;
+      const total = QUESTIONS.length;
+
+      const pct = Math.round(((state.idx) / total) * 100);
+      progressFill.style.width = pct + "%";
+      progressLabel.textContent = `Question ${state.idx + 1} of ${total}`;
+      progressPct.textContent = pct + "%";
+
+      quizSection.innerHTML = `
+        <article class="card" aria-labelledby="${q.id}-prompt">
+          <h2 id="${q.id}-prompt">${q.prompt}</h2>
+          <div class="options" role="radiogroup" aria-labelledby="${q.id}-prompt">
+            ${q.options.map((opt, i) => `
+              <label class="option ${selected === i ? "selected" : ""}">
+                <input type="radio" name="${q.id}" value="${i}" ${selected === i ? "checked" : ""}/>
+                <span>${opt.label}</span>
+              </label>
+            `).join("")}
+          </div>
+          <div class="nav">
+            <button class="btn ghost" id="back-btn" ${state.idx === 0 ? "disabled" : ""}>← Back</button>
+            <button class="btn primary" id="next-btn" disabled>${state.idx === total - 1 ? "See my reading roadmap →" : "Next →"}</button>
+          </div>
+        </article>
+      `;
+
+      const nextBtn = document.getElementById("next-btn");
+      const backBtn = document.getElementById("back-btn");
+
+      // attach option handlers
+      quizSection.querySelectorAll(".option").forEach((el, i) => {
+        el.addEventListener("click", () => {
+          quizSection.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+          el.classList.add("selected");
+          el.querySelector("input").checked = true;
+          state.answers[q.id] = {
+            choiceIndex: i,
+            label: q.options[i].label,
+            scores: q.options[i].scores,
+            appNote: q.options[i].appNote || null
+          };
+          nextBtn.disabled = false;
+        });
+      });
+
+      // enable next if previously answered
+      if (selected !== undefined) nextBtn.disabled = false;
+
+      nextBtn.addEventListener("click", () => {
+        if (!state.answers[q.id]) return;
+        if (state.idx < total - 1) {
+          state.idx++;
+          renderQuestion();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          showResult();
+        }
+      });
+
+      backBtn.addEventListener("click", () => {
+        if (state.idx > 0) {
+          state.idx--;
+          renderQuestion();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    }
+
+    /* =========================================================
+       SCORE + RESULT
+       ========================================================= */
+    function computePath() {
+      const totals = { student: 0, operator: 0, designer: 0 };
+      Object.values(state.answers).forEach(a => {
+        Object.entries(a.scores || {}).forEach(([k, v]) => { totals[k] = (totals[k] || 0) + v; });
+      });
+      state.totals = totals;
+      // Tie break: designer > operator > student (more specific signal wins)
+      const order = ["designer", "operator", "student"];
+      let best = order[0];
+      order.forEach(k => { if (totals[k] > totals[best]) best = k; });
+      // check ties manually so the order array decides the winner
+      const max = Math.max(...Object.values(totals));
+      const winners = order.filter(k => totals[k] === max);
+      best = winners[0];
+      state.path = best;
+      return best;
+    }
+
+    function showResult() {
+      const path = computePath();
+      const r = RESULTS[path];
+
+      // hide quiz + progress
+      quizSection.classList.add("hidden");
+      progressWrap.classList.add("hidden");
+      resultSection.classList.remove("hidden");
+
+      // app reference from Q4 if present
+      const appNote = state.answers["q4_application"]?.appNote;
+
+      const appNoteHtml = appNote
+        ? `<li><b>For your kind of work, go to ${appNote}.</b> Those chapters map directly to what you said you do day to day.</li>`
+        : "";
+
+      resultSection.innerHTML = `
+        <div class="result-banner">
+          <p class="path-tag">${r.tag}</p>
+          <h2>${r.title}</h2>
+          <p>${r.why}</p>
+        </div>
+
+        <div class="roadmap">
+          <h3>Your reading roadmap</h3>
+          <ol>
+            ${r.roadmap.map(([h, d]) => `<li><b>${h}</b>${d ? " " + d : ""}</li>`).join("")}
+            ${appNoteHtml}
+          </ol>
+          <p class="pen-line">${r.pen}</p>
+        </div>
+
+        <div class="form-card">
+          <h3>Get your roadmap by email — plus a free print copy if you want one.</h3>
+          <p class="small">We'll email your personalized roadmap to you. No spam. One newsletter a quarter at most.</p>
+
+          <form id="lead-form" novalidate>
+            <div class="grid">
+              <label class="field">
+                <span class="lbl">First name *</span>
+                <input type="text" name="first_name" required autocomplete="given-name" />
+              </label>
+              <label class="field">
+                <span class="lbl">Last name *</span>
+                <input type="text" name="last_name" required autocomplete="family-name" />
+              </label>
+              <label class="field full">
+                <span class="lbl">Email *</span>
+                <input type="email" name="email" required autocomplete="email" />
+              </label>
+              <label class="field">
+                <span class="lbl">Company / Institution</span>
+                <input type="text" name="company" autocomplete="organization" />
+              </label>
+              <label class="field">
+                <span class="lbl">Role / Title</span>
+                <input type="text" name="role" autocomplete="organization-title" />
+              </label>
+              <label class="field full">
+                <span class="lbl">Country</span>
+                <input type="text" name="country" autocomplete="country-name" placeholder="e.g. United States" />
+              </label>
+            </div>
+
+            <div class="opt-row">
+              <input type="checkbox" id="want-print" name="want_print" value="yes" />
+              <label for="want-print">
+                <b>Send me a free printed copy of the book.</b><br/>
+                <span style="font-size:10pt; color:var(--bnc-charcoal);">We cover shipping in the US; international shipping confirmed by reply email.</span>
+              </label>
+            </div>
+
+            <div class="address-block" id="address-block">
+              <div class="grid">
+                <label class="field full">
+                  <span class="lbl">Street address</span>
+                  <input type="text" name="ship_street" autocomplete="street-address" />
+                </label>
+                <label class="field">
+                  <span class="lbl">City</span>
+                  <input type="text" name="ship_city" autocomplete="address-level2" />
+                </label>
+                <label class="field">
+                  <span class="lbl">State / Region</span>
+                  <input type="text" name="ship_state" autocomplete="address-level1" />
+                </label>
+                <label class="field">
+                  <span class="lbl">Postal code</span>
+                  <input type="text" name="ship_postal" autocomplete="postal-code" />
+                </label>
+                <label class="field">
+                  <span class="lbl">Country (shipping)</span>
+                  <input type="text" name="ship_country" autocomplete="country-name" />
+                </label>
+              </div>
+            </div>
+
+            <div class="opt-row">
+              <input type="checkbox" id="want-class" name="want_class_pass" value="yes" />
+              <label for="want-class">
+                <b>Send me a free class pass to the BNC Academy RF course.</b><br/>
+                <span style="font-size:10pt; color:var(--bnc-charcoal);">Complimentary seat at <a href="${ACADEMY_URL}" target="_blank" rel="noopener">${ACADEMY_URL.replace(/^https?:\/\//,'')}</a> — the online companion course.</span>
+              </label>
+            </div>
+
+            <div class="consent">
+              <input type="checkbox" id="consent" name="consent" required />
+              <label for="consent">I agree to receive occasional emails from Berkeley Nucleonics. Unsubscribe any time.</label>
+            </div>
+
+            <input type="hidden" name="reader_path" id="hidden-path" />
+            <input type="hidden" name="quiz_answers" id="hidden-answers" />
+            <input type="hidden" name="path_scores" id="hidden-scores" />
+            <input type="hidden" name="submitted_from" value="rf-reader-quiz-v1" />
+            <input type="hidden" name="book" value="Radio Frequency" />
+            <input type="hidden" name="_subject" value="Radio Frequency Book: Reader-Map Quiz Lead" />
+
+            <div class="form-error" id="form-error" aria-live="polite"></div>
+
+            <div class="submit-row">
+              <button type="button" class="btn ghost" id="retake-btn">Retake quiz</button>
+              <button type="submit" class="btn primary" id="submit-btn">Email me my reading roadmap</button>
+            </div>
+          </form>
+        </div>
+      `;
+
+      wireForm();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* =========================================================
+       FORM WIRING
+       ========================================================= */
+    function wireForm() {
+      const form = document.getElementById("lead-form");
+      const wantPrint = document.getElementById("want-print");
+      const addressBlock = document.getElementById("address-block");
+      const errEl = document.getElementById("form-error");
+      const retakeBtn = document.getElementById("retake-btn");
+      const submitBtn = document.getElementById("submit-btn");
+
+      // populate hidden fields
+      document.getElementById("hidden-path").value = state.path;
+      document.getElementById("hidden-answers").value = JSON.stringify(
+        Object.fromEntries(Object.entries(state.answers).map(([k, v]) => [k, v.label]))
+      );
+      document.getElementById("hidden-scores").value = JSON.stringify(state.totals);
+
+      wantPrint.addEventListener("change", () => {
+        if (wantPrint.checked) {
+          addressBlock.classList.add("show");
+          // make ship_street + city + postal required when address block is shown
+          ["ship_street","ship_city","ship_postal","ship_country"].forEach(n => {
+            const el = form.querySelector(`[name="${n}"]`);
+            if (el) el.required = true;
+          });
+        } else {
+          addressBlock.classList.remove("show");
+          ["ship_street","ship_city","ship_postal","ship_country","ship_state"].forEach(n => {
+            const el = form.querySelector(`[name="${n}"]`);
+            if (el) { el.required = false; el.value = ""; }
+          });
+        }
+      });
+
+      retakeBtn.addEventListener("click", () => {
+        // reset state
+        state.idx = 0;
+        state.answers = {};
+        state.path = null;
+        state.totals = { student: 0, operator: 0, designer: 0 };
+        resultSection.classList.add("hidden");
+        quizSection.classList.remove("hidden");
+        progressWrap.classList.remove("hidden");
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errEl.textContent = "";
+
+        // basic validation
+        if (!form.checkValidity()) {
+          errEl.textContent = "Please fill in the required fields.";
+          form.reportValidity();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending…";
+
+        const payload = new FormData(form);
+        // pretty subject for email
+        const fname = payload.get("first_name");
+        const path = payload.get("reader_path");
+        payload.append("_subject", `[RF Quiz] ${fname} → ${path} path`);
+
+        try {
+          if (FORM_ENDPOINT.includes("REPLACE_WITH_YOUR_ID")) {
+            // dev fallback: log instead of submitting
+            console.warn("FORM_ENDPOINT not configured — logging payload instead.");
+            const obj = {};
+            payload.forEach((v, k) => obj[k] = v);
+            console.log("Quiz submission:", obj);
+            showSuccess(payload);
+            return;
+          }
+
+          const res = await fetch(FORM_ENDPOINT, {
+            method: "POST",
+            body: payload,
+            headers: { "Accept": "application/json" }
+          });
+
+          if (res.ok) {
+            showSuccess(payload);
+          } else {
+            throw new Error("Form endpoint returned " + res.status);
+          }
+        } catch (err) {
+          console.error(err);
+          errEl.textContent = "Something went wrong sending your info. Please try again, or email davidbrown750@gmail.com directly.";
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Email me my reading roadmap";
+        }
+      });
+    }
+
+    /* =========================================================
+       SUCCESS STATE
+       ========================================================= */
+    function showSuccess(payload) {
+      resultSection.classList.add("hidden");
+      successSection.classList.remove("hidden");
+
+      const fname = payload.get("first_name");
+      const email = payload.get("email");
+      const wantPrint = payload.get("want_print") === "yes";
+      const wantClass = payload.get("want_class_pass") === "yes";
+
+      const extras = [];
+      if (wantPrint) extras.push("a printed copy in the mail");
+      if (wantClass) extras.push("your free class pass to BNC Academy");
+
+      const extraLine = extras.length
+        ? `We'll be in touch within two business days about ${extras.join(" and ")}.`
+        : `If you change your mind about a print copy or a class pass, just reply to that email and we'll set you up.`;
+
+      successSection.innerHTML = `
+        <div class="success">
+          <h2>Thanks, ${escapeHtml(fname)}.</h2>
+          <p>Your reading roadmap is on its way to <b>${escapeHtml(email)}</b>.</p>
+          <p>${extraLine}</p>
+          <div class="links">
+            <p>While you wait — open the book online: <a href="../html/00-front-matter.html">Front matter</a> · <a href="../html/01-why-rf-why-now.html">Chapter 1</a> · <a href="../html/04-swept-superheterodyne-analyzer.html">Chapter 4</a></p>
+            <p style="margin-top:14px;"><a href="${ACADEMY_URL}" target="_blank" rel="noopener">Visit BNC Academy →</a></p>
+          </div>
+        </div>
+      `;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, c => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+      ));
+    }
+
+    /* =========================================================
+       BOOT
+       ========================================================= */
+    renderQuestion();
+  </script>
+</body>
+</html>

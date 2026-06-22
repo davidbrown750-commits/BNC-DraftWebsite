@@ -1,0 +1,149 @@
+﻿/* ============================================================
+   BNC Web Books - Shared "Light Touch" stylesheet
+   Series identity per BNC-Book-Series-Style-Guide.md
+   Approved direction: keep the established BNC book look,
+   improve on-screen readability, add consistent footer + nav.
+   Self-contained: copy this file into each book and link it
+   from every chapter:  <link rel="stylesheet" href="light-touch.css">
+   ============================================================ */
+:root{
+  --bnc-deep-navy:#003D6B;
+  --bnc-sky-blue:#0078B6;
+  --bnc-navy-shadow:#001f38;
+  --bnc-charcoal:#2C3E50;
+  --bnc-light-steel:#ECEFF1;
+  --bnc-deep-plum:#4B2A6B;   /* figure captions, table titles */
+  --bnc-warm-amber:#C77E00;  /* section-number + H1 underline accent */
+  --bnc-rule:#b6c2cc;
+  --bnc-paper:#fbfcfd;
+  --bnc-white:#ffffff;
+  --maxw:820px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bnc-light-steel);
+  color:var(--bnc-charcoal);
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:17px;            /* readability bump for screens */
+  line-height:1.65;
+  margin:0 auto;
+  max-width:var(--maxw);
+  padding:0 50px 60px;
+}
+p{margin:14px 0}
+a{color:var(--bnc-sky-blue)}
+strong{color:var(--bnc-deep-navy)}
+.lead{font-size:19px;color:#26323d}
+
+/* ---- reader companion strip (top of every chapter) ---- */
+.reader-companion{
+  font-family:Helvetica,Arial,sans-serif;
+  background:#eaf4fb;border:1px solid #cfe3f1;border-left:4px solid var(--bnc-sky-blue);
+  padding:10px 16px;margin:22px 0 26px;font-size:14px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.reader-companion a.rc-cta{
+  margin-left:auto;background:var(--bnc-deep-navy);color:#fff;text-decoration:none;
+  font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:10pt;
+  padding:8px 16px;border-radius:3px;
+}
+.reader-companion a.rc-cta:hover{background:var(--bnc-sky-blue)}
+
+/* ---- headings ---- */
+h1{
+  font-family:Helvetica,Arial,sans-serif;color:var(--bnc-deep-navy);
+  font-size:30px;letter-spacing:.3px;line-height:1.15;
+  border-bottom:2px solid var(--bnc-deep-navy);
+  box-shadow:inset 0 -6px 0 -3px var(--bnc-warm-amber);
+  padding-bottom:8px;margin:18px 0 18px;
+}
+h2{
+  font-family:Helvetica,Arial,sans-serif;color:var(--bnc-deep-navy);
+  font-size:23px;border-left:4px solid var(--bnc-sky-blue);
+  padding-left:12px;margin:34px 0 6px;
+}
+h3{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-sky-blue);font-size:18px;margin:24px 0 4px}
+h4{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-charcoal);font-size:15px;
+   text-transform:uppercase;letter-spacing:.5px;margin:20px 0 4px}
+.sec-num{color:var(--bnc-warm-amber);font-weight:700}
+
+/* ---- figures ---- */
+figure{margin:24px 0}
+figure img{max-width:100%;height:auto;display:block;border:1px solid var(--bnc-rule);border-radius:4px;background:#fff}
+figcaption,.caption{font-family:Helvetica,Arial,sans-serif;font-size:9.5pt;
+  color:var(--bnc-deep-plum);font-style:italic;margin-top:6px}
+.fig-num{background:var(--bnc-deep-plum);color:#fff;padding:1px 6px;border-radius:2px;
+  font-style:normal;margin-right:6px}
+
+/* ---- callouts / sidebars ---- */
+.callout{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+  border-left:4px solid var(--bnc-sky-blue);padding:14px 18px;margin:18px 0;border-radius:3px}
+.callout h4{color:var(--bnc-deep-navy);margin:0 0 6px}
+.callout.note{border-left-color:var(--bnc-deep-plum)}
+.callout.warning{border-left-color:var(--bnc-warm-amber)}
+.sidebar-deeper,blockquote{
+  background:#e6edf3;border:1px solid var(--bnc-rule);border-left:4px solid var(--bnc-charcoal);
+  padding:14px 18px;margin:18px 0;border-radius:3px}
+.sidebar-deeper h4{color:var(--bnc-charcoal);margin:0 0 6px}
+blockquote{font-style:normal}
+blockquote p{margin:8px 0}
+
+/* ---- tables ---- */
+.table-title{font-family:Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.5px;
+  font-size:11px;color:var(--bnc-deep-plum);font-weight:700;margin:18px 0 4px}
+table{border-collapse:collapse;width:100%;margin:18px 0;
+  font-family:Helvetica,Arial,sans-serif;font-size:10.5pt}
+thead th{background:var(--bnc-deep-navy);color:#fff;text-align:left;padding:8px 10px;
+  border-bottom:3px solid var(--bnc-warm-amber)}
+tbody td{padding:7px 10px;border-bottom:1px solid #d4d8db;vertical-align:top}
+tbody tr:nth-child(odd){background:var(--bnc-light-steel)}
+
+/* ---- end-of-chapter quiz callout ---- */
+.quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+  border:1px solid var(--bnc-rule);border-left:4px solid var(--bnc-warm-amber);
+  padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+.quiz-cta a.btn{font-family:Helvetica,Arial,sans-serif;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+  color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+
+/* ---- ornamental rule ---- */
+hr{border:0;height:1px;background:var(--bnc-rule);margin:30px 0;position:relative;overflow:visible}
+hr::after{content:"\2756";position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  background:var(--bnc-light-steel);color:var(--bnc-warm-amber);padding:0 10px;font-size:14px}
+
+/* ============================================================
+   FOOTER  (the approved component - identical on every chapter)
+   ============================================================ */
+footer.bnc-footer{
+  font-family:Helvetica,Arial,sans-serif;margin-top:46px;
+  border-top:2px solid var(--bnc-deep-navy);padding-top:16px;font-size:13px;color:var(--bnc-charcoal)}
+footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+footer.bnc-footer .bnc-nav a.disabled{color:#9aa7b2;pointer-events:none;font-weight:400}
+footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+footer.bnc-footer .bnc-nav .next{text-align:right}
+footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+
+/* ---- responsive ---- */
+@media(max-width:680px){
+  body{padding:0 20px 50px;font-size:16px}
+  footer.bnc-footer .bnc-nav{flex-direction:column;text-align:left}
+  footer.bnc-footer .bnc-nav .mid,footer.bnc-footer .bnc-nav .next{text-align:left}
+}
+/* ---- print ---- */
+@media print{
+  body{background:#fff;max-width:none;padding:0;color:#000}
+  .reader-companion,footer.bnc-footer .bnc-nav{display:none}
+  h1{page-break-before:always}
+  h1,h2,h3{page-break-after:avoid}
+  figure,table{page-break-inside:avoid}
+}

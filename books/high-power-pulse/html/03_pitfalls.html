@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3: Common Pitfalls and Failure Modes</title>
+
+<style>
+:root {
+  --bnc-deep-navy: #003D6B;
+  --bnc-sky-blue: #0078B6;
+  --bnc-navy-shadow: #001f38;
+  --bnc-charcoal: #2C3E50;
+  --bnc-light-steel: #ECEFF1;
+  --bnc-light-cyan: #7fdbff;
+  --bnc-bright-cyan: #00b4ff;
+  --bnc-vivid-cyan: #00d4ff;
+  --bnc-target-green: #00ff88;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 48px 32px; background: var(--bnc-light-steel); font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.55; color: var(--bnc-charcoal); }
+.wrap { max-width: 880px; margin: 0 auto; background: #fff; padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border-top: 6px solid var(--bnc-deep-navy); }
+h1 { font-family: Helvetica, Arial, sans-serif; font-size: 28pt; font-weight: 800; color: var(--bnc-deep-navy); letter-spacing: 0.5px; margin: 0 0 6px; }
+h1 + .meta { font-size: 10pt; color: var(--bnc-charcoal); opacity: 0.75; margin-bottom: 28px; }
+h2 { font-family: Helvetica, Arial, sans-serif; font-size: 19pt; font-weight: 700; color: var(--bnc-deep-navy); border-bottom: 2px solid var(--bnc-sky-blue); padding-bottom: 6px; margin: 36px 0 14px; }
+h3 { font-family: Helvetica, Arial, sans-serif; font-size: 14pt; font-weight: 700; color: var(--bnc-sky-blue); margin: 22px 0 8px; }
+h4 { font-family: Helvetica, Arial, sans-serif; font-size: 11pt; font-weight: 700; color: var(--bnc-charcoal); text-transform: uppercase; letter-spacing: 1.5px; margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul, ol { margin: 0 0 12px; padding-left: 22px; }
+li { margin-bottom: 4px; }
+code, pre { font-family: Consolas, 'Courier New', monospace; font-size: 10pt; }
+code { background: var(--bnc-light-steel); padding: 1px 5px; border-radius: 3px; color: var(--bnc-deep-navy); }
+pre { background: #f4f6f7; border-left: 4px solid var(--bnc-sky-blue); padding: 14px 16px; overflow-x: auto; margin: 12px 0 18px; line-height: 1.45; }
+pre code { background: transparent; padding: 0; color: var(--bnc-charcoal); }
+table { width: 100%; border-collapse: collapse; font-family: Helvetica, Arial, sans-serif; font-size: 10pt; margin: 12px 0 20px; }
+thead th { background: var(--bnc-deep-navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; }
+tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+tbody td { padding: 7px 10px; border-bottom: 1px solid #d4d8db; vertical-align: top; }
+blockquote { background: var(--bnc-light-steel); border-left: 4px solid var(--bnc-sky-blue); padding: 14px 18px; margin: 18px 0; color: var(--bnc-charcoal); font-style: italic; }
+blockquote p:last-child { margin-bottom: 0; }
+hr { border: 0; border-top: 1px solid #d4d8db; margin: 28px 0; }
+img { max-width: 100%; height: auto; display: block; margin: 18px auto; border: 1px solid #d4d8db; }
+em { font-style: italic; }
+strong { font-weight: 700; color: var(--bnc-deep-navy); }
+.figure-caption { font-size: 9pt; color: var(--bnc-charcoal); text-align: left; margin: -10px 0 20px; padding: 0 8px; opacity: 0.85; font-family: Helvetica, Arial, sans-serif; }
+footer { font-size: 9pt; color: var(--bnc-charcoal); opacity: 0.7; text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #d4d8db; }
+</style>
+
+<link rel="stylesheet" href="light-touch.css">
+<script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1 id="chapter-3">Chapter 3</h1>
+<h2 id="common-pitfalls-and-failure-modes">Common Pitfalls and Failure Modes</h2>
+<blockquote>
+<p><em>"Most pulser failures are not exotic. They are predictable consequences of habits the user developed working with low-voltage instruments and brought along into the high-voltage world."</em></p>
+</blockquote>
+<hr />
+<h3 id="31-the-mindset-shift">3.1 The Mindset Shift</h3>
+<p>Working with high-power pulsers is not the same as working with bench DMMs and signal generators. Three things change. The energies are larger, often by orders of magnitude. The rise times are faster, which means parasitic inductances and capacitances that did not matter in slow circuits suddenly drive the dynamics. And the failure modes are dramatic: instead of a flickering display, you get arcs, smoke, and damaged equipment that may or may not include the operator.</p>
+<p>This chapter catalogs the common failures and the habits that prevent them. Most of them are obvious in retrospect. They cause expensive repairs anyway, because the obvious habits from low-voltage work are dangerously wrong at high power.</p>
+<hr />
+<h3 id="32-cable-and-connector-failures">3.2 Cable and Connector Failures</h3>
+<p>The output cable is the single most common source of pulser failures returned for service. The reasons are predictable.</p>
+<h4 id="disconnecting-under-load">Disconnecting under load</h4>
+<p>Never disconnect the output cable or the load while a pulser is firing. The shock hazard to personnel is the primary concern, but the equipment also suffers. When a pulse fires into an open circuit, the pulser sees an instantaneous infinite impedance. Voltage doubles at the open end (transmission-line theory), and that doubled voltage feeds back to the switch as a reflection. Most pulsers have overvoltage protection that triggers in this case, but the protection components themselves take damage from repeated activations.</p>
+<p>The rule is simple: disable the trigger or power down the pulser before touching any output connection. Modern BNC pulsers help here with safety interlocks: the PVX series ships with a BNC-shorted dummy connector that must be installed for the device to output, and a removed connector triggers an immediate disable.</p>
+<h4 id="wrong-cable-impedance">Wrong cable impedance</h4>
+<p>The output impedance of a pulser is matched to a specific cable type by design. Use the cable shipped with the device. Substituting cable types because "they all look like coax" leads to overshoot, ringing, and unexpected pulse fidelity loss. Common BNC-DEI cable assignments:</p>
+<ul>
+<li>PVX-4110 (10 kV): RG-11 (75 Ω, rugged jacket for high voltage)</li>
+<li>PVX-4150 (1.5 kV): RG-62 (93 Ω)</li>
+<li>PVX-4140 / 4000 series: RG-59 (75 Ω)</li>
+<li>PCX-7500 (450 A): low-impedance stripline cable, custom</li>
+</ul>
+<p>The flexible 50 Ω coax in your bench drawer will physically fit the connectors on most of these. It will not work correctly. The 10 kV pulser into RG-58 is not a successful experiment.</p>
+<h4 id="cable-length-and-capacitance">Cable length and capacitance</h4>
+<p>For voltage pulsers driving capacitive loads, the cable's distributed capacitance adds to the load capacitance. Six feet of RG-59 contributes about 126 pF, and that adds directly into the C × V² × F power equation. If the data sheet quotes a maximum frequency assuming 6 ft of cable, doubling the cable length to 12 ft halves the maximum allowed frequency at the same voltage and load.</p>
+<p>Practical rule: keep output cables as short as the geometry allows. If the load is 10 ft from the pulser, 10 ft of cable. If the load is 3 ft away, 3 ft of cable. The temptation to coil up extra length "for flexibility" costs you in heat and pulse fidelity.</p>
+<hr />
+<h3 id="33-reflections-overshoot-and-ringing">3.3 Reflections, Overshoot, and Ringing</h3>
+<p>When a pulse encounters an impedance discontinuity (a connector, a load that does not match the cable, an open or short), part of the pulse reflects back toward the source. The reflected wave interacts with the original pulse and produces overshoot, ringing, and ghost pulses on the scope trace.</p>
+<p><img alt="Oscilloscope trace showing a pulse with severe overshoot and damped ringing on the rising edge, and a smaller bounce on the falling edge. Annotations identify the overshoot, three ring cycles, and the steady-state flat top." src="../figures/fig_03-1_reflections_overshoot.svg" />
+<em>Figure 3.1, Classic reflection signature on a mismatched cable. The overshoot at the rising edge is the first reflection arriving back at the pulser output. The damped ringing is the round-trip echo bouncing several times before energy dissipates. Termination at the load end eliminates almost all of this.</em></p>
+<h4 id="diagnosing-reflections">Diagnosing reflections</h4>
+<p>A fast scope trace with overshoot and ringing has a tell: the ring frequency reveals the round-trip time of the cable. For a 1 m cable with 0.66c propagation velocity, round trip is 10 ns. If you see ringing at 100 MHz, the period is 10 ns, and the ringing is round-trip resonance. That diagnostic almost always points at impedance mismatch.</p>
+<h4 id="fixing-reflections">Fixing reflections</h4>
+<p>Three options, in order of preference:</p>
+<ol>
+<li><strong>Match the load impedance to the cable.</strong> For resistive loads, choose R = Z_cable. For capacitive loads, add a parallel termination resistor of value Z_cable at the load end. This dissipates some power but absorbs reflections.</li>
+<li><strong>Match the source impedance to the cable.</strong> Series resistor at the pulser output equal to Z_cable. This works but doubles the rise time at the load (voltage divider effect during the transient).</li>
+<li><strong>Snubber networks.</strong> Series RC across the load, sized to absorb resonant energy. This is the right answer for pulses with severe inductive ringing where simple termination is not appropriate.</li>
+</ol>
+<p>For severe-cases or unusual loads, the best practice is to model the system in SPICE before you build it. Almost every modern pulser data sheet includes a SPICE-compatible output network model, and ten minutes of simulation save days of bench debugging.</p>
+<hr />
+<h3 id="34-inductance-where-you-do-not-want-it">3.4 Inductance, Where You Do Not Want It</h3>
+<p>The big shift from low-voltage to high-voltage work is that wire inductance starts to matter. A foot of straight 18 AWG wire has about 300 nH of inductance. At 1 MHz, that is 1.9 Ω of impedance: barely noticeable. At 100 MHz (a 3.5 ns rise time pulser), it is 190 Ω, more than enough to drop kilovolts at high current and to ring with stray capacitances.</p>
+<p>The places where parasitic inductance causes problems:</p>
+<h4 id="gate-drive-loops">Gate drive loops</h4>
+<p>The path from the gate driver output to the MOSFET gate, and back through the source, forms a loop. The loop area times the rate of change of current sets the inductive voltage drop. A noisy gate drive loop causes the MOSFET to false-trigger (Miller turn-on, see 3.5) or to miss commanded transitions. The fix is geometric: keep the gate-to-source loop as small as physically possible. On a PCB, this means routing gate and source returns directly adjacent, often as a coplanar stripe. In a multi-MOSFET stack, every stage gets its own short loop, fed from a transformer or a fast buffer.</p>
+<h4 id="output-return-path">Output return path</h4>
+<p>If the pulser output current returns through a path that is not directly adjacent to the outgoing conductor, the output loop area is large. Stray inductance in that loop limits dI/dt and adds ringing. The fix is to use coaxial cable (which forces the return current to flow as a sheath around the center conductor), and to ensure the load is a coaxial structure too. Substituting a single wire for the coax shield is a common mistake on the bench. It works at low frequencies. It fails badly at fast rise times.</p>
+<h4 id="capacitor-bank-esl">Capacitor bank ESL</h4>
+<p>The equivalent series inductance (ESL) of the storage capacitor bank limits how fast the pulser can extract energy. A 100 µF electrolytic with 50 nH ESL cannot deliver a 100 ns rise pulse, period. The capacitor itself is the limit. For fast-rise applications, use ceramic or film capacitors with low ESL, paralleled in low-inductance bus structures (the rail-bus design from Chapter 1's Manhattan Project lineage).</p>
+<hr />
+<h3 id="35-gate-driver-miller-turn-on">3.5 Gate Driver Miller Turn-on</h3>
+<p>This one is its own category because it bites every solid-state pulser engineer at least once. Here is the mechanism.</p>
+<p>A power MOSFET has a parasitic capacitance from drain to gate, called Cgd or "Miller capacitance." Typical values are 50 to 500 pF for a few-kV-class MOSFET. When the drain voltage swings rapidly (high dV/dt during a switching transition), the Miller capacitance couples that dV/dt into the gate as a current:</p>
+<blockquote>
+<p>i_miller = C_gd × dV/dt</p>
+</blockquote>
+<p>That current flows through whatever impedance is between the gate and ground. If the gate driver is fast and low-impedance (a 10 Ω driver, say), the gate voltage barely moves. If the gate driver is slow or high-impedance (or if the source has stray inductance in series), the gate voltage rises, the MOSFET partially turns on, the dV/dt slows down, and you have an unstable feedback loop.</p>
+<p>Symptoms are subtle: pulses look right at low repetition rate, then degrade as PRF climbs. Switching losses go up, the device heats, and eventually a thermal failure ends the experiment. On a scope, the gate-source voltage shows a small bump at the time of the drain transition.</p>
+<p>Fixes, in order of practicality:</p>
+<ol>
+<li><strong>Stronger gate driver.</strong> A 2 A peak driver beats a 500 mA driver every time.</li>
+<li><strong>Low-impedance gate path.</strong> Wide trace, short distance, sometimes a ferrite bead near the gate to damp resonances.</li>
+<li><strong>Negative gate-off voltage.</strong> Driving the gate to -5 V instead of 0 V during the off state widens the noise margin against Miller-induced bumps. Most modern half-bridge drivers do this by default.</li>
+<li><strong>Lower-Cgd MOSFETs.</strong> Newer-generation devices have engineered-in lower Miller capacitance. Wide-bandgap devices (SiC, GaN) tend to have higher dV/dt capability but also tighter Miller specs, so the trade-off is mixed. Chapter 5 covers the device-level details.</li>
+</ol>
+<hr />
+<h3 id="36-common-mode-currents-and-ground-bounce">3.6 Common-Mode Currents and Ground Bounce</h3>
+<p>When a high dV/dt signal travels through a cable to a load, the cable's parasitic capacitance to its surroundings acts as a current path back to the pulser. That current flows on the outside of the cable shield, through whatever stray capacitance exists between the cable, the load fixture, and earth ground. It is called a common-mode current because it flows in the same direction on both the center conductor and the shield (rather than the equal-and-opposite differential-mode current of normal signal flow).</p>
+<p>Common-mode currents cause two problems. First, they couple into nearby instruments (oscilloscopes, controllers, computers) and cause apparent "noise" that scales with pulser dV/dt. Second, they create ground bounce: the ground reference at the load is no longer at the same voltage as the ground reference at the pulser, because there is real impedance between them carrying real current. Ground bounce shows up as common-mode error on differential measurements, as triggering errors on logic circuits sharing the same ground, and as a generic "ground noise" that scales with PRF.</p>
+<p>The fix is twofold. First, minimize common-mode current by keeping the cable short and away from grounded surfaces. Second, block whatever common-mode current does flow with a common-mode choke (a ferrite ring around the cable) or with optical isolation between the high-voltage circuit and any low-voltage systems.</p>
+<p>For oscilloscope measurements specifically: float the scope properly with a differential probe or an isolation amplifier, never by lifting the safety ground (which is dangerous and sometimes illegal). Chapter 7 develops this in full.</p>
+<hr />
+<h3 id="37-partial-discharge-and-dielectric-breakdown">3.7 Partial Discharge and Dielectric Breakdown</h3>
+<p>In voltage pulsers, anywhere two conductors are close enough that the field between them exceeds the breakdown strength of the intervening dielectric, a small ionization event happens. If the dielectric is air, the breakdown field is roughly 30 kV/cm at sea level. For 1 cm spacing, that means breakdown at 30 kV. For 1 mm spacing, breakdown at 3 kV. For 0.1 mm, breakdown at 300 V. Most modern PCBs have spacings well below 1 mm in places, and at kilovolt levels you can get partial discharge on a board that looks fine to the eye.</p>
+<p>Partial discharge is not a full arc. It is a localized ionization that does not propagate to a complete short, but that does carbonize the dielectric over time and eventually leads to full breakdown. On a PCB, partial discharge along surface traces leaves a black tracking pattern that you can see under a microscope. In an encapsulated device, you cannot see it but the device fails after some hours of operation, suddenly.</p>
+<p>The remedies are geometric:</p>
+<ul>
+<li><strong>Increase clearance and creepage</strong> between high-voltage nodes. IPC-2221 has tables for required spacings as a function of voltage and altitude.</li>
+<li><strong>Round all sharp corners</strong> on conductors. Field concentrates at sharp edges and breakdown happens there first.</li>
+<li><strong>Pot the high-voltage section</strong> in an insulating compound (silicone, epoxy, oil) for voltages above a few kV.</li>
+<li><strong>Avoid air gaps near voltage gradients.</strong> Air is the worst dielectric in your design at sea level. Solid dielectrics are an order of magnitude better.</li>
+</ul>
+<p>Voltages above 30 kV in air are difficult and require specialized engineering. Above 100 kV, oil immersion or SF6 is the standard answer in industrial systems, and water is the standard in pulsed-power physics applications because of its high dielectric strength under nanosecond stresses.</p>
+<hr />
+<h3 id="38-floating-badly">3.8 Floating, Badly</h3>
+<p>The term "floating" appears constantly in pulsed-power discussions, and it means different things in different contexts. Three usages:</p>
+<ol>
+<li><strong>Floating the load.</strong> The load's reference is not at earth ground. This is required for current pulsers driving laser diodes that have a grounded heatsink, for example. It is normal and well-supported by most modern pulsers.</li>
+<li><strong>Floating the pulser.</strong> The entire pulser sits at some elevated DC bias above ground. Required for unusual applications (some accelerator extractors, some electric-propulsion drivers). It is technically difficult: the pulser, its supplies, its trigger inputs, and its cooling all have to float together. Specialized kit only.</li>
+<li><strong>Floating the scope.</strong> Lifting the scope's safety ground so its reference can be at the load voltage. Dangerous, sometimes illegal, and almost never the right answer. Use a differential probe or an isolation amplifier instead.</li>
+</ol>
+<p>The dangerous kind is the third. Floating a scope means the chassis and all the connected probe grounds are at whatever voltage the load develops. A 10 kV pulser into a load you are probing with a "floated" scope means the scope chassis is at 10 kV. Touching the scope while it is firing will electrocute you. There is no scenario where this is the right thing to do.</p>
+<hr />
+<h3 id="39-failure-analysis-checklist">3.9 Failure-Analysis Checklist</h3>
+<p>When a pulser comes back from the field showing strange behavior, work through this checklist before opening the case.</p>
+<ol>
+<li><strong>Look at the load.</strong> Is it the load you specified? Is its impedance still in spec? Has it been replaced or modified?</li>
+<li><strong>Look at the cable.</strong> Is it the cable shipped with the unit? Right impedance, right voltage rating, intact connectors, no kinks or visible damage?</li>
+<li><strong>Look at the duty cycle.</strong> Has the user pushed the pulser past its safe-operating-area envelope? Most modern pulsers log this kind of abuse internally; look for the count.</li>
+<li><strong>Look at the trigger signal.</strong> Is the trigger amplitude and timing what the pulser expects? A trigger that violates the input spec causes downstream symptoms that look like everything else.</li>
+<li><strong>Look at the supply voltage.</strong> Sag in the input power can cause the HV supply to undervolt, which produces low and droopy output pulses that look like switch failure.</li>
+<li><strong>Look at the cooling.</strong> Has the user blocked airflow vents, or run the pulser in a hot environment? Thermal throttling produces symptoms that look like control loop failure.</li>
+<li><strong>Look at the trigger return path.</strong> Common-mode currents on the trigger cable cause false triggers, missed triggers, and timing jitter that scales with PRF. Add a common-mode choke if the symptoms fit.</li>
+</ol>
+<p>If all seven check out clean and the pulser is still misbehaving, it is time to open the case. Do that with the unit unplugged, capacitor bank discharged through a bleeder resistor, and a partner present. High-voltage capacitor banks hold dangerous charges for hours after the supply is disconnected. Treat them with respect.</p>
+<hr />
+<h3 id="310-questions-for-review">3.10 Questions for Review</h3>
+<ol>
+<li>
+<p>A pulser drives an open-circuit cable. What happens to the voltage at the open end during the pulse?
+   a. The voltage stays the same as the source.
+   b. The voltage drops to zero.
+   c. The voltage doubles due to reflection.
+   d. The voltage oscillates randomly.</p>
+</li>
+<li>
+<p>Miller turn-on is caused by:
+   a. Bias on the source resistor.
+   b. dV/dt at the drain coupling current through Cgd into the gate.
+   c. Thermal runaway in the channel.
+   d. Common-mode current on the trigger cable.</p>
+</li>
+<li>
+<p>A 10 ns ring period on a scope trace from a pulser-cable system most likely indicates:
+   a. EMI pickup from a nearby AC line.
+   b. Round-trip resonance on a 1 m cable with mismatched impedance.
+   c. Switch ringing from gate-loop inductance.
+   d. Power supply ripple.</p>
+</li>
+<li>
+<p>A user replaces the supplied RG-62 cable on a PVX-4150 with a 50 Ω BNC cable that fits the connector. The result is most likely:
+   a. No effect because the impedance difference is small.
+   b. Overshoot and ringing on the pulse waveform.
+   c. The pulser stops working entirely.
+   d. Reduced power dissipation in the pulser.</p>
+</li>
+<li>
+<p>Which of the following is NOT a safe way to make a measurement on a floating load?
+   a. Use a differential probe with adequate voltage rating.
+   b. Use a fiber-coupled isolation amplifier.
+   c. Lift the oscilloscope's safety ground.
+   d. Use a current-viewing resistor with a galvanically isolated digitizer.</p>
+</li>
+<li>
+<p>Partial discharge typically leaves what visible evidence?
+   a. A clean burn mark across all conductors.
+   b. Carbonized tracking patterns along the dielectric surface.
+   c. Melted solder joints.
+   d. Discolored heatsinks.</p>
+</li>
+<li>
+<p>The single most common cause of pulser returns from the field is:
+   a. Switch failure in the output stage.
+   b. Software firmware bugs.
+   c. Cable and connector problems, including wrong cable substitution and disconnect-under-load events.
+   d. Power supply failure.</p>
+</li>
+</ol>
+<div class="quiz-cta">
+  <h4>Test yourself</h4>
+  <p>The same seven questions, graded instantly with your score saved on this device.</p>
+  <p><a class="btn" href="quiz-03_pitfalls.html">Take the interactive quiz &rarr;</a></p>
+</div>
+<hr />
+<p><em>Answer key at end of book.</em></p>
+<hr />
+<h3 id="311-further-reading">3.11 Further Reading</h3>
+<ul>
+<li>
+<p><strong>IPC-2221.</strong> Generic standard on printed board design, including the voltage-versus-spacing tables that govern partial-discharge clearance. Essential for anyone laying out a high-voltage PCB.</p>
+</li>
+<li>
+<p><strong>Williams, T.</strong> <em>EMC for Product Designers.</em> Newnes, multiple editions. The clearest practical treatment of common-mode currents and how they cause "noise" that has nothing to do with EMI.</p>
+</li>
+<li>
+<p><strong>Mohan, N., Undeland, T.M., and Robbins, W.P.</strong> <em>Power Electronics: Converters, Applications, and Design.</em> Wiley. Chapter 22 on gate-drive design covers Miller turn-on and the geometric remedies in detail.</p>
+</li>
+<li>
+<p><strong>Application notes from gate-driver manufacturers</strong> (Analog Devices, Texas Instruments, Infineon) on Miller-effect mitigation. Look for "high-side gate driver" application notes specifically.</p>
+</li>
+<li>
+<p><strong>NFPA 70E.</strong> Standard for electrical safety in the workplace. Required reading for anyone who works on energized high-voltage equipment.</p>
+</li>
+</ul>
+<hr />
+<p><em>End of Chapter 3.</em></p>
+<p><em>Chapter 4 (Safety) follows.</em></p>
+</div>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="02_fundamentals.html">&larr; Ch 2: Pulser Fundamentals</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="04_safety.html">Ch 4: Safety &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

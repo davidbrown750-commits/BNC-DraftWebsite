@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Two-port S-parameter signal-flow diagram">
+  <defs>
+    <linearGradient id="dut" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#003D6B"/>
+      <stop offset="0.6" stop-color="#0078B6"/>
+      <stop offset="1" stop-color="#00b4ff"/>
+    </linearGradient>
+    <style>
+      .node{fill:#003D6B;font-size:15px;font-weight:700;}
+      .wave{fill:#2C3E50;font-size:14px;font-style:italic;}
+      .sp{fill:#ffffff;font-size:15px;font-weight:700;}
+      .lbl{fill:#2C3E50;font-size:13px;}
+      .axis{stroke:#b6c2cc;stroke-width:1.5;fill:none;}
+      .flow{stroke:#0078B6;stroke-width:2.5;fill:none;}
+      .flow2{stroke:#C77E00;stroke-width:2.5;fill:none;}
+    </style>
+    <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0078B6"/>
+    </marker>
+    <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C77E00"/>
+    </marker>
+  </defs>
+
+  <!-- title strip -->
+  <text x="400" y="34" text-anchor="middle" class="node" font-size="17">A Two-Port Network and Its Four S-Parameters</text>
+
+  <!-- central DUT box -->
+  <rect x="320" y="150" width="160" height="130" rx="6" fill="url(#dut)"/>
+  <text x="400" y="208" text-anchor="middle" class="sp" font-size="18">DUT</text>
+  <text x="400" y="232" text-anchor="middle" fill="#7fdbff" font-size="12" letter-spacing="1">2-PORT NETWORK</text>
+
+  <!-- Port 1 reference plane -->
+  <line class="axis" x1="120" y1="120" x2="120" y2="310"/>
+  <text x="120" y="110" text-anchor="middle" class="lbl">Port 1</text>
+  <!-- Port 2 reference plane -->
+  <line class="axis" x1="680" y1="120" x2="680" y2="310"/>
+  <text x="680" y="110" text-anchor="middle" class="lbl">Port 2</text>
+
+  <!-- incident a1 -->
+  <line class="flow" x1="120" y1="160" x2="318" y2="160" marker-end="url(#a1)"/>
+  <text x="150" y="150" class="wave">a&#8321;  (incident)</text>
+  <!-- reflected b1 -->
+  <line class="flow" x1="318" y1="195" x2="122" y2="195" marker-end="url(#a1)"/>
+  <text x="150" y="215" class="wave">b&#8321;  (reflected)</text>
+
+  <!-- transmitted b2 -->
+  <line class="flow2" x1="482" y1="235" x2="678" y2="235" marker-end="url(#a2)"/>
+  <text x="510" y="225" class="wave">b&#8322;  (transmitted)</text>
+  <!-- incident a2 from port 2 -->
+  <line class="flow2" x1="678" y1="270" x2="482" y2="270" marker-end="url(#a2)"/>
+  <text x="510" y="290" class="wave">a&#8322;  (incident)</text>
+
+  <!-- S-parameter definition cards -->
+  <rect x="60" y="345" width="160" height="62" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5"/>
+  <rect x="60" y="345" width="6" height="62" fill="#0078B6"/>
+  <text x="80" y="368" class="node" font-size="14">S&#8321;&#8321;  Input return loss</text>
+  <text x="80" y="392" class="lbl">b&#8321;/a&#8321;,  a&#8322;=0</text>
+
+  <rect x="240" y="345" width="160" height="62" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5"/>
+  <rect x="240" y="345" width="6" height="62" fill="#C77E00"/>
+  <text x="260" y="368" class="node" font-size="14">S&#8322;&#8321;  Forward gain</text>
+  <text x="260" y="392" class="lbl">b&#8322;/a&#8321;,  a&#8322;=0</text>
+
+  <rect x="420" y="345" width="160" height="62" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5"/>
+  <rect x="420" y="345" width="6" height="62" fill="#C77E00"/>
+  <text x="440" y="368" class="node" font-size="14">S&#8321;&#8322;  Reverse / isolation</text>
+  <text x="440" y="392" class="lbl">b&#8321;/a&#8322;,  a&#8321;=0</text>
+
+  <rect x="600" y="345" width="160" height="62" rx="4" fill="#ffffff" stroke="#b6c2cc" stroke-width="1.5"/>
+  <rect x="600" y="345" width="6" height="62" fill="#4B2A6B"/>
+  <text x="620" y="368" class="node" font-size="14">S&#8322;&#8322;  Output return loss</text>
+  <text x="620" y="392" class="lbl">b&#8322;/a&#8322;,  a&#8321;=0</text>
+</svg>

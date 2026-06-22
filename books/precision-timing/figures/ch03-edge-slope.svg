@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+  <title id="title">Trigger edge slope selection</title>
+  <desc id="desc">A single trigger pulse crosses a horizontal threshold line. The rising-edge crossing and the falling-edge crossing each drop to a separate To marker on a timeline below, showing the two slope choices produce To at different instants.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="36" y="40" fill="#003D6B" font-size="16" font-weight="700">Trigger Edge Slope Selection</text>
+
+  <!-- Waveform plot baseline -->
+  <line x1="80" y1="240" x2="660" y2="240" stroke="#b6c2cc" stroke-width="1"/>
+  <text x="36" y="244" fill="#2C3E50" font-size="12">low</text>
+  <text x="36" y="120" fill="#2C3E50" font-size="12">high</text>
+
+  <!-- Threshold dashed line -->
+  <line x1="80" y1="180" x2="660" y2="180" stroke="#C77E00" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="488" y="173" fill="#C77E00" font-size="13">Threshold (discriminator level)</text>
+
+  <!-- Trigger waveform: slow rise then fall -->
+  <path d="M80,240 L160,240 L300,120 L420,120 L560,240 L660,240" fill="none" stroke="#003D6B" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Rising crossing at x where path reaches threshold (y=180). Rising segment 160->300, midpoint x=230 -->
+  <circle cx="230" cy="180" r="4" fill="#C77E00"/>
+  <!-- up arrow -->
+  <line x1="230" y1="156" x2="230" y2="178" stroke="#C77E00" stroke-width="2"/>
+  <path d="M230,150 l-5,9 l10,0 z" fill="#C77E00"/>
+  <text x="150" y="146" fill="#2C3E50" font-size="13">Rising (leading) edge</text>
+
+  <!-- Falling crossing: falling segment 420->560, midpoint x=490 -->
+  <circle cx="490" cy="180" r="4" fill="#C77E00"/>
+  <!-- down arrow -->
+  <line x1="490" y1="156" x2="490" y2="178" stroke="#C77E00" stroke-width="2"/>
+  <path d="M490,150 l-5,9 l10,0 z" fill="#C77E00"/>
+  <text x="430" y="146" fill="#2C3E50" font-size="13">Falling edge</text>
+
+  <!-- vertical dotted drops to timeline -->
+  <line x1="230" y1="184" x2="230" y2="320" stroke="#003D6B" stroke-width="1.5" stroke-dasharray="2 4"/>
+  <line x1="490" y1="184" x2="490" y2="320" stroke="#003D6B" stroke-width="1.5" stroke-dasharray="2 4"/>
+
+  <!-- Timeline below -->
+  <line x1="80" y1="340" x2="660" y2="340" stroke="#b6c2cc" stroke-width="1"/>
+  <path d="M660,340 l-9,-5 l0,10 z" fill="#b6c2cc"/>
+  <text x="600" y="362" fill="#2C3E50" font-size="12">time</text>
+
+  <!-- To markers -->
+  <line x1="230" y1="328" x2="230" y2="352" stroke="#0078B6" stroke-width="2.5"/>
+  <text x="200" y="386" fill="#0078B6" font-size="13" font-weight="700">To (rising)</text>
+
+  <line x1="490" y1="328" x2="490" y2="352" stroke="#0078B6" stroke-width="2.5"/>
+  <text x="460" y="386" fill="#0078B6" font-size="13" font-weight="700">To (falling)</text>
+</svg>

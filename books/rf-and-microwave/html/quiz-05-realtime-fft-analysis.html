@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 5 Quiz &mdash; Real-Time and FFT-Based Spectrum Analysis</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 5 &middot; Quiz</p>
+      <h1>Real-Time and FFT-Based Spectrum Analysis</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="05-realtime-fft-analysis.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="06-vector-network-analysis.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "05",
+    title: "Chapter 5 Quiz: Real-Time and FFT-Based Spectrum Analysis",
+    questions: [
+      {
+        q: "Why can a swept superheterodyne analyzer miss a brief, one-time burst, and why does sweeping faster not reliably fix it?",
+        options: [
+          "It observes one frequency at a time, so a short event can occur while the sweep is elsewhere; sweeping faster shortens dwell until the IF cannot respond, producing UNCAL and inaccurate amplitudes",
+          "Its display refreshes too slowly to show any signal; faster sweeps fix it completely",
+          "It can only see continuous signals by design; faster sweeps add a second receiver",
+          "It filters out all bursts intentionally; faster sweeps disable the filter"
+        ],
+        answer: 0,
+        explain: "A swept analyzer is deaf to channels the LO is not parked on, and sweeping faster trades accuracy (UNCAL) for speed."
+      },
+      {
+        q: "What limits the highest frequency a raw FFT can analyze, and how do real instruments work around it?",
+        options: [
+          "The display resolution; instruments add more pixels",
+          "Half the ADC sampling rate (the Nyquist limit); instruments downconvert a high-frequency window to an IF the ADC can digitize, then run the FFT there",
+          "The size of the FFT memory; instruments delete old samples",
+          "The cable length; instruments use shorter cables"
+        ],
+        answer: 1,
+        explain: "A raw FFT reaches only half the sample rate (Nyquist); a superheterodyne front end downconverts a window to an IF the ADC can handle."
+      },
+      {
+        q: "What does probability of intercept (POI) describe?",
+        options: [
+          "The chance an analyzer will be hacked during a measurement",
+          "The minimum signal duration the analyzer is guaranteed to display at full amplitude, untriggered, even if it occurs only once",
+          "How likely a trigger is to fire on a known repetitive signal",
+          "The fraction of a sweep spent on each frequency step"
+        ],
+        answer: 1,
+        explain: "POI is the shortest event the analyzer is guaranteed to show at full, accurate amplitude without a trigger, even for a single occurrence."
+      },
+      {
+        q: "What question does a density (persistence) display answer that a single live trace cannot?",
+        options: [
+          "It shows the exact phase of every signal",
+          "It shows how often each point is hit by accumulating many spectra and color-grading by frequency of occurrence, so a rare transient stands out from the steady noise floor",
+          "It shows the future value of the signal",
+          "It shows only the highest amplitude ever seen, like max hold"
+        ],
+        answer: 1,
+        explain: "A density display color-grades by how often each point recurs, separating a rare transient from the steady noise floor at the same amplitude."
+      },
+      {
+        q: "You must measure phase noise of a stable, always-on carrier with the lowest noise floor and best dynamic range, on a tight budget. Which architecture fits best?",
+        options: [
+          "A real-time FFT analyzer, because gap-free capture lowers phase noise",
+          "A swept superheterodyne analyzer with a digital IF, because it offers the lowest noise floor and best dynamic range for the money, and real-time capability buys nothing for an always-present carrier",
+          "An oscilloscope with FFT, because it is cheapest",
+          "A vector network analyzer, because it measures phase"
+        ],
+        answer: 1,
+        explain: "An always-on carrier is always there when the sweep arrives, so a swept analyzer with a digital IF wins on noise floor and dynamic range per dollar."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

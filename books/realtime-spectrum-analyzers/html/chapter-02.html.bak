@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 2 - RTSA Terminology and Core Concepts</title>
+<script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
+  .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-top:8px}
+  .summary{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:16px 22px;margin:26px 0;border-radius:3px}
+  .summary h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-sky-blue);padding:16px 22px;margin:22px 0;border-radius:3px}
+  .quiz h3{color:var(--bnc-deep-navy);margin-top:0}
+  .quiz ol{padding-left:22px}
+  .quiz ol li{margin:14px 0}
+  .quiz ol li p{margin:5px 0 4px 12px;font-family:Helvetica,Arial,sans-serif;font-size:14px}
+  .case{background:var(--bnc-white);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-plum);padding:14px 22px;margin:28px 0;border-radius:3px}
+  .case h2{color:var(--bnc-deep-plum);border-left:0;padding-left:0;margin-top:0}
+  .case h3{color:var(--bnc-sky-blue);font-style:normal}
+  .next{background:var(--bnc-deep-navy);color:var(--bnc-light-steel);
+    padding:20px 26px;margin:38px 0 0;border-radius:3px}
+  .next h3{color:#fff;margin-top:0}
+  .next a{color:#9fd0ee}
+  .math-display{margin:18px 0;padding:14px 16px;background:var(--bnc-light-steel);
+    border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
+  code{background:#eef2f7;padding:2px 6px;border-radius:3px;
+    font-family:'Courier New',monospace;font-size:.94em}
+</style>
+</head>
+<body>
+
+<div class="chapter-number">Chapter 2</div>
+<h1>Real-Time Spectrum Analyzer Terminology and Core Concepts</h1>
+
+<blockquote>Every measurement profession develops a private language. When you can read a datasheet without translating, you start to make better instrument choices.</blockquote>
+
+<h2>2.1 Why RTSA Terminology Matters</h2>
+
+<p>Walk into any RTSA datasheet and you will see the same six or seven specifications repeated in different orders: real-time bandwidth, probability of intercept, FFT length, resolution bandwidth, dynamic range, streaming rate, and trigger latency. Each of those terms encodes a physical limit. Each of them constrains what you can and cannot see.</p>
+
+<p>Misread the terminology and you buy the wrong instrument. Buy a 40 MHz RTBW analyzer to monitor a 100 MHz 5G channel and you will see only fragments of the signal. Buy a system whose advertised POI is 1 microsecond to characterize a 100 nanosecond radar burst and you will be looking at noise. The numbers are not marketing copy. They are physics.</p>
+
+<p>This chapter unpacks the vocabulary. Each term gets a precise definition, a plain-English explanation, and at least one worked example. The Aaronia SPECTRAN V6 PLUS family gives us concrete numbers to ground the discussion. By the end of this chapter, you will be able to read any RTSA datasheet, line by line, and predict how that instrument will behave on your bench.</p>
+
+<p>The terminology splits into three groups. The first describes what the analyzer can capture: real-time bandwidth, probability of intercept, gap-free processing. The second describes how it processes what it captures: FFT length, resolution bandwidth, windowing tradeoffs. The third describes how it presents and stores the results: waterfall, persistence, density, frequency mask triggers, streaming, phase-coherent capture, and the wrapped spectrum view. Take them in that order and the picture comes together.</p>
+
+<h2>2.2 Real-Time Bandwidth (RTBW)</h2>
+
+<p>Real-time bandwidth is the width of spectrum that an RTSA can digitize and process simultaneously, with no time gaps. It is the most important specification on any RTSA datasheet.</p>
+
+<p>Mathematically, RTBW is bounded by the analog-to-digital converter sample rate:</p>
+
+<div class="math-display">$$\text{RTBW} = \alpha \cdot f_s$$</div>
+
+<p>where $f_s$ is the ADC sampling rate and $\alpha$ is the usable fraction after digital filtering, typically between 0.4 and 0.8 depending on architecture. A 1 GS/s ADC running complex baseband I/Q gives roughly 800 MHz of usable instantaneous bandwidth in theory, though practical filtering and image rejection bring this down to something like 400 to 600 MHz. Real-IF sampling architectures cut this in half again.</p>
+
+<p>Within the RTBW window, every signal is observed. Every burst is captured. Every frequency hop is tracked. The instrument has no blind time within that window. Outside of it, you see nothing.</p>
+
+<p>This means RTBW determines whether:</p>
+<ul>
+  <li>A wideband signal fits in a single capture (a 100 MHz 5G NR channel needs at least 100 MHz of RTBW).</li>
+  <li>Multiple channels can be monitored together (a Bluetooth hopper across 79 channels in 2.4 GHz ISM needs at least 80 MHz of RTBW to see every hop).</li>
+  <li>Wideband threats can be detected (a barrage jammer spreading 200 MHz of energy needs at least 200 MHz of RTBW to characterize in one shot).</li>
+</ul>
+
+<p>If your signal is wider than your RTBW, you have to either upgrade the instrument, retune to a different center frequency to see another slice, or cascade multiple RTSAs to combine their windows.</p>
+
+<div class="callout warning">
+<h3>Aaronia in Practice: SPECTRAN V6 PLUS RTBW tiers</h3>
+<p>The Aaronia V6 PLUS family ships with a deliberate ladder of real-time bandwidth options:</p>
+<table>
+<thead><tr><th>Model</th><th>Standard RTBW</th><th>Optional RTBW</th></tr></thead>
+<tbody>
+<tr><td>SPECTRAN V6 ECO 100XA-6</td><td>44 MHz</td><td>-</td></tr>
+<tr><td>SPECTRAN V6 PLUS 250XA-6</td><td>80 MHz</td><td>120 MHz</td></tr>
+<tr><td>SPECTRAN V6 PLUS 500XA-6</td><td>80 MHz</td><td>120 MHz</td></tr>
+<tr><td>SPECTRAN V6 PLUS 2000XA-6</td><td>160 MHz</td><td>245 MHz or 490 MHz</td></tr>
+</tbody>
+</table>
+<p>That ladder maps to specific use cases. A 44 MHz ECO unit handles teaching labs and Wi-Fi 5 channel inspection. An 80 to 120 MHz V6 PLUS handles 5G FR1 channels, Bluetooth full-band capture, and most ISM monitoring. The 160 to 490 MHz flagship handles 5G FR2 mmWave channels, Wi-Fi 7 320 MHz captures, and broadband EW work in a single shot. Cascading lifts the ceiling further: four V6 PLUS units operating phase-coherently produce 1 GHz of aggregate real-time bandwidth.</p>
+</div>
+
+<h2>2.3 Probability of Intercept (POI)</h2>
+
+<p>Probability of intercept defines the minimum signal duration that an analyzer will detect with near certainty inside its real-time bandwidth.</p>
+
+<p>In a swept analyzer, POI is statistical: most short bursts are missed because the analyzer is looking elsewhere. In an RTSA, POI becomes deterministic: any signal longer than the POI floor is captured every single time, full stop.</p>
+
+<p>The POI floor of an RTSA is set by the FFT length and the windowing scheme. A burst must persist long enough to populate at least one full FFT window for its energy to register cleanly. With overlapping FFTs, that minimum window time can be reduced because partial-window bursts still contribute energy. Hardware-level peak detection can drop the floor even lower.</p>
+
+<h3>Worked example</h3>
+
+<p>Suppose an RTSA processes 4096-point FFTs at a 2 GS/s sample rate with 75 percent overlap.</p>
+
+<div class="math-display">
+$$T_{FFT} = \frac{N_{FFT}}{f_s} = \frac{4096}{2 \times 10^9} = 2.048\,\mu s$$
+$$T_{hop} = \frac{T_{FFT}}{4} = 512\,ns$$
+</div>
+
+<p>So a burst longer than 512 nanoseconds is guaranteed to overlap at least one full FFT window. Combined with hardware peak detection across the wideband front-end, the realized POI can drop further.</p>
+
+<p>In Aaronia's RTSA Suite PRO, the published POI is 10 nanoseconds. That number comes from a combination of high sample rate, deep parallel FFT processing, and dedicated peak-detection hardware that catches transient energy even between FFT windows. A 10 ns burst, the kind a high-PRF radar emits, is captured with confidence rather than chance.</p>
+
+<p>POI matters most for pulsed radar characterization, counter-UAS where drone uplink bursts are tens of nanoseconds long, spectrum security where adversaries deliberately use short transmissions to evade detection, and high-confidence regulatory compliance. Lower POI means tighter security. It also means more storage and faster processing, so cost goes up. The right POI for your application is "just low enough to catch what you care about, no lower."</p>
+
+<h2>2.4 Gap-Free Processing</h2>
+
+<p>Gap-free processing means that no time interval within the real-time bandwidth window is unobserved. Every nanosecond of input feeds at least one FFT.</p>
+
+<p>This is achieved through overlapping FFTs. Successive FFT windows share samples, so the boundary effects of windowing are smoothed across overlapping computations. The standard overlap is 50 percent or 75 percent, with higher overlap providing smoother displays at the cost of more computation.</p>
+
+<figure>
+  <object type="image/svg+xml" data="../figures/fig-02-01-overlapping-ffts.svg" style="width:100%;">Figure 2-1</object>
+  <figcaption>Figure 2-1. Overlapping FFTs at 75 percent overlap guarantee every input sample is fully weighted by at least one window. Bursts longer than the hop time are captured with full energy. With hardware peak detection, even bursts shorter than the hop time can be captured down to the 10 nanosecond POI floor.</figcaption>
+</figure>
+
+<p>In a non-overlapped FFT pipeline, a signal that arrives exactly at a window boundary loses energy at both ends of the window. Its peak appears attenuated, its frequency appears smeared. With 75 percent overlap, the same signal contributes full energy to at least three consecutive windows, and its peak is preserved.</p>
+
+<p>Gap-free processing is what makes RTSAs deterministic instruments. You can quote a POI number with confidence because the overlapping FFT structure guarantees coverage. You can promise a customer that no signal in the RTBW will be missed because the math forces that conclusion.</p>
+
+<h2>2.5 FFT Length and Resolution Bandwidth (RBW)</h2>
+
+<p>Resolution bandwidth on an RTSA is the width of one frequency bin in the FFT output. It is set by the FFT length and the sample rate:</p>
+
+<div class="math-display">$$\text{RBW} = \frac{f_s}{N_{FFT}}$$</div>
+
+<p>For a 2 GS/s sample rate and a 4096-point FFT:</p>
+
+<div class="math-display">$$\text{RBW} = \frac{2 \times 10^9}{4096} \approx 488\,\text{kHz}$$</div>
+
+<p>Want narrower RBW? Increase the FFT length. A 65,536-point FFT at the same sample rate gives an RBW of about 30 kHz, fine enough to separate adjacent narrowband signals. A million-point FFT pushes RBW to less than 2 kHz.</p>
+
+<p>But there is a cost. Longer FFTs require longer integration windows, which raises the POI floor:</p>
+
+<div class="math-display">$$T_{FFT} = \frac{N_{FFT}}{f_s}$$</div>
+
+<p>A 65,536-point FFT at 2 GS/s integrates for about 33 microseconds. A burst shorter than that may not produce a clean spectral peak even though the RTSA captures it in I/Q. There is a fundamental tradeoff between frequency resolution and time resolution, identical in form to the time-bandwidth uncertainty principle:</p>
+
+<div class="math-display">$$\Delta f \cdot \Delta t \geq \text{constant}$$</div>
+
+<p>You cannot escape this. You can only choose where on the curve to sit for a given measurement.</p>
+
+<p>The window function (Hann, Hamming, Blackman, Flat-top, Kaiser) modifies the effective RBW further. A Hann window spreads each tone across a few bins but suppresses sidelobes by 30 dB. A Flat-top window smooths the peak so amplitude readings are accurate but blurs frequency. A Blackman window squeezes sidelobes below 50 dB at the cost of wider main lobes. Choosing the right window is its own discipline, covered in detail in Chapter 5.</p>
+
+<p>For now, the rule of thumb: FFT length sets the RBW floor, the window sets the practical RBW and amplitude accuracy, and overlap sets how often a new FFT becomes available.</p>
+
+<h2>2.6 Waterfall (Spectrogram) Displays</h2>
+
+<p>A waterfall display, also called a spectrogram, plots time-frequency-amplitude in a single image. The X axis is frequency, the Y axis is time, and color encodes amplitude.</p>
+
+<p>Each horizontal line in the waterfall is one FFT result. New lines push older lines downward, building a scrolling history of spectral activity. With overlapping FFTs running at thousands per second, the waterfall paints a continuous picture of how the spectrum evolves.</p>
+
+<p>What waterfalls expose: frequency hopping shows up as diagonal stripes, each a hop landing on a different channel. Sweeping radars trace a slowly rotating peak that paints a chirp pattern down the time axis. Congestion fills the waterfall solid as overlapping Wi-Fi and Bluetooth traffic compete in the 2.4 GHz ISM band. Every transmission appears as a colored bar with a precise duration measurable from the Y axis.</p>
+
+<p>The waterfall is the single most useful display in modern RF troubleshooting. A swept analyzer cannot produce one because it cannot capture the time dimension faithfully. RTSAs make it free. A practiced engineer can identify dozens of signal types by waterfall pattern alone: TDMA bursts, GSM frames, Wi-Fi beacons, LoRa chirps, radar PRIs, drone control links, jammer sweeps. The patterns are as recognizable as fingerprints, and the waterfall is the magnifying glass.</p>
+
+<h2>2.7 Persistence and Density Displays</h2>
+
+<p>Persistence integrates spectral energy over time. Each FFT result is layered onto a 2D histogram of frequency-versus-amplitude, and color encodes how often a particular point has been hit.</p>
+
+<p>Stable signals (carriers, beacons, continuous tones) produce bright, saturated lines because the same bin gets hit thousands of times per second. Rare events (a one-in-a-million transient) produce faint dots. Noise produces a diffuse cloud that traces the noise floor.</p>
+
+<p>This is what persistence reveals that no other display can: stable carriers stand out from background noise by orders of magnitude in apparent brightness, rare emitters appear as sub-threshold dots that would be invisible on a single FFT, modulation envelopes paint themselves onto the display as the analyzer integrates over symbol transitions, and noise statistics become visible as the cloud's vertical thickness.</p>
+
+<p>Density displays are a close cousin. Where persistence shows hit count, density shows hit probability. The two are mathematically equivalent up to normalization but pedagogically distinct. Persistence and density together let you see things that exist only statistically. A drone with a 1 percent duty cycle is invisible to a single sweep. On persistence with five seconds of integration, it is unmistakable.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: persistence as a Bayesian prior</h3>
+<p>Persistence amounts to a non-parametric Bayesian estimate of $P(\text{amplitude} \mid \text{frequency})$ over the integration window. The display is showing you a posterior probability distribution. This is why persistence is so good at separating signal from noise: the brain reads probability density better than it reads instantaneous amplitude.</p>
+</div>
+
+<h2>2.8 Frequency Mask Trigger (FMT)</h2>
+
+<p>A frequency mask trigger fires when the spectrum violates a user-defined envelope. You draw a forbidden region (above a power level, inside a frequency band, or both), and the RTSA captures whenever the spectrum enters that region.</p>
+
+<p>This is automation. Without an FMT, hunting for an intermittent interferer means staring at a screen for hours. With an FMT, you arm the trigger, walk away, and come back to a list of timestamped events with full I/Q replay attached.</p>
+
+<p>The mask itself is just a piecewise linear function in the frequency-amplitude plane. Real-world masks include "anything above -60 dBm in the GPS L1 band" for spoofing detection, "any energy outside the licensed 60 MHz channel" for adjacent-channel emissions enforcement, "power above -40 dBm in the 5.8 GHz drone band" for counter-UAS alerting, and "carrier present on a frequency where it should not be" for unauthorized transmitter detection.</p>
+
+<p>In Aaronia RTSA Suite PRO, the mask is editable as a graphical overlay, and the system supports both static and learned masks. Learned masks integrate the spectrum over a quiet period, build a noise-floor envelope automatically, and trigger on any deviation. This is invaluable for compliance officers monitoring a quiet protection zone such as a hospital telemetry band.</p>
+
+<p>When the FMT fires, the RTSA captures the I/Q surrounding the violation, including pre-trigger samples from the rolling buffer. You get the moments before the event, the event itself, and whatever follows, all in a replayable file.</p>
+
+<h2>2.9 Streaming and RF Recording</h2>
+
+<p>Streaming captures raw I/Q samples to host storage continuously, without dropping frames, for hours or days. This turns the RTSA into a forensic recorder.</p>
+
+<p>The challenge is sustained bandwidth. At 245 MHz of real-time bandwidth with 16-bit complex samples, raw data flows at 980 megabytes per second. Twelve hours of continuous capture is about 42 terabytes. The streaming fabric (USB4, Thunderbolt, 10 GbE, PCIe) and the host storage subsystem (NVMe RAID) have to keep up without dropping a sample.</p>
+
+<p>What streaming enables: forensic replay of an event hours after it occurred with the same I/Q seen as if live, AI-based offline classification using long-duration training data, long-term compliance logging for regulatory archives, and remote monitoring networks where edge nodes stream to a central archive.</p>
+
+<p>Aaronia RTSA Suite PRO records and replays the full I/Q bandwidth up to 245 MHz, with 24/7 continuous recording limited only by the size of the attached storage. A 100 TB external array gives roughly 28 hours of continuous full-bandwidth I/Q. For longer windows, you either reduce bandwidth via decimation or rotate storage.</p>
+
+<p>This capability transforms what RF compliance means. Instead of "we measured the band on Tuesday and saw nothing," you have "here is the I/Q file from 2:14 AM Tuesday when the alarm fired." Replay the file. See the event. Show it to the regulator. Done.</p>
+
+<h2>2.10 Phase-Coherent Capture</h2>
+
+<p>Phase-coherent capture means that two or more RTSAs share a clock and a synchronization signal, so their I/Q samples can be combined as if from a single instrument. This unlocks four major capabilities:</p>
+
+<ol>
+  <li><strong>Wider effective RTBW.</strong> Two phase-coherent RTSAs centered on adjacent frequency bands can be stitched into one effective receiver. Four units cascaded yield 1 GHz of aggregate real-time bandwidth.</li>
+  <li><strong>Direction finding.</strong> Multiple antennas spaced across a known geometry let the analyzer compute the angle of arrival of incoming signals from phase differences.</li>
+  <li><strong>MIMO analysis.</strong> Beamformed and MIMO signals can be characterized only when multiple receive paths are sampled coherently.</li>
+  <li><strong>TDOA geolocation.</strong> Spatially distributed RTSAs sampling a common reference can localize a transmitter from time-difference-of-arrival across the array.</li>
+</ol>
+
+<p>The synchronization plumbing matters. A shared 10 MHz reference oscillator gets you frequency coherence. A shared sample clock gets you sample alignment. A shared trigger gets you start-of-capture alignment. All three together get you phase coherence.</p>
+
+<p>Aaronia SPECTRAN V6 PLUS units cascade through built-in synchronization ports. Four units with shared reference, sample clock, and trigger produce a 1 GHz effective receiver, which is enough to monitor most defense bands or capture multiple Wi-Fi 7 channels simultaneously. Phase coherence is also the foundation of the IsoLOG 3D DF antenna system, covered in Chapter 8.</p>
+
+<h2>2.11 Wrapped Spectrum View</h2>
+
+<p>Most spectrum analyzers display frequency on a single horizontal axis. If you want to see 6 GHz of spectrum at 1 kHz resolution, you need a screen 6 million pixels wide. This is impossible.</p>
+
+<p>Aaronia's patented Wrapped Spectrum view solves this by stacking the frequency axis across multiple display lines. A 6 GHz span at 1 kHz resolution wraps across, say, 8 stacked lines, each line showing 750 MHz of the band. The full 6 GHz is visible at full resolution simultaneously.</p>
+
+<p>This sounds gimmicky until you use it. Then it becomes addictive. What Wrapped Spectrum exposes: wide-span monitoring at high RBW that no traditional display can show, co-located transmitters across a wide band visible together for comparison, harmonic relationships between widely spaced signals (a 1 GHz fundamental and its second through fifth harmonics across a single screen), and compliance dashboards covering an entire allocation chart.</p>
+
+<p>It is the sort of feature that only emerges when an instrument company has full software control over both the data acquisition and the display engine. RTSA Suite PRO gives Aaronia that control, and Wrapped Spectrum is one of the visible payoffs.</p>
+
+<p>For book purposes, the takeaway is simpler. RTSA displays are not a fixed set of three views. They are a software ecosystem, and innovation in the display layer can be as valuable as innovation in the silicon.</p>
+
+<div class="summary">
+<h3>Chapter Summary</h3>
+<ul>
+  <li>Real-time bandwidth is the simultaneously digitized window of spectrum, set by ADC sample rate and digital filtering. SPECTRAN V6 PLUS scales from 44 MHz (ECO) to 490 MHz (flagship 2000XA-6 with full upgrade), with cascading to 1 GHz across four units.</li>
+  <li>Probability of intercept is the minimum burst duration captured with near certainty. Aaronia RTSA Suite PRO advertises a POI floor of 10 nanoseconds.</li>
+  <li>Gap-free processing requires overlapping FFTs (50 to 75 percent overlap is standard).</li>
+  <li>Resolution bandwidth equals sample rate divided by FFT length. Longer FFTs give finer RBW at the cost of higher POI.</li>
+  <li>Waterfall displays expose time-frequency-amplitude relationships and are the most useful general-purpose RF troubleshooting view.</li>
+  <li>Persistence and density displays integrate spectral energy over time, exposing rare events and statistical structure.</li>
+  <li>Frequency mask triggers automate detection of out-of-envelope events and capture I/Q surrounding the violation.</li>
+  <li>Streaming and RF recording enable forensic replay, with up to 245 MHz of continuous I/Q to disk in RTSA Suite PRO, limited only by storage capacity.</li>
+  <li>Phase-coherent capture across multiple RTSAs enables wider effective bandwidth, direction finding, MIMO analysis, and TDOA geolocation.</li>
+  <li>The patented Wrapped Spectrum view stacks the frequency axis across multiple lines for high-resolution wide-span monitoring.</li>
+</ul>
+</div>
+
+<div class="quiz">
+<h3>End-of-Chapter Quiz</h3>
+<ol>
+<li>Which specification determines the width of spectrum captured simultaneously by an RTSA?
+  <p>A. RBW</p><p>B. RTBW</p><p>C. IF bandwidth</p><p>D. Sweep speed</p>
+</li>
+<li>Why does increasing FFT length improve frequency resolution?
+  <p>A. It increases ADC sample rate.</p><p>B. It includes more samples per transform, narrowing each bin.</p><p>C. It increases on-board memory.</p><p>D. It reduces the noise figure of the front end.</p>
+</li>
+<li>What does gap-free processing guarantee?
+  <p>A. Faster display refresh.</p><p>B. Continuous time coverage with no missed samples.</p><p>C. Narrower IF filters.</p><p>D. Higher display brightness.</p>
+</li>
+<li>Approximately what is the resolution bandwidth of a 4096-point FFT at a 2 GS/s sample rate?
+  <p>A. 2 kHz</p><p>B. 50 kHz</p><p>C. 488 kHz</p><p>D. 2 MHz</p>
+</li>
+<li>What is the published probability of intercept floor of Aaronia RTSA Suite PRO?
+  <p>A. 10 microseconds</p><p>B. 1 microsecond</p><p>C. 10 nanoseconds</p><p>D. 1 millisecond</p>
+</li>
+<li>Which display reveals rare emitters by accumulating hit probability over time?
+  <p>A. Single FFT trace</p><p>B. Waterfall</p><p>C. Persistence</p><p>D. Time domain</p>
+</li>
+<li>A frequency mask trigger fires when:
+  <p>A. The trace updates more than 100 times per second.</p><p>B. The spectrum violates a user-defined envelope.</p><p>C. The ADC clips its input.</p><p>D. The trace average exceeds the maximum hold.</p>
+</li>
+<li>What aggregate real-time bandwidth do four cascaded SPECTRAN V6 PLUS units produce?
+  <p>A. 80 MHz</p><p>B. 245 MHz</p><p>C. 490 MHz</p><p>D. 1 GHz</p>
+</li>
+<li>Which Aaronia patented display wraps a wide frequency span across multiple stacked lines for high-resolution viewing?
+  <p>A. Heatmap View</p><p>B. Wrapped Spectrum</p><p>C. Persistence Cube</p><p>D. Density Plot</p>
+</li>
+<li>Continuous I/Q recording up to 245 MHz of bandwidth in RTSA Suite PRO is limited by:
+  <p>A. CPU cycles</p><p>B. The size of the attached storage</p><p>C. The display refresh rate</p><p>D. The ADC resolution</p>
+</li>
+</ol>
+<p style="margin-top:16px; font-style:italic; color:var(--bnc-deep-plum);">Answer key in Appendix E.</p>
+</div>
+
+<div class="next">
+<h3>What's Next</h3>
+<p>Chapter 3 walks down the signal chain: from the antenna, through the RF front end, the downconverter, the ADC, the digital filtering and decimation stages, the FFT engine, and finally the display pipeline. Each stage has its own physics and its own limits, and understanding the whole chain is what separates a button-pusher from an engineer who can troubleshoot a measurement when the result does not look right.</p>
+</div>
+
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="chapter-01.html">&larr; Ch 1. Evolution of Spectrum Analysis</a>
+    <a class="mid"  href="index.html">Contents</a>
+    <a class="next" href="chapter-03.html">Ch 3. The Signal Chain &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+<script defer src="reader-companion.js"></script>
+</body>
+</html>

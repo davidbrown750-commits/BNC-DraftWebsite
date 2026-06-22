@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+  <title id="title">PLL lock block diagram</title>
+  <desc id="desc">The local oscillator and a 10 MHz reference feed a phase detector, whose error signal passes through a loop filter that steers the oscillator until its output tracks the reference. The disciplined clock fans out to the timing core.</desc>
+
+  <rect x="0" y="0" width="720" height="420" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="719" height="419" fill="none" stroke="#b6c2cc" rx="6"/>
+
+  <text x="36" y="36" fill="#003D6B" font-size="16" font-weight="700">Phase-Locked Loop (PLL) Lock</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L8,3 L0,6 z" fill="#2C3E50"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="12" markerHeight="12" refX="9" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L9,3.5 L0,7 z" fill="#C77E00"/>
+    </marker>
+  </defs>
+
+  <!-- 10 MHz reference box -->
+  <rect x="40" y="90" width="150" height="56" rx="4" fill="#eaf4fb" stroke="#003D6B" stroke-width="2"/>
+  <text x="115" y="115" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">10 MHz</text>
+  <text x="115" y="133" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">reference</text>
+
+  <!-- Phase detector box -->
+  <rect x="290" y="80" width="150" height="76" rx="4" fill="#eaf4fb" stroke="#003D6B" stroke-width="2"/>
+  <text x="365" y="112" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">Phase</text>
+  <text x="365" y="132" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">detector</text>
+
+  <!-- Loop filter box -->
+  <rect x="530" y="80" width="150" height="76" rx="4" fill="#eaf4fb" stroke="#003D6B" stroke-width="2"/>
+  <text x="605" y="112" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">Loop</text>
+  <text x="605" y="132" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">filter</text>
+
+  <!-- Local oscillator box -->
+  <rect x="290" y="270" width="150" height="76" rx="4" fill="#eaf4fb" stroke="#003D6B" stroke-width="2"/>
+  <text x="365" y="302" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">Local</text>
+  <text x="365" y="322" fill="#003D6B" font-size="13" font-weight="700" text-anchor="middle">oscillator</text>
+
+  <!-- Reference -> phase detector -->
+  <line x1="190" y1="118" x2="284" y2="118" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Phase detector -> loop filter (error signal) -->
+  <line x1="440" y1="118" x2="524" y2="118" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="445" y="108" fill="#2C3E50" font-size="11">error</text>
+
+  <!-- Loop filter -> local oscillator (steer, down the right side) -->
+  <path d="M605,156 L605,308 L446,308" fill="none" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="500" y="300" fill="#2C3E50" font-size="11">steer (tune)</text>
+
+  <!-- Local oscillator -> phase detector (feedback up) -->
+  <line x1="335" y1="270" x2="335" y2="162" stroke="#2C3E50" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="250" y="220" fill="#2C3E50" font-size="11">local osc.</text>
+  <text x="250" y="234" fill="#2C3E50" font-size="11">feedback</text>
+
+  <!-- Disciplined output (amber) from local oscillator to timing core -->
+  <line x1="440" y1="308" x2="600" y2="308" stroke="#C77E00" stroke-width="2.5" marker-end="url(#arrowAmber)"/>
+  <rect x="600" y="282" width="0" height="0"/>
+  <text x="455" y="298" fill="#C77E00" font-size="12" font-weight="700">disciplined clock</text>
+  <text x="492" y="338" fill="#C77E00" font-size="12">to timing core / delays</text>
+</svg>

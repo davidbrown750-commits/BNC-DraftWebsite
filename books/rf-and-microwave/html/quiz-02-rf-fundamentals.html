@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 2 Quiz &mdash; RF Fundamentals</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 2 &middot; Quiz</p>
+      <h1>RF Fundamentals</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="02-rf-fundamentals.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="03-em-spectrum-signal-generation.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "02",
+    title: "Chapter 2 Quiz: RF Fundamentals",
+    questions: [
+      {
+        q: "An oscilloscope plots which two quantities, and on which axes?",
+        options: [
+          "Power on the vertical axis against frequency on the horizontal axis",
+          "Voltage (amplitude) on the vertical axis against time on the horizontal axis",
+          "Phase on the vertical axis against amplitude on the horizontal axis",
+          "Current on the vertical axis against impedance on the horizontal axis"
+        ],
+        answer: 1,
+        explain: "An oscilloscope is a time domain instrument: amplitude (voltage) versus time."
+      },
+      {
+        q: "A waveform repeats every 20 ms. What is its frequency?",
+        options: [
+          "20 Hz",
+          "200 Hz",
+          "50 Hz",
+          "500 Hz"
+        ],
+        answer: 2,
+        explain: "f = 1/T = 1/(20 ms) = 50 Hz."
+      },
+      {
+        q: "How does the superposition principle let a square wave be built from sine waves?",
+        options: [
+          "By adding a fundamental and its odd harmonics (3rd, 5th, 7th, ...) in the correct proportions, since added sine waves sum to a new shape",
+          "By multiplying two sine waves of the same frequency together",
+          "By adding only even harmonics of the fundamental",
+          "By subtracting a single higher-frequency sine from the fundamental"
+        ],
+        answer: 0,
+        explain: "Superposition sums sine waves; a square wave is the fundamental plus its odd harmonics in the right proportions."
+      },
+      {
+        q: "A signal measures -10 dBm. How many milliwatts is that, and how does dBm differ from dB?",
+        options: [
+          "1 mW; dBm and dB mean the same thing",
+          "10 mW; dBm is a ratio and dB is absolute",
+          "0.1 mW; dBm is an absolute power referenced to 1 mW, while dB is a dimensionless ratio between two quantities",
+          "-10 mW; both are absolute power levels"
+        ],
+        answer: 2,
+        explain: "0 dBm = 1 mW, so -10 dBm = 0.1 mW. dBm is absolute (relative to 1 mW); dB is a ratio."
+      },
+      {
+        q: "Why did the RF industry standardize on 50 ohms?",
+        options: [
+          "It is the impedance of free space, so it needs no matching",
+          "It is a compromise between the impedance for lowest loss (about 77 ohms) and the impedance for highest power handling (about 30 ohms) in coaxial cable",
+          "It was the only value early connectors could be machined to",
+          "It exactly matches the impedance of every antenna ever built"
+        ],
+        answer: 1,
+        explain: "Fifty ohms splits the difference between coax's lowest-loss (~77 ohm) and highest-power (~30 ohm) impedances."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

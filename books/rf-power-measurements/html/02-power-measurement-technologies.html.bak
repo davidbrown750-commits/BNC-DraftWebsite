@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 2: Power Measurement Technologies</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+  }
+  h1::first-letter { text-transform: uppercase; }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  /* Reconcile shared light-touch.css with this book's full-bleed cover and
+     centered .wrap layout. The series sheet sets a narrow body max-width and
+     side padding; this book manages width inside .wrap instead, so reset the
+     body to full width and let the cover and wrap behave as designed. */
+  body { max-width: none; padding: 0; }
+  /* Series figure styling is welcome; keep figures readable inside .wrap. */
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-2-power-measurement-technologies">Chapter 2: Power Measurement Technologies</h2>
+<figure>
+<img src="../figures/chapter-02-opener.svg" alt="" /><figcaption>Chapter 2 — Power Measurement Technologies</figcaption>
+</figure>
+<p>There are five broad families of RF amplitude measurement in common use today. Thermal sensors, diode detectors, receiver-based designs, monolithic amplitude ICs, and direct RF sampling. Each has strengths, each has trade-offs, and each owes a great deal to the engineers who came before. Let us take them one at a time.</p>
+<h3 id="thermal-rf-power-sensors">2.1 Thermal RF Power Sensors</h3>
+<p>Thermal sensors measure what power actually <em>does</em>: they measure heat.</p>
+<p>The idea is beautifully simple. Feed an RF signal into a precision termination. The signal dissipates as heat. Measure the temperature rise. Convert the temperature rise to power using a calibration curve. The measurement has no quarrel with modulation, no argument with signal shape, and no opinion about crest factor. Watts are watts.</p>
+<p><strong>Thermistors and bolometers.</strong> The earliest practical thermal sensors used thermistors, small resistive elements whose resistance changes sharply with temperature. The thermistor served both as the RF termination and as the temperature transducer, usually inside a Wheatstone bridge that applied a DC bias to hold the thermistor at a constant resistance. When RF power arrived, the bridge reduced the DC bias to keep the thermistor at the same temperature. The reduction in DC substitute power was numerically equal to the RF power. This technique is called <em>DC substitution</em>, and when done with a precision reference, it yields some of the most traceable RF power measurements available.</p>
+<p><strong>Thermocouple sensors.</strong> Thermocouples exploit the Seebeck effect: a junction of two dissimilar metals generates a voltage proportional to its temperature. A thermocouple sensor places a tiny thin-film thermocouple adjacent to a matched termination. When RF heats the termination, the thermocouple reports the temperature rise as a DC voltage. Thermocouples are more rugged than thermistors, offer better dynamic range on the low end, and do not require the active bridge circuitry. The classic HP 435 / 437 series of power meters used thermocouple technology and set the industry standard for accurate true-average measurement for decades.</p>
+<p><strong>The modern calorimeter.</strong> Calorimeters at the high-power end work on the same principle but measure the heat transferred to a flowing coolant, typically water or oil. These show up in manufacturing test of high-power transmitter tubes and in military radar test benches, where the signal would instantly vaporize a coaxial termination.</p>
+<p><strong>Strengths and limits.</strong> Thermal sensors are the reference standard for accuracy.</p>
+<figure>
+<img src="../figures/fig-2-1-1-thermal-sensor.svg" alt="Thermal RF power sensor with DC substitution" /><figcaption>Figure 2.1.1 Thermal RF power sensor using DC substitution.</figcaption>
+</figure>
+<p>They respond to true RMS power regardless of waveform. Their limitation is speed. Thermal time constants are measured in milliseconds to seconds, which means they average across any modulation faster than that. If your question is “what is the true average power of this signal over the last minute,” a thermal sensor answers with authority. If your question is “what was the peak power during that 1 microsecond radar pulse,” you need a different tool.</p>
+<h3 id="detector-diode-rf-power-sensors">2.2 Detector (Diode) RF Power Sensors</h3>
+<p>Diode detector sensors are the workhorse of modern RF power measurement. They are fast, sensitive, and available from microwatts to watts. Almost every USB power sensor on the market today uses a diode detector at its core.</p>
+<p>The principle is rectification. A low-barrier Schottky diode driven by an RF signal produces a DC voltage proportional to some function of the input. At low power levels (typically below about -20 dBm), the diode operates in its <em>square law</em> region, where the DC output is proportional to the input power. At higher levels, the diode transitions through a linear region and finally into a peak-detecting region where the DC output tracks the envelope of the RF.</p>
+<figure>
+<img src="../figures/fig-2-2-1-diode-square-law.svg" alt="Diode detector response: square-law region transitioning to linear region above minus 20 dBm" /><figcaption>Figure 2.2.1 Diode detector response. The square-law region transitions to a linear region above about -20 dBm.</figcaption>
+</figure>
+<p><strong>Square law behavior.</strong> In the square law region (typically below about -20 dBm), a diode detector is truly a power sensor. The DC voltage is proportional to Vrms² / R, which is the same as average power. This means a square-law-operated diode delivers true-RMS measurement on any waveform, modulated or not, without any bandwidth penalty. It is a genuinely beautiful property of semiconductor physics, and it is the basis for a whole class of high-accuracy average power sensors.</p>
+<p><strong>Above the square law knee.</strong> Once the signal rises above the square law region, the diode response becomes more linear and then peak-detecting. The DC output now depends on the instantaneous envelope rather than the average power. For a CW signal this is easy to correct because the envelope is constant, but for modulated signals it is a problem. The peak-to-average ratio of the signal starts to leak into the measurement. The remedy is either to keep the signal within the square law region (usually with switchable attenuators), or to correct for it with calibration data, or to accept that the sensor is now a peak detector rather than an average detector and plan accordingly.</p>
+<p><strong>Multi-path diode designs.</strong> Modern average power sensors solve this elegantly with multiple parallel detection paths, each covering a different power range. The sensor firmware stitches the outputs together to deliver a true-RMS measurement across 80 dB or more of dynamic range, regardless of signal modulation. Berkeley Nucleonics uses a thermally stabilized two-path square-law scheme of exactly this kind in the Model 12100 series, with the practical benefit that there is no need to zero the sensor or reference it to a known source before use. More on that in Chapter 11.</p>
+<p><strong>Strengths and limits.</strong> Diode sensors are fast (nanosecond response times are achievable), sensitive (noise floors into the -70 dBm range), and compact. They can be made to deliver either average or peak measurements depending on the firmware and signal conditioning. Their limitation, at high signal levels, is the departure from square law. Well-designed modern sensors work around this with multiple paths, temperature stabilization, and careful calibration, but any engineer using a diode-based sensor should know which region they are operating in.</p>
+<h3 id="receiver-based-amplitude-measurement">2.3 Receiver-Based Amplitude Measurement</h3>
+<p>Receiver-based amplitude measurement is what a spectrum analyzer does when you put it in zero-span or channel-power mode.</p>
+<p>A receiver down-converts the signal of interest to an intermediate frequency (IF), filters it with a known bandwidth, digitizes the IF, and computes amplitude statistics from the samples. Because the receiver can select a frequency and a bandwidth precisely, it can measure the power inside a narrow slice of spectrum while rejecting everything else. This is irreplaceable when you need to measure a small signal in the presence of a large nearby carrier, and it is the natural tool for measuring spurs, harmonics, and out-of-band emissions.</p>
+<p>Receiver-based measurement also has some real disadvantages for bulk power measurement. The displayed amplitude depends on the resolution bandwidth, the detector setting (peak, average, sample, quasi-peak), and the frequency calibration. Getting the right number takes careful setup. Measurement speed is limited by the sweep time. And absolute accuracy, while respectable, does not approach a dedicated power sensor.</p>
+<p>As a rule, use a receiver when you care about <em>what frequencies the power is at</em>. Use a power sensor when you care about <em>how much power is there</em>.</p>
+<h3 id="monolithic-rf-amplitude-measurement">2.4 Monolithic RF Amplitude Measurement</h3>
+<p>Some applications demand amplitude measurement inside the product rather than on the bench. For these, monolithic amplitude detection ICs exist. Parts like the Analog Devices AD8318, AD8362, and similar devices implement log-amp or RMS-responding detectors in a single package, often with 60 dB or more of dynamic range and response times in the microsecond to millisecond range.</p>
+<p>These parts are how your phone actually controls its transmitter power. They are how a transmitter module knows to shut down when its output VSWR goes out of spec. They are not, generally, bench-accuracy devices. Their role is real-time, embedded, closed-loop amplitude control, and they do that role extraordinarily well.</p>
+<h3 id="direct-rf-sampling-amplitude-measurement">2.5 Direct RF Sampling Amplitude Measurement</h3>
+<p>Direct RF sampling is the youngest of the technologies in wide use. A high-speed ADC digitizes the RF signal directly, and everything downstream is done in DSP. Modern gigasamples-per-second converters can capture signals to 6 GHz or higher without any analog down-conversion, and software computes amplitude, phase, modulation, demodulated data, and any other derived quantity you can imagine.</p>
+<p>Direct sampling brings extraordinary flexibility.</p>
+<figure>
+<img src="../figures/image10.png" alt="Direct RF sampling architecture" /><figcaption>Figure 2.5.1 Direct RF sampling architecture. A high-speed ADC digitizes the carrier directly, and DSP derives every measured quantity.</figcaption>
+</figure>
+<p>One hardware configuration can measure average power, peak power, modulation quality, spectrum, and time-domain pulse profile, all from the same sample stream. It is also expensive, complex, and gluttonous about data storage. For bench-top bulk power measurement, a good diode sensor is still faster, cheaper, and easier to calibrate. For research labs and advanced test equipment, direct sampling is where the frontier lies.</p>
+<h3 id="what-is-an-rf-power-meter">2.6 What Is an RF Power Meter?</h3>
+<p>After all that discussion of sensor technology, we should answer a deceptively simple question. What is an RF power meter?</p>
+<p>The shortest answer is that a power meter is a sensor plus everything needed to turn the sensor’s output into a useful number.</p>
+<p>In a traditional benchtop instrument, the “power meter” is a separate box with a display, a keypad, and a front-panel connector for the sensor. The sensor captures the RF energy; the meter supplies the sensor’s bias, reads its output, applies calibration corrections, and displays a power reading in dBm or watts.</p>
+<p>In a modern USB sensor, this division gets blurred. The sensor itself has enough microcontroller intelligence to handle its own calibration, corrections, triggering, and statistical analysis. The “meter” becomes a piece of software running on a PC. The Berkeley Nucleonics Model 12100 series is built around exactly this idea: each sensor is a complete, self-contained measurement instrument, and the host computer simply hosts the display.</p>
+<p>In both cases, the function is the same. A power meter is the thing that turns a raw thermoelectric or diode-detector voltage into a number you can trust.</p>
+<blockquote>
+<p><strong>Pro tip.</strong> Never argue with a power reading until you know what the sensor is doing. An average sensor reporting 0 dBm on a pulsed radar signal is not lying. It is just answering a different question than you think you asked.</p>
+</blockquote>
+<hr />
+<hr />
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="01-power-measurement-basics.html">&larr; 1. Power Measurement Basics</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="03-cw-average-and-peak-power.html">3. CW, Average, and Peak Power &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a href="https://www.berkeleynucleonics.com/contact">Chat with a BNC engineer</a>
+    <a href="../web/reader-quiz.html">Request a free print copy</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+  </div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chapter 11: Berkeley Nucleonics AWG Solutions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="light-touch.css">
+<style>
+  :root {
+    --bnc-deep-navy: #003D6B;
+    --bnc-sky-blue: #0078B6;
+    --bnc-navy-shadow: #001f38;
+    --bnc-charcoal: #2C3E50;
+    --bnc-light-steel: #ECEFF1;
+    --bnc-light-cyan: #7fdbff;
+    --bnc-bright-cyan: #00b4ff;
+    --bnc-vivid-cyan: #00d4ff;
+    --bnc-target-green: #00ff88;
+    --bnc-white: #ffffff;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--bnc-charcoal);
+    background: var(--bnc-light-steel);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 30px 80px 30px;
+    background: var(--bnc-white);
+    box-shadow: 0 0 30px rgba(0,31,56,0.06);
+  }
+  /* Cover */
+  header.cover {
+    position: relative;
+    background: linear-gradient(135deg, var(--bnc-deep-navy) 0%, var(--bnc-navy-shadow) 100%);
+    color: var(--bnc-white);
+    padding: 88px 36px 64px 36px;
+    border-bottom: 6px solid var(--bnc-sky-blue);
+    overflow: hidden;
+  }
+  header.cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(120deg, transparent 0 28%, rgba(127,219,255,0.05) 28% 60%, transparent 60%),
+      linear-gradient(155deg, transparent 0 40%, rgba(0,180,255,0.03) 40% 75%, transparent 75%);
+    pointer-events: none;
+  }
+  header.cover .series {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--bnc-light-cyan);
+    font-size: 14px;
+    margin: 0 0 16px 0;
+    position: relative;
+  }
+  header.cover h1 {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.05;
+    color: var(--bnc-white);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    position: relative;
+    text-transform: uppercase;
+  }
+  header.cover h1 .small { display: block; font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; color: var(--bnc-light-cyan); margin-bottom: 12px; text-transform: none; font-style: italic; font-family: Georgia, serif; }
+  header.cover .byline {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 26px;
+    color: var(--bnc-white);
+    opacity: 0.92;
+    position: relative;
+  }
+  header.cover .byline strong { font-weight: 700; }
+  header.cover .edition {
+    margin-top: 28px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-size: 13px;
+    color: var(--bnc-bright-cyan);
+    position: relative;
+  }
+  /* Headings */
+  h1, h2, h3, h4, h5 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.25;
+  }
+  h1 {
+    color: var(--bnc-deep-navy);
+    border-bottom: 3px solid var(--bnc-sky-blue);
+    padding-bottom: 0.3em;
+    margin-top: 2em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  h2 {
+    color: var(--bnc-deep-navy);
+    margin-top: 1.7em;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  h3 {
+    color: var(--bnc-sky-blue);
+    margin-top: 1.4em;
+    font-size: 1.18rem;
+    font-weight: 700;
+  }
+  h4 {
+    color: var(--bnc-charcoal);
+    margin-top: 1.1em;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  p { margin: 0.75em 0; }
+  /* Blockquote = pro tip / engineer's corner callout */
+  blockquote {
+    background: var(--bnc-light-steel);
+    border-left: 4px solid var(--bnc-sky-blue);
+    padding: 14px 22px;
+    margin: 1.3em 0;
+    color: var(--bnc-charcoal);
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+  }
+  blockquote strong {
+    color: var(--bnc-deep-navy);
+    font-style: normal;
+  }
+  /* Code */
+  code {
+    background: #e8eef3;
+    color: var(--bnc-deep-navy);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--bnc-navy-shadow);
+    color: var(--bnc-light-cyan);
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 4px solid var(--bnc-sky-blue);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    overflow-x: auto;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  /* Tables - per BNC style */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.3em 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: var(--bnc-deep-navy);
+    color: var(--bnc-white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+  }
+  tbody td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #d4d8db;
+  }
+  tbody tr:nth-child(odd) { background: var(--bnc-light-steel); }
+  tbody tr:nth-child(even) { background: var(--bnc-white); }
+  tbody tr:hover { background: #d8e5ee; }
+  /* Lists */
+  ul, ol { padding-left: 1.5em; }
+  li { margin: 0.3em 0; }
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bnc-sky-blue), transparent);
+    margin: 2.4em 0;
+  }
+  /* Strong / em */
+  strong { color: var(--bnc-deep-navy); }
+  em { color: var(--bnc-charcoal); }
+  /* Figure captions */
+  p > em:only-child { display: block; font-family: "Helvetica Neue", Arial, sans-serif; font-style: italic; color: var(--bnc-charcoal); font-size: 0.88rem; margin-top: 0.4em; }
+  /* Footer */
+  footer.fin {
+    text-align: center;
+    color: var(--bnc-white);
+    background: var(--bnc-deep-navy);
+    padding: 30px 20px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    letter-spacing: 1.5px;
+  }
+  footer.fin .accent { color: var(--bnc-bright-cyan); }
+  /* BNC logo card top-right */
+  .bnc-logo {
+    position: absolute;
+    top: 26px;
+    right: 26px;
+    background: var(--bnc-white);
+    border: 1px solid var(--bnc-sky-blue);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+  }
+  .bnc-logo svg { display: block; }
+  .bnc-logo .wordmark {
+    font-family: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    color: var(--bnc-deep-navy);
+    letter-spacing: 1px;
+  }
+  /* Print */
+  @media print {
+    body { font-size: 11pt; background: white; }
+    .wrap { max-width: none; padding: 0 14mm; box-shadow: none; }
+    header.cover { page-break-after: always; }
+    h1 { page-break-before: always; }
+    pre { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+  body { max-width: none; padding: 0; }
+  figure { margin: 1.6em 0; }
+  figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+  figcaption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--bnc-charcoal);
+    margin-top: 0.6em;
+    text-align: center;
+    line-height: 1.45;
+  }
+  figcaption .fig-num {
+    font-weight: 700;
+    color: #ffffff;
+    margin-right: 0.4em;
+  }
+  .quiz-cta{background:linear-gradient(90deg,#fff8ec 0%,#fffaf2 70%,#fff 100%);
+    border:1px solid #b6c2cc;border-left:4px solid #C77E00;
+    padding:14px 18px;margin:22px 0;border-radius:3px;font-family:Georgia,serif}
+  .quiz-cta h4{color:var(--bnc-deep-navy);margin:0 0 4px}
+  .quiz-cta a.btn{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;font-size:10pt;padding:8px 16px;background:var(--bnc-deep-navy);
+    color:#fff;text-decoration:none;border-radius:3px;display:inline-block}
+  footer.bnc-footer{font-family:"Helvetica Neue",Arial,sans-serif;margin-top:46px;
+    border-top:2px solid var(--bnc-deep-navy);padding:16px 30px 30px;font-size:13px;color:var(--bnc-charcoal);max-width:880px;margin-left:auto;margin-right:auto}
+  footer.bnc-footer .bnc-nav{display:flex;justify-content:space-between;gap:12px;margin-bottom:12px}
+  footer.bnc-footer .bnc-nav a{color:var(--bnc-sky-blue);text-decoration:none;font-weight:700}
+  footer.bnc-footer .bnc-nav a:hover{text-decoration:underline}
+  footer.bnc-footer .bnc-nav .mid{text-align:center;flex:0 0 auto}
+  footer.bnc-footer .bnc-nav .next{text-align:right}
+  footer.bnc-footer .bnc-meta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:13px;border-top:1px solid #b6c2cc;font-family:Georgia,serif;font-style:italic;font-size:13px;color:#5b6b78}
+footer.bnc-footer .bnc-meta a{color:#5b6b78;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#9fb0bf;font-weight:400;display:inline-flex;align-items:center;gap:5px}
+footer.bnc-footer .bnc-meta a:hover{color:#0078B6;text-decoration-color:#0078B6}
+footer.bnc-footer .bnc-meta a svg{width:14px;height:14px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+footer.bnc-footer .bnc-meta .spacer{font-weight:400;text-align:center;font-style:italic}
+footer.bnc-footer .bnc-nav a{font-size:13px}
+footer.bnc-footer .bnc-edge{margin-top:11px;height:0;border-top:2.5px solid #003D6B;box-shadow:0 3px 0 -1px #aebccb,0 6px 0 -2px #cfd9e2}
+@media (max-width:560px){footer.bnc-footer .bnc-meta{justify-content:center;text-align:center}}
+</style>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<main class="wrap">
+<h2 id="chapter-11-berkeley-nucleonics-awg-solutions">Chapter 11: Berkeley Nucleonics AWG Solutions</h2>
+
+<figure>
+<img src="../figures/bnc-model-685.png" alt="The Berkeley Nucleonics Model 685 arbitrary waveform generator, front panel with display and output connectors." />
+<figcaption><span class="fig-num">Figure 11.1</span> The Berkeley Nucleonics Model 685, a 16-bit arbitrary waveform generator. The previous ten chapters were about the physics and the practice of arbitrary waveform generation; this one is about the instruments that put those ideas to work, from entry-level benchtop sources up to a flagship built for the most demanding wideband test.</figcaption>
+</figure>
+
+<p>Everything to this point has been vendor-neutral on purpose. Sampling theory does not care whose logo is on the front panel, and a Nyquist zone behaves the same in every lab. This final chapter changes register. It looks at how one manufacturer, Berkeley Nucleonics Corporation, has built a line of arbitrary waveform generators around the principles the book has covered: fidelity, sequencing, and synchronization. The aim here is to map the concepts you now understand onto real instruments, so that when you reach for a spec sheet, you already know what the numbers mean and which model is built to deliver them.</p>
+
+<p>A short note on sourcing before we start. Every Berkeley Nucleonics specification stated in this chapter is drawn from the current product line, and the figures move from time to time as products improve. Treat the datasheet at berkeleynucleonics.com as the authority. Where a useful detail is not part of the verified record, this chapter says "see datasheet" rather than guess, because a number you cannot trust is worse than no number at all.</p>
+
+<h3 id="design-philosophy">11.1 A Word on Our Design Philosophy</h3>
+
+<p>Berkeley Nucleonics was founded in 1963 to build fast-risetime pulse generators for nuclear research. That origin matters more than it might seem. A pulse generator for nuclear instrumentation lives or dies on edge quality and timing accuracy, because the experiments downstream are counting events and measuring intervals where a few picoseconds of jitter or a soft edge changes the answer. The company learned, early and under pressure, that a signal source is only as good as the cleanliness of what comes out of the connector.</p>
+
+<p>That heritage runs straight into the modern arbitrary waveform generator line. The same instincts that shaped a good pulse generator (sharp edges, accurate timing, low jitter, predictable behavior) are exactly the instincts that shape a good AWG. The instrument still based in San Rafael, California carries decades of precision timing and waveform work in its design language. When you read the earlier chapters on rise time, on settling, and on phase coherence between channels, you were reading about the things this company has cared about since before the integrated circuit was common.</p>
+
+<figure>
+<img src="../figures/fig-11-2-heritage-timeline.svg" alt="A timeline running from a 1963 founding in San Rafael, through fast-risetime pulse generators for nuclear research, into precision timing and waveform expertise, arriving at a modern AWG family spanning the A2085 through the 686." />
+<figcaption><span class="fig-num">Figure 11.2</span> One verified date, 1963, anchors the line. The milestones between it and the present are a direction of travel rather than a dated record, but the priorities along the way have not changed: clean edges, accurate timing, and signals an engineer can trust.</figcaption>
+</figure>
+
+<p>Three commitments shape the present line, and each ties back to a theme of this book. The first is <strong>clean signals</strong>. Fidelity is the whole point of an arbitrary waveform generator, since a waveform you cannot reproduce accurately is just an idea, not a test stimulus. The second is <strong>strong software and a usable interface</strong>. An AWG that can build any waveform in principle is useless if you cannot describe the waveform you want, so the line pairs the hardware with tools for creating, importing, and sequencing waveforms, and with remote interfaces that fit into an automated bench. The third is <strong>cost-effective instruments</strong>, the recognition that not every lab needs twenty gigasamples per second, and that an entry-level bench source that does its job well is as honorable a product as a flagship.</p>
+
+<blockquote><p><strong>Engineer's corner.</strong> A surprising amount of an AWG's real-world value lives in the software, not the silicon. The sample rate sets the ceiling on what the instrument can do, but the waveform editor, the import path, and the sequencer set how much of that ceiling you can actually reach on a deadline. When you compare instruments, budget time to evaluate the toolchain, not just the front-panel specs.</p></blockquote>
+
+<h3 id="the-awg-family">11.2 The Berkeley Nucleonics AWG Family</h3>
+
+<p>The family is best understood as a ladder. At the bottom sit compact benchtop sources for everyday characterization and teaching. In the middle sit higher-performance instruments for serious signal work. At the top sit wideband, high-resolution generators built for radar, quantum control, advanced communications, and semiconductor test. You climb the ladder as your highest-frequency content, your dynamic-range needs, and your channel count grow.</p>
+
+<p>The <strong>Model A2085</strong> is the entry point: a two-channel, 80 MHz arbitrary waveform generator positioned as an entry-level benchtop instrument, with pricing that starts around $1,700. It is the model you reach for when you need a dependable bench source without paying for headroom you will not use. The <strong>Model A2255</strong> sits just above it, a 250 MHz benchtop arbitrary waveform generator for work that pushes past the A2085's range while staying in the benchtop class.</p>
+
+<p>The <strong>Model 645</strong> is a combined arbitrary waveform and function generator aimed at the broad middle of bench work. It produces sine output to 50 MHz and arbitrary waveforms to 10 MHz, with 14-bit vertical resolution and a 125 MSa/s sample rate. It carries 256K points of arbitrary memory and a built-in pattern generator, and it ships with the WaveCrafter software for creating and importing waveforms. We profile it in detail below.</p>
+
+<p>The <strong>Model 670C</strong> and <strong>Model 675</strong> are high-performance members of the family. They occupy the rung between the general-purpose bench instruments and the wideband flagship tier. For their detailed specifications, consult the datasheet, since the verified record here does not fix every parameter.</p>
+
+<p>At the high end, the <strong>Model 685</strong> and <strong>Model 685C</strong> bring 16-bit vertical resolution together with a 6.16 GS/s sample rate and up to 2 GHz of bandwidth. They reach 110 ps rise and fall times, deliver up to 5 Vpp single-ended (3 Vpp differential), and hold up to 4 GSamples of memory per channel. Their sequencer supports loops, jumps, and conditional branches, and up to four channels can run fully synchronized. This is the instrument for high-fidelity wideband scenarios where both resolution and sequencing matter.</p>
+
+<p>The <strong>Model 686</strong> is the flagship and, by the verified record, the fastest 14-bit AWG on the market. It runs a 20 GS/s real-time update rate, produces sine output to 6.5 GHz, reaches 10 GHz of bandwidth, and resolves 50 ps rise and fall times. It offers up to 5 Vpp output across 2 or 4 fully synchronized analog channels, pairs those channels with 32 digital lines per unit, and holds up to 9 GSamples of waveform memory per channel. It is positioned for semiconductor testing and other demanding applications.</p>
+
+<figure>
+<img src="../figures/fig-11-3-family-positioning.svg" alt="A positioning chart with sample rate and speed on the vertical axis and performance class on the horizontal axis. The A2085, A2255, and 645 sit in the benchtop region, the 670C and 675 in the high-performance region, the 685 and 685C above them, and the 686 at the flagship corner." />
+<figcaption><span class="fig-num">Figure 11.3</span> The family arranged by sample rate and performance class. Entry-level benchtop sources sit at the lower left, the high-performance models in the middle, and the flagship 686 at the upper right. Use the chart to find the rung that matches your highest-frequency content and your channel count, then confirm the exact specs against the datasheet.</figcaption>
+</figure>
+
+<h3 id="family-at-a-glance">11.3 The Family at a Glance</h3>
+
+<p>The table below gathers the verified specifications in one place. Where a cell is not fixed by the verified record, it reads "See datasheet" rather than a guessed value. Always confirm current numbers at berkeleynucleonics.com before committing a design to a particular model.</p>
+
+<table>
+<thead>
+<tr><th>Model</th><th>Class / Positioning</th><th>Vertical Resolution</th><th>Sample Rate</th><th>Analog Bandwidth</th><th>Channels</th><th>Memory</th><th>Notable</th></tr>
+</thead>
+<tbody>
+<tr><td>A2085</td><td>Entry-level benchtop</td><td>See datasheet</td><td>See datasheet</td><td>80 MHz</td><td>2</td><td>See datasheet</td><td>Starting around $1,700</td></tr>
+<tr><td>A2255</td><td>Benchtop</td><td>See datasheet</td><td>See datasheet</td><td>250 MHz</td><td>See datasheet</td><td>See datasheet</td><td>Benchtop, higher range than A2085</td></tr>
+<tr><td>645</td><td>Bench arb / function generator</td><td>14-bit</td><td>125 MSa/s</td><td>50 MHz sine / 10 MHz arb</td><td>See datasheet</td><td>256K points</td><td>WaveCrafter software, pattern generator</td></tr>
+<tr><td>670C</td><td>High-performance</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td></tr>
+<tr><td>675</td><td>High-performance</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td><td>See datasheet</td></tr>
+<tr><td>685 / 685C</td><td>High-resolution wideband</td><td>16-bit</td><td>6.16 GS/s</td><td>Up to 2 GHz</td><td>Up to 4 synchronized</td><td>Up to 4 GSamples/ch</td><td>110 ps edges; loops, jumps, conditional branches</td></tr>
+<tr><td>686</td><td>Flagship, semiconductor test</td><td>14-bit</td><td>20 GS/s</td><td>10 GHz (6.5 GHz sine)</td><td>2 or 4 synchronized + 32 digital lines</td><td>Up to 9 GSamples/ch</td><td>Fastest 14-bit AWG; 50 ps edges</td></tr>
+</tbody>
+</table>
+
+<h3 id="model-645">11.4 Model 645: Bench Arbitrary / Function Generator</h3>
+
+<p>The Model 645 is the instrument most benches actually need most of the time. It is a combined arbitrary waveform and function generator, which means it covers both the standard function-generator catalog and true sample-by-sample arbitrary playback in one box. On the function side it produces sine, square, ramp, triangle, pulse, noise, and DC, with AM, FM, PM, FSK, and PWM modulation, linear and logarithmic sweeps, and burst modes. Sine output reaches 50 MHz. Arbitrary waveforms run to 10 MHz, backed by 14-bit vertical resolution and a 125 MSa/s sample rate.</p>
+
+<figure>
+<img src="../figures/bnc-model-645.jpg" alt="The Berkeley Nucleonics Model 645 arbitrary waveform and function generator front panel." />
+<figcaption><span class="fig-num">Figure 11.4</span> The Berkeley Nucleonics Model 645, a 14-bit arbitrary waveform and function generator built for everyday bench work.</figcaption>
+</figure>
+
+<p>Memory and pattern generation are where the 645 earns its keep on a working bench. It carries 256K points of arbitrary memory and stores up to five waveforms, four in nonvolatile memory plus one volatile, so your common stimuli stay loaded between sessions. A separate 16-bit by 256K pattern generator handles digital pattern work alongside the analog output. For waveform creation and import, the instrument ships with <strong>WaveCrafter</strong> software, so you can draw, compute, or import a waveform on a PC and load it into the instrument rather than building everything from the front panel.</p>
+
+<p>Connectivity is built for an automated bench. USB and LAN are standard, with GPIB available as an option, and a sync output lets you align the 645 with the rest of your setup. The LAN interface includes web-browser remote control, which means you can drive the instrument from a browser without installing a client. For general characterization, education, and modulation work that lives comfortably below the tens of megahertz, the 645 is a sensible default.</p>
+
+<blockquote><p><strong>Pro tip.</strong> The 645's four nonvolatile waveform slots are worth a few minutes of setup. Load your most-used stimuli once (a calibration tone, a standard pulse, a reference modulation, a known test pattern) and they survive a power cycle. A bench source you do not have to reprogram every morning is a quietly faster bench.</p></blockquote>
+
+<h3 id="model-685">11.5 Model 685 and 685C: High-Resolution Wideband</h3>
+
+<p>The Model 685 and 685C are the instruments to reach for when both resolution and bandwidth have to be high at the same time. The 16-bit vertical resolution is the headline. As Chapter 3 covered, every extra bit lowers the quantization noise floor, and sixteen bits buys a great deal of dynamic range for placing small spectral detail beside a large signal. Pair that resolution with a 6.16 GS/s sample rate and up to 2 GHz of bandwidth, and you have a source that can build wideband signals without trading away the fine vertical detail that makes them faithful.</p>
+
+<p>The edges are fast, with 110 ps rise and fall times, and the output reaches up to 5 Vpp single-ended or 3 Vpp differential, which covers most direct-drive and balanced-input needs without external amplification. Memory runs up to 4 GSamples per channel, which is the difference between looping a short segment and playing a long, non-repeating scenario in full.</p>
+
+<p>Sequencing is the other half of the story. The 685 sequencer supports loops, jumps, and conditional branches, the building blocks Chapter 5 described for assembling long, structured playback from compact segments. With up to four fully synchronized channels, the 685 family suits high-fidelity work in radar, quantum control, and advanced communications, where you often need several phase-aligned signals carrying a precisely timed scenario. Confirm the specifics that matter to your application against the datasheet at berkeleynucleonics.com.</p>
+
+<h3 id="model-686">11.6 Model 686: The Flagship</h3>
+
+<p>The Model 686 is the top of the line and, by the verified record, the fastest 14-bit AWG on the market. Its defining number is a 20 GS/s real-time update rate, which gives it the sample budget to synthesize signals other instruments have to upconvert. Sine output reaches 6.5 GHz, analog bandwidth reaches 10 GHz, and rise and fall times come down to 50 ps. Output reaches up to 5 Vpp. This is direct, high-speed generation of signals that used to demand a chain of external hardware.</p>
+
+<figure>
+<img src="../figures/bnc-model-686.png" alt="The Berkeley Nucleonics Model 686 flagship arbitrary waveform generator front panel." />
+<figcaption><span class="fig-num">Figure 11.5</span> The Berkeley Nucleonics Model 686, the flagship of the family and, by the verified record, the fastest 14-bit AWG on the market.</figcaption>
+</figure>
+
+<p>Channel architecture is what makes the 686 a system instrument rather than a single source. It offers 2 or 4 fully synchronized analog channels, and it pairs those analog channels with 32 digital lines per unit, so you can drive a device under test with coordinated analog and digital stimulus from one chassis. Waveform memory runs up to 9 GSamples per channel, enough to hold long, complex, non-repeating scenarios at full rate.</p>
+
+<p>The 686 is positioned for semiconductor testing and other demanding applications, the places where you need the fastest edges, the widest bandwidth, and tightly coordinated analog and digital playback together. It is the instrument you specify when the test itself is at the edge of what is possible, not the one you buy for routine bench work. As always, verify the current specification set at berkeleynucleonics.com before designing it into a program.</p>
+
+<h3 id="application-case-studies">11.7 Application Case Studies</h3>
+
+<p>The vignettes below are representative illustrations, not specific customer claims. They show how a need maps onto a member of the family. Your own requirements should always be derived from the signal itself, the way Chapter 9 laid out, and then matched to an instrument.</p>
+
+<p><strong>Radar threat emulation maps to the 686.</strong> Suppose a team needs to emulate a dense electromagnetic environment: multiple emitters, wide instantaneous bandwidth, fast pulse edges, and coordinated digital control lines to gate the scenario. The requirement is dominated by speed and bandwidth, with tightly synchronized analog and digital playback. That points squarely at the flagship. The 20 GS/s update rate and 10 GHz bandwidth carry the wideband content, the 50 ps edges keep the pulses crisp, and the 32 digital lines alongside the synchronized analog channels orchestrate the scenario from one chassis.</p>
+
+<p><strong>High-fidelity quantum control maps to the 685.</strong> Now suppose the need is precise control pulses for a quantum experiment, where small amplitude errors translate directly into control errors, and several channels must stay phase-aligned through a long sequence. Here the dominant requirement is vertical fidelity and clean multi-channel sequencing, not raw top-end frequency. The 685 family answers it: 16-bit resolution for the low noise floor, up to four synchronized channels, and a sequencer with loops, jumps, and conditional branches to assemble a long control sequence from compact segments.</p>
+
+<p><strong>General bench characterization maps to the 645 or the A2085.</strong> Finally, consider routine work: characterizing a filter, exercising a sensor front end, teaching modulation, generating a standard set of stimuli day after day. None of this needs gigasamples per second. The 645 covers it with arbitrary playback, the full function-generator catalog, modulation modes, and WaveCrafter for building waveforms. When the budget and the bandwidth needs are both modest, the A2085 entry-level benchtop does the job at a starting price around $1,700.</p>
+
+<h3 id="selection-and-support">11.8 Selection Guide and Support</h3>
+
+<p>The quickest way to choose is to start from the signal and climb the ladder only as far as you must. The short version goes like this:</p>
+
+<ul>
+<li><strong>Routine bench and teaching, modest frequencies:</strong> the A2085 (2-channel, 80 MHz, entry-level benchtop) or the A2255 (250 MHz benchtop) when you need more range.</li>
+<li><strong>General arbitrary and function-generator work with modulation and pattern needs:</strong> the Model 645, with WaveCrafter software and a built-in pattern generator.</li>
+<li><strong>Serious signal work between the bench class and the wideband tier:</strong> the Model 670C and Model 675 (see datasheet for the parameters that matter to you).</li>
+<li><strong>High-resolution wideband, multi-channel fidelity, advanced sequencing:</strong> the Model 685 and 685C.</li>
+<li><strong>The fastest edges, widest bandwidth, and coordinated analog plus digital playback:</strong> the flagship Model 686.</li>
+</ul>
+
+<p>Two practical reminders close the chapter. First, the software and interfaces are part of the decision. The Model 645 ships with WaveCrafter for waveform creation and import, and the standard remote interfaces across the line let an instrument drop into an automated bench rather than living as an island. Match the toolchain to your workflow, not just the front-panel numbers.</p>
+
+<p>Second, specifications move as products improve, and the verified figures in this chapter are a snapshot, not a contract. Before you commit a design or a purchase, confirm the current numbers against the datasheet at berkeleynucleonics.com, and talk to a Berkeley Nucleonics engineer about your actual signal. The fastest route from a requirement to the right instrument is a conversation with someone who knows the whole family. You bring the signal. They bring the map.</p>
+
+<hr />
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="10-performance-tips-and-reference.html">&larr; 10. Performance Tips and Reference Tables</a>
+    <a class="mid"  href="00-front-matter.html#table-of-contents">Contents</a>
+    <a class="next" href="appendix-A-glossary.html">Appendix A: Glossary &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</main>
+<script defer src="reader-prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>08-quantum-today</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="quantum-computing-today">8. Quantum Computing Today: Players and State of the Art</h1>
+<p>The earlier chapters explained how a qubit holds information, why superposition and entanglement create computational leverage, and which physical platforms are competing to build a useful machine. This chapter steps back from the physics and looks at the field as an industry. Who is building quantum computers, how good are the best machines right now, and is there any reliable way to chart progress the way Moore's Law once charted the rise of the transistor?</p>
+<p>A note on timing matters here. The first edition of this book was written in 2021, and even then the authors warned that announcements were arriving faster than they could be documented. That is still true in 2026, only more so. The figures and company claims below are current as of early 2026, and several are flagged "Verify before publication" because the leading edge moves week to week. Treat the named records as snapshots, not permanent facts.</p>
+
+<h2 id="the-race-is-on">8.1 The Race Is On: The Quantum Computing Players</h2>
+<p>There is still no single winning approach to quantum computing, and that is precisely what makes the field a race rather than a coronation. Contenders range from the largest technology companies on earth to venture-backed startups founded around a single physical idea. They are not all building the same thing. Some build full-stack quantum computers, some sell access through the cloud, some supply control electronics, cryogenics, lasers, or software, and some focus narrowly on error correction or compilation. The ecosystem is wider than the list of "computer makers" suggests.</p>
+<p>The 2021 edition pointed readers to a roster that included IBM, Google, IonQ, Honeywell, Intel, Rigetti, Atom Computing, Xanadu, ColdQuanta, D-Wave, Microsoft, PsiQuantum, and others. Most of those names are still in the game, though the landscape has reshuffled. Honeywell's quantum unit merged with Cambridge Quantum to form Quantinuum. ColdQuanta became Infleqtion. Several pure-play hardware companies went public, and a wave of government funding arrived in 2025 and 2026 that changed the financial picture for the whole sector.</p>
+<p>Here is where the major players stand in early 2026. The records and figures move quickly, so verify before publication.</p>
+<p><strong>IBM</strong> remains the most visible full-stack effort. Its public roadmap targets a large-scale, fault-tolerant machine called Starling by 2029, built to run roughly 100 million quantum operations on about 200 logical qubits. The path there runs through intermediate processors (Nighthawk, with a 120-qubit lattice, plus modular building blocks named Kookaburra and Cockatoo) and a strategic shift from surface codes to quantum low-density parity-check (qLDPC) codes, which IBM says can cut the physical-qubit overhead of error correction dramatically. [1] [2]</p>
+<p><strong>Google Quantum AI</strong> made the headline result of the recent cycle with its 105-qubit Willow chip, announced in December 2024. Willow demonstrated error correction "below threshold," meaning that adding more physical qubits to a logical qubit drove the error rate down rather than up. That had long been the theoretical promise of error correction, and Willow was a clear experimental demonstration of it at scale. [3]</p>
+<p><strong>Quantinuum</strong> (the Honeywell and Cambridge Quantum combination) builds trapped-ion machines and holds some of the strongest verified error-correction results. As of late 2025 it reported 48 logical qubits encoded in 98 physical qubits on its Helios processor, and it completed a large public offering that valued the company in the tens of billions. [4]</p>
+<p><strong>IonQ</strong>, also a trapped-ion company, crossed a commercial milestone that no quantum pure-play had reached before: more than $100 million in annual revenue, reported with triple-digit year-over-year growth. By early 2026 its market value was approaching the ten-billion-dollar range. [5]</p>
+<p><strong>Atom Computing</strong> and <strong>QuEra</strong> lead the neutral-atom camp. Atom Computing built a system with a 1,225-site atomic array, populated with well over 1,000 atomic qubits, briefly the largest qubit count of any platform. QuEra published a 96-logical-qubit result and demonstrated continuous operation with thousands of atoms, attracting one of the largest hardware funding rounds of the cycle with backing from Google, SoftBank, and NVIDIA's investment arm. [1] [6]</p>
+<p><strong>PsiQuantum</strong> is pursuing utility-scale photonic machines and is constructing large facilities in Chicago and Brisbane, supported by more than two billion dollars in private funding and a multi-billion-dollar valuation. <strong>Rigetti</strong> continues with superconducting processors, reporting a 108-qubit multi-chip system at high two-qubit gate fidelity. <strong>D-Wave</strong> remains the long-standing quantum-annealing specialist, a different machine aimed squarely at optimization. <strong>Microsoft</strong> took a distinct bet with its topological approach, unveiling the Majorana 1 processor in 2025. <strong>Fujitsu and RIKEN</strong> in Japan pushed superconducting qubit counts into the hundreds and are working toward a 1,000-qubit system. [6] [7]</p>
+<p>The point of the list is not to crown a winner. It is to show that serious capital, serious science, and serious national-strategic attention are all pointed at the same goal from many directions at once. A useful research habit is to read the newsrooms on each company's site directly, because by the time a roster like this is printed, several entries are already out of date.</p>
+<figure>
+<img src="../figures/img-p051-01-x193.jpeg" alt="China's Sunway TaihuLight supercomputer" /><figcaption><span class="fig-num">Figure 8.1</span> China's Sunway TaihuLight supercomputer, one of the classical machines used as a yardstick when teams measure quantum advantage.</figcaption>
+</figure>
+
+<h2 id="where-quantum-computing-is-today">8.2 Where Quantum Computing Is Today</h2>
+<p>The clearest way to understand the state of the art is through the milestones the field uses to mark its own progress. The first big one was quantum supremacy, sometimes called quantum advantage: solving a problem that a classical computer cannot realistically solve in any reasonable time.</p>
+<p>Google reached that mark in 2019 with its 53-qubit superconducting processor, Sycamore. The task was a contrived one, sampling the output of random quantum circuits, but the result was striking. Sycamore finished in about 200 seconds a calculation Google estimated would take a leading classical supercomputer roughly 10,000 years. IBM disputed the estimate, arguing the same problem could be done in a few days on its Summit machine with smarter classical methods. That back-and-forth is itself instructive: "supremacy" is a moving target, because classical algorithms also improve in response. [8]</p>
+<figure>
+<img src="../figures/img-p051-01-x192.jpeg" alt="Google Sycamore processor layout and chip photograph" /><figcaption><span class="fig-num">Figure 8.2</span> The Google Sycamore processor. Left, the layout of the 54-qubit rectangular array, each qubit coupled to its four nearest neighbors (one qubit was inoperable). Right, a photograph of the Sycamore chip.</figcaption>
+</figure>
+<p>A team in China led by Jian-Wei Pan and Chao-Yang Lu pursued a different route to the same kind of claim, using a photonic machine called Jiuzhang. Light-based calculations completed a statistical sampling task that the team estimated would take a top classical supercomputer billions of years. The headline numbers are dramatic, and they are meant to be, but the deeper signal is consistency: multiple independent groups, on entirely different hardware, can now do something no classical machine can match on a carefully chosen problem.</p>
+<p>The frontier has since moved from "can we beat a classical computer once" to "can we keep errors under control while scaling up." That is why Google's Willow result in 2024 mattered more than a raw qubit count. Demonstrating error correction below threshold is the engineering precondition for everything that follows, because without it, adding qubits just adds noise. The current race is no longer only about how many physical qubits a chip carries. It is about how many reliable, error-corrected logical qubits a system can sustain, and for how long. [3]</p>
+<p>So where does that leave us in 2026? We have machines with over a thousand physical qubits, the first convincing demonstrations of below-threshold error correction, dozens of logical qubits in the best systems, and a handful of companies reporting real commercial revenue. We do not yet have a large, fault-tolerant, general-purpose quantum computer that reliably outperforms classical hardware on a commercially important problem. The honest summary is that the field has crossed from "interesting physics" into "early engineering," with the hardest scaling work still ahead. The open questions the 2021 edition asked still stand. How many qubits will it take to design pharmaceuticals, break or rebuild cryptography, and solve the hardest optimization problems? Nobody knows the exact number, but the trajectory is now clearly upward.</p>
+
+<h2 id="moores-law-for-the-number-of-qubits">8.3 Moore's Law for the Number of Qubits</h2>
+<p>It is tempting to look for a quantum version of Moore's Law. The original observation, made by Intel co-founder Gordon Moore in 1965, was that the number of components on an integrated circuit was doubling at a rapid, regular pace. Moore first framed it as a doubling each year, then revised it in 1975 to a doubling roughly every two years. The prediction held for decades, and it became as much an economic planning tool as a technical one, because Moore had also noted that the cost per component fell as density rose. Advanced chips today carry tens of billions of transistors. [9] [10]</p>
+<figure>
+<img src="../figures/img-p052-01-x196.png" alt="Portrait of Gordon Moore" /><figcaption><span class="fig-num">Figure 8.3</span> Gordon Moore, the Intel co-founder whose 1965 observation became Moore's Law.</figcaption>
+</figure>
+<figure>
+<img src="../figures/img-p052-01-x197.jpeg" alt="Transistor count chart from 1970 onward on a logarithmic scale" /><figcaption><span class="fig-num">Figure 8.4</span> Transistor counts on commercial microchips from 1970 onward, plotted on a logarithmic scale. The straight-line trend on a log axis is the visual signature of exponential growth, the essence of Moore's Law.</figcaption>
+</figure>
+<p>Could qubit counts follow a similar curve? When that question was put to John Levy, head of the superconducting-electronics company SEEQC, his answer was skeptical. The real goal, he argued, is not to track a single number the way Moore's Law tracks transistors. It is to understand whether any metric in quantum computing can reliably predict performance, cost, or capability over time. Right now, he said, the whole notion of benchmarking is still embryonic.</p>
+<p>The trouble is that a raw qubit count tells you very little on its own. A machine with a thousand noisy, poorly connected qubits may do less useful work than one with a hundred clean, well-connected ones. IBM proposed quantum volume to capture more of the picture, a single figure that folds in qubit count, gate and measurement error, crosstalk, and connectivity, and which IBM showed could double with some regularity. But even quantum volume has blind spots. It does not account for speed. A trapped-ion system may have excellent coherence and a high quantum volume, yet run so slowly that a calculation taking seconds on a superconducting chip could take months on the ion machine. A fair benchmark has to weigh quality, scale, connectivity, and speed together, and no single accepted standard does all of that yet.</p>
+<p>There is a deeper reason to be cautious. There is no industry-wide standard because vendors naturally favor benchmarks that flatter their own technology. Read any benchmark claim with that incentive in mind. Serious, neutral work on the problem is underway. Standards bodies such as NIST and various international laboratories are the most likely sources of a credible, technology-agnostic benchmark, and other industry groups are expected to join the effort. Until then, the field has no Moore's Law for qubits, and, more importantly, no universal benchmark at all.</p>
+<p>A final irony is worth noting. Even classical computing's Moore's Law is now widely considered dead, or at least dying, with organizations like MIT and NVIDIA among those who say its exponential era is over, while Intel has argued it can keep the trend alive for another decade. So the honest answer to "is there a Moore's Law for qubits" is that the field is still searching for the right thing to measure, and it would be unwise to expect a clean exponential before we even agree on the axis.</p>
+<blockquote>
+<p><strong>Going Deeper - Logical versus physical qubits</strong></p>
+<p>When you read that a system has "1,000 qubits," ask whether those are physical or logical. A physical qubit is one piece of quantum hardware: a single ion, atom, or superconducting circuit. A logical qubit is an error-corrected unit built from many physical qubits working together, with the redundancy needed to detect and fix errors. The conversion factor is large. Today's best results encode a few dozen logical qubits out of roughly one hundred physical ones, and future fault-tolerant designs may need hundreds or thousands of physical qubits per logical qubit. This is why "qubit count" headlines can mislead, and why error-correction milestones like Google's Willow matter more than the raw physical number.</p>
+</blockquote>
+<div class="callout">
+<p><strong>BNC in Practice - Instrumentation behind the qubit</strong></p>
+<p>Every record-setting qubit in the labs above depends on a stack of precise classical electronics: stable timing, clean signal generation, and low-noise measurement. Berkeley Nucleonics builds timing and signal-generation instruments used in demanding physics and metrology environments. For the exact models, performance figures, and suitability to a given quantum-control setup, verify against the current BNC datasheet and talk to a BNC engineer rather than relying on any specification quoted here.</p>
+</div>
+
+<h2 id="chapter-8-quiz">Chapter 8 Quiz</h2>
+<div class="callout" style="border-left-color: var(--bnc-warm-amber); background: linear-gradient(90deg, #fff8ec 0%, #fffaf2 70%, var(--bnc-white) 100%);">
+  <p style="margin:0 0 8px 0;"><strong style="color: var(--bnc-deep-navy);">Take it interactively.</strong> The quiz lives on its own page with hidden answers - write your attempt first (even four characters works), then reveal. Self-graded. About 10 minutes.</p>
+  <p style="margin:0;"><a href="quiz-08-quantum-today.html" style="font-family: Helvetica, Arial, sans-serif; font-weight:700; letter-spacing:1px; text-transform:uppercase; font-size:10pt; padding:8px 16px; background:var(--bnc-deep-navy); color:var(--bnc-white); text-decoration:none; border-radius:3px; display:inline-block; border:none;">Open the interactive quiz &rarr;</a></p>
+</div>
+<p style="font-size: 9.5pt; color: var(--bnc-charcoal); font-style: italic; margin-top: 6px;">Or read the questions and answers inline below (preserved for print and offline use).</p>
+<ol type="1">
+<li>What does it mean for a quantum computer to achieve "quantum supremacy" (also called quantum advantage), and which Google processor first claimed it?</li>
+<li>Why was Google's Willow result in 2024 considered a more important milestone than simply adding more qubits?</li>
+<li>Explain the difference between a physical qubit and a logical qubit, and why the distinction matters when reading "qubit count" headlines.</li>
+<li>What is quantum volume, and name one important factor it does not capture.</li>
+<li>Why is there currently no reliable "Moore's Law for qubits," and which kinds of organizations are most likely to produce a credible, neutral benchmark?</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>Quantum supremacy means solving a problem that a classical computer cannot realistically solve in any reasonable amount of time. Google's 53-qubit superconducting processor, Sycamore, made the first prominent claim in 2019, completing a random-circuit-sampling task in about 200 seconds.</li>
+<li>Willow demonstrated error correction "below threshold," meaning that adding more physical qubits drove the logical error rate down rather than up. That reverses the historical problem where more qubits meant more noise, and it is the engineering precondition for scaling to a useful, fault-tolerant machine.</li>
+<li>A physical qubit is a single piece of hardware (an ion, atom, or superconducting circuit). A logical qubit is an error-corrected unit built from many physical qubits. Because it can take dozens to thousands of physical qubits to make one reliable logical qubit, a large physical-qubit headline does not necessarily mean a large amount of usable computing power.</li>
+<li>Quantum volume is a single metric that combines qubit count, gate and measurement error, crosstalk, and connectivity to estimate the practical work a machine can do. It does not capture speed, so a slow but high-coherence machine can post a strong quantum volume while taking far longer to finish real calculations.</li>
+<li>Raw qubit count does not predict useful performance, no single metric yet captures quality, scale, connectivity, and speed together, and vendors tend to promote benchmarks that favor their own technology. Neutral standards bodies such as NIST and international laboratories are the most likely sources of a credible, technology-agnostic benchmark.</li>
+</ol>
+
+<h2 id="references">References</h2>
+<p>[1] SpinQuanta, "Discover the World's Largest Quantum Computer in 2025." Verify before publication.</p>
+<p>[2] IBM Quantum, "IBM lays out clear path to fault-tolerant quantum computing" and IBM Quantum roadmap, 2025. Verify before publication.</p>
+<p>[3] Google, "Meet Willow, our state-of-the-art quantum chip," December 9, 2024; "Quantum error correction below the surface code threshold," Nature (2024). Verify before publication.</p>
+<p>[4] Quantinuum press materials, Helios processor logical-qubit result and Nasdaq listing, November 2025. Verify before publication.</p>
+<p>[5] IonQ investor and news releases, 2025-2026 revenue and market-capitalization figures. Verify before publication.</p>
+<p>[6] QuEra and Atom Computing announcements, 2025-2026, including QuEra's 96-logical-qubit Nature result (January 2026). Verify before publication.</p>
+<p>[7] Microsoft Azure Quantum, "Microsoft unveils Majorana 1," February 19, 2025; Fujitsu and RIKEN 256-qubit superconducting computer, April 2025; Rigetti Cepheus-1 processor announcement, early 2026. Verify before publication.</p>
+<p>[8] Google, "Quantum supremacy using a programmable superconducting processor," Nature (2019); IBM rebuttal. Verify before publication.</p>
+<p>[9] G. E. Moore, "Cramming more components onto integrated circuits," Electronics (1965); revised projection, 1975. Verify before publication.</p>
+<p>[10] Our World in Data, "Moore's Law: The number of transistors on microchips doubles every two years" (transistor-count chart, CC-BY, Hannah Ritchie and Max Roser). Verify before publication.</p>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="07-physical-approaches.html">&larr; 7. Physical Approaches</a>
+    <a class="mid" href="00-front-matter.html">Contents</a>
+    <a class="next" href="09-algorithms-error-correction.html">9. Algorithms &amp; QEC &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" font-family="Helvetica, Arial, sans-serif" font-size="12">
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2C3E50"/>
+    </marker>
+  </defs>
+
+  <text x="600" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="#003D6B">Figure 3-1: RTSA Signal Chain — Antenna to Spectrogram</text>
+  <text x="600" y="48" text-anchor="middle" font-size="12" fill="#486581">Analog domain | Digital domain</text>
+
+  <!-- Analog domain background -->
+  <rect x="20" y="65" width="540" height="220" fill="#ECEFF1" stroke="#0078B6" stroke-width="1.5" rx="6"/>
+  <text x="40" y="84" font-size="12" fill="#003D6B" font-weight="700">ANALOG DOMAIN</text>
+
+  <!-- Digital domain background -->
+  <rect x="580" y="65" width="600" height="220" fill="#e8f5e9" stroke="#1b5e20" stroke-width="1.5" rx="6"/>
+  <text x="600" y="84" font-size="12" fill="#1b5e20" font-weight="700">DIGITAL DOMAIN</text>
+
+  <!-- Stage 1: Antenna -->
+  <g transform="translate(50,150)">
+    <polygon points="20,30 40,30 30,5 20,30" fill="#486581"/>
+    <line x1="30" y1="30" x2="30" y2="60" stroke="#486581" stroke-width="2"/>
+    <text x="30" y="80" text-anchor="middle" font-size="11" font-weight="600">Antenna</text>
+    <text x="30" y="95" text-anchor="middle" font-size="9" fill="#627d98">band-matched</text>
+  </g>
+
+  <line x1="80" y1="180" x2="115" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 2: Preselector + Attenuator -->
+  <g transform="translate(120,150)">
+    <rect x="0" y="0" width="80" height="60" fill="#fff" stroke="#003D6B" stroke-width="1.5" rx="3"/>
+    <text x="40" y="22" text-anchor="middle" font-size="10" font-weight="600">Preselector</text>
+    <text x="40" y="36" text-anchor="middle" font-size="10">+</text>
+    <text x="40" y="50" text-anchor="middle" font-size="10" font-weight="600">Atten.</text>
+    <text x="40" y="80" text-anchor="middle" font-size="9" fill="#627d98">image reject</text>
+  </g>
+
+  <line x1="200" y1="180" x2="225" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 3: LNA -->
+  <g transform="translate(230,150)">
+    <polygon points="0,5 60,30 0,55 0,5" fill="#fff" stroke="#003D6B" stroke-width="1.5"/>
+    <text x="22" y="35" text-anchor="middle" font-size="10" font-weight="600">LNA</text>
+    <text x="22" y="80" text-anchor="middle" font-size="9" fill="#627d98">NF 1.5 dB</text>
+    <text x="22" y="93" text-anchor="middle" font-size="9" fill="#627d98">G 20 dB</text>
+  </g>
+
+  <line x1="290" y1="180" x2="315" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 4: Quadrature Mixer -->
+  <g transform="translate(320,140)">
+    <circle cx="35" cy="40" r="22" fill="#fff" stroke="#003D6B" stroke-width="1.5"/>
+    <text x="35" y="44" text-anchor="middle" font-size="13" font-weight="700">×</text>
+    <rect x="10" y="80" width="50" height="22" fill="#fff" stroke="#003D6B"/>
+    <text x="35" y="96" text-anchor="middle" font-size="9" font-weight="600">LO (I/Q)</text>
+    <line x1="35" y1="80" x2="35" y2="62" stroke="#003D6B" stroke-width="1.5"/>
+    <text x="35" y="120" text-anchor="middle" font-size="9" fill="#627d98">f_RF - f_LO</text>
+  </g>
+
+  <line x1="385" y1="180" x2="410" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 5: Anti-alias filter -->
+  <g transform="translate(415,150)">
+    <rect x="0" y="0" width="65" height="60" fill="#fff" stroke="#003D6B" stroke-width="1.5" rx="3"/>
+    <text x="32" y="22" text-anchor="middle" font-size="10" font-weight="600">Anti-alias</text>
+    <text x="32" y="38" text-anchor="middle" font-size="10">LPF</text>
+    <text x="32" y="80" text-anchor="middle" font-size="9" fill="#627d98">limits BW &lt; f_s/2</text>
+  </g>
+
+  <line x1="480" y1="180" x2="510" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 6: ADC (boundary between analog and digital) -->
+  <g transform="translate(515,140)">
+    <rect x="0" y="10" width="80" height="60" fill="#fff" stroke="#1b5e20" stroke-width="2" rx="3"/>
+    <text x="40" y="32" text-anchor="middle" font-size="11" font-weight="700">ADC (I/Q)</text>
+    <text x="40" y="48" text-anchor="middle" font-size="9">12-bit, 614 MS/s</text>
+    <text x="40" y="62" text-anchor="middle" font-size="9">ENOB 11.3</text>
+    <text x="40" y="100" text-anchor="middle" font-size="9" fill="#1b5e20" font-weight="600">A/D boundary</text>
+  </g>
+
+  <line x1="595" y1="180" x2="625" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 7: I/Q correction + decimation (FPGA) -->
+  <g transform="translate(630,140)">
+    <rect x="0" y="0" width="110" height="80" fill="#fff" stroke="#1b5e20" stroke-width="1.5" rx="3"/>
+    <text x="55" y="22" text-anchor="middle" font-size="11" font-weight="600">FPGA</text>
+    <text x="55" y="38" text-anchor="middle" font-size="10">I/Q correction</text>
+    <text x="55" y="52" text-anchor="middle" font-size="10">decimation</text>
+    <text x="55" y="66" text-anchor="middle" font-size="10">channelizer</text>
+    <text x="55" y="105" text-anchor="middle" font-size="9" fill="#627d98">image &lt; -70 dBc</text>
+  </g>
+
+  <line x1="740" y1="180" x2="770" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 8: FFT engine -->
+  <g transform="translate(775,140)">
+    <rect x="0" y="0" width="100" height="80" fill="#fff" stroke="#1b5e20" stroke-width="1.5" rx="3"/>
+    <text x="50" y="22" text-anchor="middle" font-size="11" font-weight="600">FFT Engine</text>
+    <text x="50" y="38" text-anchor="middle" font-size="10">window +</text>
+    <text x="50" y="52" text-anchor="middle" font-size="10">overlap</text>
+    <text x="50" y="68" text-anchor="middle" font-size="10">8192-pt @75%</text>
+    <text x="50" y="105" text-anchor="middle" font-size="9" fill="#627d98">~30k spectra/s</text>
+  </g>
+
+  <line x1="875" y1="180" x2="905" y2="180" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+
+  <!-- Stage 9: Display pipeline -->
+  <g transform="translate(910,140)">
+    <rect x="0" y="0" width="105" height="80" fill="#fff" stroke="#1b5e20" stroke-width="1.5" rx="3"/>
+    <text x="52" y="22" text-anchor="middle" font-size="11" font-weight="600">Display</text>
+    <text x="52" y="38" text-anchor="middle" font-size="10">waterfall</text>
+    <text x="52" y="52" text-anchor="middle" font-size="10">persistence</text>
+    <text x="52" y="66" text-anchor="middle" font-size="10">trace + overlay</text>
+    <text x="52" y="105" text-anchor="middle" font-size="9" fill="#627d98">GPU-accel</text>
+  </g>
+
+  <!-- Branch to Streaming + Memory (parallel path) -->
+  <line x1="740" y1="220" x2="740" y2="320" stroke="#2C3E50" stroke-width="1.5"/>
+  <line x1="740" y1="320" x2="1050" y2="320" stroke="#2C3E50" stroke-width="1.5"/>
+  <line x1="1050" y1="320" x2="1050" y2="225" stroke="#2C3E50" stroke-width="1.5" marker-end="url(#arrow3)"/>
+  <text x="800" y="335" font-size="10" fill="#486581" font-style="italic">parallel I/Q stream</text>
+
+  <!-- Memory + storage -->
+  <g transform="translate(1020,140)">
+    <rect x="0" y="0" width="100" height="80" fill="#fff" stroke="#1b5e20" stroke-width="1.5" rx="3" stroke-dasharray="3,3"/>
+    <text x="50" y="22" text-anchor="middle" font-size="11" font-weight="600">Memory +</text>
+    <text x="50" y="38" text-anchor="middle" font-size="11" font-weight="600">Streaming</text>
+    <text x="50" y="55" text-anchor="middle" font-size="10">DDR rolling</text>
+    <text x="50" y="69" text-anchor="middle" font-size="10">USB4 → disk</text>
+    <text x="50" y="105" text-anchor="middle" font-size="9" fill="#627d98">SigMF I/Q</text>
+  </g>
+
+  <!-- Bottom annotations -->
+  <g transform="translate(60, 350)">
+    <text x="0" y="0" font-size="13" font-weight="700" fill="#003D6B">Stage-by-stage purposes:</text>
+    <text x="0" y="22" font-size="11" fill="#2C3E50">1. Antenna captures EM field. 2. Preselector + attenuator reject out-of-band energy and protect downstream gain.</text>
+    <text x="0" y="40" font-size="11" fill="#2C3E50">3. LNA sets system noise figure. 4. Quadrature mixer downconverts to complex baseband.</text>
+    <text x="0" y="58" font-size="11" fill="#2C3E50">5. Anti-alias filter limits bandwidth. 6. ADC digitizes I and Q. 7. FPGA corrects, decimates, channelizes.</text>
+    <text x="0" y="76" font-size="11" fill="#2C3E50">8. FFT engine produces spectra at thousands of frames per second. 9. Display pipeline composes waterfall, persistence, traces.</text>
+    <text x="0" y="94" font-size="11" fill="#2C3E50">Parallel: rolling DDR buffer + streaming to disk for forensic replay.</text>
+  </g>
+
+</svg>

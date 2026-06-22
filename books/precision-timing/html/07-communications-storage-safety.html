@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>7. Communications, Storage &amp; Safety</title>
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="reader-prompt.js"></script>
+  <script defer src="book-enhance-data.js"></script>
+  <script defer src="book-enhance.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+<h1 id="communications-storage-and-safety">7. Communications, Storage &amp; Safety</h1>
+
+<p class="lead">A pulse generator that can only be driven by hand is a pulse generator that has to be re-dialed every time the bench is cleared. The earlier chapters built up sweeps, burst sequences, multi-channel coordination, and the kind of repeatable test runs that real applications demand. None of that stays useful if the settings vanish at power-down or if every run depends on a person turning knobs. This chapter covers the parts of the instrument that make a setup repeatable and remote: saving and recalling configurations, the communication interfaces that let a computer drive the instrument, and the safety markings that govern any modern piece of electronics.</p>
+
+<h2 id="saving-and-loading-configurations">7.1 Saving and Loading Configurations</h2>
+<p>Storing settings is a common requirement, and most timing systems allow on-board storage to save setups. For applications that are computer controlled, the control PC offers virtually unlimited storage of configurations.</p>
+<figure>
+<img src="../figures/525GUIstore.jpg" alt="Model 525 control software storage dropdown." />
+<figcaption><span class="fig-num">Figure 7.1</span> BNC Model 525 GUI storage dropdown. Setups can be saved and recalled from the control software.</figcaption>
+</figure>
+<p>A stored setup captures the full state of the timing program, not just one number. That usually means every channel's delay, width, and output mode, the amplitude and polarity on each output, the trigger source and its threshold and slope, the reference selection, and the rep rate. Recalling it restores all of that at once. Recall works a little differently on each pulse generator, but a quick couple of buttons should bring a setup back. Some systems let you store a setup as the power-up state, so the instrument wakes up ready to run. Some let you name a setup so it is easy to find later, which matters once a drawer of saved configurations starts to fill.</p>
+<figure>
+<img src="../figures/575store.jpg" alt="Model 575 front panel store and recall." />
+<figcaption><span class="fig-num">Figure 7.2</span> BNC Model 575 front panel store and recall. On-board memory holds setups directly on the instrument.</figcaption>
+</figure>
+<p>A saved setup is more than a convenience. It is the foundation of a repeatable experiment. When a delay, width, and channel configuration are captured once and recalled exactly, the same timing arrives at the same outputs run after run, week after week, and from one operator to the next. The multi-channel arrangements and burst sequences described in Chapters 4 through 6 only become trustworthy when they can be reproduced without re-entry, and a stored configuration is what removes the human variation between runs. For work that has to stand up to review, it helps to treat saved setups like any other record: give them clear names, note which experiment each one belongs to, and keep a copy of the important ones off the instrument, since on-board memory is finite and a configuration file on the control PC can be backed up, versioned, and shared.</p>
+
+<h2 id="remote-communication-options-and-commands">7.2 Remote Communication Options and Commands</h2>
+<h3 id="remote-communication">Remote Communication</h3>
+<p>Remote communication is a useful way to program an instrument quickly, make modifications, apply scripts or LabVIEW controls, or step a unit through multiple sequences. The back panel of a pulse generator typically carries several communication options.</p>
+<figure>
+<img src="../figures/575remote.jpg" alt="Back panel of a pulse generator with remote communication ports." />
+<figcaption><span class="fig-num">Figure 7.3</span> The back panel of a pulse generator. Several communication interfaces are available for remote control.</figcaption>
+</figure>
+<p>In modern designs, all menu settings can typically be set and retrieved over the computer interface using a simple command language. The command set is structured to be consistent with the Standard Commands for Programmable Instruments (SCPI), and the syntax is generally the same across every interface. Common interfaces include:</p>
+<ul>
+<li>RS-232</li>
+<li>USB</li>
+<li>Ethernet</li>
+<li>GPIB</li>
+</ul>
+<p>These interfaces differ in their wiring and their reach, not in what they let you say to the instrument. RS-232 is the simple serial port, dependable over short runs. USB is the convenient desktop connection. Ethernet puts the instrument on the network, where it can be reached from anywhere in the lab and, on instruments that follow the LXI standard for networked test equipment, discovered and configured through a web browser. GPIB is the long-standing parallel instrument bus, still common on established automated benches. The right choice usually follows the lab's existing wiring rather than any difference in capability.</p>
+
+<h3 id="how-scpi-commands-are-structured">How SCPI Commands Are Structured</h3>
+<p>SCPI is a layer that sits on top of the IEEE-488.2 conventions for instrument messaging, and knowing its shape makes any timing instrument easier to drive. Commands are organized as a tree of keywords separated by colons, so a setting reads like a path. A command that ends in a value sets something; a command that ends in a question mark asks for it. The same keyword therefore both writes and reads, which keeps a control program short and symmetric. Alongside the instrument-specific tree, every compliant instrument answers a small set of standard common commands that begin with an asterisk. A handful show up constantly:</p>
+<ul>
+<li><strong>*IDN?</strong> asks the instrument to identify itself, which is the first thing a controller sends to confirm it is talking to the right unit.</li>
+<li><strong>*RST</strong> returns the instrument to a known reset state, a clean starting point for a sequence.</li>
+<li><strong>*OPC?</strong> asks whether the previous operation has completed, which is how a script waits for the instrument to be ready before moving on.</li>
+<li><strong>*CLS</strong> clears the status and error registers.</li>
+</ul>
+<p>The instrument also keeps an error queue. After a run of commands, reading that queue tells you whether anything was rejected, which is far more reliable than assuming a setup took. The illustrative sequence below shows the shape of a delay sweep. The exact keywords vary by instrument, so treat this as the pattern rather than a literal command set, and confirm the syntax in the programming guide for the specific unit.</p>
+<div class="callout">
+<h4>Example</h4>
+<p>A controller might send *RST to reach a known state, then loop: set a channel delay to the next value, trigger or arm the cycle, query a result, read the error queue, and step the delay again. Because the same routine works whether the instrument is reached over USB, Ethernet, or GPIB, the code can outlive any one connection.</p>
+</div>
+<p>Remote control is what turns a single instrument into part of an automated bench. The sweeps, burst sequences, and overlap-aware timing budgets covered in Chapters 4 through 6 are tedious to drive by hand and nearly impossible to repeat exactly that way. Under script control they become routine. A test sequence can step delay across a range, log a result at each point, change channel modes between runs, and do it all again tomorrow with identical timing. Most labs reach the instrument through a standard I/O layer such as VISA, which lets the same script in LabVIEW, Python, MATLAB, or C address the unit the same way regardless of the physical interface. In a multi-instrument setup, the same command language lets a controller configure several units in a known order, which matters when their outputs have to line up. Because the SCPI syntax stays consistent across RS-232, USB, Ethernet, and GPIB, a routine written for one connection generally moves to another with little change.</p>
+
+<h2 id="instrument-configuration">7.3 Instrument Configuration</h2>
+<p>The source course includes a screen-recorded walkthrough of instrument configuration. That video is not embedded in this web edition.</p>
+<div class="callout">
+<h4>Note</h4>
+<p>A configuration walkthrough video accompanies this section in the original Berkeley Nucleonics Academy course. It is not reproduced here. To watch it, see the companion course at <a href="https://academy.berkeleynucleonics.com">academy.berkeleynucleonics.com</a>, or ask a BNC engineer for a current configuration demo.</p>
+</div>
+
+<h2 id="safety-markings">7.4 Safety Markings</h2>
+<p>All modern electronics conform to industry-required safety markings. The marks on an instrument are a short record of the standards it was built and tested to meet, and they tend to fall into a few familiar groups. Conformity marks, such as the CE mark in the European market and the UKCA mark in the United Kingdom, declare that a product meets the applicable regional directives. Safety-certification marks from a recognized testing laboratory indicate that the design passed an independent electrical-safety evaluation. Electromagnetic-compatibility marks, such as the FCC declaration used in the United States, show that the instrument neither emits nor is unduly disturbed by electromagnetic interference. Environmental marks, such as RoHS for restricted hazardous substances and WEEE for end-of-life electronics handling, address materials and disposal. The figures below show markings that can appear on pulse generators and on more complex timing systems.</p>
+<figure>
+<img src="../figures/safe1.jpg" alt="Safety markings used on electronic instruments, part 1." />
+<figcaption><span class="fig-num">Figure 7.4</span> Safety markings used on electronic instruments (part 1).</figcaption>
+</figure>
+<figure>
+<img src="../figures/safe2.jpg" alt="Safety markings used on electronic instruments, part 2." />
+<figcaption><span class="fig-num">Figure 7.5</span> Safety markings used on electronic instruments (part 2).</figcaption>
+</figure>
+<div class="callout">
+<h4>Note</h4>
+<p>Marks and certifications vary by model, by configuration, and by the market a unit ships into, and they change over time. The marks shown here are representative. Always confirm the current set of safety and regulatory markings for a specific instrument against its datasheet and its certificate of conformity.</p>
+</div>
+
+<div class="quiz-cta">
+<p><strong>Check your understanding.</strong> Five quick questions on this chapter.</p>
+<p><a class="btn" href="quiz-07.html">Take the Chapter 7 quiz</a></p>
+</div>
+
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="06-applications.html">&larr; 6. Applications of Precision Timing</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="08-industry-trends.html">8. Industry Trends &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

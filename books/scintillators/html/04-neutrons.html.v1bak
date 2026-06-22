@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>04-neutrons</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">04-neutrons</h1>
+</header>
+<h1 id="chapter-4---thermal-neutron-detection">Chapter 4 - Thermal Neutron Detection</h1>
+<p>Neutrons do not produce ionization directly in a scintillator. They produce scintillation light only after a nuclear reaction with a target nucleus releases charged secondary particles, which then ionize the scintillator and produce scintillation in the same way a charged particle from any other source would. The choice of target nucleus and the detection-scintillator combination drive most of the design choices in neutron-detector engineering.</p>
+<p>This chapter covers thermal neutron detection (neutron energies below about 0.5 eV, where capture cross-sections are highest). Fast neutron detection by elastic scattering on hydrogen, the dominant approach for higher-energy neutron measurements, is touched on briefly here and covered in more depth in Chapter 9 (electronics for PSD) and Appendix A (advanced materials).</p>
+<h2 id="why-thermal-neutrons-need-a-converter">4.1 Why Thermal Neutrons Need a Converter</h2>
+<p>Thermal neutrons interact with most nuclei only weakly. The few nuclei with large thermal-neutron capture cross-sections suitable for detection are: 6Li (about 940 barns), 10B (about 3840 barns), 3He (about 5330 barns), and 157Gd (about 254,000 barns). Each capture produces a different set of secondary particles, with different scintillator-design implications.</p>
+<ul>
+<li><strong>6Li(n, alpha)3H</strong> produces an alpha and a triton, with combined kinetic energy 4.78 MeV. The two particles are emitted back-to-back, with the alpha taking 2.05 MeV and the triton taking 2.73 MeV. Both stop in micrometers of scintillator, depositing all their energy.</li>
+<li><strong>10B(n, alpha)7Li</strong> produces an alpha (1.47 MeV in the dominant branch) and a 7Li recoil (0.84 MeV), plus a 478 keV gamma in 94 percent of the events from the excited 7Li.</li>
+<li><strong>3He(n, p)3H</strong> produces a proton (573 keV) and a triton (191 keV). 3He is a gas, used in proportional counters, not in scintillators.</li>
+<li><strong>157Gd(n, gamma)158Gd</strong> produces a cascade of gamma rays totaling about 8 MeV. The gammas are not local to the capture site, which complicates spatial resolution.</li>
+</ul>
+<p>The 6Li reaction is the dominant choice for scintillator-based thermal neutron detection because the alpha and triton deposit all their energy locally, the secondary particles are charged, and 6Li can be incorporated into multiple scintillator host materials.</p>
+<h2 id="li-loaded-scintillators">4.2 6Li-Loaded Scintillators</h2>
+<p><strong>6LiI(Eu)</strong> - europium-doped lithium iodide, isotopically enriched in 6Li. Light yield about 35 percent of NaI(Tl) for gamma reference. Decay time 1.4 microseconds. Hygroscopic. The thermal neutron capture event produces a light pulse equivalent to roughly 4.1 MeV gamma in NaI(Tl), well above natural gamma background, which means simple energy thresholding above 3 MeV separates neutrons from gamma. 90 percent of thermal neutrons absorb in 3 mm of material. Crystals are grown to about 25 mm diameter. Used as a thermal neutron spectrometer in older instruments and in some current physics applications.</p>
+<p><strong>6Li-glass (GS-20 and equivalents)</strong> - cerium-activated lithium silicate glass with 6Li enrichment. Light yield is much lower than 6LiI(Eu), around 4 to 6 percent of NaI(Tl), so the neutron peak is broader and falls at gamma-equivalent energy around 1.6 MeV. Non-hygroscopic, mechanically robust, can be cast in arbitrary shapes including thin sheets and arrays. 90 percent thermal neutron absorption in 1 mm of material. The standard format for large-area thermal neutron detectors and for fiber-coupled detector arrays.</p>
+<p><strong>6LiF/ZnS(Ag) screens</strong> - a composite detector formed by mixing fine powder of 6LiF with ZnS:Ag scintillator powder, bonded into a thin layer (typically 0.2 to 1 mm thick). The 6Li capture produces alpha and triton in the LiF; these particles travel a few microns into adjacent ZnS:Ag particles and produce intense scintillation. ZnS:Ag has very high light yield for charged particles, so the thermal neutron signal is bright. The scintillation light is read out either directly with a PMT or, for large-area detectors, through a wavelength-shifting fiber array that re-emits the light at a longer wavelength matched to the photodetector. ZnS:Ag is opaque to its own emission, which limits practical layer thicknesses, but the technique scales to very large areas. Used in neutron portal monitors and in neutron-imaging detectors.</p>
+<h2 id="the-elpasolites-dual-gamma-neutron-in-one-crystal">4.3 The Elpasolites: Dual Gamma-Neutron in One Crystal</h2>
+<p>The elpasolite scintillators (CLYC, CLLB, CLLBC, all introduced in Chapter 3) detect thermal neutrons through the 6Li content of the crystal lattice and gamma rays through standard photoelectric and Compton interactions in the same crystal volume. The two event types produce different scintillation pulse shapes because the alpha and triton from neutron capture have much higher linear energy transfer than the photoelectrons and Compton electrons from gamma interactions. Pulse shape discrimination separates the two populations in real time on a digital pulse processor, producing simultaneous gamma spectra and neutron counts from a single detector.</p>
+<p>This is the dominant approach for handheld dual-mode radiation detectors used in homeland security and law enforcement, where a single small detector that gives both a gamma spectrum (for isotope identification) and a thermal neutron count (for shielded special nuclear material detection) replaces what previously needed two separate detectors.</p>
+<p>The trade-offs of the elpasolite approach are: lower thermal neutron detection efficiency per unit volume than dedicated neutron detectors (because most of the crystal volume is not 6Li); the energy resolution and absolute count rates do not match dedicated single-purpose instruments; and the materials are hygroscopic, which complicates packaging.</p>
+<h2 id="boron--and-gadolinium-loaded-scintillators">4.4 Boron- and Gadolinium-Loaded Scintillators</h2>
+<p><strong>Boron-loaded plastic and liquid scintillators</strong> offer an alternative to 6Li-based detection. The 10B(n, alpha)7Li reaction has a higher cross-section than 6Li(n, alpha)3H, but the secondary particles deposit only about 2.3 MeV instead of 4.78 MeV, and the 478 keV gamma from the excited 7Li produces a degraded energy signature. Boron-loaded detectors are used where the cost or scalability of plastic or liquid wins over the energy resolution of 6Li, particularly in large-area portal monitors and in physics experiments with very large active volumes.</p>
+<p><strong>Gadolinium-loaded scintillators</strong> are uncommon as commercial detectors. The 8 MeV gamma cascade from 157Gd(n, gamma) is easy to detect but does not produce a localized energy deposit suitable for traditional thermal neutron spectroscopy. Gadolinium loading is more common in liquid scintillator neutrino detectors (where the gadolinium-tagged cascade is used as a delayed-coincidence signature for inverse beta decay) than in routine neutron-detection instruments.</p>
+<h2 id="pulse-shape-discrimination-for-n-gamma-separation">4.5 Pulse Shape Discrimination for N-Gamma Separation</h2>
+<p>In any combined gamma-neutron environment, the detector must distinguish the two populations cleanly. The technique is pulse shape discrimination (PSD): exploiting the different scintillation pulse shapes produced by high-LET (alpha, triton) and low-LET (electron) ionization tracks.</p>
+<p>The classical PSD figure of merit is:</p>
+<p>FoM = | mu_n - mu_g | / (FWHM_n + FWHM_g)</p>
+<p>where mu_n and mu_g are the centroids of the neutron and gamma distributions in some PSD parameter (typically the ratio of fast to total integrated charge), and FWHM_n and FWHM_g are the widths of those distributions. FoM above 1.5 gives clean separation in practice; modern elpasolite and PSD-plastic detectors achieve FoM above 3 in the gamma-equivalent energy regions where most events occur.</p>
+<p>PSD is implemented either as analog charge-comparison (two integrating gates of different lengths, ratio of one to the other) or as digital pulse-shape analysis on a sampled waveform. Digital implementations dominate modern instruments because they allow event-by-event characterization, real-time histogram display, and post-acquisition reanalysis if PSD parameters need adjustment.</p>
+<blockquote>
+<p><strong>Going Deeper - PSD with charge-comparison and machine learning</strong></p>
+<p>The standard PSD parameter is Q_tail / Q_total, where Q_tail is the integrated charge in a time window after the prompt peak and Q_total is the integrated charge over the full pulse. The ratio is larger for high-LET events because of the relatively stronger slow component. Optimization of the gate boundaries is application-specific and usually done with calibration runs against pure-gamma and pure-neutron sources.</p>
+<p>Recent SCINT and IEEE NSS papers report on machine-learning approaches to PSD, particularly convolutional neural networks operating on full digitized waveforms. Reported FoMs are slightly better than the best charge-comparison implementations, with the cost of less interpretable decision boundaries. For applications where calibration must be auditable and explainable, charge-comparison remains the standard.</p>
+</blockquote>
+<h2 id="the-he-3-replacement-story">4.6 The He-3 Replacement Story</h2>
+<p>For most of the period from 1990 to about 2008, thermal neutron detection in homeland security and physics applications was dominated by helium-3 proportional counters. He-3 is a gas-filled detector technology, not a scintillator, and its inclusion in this chapter is to explain why scintillator-based neutron detection has grown so much.</p>
+<p>He-3 is a non-renewable byproduct of tritium decay. The principal supply came from US defense stockpiles, with the supply rate set by tritium-handling activities. Around 2008 the US He-3 stockpile drew down faster than expected because of homeland-security demand following the 9/11 era. By 2009 the supply had constricted to the point where new neutron portal monitor deployments could not be filled with He-3 detectors, and the radiation-detection industry had to find alternatives.</p>
+<p>The alternatives that emerged: 6LiF/ZnS(Ag) screen detectors for large-area portal monitoring (cheap, scalable, but lower count rate capability than He-3); boron-coated proportional tubes (B-10 lining the inside of an Ar-CO2 proportional counter, geometrically equivalent to He-3 but with different gas requirements); CLYC and CLLBC for handheld combined gamma-neutron use; and PSD-capable plastic and liquid scintillators for fast neutron measurement. By 2025 the radiation-detection industry has substantially shifted to these alternatives. He-3 is still used where its specific advantages (very high efficiency, low gamma sensitivity, robust energy threshold) are required, but it is no longer the default.</p>
+<p>The He-3 story matters for the engineer designing in 2026 because the lessons of supply-chain fragility apply to several of the new scintillator materials. Helium-3 was a single-source commodity. Several of the rare-earth-bearing scintillators (LaBr3:Ce, CeBr3, GAGG:Ce, LSO:Ce) depend on supply chains for europium, cerium, lanthanum, lutetium, and gadolinium that are concentrated in a small number of countries. Material-substitution flexibility, multi-source qualification, and inventory planning are part of detector engineering now in a way they were not in 2010.</p>
+<div class="callout">
+<p><strong>BNC in Practice - When neutron count is what matters</strong></p>
+<p>In a security application, neutron sensitivity is often the binding requirement, not gamma resolution. A clean fingerprint of fissile material is a neutron count that exceeds background, regardless of whether the detector resolves the U-235 line at 185.7 keV cleanly. For these jobs, a CLLBC handheld will often beat a higher-resolution gamma-only handheld because the CLLBC also delivers thermal neutron counts. A 6LiF/ZnS(Ag) screen detector will deliver large-area thermal neutron sensitivity at lower cost. The right answer depends on whether the application is identification (what isotope) or screening (is anything there). Specifying for the wrong objective is the most common mistake in this corner of the catalog.</p>
+</div>
+<h2 id="the-lesson-the-he-3-shortage-taught">4.7 The Lesson the He-3 Shortage Taught</h2>
+<p>The neutron-detection chapter ends differently than it started. In the first edition of this book, He-3 was the assumed default for thermal neutron detection in serious applications, with scintillator alternatives positioned as fallbacks. By 2026 the scintillator alternatives are the standard, and a 6Li-based detector is rarely viewed as a compromise. The shift took fifteen years. The next supply disruption, when it comes, will not be in helium-3, because the field has already moved on. It will be in something else. The lesson is not which material to stockpile. It is to design for material substitution from the start.</p>
+<h2 id="chapter-4-quiz">Chapter 4 Quiz</h2>
+<ol type="1">
+<li>The 6Li(n, alpha)3H reaction releases what total kinetic energy in the secondary particles.</li>
+<li>Why is the thermal neutron peak in 6LiI(Eu) located above the natural gamma background in the energy spectrum.</li>
+<li>What scintillator family delivers simultaneous gamma spectroscopy and thermal neutron counting in a single crystal.</li>
+<li>Pulse shape discrimination relies on what physical difference between gamma events and thermal neutron capture events.</li>
+<li>What single supply-chain event drove the radiation-detection industry’s shift from He-3 to scintillator-based thermal neutron detection.</li>
+</ol>
+<h3 id="quiz-answers">Quiz Answers</h3>
+<ol type="1">
+<li>4.78 MeV total (2.05 MeV alpha + 2.73 MeV triton).</li>
+<li>The capture event deposits the full 4.78 MeV reaction Q-value locally, putting the thermal neutron peak at gamma-equivalent energy above 3 MeV in NaI(Tl), well above natural gamma background which generally peaks at the 2.6 MeV Tl-208 line.</li>
+<li>The elpasolites: CLYC, CLLB, and CLLBC.</li>
+<li>The two event types produce different ratios of fast to slow scintillation light because the alpha and triton from neutron capture have much higher linear energy transfer than the photoelectrons and Compton electrons from gamma interactions.</li>
+<li>The post-2008 He-3 supply contraction following heavy homeland-security demand draw on the US tritium-byproduct stockpile.</li>
+</ol>
+<h2 id="references">References</h2>
+<p>[1] R. T. Kouzes et al., “Neutron detection alternatives to 3He for national security applications,” <em>Nucl. Instrum. Methods A</em>, vol. 623, pp. 1035-1045, 2010.</p>
+<p>[2] N. Zaitseva et al., “Plastic scintillators with efficient neutron/gamma pulse shape discrimination,” <em>Nucl. Instrum. Methods A</em>, vol. 668, pp. 88-93, 2012.</p>
+<p>[3] J. Glodo et al., “Selected properties of Cs2LiYCl6, Cs2LiLaCl6, and Cs2LiLaBr6 scintillators,” <em>IEEE Trans. Nucl. Sci.</em>, vol. 58, no. 1, pp. 333-338, 2011.</p>
+<p>[4] M. Kapusta et al., “Properties of CLLBC scintillator: A combined gamma and neutron detector,” in <em>Proc. IEEE NSS-MIC 2023</em>, Vancouver, 2023.</p>
+<p>[5] G. F. Knoll, <em>Radiation Detection and Measurement</em>, 4th ed. Hoboken, NJ: Wiley, 2010.</p>
+<p>[6] R. T. Kouzes, “The 3He supply problem,” PNNL-18388, Pacific Northwest National Laboratory, Apr. 2009.</p>
+</body>
+</html>

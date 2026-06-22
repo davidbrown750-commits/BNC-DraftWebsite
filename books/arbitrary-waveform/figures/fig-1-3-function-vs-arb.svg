@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 440" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="820" height="440" fill="#ffffff"/>
+  <text x="410" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#003D6B">Standard Functions vs. an Arbitrary Waveform</text>
+
+  <!-- ============ TOP ROW: standard functions ============ -->
+  <text x="40" y="62" font-size="13" font-weight="bold" fill="#4B2A6B">Function generator: a fixed library of mathematical shapes</text>
+
+  <!-- Sine -->
+  <rect x="40" y="74" width="170" height="96" fill="#ECEFF1" stroke="#b6c2cc"/>
+  <line x1="40" y1="122" x2="210" y2="122" stroke="#cfd8df" stroke-width="1"/>
+  <path d="M50,122 C66,86 82,86 98,122 C114,158 130,158 146,122 C162,86 178,86 194,122 C202,140 206,140 210,131"
+        fill="none" stroke="#0078B6" stroke-width="2"/>
+  <text x="125" y="164" text-anchor="middle" font-size="11.5" fill="#2C3E50">Sine</text>
+
+  <!-- Square -->
+  <rect x="230" y="74" width="170" height="96" fill="#ECEFF1" stroke="#b6c2cc"/>
+  <line x1="230" y1="122" x2="400" y2="122" stroke="#cfd8df" stroke-width="1"/>
+  <polyline points="240,150 240,94 282,94 282,150 324,150 324,94 366,94 366,150 396,150"
+        fill="none" stroke="#0078B6" stroke-width="2"/>
+  <text x="315" y="164" text-anchor="middle" font-size="11.5" fill="#2C3E50">Square</text>
+
+  <!-- Triangle / Ramp -->
+  <rect x="420" y="74" width="170" height="96" fill="#ECEFF1" stroke="#b6c2cc"/>
+  <line x1="420" y1="122" x2="590" y2="122" stroke="#cfd8df" stroke-width="1"/>
+  <polyline points="430,150 462,94 494,150 526,94 558,150 586,116"
+        fill="none" stroke="#0078B6" stroke-width="2"/>
+  <text x="505" y="164" text-anchor="middle" font-size="11.5" fill="#2C3E50">Triangle / Ramp</text>
+
+  <!-- Pulse + Noise stacked at right -->
+  <rect x="610" y="74" width="170" height="96" fill="#ECEFF1" stroke="#b6c2cc"/>
+  <line x1="610" y1="110" x2="780" y2="110" stroke="#cfd8df" stroke-width="1"/>
+  <polyline points="620,128 656,128 656,90 672,90 672,128 740,128 740,90 756,90 756,128 778,128"
+        fill="none" stroke="#0078B6" stroke-width="2"/>
+  <text x="695" y="124" text-anchor="middle" font-size="10.5" fill="#2C3E50">Pulse</text>
+  <path d="M620,150 L626,144 L632,156 L638,146 L644,158 L650,143 L656,154 L662,147 L668,157 L674,144 L680,153 L686,148 L692,156 L698,145 L704,154 L710,147 L716,157 L722,144 L728,153 L734,149 L740,156 L746,146 L752,155 L758,148 L764,154 L770,147 L778,152"
+        fill="none" stroke="#C77E00" stroke-width="1.6"/>
+  <text x="695" y="166" text-anchor="middle" font-size="10.5" fill="#2C3E50">Noise</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="200" x2="780" y2="200" stroke="#b6c2cc" stroke-width="1" stroke-dasharray="5 5"/>
+
+  <!-- ============ BOTTOM: arbitrary waveform ============ -->
+  <text x="40" y="232" font-size="13" font-weight="bold" fill="#4B2A6B">Arbitrary waveform generator: any shape, played from sample memory</text>
+
+  <rect x="40" y="246" width="740" height="150" fill="#ffffff" stroke="#003D6B" stroke-width="1.5"/>
+  <line x1="40" y1="321" x2="780" y2="321" stroke="#cfd8df" stroke-width="1"/>
+
+  <!-- An irregular captured-looking waveform: a damped burst + glitch + ringing -->
+  <path fill="none" stroke="#003D6B" stroke-width="2.2"
+    d="M50,321
+       L120,321
+       C140,321 150,260 175,260
+       C200,260 205,372 235,372
+       C262,372 268,282 295,300
+       C320,316 322,330 345,321
+       L380,321
+       L380,272 L392,272 L392,321
+       L430,321
+       C455,321 460,290 485,296
+       C510,302 512,346 540,338
+       C566,331 572,308 600,316
+       C628,324 634,329 660,322
+       C690,314 700,326 730,321
+       L778,321"/>
+
+  <!-- sample dots to imply discrete samples on a segment -->
+  <g fill="#00b4ff">
+    <circle cx="485" cy="296" r="2.6"/>
+    <circle cx="500" cy="300" r="2.6"/>
+    <circle cx="515" cy="316" r="2.6"/>
+    <circle cx="528" cy="333" r="2.6"/>
+    <circle cx="540" cy="338" r="2.6"/>
+    <circle cx="558" cy="334" r="2.6"/>
+    <circle cx="575" cy="320" r="2.6"/>
+  </g>
+  <text x="555" y="382" font-size="10.5" fill="#0078B6">discrete voltage samples</text>
+
+  <!-- callouts -->
+  <text x="175" y="252" font-size="10.5" fill="#C77E00">captured pulse</text>
+  <text x="372" y="266" font-size="10.5" fill="#C77E00">injected glitch</text>
+  <text x="650" y="306" font-size="10.5" fill="#C77E00">ringing tail</text>
+
+  <text x="410" y="424" text-anchor="middle" font-size="12" fill="#2C3E50" font-style="italic">The AWG plays back whatever the engineer defines, sample by sample, with no fixed shape.</text>
+</svg>

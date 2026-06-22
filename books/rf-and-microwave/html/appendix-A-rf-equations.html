@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>appendix-A-rf-equations</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="light-touch.css" />
+  <script defer src="_reader-prompt.js"></script>
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body><h1 id="appendix-a-rf-equations-and-quick-reference">Appendix A. RF Equations and Quick Reference</h1>
+<p>This appendix collects the formulas an RF engineer or technician reaches for most often. It is meant for the bench, not the classroom, so each entry states the equation, names its variables, and where it helps, shows a short worked example. The earlier chapters explain where these relationships come from. This is the place to look them up fast.</p>
+<p>Unless noted, the formulas assume a matched 50 ohm system and use base-10 logarithms. Keep an eye on whether a quantity is a power ratio or a voltage (or field) ratio, because that single distinction is the source of most decibel mistakes.</p>
+<h2 id="a1-decibels-and-power-units">A.1 Decibels and Power Units</h2>
+<p>The decibel expresses a ratio on a logarithmic scale. Use the 10 log form for power and the 20 log form for voltage, current, or field strength.</p>
+<table>
+<thead>
+<tr><th>Quantity</th><th>Formula</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Power ratio in dB</td><td>dB = 10 log10(P2 / P1)</td><td>Use for power, gain, loss</td></tr>
+<tr><td>Voltage ratio in dB</td><td>dB = 20 log10(V2 / V1)</td><td>Valid when both are at the same impedance</td></tr>
+<tr><td>dBm (absolute power)</td><td>dBm = 10 log10(P / 1 mW)</td><td>Reference is 1 milliwatt</td></tr>
+<tr><td>dBW (absolute power)</td><td>dBW = 10 log10(P / 1 W)</td><td>dBW = dBm minus 30</td></tr>
+<tr><td>dBuV (absolute voltage)</td><td>dBuV = 20 log10(V / 1 uV)</td><td>Common in EMI work</td></tr>
+<tr><td>Power from dBm</td><td>P (mW) = 10^(dBm / 10)</td><td>Inverse of the dBm definition</td></tr>
+</tbody>
+</table>
+<p>Useful anchors worth memorizing: 3 dB is a factor of 2 in power, 10 dB is a factor of 10 in power, and 6 dB is a factor of 2 in voltage. Adding decibels multiplies the underlying ratios, which is why a chain of gains and losses reduces to simple addition.</p>
+<p>In a 50 ohm system, dBm and dBuV are related by a fixed offset:</p>
+<p>dBuV = dBm + 107 (in 50 ohms)</p>
+<p><strong>Worked example.</strong> An amplifier delivers 2 W into a matched load. In dBm that is 10 log10(2000 mW / 1 mW), which is 10 log10(2000), or about 33 dBm. Subtract 30 to get 3 dBW. The same 2 W into 50 ohms corresponds to a voltage of about 10 V RMS, so the level in dBuV is 33 + 107, which is 140 dBuV.</p>
+<h2 id="a2-power-voltage-and-impedance">A.2 Power, Voltage, and Impedance</h2>
+<p>Power, voltage, current, and impedance are linked by Ohm's law and the power relations. For RMS quantities in a resistive system:</p>
+<p>P = V^2 / R = I^2 * R = V * I</p>
+<p>where P is power in watts, V is RMS voltage, I is RMS current, and R is resistance in ohms.</p>
+<table>
+<thead>
+<tr><th>Conversion</th><th>Formula</th><th>Reference R</th></tr>
+</thead>
+<tbody>
+<tr><td>Voltage to power</td><td>P = V^2 / R</td><td>Any R</td></tr>
+<tr><td>Power to voltage</td><td>V = sqrt(P * R)</td><td>Any R</td></tr>
+<tr><td>RMS to peak (sine)</td><td>Vpeak = Vrms * sqrt(2)</td><td>Sine only</td></tr>
+<tr><td>RMS to peak-to-peak</td><td>Vpp = 2 * sqrt(2) * Vrms</td><td>Sine only</td></tr>
+<tr><td>Peak to RMS (sine)</td><td>Vrms = Vpeak / sqrt(2)</td><td>Sine only</td></tr>
+</tbody>
+</table>
+<p><strong>Worked example.</strong> A signal generator outputs 0 dBm, which is 1 mW. Into 50 ohms the RMS voltage is sqrt(0.001 W * 50 ohm), which is about 0.224 V, or 224 mV RMS. The peak voltage is 224 mV times 1.414, about 316 mV, and the peak-to-peak voltage is about 632 mV.</p>
+<h2 id="a3-frequency-wavelength-and-the-speed-of-light">A.3 Frequency, Wavelength, and the Speed of Light</h2>
+<p>In free space, frequency and wavelength are tied together by the speed of light:</p>
+<p>c = f * lambda</p>
+<p>where c is about 3.0 x 10^8 meters per second, f is frequency in hertz, and lambda is wavelength in meters. In a medium or a transmission line, the wave travels slower by the velocity factor (VF), so the in-medium wavelength is shorter:</p>
+<p>lambda_medium = (c * VF) / f</p>
+<p>A handy bench shortcut for free space: wavelength in meters is approximately 300 divided by frequency in megahertz.</p>
+<table>
+<thead>
+<tr><th>Frequency</th><th>Free-space wavelength</th><th>Quarter wavelength</th></tr>
+</thead>
+<tbody>
+<tr><td>100 MHz</td><td>3.0 m</td><td>0.75 m</td></tr>
+<tr><td>1 GHz</td><td>30.0 cm</td><td>7.5 cm</td></tr>
+<tr><td>2.4 GHz</td><td>12.5 cm</td><td>3.1 cm</td></tr>
+<tr><td>6 GHz</td><td>5.0 cm</td><td>1.25 cm</td></tr>
+<tr><td>28 GHz</td><td>1.07 cm</td><td>0.27 cm</td></tr>
+</tbody>
+</table>
+<p><strong>Worked example.</strong> A 2.4 GHz Wi-Fi signal has a free-space wavelength of 300 / 2400, which is 0.125 m, or 12.5 cm. A quarter-wave whip antenna for that band is about 3.1 cm long before accounting for the antenna's own velocity factor and end effects.</p>
+<h2 id="a4-vswr-return-loss-and-reflection-coefficient">A.4 VSWR, Return Loss, and Reflection Coefficient</h2>
+<p>When a load impedance does not match the line impedance, part of the incident wave reflects. The reflection coefficient (Gamma) captures the size and phase of that reflection, and VSWR and return loss are two ways of reporting its magnitude.</p>
+<p>Reflection coefficient magnitude, where mag(Gamma) denotes the absolute value of Gamma: mag(Gamma) = mag((ZL - Z0) / (ZL + Z0)), where ZL is the load impedance and Z0 is the line impedance (usually 50 ohms).</p>
+<table>
+<thead>
+<tr><th>Quantity</th><th>Formula</th></tr>
+</thead>
+<tbody>
+<tr><td>VSWR from reflection</td><td>VSWR = (1 + mag(Gamma)) / (1 - mag(Gamma))</td></tr>
+<tr><td>Reflection from VSWR</td><td>mag(Gamma) = (VSWR - 1) / (VSWR + 1)</td></tr>
+<tr><td>Return loss (dB)</td><td>RL = -20 log10(mag(Gamma))</td></tr>
+<tr><td>Reflection from RL</td><td>mag(Gamma) = 10^(-RL / 20)</td></tr>
+<tr><td>Mismatch loss (dB)</td><td>ML = -10 log10(1 - mag(Gamma)^2)</td></tr>
+</tbody>
+</table>
+<p>The common reference points are worth keeping in your head. A perfect match has Gamma = 0, VSWR = 1, and infinite return loss. The table below maps the values engineers quote most.</p>
+<table>
+<thead>
+<tr><th>VSWR</th><th>Reflection mag(Gamma)</th><th>Return loss (dB)</th><th>Power reflected</th></tr>
+</thead>
+<tbody>
+<tr><td>1.0</td><td>0.000</td><td>infinite</td><td>0.0%</td></tr>
+<tr><td>1.2</td><td>0.091</td><td>20.8</td><td>0.8%</td></tr>
+<tr><td>1.5</td><td>0.200</td><td>14.0</td><td>4.0%</td></tr>
+<tr><td>2.0</td><td>0.333</td><td>9.5</td><td>11.1%</td></tr>
+<tr><td>3.0</td><td>0.500</td><td>6.0</td><td>25.0%</td></tr>
+<tr><td>5.0</td><td>0.667</td><td>3.5</td><td>44.4%</td></tr>
+</tbody>
+</table>
+<p><strong>Worked example.</strong> A connector measures a return loss of 14 dB. The reflection magnitude is 10^(-14/20), about 0.20, so the VSWR is (1 + 0.20) / (1 - 0.20), which is 1.5. The reflected power is mag(Gamma)^2, about 0.04, so 4 percent of the incident power bounces back.</p>
+<h2 id="a5-the-friis-transmission-equation">A.5 The Friis Transmission Equation</h2>
+<p>The Friis equation predicts the power a receiving antenna captures over a free-space path. In linear form:</p>
+<p>Pr = Pt * Gt * Gr * (lambda / (4 * pi * d))^2</p>
+<p>where Pr is received power, Pt is transmitted power, Gt and Gr are the transmit and receive antenna gains as linear ratios, lambda is wavelength, and d is the path distance.</p>
+<p>The logarithmic form is easier on the bench because the terms simply add:</p>
+<p>Pr(dBm) = Pt(dBm) + Gt(dBi) + Gr(dBi) - FSPL(dB)</p>
+<p>Free-space path loss (FSPL) in decibels, with distance in kilometers and frequency in megahertz:</p>
+<p>FSPL(dB) = 20 log10(d_km) + 20 log10(f_MHz) + 32.45</p>
+<p><strong>Worked example.</strong> A link runs at 1 GHz over 10 km with a 10 dBm transmitter, a 6 dBi transmit antenna, and a 6 dBi receive antenna. FSPL is 20 log10(10) + 20 log10(1000) + 32.45, which is 20 + 60 + 32.45, about 112.45 dB. Received power is 10 + 6 + 6 - 112.45, about -90.45 dBm. If the receiver sensitivity is -100 dBm, the link closes with roughly 9.5 dB of margin.</p>
+<h2 id="a6-noise-figure-and-cascaded-noise">A.6 Noise Figure and Cascaded Noise</h2>
+<p>Noise figure (NF) quantifies how much a device degrades the signal-to-noise ratio. It is the noise factor (F) expressed in decibels:</p>
+<p>NF = 10 log10(F)</p>
+<p>The thermal noise floor sets the starting point. At room temperature (290 K), the available noise power in decibels is:</p>
+<p>N(dBm) = -174 + 10 log10(BW_Hz)</p>
+<p>where BW is the bandwidth in hertz. The -174 dBm/Hz figure is the thermal noise power spectral density at 290 K.</p>
+<p>For a cascade of stages, the Friis noise formula gives the total noise factor referred to the input:</p>
+<p>F_total = F1 + (F2 - 1) / G1 + (F3 - 1) / (G1 * G2) + ...</p>
+<p>where each F and G is a linear ratio (not in decibels). The lesson the formula teaches is blunt: the first stage dominates. A low-noise, high-gain first amplifier suppresses the noise contribution of everything that follows.</p>
+<p><strong>Worked example.</strong> A receiver front end has an LNA with NF1 = 1 dB and gain G1 = 20 dB, followed by a mixer with NF2 = 10 dB. Convert to linear: F1 = 1.26, G1 = 100, F2 = 10. The cascade noise factor is 1.26 + (10 - 1) / 100, which is 1.26 + 0.09, about 1.35. In decibels that is 10 log10(1.35), about 1.3 dB. The high-gain LNA almost completely masks the mixer's poor noise figure.</p>
+<h2 id="a7-radar-range-pointers">A.7 Radar Range Pointers</h2>
+<p>Radar combines several of the relationships above into a single budget. The radar range equation, in its basic monostatic form, gives the received echo power:</p>
+<p>Pr = (Pt * G^2 * lambda^2 * sigma) / ((4 * pi)^3 * R^4)</p>
+<p>where G is the antenna gain (the same antenna transmits and receives), sigma is the target radar cross section in square meters, and R is the range to the target. The fourth-power dependence on range is the defining feature: doubling the range cuts the echo to one sixteenth.</p>
+<p>Two more relations come up constantly in pulsed radar:</p>
+<table>
+<thead>
+<tr><th>Quantity</th><th>Formula</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Round-trip range</td><td>R = (c * t) / 2</td><td>t is echo delay</td></tr>
+<tr><td>Maximum unambiguous range</td><td>R_max = c / (2 * PRF)</td><td>PRF is pulse repetition frequency</td></tr>
+<tr><td>Range resolution</td><td>dR = (c * tau) / 2</td><td>tau is pulse width</td></tr>
+</tbody>
+</table>
+<p><strong>Worked example.</strong> A radar with a 1 kHz pulse repetition frequency has a maximum unambiguous range of (3 x 10^8) / (2 * 1000), which is 150,000 m, or 150 km. Beyond that range an echo arrives after the next pulse has already gone out and is reported at the wrong, shorter range.</p>
+<h2 id="references">References</h2>
+<p>[1] IEEE Std 100, The Authoritative Dictionary of IEEE Standards Terms, for definitions of decibel, reflection coefficient, VSWR, and noise figure. Verify current edition before publication.</p>
+<p>[2] Pozar, D. M., Microwave Engineering, for derivations of the reflection, Smith chart, and noise-cascade relationships. Verify edition and page references before publication.</p>
+<p>[3] Friis, H. T., "A Note on a Simple Transmission Formula," Proceedings of the IRE, 1946, for the transmission equation. Verify citation before publication.</p>
+<footer class="bnc-footer">
+  <nav class="bnc-nav">
+    <a class="prev" href="14-careers-standards-future.html">&larr; 14. Careers &amp; Future</a>
+    <a class="mid"  href="00-front-matter.html">Contents</a>
+    <a class="next" href="appendix-B-decibel-tables.html">App. B: dB Tables &rarr;</a>
+  </nav>
+  <div class="bnc-meta">
+    <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
+    <span class="spacer">&copy; Berkeley Nucleonics Corporation</span>
+    <a class="print" href="../web/reader-quiz.html">Request a free print copy<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.4C9.7 5.1 6.7 4.9 4 5.7v12.5c2.7-0.8 5.7-0.6 8 0.7 2.3-1.3 5.3-1.5 8-0.7V5.7C17.3 4.9 14.3 5.1 12 6.4z"/><path d="M12 6.4V19.4"/></svg></a>
+  </div>
+  <div class="bnc-edge" aria-hidden="true"></div>
+</footer>
+</body>
+</html>

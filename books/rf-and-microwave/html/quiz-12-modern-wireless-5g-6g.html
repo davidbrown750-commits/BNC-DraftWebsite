@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 12 Quiz &mdash; Modern Wireless: 5G, 6G, mmWave</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 12 &middot; Quiz</p>
+      <h1>Modern Wireless: 5G, 6G, mmWave</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="12-modern-wireless-5g-6g.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="13-defense-aerospace-rf.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "12",
+    title: "Chapter 12 Quiz: Modern Wireless: 5G, 6G, mmWave",
+    questions: [
+      {
+        q: "What frequency ranges do 5G NR FR1 and FR2 cover, and what role does each play?",
+        options: [
+          "FR1 is mmWave for capacity; FR2 is sub-6 GHz for coverage",
+          "FR1 covers sub-6 GHz (roughly 410 MHz to 7.125 GHz) for coverage and reliability; FR2 covers mmWave (24.25 to 71 GHz) for very high capacity over short ranges",
+          "FR1 and FR2 both cover sub-6 GHz, differing only in bandwidth",
+          "FR1 is satellite-only; FR2 is terrestrial-only"
+        ],
+        answer: 1,
+        explain: "FR1 is sub-6 GHz for coverage; FR2 is mmWave (24.25-71 GHz) for high capacity at short range."
+      },
+      {
+        q: "Why is analog beamforming considered mandatory for FR2 millimeter-wave operation?",
+        options: [
+          "Because mmWave hardware cannot work without it for legal reasons",
+          "Because free-space path loss rises with frequency, so mmWave signals are easily blocked; beamforming concentrates energy into a directed beam aimed at the user, the only practical way to close the link",
+          "Because it lowers the cost of the base station",
+          "Because regulators require a single fixed beam"
+        ],
+        answer: 1,
+        explain: "Severe mmWave path loss makes beamforming essential: it concentrates energy toward the user to close the link."
+      },
+      {
+        q: "In a 64T64R massive MIMO array, what do the numbers mean, and what two benefits does it provide?",
+        options: [
+          "64 channels at 64 watts; it provides cooling and redundancy",
+          "64 transmit and 64 receive elements (128 total), each with its own RF chain; it provides beamforming gain (range) and spatial multiplexing (multiple simultaneous beams that multiply capacity)",
+          "64 antennas shared by 64 users one at a time; it provides only range",
+          "64-bit transmit and 64-bit receive processing; it provides faster software"
+        ],
+        answer: 1,
+        explain: "64T64R is 64 transmit and 64 receive elements; it delivers beamforming gain and spatial multiplexing."
+      },
+      {
+        q: "Why must FR2 devices be tested over the air, and what does a CATR chamber do to make that practical?",
+        options: [
+          "Because cables are too expensive; a CATR chamber stores spare cables",
+          "Because FR2 antenna arrays are integrated with no RF connector and radiated quantities depend on direction; a CATR chamber uses a shaped parabolic reflector to collimate the feed's spherical wave into a planar far-field wave at short range",
+          "Because OTA is faster than conducted testing; a CATR chamber speeds the sweep",
+          "Because regulations forbid conducted FR2 testing; a CATR chamber issues certificates"
+        ],
+        answer: 1,
+        explain: "Integrated FR2 arrays have no connector and radiate directionally; a CATR reflector creates far-field conditions in a compact chamber."
+      },
+      {
+        q: "In the CBRS three-tier sharing model, what are the three tiers and what does the Spectrum Access System do?",
+        options: [
+          "Gold, silver, bronze tiers; the SAS sells the licenses",
+          "Incumbent Access (highest, such as naval radar), Priority Access Licenses (auctioned, protected from the tier below), and General Authorized Access (open, lowest); the SAS is a cloud service that coordinates the band in near real time and moves lower-tier users aside when an incumbent appears",
+          "Voice, data, and video tiers; the SAS routes traffic by type",
+          "Federal, state, and local tiers; the SAS allocates by geography only"
+        ],
+        answer: 1,
+        explain: "CBRS tiers are Incumbent, Priority Access, and General Authorized; the SAS coordinates access and protects higher tiers in near real time."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>

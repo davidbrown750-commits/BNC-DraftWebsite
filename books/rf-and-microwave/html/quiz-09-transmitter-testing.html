@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 9 Quiz &mdash; Transmitter Testing</title>
+  <link rel="stylesheet" href="_bnc-style.css" />
+  <link rel="stylesheet" href="_quiz-style.css" />
+  <script defer src="book-search-data.js"></script>
+  <script defer src="book-search.js"></script>
+</head>
+<body>
+  <main class="quiz-page">
+    <header class="quiz-header">
+      <p class="crumb">Chapter 9 &middot; Quiz</p>
+      <h1>Transmitter Testing</h1>
+      <p class="sub">Five questions, multiple choice. Pick one answer each, then check your score. Your answers are saved on this device.</p>
+      <div class="meta">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>~8 minutes</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>5 questions</span>
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20l9-9-9-9-9 9 9 9z"/><path d="M9 12l2 2 4-4"/></svg>Multiple choice</span>
+      </div>
+    </header>
+
+    <div id="bnc-quiz"></div>
+
+    <footer class="quiz-footer">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn-link" href="09-transmitter-testing.html">&larr; Back</a>
+        <a class="btn-link" href="progress.html">My progress</a>
+        <a class="btn-link primary" href="10-receiver-testing.html">Continue &rarr;</a>
+      </div>
+    </footer>
+
+    <p class="pen-note">The book is meant to be marked up. Read it with a pen. Quiz it on screen.</p>
+  </main>
+
+  <script>
+  window.QUIZ_DATA = {
+    bookKey: "rf",
+    chapterKey: "09",
+    title: "Chapter 9 Quiz: Transmitter Testing",
+    questions: [
+      {
+        q: "What two foundational measurements apply to essentially every transmitter, and what does each confirm?",
+        options: [
+          "Noise figure and gain; that the device amplifies cleanly",
+          "Output power and transmission frequency; power confirms the signal is present and strong enough, frequency confirms it sits in its assigned band and is not leaking into adjacent channels",
+          "Phase noise and EVM; that modulation is accurate",
+          "Impedance and return loss; that the antenna is matched"
+        ],
+        answer: 1,
+        explain: "Output power and transmission frequency are the universal pair: power for reach, frequency for staying in band."
+      },
+      {
+        q: "When testing an AM transmitter on a spectrum analyzer, why should the RBW be set smaller than the modulation frequency?",
+        options: [
+          "To speed up the sweep",
+          "Because an RBW at or above the modulation frequency cannot resolve the sidebands from the carrier, so the modulation becomes invisible; a smaller RBW provides the resolution to see the sidebands",
+          "To lower the noise floor for harmonics",
+          "Because the carrier disappears otherwise"
+        ],
+        answer: 1,
+        explain: "An RBW smaller than the modulation frequency is needed to resolve the modulation sidebands from the carrier."
+      },
+      {
+        q: "What is the purpose of a max hold trace when measuring a voice-modulated AM or FM transmitter?",
+        options: [
+          "It speeds up the analyzer's response time",
+          "Because a voice signal changes constantly, max hold keeps the highest value in each bin across many sweeps, building the full modulation envelope so you can confirm it stays within its channel",
+          "It removes the carrier from the display",
+          "It averages out the modulation to a single tone"
+        ],
+        answer: 1,
+        explain: "Max hold accumulates peaks across sweeps to capture the full modulation envelope of a constantly changing voice signal."
+      },
+      {
+        q: "How does a harmonic differ from a spurious emission, and why are spurs generally harder to locate?",
+        options: [
+          "A harmonic is random while a spur is at a fixed integer multiple",
+          "A harmonic falls at an integer multiple of the fundamental (predictable); a spur comes from nonlinear mixing at less predictable frequencies, so spurs are harder to anticipate and find",
+          "A harmonic is always stronger than a spur and easy to miss",
+          "There is no difference; the terms are interchangeable"
+        ],
+        answer: 1,
+        explain: "Harmonics sit at predictable integer multiples; spurs arise from nonlinear mixing at unpredictable frequencies, making them harder to find."
+      },
+      {
+        q: "What do ACPR and EVM measure, and why do both depend heavily on power amplifier linearity?",
+        options: [
+          "ACPR measures phase noise and EVM measures gain; neither depends on linearity",
+          "ACPR measures power leaking into adjacent channels and EVM measures symbol placement accuracy; both worsen when the amplifier compresses, causing spectral regrowth (ACPR) and symbol errors (EVM)",
+          "ACPR measures output power and EVM measures frequency; both depend only on the oscillator",
+          "ACPR and EVM both measure the same adjacent-channel quantity"
+        ],
+        answer: 1,
+        explain: "ACPR is adjacent-channel leakage; EVM is symbol accuracy. Amplifier compression causes spectral regrowth and symbol errors, raising both."
+      }
+    ]
+  };
+  </script>
+  <script defer src="quiz-mc.js"></script>
+</body>
+</html>
