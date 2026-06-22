@@ -25,6 +25,8 @@
   function ready(fn){ if (document.readyState !== "loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
   function el(tag, attrs, html){ var e=document.createElement(tag); if(attrs) for(var k in attrs) e.setAttribute(k, attrs[k]); if(html!=null) e.innerHTML=html; return e; }
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  // If signed in via the Clerk/Supabase auth layer, use the account email.
+  function userEmail(){ try { var u = window.Clerk && window.Clerk.user; return (u && u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || null; } catch(e){ return null; } }
 
   function deriveDesc(nodes){
     var i, t;
@@ -97,10 +99,28 @@
 
     var trigger = el("button", {"class":"pdfcfg-trigger","type":"button"},
       '<svg viewBox="0 0 24 24"><path d="M14 3v5h5"/><path d="M6 3h8l5 5v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M9 13h6M9 16h4"/></svg> Create your own PDF');
-    var anchor = document.querySelector(".doc-hero") || document.querySelector("h1");
-    var holder = el("div", {"style":"margin:16px 0 6px;text-align:center;"}); holder.appendChild(trigger);
+    // Place the button consistently: just below the hero's blue divider, at the
+    // top of the body, right-justified to the content column. Anchor to the hero
+    // SECTION on both layouts (older .doc-hero, newer .man-hero) so it always
+    // lands after the divider rather than inside the header.
+    var anchor = document.querySelector(".doc-hero") || document.querySelector(".man-hero") || document.querySelector("h1");
+    // Sticky, pinned just under the 62px nav, right-aligned to the content column
+    // (max-width matches .sitenav-inner so it lines up under "Get a Quote/Demo").
+    // pointer-events:none on the bar so it never blocks the content scrolling
+    // beneath it; only the button itself is clickable.
+    var holder = el("div", {"class":"pdfcfg-holder","style":
+      "position:sticky;top:70px;z-index:150;max-width:1240px;margin:10px auto 0;padding:0 28px;text-align:right;pointer-events:none;"});
+    trigger.style.pointerEvents = "auto";
+    trigger.style.boxSizing = "border-box";
+    trigger.style.boxShadow = "0 6px 18px -6px rgba(10,22,38,.45)";
+    holder.appendChild(trigger);
     if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(holder, anchor.nextSibling);
     else document.body.insertBefore(holder, document.body.firstChild);
+    // Match the nav "Get a Quote/Demo" button width for a consistent stacked look.
+    try {
+      var navcta = document.querySelector(".sitenav-cta");
+      if (navcta && navcta.offsetWidth) trigger.style.width = navcta.offsetWidth + "px";
+    } catch (e) {}
 
     var overlay = el("div", {"class":"pdfcfg-overlay"});
     var rows = chapters.map(function(c){
@@ -128,6 +148,17 @@
     var boxes = overlay.querySelectorAll('input[data-ch]');
     var nEl = overlay.querySelector(".pdfcfg-n"), pEl = overlay.querySelector(".pdfcfg-p");
     var emailEl = overlay.querySelector(".pdfcfg-email"), msg = overlay.querySelector(".pdfcfg-msg");
+    var noteEl = overlay.querySelector(".pdfcfg-note");
+    function applyAuth(){
+      var ue = userEmail();
+      if (ue) {
+        emailEl.value = ue; emailEl.style.display = "none";
+        noteEl.innerHTML = 'Signed in as <b>' + esc(ue) + '</b>. Your custom PDF opens as soon as you click below.';
+      } else {
+        emailEl.style.display = "";
+        noteEl.innerHTML = 'Your custom PDF opens as soon as you submit. We use your email only to follow up on your request.';
+      }
+    }
 
     function selected(){ return chapters.filter(function(c){ return overlay.querySelector('input[data-ch="'+c.i+'"]').checked; }); }
     function estimate(){
@@ -135,7 +166,7 @@
       var nodes = sel.reduce(function(a,c){ return a + c.nodes.length; }, 0);
       pEl.textContent = Math.max(1, Math.round(nodes / 6));
     }
-    function open(){ overlay.classList.add("open"); estimate(); }
+    function open(){ overlay.classList.add("open"); applyAuth(); estimate(); }
     function close(){ overlay.classList.remove("open"); }
 
     trigger.addEventListener("click", open);
@@ -148,8 +179,8 @@
 
     overlay.querySelector(".pdfcfg-go").addEventListener("click", function(){
       var go = this, sel = selected();
-      var email = (emailEl.value || "").trim();
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.style.color = "#c0392b"; msg.textContent = "Please enter a valid email address."; emailEl.focus(); return; }
+      var email = userEmail() || (emailEl.value || "").trim();
+      if (!userEmail() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.style.color = "#c0392b"; msg.textContent = "Please enter a valid email address."; emailEl.focus(); return; }
       if (!sel.length) { msg.style.color = "#c0392b"; msg.textContent = "Pick at least one chapter."; return; }
       go.disabled = true; msg.style.color = "#0a7"; msg.textContent = "Preparing your PDF…";
 
