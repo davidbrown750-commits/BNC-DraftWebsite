@@ -91,6 +91,8 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
 </style>
 
 
@@ -165,147 +167,156 @@ th .modelthumb{filter:none;}
 </div></header>
 
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>SAMmobile 150 (RD-150) Vehicle-Mounted Radiation Detection System</h1><p>A flexible, plug-and-play vehicle-mounted radiation detection system (VMRDS) built for rapid deployment and easy transfer between vehicles. The SAMmobile 150 (RD-150) scales to three high-sensitivity NaI modules, corrects background in real time, and tags every detection with GPS for color-contour radiological mapping across freeways, choke points, parking lots, and covert routes.</p><div class="ver">SAMmobile 150 (RD-150) VMRDS &middot; Vehicle-Mounted System &middot; Rev. 2026.06</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/images/products/sammobile150_001_0007_layer_0.jpg" alt="SAMmobile 150 (RD-150) vehicle-mounted radiation detection module"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>SAMmobile 150 (RD-150) Vehicle-Mounted Radiation Detection System</h1><p>The Model RD-150 Vehicle Mounted Radiation Detection System (VMRDS) integrates large-volume, highly sensitive gamma and neutron detectors into shock-absorbent packaging for reliable mobile monitoring in existing response vehicles. Gamma-ray spectroscopy delivers specific nuclide identification, real-time background correction and stabilization keep results stable in motion, and integrated GPS adds mapping for freeway passing, pinch points, lot scans, and clandestine monitoring. It ships standard with the PeakGo software interface.</p><div class="ver">SAMmobile 150 (RD-150) VMRDS &middot; Datasheet 1/9/19</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/images/products/sammobile150_001_0007_layer_0.jpg" alt="SAMmobile 150 (RD-150) vehicle-mounted radiation detection module"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Detector Array &amp; Performance</a>
-  <a href="#s4">4. Specifications</a>
-  <a href="#s5">5. System &amp; Software</a>
-  <a href="#s6">6. Configurations &amp; Options</a>
-  <a href="#s7">7. Applications</a>
-  <a href="#s8">8. Ordering</a>
+  <a href="#s1">1. Description</a>
+  <a href="#s2">2. Features</a>
+  <a href="#s3">3. Applications</a>
+  <a href="#s4">4. System Hardware</a>
+  <a href="#s5">5. System Firmware</a>
+  <a href="#s6">6. System Software</a>
+  <a href="#s7">7. Application Software &ndash; PeakGO</a>
+  <a href="#s8">8. Specifications</a>
+  <a href="#s9">9. Detectable Isotopes</a>
+  <a href="#s10">10. Document History</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <p>The <strong>SAMmobile 150 (RD-150)</strong> is a vehicle-mounted radiation detection system, or VMRDS, designed to deploy fast and move between vehicles without a fixed install. It suits dynamic detection geometry: freeway monitoring, choke points, parking lots, and covert surveillance, where the source moves and the platform has to keep up.</p>
-  <p>At its core sits a high-performance MCA with DSP electronics and a high-voltage control system, driven by a 32-bit RISC processor for data acquisition and processing. A shock-reducing enclosure matches the photomultiplier tube to the NaI detector for stable performance in motion. The firmware applies a proprietary Wavelet Transform with concurrent background correction and subtraction, and second-by-second analysis keeps the system responsive as the vehicle drives through changing backgrounds.</p>
-  <div class="note warn"><b>Verification notes.</b> Confirm the following against the latest SAMmobile 150 datasheet before release. The product page lists operating temperature as "20 C to -50 C"; verify the correct low-to-high ordering. Neutron tube count and type are not published (the page lists "Gamma and Neutron Detection" as a feature only). Total combined crystal volume across modules and the dose-rate range are not published. The app name appears on the page as both <strong>PeakGO</strong> and <strong>PeakAbout</strong>; verify the canonical app name with engineering. Do not publish an unconfirmed value.</div>
+  <h2><span class="num">1</span>Description</h2>
+  <p>The Model RD-150 Vehicle Based Radiation Detection System offers users a quick integration of spectroscopic nuclear detection capability in existing response vehicles. Large volume, highly sensitive gamma and neutron detectors are integrated into shock-absorbent packaging for reliable mobile monitoring. The unified monitoring system is scalable with multiple detector point options in your existing vehicles. Results in simple form, backed by full spectroscopic reports and identification details, are available to the vehicle operator in real time. Detector positioning enables optimized detection geometry for pinch points, freeway passing, lot scans or other clandestine monitoring requirements.</p>
+  <p>The detector modules are tied to a comprehensive user interface running locally or remotely. Scalability of systems with this size and sensitivity is a first in the mobile detection industry.</p>
+  <p>The Model RD-150 comes standard with PeakGo, a PC-based software interface which conveniently illustrates isotope and isotope class-specific, color coded peaks and bar graphs. The app is free and included with all shipments of Berkeley Nucleonics&rsquo; Nuclear Detection and Isotope Identification products. The rich feature set in PeakGo includes GPS Tagging, photo/video report appending, pop-up isotope help and &ldquo;Push-to-Reachback&rdquo; functionality. In addition to PeakAbout, users may elect to integrate alarms or push-functions to existing communications and reporting systems.</p>
 </section>
 
 <section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">2</span>Features</h2>
   <ul>
-    <li>Modular, scalable architecture with high-sensitivity NaI detectors.</li>
-    <li><strong>Plug-and-play</strong> detector design for quick setup and reconfiguration.</li>
-    <li>Seamless vehicle-to-vehicle transfer, with no fixed install required.</li>
-    <li>Integrates with any existing vehicle; vehicle, marine, aerial, or crane variants.</li>
-    <li>Local or remote control.</li>
-    <li>Real-time background auto-correction and the industry's lowest sigma trigger.</li>
-    <li>Industrial shock absorption for detection in motion.</li>
-    <li>Gamma and neutron detection.</li>
-    <li>GPS integrated mapping with color-contour radiological mapping.</li>
-    <li>App integration for real-time isotope ID, GPS-tagged detections, and reachback alerting.</li>
+    <li>Gamma-Ray Spectroscopy for Specific Nuclide Identification</li>
+    <li>Neutron Detection (3He or Solid State)</li>
+    <li>Bluetooth Communication to PAD and/or Tablet PC</li>
+    <li>Up to 8 Hours of Operation</li>
+    <li>Automatic System Calibration and Stabilization</li>
+    <li>Database Protocol for Log Files and Alarm Events</li>
+    <li>Water and Shock Resistant (IP 67)</li>
+    <li>Integrated GPS with Mapping Function</li>
   </ul>
 </section>
 
 <section id="s3">
-  <h2><span class="num">3</span>Detector Array &amp; Performance</h2>
-  <p>Each SAMmobile 150 module carries a <strong>Gamma 2x4x16 in NaI</strong> detector. Crystal sizes are available in 2x4x16 and 4x4x16 inches. The architecture is modular and plug-and-play: scale from one module up to <strong>three units or systems</strong> to widen coverage or sharpen geometry for a given deployment. Each module weighs 58 lbs and measures 29.7 x 19.8 x 9.9 in.</p>
-  <p>The system identifies isotopes against the ANSI isotope list and ANSI isotope class, both color coded, and returns the first three isotopes in real time in under one second. A proprietary Wavelet Transform algorithm drives identification, with real-time background correction and analysis-based subtraction. Calibration is multi-peak and automatic, performed on each module individually.</p>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Detector</td><td>Gamma 2x4x16 in NaI per module</td></tr>
-    <tr><td>Crystal sizes available</td><td>2x4x16 and 4x4x16 in</td></tr>
-    <tr><td>Crystal type</td><td>NaI</td></tr>
-    <tr><td>Max detector units</td><td>Up to 3 units / systems (modular, plug-and-play)</td></tr>
-    <tr><td>Energy range</td><td>0.010 to 3.0 MeV</td></tr>
-    <tr><td>Resolution</td><td>7% nom. FWHM at 662 keV</td></tr>
-    <tr><td>Neutron detection</td><td>Yes (tube count and type not published, verify)</td></tr>
-    <tr><td>Total combined crystal volume</td><td>verify</td></tr>
-    <tr><td>Dose-rate range</td><td>verify</td></tr>
-  </table>
-  <figure class="fig"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/rd-150_car.png" alt="RD-150 vehicle placement diagram"><figcaption>Vehicle placement: the self-contained enclosure mounts in the vehicle and transfers between platforms without a fixed install.</figcaption></figure>
-  <figure class="fig"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/rd_150_directionality.png" alt="RD-150 directionality diagram"><figcaption>Directional coverage geometry for the SAMmobile 150 in a mobile detection scenario.</figcaption></figure>
+  <h2><span class="num">3</span>Applications</h2>
+  <ul>
+    <li>Emergency Response</li>
+    <li>Law Enforcement</li>
+    <li>Homeland Security</li>
+    <li>Undercover Surveillance</li>
+    <li>HAZMAT</li>
+  </ul>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Specifications</h2>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Isotope identification</td><td>NaI</td></tr>
-    <tr><td>Detector</td><td>Gamma 2x4x16 in NaI</td></tr>
-    <tr><td>Detector sizes</td><td>2x4x16 and 4x4x16 in</td></tr>
-    <tr><td>Max detector units</td><td>Up to 3 units / systems</td></tr>
-    <tr><td>Electronics</td><td>Digital MCA, 32-bit RISC, ARM Cortex</td></tr>
-    <tr><td>Conversion</td><td>12-bit (65 Msps)</td></tr>
-    <tr><td>Data buffer</td><td>54 Kbyte</td></tr>
-    <tr><td>Energy range</td><td>0.010 to 3.0 MeV</td></tr>
-    <tr><td>Resolution</td><td>7% nom. FWHM at 662 keV</td></tr>
-    <tr><td>Operating temperature</td><td>20 C to -50 C as listed on page (verify ordering)</td></tr>
-    <tr><td>Identification</td><td>ANSI isotope list (color coded), ANSI isotope class (color coded)</td></tr>
-    <tr><td>Multi-isotope identification</td><td>Real-time response under 1 sec, first 3 isotopes</td></tr>
-    <tr><td>Algorithm</td><td>Proprietary Wavelet Transform</td></tr>
-    <tr><td>Background correction</td><td>Real time</td></tr>
-    <tr><td>Background subtraction</td><td>Analysis-based</td></tr>
-    <tr><td>Calibration</td><td>Multi-peak, automatic, each module individually</td></tr>
-    <tr><td>Detector module dimensions</td><td>29.7 x 19.8 x 9.9 in</td></tr>
-    <tr><td>Shock absorption</td><td>Yes</td></tr>
-    <tr><td>Weight per detector module</td><td>58 lbs</td></tr>
-    <tr><td>Vehicle positioning</td><td>Self-contained enclosure</td></tr>
-    <tr><td>Power source</td><td>Battery (internal Li-Ion) or vehicle powered</td></tr>
-    <tr><td>Battery runtime</td><td>Greater than 24 hours</td></tr>
-    <tr><td>GPS data</td><td>Report based, coordinate-tagged reports</td></tr>
-    <tr><td>Radiological mapping</td><td>Color-contour mapping</td></tr>
-    <tr><td>Connectivity</td><td>WiFi, Bluetooth, GPS, USB</td></tr>
-    <tr><td>FEMA RadResponder</td><td>Enabled</td></tr>
-    <tr><td>Shipping dimensions</td><td>46 x 16 x 14 in</td></tr>
-    <tr><td>Shipping weight</td><td>65 lbs</td></tr>
-  </table>
+  <h2><span class="num">4</span>System Hardware</h2>
+  <p>At the core of the Model RD-150 is a high-performance MCA featuring DSP electronics and a high-voltage control system for optimum dynamic range. The digital processor is supplemented with an analog anode output to enhance timing functionality. The processor is a 32-Bit RISC with excellent data acquisition and processing functionality. The entire electronic module is packaged in a shock-reducing enclosure. The photomultiplier tube and NaI detector are matched prior to final hermetic seal to ensure that efficiency is optimized.</p>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>System &amp; Software</h2>
-  <p>The SAMmobile 150 mounts as a self-contained enclosure that integrates with any existing vehicle and transfers between platforms without rework. Beyond ground vehicles, it ships in marine, aerial, and crane variants. Power comes from an internal Li-Ion battery or from the vehicle, with battery runtime greater than 24 hours, and the system runs under local or remote control.</p>
-  <h3>App and reachback</h3>
-  <p>The companion app delivers real-time isotope and isotope-class identification, color-coded spectral peaks, GPS tagging of detections, photo and video reporting with annotation, pop-up isotope guidance, and push-to-reachback alerting. It offers optional integration with existing alarm, comms, and command-and-control systems. The app name appears on the product page as both PeakGO and PeakAbout (verify the canonical name).</p>
-  <h3>Mapping, reporting, and networking</h3>
-  <p>GPS integrated mapping produces color-contour radiological maps from coordinate-tagged reports, so a drive becomes a map of where activity rose. The system supports full <strong>ANSI N42</strong> report capability and is FEMA RadResponder enabled. Optional integration ties it into existing alarm, comms, and C2 systems. Web-based training is available at academy.berkeleynucleonics.com.</p>
+  <h2><span class="num">5</span>System Firmware</h2>
+  <p>The data processing and management is extremely efficient and leverages several proprietary processing and post-processing techniques. A unique Wavelet Transform gives users a strong confidence level on a wide range of isotopes without being limited to a peak search in a Region of Interest (ROI). The concurrent background correction and background subtraction, two separate algorithm enhancements, give second-by-second analysis and unprecedented confidence. These enhancements are particularly useful with high-sensitivity (large volume) NaI detectors and moving applications where background shifts are common.</p>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Configurations &amp; Options</h2>
-  <table class="spec">
-    <tr><th>Option</th><th>Detail</th></tr>
-    <tr><td>Detector sizes</td><td>2x4x16 and 4x4x16 in</td></tr>
-    <tr><td>Scalability</td><td>Up to 3 units / systems</td></tr>
-    <tr><td>Platform variants</td><td>Vehicle, marine, aerial, crane</td></tr>
-    <tr><td>Power options</td><td>Internal Li-Ion battery or vehicle powered</td></tr>
-  </table>
-  <p>Included items and the full accessory list are not published on the product page (verify).</p>
+  <h2><span class="num">6</span>System Software</h2>
+  <p>In addition to powerful spectroscopic data analysis and reporting, the Model RD-150 in tandem with PeakGo gives users all the functionality they need. The full ANSI N42 report can be quickly examined, and then forwarded to a management team, reachback office, or a series of several incident support options. Users can capture pictures or video during data acquisition, allowing for a more complete spectroscopic report. Additionally, real time tutorials on an isotope-by-isotope basis are included with the RD-150. This focus on the larger application requirements further differentiates PeakGo and BNC&rsquo;s line of Nuclear Radiation Detection instruments.</p>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Applications</h2>
-  <ul>
-    <li>Homeland security and emergency response</li>
-    <li>Safeguards and nuclear security</li>
-    <li>Radiological area mapping and geological radiation survey</li>
-    <li>Large public event monitoring</li>
-    <li>Industrial accident response</li>
-    <li>Plume and background mapping and modeling</li>
-    <li>Large facility perimeter monitoring</li>
-    <li>Vehicle, marine, and airborne detection</li>
-    <li>Locating illicit transportation of radioactive sources</li>
-  </ul>
-  <p>Typical deployment scenarios include freeway monitoring, choke points, parking lots, and covert surveillance.</p>
+  <h2><span class="num">7</span>Application Software &ndash; PeakGO</h2>
+  <p>The PeakGO application software is compatible with any Windows platform. It graphically displays details about identified isotopes and a map derived from GPS data. Alternatively, an Android-based application software can be used for smartphone.</p>
+  <p class="xref">See the PeakGO interface screens (Main, Event Log, Spectrum Analysis / ID, and Map) below.</p>
+  <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid #d6d3d1;border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:#57534e;margin-top:8px;line-height:1.4}</style>
+  <div class="ds-figgrid">
+    <figure class="ds-fig"><img src="figures/sammobile150-ds/fig1_main_screen.jpeg" alt="PeakGO Main Screen" loading="lazy"><figcaption>Main Screen</figcaption></figure>
+    <figure class="ds-fig"><img src="figures/sammobile150-ds/fig2_event_log_screen.jpeg" alt="PeakGO Event Log Screen" loading="lazy"><figcaption>Event Log Screen</figcaption></figure>
+    <figure class="ds-fig"><img src="figures/sammobile150-ds/fig3_spectrum_id_screen.jpeg" alt="PeakGO Spectrum Analysis / ID Screen" loading="lazy"><figcaption>Spectrum Analysis / ID Screen</figcaption></figure>
+    <figure class="ds-fig"><img src="figures/sammobile150-ds/fig4_map_screen.jpeg" alt="PeakGO Map Screen" loading="lazy"><figcaption>Map Screen</figcaption></figure>
+  </div>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Ordering</h2>
-  <p>To configure a SAMmobile 150 (RD-150), select the detector crystal size, choose the number of modules up to three, pick the platform variant, and set the power option. For quotes, configuration help, or a demonstration, contact Berkeley Nucleonics at <strong>info@berkeleynucleonics.com</strong> or <strong>800-234-7858</strong>.</p>
+  <h2><span class="num">8</span>Specifications</h2>
+  <h3>Input / Output</h3>
   <table class="spec">
-    <tr><th>Item</th><th>Description</th></tr>
-    <tr><td>RD-150 module (2x4x16)</td><td>SAMmobile 150 detector module, Gamma 2x4x16 in NaI</td></tr>
-    <tr><td>RD-150 module (4x4x16)</td><td>SAMmobile 150 detector module, 4x4x16 in NaI</td></tr>
-    <tr><td>Multi-module system</td><td>Up to 3 units / systems, modular plug-and-play</td></tr>
-    <tr><td>Platform variant</td><td>Vehicle, marine, aerial, or crane</td></tr>
-    <tr><td>Power option</td><td>Internal Li-Ion battery or vehicle powered</td></tr>
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>USB</td><td>Micro USB 2.0</td></tr>
+    <tr><td>Bluetooth</td><td>Class 2.0, max 100m range (class 2)</td></tr>
+    <tr><td>GPS</td><td>Built-in GPS in a tablet PC or Smartphone</td></tr>
+  </table>
+  <h3>Physical</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Dimensions (W x D x H)</td><td>74 x 52 x 30 (cm)</td></tr>
+    <tr><td>Weight</td><td>44 lbs (20 kg) VMRDS-2G1 Model</td></tr>
+  </table>
+  <h3>Environmental</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Operating Temperature</td><td>5 to 122 F&deg; (-15 to 50 C&deg;)</td></tr>
+    <tr><td>Relative Humidity</td><td>10 to 80%, non condensing</td></tr>
+    <tr><td>Protection Rating</td><td>IP 65 (according to IEC 60529)</td></tr>
+  </table>
+  <h3>Performance</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Energy Resolution (Gamma)</td><td>NaI(TI) 2 x 4 x 16 inch: &gt;8% @ 662 KeV</td></tr>
+    <tr><td>Energy Range (Gamma)</td><td>20 Kev - 3 Mev</td></tr>
+    <tr><td>Throughput</td><td>&gt; 150 kcps</td></tr>
+    <tr><td>MCA Channel</td><td>10 bit 1024 channel</td></tr>
+    <tr><td>Dose Rate Range (NaI)</td><td>0-10 mR/h</td></tr>
+    <tr><td>Dose Rate Range (GM)</td><td>10 Mr/h - 10 R/h</td></tr>
+    <tr><td>Stabilization</td><td>Automatic real-time</td></tr>
+    <tr><td>Nuclide Identification</td><td>According to ANSI N42.34, isotope/category/confidence report</td></tr>
+    <tr><td>Battery</td><td>&gt;8 hours, Lithium Ion</td></tr>
+  </table>
+  <h3>Detectors</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Gamma NaI (TI)</td><td>2 x 4 x 16 inch - Standard, 4 x 4 x 16 - optional, up to 2 detectors / unit</td></tr>
+    <tr><td>Gamma (High Dose Rate)</td><td>Geiger-Muller detector (standard)</td></tr>
+    <tr><td>Neutron (optional)</td><td>Solid-state Neutron detector: 4 cm&sup2; active area, 20% thermal neutron effect. Gamma rejection: 1: 10&#8311;, Tileable up to 20 detectors</td></tr>
+  </table>
+  <h3>Display</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Smartphone</td><td>Samsung Galaxy Player or equivalent</td></tr>
+    <tr><td>Tablet PC</td><td>Any Windows compatible tablet PC</td></tr>
+  </table>
+  <h3>Software</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Application SW</td><td>Android based application SW for Smartphone</td></tr>
+    <tr><td>Reach-back Feature</td><td>ANSI N42.42 event data via a Tablet PC or Smartphone</td></tr>
+  </table>
+</section>
+
+<section id="s9">
+  <h2><span class="num">9</span>Detectable Isotopes</h2>
+  <table class="spec">
+    <tr><th>Category</th><th>Isotopes</th></tr>
+    <tr><td>NORM</td><td>K40, Ra226 and daughters, Th232 and daughters</td></tr>
+    <tr><td>Medical</td><td>F18, Cr51, Ga67, Mo99, Tc99m, Pd103, In111, I123, I131, Xe133, Sm153, Ti201</td></tr>
+    <tr><td>Industrial</td><td>Na22, Co57, Co60, Se75, Rh106, I132, I133, Ba133, Cs134, Cs137, Eu152, Ir192, Am241</td></tr>
+    <tr><td>SNM</td><td>U233, U235, U238, Pu239, Pu241, Np237</td></tr>
+  </table>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>Document History</h2>
+  <table class="spec">
+    <tr><th>Version / Date</th><th>Notes</th></tr>
+    <tr><td>1/9/19</td><td>SAMmobile 150 (RD-150) datasheet, Berkeley Nucleonics Corporation.</td></tr>
   </table>
 </section>
 
@@ -377,6 +388,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="SAMmobile 150 (RD-150) Vehicle-Mounted Radiation Detection System"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

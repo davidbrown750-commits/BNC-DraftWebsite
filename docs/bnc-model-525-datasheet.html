@@ -91,6 +91,8 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
 </style>
 
 
@@ -169,164 +171,157 @@ th .modelthumb{filter:none;}
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Channels &amp; Timing Architecture</a>
-  <a href="#s4">4. Specifications</a>
-  <a href="#s5">5. Triggering &amp; I/O</a>
-  <a href="#s6">6. Options &amp; Configurations</a>
-  <a href="#s7">7. Applications</a>
-  <a href="#s8">8. Ordering</a>
+  <a href="#s1">1. Description</a>
+  <a href="#s2">2. Features &amp; Applications</a>
+  <a href="#s3">3. Output Modes &amp; GUI</a>
+  <a href="#s4">4. Rear Panel &amp; Operation</a>
+  <a href="#s5">5. Internal Rate Generator</a>
+  <a href="#s6">6. Pulse / Delay Generation</a>
+  <a href="#s7">7. External Gate / Trigger Input</a>
+  <a href="#s8">8. Outputs</a>
+  <a href="#s9">9. General</a>
+  <a href="#s-perf">10. Output Mode Timing Diagram</a>
+  <a href="#s-order">11. Ordering Information</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <p>The Model 525 is a portable digital delay and pulse generator built for engineers who need real timing performance without a benchtop instrument. Six independent channels fit inside a case measuring 7.125&Prime; &times; 5.1&Prime; &times; 1.5&Prime;. It runs entirely from a USB connection, so a laptop, a phone charger, or a battery pack is enough to power a full six-channel timing setup in the field.</p>
-  <p>That combination is what sets the 525 apart. It offers the highest channel density in its class, and it does so at a price point aimed at value-conscious labs, classrooms, and integrators. Berkeley Nucleonics positions the Model 525 as a direct upgrade and replacement for the discontinued Picosecond Pulse Labs PSPL2600C, carrying over the portability while adding channels and precision.</p>
-  <p>Each channel produces trigger, gate, or pulse signals with 4 ns resolution and jitter under 50 ps RMS on the internal rate generator. A PC-based graphical interface handles setup. For research, event synchronization, and device triggering, the 525 delivers full pulse/delay functionality in a package you can carry in one hand.</p>
+  <h2><span class="num">1</span>Description</h2>
+  <p>The Model 525 Digital Delay/Pulse Generator offers users a performance benchtop delay generator rich with output features in a compact package. The interface is USB only, which eliminates the bulky front panel components and reduces the potential for mechanical problems. The timing and triggering flexibility is outstanding, with 20 MHz rep rates, 2 ns timing resolution, &lt; 50 ps RMS Channel jitter and internal or external triggering options. Outputs can be selected for each channel, giving users the ability to trigger, gate or pulse various devices in a research project with different requirements. Single Pulse, Continuous, Burst, Duty Cycle and Cycle Counting are all selectable options for each channel. Wide pulses are also possible, with a width range of 10 ns &ndash; 1000 s and a delay from trigger range up to 1000 s. Trigger externally with signals up to 30 V peak and widths as low as 20 ns on the rising or falling edge.</p>
+  <p>The friendly BNC GUI will be familiar to existing customers, with a few new features added. The additional channels in the Model 525 allow for a greater variety of pulse sequences and multiplexing. SCPI and LabView compatibility offer users many options to interface to their Model 525.</p>
+  <p class="xref">See <a href="#s-perf">Output Mode Timing Diagram</a> in the Output Mode Timing section, which illustrates some popular output modes (Normal, Single Shot, Burst, Duty Cycle, Gate, Wait, and Multiplex).</p>
 </section>
 
 <section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">2</span>Features &amp; Applications</h2>
+  <h3>Features</h3>
   <ul>
-    <li>Six independent channels, each selectable as trigger, gate, or pulse output</li>
-    <li>20 MHz maximum repetition rate</li>
-    <li>4 ns timing resolution on width and delay</li>
-    <li>Internal rate generator jitter below 50 ps RMS</li>
-    <li>Pulse width from 10 ns to 1000 s</li>
-    <li>Delay range up to 1000 s from the trigger event</li>
-    <li>Per-channel modes: single pulse, continuous, burst, duty cycle, cycle counting</li>
-    <li>External trigger to 30 V peak, rising or falling edge selectable</li>
-    <li>USB powered from a laptop, charger, or battery pack</li>
-    <li>PC-based graphical user interface for full control</li>
+    <li>6 Channels of Delay and Width</li>
+    <li>2 ns Timing Resolution</li>
+    <li>&lt; 50 ps RMS Channel Jitter</li>
+    <li>USB Power</li>
+    <li>LED Indicators</li>
   </ul>
-  <div class="note"><b>Value in a small footprint.</b> The 525 trades nothing for its size. Six channels, 4 ns resolution, and sub-50 ps internal jitter ship in a book-sized enclosure that draws power from a single USB port.</div>
+  <h3>Applications</h3>
+  <ul>
+    <li>ICCD/PIV Testing</li>
+    <li>Laser Triggering / Gating</li>
+    <li>Pulse DUTs and Pump Lasers</li>
+    <li>Radar / Sonar Simulation</li>
+    <li>High Speed Photography</li>
+  </ul>
 </section>
 
 <section id="s3">
-  <h2><span class="num">3</span>Channels &amp; Timing Architecture</h2>
-  <p>The Model 525 organizes timing around an internal rate generator and six independent pulse-and-delay channels. The rate generator establishes the master T0 period. Each channel then references that period and applies its own delay and width, so a single trigger can fan out into six precisely staggered events.</p>
-  <h3>Internal rate generator</h3>
-  <p>A 100 MHz low-jitter PLL drives the timebase, locked to a 50 MHz, 50 ppm crystal oscillator. The period range spans 0.001 Hz to 20 MHz, which is 1000 s down to 50 ns. Burst and duty-cycle operation counts from 1 to 1,000,000 pulses, tracked by a 32-bit pulse and period counter.</p>
-  <h3>Per-channel flexibility</h3>
-  <p>Each channel can run at the full T0 rate or at an integer division of T0, giving every output its own effective frequency. A multiplexer lets any or all channels combine onto any or all output connectors. Negative delay references one channel to another in positive or negative time increments, which is useful when one event must precede the nominal trigger.</p>
-  <table class="spec">
-    <tr><th>Capability</th><th>Detail</th></tr>
-    <tr><td>Channels</td><td>6 independent outputs</td></tr>
-    <tr><td>Channel multiplexing</td><td>Combine timing of any/all channels to any/all outputs</td></tr>
-    <tr><td>Individual rates</td><td>Each channel at T0 or an integer division of T0</td></tr>
-    <tr><td>Negative delay</td><td>Reference one channel to another, positive or negative increments</td></tr>
-    <tr><td>Clock reference</td><td>User-selectable 10 MHz to 100 MHz input/output reference</td></tr>
-    <tr><td>Gating</td><td>Gate individual channels or gate all channels together</td></tr>
-  </table>
+  <h2><span class="num">3</span>Output Modes &amp; GUI</h2>
+  <p>The provided GUI gives full control of the Model 525. The main BNC GUI interface offers:</p>
+  <ul>
+    <li><strong>System Wide Trigger Selection</strong> (Internal or External)</li>
+    <li><strong>Flexible Triggering Options</strong> (Leading or Falling Edge, etc.)</li>
+    <li><strong>Channel Specific Menu</strong> offering unprecedented flexibility (Polarity, Multiplex, etc.)</li>
+  </ul>
+  <p>The Channel Parameter Sub-Menu lets users select channel properties quickly for absolute flexibility in output sequences (independent time and amplitude domain, burst, multiplex, gating, etc.).</p>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Specifications</h2>
-  <h3>Core specifications</h3>
-  <table class="spec">
-    <tr><th>Specification</th><th>Value</th></tr>
-    <tr><td>Number of channels</td><td>6 independent outputs</td></tr>
-    <tr><td>Resolution</td><td>4 ns</td></tr>
-    <tr><td>Width / delay accuracy</td><td>10 ns + 0.0001 &times; settings</td></tr>
-    <tr><td>Channel-to-channel jitter</td><td>&lt; 250 ps RMS</td></tr>
-    <tr><td>Output pulse amplitude</td><td>TTL</td></tr>
-    <tr><td>Power source</td><td>Standard USB</td></tr>
-  </table>
-  <h3>Internal rate generator</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Frequency (period) range</td><td>0.001 Hz to 20 MHz (1000 s to 50 ns)</td></tr>
-    <tr><td>Resolution &amp; accuracy</td><td>4 ns</td></tr>
-    <tr><td>Jitter</td><td>&lt; 50 ps RMS</td></tr>
-    <tr><td>Burst / duty cycle mode</td><td>1 to 1,000,000 pulses</td></tr>
-    <tr><td>Timebase</td><td>100 MHz, low-jitter PLL</td></tr>
-    <tr><td>Oscillator</td><td>50 MHz, 50 ppm crystal oscillator</td></tr>
-    <tr><td>Pulse control modes</td><td>Internal rate generator, external trigger / gate</td></tr>
-    <tr><td>System output modes</td><td>Single, continuous, burst, duty cycle, cycle counts</td></tr>
-    <tr><td>Pulse &amp; period counter</td><td>32 bit</td></tr>
-  </table>
-  <h3>Pulse &amp; delay generation</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Width / delay resolution</td><td>4 ns</td></tr>
-    <tr><td>Width range</td><td>10 ns to 1000 s</td></tr>
-    <tr><td>Width accuracy</td><td>10 ns + 0.0001 &times; (width + delay settings)</td></tr>
-    <tr><td>Delay range</td><td>&plusmn;1000 s</td></tr>
-    <tr><td>Delay accuracy</td><td>5 ns + (0.0001 &times; delay setting)</td></tr>
-    <tr><td>Multiplexer</td><td>Any or all channels combined to any/all outputs</td></tr>
-    <tr><td>Channel output modes</td><td>Single shot, normal, burst, duty cycle</td></tr>
-    <tr><td>Channel control modes</td><td>Internally triggered or externally gated</td></tr>
-    <tr><td>Jitter (channel to channel)</td><td>&lt; 250 ps RMS</td></tr>
-  </table>
-  <h3>Physical</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>Dimensions</td><td>7.125&Prime; &times; 5.1&Prime; &times; 1.5&Prime;</td></tr>
-    <tr><td>Shipping dimensions</td><td>12 &times; 10 &times; 5&Prime;</td></tr>
-    <tr><td>Shipping weight</td><td>5 lbs</td></tr>
-  </table>
+  <h2><span class="num">4</span>Rear Panel &amp; Operation</h2>
+  <p>The handy rear panel offers ample spacing of output connectors for easy setup. The Output nomenclature is backlit to enable a visual indicator of active channels. An external trigger can be used to initiate pulses, or a gate pulse can be used to limit pulses according to an active high or active low gate. Use the clock in to synchronize to laser cavities or other external sources. The compact design and power over USB reduce the bench / rack space required.</p>
+  <p>With illuminated indicators on both panels, the Model 525 can be positioned with output cables on the front or back depending on user requirements. The Power Button doubles as a run/stop control as well, simply press to run or hold to power down.</p>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>Triggering &amp; I/O</h2>
-  <p>The 525 operates from its internal rate generator in free-run, or from an external trigger or gate. The external trigger accepts up to 30 V peak with a minimum width of 20 ns, and the active edge is selectable rising or falling.</p>
-  <h3>Clock reference and gating</h3>
-  <p>A user-selectable clock reference accepts or supplies a frequency from 10 MHz to 100 MHz, which lets the 525 lock to an external timebase or serve as the reference for other instruments. Gating works at two levels: individual channels can be gated independently, or every channel can be gated together as a group.</p>
+  <h2><span class="num">5</span>Internal Rate Generator</h2>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>External trigger amplitude</td><td>Up to 30 V peak</td></tr>
-    <tr><td>External trigger width</td><td>&ge; 20 ns</td></tr>
-    <tr><td>External trigger edge</td><td>Rising or falling, selectable</td></tr>
-    <tr><td>Clock reference range</td><td>10 MHz to 100 MHz, user selectable</td></tr>
-    <tr><td>Output amplitude</td><td>TTL</td></tr>
+    <tr><td>Rate (To Period)</td><td>0.001Hz to 20MHz (1000s to 50ns)</td></tr>
+    <tr><td>Resolution &amp; Accuracy</td><td>4 ns</td></tr>
+    <tr><td>Jitter</td><td>&lt; 50 ps RMS</td></tr>
+    <tr><td>Burst / Duty Cycle Mode</td><td>1 to 1,000,000 pulses</td></tr>
+    <tr><td>Timebase</td><td>200 MHz / 250MHz low jitter PLL</td></tr>
+    <tr><td>Oscillator</td><td>50 MHz, 50 ppm crystal oscillator, optional 1ppm clock</td></tr>
+    <tr><td>Pulse Control Modes</td><td>Internal rate generator, external trigger / gate</td></tr>
+    <tr><td>System Output Modes</td><td>Single, continuous, burst, duty cycle, cycle counts</td></tr>
+    <tr><td>Pulse &amp; Period Counter</td><td>32 Bit</td></tr>
+    <tr><td>Synchronized Update Mode</td><td>Updates widths and delays on command</td></tr>
   </table>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Options &amp; Configurations</h2>
-  <p>The Model 525 ships as a single six-channel configuration. Power and control come through standard USB, and the PC-based graphical interface handles all setup, including per-channel modes, rates, and multiplexing.</p>
-  <ul>
-    <li>USB power from a laptop, charger, or battery pack</li>
-    <li>PC-based graphical user interface, included</li>
-    <li>Selectable clock reference, 10 MHz to 100 MHz</li>
-  </ul>
-  <h3>Service and support</h3>
-  <ul>
-    <li>In-stock same-day shipping</li>
-    <li>No-risk demo for 14 days</li>
-    <li>Full two-year warranty</li>
-    <li>Integration assistance and full customer support by phone or web</li>
-  </ul>
-  <div class="note warn"><b>Verification notes.</b> Detailed ordering codes and option part numbers are not enumerated on the published product page <b>(verify)</b>. Laser-system and test-setup applications are implied by the 500-series positioning rather than stated for the 525 specifically <b>(verify)</b>. Confirm all values against the latest Model 525 datasheet before quoting.</div>
+  <h2><span class="num">6</span>Pulse / Delay Generation</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Width / Delay Resolution</td><td>4 ns</td></tr>
+    <tr><td>Width Range</td><td>10 ns - 1000 s</td></tr>
+    <tr><td>Width Accuracy</td><td>10 ns + 0.0001 x (width + delay)</td></tr>
+    <tr><td>Delay Range</td><td>&plusmn;1000 s</td></tr>
+    <tr><td>Delay Accuracy</td><td>4 ns / 5 ns + (0.0001 x delay)</td></tr>
+    <tr><td>Multiplexer</td><td>Any / all channels may be OR&#39;d to any / All outputs. 2x the number of outputs via virtual channels for mixing</td></tr>
+    <tr><td>Channel Output Modes</td><td>Single Shot, normal, burst, duty cycle</td></tr>
+    <tr><td>Channel Control Modes</td><td>Internally triggered or externally gated. Each channel may be independently set to any of the modes</td></tr>
+    <tr><td>Jitter (Channel to Channel)</td><td>&lt; 250 ps RMS</td></tr>
+  </table>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Applications</h2>
-  <ul>
-    <li>Research and laboratory timing</li>
-    <li>Event synchronization across multiple instruments</li>
-    <li>Device and circuit triggering</li>
-    <li>Portable and field test setups where no wall power is available</li>
-    <li>Classroom and teaching environments needing a low-cost multi-channel source</li>
-  </ul>
-  <p>Because the 525 powers from USB and carries six channels in a book-sized case, it suits any setting where bench space, mains power, or budget is limited but real timing precision still matters.</p>
-  <figure class="fig">
-    <img src="../figures/pdg/500-series/app-internal-operation.png" alt="Block diagram of a synchronizer delay generator driving multiple independent channels with per-channel delay and pulse width">
-    <figcaption>How a 500-series generator works inside. A single synchronizer drives independent channels, each with its own delay and pulse width, all set from the front panel or the computer interface.</figcaption>
-  </figure>
+  <h2><span class="num">7</span>External Gate / Trigger Input</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Threshold</td><td>0.2 to 15 VDC</td></tr>
+    <tr><td>Max Input Voltage</td><td>30 V Peak</td></tr>
+    <tr><td>Gate Polarity</td><td>Active high / active low</td></tr>
+    <tr><td>Gate Control Modes</td><td>Pulse inhibit / output inhibit</td></tr>
+    <tr><td>Trigger Edge</td><td>Rising or falling</td></tr>
+    <tr><td>Trigger Rate</td><td>DC to 20 MHz</td></tr>
+    <tr><td>Trigger Input Jitter</td><td>&lt; 5 ns RMS</td></tr>
+    <tr><td>Trigger Minimum Pulse Width</td><td>20 ns</td></tr>
+    <tr><td>Trigger Insertion Delay</td><td>&lt; 100 ns</td></tr>
+    <tr><td>Pulse Inhibit Delay</td><td>&lt; 150 ns</td></tr>
+    <tr><td>Output Inhibit Delay</td><td>&lt; 100 ns</td></tr>
+    <tr><td>Trigger Input Function</td><td>System can generate a single, burst or duty cycle response of pulses for every external trigger pulse.</td></tr>
+  </table>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Ordering</h2>
-  <p>The Model 525 is a six-channel portable digital delay and pulse generator, USB powered, with the PC interface included. To request a quote, a configuration review, or a no-risk demo, contact Berkeley Nucleonics.</p>
+  <h2><span class="num">8</span>Outputs</h2>
   <table class="spec">
-    <tr><th>Item</th><th>Description</th></tr>
-    <tr><td>Model 525</td><td>Six-channel portable digital delay / pulse generator, USB powered, PC GUI included</td></tr>
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Output Impedance</td><td>50 ohm</td></tr>
+    <tr><td>Output Level</td><td>3.3 &ndash; 5 VDC into &ge; 1 K ohm, 1.7 &ndash; 2.5 VDC into 50 ohm</td></tr>
+    <tr><td>Resolution</td><td>20 mV</td></tr>
+    <tr><td>Current</td><td>5 mA into 1 K ohm, 50 mA into 50 ohm</td></tr>
+    <tr><td>Rise Time</td><td>&lt; 2ns @ 5 V (high impedance), &lt; 1ns @ 2.5 V (50 ohm)</td></tr>
+    <tr><td>Overshoot</td><td>&lt; 100 mV + 10 % of pulse amplitude</td></tr>
   </table>
-  <p>Berkeley Nucleonics Corporation &middot; <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> &middot; 800-234-7858</p>
-  <div class="note warn"><b>Verification notes.</b> A formal ordering chart with option codes is not published for the 525 on the source page <b>(verify)</b>. Confirm configuration and pricing with Berkeley Nucleonics at the contact above.</div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">9</span>General</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>USB</td><td>Standard USB 2.0</td></tr>
+    <tr><td>Baud Rate</td><td>Up to 115200 bits /sec typ.</td></tr>
+    <tr><td>Voltage</td><td>+ 5 VDC &plusmn; 250 mVDC</td></tr>
+    <tr><td>Current</td><td>&lt; 470 mA</td></tr>
+    <tr><td>Dimensions</td><td>7.125 x 5.1 x 1.5 inches (18.1 x 13 x 3.8 cm). 1lb</td></tr>
+  </table>
+</section>
+
+<section id="s-perf">
+  <h2><span class="num">10</span>Output Mode Timing Diagram</h2>
+  <p>The diagram below illustrates some popular output modes available per channel: Normal, Single Shot, Burst, Duty Cycle, Gate (active high), Wait, and Multiplex.</p>
+  <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid #d6d3d1;border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:#57534e;margin-top:8px;line-height:1.4}</style>
+  <div class="ds-figgrid">
+  <figure class="ds-fig"><img src="figures/525-ds/output-modes.png" alt="Output mode timing diagram showing Channel A Normal, Channel B Single Shot, Channel C Burst-3, Channel D Duty Cycle (1 on/4 off), Gate, Channel F Gate Active High, Channel G Wait-5 Pulses, and Channel H Mux B and F" loading="lazy"><figcaption>Popular output modes: Channel A Normal, Channel B Single Shot, Channel C Burst-3, Channel D Duty Cycle (1 on / 4 off), Gate, Channel F Gate Active High, Channel G Wait - 5 Pulses, Channel H Mux B &amp; F.</figcaption></figure>
+  </div>
+</section>
+
+<section id="s-order">
+  <h2><span class="num">11</span>Ordering Information</h2>
+  <table class="spec">
+    <tr><th>Model</th><th>Description</th></tr>
+    <tr><td>Model 525</td><td>6 Channel Digital Delay / Pulse Generator (includes travel bag)</td></tr>
+  </table>
+  <p>Berkeley Nucleonics Corporation &middot; <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> &middot; www.berkeleynucleonics.com &middot; 2955 Kerner Blvd, San Rafael, CA 94901 &middot; 800-234-7858</p>
 </section>
 
 </main>
@@ -398,6 +393,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 525 Six-Channel Portable Digital Delay / Pulse Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

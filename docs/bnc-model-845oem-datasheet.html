@@ -91,6 +91,8 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
 </style>
 
 
@@ -164,173 +166,452 @@ th .modelthumb{filter:none;}
   <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search…" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 845-OEM Shielded Microwave/RF Signal Generator</h1><p>Shielded, board-level microwave and RF signal generator for OEM integration. Page title states 100 kHz to 20 GHz while the spec states 100 kHz to 26.5 GHz; both are shown and flagged for verification.</p><div class="ver">Specifications drawn from Model 845-OEM datasheet v2.59. Frequency range and other values marked (verify).</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/845_oem_2023_0.png" alt="Berkeley Nucleonics Model 845-OEM shielded board-level microwave and RF signal generator"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 845-OEM RF / Microwave Signal Generator</h1><p>A very compact, low-noise, fast-switching microwave signal generator series for OEM integration. Continuous coverage from 100 kHz (9 kHz with option 9K) up to 12, 20, or 26 GHz, with 0.001 Hz resolution, accurately leveled output power, and a full analog modulation suite.</p><div class="ver">Specifications reproduced from Model 845-OEM datasheet V2.59 (2025-04-18). Warranted at 23 &plusmn;5 &deg;C after 30-minute warm-up unless stated.</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/845_oem_2023_0.png" alt="Berkeley Nucleonics Model 845-OEM board-level microwave and RF signal generator"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-    <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Frequency &amp; Output Power</a>
-  <a href="#s4">4. Phase Noise &amp; Spectral Purity</a>
-  <a href="#s5">5. Modulation</a>
-  <a href="#s6">6. Frequency Switching &amp; Sweep</a>
-  <a href="#s7">7. Specifications</a>
-  <a href="#s8">8. Interfaces &amp; Form Factor</a>
-  <a href="#s9">9. Options &amp; Configurations</a>
-  <a href="#s10">10. Applications</a>
-  <a href="#s11">11. Ordering</a>
+  <a href="#s1">Introduction</a>
+  <a href="#s2">Available Options</a>
+  <a href="#s3">Frequency Parameters &amp; Range</a>
+  <a href="#s4">Level Performance</a>
+  <a href="#s5">Power Uncertainty &amp; VSWR</a>
+  <a href="#s6">Phase Noise</a>
+  <a href="#s7">Spectral Purity</a>
+  <a href="#s8">Sweeping &amp; Switching</a>
+  <a href="#s9">Reference Frequency</a>
+  <a href="#s10">Outputs &amp; Triggers</a>
+  <a href="#s11">Modulation</a>
+  <a href="#s-perf">Performance Curves</a>
+  <a href="#s12">Ordering Information</a>
+  <a href="#s13">General Characteristics</a>
+  <a href="#s14">Document History</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <p>The Model 845-OEM is a compact, board-level RF signal generator built for integration into custom test systems, automated equipment, and embedded designs. A shielded enclosure keeps the output clean in dense or electrically noisy environments, so the module holds its phase-noise and spurious performance once it is built into a larger system.</p>
-  <p>It carries the synthesis core of the Model 845 in an OEM form factor: wide frequency coverage, 0.001 Hz resolution, fast switching, and full modulation, all controllable through the BNC GUI or over standard remote interfaces.</p>
-  <div class="note warn"><b>Frequency range, verify.</b> The current product page title states <b>100 kHz to 20 GHz</b>, while the key-features and specification sections state <b>100 kHz to 26.5 GHz</b>. Both figures are reproduced here as published. Confirm which range is authoritative for the configured unit against Model 845-OEM datasheet v2.59 before release.</div>
-</section>
-
-<section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">1</span>Introduction</h2>
+  <p>Very compact, portable analog signal generator models with a range from 9 kHz (with option 9K) up to 26.5 GHz. The Model 845-OEM is a series of low-noise and fast-switching microwave signal generators covering a continuous frequency range from as low as 100 kHz up to 12, 20, and 26 GHz, respectively, with a 0.001 Hz resolution.</p>
+  <p>The Model 845-OEM provides an accurately leveled output power range and high spurious suppression. Advanced frequency synthesis with fractional-N divider makes for low SSB phase noise and micro-Hz resolution.</p>
+  <p>The standard Model 845-OEM includes amplitude modulation (AM), DC-coupled low-distortion wideband frequency modulation (FM), PM, FSK and PSK, frequency chirp, and fast pulse modulation with internal pulse train generator. Three internal modulation sources are available, and all modulation modes can be combined. This allows the generation of complex modulation signals for modern communication and location systems. The combination of pulse modulation and FM simulates Doppler effects or chirp signals. Simultaneous AM and pulse modulation provide the types of signals occurring in pulse radar applications with rotating antenna. The combination of FM and AM can be used to check fading effects of FM receivers.</p>
+  <p>All Model 845-OEM units allow fast analog and digital sweeps including flexible list sweeps, where frequency, power, and dwell times can be set individually. A flexible triggering capability simplifies synchronization within test environments.</p>
+  <p>All units operate with an ultra-stable temperature-compensated 100 MHz reference (OCXO) to ensure minimal drift, and can be phase-locked to any stable external reference in a range from 1 to 250 MHz. Additionally, optimum phase-synchronous signals can be achieved by bypassing the internal reference and feeding a 100 MHz signal directly as reference. The 845-OEM supports various standard interfaces such as USB-TMC, LAN, and GPIB.</p>
+  <h3>Definitions</h3>
+  <p>The specifications describe the warranted performance of the instrument for 23 &plusmn;5 &deg;C after a 30-minute warm-up period, unless otherwise stated.</p>
   <ul>
-    <li><strong>High output power.</strong> +27 dBm with option HP.</li>
-    <li><strong>Wide frequency range.</strong> 100 kHz to 26.5 GHz (page title states 20 GHz; verify).</li>
-    <li><strong>Excellent phase noise performance.</strong></li>
-    <li><strong>Fine resolution.</strong> 0.001 Hz frequency, 0.01 dB power.</li>
-    <li><strong>Phase lock capability</strong> for synchronized systems.</li>
-    <li><strong>Fast frequency switching.</strong></li>
-    <li><strong>BNC GUI integration</strong> with control via USB, Ethernet, and optional GPIB.</li>
-    <li><strong>Shielded enclosure</strong> for clean performance in noisy environments.</li>
+    <li><strong>Min/Max:</strong> Parameter range guaranteed by product design and/or production tested. Warranted performance specifications include guard-bands to account for the expected statistical performance distribution, measurement uncertainties, and changes in performance due to environmental conditions.</li>
+    <li><strong>Typical:</strong> Expected mean values, not warranted performance.</li>
+  </ul>
+  <h3>Applications</h3>
+  <ul>
+    <li>R&amp;D low-noise microwave source</li>
+    <li>Production testing (industry-leading switching times, high dynamic range)</li>
+    <li>Service and maintenance (battery operation)</li>
+    <li>Signal simulation (Radar, WiMax, UWB)</li>
+    <li>Aerospace &amp; defense (pulse modulator, chirps)</li>
   </ul>
 </section>
 
-<section id="s3">
-  <h2><span class="num">3</span>Frequency &amp; Output Power</h2>
-  <p>The Model 845-OEM tunes with 0.001 Hz resolution. The specification sections state a range of 100 kHz to 26.5 GHz, while the page title states 100 kHz to 20 GHz; see the verification note in Section 1.</p>
-  <p>Standard leveled output power runs from -20 to +15 dBm with 0.01 dB resolution. With the HP high-output option, output reaches +27 dBm; contact the factory for levels above +25 dBm.</p>
+<section id="s2">
+  <h2><span class="num">2</span>Available Options</h2>
   <table class="spec">
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>Frequency range</td><td>100 kHz to 26.5 GHz (page title states 20 GHz; verify)</td></tr>
-    <tr><td>Frequency resolution</td><td>0.001 Hz</td></tr>
-    <tr><td>Output power range</td><td>-20 to +15 dBm (+27 dBm with option HP)</td></tr>
-    <tr><td>Power resolution</td><td>0.01 dB</td></tr>
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td>HP</td><td>Delivers higher maximum output power, to a level up to +27 dBm.</td></tr>
+    <tr><td>PE2</td><td>Optional power level extension to accurately level below -120 dBm.</td></tr>
+    <tr><td>FS</td><td>Substantially enhances the switching speed.</td></tr>
+    <tr><td>B3</td><td>Adds an internal rechargeable battery module.</td></tr>
+    <tr><td>9K</td><td>Low-frequency extension down to 9 kHz (845-20, 845-12 only).</td></tr>
+    <tr><td>FILT</td><td>Harmonic filtering.</td></tr>
+  </table>
+</section>
+
+<section id="s3">
+  <h2><span class="num">3</span>Frequency Parameters &amp; Range</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="4">Frequency range</td><td>100 kHz</td><td></td><td>12.0 GHz</td><td>845-OEM-12</td></tr>
+    <tr><td>100 kHz</td><td></td><td>20.0 GHz</td><td>845-OEM-20, settable to 20.5 GHz</td></tr>
+    <tr><td>100 kHz</td><td></td><td>26.0 GHz</td><td>845-OEM-26, settable to 30 GHz</td></tr>
+    <tr><td>9 kHz</td><td></td><td></td><td>Option 9 kHz</td></tr>
+    <tr><td>Resolution</td><td></td><td>0.001 Hz</td><td></td><td></td></tr>
+    <tr><td>Phase resolution</td><td></td><td>0.1 deg</td><td></td><td></td></tr>
+    <tr><td rowspan="3">Frequency / amplitude setting time</td><td></td><td>200 &micro;s</td><td>300 &micro;s</td><td></td></tr>
+    <tr><td></td><td></td><td>30 &micro;s</td><td>Option FS</td></tr>
+    <tr><td></td><td></td><td>30 &micro;s</td><td>F<sub>swp</sub> &lt; 2.2 GHz, Option NEC</td></tr>
   </table>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Phase Noise &amp; Spectral Purity</h2>
-  <p>SSB phase noise measured at 1 GHz CW:</p>
+  <h2><span class="num">4</span>Level Performance</h2>
+  <p>Output power. Check maximum output power plots in the Typical Performance Curves section. Level resolution is 0.01 dB (typical).</p>
+  <p class="xref">See <a href="#s-perf">Figure 1</a> (max output power, 9 kHz to 1 MHz) and <a href="#s-perf">Figure 2</a> (max output power, 845-26 with HP and PE2) in Typical Performance Curves.</p>
   <table class="spec">
-    <tr><th>Offset from carrier</th><th>SSB phase noise (1 GHz CW)</th></tr>
-    <tr><td>10 Hz</td><td>-80 dBc/Hz</td></tr>
-    <tr><td>1 kHz</td><td>-117 dBc/Hz</td></tr>
-    <tr><td>100 kHz</td><td>-128 dBc/Hz</td></tr>
-    <tr><td>10 MHz</td><td>-150 dBc/Hz</td></tr>
+    <tr><th>Configuration</th><th>Min</th><th>Max</th><th>Frequency range</th></tr>
+    <tr><td rowspan="2">Standard</td><td>-20 dBm</td><td>+15 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-20 dBm</td><td>+15 dBm</td><td>100 kHz to 26 GHz</td></tr>
+    <tr><td rowspan="2">Option PE</td><td>-90 dBm</td><td>+13 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-90 dBm</td><td>+13 dBm</td><td>100 kHz to 26 GHz</td></tr>
+    <tr><td rowspan="2">Option PE2</td><td>-120 dBm</td><td>+13 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-120 dBm</td><td>+13 dBm</td><td>100 kHz to 26 GHz</td></tr>
+    <tr><td rowspan="6">Option HP</td><td>-20 dBm</td><td>+15 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-20 dBm</td><td>+20 dBm</td><td>100 kHz to 10 MHz</td></tr>
+    <tr><td>-20 dBm</td><td>+21 dBm</td><td>0.01 to 12 GHz</td></tr>
+    <tr><td>-20 dBm</td><td>+20 dBm</td><td>12 to 20 GHz</td></tr>
+    <tr><td>-20 dBm</td><td>+19 dBm</td><td>20 to 24 GHz</td></tr>
+    <tr><td>-20 dBm</td><td>+15 dBm</td><td>24 to 26 GHz</td></tr>
+    <tr><td rowspan="6">Option HP and FILT</td><td>-20 dBm</td><td>+15 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-20 dBm</td><td>+19 dBm</td><td>100 kHz to 10 MHz</td></tr>
+    <tr><td>-20 dBm</td><td>+20 dBm</td><td>0.01 to 12 GHz</td></tr>
+    <tr><td>-20 dBm</td><td>+19 dBm</td><td>12 to 20 GHz</td></tr>
+    <tr><td>-20 dBm</td><td>+18 dBm</td><td>20 to 24 GHz</td></tr>
+    <tr><td>-20 dBm</td><td>+14 dBm</td><td>24 to 26 GHz</td></tr>
+    <tr><td rowspan="6">Option HP and PE2</td><td>-120 dBm</td><td>+13 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-120 dBm</td><td>+20 dBm</td><td>100 kHz to 10 MHz</td></tr>
+    <tr><td>-120 dBm</td><td>+21 dBm</td><td>0.01 to 12 GHz</td></tr>
+    <tr><td>-120 dBm</td><td>+20 dBm</td><td>12 to 20 GHz</td></tr>
+    <tr><td>-120 dBm</td><td>+18 dBm</td><td>20 to 24 GHz</td></tr>
+    <tr><td>-120 dBm</td><td>+14 dBm</td><td>24 to 26 GHz</td></tr>
+    <tr><td rowspan="6">Options HP and PE2 + FILT</td><td>-120 dBm</td><td>+13 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-120 dBm</td><td>+19 dBm</td><td>100 kHz to 10 MHz</td></tr>
+    <tr><td>-120 dBm</td><td>+20 dBm</td><td>0.01 to 12 GHz</td></tr>
+    <tr><td>-120 dBm</td><td>+18 dBm</td><td>12 to 20 GHz</td></tr>
+    <tr><td>-120 dBm</td><td>+17 dBm</td><td>20 to 24 GHz</td></tr>
+    <tr><td>-120 dBm</td><td>+13 dBm</td><td>24 to 26 GHz</td></tr>
+    <tr><td rowspan="6">Options HP and PE</td><td>-90 dBm</td><td>+13 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-90 dBm</td><td>+20 dBm</td><td>100 kHz to 10 MHz</td></tr>
+    <tr><td>-90 dBm</td><td>+21 dBm</td><td>0.01 to 12 GHz</td></tr>
+    <tr><td>-90 dBm</td><td>+19 dBm</td><td>12 to 20 GHz</td></tr>
+    <tr><td>-90 dBm</td><td>+18 dBm</td><td>20 to 24 GHz</td></tr>
+    <tr><td>-90 dBm</td><td>+14 dBm</td><td>24 to 26 GHz</td></tr>
+    <tr><td rowspan="6">Option HP and PE + FILT</td><td>-90 dBm</td><td>+13 dBm</td><td>9 kHz to 100 kHz (option 9K)</td></tr>
+    <tr><td>-90 dBm</td><td>+19 dBm</td><td>100 kHz to 10 MHz</td></tr>
+    <tr><td>-90 dBm</td><td>+20 dBm</td><td>0.01 to 12 GHz</td></tr>
+    <tr><td>-90 dBm</td><td>+18 dBm</td><td>12 to 20 GHz</td></tr>
+    <tr><td>-90 dBm</td><td>+17 dBm</td><td>20 to 24 GHz</td></tr>
+    <tr><td>-90 dBm</td><td>+13 dBm</td><td>24 to 26 GHz</td></tr>
   </table>
-  <div class="note warn"><b>Verification notes.</b> Harmonic and spurious specifications are not listed on the current product page and are marked <b>(verify)</b> in Section 7. The LN low-noise option further improves close-in phase noise.</div>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>Modulation</h2>
-  <p>The Model 845-OEM supports AM, FM, PM, pulse, and chirp modulation. External modulation inputs are brought out on MCX connectors. For CW-only builds, the NM option removes modulation.</p>
-  <ul>
-    <li><strong>AM</strong> amplitude modulation (external input on MCX).</li>
-    <li><strong>FM</strong> frequency modulation (external input on MCX).</li>
-    <li><strong>PM</strong> phase modulation (external input on MCX).</li>
-    <li><strong>Pulse</strong> pulse modulation (external input on MCX).</li>
-    <li><strong>Chirp</strong> swept-frequency stimulus.</li>
-  </ul>
+  <h2><span class="num">5</span>Power Uncertainty &amp; VSWR</h2>
+  <h3>Reverse Power Protection and VSWR</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Reverse power protection &mdash; DC voltage</td><td></td><td></td><td>&plusmn;15 V</td><td></td></tr>
+    <tr><td>Reverse power protection &mdash; RF power</td><td></td><td></td><td>+30 dBm</td><td></td></tr>
+    <tr><td>Output impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
+    <tr><td rowspan="2">VSWR</td><td></td><td>1.5</td><td></td><td>&lt; 20 GHz</td></tr>
+    <tr><td></td><td>2.0</td><td></td><td>&gt; 20 GHz</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 3</a> (typical VSWR, 845-20) in Typical Performance Curves.</p>
+  <h3>Power Level Uncertainty (ALC on, Model 845-OEM + PE2/PE)</h3>
+  <p>Values are the warranted figure, with the typical value in parentheses.</p>
+  <table class="spec">
+    <tr><th>Frequency</th><th>&gt;15 dBm to P<sub>max</sub></th><th>-15 to +15 dBm</th><th>-70 to -15 dBm</th><th>&lt; -70 dBm</th></tr>
+    <tr><td>10 MHz to 10 GHz</td><td>1.6 dB (0.8 dB)</td><td>1.0 dB (0.3 dB)</td><td>1.5 dB (0.4 dB)</td><td>1.8 dB (0.5 dB)</td></tr>
+    <tr><td>100 Hz to f<sub>max</sub></td><td>1.6 dB (0.8 dB)</td><td>1.0 dB (0.3 dB)</td><td>1.5 dB (0.4 dB)</td><td>2.0 dB (0.5 dB)</td></tr>
+  </table>
+  <p>User flatness correction: up to 2000 points. Temperature effects: 0.015 dB/&deg;C (typical) in the range 0 to 45 &deg;C.</p>
+  <p class="xref">See <a href="#s-perf">Figures 4 and 5</a> (typical frequency response, 0 to 20 GHz at -20, 0, and +20 dBm) in Typical Performance Curves.</p>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Frequency Switching &amp; Sweep</h2>
-  <p>Standard switching speed is 400 microseconds. With the FS fast-switching option, switching drops to under 30 microseconds. List, frequency, and power sweeps support automated measurement.</p>
+  <h2><span class="num">6</span>Phase Noise</h2>
+  <p class="xref">See <a href="#s-perf">Figure 6</a> (phase noise performance, 1 Hz to 100 MHz offset at different carrier frequencies) in Typical Performance Curves.</p>
   <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Switching speed (standard)</td><td>400 &micro;s</td></tr>
-    <tr><td>Switching speed (option FS)</td><td>&lt;30 &micro;s</td></tr>
-    <tr><td>Sweep modes</td><td>List, Frequency, Power</td></tr>
+    <tr><th>SSB phase noise (standard)</th><th>Typical</th><th>Max</th></tr>
+    <tr><td>1 GHz, 10 Hz offset</td><td>-80 dBc/Hz</td><td>-77 dBc/Hz</td></tr>
+    <tr><td>1 GHz, 20 kHz offset</td><td>-130 dBc/Hz</td><td>-128 dBc/Hz</td></tr>
+    <tr><td>1 GHz, 100 kHz offset</td><td>-131 dBc/Hz</td><td>-129 dBc/Hz</td></tr>
+    <tr><td>4 GHz, 10 Hz offset</td><td>-68 dBc/Hz</td><td>-65 dBc/Hz</td></tr>
+    <tr><td>4 GHz, 20 kHz offset</td><td>-118 dBc/Hz</td><td>-116 dBc/Hz</td></tr>
+    <tr><td>4 GHz, 100 kHz offset</td><td>-119 dBc/Hz</td><td>-117 dBc/Hz</td></tr>
+    <tr><td>20 GHz, 10 Hz offset</td><td>-51 dBc/Hz</td><td>-48 dBc/Hz</td></tr>
+    <tr><td>20 GHz, 20 kHz offset</td><td>-104 dBc/Hz</td><td>-102 dBc/Hz</td></tr>
+    <tr><td>20 GHz, 100 kHz offset</td><td>-104 dBc/Hz</td><td>-100 dBc/Hz</td></tr>
+    <tr><td>Wideband noise</td><td>-150 dBc/Hz</td><td></td></tr>
+    <tr><td>Amplitude noise at 10 GHz</td><td>-130 dBc/Hz (-140 dBm)</td><td></td></tr>
   </table>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Specifications</h2>
+  <h2><span class="num">7</span>Spectral Purity</h2>
+  <p>Spectral purity at +5 dBm.</p>
+  <p class="xref">See <a href="#s-perf">Figures 7 to 10</a> (harmonics: standard, and 845-12 / 845-20 / 845-26 with option FILT) in Typical Performance Curves.</p>
   <table class="spec">
-    <tr><th>Specification</th><th>Value</th></tr>
-    <tr><td>Frequency range</td><td>100 kHz to 26.5 GHz (page title states 100 kHz to 20 GHz; verify)</td></tr>
-    <tr><td>Channels</td><td>1 (single channel; verify)</td></tr>
-    <tr><td>Frequency resolution</td><td>0.001 Hz</td></tr>
-    <tr><td>Output power range</td><td>-20 to +15 dBm (+27 dBm with option HP)</td></tr>
-    <tr><td>Power resolution</td><td>0.01 dB</td></tr>
-    <tr><td>Switching speed</td><td>400 &micro;s (&lt;30 &micro;s with option FS)</td></tr>
-    <tr><td>Phase noise @ 1 GHz CW (10 Hz)</td><td>-80 dBc/Hz</td></tr>
-    <tr><td>Phase noise @ 1 GHz CW (1 kHz)</td><td>-117 dBc/Hz</td></tr>
-    <tr><td>Phase noise @ 1 GHz CW (100 kHz)</td><td>-128 dBc/Hz</td></tr>
-    <tr><td>Phase noise @ 1 GHz CW (10 MHz)</td><td>-150 dBc/Hz</td></tr>
-    <tr><td>Harmonics</td><td>(verify)</td></tr>
-    <tr><td>Spurious</td><td>(verify)</td></tr>
-    <tr><td>Modulation types</td><td>AM, FM, PM, Pulse, Chirp</td></tr>
-    <tr><td>Sweep modes</td><td>List, Frequency, Power</td></tr>
-    <tr><td>RF output connector</td><td>SMA</td></tr>
-    <tr><td>Reference clock</td><td>MCX in and out</td></tr>
-    <tr><td>External modulation inputs</td><td>MCX (AM, FM, PM, Pulse)</td></tr>
-    <tr><td>Trigger input</td><td>MCX</td></tr>
-    <tr><td>Function output</td><td>MCX (trigger output, low-frequency generator, pulse video out)</td></tr>
-    <tr><td>Indicator</td><td>2-pin Molex RF On/Off LED</td></tr>
-    <tr><td>Remote control protocol</td><td>SCPI v1999</td></tr>
-    <tr><td>Connectivity / interfaces</td><td>Ethernet, USB, GPIB (optional)</td></tr>
-    <tr><td>Form factor</td><td>Board-level / OEM (shielded enclosure)</td></tr>
-    <tr><td>RF board dimensions</td><td>9.65 x 1.4 x 9.06 in (245 x 35 x 230 mm)</td></tr>
-    <tr><td>Controller board dimensions</td><td>3.94 x 0.5 x 8.1 in (100 x 12.7 x 205.7 mm)</td></tr>
-    <tr><td>Controller board dims (FS option)</td><td>3.94 x 0.5 x 8.5 in (100 x 12.7 x 216 mm)</td></tr>
-    <tr><td>Shipping dimensions</td><td>7 x 9 x 13 in</td></tr>
-    <tr><td>Shipping weight</td><td>8 lbs</td></tr>
-    <tr><td>Power supply / consumption</td><td>(verify; spare P/N 7134)</td></tr>
+    <tr><th>Parameter</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Output harmonics</td><td>-40 dBc</td><td>-30 dBc</td><td>See plot</td></tr>
+    <tr><td>845-OEM-12 with option FILT, 10 MHz to 8 GHz</td><td>-40 dBc</td><td>-30 dBc</td><td>See plot</td></tr>
+    <tr><td>845-OEM-12 with option FILT, 8 to 12 GHz</td><td>-60 dBc</td><td>-50 dBc</td><td></td></tr>
+    <tr><td>845-OEM-20 with option FILT, 10 MHz to 12 GHz</td><td>-40 dBc</td><td>-30 dBc</td><td>See plot</td></tr>
+    <tr><td>845-OEM-20 with option FILT, 12 to 20 GHz</td><td>-65 dBc</td><td>-50 dBc</td><td></td></tr>
+    <tr><td>845-OEM-26 with option FILT, 10 MHz to 15 GHz</td><td>-40 dBc</td><td>-30 dBc</td><td>See plot</td></tr>
+    <tr><td>845-OEM-26 with option FILT, 15 to 20 GHz</td><td>-60 dBc</td><td>-50 dBc</td><td></td></tr>
+    <tr><td rowspan="2">Sub-harmonics</td><td>-75 dBc</td><td>-65 dBc</td><td>&lt; 20 GHz</td></tr>
+    <tr><td>-50 dBc</td><td>-40 dBc</td><td>&gt; 20 GHz</td></tr>
+    <tr><td>Non-harmonic spurious, &lt; 312 MHz</td><td>-80 dBc</td><td>-66 dBc</td><td rowspan="8">CW +10 dBm, &gt; 3 kHz offset</td></tr>
+    <tr><td>Non-harmonic spurious, &gt; 312 to 625 MHz</td><td>-75 dBc</td><td>-70 dBc</td></tr>
+    <tr><td>Non-harmonic spurious, &gt; 625 MHz to 1.5 GHz</td><td>-75 dBc</td><td>-65 dBc</td></tr>
+    <tr><td>Non-harmonic spurious, 1.5 to 2.5 GHz</td><td>-70 dBc</td><td>-65 dBc</td></tr>
+    <tr><td>Non-harmonic spurious, &gt; 2.5 to 5 GHz</td><td>-65 dBc</td><td>-60 dBc</td></tr>
+    <tr><td>Non-harmonic spurious, &gt; 5 to 10 GHz</td><td>-60 dBc</td><td>-55 dBc</td></tr>
+    <tr><td>Non-harmonic spurious, &gt; 10 to 20 GHz</td><td>-55 dBc</td><td>-50 dBc</td></tr>
+    <tr><td>Non-harmonic spurious, &gt; 20 GHz</td><td>-50 dBc</td><td>-45 dBc</td></tr>
+    <tr><td>Residual FM @ 10 GHz</td><td>15 Hz</td><td></td><td>0.3 kHz to 3 kHz, weighted (ITU-T), RMS</td></tr>
+    <tr><td>Residual AM @ 10 GHz</td><td>0.02%</td><td></td><td>RMS value (0.01 kHz to 15 kHz)</td></tr>
   </table>
-  <div class="note warn"><b>Verification notes.</b> The frequency range conflict (20 GHz title vs 26.5 GHz spec), channel count, harmonics, spurious, and power supply / consumption are all marked <b>(verify)</b>. Confirm against Model 845-OEM datasheet v2.59 before release.</div>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Interfaces &amp; Form Factor</h2>
-  <p>The Model 845-OEM ships as a shielded board-level package. The RF board measures 9.65 x 1.4 x 9.06 inches; the controller board measures 3.94 x 0.5 x 8.1 inches, growing to 8.5 inches long with the FS option. The RF output is SMA; reference clock, external modulation inputs, trigger input, and the function output are brought out on MCX connectors. A 2-pin Molex header drives an RF On/Off LED.</p>
-  <p>Remote control follows SCPI v1999 over Ethernet and USB, with GPIB available as an option. The BNC GUI provides a software control surface for bring-up and test.</p>
+  <h2><span class="num">8</span>Sweeping &amp; Switching</h2>
+  <p>Digital power / frequency / list sweeps. Sweep type: linear, logarithmic, random. Sweeps can be performed with combined internal or external AM/FM/PM/pulse modulation running; with modulation enabled, the minimum step time increases to 2 ms.</p>
+  <p class="xref">See <a href="#s-perf">Figure 15</a> (typical switching transient, 12 GHz to 14 GHz step) in Typical Performance Curves.</p>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="2">Step time (t<sub>step</sub>)</td><td>400 &micro;s</td><td></td><td>19998 s</td><td></td></tr>
+    <tr><td>40 &micro;s</td><td></td><td></td><td>Option FS</td></tr>
+    <tr><td>Dwell time (t<sub>dwell</sub>)</td><td>10 &micro;s</td><td></td><td>9999 s</td><td></td></tr>
+    <tr><td>Off-time incl. transient time (t<sub>off</sub>)</td><td>0</td><td></td><td>9999 s</td><td></td></tr>
+    <tr><td rowspan="2">Transient time (t<sub>trs</sub>)</td><td></td><td></td><td>270 &micro;s</td><td></td></tr>
+    <tr><td></td><td></td><td>30 &micro;s</td><td>Option FS</td></tr>
+    <tr><td rowspan="2">Timing delay (t<sub>dly</sub>)</td><td></td><td>2 to 10 &micro;s</td><td></td><td></td></tr>
+    <tr><td></td><td>50 ns</td><td></td><td>Option FS</td></tr>
+    <tr><td rowspan="2">Time resolution</td><td></td><td>0.1 &micro;s</td><td></td><td></td></tr>
+    <tr><td></td><td>5 ns</td><td></td><td>Option FS</td></tr>
+    <tr><td rowspan="2">Timing accuracy per point</td><td></td><td>3 &micro;s</td><td></td><td></td></tr>
+    <tr><td></td><td>5 ns</td><td></td><td>Option FS</td></tr>
+  </table>
 </section>
 
 <section id="s9">
-  <h2><span class="num">9</span>Options &amp; Configurations</h2>
+  <h2><span class="num">9</span>Reference Frequency</h2>
+  <p>REF IN input and REF OUT output are at the rear panel.</p>
   <table class="spec">
-    <tr><th>Option</th><th>Description</th></tr>
-    <tr><td>-HP</td><td>High output power (contact factory for greater than +25 dBm)</td></tr>
-    <tr><td>-9K</td><td>Frequency range extension down to 9 kHz</td></tr>
-    <tr><td>-NM</td><td>CW only, no modulation</td></tr>
-    <tr><td>-FS</td><td>Fast switching (&lt;30 &micro;s)</td></tr>
-    <tr><td>-LN</td><td>Low noise</td></tr>
-    <tr><td>-GPIB</td><td>GPIB communication port</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Internal reference frequency</td><td></td><td>100 MHz</td><td></td><td></td></tr>
+    <tr><td>Initial accuracy</td><td></td><td></td><td>&plusmn;40 ppb</td><td>Calibrated at 23 &plusmn;3 &deg;C at time of calibration, user adjustable</td></tr>
+    <tr><td>Temperature stability (0 to 50 &deg;C)</td><td></td><td></td><td>&plusmn;100 ppb</td><td></td></tr>
+    <tr><td>Aging, 1st year</td><td></td><td>0.5 ppm</td><td></td><td></td></tr>
+    <tr><td>Aging per day (after 30 days operation)</td><td></td><td></td><td>5 ppb</td><td></td></tr>
+    <tr><td>Warm-up time</td><td></td><td>5 min</td><td></td><td></td></tr>
+    <tr><td>Output of internal reference</td><td></td><td>10 / 100 MHz</td><td></td><td></td></tr>
+    <tr><td>Output power</td><td></td><td>0 dBm</td><td></td><td></td></tr>
+    <tr><td>Output impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
+    <tr><td>Bypass internal reference input</td><td colspan="3">100 MHz, -5 to +10 dBm</td><td>High phase-synchronous mode</td></tr>
+    <tr><td>External input range (phase lock)</td><td>1 MHz</td><td></td><td>250 MHz</td><td>User programmable</td></tr>
+    <tr><td>Reference input level</td><td>-5 dBm</td><td>0 dBm</td><td>+13 dBm</td><td></td></tr>
+    <tr><td>Lock range</td><td></td><td></td><td>&plusmn;1.5 ppm</td><td></td></tr>
+    <tr><td>Reference input impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
   </table>
-  <h3>Accessories</h3>
-  <ul>
-    <li>Spare power supply (P/N 7134)</li>
-  </ul>
 </section>
 
 <section id="s10">
-  <h2><span class="num">10</span>Applications</h2>
-  <ul>
-    <li>Automated test environment</li>
-    <li>Signal simulation</li>
-    <li>Aerospace and defense</li>
-    <li>Low-noise microwave source for R&amp;D</li>
-  </ul>
+  <h2><span class="num">10</span>Outputs &amp; Triggers</h2>
+  <h3>Multi-Purpose Output (FUNC OUT)</h3>
+  <p>Output is FUNC OUT at the rear panel.</p>
+  <table class="spec">
+    <tr><th>Multifunction generator</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="3">Frequency range (sine, triangle, square)</td><td>10 Hz</td><td></td><td>3 MHz</td><td>Sine</td></tr>
+    <tr><td>10 Hz</td><td></td><td>1 MHz</td><td>Triangle</td></tr>
+    <tr><td></td><td></td><td>50 kHz</td><td>Square</td></tr>
+    <tr><td>Frequency resolution</td><td></td><td>0.1 Hz</td><td></td><td></td></tr>
+    <tr><td rowspan="2">Output voltage amplitude (peak-peak)</td><td>10 mV</td><td></td><td>2 V</td><td>Sine, triangle</td></tr>
+    <tr><td></td><td>5 V</td><td></td><td>Square (CMOS output)</td></tr>
+    <tr><td>Harmonic distortion</td><td></td><td>1%</td><td></td><td>&lt; 100 kHz, 1 Vpp</td></tr>
+    <tr><td>Output impedance</td><td></td><td>50 &Omega; / CMOS</td><td></td><td>Sine, triangle / square wave</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th>Video output (of internal pulse modulator)</th><th>Min</th><th>Typical</th><th>Max</th></tr>
+    <tr><td>Output</td><td></td><td>CMOS</td><td></td></tr>
+    <tr><td>Period</td><td>30 ns</td><td></td><td>50 s</td></tr>
+    <tr><td>Pulse width</td><td>15 ns</td><td></td><td>50 s</td></tr>
+    <tr><td>RF delay</td><td></td><td>10 ns</td><td></td></tr>
+  </table>
+  <p>TRIG OUT synchronization modes for multiple sources: trigger on sweep start, trigger on each point, signal valid (option FS).</p>
+  <h3>Trigger (TRIG IN)</h3>
+  <p>Input is TRIG IN at the rear panel. Trigger Output (TRIG OUT) follows the Multi-Purpose Output (FUNC OUT) above.</p>
+  <p class="xref">See the <a href="#s-perf">trigger input / output timing diagram</a> in Typical Performance Curves.</p>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Trigger types</td><td colspan="3">Continuous, single, gated, gated direction</td><td></td></tr>
+    <tr><td>Trigger source</td><td colspan="3">RF key, external, bus (GPIB, LAN, USB)</td><td></td></tr>
+    <tr><td>Trigger modes</td><td colspan="3">Continuous free run, trigger and run, reset and run</td><td></td></tr>
+    <tr><td rowspan="2">Trigger latency</td><td></td><td>2 &micro;s</td><td></td><td></td></tr>
+    <tr><td></td><td>130 ns</td><td></td><td>Option FS</td></tr>
+    <tr><td rowspan="2">Trigger uncertainty</td><td></td><td>5 &micro;s</td><td></td><td></td></tr>
+    <tr><td></td><td>10 ns</td><td></td><td>Option FS</td></tr>
+    <tr><td rowspan="2">External trigger delay</td><td>50 &micro;s</td><td></td><td>40 s</td><td>Programmable</td></tr>
+    <tr><td>50 ns</td><td></td><td>10 s</td><td>Option FS</td></tr>
+    <tr><td rowspan="2">External delay resolution</td><td></td><td>15 ns</td><td></td><td></td></tr>
+    <tr><td></td><td>10 ns</td><td></td><td>Option FS</td></tr>
+    <tr><td>Trigger modulo</td><td>1</td><td></td><td>255</td><td>Execute only on Nth trigger event</td></tr>
+    <tr><td>Trigger polarity</td><td colspan="3">Rising, falling</td><td></td></tr>
+    <tr><td>External trigger input threshold</td><td>0.85 V</td><td>0.9 V</td><td>0.95 V</td><td>TTL compatible</td></tr>
+    <tr><td>External trigger input voltage range</td><td>-0.5 V</td><td></td><td>+5.5 V</td><td>TTL compatible</td></tr>
+    <tr><td>External trigger input hysteresis</td><td></td><td>60 mV</td><td></td><td></td></tr>
+  </table>
 </section>
 
 <section id="s11">
-  <h2><span class="num">11</span>Ordering</h2>
-  <p>Specify the Model 845-OEM and append option codes as needed. Confirm the configured frequency range with the factory given the published 20 GHz / 26.5 GHz discrepancy. For a configured quote, contact Berkeley Nucleonics.</p>
+  <h2><span class="num">11</span>Modulation</h2>
+  <p>Combinations of AM/PM/FM/pulse are possible. See the user manual for more details.</p>
+  <p class="xref">See <a href="#s-perf">Figure 16</a> (pulse modulation timing parameters) in Typical Performance Curves.</p>
+  <h3>Pulse Modulation</h3>
   <table class="spec">
-    <tr><th>Model</th><th>Configuration</th></tr>
-    <tr><td>845-OEM</td><td>100 kHz to 26.5 GHz shielded board-level signal generator (range verify)</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>On/off ratio</td><td></td><td>75 dB (typical)</td><td></td><td>At +10 dBm</td></tr>
+    <tr><td>Repetition frequency</td><td>DC</td><td></td><td>10 MHz</td><td></td></tr>
+    <tr><td rowspan="3">Pulse width</td><td>100 ns</td><td></td><td>5 s</td><td>ALC hold</td></tr>
+    <tr><td>30 ns</td><td></td><td>5 s</td><td>ALC hold, options NP or FS</td></tr>
+    <tr><td>500 ns</td><td></td><td></td><td>ALC on</td></tr>
+    <tr><td rowspan="2">Pulse rise/fall time</td><td></td><td>30 ns</td><td></td><td>&lt; 5 GHz</td></tr>
+    <tr><td></td><td>5 ns</td><td></td><td>&gt; 5 GHz</td></tr>
+    <tr><td>Duty cycle</td><td>0.05%</td><td></td><td>99.95%</td><td></td></tr>
+    <tr><td>Pulse resolution</td><td></td><td>30 ns</td><td></td><td></td></tr>
+    <tr><td>Polarity</td><td colspan="3">Selectable</td><td></td></tr>
+    <tr><td>External input threshold</td><td>0.85 V</td><td>0.9 V</td><td>0.95 V</td><td>TTL compatible</td></tr>
+    <tr><td>External input voltage range</td><td>-0.5 V</td><td></td><td>+5.5 V</td><td>TTL compatible</td></tr>
+    <tr><td>External input hysteresis</td><td></td><td>60 mV</td><td></td><td></td></tr>
+    <tr><td>Onset delay (to RF)</td><td></td><td>20 ns</td><td>40 ns</td><td></td></tr>
   </table>
-  <p>Berkeley Nucleonics Corporation &middot; info@berkeleynucleonics.com &middot; 800-234-7858</p>
+  <h3>Pulse Pattern Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="3">Pulse bit width</td><td>100 ns</td><td></td><td></td><td>ALC hold</td></tr>
+    <tr><td>30 ns</td><td></td><td></td><td>ALC hold, option NP or FS</td></tr>
+    <tr><td>500 ns</td><td></td><td></td><td>ALC on. Uses internal pattern generator.</td></tr>
+    <tr><td>Programmable pattern length</td><td>2</td><td></td><td>4096</td><td></td></tr>
+    <tr><td>Duty cycle</td><td>0.05%</td><td></td><td>99.95%</td><td></td></tr>
+    <tr><td rowspan="2">Pulse bit resolution</td><td></td><td>30 ns</td><td></td><td></td></tr>
+    <tr><td></td><td>5 ns</td><td></td><td>Option NP or FS</td></tr>
+    <tr><td>Polarity</td><td colspan="3">Selectable</td><td></td></tr>
+  </table>
+  <h3>N-Pulse Modulation (Option FS)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Period</td><td>30 ns</td><td></td><td>21 s</td><td></td></tr>
+    <tr><td>N-Pulse type</td><td></td><td>1 to 4</td><td></td><td>No overlapping with other pulses</td></tr>
+    <tr><td rowspan="2">N-Pulse width (P1, P2, P3, P4 widths)</td><td>30 ns</td><td></td><td>21 s</td><td>ALC hold</td></tr>
+    <tr><td>500 ns</td><td></td><td>21 s</td><td>ALC on</td></tr>
+    <tr><td>N-Pulse delay (P1 delay)</td><td>0 ns</td><td></td><td>21 s</td><td></td></tr>
+    <tr><td>N-Pulse delay (P2, P3, P4)</td><td colspan="3">Min: end of prior pulse + min off time</td><td></td></tr>
+    <tr><td>N-Pulse width and delay resolution</td><td></td><td>5 ns</td><td></td><td></td></tr>
+    <tr><td>N-Pulse off time</td><td>1 &micro;s</td><td></td><td>21 s</td><td>Determined by pulse delay and prior pulse width</td></tr>
+  </table>
+  <h3>Frequency Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Maximum frequency deviation (peak)</td><td>0</td><td></td><td>0.05&middot;f</td><td>&lt; 0.5 GHz</td></tr>
+    <tr><td>Maximum frequency deviation (peak)</td><td>0</td><td></td><td>N&middot;200 MHz</td><td>0.5 to 2.5 GHz (N=0.125); 2.5 to 5 GHz (N=0.25); 5 to 10 GHz (N=0.5); &gt; 10 to 20 GHz (N=1)</td></tr>
+    <tr><td>Deviation accuracy, &lt; 100 kHz rate</td><td></td><td>0.5%</td><td>2%</td><td></td></tr>
+    <tr><td>Deviation accuracy, &gt; 100 kHz rate</td><td></td><td>2%</td><td>5%</td><td></td></tr>
+    <tr><td>Distortion</td><td></td><td>&lt; 1%</td><td></td><td>1 kHz rate, 50 kHz deviation</td></tr>
+    <tr><td>Modulation waveforms / rate</td><td>DC</td><td>Sine, triangle, FSK</td><td>100 kHz</td><td>&gt; -3 dB frequency response</td></tr>
+    <tr><td>External input sensitivity (AC coupled)</td><td colspan="3">0 to N&middot;200 MHz / V</td><td>Adjustable for &plusmn;1 V range</td></tr>
+    <tr><td>External input sensitivity (DC coupled)</td><td colspan="3">0 to N&middot;100 MHz / V</td><td>Discrete values, &plusmn;5 V range</td></tr>
+    <tr><td>Total harmonic distortion</td><td></td><td>&lt; 1%</td><td></td><td>1 kHz rate &amp; N&middot;1 MHz deviation</td></tr>
+  </table>
+  <h3>Frequency Chirps (linear ramp, up/down)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Span</td><td>10%</td><td></td><td>Of carrier frequency</td></tr>
+    <tr><td>Chirp time (t<sub>chirp</sub>)</td><td>10 ns</td><td>60 s</td><td></td></tr>
+    <tr><td rowspan="2">Total duration of finite repeated chirps (t<sub>chirp</sub> &middot; repetitions)</td><td></td><td>64.1 s</td><td></td></tr>
+    <tr><td></td><td>21.4 s</td><td>With option FS</td></tr>
+    <tr><td>Slope</td><td></td><td>100 MHz/&micro;s</td><td></td></tr>
+    <tr><td>Number of frequencies</td><td></td><td>65,000</td><td></td></tr>
+  </table>
+  <h3>Phase Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Phase deviation (peak)</td><td>0</td><td></td><td>N&middot;300 rad</td><td></td></tr>
+    <tr><td>Modulation rate</td><td>DC</td><td></td><td>100 kHz</td><td>&gt; -3 dB frequency response; max. phase deviation degrades above 20 kHz modulation rate</td></tr>
+    <tr><td>Modulation waveforms</td><td colspan="3">Sine, triangle, FSK</td><td></td></tr>
+    <tr><td>External input sensitivity</td><td colspan="3">Settable 0.1 rad/V to 360 rad/V</td><td></td></tr>
+    <tr><td>Total harmonic distortion</td><td></td><td>&lt; 1%</td><td></td><td>1 kHz rate &amp; N&middot;100 rad deviation</td></tr>
+  </table>
+  <h3>Amplitude Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Modulation rate</td><td>0.1 Hz</td><td></td><td>50 kHz</td><td></td></tr>
+    <tr><td>Modulation waveforms</td><td colspan="3">Sine, triangle, square</td><td></td></tr>
+    <tr><td>Modulation depth</td><td>0%</td><td></td><td>100%</td><td>Settable</td></tr>
+    <tr><td>Accuracy (f &ge; 10 MHz)</td><td></td><td>0.8%</td><td>1.4%</td><td>f-carrier, modulation depth &lt; 80%</td></tr>
+    <tr><td>Distortion (f &ge; 10 MHz)</td><td></td><td>1%</td><td>2%</td><td>&amp; 1 kHz modulation rate, power 0 dBm</td></tr>
+    <tr><td>External input range</td><td>0 V</td><td></td><td>5 V</td><td>To GND</td></tr>
+  </table>
+</section>
+
+
+    <section id="s-perf">
+      <h2>Typical Performance Curves</h2>
+      <p>Representative measured performance, reproduced from the Model 845-OEM datasheet. Curves are typical and not guaranteed.</p>
+      <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid #d6d3d1;border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:#57534e;margin-top:8px;line-height:1.4}</style>
+      <div class="ds-figgrid">
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig04_p5_792x497.jpeg" alt="Figure 1: Typical Maximum Output Power from 9 kHz to 1 MHz (option 9K)" loading="lazy"><figcaption>Figure 1: Typical Maximum Output Power from 9 kHz to 1 MHz (option 9K)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig05_p5_879x683.jpeg" alt="Figure 2: Maximum Output Power 845-26, HP with and without option PE2" loading="lazy"><figcaption>Figure 2: Maximum Output Power 845-26, HP with and without option PE2</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig06_p6_748x427.jpeg" alt="Figure 3: Typical VSWR (845-20)" loading="lazy"><figcaption>Figure 3: Typical VSWR (845-20)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig07_p6_772x563.png" alt="Figure 4: Typical Frequency Response 0 to 20 GHz at -20, 0, and +20 dBm" loading="lazy"><figcaption>Figure 4: Typical Frequency Response 0 to 20 GHz at -20, 0, and +20 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig08_p7_679x492.jpeg" alt="Figure 5: Typical Frequency Response 0 to 20 GHz at -20, 0, and +20 dBm" loading="lazy"><figcaption>Figure 5: Typical Frequency Response 0 to 20 GHz at -20, 0, and +20 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig09_p8_1167x738.jpeg" alt="Figure 6: Phase Noise Performance (1 Hz to 100 MHz offset)" loading="lazy"><figcaption>Figure 6: Phase Noise Performance (1 Hz to 100 MHz offset)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig10_p9_700x559.png" alt="Figure 7: Harmonics, Standard" loading="lazy"><figcaption>Figure 7: Harmonics, Standard</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig11_p9_778x531.png" alt="Figure 8: Harmonics, 845-12 with option FILT" loading="lazy"><figcaption>Figure 8: Harmonics, 845-12 with option FILT</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig12_p9_717x503.png" alt="Figure 9: Harmonics, 845-20 with option FILT" loading="lazy"><figcaption>Figure 9: Harmonics, 845-20 with option FILT</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig13_p9_711x526.png" alt="Figure 10: Harmonics, 845-26 with option FILT" loading="lazy"><figcaption>Figure 10: Harmonics, 845-26 with option FILT</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig14_p10_589x327.jpeg" alt="Trigger input / output timing" loading="lazy"><figcaption>Trigger input / output timing</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig15_p10_675x416.png" alt="Figure 15: Typical switching transient from 12 GHz to 14 GHz step" loading="lazy"><figcaption>Figure 15: Typical switching transient from 12 GHz to 14 GHz step</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/845oem-ds/fig16_p13_871x403.jpeg" alt="Pulse modulation timing parameters" loading="lazy"><figcaption>Pulse modulation timing parameters</figcaption></figure>
+      </div>
+    </section>
+
+<section id="s12">
+  <h2><span class="num">12</span>Ordering Information</h2>
+  <table class="spec">
+    <tr><th>Host model</th><th>Product / option</th><th>Description</th></tr>
+    <tr><td>845-OEM-12</td><td>845-OEM-12</td><td>12 GHz microwave signal generator</td></tr>
+    <tr><td>845-OEM-20</td><td>845-OEM-20</td><td>20 GHz microwave signal generator</td></tr>
+    <tr><td>845-OEM-26</td><td>845-OEM-26</td><td>26 GHz microwave signal generator</td></tr>
+    <tr><td>845-OEM-12/20</td><td>Option 9K</td><td>Frequency range extension to 9 kHz</td></tr>
+    <tr><td>845-OEM-26</td><td>Option PE</td><td>Mechanical step attenuator (26 GHz version) down to -90 dBm</td></tr>
+    <tr><td>845-OEM-XX</td><td>Option PE2</td><td>Mechanical step attenuator to -120 dBm</td></tr>
+    <tr><td>845-OEM-XX</td><td>Option HP</td><td>Higher output power</td></tr>
+    <tr><td>845-OEM-12/20/26</td><td>Option FILT</td><td>Improved harmonic filtering</td></tr>
+    <tr><td>845-OEM-XX</td><td>Option FS</td><td>Ultra-fast switching speed (export control)</td></tr>
+    <tr><td>845-OEM-XX</td><td>Option Retrofit</td><td>Applies when options are added after first delivery</td></tr>
+    <tr><td>845-OEM-XX</td><td>Option NP</td><td>Narrow pulse (30 ns minimum PW and 5 ns resolution)</td></tr>
+  </table>
+  <p>For a configured quote, contact Berkeley Nucleonics Corporation &middot; info@berkeleynucleonics.com &middot; 415-453-9955.</p>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>General Characteristics</h2>
+  <table class="spec">
+    <tr><th>Characteristic</th><th>Specification</th></tr>
+    <tr><td>Remote programming interfaces</td><td>Ethernet 100BaseT LAN interface; USB 2.0 host &amp; device; GPIB (IEEE-488.2, 1987) with listen and talk (optional)</td></tr>
+    <tr><td>Control language</td><td>SCPI version 1999.0</td></tr>
+    <tr><td>Power requirements</td><td>6.25 &plusmn;0.2 VDC; 20 W maximum</td></tr>
+    <tr><td>Main adapter supplied</td><td>100&ndash;240 VAC in / 6 V, 6.0 A DC out</td></tr>
+    <tr><td>Environmental</td><td>Levels similar to MIL-PRF-28800F Class 3 &amp; 4. Samples type tested to be robust against the environmental stresses of storage, transportation, and end-use (temperature, humidity, shock, vibration, altitude, and power line conditions).</td></tr>
+    <tr><td>Operating temperature range</td><td>0 to 45 &deg;C</td></tr>
+    <tr><td>Storage temperature range</td><td>-40 to 70 &deg;C</td></tr>
+    <tr><td>Max. relative humidity</td><td>85% up to 45 &deg;C ambient</td></tr>
+    <tr><td>Operating and storage altitude</td><td>Up to 15,000 feet (4600 m)</td></tr>
+    <tr><td>EMC</td><td>Complies with EMC regulations and directives for emission and immunity to interference (EN 61326-1 Industrial, EN/IEC 61326-2-1)</td></tr>
+    <tr><td>Safety</td><td>Complies with applicable safety regulation in line with IEC/EN 61010-1</td></tr>
+    <tr><td>Weight</td><td>&le; 6 lbs (2.5 kg) net, &le; 8 lb (4 kg) shipping</td></tr>
+    <tr><td>Dimensions (H x W x L)</td><td>4.21 in H x 6.77 in W x 10.63 in L incl. connectors [106 mm H x 172 mm W x 270 mm L]</td></tr>
+    <tr><td>Recommended calibration cycle</td><td>24 months</td></tr>
+  </table>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>Document History</h2>
+  <table class="spec">
+    <tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr>
+    <tr><td>V2.58</td><td>2024-06-17</td><td>AT</td><td>Updated options and pulse width</td></tr>
+    <tr><td>V2.59</td><td>2025-04-18</td><td>AT</td><td>Removed option NM</td></tr>
+  </table>
+  <p>Berkeley Nucleonics Corporation &middot; 2955 Kerner Blvd., San Rafael, CA 94901 &middot; Phone: 415-453-9955 &middot; info@berkeleynucleonics.com &middot; berkeleynucleonics.com</p>
 </section>
 
 
@@ -402,6 +683,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 845-OEM RF / Microwave Signal Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

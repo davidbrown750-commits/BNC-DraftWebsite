@@ -87,6 +87,14 @@ th .modelthumb{filter:none;}
 .note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
 .note.warn{border-left-color:#c77e00;background:#fff7e9;}
 .note b{color:var(--blue-dark);}
+/* ---- cross-references ---- */
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
+/* ---- performance-curve figure grid ---- */
+.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px;}
+.ds-fig{margin:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px;overflow:hidden;}
+.ds-fig img{width:100%;height:auto;display:block;border-radius:4px;}
+.ds-fig figcaption{font-size:.82rem;color:var(--muted);margin-top:8px;line-height:1.4;}
 /* ---- footer (dark, so white logo shows) ---- */
 .doc-footer{background:#0e2038;border-top:1px solid var(--line);padding:30px 0;color:#9bb0cc;font-size:.82rem;}
 .doc-footer .wrap{max-width:var(--wrap);}
@@ -180,11 +188,11 @@ th .modelthumb{filter:none;}
 <div class="layout">
 <aside class="toc">
   <h4>Contents</h4>
-  <a href="#overview">1. Overview</a>
-  <a href="#how">2. How It Works</a>
+  <a href="#overview">1. Introduction</a>
+  <a href="#how">2. Operation</a>
   <a href="#spec">3. Specifications</a>
-  <a href="#panel">4. Front Panel &amp; Monitoring</a>
-  <a href="#remote">5. Remote &amp; Gate Control</a>
+  <a href="#s-perf">4. Typical Performance Curves</a>
+  <a href="#panel">5. Front Panel &amp; Monitoring</a>
   <a href="#applications">6. Applications</a>
   <a href="#ordering">7. Ordering Information</a>
 </aside>
@@ -192,106 +200,114 @@ th .modelthumb{filter:none;}
 <main class="content">
 
 <section id="overview">
-  <h2><span class="num">1</span>Overview</h2>
-  <div class="note warn"><b>Verify model designation.</b> This page uses the model number <b>PVX-4150</b>, which matches the source datasheet PDF. The product page lists the same unit as "PVX-4151." Confirm the correct final model designation with Berkeley Nucleonics before publishing or quoting.</div>
-  <p>The PVX-4150 is a high voltage pulse generator from the Directed Energy Division of Berkeley Nucleonics. It generates clean, fast pulse waveforms to 1,500 V and is optimized for high impedance capacitive loads. That suits it to driving extraction grids and deflection plates for the electrostatic modulation of particle beams in time-of-flight mass spectrometers and accelerators.</p>
-  <p>The same robust design serves a wide range of pulsing and gating tasks. Typical loads include power tube grids, Pockels cells and Q-switches, acoustic transducers, microchannel plates, photomultiplier tubes, and image intensifiers. The exceptional pulse fidelity of the PVX-4150 improves rather than limits the performance of the system around it.</p>
-  <p>The instrument is fully self-contained. All control and protection logic, support power, energy storage, and the output network are built in. It connects directly to the load and does not need series or shunt resistors, an impedance-matching network, or an external capacitor bank. To run, it needs a TTL gate signal, a user-supplied high voltage DC source, and an optional second supply when the output is biased away from ground.</p>
+  <h2><span class="num">1</span>Introduction</h2>
+  <div class="note warn"><b>Verify voltage rating.</b> This page transcribes the source datasheet PDF, which specifies a <b>&plusmn;1,500 V</b> output. A separate product listing refers to the same unit at <b>&plusmn;15 kV</b>. The two ratings differ by a factor of ten. Confirm the correct output rating with Berkeley Nucleonics before publishing or quoting; the values below follow the PDF.</div>
+  <p>The PVX-4150 pulse generator produces fast, high voltage waveforms to 1,500 V. Optimized for high impedance capacitive loads, it is well suited for driving extraction grids and deflection plates for electrostatic modulation of particle beams in time-of-flight mass spectrometers and accelerators. Its robust and versatile design also makes it well suited for pulsing or gating power tube grids, Pockels cells and Q-switches, acoustic transducers, microchannel plates, photomultiplier tubes, and image intensifiers. The exceptional pulse fidelity of the PVX-4150 will optimize the performance of any system in which it is used.</p>
+  <p>The PVX-4150 generates an output voltage pulse of 1,500 volts with rise and fall times less than 25 ns, with very flat voltage pulses to DC into a capacitive load. It can generate single-ended output pulses from ground to +1,500 V or from ground to &minus;1,500 V, and can also generate pulses originating from a DC voltage offset from ground by using both VLow and VHigh power supply inputs. This offset can be from &minus;1,500 V to +1,500 V, with a maximum power supply voltage differential of &le;1,500 V.</p>
+  <p>The PVX-4150 requires a TTL gate signal, a high voltage DC power supply, and optional DC offset supply inputs. The output pulse width and frequency are controlled by the gate signal. The pulse output voltage is controlled by the amplitude of the input DC power supplies.</p>
   <figure class="fig">
     <img src="figures/dei/PVX-4150/p1_x12.png" alt="DEI PVX-4150 high voltage pulse generator front panel with BNC square-wave logo, status LEDs, and monitor connectors">
-    <figcaption>PVX-4150 front panel: status LEDs for output enabled, over-current, control error, gated, and power, with Power, Enable, V Mon, I Mon, and Gate (50 &Omega;) connectors.</figcaption>
+    <figcaption>PVX-4150 front panel: status LEDs and Power, Enable, V Mon, I Mon, and Gate (50 &Omega;) connectors.</figcaption>
   </figure>
 </section>
 
 <section id="how">
-  <h2><span class="num">2</span>How It Works</h2>
-  <p>The PVX-4150 is a direct-coupled, air-cooled, solid-state half-bridge, often called a totem-pole output stage. Two high voltage switches sit in series between a user-supplied high rail (VHigh) and low rail (VLow). The gate decides which rail is connected to the output. When the gate is high, VHigh is switched to the output; when the gate is low, VLow is switched to the output. The pulse amplitude is therefore set by the difference between the two supply voltages, and the pulse width and repetition rate are set by the gate.</p>
-  <p>Driving the output from both rails gives flexible polarity. With VLow at ground, the unit produces positive pulses from ground to +1,500 V. With VHigh at ground, it produces negative pulses from ground to &minus;1,500 V. To make a negative-going pulse from a normally-high baseline, invert the gate so the input sits high until the unit is pulsed; when the gate goes low, VLow connects to the output and the result is a negative-going pulse. The output can also be offset from ground by setting both supplies, anywhere from &minus;1,500 V to +1,500 V, with a maximum supply differential of 1,500 V.</p>
-  <p>The totem-pole topology gives equally fast rise and fall times, low power dissipation, and virtually no overshoot, undershoot, or ringing. Over-current detection and shut-down circuitry protect the generator against arcs and shorts in the load or the interconnect cable.</p>
-  <div class="note"><b>Power budget.</b> When driving a capacitive load, dissipation follows C&middot;V&sup2;&middot;F, where C is the total load capacitance (load, cable, and the roughly 200 pF internal capacitance of the PVX-4150), V is the pulse voltage, and F is the repetition frequency. With a maximum dissipation of about 150 W, derated at 2 W per &deg;C above 25 &deg;C ambient, this relationship sets the achievable combination of load, voltage, and rate. At lower load capacitances or voltages below 1,500 V, the unit can run at continuous repetition frequencies above 240 kHz.</div>
+  <h2><span class="num">2</span>Operation</h2>
+  <p>When the input gate is high, the VHigh supply is connected to the output. When the input gate is low, the VLow supply is connected to the output. The PVX-4150 can therefore be used to generate a negative-going pulse by logically inverting the input gate, so that the input gate is high until the unit is pulsed. When the input gate goes low, the VLow input supply is connected to the output, thereby generating a negative-going pulse.</p>
+  <p>The PVX-4150 features front panel indicator LEDs to monitor the status of the pulse generator. Front panel voltage and current monitors provide a straightforward means to view the output voltage and current waveforms in real-time, eliminating the need for an external high voltage oscilloscope probe.</p>
+  <p>The pulse generator is a direct-coupled, air-cooled, solid-state half-bridge (totem pole) design, offering equally fast pulse rise and fall times, low power dissipation, and virtually no overshoot, undershoot or ringing. It has over-current detection and shut-down circuitry to protect the pulse generator from potential damage due to arcs and shorts in the load or interconnect cable. All control and protection logic circuitry, support power, energy storage, and output network are incorporated into the PVX-4150. It can be connected directly to the load, and does not require series or shunt resistors, impedance matching networks between the pulser and the load, or additional energy storage (capacitor banks). All of this is taken care of within the PVX-4150.</p>
+  <div class="note"><b>Power budget.</b> The power dissipated in the PVX-4150 when driving a capacitive load is defined by the formula CV&sup2;F, where C is the total load capacitance (load, interconnect cable, and the internal capacitance of the PVX-4150), V is the pulse voltage, and F is the pulse repetition frequency. For these calculations, the internal capacitance of the PVX-4150 is 200 pF, and RG-62 cable is 13 pF/foot. Given the maximum dissipation of 150 W, the maximum load capacitance, frequency, and/or voltage at which the PVX-4150 can operate can be approximated using this formula, which also approximates the high voltage power supply requirements. This formula is not applicable when driving resistive or inductive loads.</div>
 </section>
 
 <section id="spec">
   <h2><span class="num">3</span>Specifications</h2>
-  <p>All output specifications are measured into a 50 pF load connected with 6 ft (~1.8 m) of RG-62 (93 &Omega;) coaxial cable, at 1,500 V output. The PVX-4150 can drive loads from a few picofarads to several hundred picofarads, limited by its maximum power dissipation. It can also drive resistive or inductive loads within limits; contact Berkeley Nucleonics for application assistance.</p>
+  <p>All specifications measured into a 50 pF load connected with 6 feet (~1.8 m) of RG-62 (93 &Omega;) coaxial cable, at 1,500 V output. The PVX-4150 can drive loads of a few picofarads to several hundred picofarads of capacitance, limited by its maximum power dissipation capability. At lower load capacitances and/or voltages less than 1,500 V, the PVX-4150 can operate at continuous pulse recurrence frequencies above 240 kHz. It can also drive resistive or inductive loads, within limitations. Contact DEI for additional information and applications assistance.</p>
+
+  <h3>Output</h3>
   <table class="spec">
-    <tr><th>Output</th><th>Specification</th></tr>
-    <tr><td>Maximum value</td><td>&plusmn;1,500 V (VHigh &minus; VLow)</td></tr>
-    <tr><td>Minimum value</td><td>0 V</td></tr>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Maximum value</td><td>&plusmn;1,500 volts (VHigh &minus; VLow)</td></tr>
+    <tr><td>Minimum value</td><td>0 volts</td></tr>
     <tr><td>Means of adjustment</td><td>Controlled by power supply input voltages</td></tr>
-    <tr><td>Pulse rise and fall time</td><td>&lt;25 ns, typically &lt;20 ns (10% to 90%); ~18 ns at 1,500 V</td></tr>
+    <tr><td>Pulse rise and fall time (10% to 90%)</td><td>&lt;25 ns, typically &lt;20 ns</td></tr>
     <tr><td>Pulse width</td><td>&lt;60 ns to DC, controlled by input gate</td></tr>
-    <tr><td>Pulse recurrence frequency (PRF)</td><td>Single-shot to 240 kHz at 1,500 V continuous output (max. limited by power dissipation); 5 MHz burst, controlled by input gate</td></tr>
-    <tr><td>Max. average power</td><td>150 W (VHigh + VLow), derated at 2 W/&deg;C above 25 &deg;C ambient</td></tr>
+    <tr><td>Pulse recurrence frequency (PRF)</td><td>Single shot to 240 kHz at 1,500 V continuous output, maximum limited by power dissipation <sup>(1)</sup>; 5 MHz burst, controlled by input gate</td></tr>
+    <tr><td>Max. average power</td><td>150 W (VHigh + VLow), derated at 2 W/&deg;C over 25 &deg;C ambient <sup>(1)</sup></td></tr>
     <tr><td>Max. duty cycle</td><td>Continuous</td></tr>
     <tr><td>Droop</td><td>&lt;1%</td></tr>
     <tr><td>Over/undershoot</td><td>&lt;5%</td></tr>
     <tr><td>Throughput delay</td><td>120 ns typical</td></tr>
     <tr><td>Jitter</td><td>&lt;1 ns shot-to-shot</td></tr>
-    <tr><td>Output connector &amp; cable</td><td>SHV, with 6 ft (~1.8 m) RG-62 (93 &Omega;) coaxial cable</td></tr>
+    <tr><td>Output connector and cable</td><td>SHV, with 6 feet (~1.8 m) RG-62 (93 &Omega;) coaxial cable</td></tr>
   </table>
+  <p class="xref">See <a href="#s-perf">Figure 1</a> (minimum pulse width), <a href="#s-perf">Figure 2</a> (rise &amp; fall times) and <a href="#s-perf">Figure 4</a> (244 kHz operation) in Typical Performance Curves.</p>
+
+  <h3>Input DC Voltage +VIN (VHigh)</h3>
   <table class="spec">
-    <tr><th>Input DC voltage</th><th>Specification</th></tr>
-    <tr><td>+VIN (VHigh) absolute max.</td><td>+1,500 V</td></tr>
-    <tr><td>+VIN (VHigh) absolute min.</td><td>&minus;1,500 V</td></tr>
-    <tr><td>+VIN (VHigh) relative max.</td><td>+1,500 V over VLow voltage</td></tr>
-    <tr><td>+VIN (VHigh) relative min.</td><td>+0 V over VLow voltage</td></tr>
-    <tr><td>&minus;VIN (VLow) absolute max.</td><td>+1,500 V</td></tr>
-    <tr><td>&minus;VIN (VLow) absolute min.</td><td>&minus;1,500 V (only needed when biasing the output)</td></tr>
-    <tr><td>Input DC connectors</td><td>SHV, rear panel (one each for +VIN and &minus;VIN)</td></tr>
-  </table>
-  <table class="spec">
-    <tr><th>Gate, monitors &amp; general</th><th>Specification</th></tr>
-    <tr><td>Gate source &amp; connector</td><td>TTL into 50 &Omega;, front-panel BNC</td></tr>
-    <tr><td>Voltage monitor</td><td>1000:1 into 1 M&Omega;, BNC connector</td></tr>
-    <tr><td>Current monitor</td><td>10 A/V into 50 &Omega;, BNC connector</td></tr>
-    <tr><td>Support power</td><td>90&ndash;240 VAC, 50/60 Hz</td></tr>
-    <tr><td>Dimensions (H &times; W &times; D, excluding connectors)</td><td>5.2 in &times; 19 in &times; 13 in (13.2 &times; 48.25 &times; 33 cm)</td></tr>
-    <tr><td>Weight</td><td>Approximately 18 lb (8.2 kg)</td></tr>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Absolute max. value</td><td>+1,500 volts</td></tr>
+    <tr><td>Absolute min. value</td><td>&minus;1,500 volts</td></tr>
+    <tr><td>Relative max. value</td><td>+1,500 volts over VLow voltage</td></tr>
+    <tr><td>Relative min. value</td><td>+0 V over VLow voltage</td></tr>
   </table>
 
-  <div class="figrow">
-    <figure class="fig">
-      <img src="figures/dei/PVX-4150/p1_x9.jpeg" alt="PVX-4150 minimum pulse width waveform at 1500 V">
-      <figcaption>&lt;60 ns minimum pulse width, 1,500 V output (25 ns/div horizontal, 300 V/div vertical).</figcaption>
-    </figure>
-    <figure class="fig">
-      <img src="figures/dei/PVX-4150/p2_x17.jpeg" alt="PVX-4150 18 ns rise and fall time waveform at 1500 V">
-      <figcaption>18 ns rise and fall times, 1,500 V output (10 ns/div horizontal, 300 V/div vertical).</figcaption>
-    </figure>
-  </div>
-  <div class="figrow">
-    <figure class="fig">
-      <img src="figures/dei/PVX-4150/p2_x18.jpeg" alt="PVX-4150 typical output waveform at 1500 V">
-      <figcaption>Typical output waveform, 1,500 V output (1 &micro;s/div horizontal, 300 V/div vertical).</figcaption>
-    </figure>
-    <figure class="fig">
-      <img src="figures/dei/PVX-4150/p2_x19.jpeg" alt="PVX-4150 244 kHz frequency waveform at 1500 V">
-      <figcaption>244 kHz repetition frequency, 1,500 V output (2.5 &micro;s/div horizontal, 300 V/div vertical).</figcaption>
-    </figure>
+  <h3>Input DC Voltage &minus;VIN (VLow)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Absolute max. value</td><td>+1,500 volts</td></tr>
+    <tr><td>Absolute min. value</td><td>&minus;1,500 volts</td></tr>
+    <tr><td>Input DC connectors</td><td>SHV, rear panel (one each for +VIN and &minus;VIN)</td></tr>
+  </table>
+
+  <h3>Gate</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Gate source and connector</td><td>TTL into 50 &Omega;, into BNC connector on the front panel</td></tr>
+  </table>
+
+  <h3>Voltage and Current Monitors</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Voltage monitor</td><td>1000:1 into 1 M&Omega;, BNC connector</td></tr>
+    <tr><td>Current monitor</td><td>10 A/V into 50 &Omega;, BNC connector</td></tr>
+  </table>
+
+  <h3>General</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>Support power</td><td>90 VAC to 240 VAC, 50/60 Hz</td></tr>
+    <tr><td>Dimensions (H &times; W &times; D, excluding connectors)</td><td>5.2&Prime; &times; 19&Prime; &times; 13&Prime; (13.2 cm &times; 48.25 cm &times; 33 cm)</td></tr>
+    <tr><td>Weight (approximate)</td><td>18 lbs. (8.2 kilograms)</td></tr>
+  </table>
+  <p class="note"><b>(1)</b> The power dissipated in the PVX-4150 when driving a capacitive load is defined by the formula CV&sup2;F (see the power budget note under Operation). This formula is not applicable when driving resistive or inductive loads.</p>
+</section>
+
+<section id="s-perf">
+  <h2><span class="num">4</span>Typical Performance Curves</h2>
+  <p>Representative measured waveforms, reproduced from the PVX-4150 datasheet. All measured into a 50 pF load connected with 6 feet (~1.8 m) of RG-62 (93 &Omega;) coaxial cable. Curves are typical and not guaranteed.</p>
+  <div class="ds-figgrid">
+    <figure class="ds-fig"><img src="figures/pvx4150-ds/fig1-min-pulse-width.png" alt="Figure 1: under 60 ns minimum pulse width, 1,500 V output" loading="lazy"><figcaption>Figure 1: &lt;60 ns minimum pulse width, 1,500 V output (25 ns/div horizontal scale, 300 V/div vertical scale).</figcaption></figure>
+    <figure class="ds-fig"><img src="figures/pvx4150-ds/fig2-rise-fall-time.png" alt="Figure 2: 18 ns rise and fall times, 1,500 V output" loading="lazy"><figcaption>Figure 2: 18 ns rise &amp; fall times, 1,500 V output (10 ns/div horizontal scale, 300 V/div vertical scale).</figcaption></figure>
+    <figure class="ds-fig"><img src="figures/pvx4150-ds/fig3-typical-output.png" alt="Figure 3: Typical output waveform, 1,500 V" loading="lazy"><figcaption>Figure 3: Typical output waveform, 1,500 V (1 &micro;s/div horizontal scale, 300 V/div vertical scale).</figcaption></figure>
+    <figure class="ds-fig"><img src="figures/pvx4150-ds/fig4-244khz-frequency.png" alt="Figure 4: 244 kHz frequency, 1,500 V output" loading="lazy"><figcaption>Figure 4: 244 kHz frequency, 1,500 V output (2.5 &micro;s/div horizontal scale, 300 V/div vertical scale).</figcaption></figure>
   </div>
 </section>
 
 <section id="panel">
-  <h2><span class="num">4</span>Front Panel &amp; Monitoring</h2>
-  <p>Front-panel indicator LEDs report the state of the pulse generator at a glance: output enabled, over-current, control error, gated, and power. Two monitor outputs sit on the front panel. The voltage monitor scales the output 1000:1 into 1 M&Omega;, and the current monitor reports 10 A per volt into 50 &Omega;. Together they let an engineer view the real-time output voltage and current waveforms on a standard oscilloscope, without a high voltage scope probe.</p>
-  <p>Power and enable controls are on the front panel. The over-current circuit shuts the output down on a fault from an arc or short, protecting both the pulser and the load. High voltage input and output connections are on the rear panel to keep the operator side of the instrument at low voltage.</p>
-</section>
-
-<section id="remote">
-  <h2><span class="num">5</span>Remote &amp; Gate Control</h2>
-  <p>Pulse timing is driven entirely by the gate. The gate input accepts a TTL signal into 50 &Omega; on a front-panel BNC connector, and it sets both the pulse width and the repetition rate, including burst operation to 5 MHz. Output amplitude is set separately by the user-supplied high voltage DC supplies, so timing and amplitude are controlled independently.</p>
-  <p>Inverting the gate inverts the output, which is the standard way to produce a negative-going pulse from a normally-high baseline. For integration into automated or interlocked systems, contact Berkeley Nucleonics to confirm the available remote and status options for your configuration.</p>
+  <h2><span class="num">5</span>Front Panel &amp; Monitoring</h2>
+  <p>Front-panel indicator LEDs report the state of the pulse generator at a glance. Two monitor outputs sit on the front panel: the voltage monitor scales the output 1000:1 into 1 M&Omega;, and the current monitor reports 10 A per volt into 50 &Omega;. Together they let an engineer view the real-time output voltage and current waveforms on a standard oscilloscope, without a high voltage scope probe.</p>
+  <p>The over-current detection circuit shuts the output down on a fault from an arc or short, protecting both the pulser and the load. High voltage input and output connections are on the rear panel (SHV) to keep the operator side of the instrument at low voltage, while the TTL gate input is a front-panel BNC connector.</p>
+  <p class="xref">See <a href="#s-perf">Figure 3</a> (typical output waveform) in Typical Performance Curves.</p>
 </section>
 
 <section id="applications">
   <h2><span class="num">6</span>Applications</h2>
   <ul>
-    <li><strong>Time-of-flight mass spectrometry.</strong> High-rate pulsing of extraction grids and deflection plates for electrostatic modulation of ion beams.</li>
-    <li><strong>Accelerators and beam handling.</strong> Deflecting, gating, and kicking charged-particle beams.</li>
-    <li><strong>Electro-optics.</strong> Driving Pockels cells and Q-switches in laser cavities where fast, low-jitter edges matter.</li>
-    <li><strong>Detector gating.</strong> Gating microchannel plates, photomultiplier tubes, and image intensifiers.</li>
-    <li><strong>Tube and transducer drive.</strong> Pulsing or gating power tube grids and acoustic transducers.</li>
+    <li><strong>Time-of-flight mass spectrometry.</strong> Electrostatic modulation of particle beams by pulsing extraction grids and deflection plates.</li>
+    <li><strong>Accelerators.</strong> Modulation, deflection, and gating of charged-particle beams.</li>
+    <li><strong>Electro-optics.</strong> Pulsing or gating Pockels cells and Q-switches.</li>
+    <li><strong>Detector and tube gating.</strong> Gating microchannel plates, photomultiplier tubes, and image intensifiers; pulsing or gating power tube grids.</li>
+    <li><strong>Transducers.</strong> Driving acoustic transducers.</li>
   </ul>
 </section>
 
@@ -299,14 +315,14 @@ th .modelthumb{filter:none;}
   <h2><span class="num">7</span>Ordering Information</h2>
   <table class="spec">
     <tr><th>Model</th><th>Description</th></tr>
-    <tr><td>PVX-4150</td><td>&plusmn;1,500 V high voltage pulse generator, &lt;25 ns rise/fall, &lt;60 ns to DC pulse width, single-shot to 240 kHz with 5 MHz burst, with voltage and current monitors</td></tr>
+    <tr><td>PVX-4150</td><td>&plusmn;1,500 V high voltage pulse generator; &lt;25 ns rise/fall, &lt;60 ns to DC pulse width, single shot to 240 kHz with 5 MHz burst, SHV output, with voltage and current monitors</td></tr>
   </table>
   <p>The PVX-4150 requires a user-supplied high voltage DC source and a TTL gate. A second DC supply is needed only when the output is biased away from ground. Berkeley Nucleonics can advise on supply sizing from the load capacitance, pulse voltage, and repetition rate.</p>
   <h3>Contact</h3>
-  <p>For a quote, configuration help, or application support, reach the Berkeley Nucleonics team.</p>
   <p><strong>Email:</strong> <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a><br>
-  <strong>Phone:</strong> 800-234-7858</p>
-  <div class="note"><b>Request the full datasheet.</b> This page summarizes the PVX-4150 specifications. For the complete published datasheet and a configuration tailored to your load, <a href="../get-quote.html" target="_blank" rel="noopener">contact Berkeley Nucleonics</a>.</div>
+  <strong>Phone:</strong> (415) 453-9955<br>
+  2955 Kerner Blvd., San Rafael, CA 94901</p>
+  <div class="note"><b>Request the full datasheet.</b> This page transcribes the published PVX-4150 datasheet. For a configuration tailored to your load, <a href="../get-quote.html" target="_blank" rel="noopener">contact Berkeley Nucleonics</a>.</div>
 </section>
 
 </main>
@@ -376,6 +392,7 @@ inp.addEventListener("focus",function(){loadVids();if(inp.value)run(inp.value);}
 inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-item");if(ev.key==="ArrowDown"){ev.preventDefault();active=Math.min(active+1,its.length-1);mark(its);}else if(ev.key==="ArrowUp"){ev.preventDefault();active=Math.max(active-1,0);mark(its);}else if(ev.key==="Enter"){var t=(active>=0?its[active]:its[0]);if(t){if(t.getAttribute("data-vid")){ev.preventDefault();openVideo(t.getAttribute("data-vid"),+t.getAttribute("data-t"),t.getAttribute("data-title"));}else{window.open(t.href,"_blank","noopener");}}}else if(ev.key==="Escape"){panel.className="ss-panel";inp.blur();}});
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
+<script src="../_shared/pdf-configurator.js" data-doc="PVX-4150 &plusmn;1,500 V High Voltage Pulse Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

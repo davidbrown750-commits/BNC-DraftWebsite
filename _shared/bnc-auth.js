@@ -18,9 +18,11 @@
     CFG.supabaseUrl && CFG.supabaseUrl.indexOf('REPLACE') === -1 &&
     CFG.supabaseAnonKey && CFG.supabaseAnonKey.indexOf('REPLACE') === -1;
 
-  var FREE_PX = (CFG.freeManualPages || 7) * (CFG.pxPerPage || 1150);
+  var FREE_PX = (CFG.freeManualPages || 7) * (CFG.pxPerPage || 1150);  // legacy, unused
+  var FREE_CHARS = (CFG.freeManualChars || 10000);
+  var FREE_FRACTION = (CFG.freeManualFraction || 0.34);
 
-  var Clerk = null, sb = null;
+  var Clerk = null, sb = null, sbPublic = null;
 
   var LOCK_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
     '<path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z"/></svg>';
@@ -69,6 +71,16 @@
       toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
     }
   }
+  // New visitors hitting a gate (or the header button) should land on Sign Up
+  // first; the Clerk modal still has a "Sign in" link for returning users.
+  function triggerSignUp(resumeUrl) {
+    if (resumeUrl) { try { sessionStorage.setItem('bncResume', resumeUrl); } catch (e) {} }
+    if (configured && Clerk) {
+      Clerk.openSignUp({ afterSignInUrl: location.href, afterSignUpUrl: location.href });
+    } else {
+      toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
+    }
+  }
 
   /* ---------- header account control -------------------------------------- */
   function renderHeader() {
@@ -89,8 +101,11 @@
         Clerk.mountUserButton(btnWrap, { afterSignOutUrl: location.href });
       }
     } else {
-      var b = el('button', 'bnc-signin', 'Sign in');
-      b.addEventListener('click', function () { triggerSignIn(); });
+      // Not signed in => new visitors have no account yet, so open Sign Up
+      // (the Clerk sign-up modal still has an "Already have an account? Sign in"
+      // link for returning users).
+      var b = el('button', 'bnc-signin', 'Sign up');
+      b.addEventListener('click', function () { triggerSignUp(); });
       acct.appendChild(b);
     }
   }
@@ -102,9 +117,12 @@
 
   /* ---------- manual page-7 gate ------------------------------------------ */
   function applyManualGate() {
-    var body = document.querySelector('main.man-body');
+    // Works on both manual layouts: newer (main.man-body / section.ch) and
+    // older (main.content / section[id]).
+    var body = document.querySelector('main.man-body') || document.querySelector('main.content');
     if (!body) return;
     var secs = [].slice.call(body.querySelectorAll('section.ch'));
+    if (!secs.length) secs = [].slice.call(body.querySelectorAll('section[id]'));
     if (!secs.length) return;
 
     // reset to a clean state first
@@ -114,13 +132,24 @@
 
     if (isSignedIn()) return;   // full access for signed-in users
 
-    var bodyTop = body.getBoundingClientRect().top + window.scrollY;
-    var cut = -1;
-    for (var i = 0; i < secs.length; i++) {
-      var top = secs[i].getBoundingClientRect().top + window.scrollY - bodyTop;
-      if (top > FREE_PX) { cut = i; break; }
+    // Character-count cutoff: keep whole sections visible until the running
+    // body-text length passes FREE_CHARS, then gate everything after. This is
+    // consistent no matter how a manual is paginated — page numbers, table of
+    // contents, or chapter layout don't change where it cuts.
+    var total = 0, i;
+    for (i = 0; i < secs.length; i++) total += (secs[i].textContent || '').length;
+    // Free preview = the smaller of FREE_CHARS and a fraction of the whole
+    // manual. So long manuals get a bounded preview and short manuals still
+    // gate (they reveal about a third before locking).
+    var target = Math.min(FREE_CHARS, total * FREE_FRACTION);
+    var acc = 0, cut = -1;
+    for (i = 0; i < secs.length; i++) {
+      acc += (secs[i].textContent || '').length;
+      if (acc > target) { cut = i + 1; break; }
     }
-    if (cut <= 0) return;       // whole manual is within the free allowance
+    // back-loaded fallback: if the cut lands at the end, still gate the tail
+    if ((cut <= 0 || cut >= secs.length) && secs.length > 1) cut = secs.length - 1;
+    if (cut <= 0 || cut >= secs.length) return;   // single-section, nothing to gate
 
     var hidden = secs.slice(cut);
     hidden.forEach(function (s) { s.style.display = 'none'; });
@@ -135,11 +164,11 @@
     inner.appendChild(el('div', 'lockwrap', LOCK_SVG));
     inner.appendChild(el('h3', null, 'Read the full manual'));
     inner.appendChild(el('p', null,
-      'You are viewing the first ' + (CFG.freeManualPages || 7) +
-      ' pages. Sign in with a free account to read the remaining ' + remaining +
-      ' chapter' + (remaining === 1 ? '' : 's') + ', plus download software tools and view expanded pricing.'));
+      'You are previewing the opening of this manual. Sign in with a free account to read the ' +
+      'remaining ' + remaining + ' section' + (remaining === 1 ? '' : 's') +
+      ', plus download software tools and view expanded pricing.'));
     var cta = el('button', 'cta', 'Sign in to continue');
-    cta.addEventListener('click', function () { triggerSignIn(location.href); });
+    cta.addEventListener('click', function () { triggerSignUp(location.href); });
     inner.appendChild(cta);
     inner.appendChild(el('div', 'sub', 'No account yet? Creating one is free and takes a moment.'));
     card.appendChild(inner);
@@ -147,29 +176,29 @@
   }
 
   function lockToc(hiddenSecs) {
-    var toc = document.querySelector('.man-toc'); if (!toc) return;
+    var toc = document.querySelector('.man-toc') || document.querySelector('.toc'); if (!toc) return;
     var ids = {};
     hiddenSecs.forEach(function (s) { if (s.id) ids['#' + s.id] = 1; });
     // also lock sub-anchors that live inside hidden sections
     [].slice.call(toc.querySelectorAll('a[href^="#"]')).forEach(function (a) {
       var href = a.getAttribute('href');
-      var target = document.querySelector(href.replace(/"/g, '\\"'));
-      var inHidden = ids[href] || (target && target.closest && target.closest('section.ch') &&
-        hiddenSecs.indexOf(target.closest('section.ch')) !== -1);
+      var target = null; try { target = document.querySelector(href.replace(/"/g, '\\"')); } catch (e) {}
+      var inHidden = ids[href] || (target && target.closest && target.closest('section') &&
+        hiddenSecs.indexOf(target.closest('section')) !== -1);
       if (inHidden) {
         a.classList.add('bnc-locked');
         if (!a.querySelector('svg')) a.insertAdjacentHTML('afterbegin', LOCK_SVG);
         if (!a.__bncBound) {
           a.__bncBound = true;
           a.addEventListener('click', function (e) {
-            if (!isSignedIn()) { e.preventDefault(); triggerSignIn(location.href); }
+            if (!isSignedIn()) { e.preventDefault(); triggerSignUp(location.href); }
           });
         }
       }
     });
   }
   function unlockToc() {
-    [].slice.call(document.querySelectorAll('.man-toc a.bnc-locked')).forEach(function (a) {
+    [].slice.call(document.querySelectorAll('.man-toc a.bnc-locked, .toc a.bnc-locked')).forEach(function (a) {
       a.classList.remove('bnc-locked');
       var svg = a.querySelector('svg'); if (svg) svg.remove();
     });
@@ -185,7 +214,7 @@
         a.addEventListener('click', function (e) {
           if (!isSignedIn()) {
             e.preventDefault();
-            triggerSignIn(a.href);
+            triggerSignUp(a.href);
           }
         });
       }
@@ -198,21 +227,26 @@
     var host = document.querySelector('[data-bnc-pricing="expanded"]');
     if (!host) return;
     host.innerHTML = '';
-    if (!isSignedIn() || !sb) {
+    if (!isSignedIn() || !sbPublic) {
       var g = el('div', 'bnc-pricing-gate');
       g.appendChild(el('h3', null, 'Expanded pricing is for registered users'));
       g.appendChild(el('p', null, 'Sign in with a free account to view the full price list.'));
       var cta = el('button', 'cta', 'Sign in to view');
-      cta.addEventListener('click', function () { triggerSignIn(location.href); });
+      cta.addEventListener('click', function () { triggerSignUp(location.href); });
       g.appendChild(cta);
       host.appendChild(g);
       return;
     }
     host.appendChild(el('p', 'bnc-loading', 'Loading the full price list...'));
-    sb.from('bnc_pricing').select('model,description,price_usd,category,is_option,sort')
+    sbPublic.from('bnc_pricing').select('model,description,price_usd,category,is_option,sort')
       .eq('tier', 'expanded').order('sort', { ascending: true })
       .then(function (res) {
         host.innerHTML = '';
+        if (res && res.error) {
+          host.appendChild(el('p', null, 'Pricing is temporarily unavailable. Please try again shortly.'));
+          if (window.console) console.warn('[bnc-auth] pricing read error:', res.error.message);
+          return;
+        }
         var rows = (res && res.data) || [];
         if (!rows.length) { host.appendChild(el('p', null, 'No expanded pricing published yet.')); return; }
         var groups = [], byName = {};
@@ -316,12 +350,54 @@
     }).then(function () {}, function () {}); // best-effort, never block UI
   }
 
+  /* ---------- prefill contact forms from the signed-in profile ------------ */
+  // Log in once, never retype: fill name/email/phone/company on every form
+  // (contact, quote, RMA, configurator) from the Clerk profile when signed in.
+  // Only fills empty fields, so anything the visitor typed is left alone.
+  function prefillForms() {
+    if (!isSignedIn()) return;
+    var u = Clerk.user;
+    var name = u.fullName || u.firstName || '';
+    var email = (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || '';
+    var phone = (u.primaryPhoneNumber && u.primaryPhoneNumber.phoneNumber) || '';
+    var company = (u.publicMetadata && (u.publicMetadata.company || u.publicMetadata.organization)) || '';
+    var map = { name: name, Name: name, email: email, Email: email, _replyto: email,
+                phone: phone, Phone: phone, company: company, organization: company, Organization: company };
+    [].slice.call(document.querySelectorAll('form')).forEach(function (f) {
+      Object.keys(map).forEach(function (k) {
+        if (!map[k]) return;
+        var el = f.querySelector('[name="' + k + '"]');
+        if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && !el.value) {
+          el.value = map[k];
+          try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) {}
+        }
+      });
+    });
+    // The PDF configurator's email box is built outside a <form> (class only),
+    // so fill it directly when signed in.
+    if (email) {
+      var pe = document.querySelector('.pdfcfg-email');
+      if (pe) {
+        if (!pe.value) {
+          pe.value = email;
+          try { pe.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) {}
+        }
+        // Signed in: hide the email box + note entirely; the value stays set so
+        // the Build button still submits to their account email.
+        pe.style.display = 'none';
+        var pnote = document.querySelector('.pdfcfg-note');
+        if (pnote) pnote.style.display = 'none';
+      }
+    }
+  }
+
   /* ---------- apply everything for the current auth state ----------------- */
   function applyState() {
     renderHeader();
     applyManualGate();
     applyDownloadGate();
     applyPricingGate();
+    prefillForms();
   }
 
   /* ---------- boot -------------------------------------------------------- */
@@ -350,6 +426,11 @@
           return (Clerk && Clerk.session) ? Clerk.session.getToken() : Promise.resolve(null);
         }
       });
+      // Plain anon client (no Clerk token) for reads governed purely by RLS
+      // policy, e.g. expanded pricing. When signed in, the main client above
+      // sends the Clerk JWT, which Supabase rejects unless a Clerk third-party-
+      // auth bridge is configured — so we read pricing with the anon key instead.
+      sbPublic = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
       // resume an action the user was blocked on before signing in
       if (isSignedIn()) {
         var resume = null;
@@ -361,7 +442,13 @@
       recordVisit();
       maybeShowContactModal();
       // react to sign-in / sign-out without a full reload
+      // Reload once when the signed-in state actually flips, so gated content
+      // unlocks (or re-locks) immediately without a manual refresh. Guarded on
+      // the state change so it can't loop.
+      var __bncSignedIn = isSignedIn();
       Clerk.addListener(function () {
+        var now = isSignedIn();
+        if (now !== __bncSignedIn) { __bncSignedIn = now; location.reload(); return; }
         applyState();
         if (isSignedIn()) { recordVisit(); maybeShowContactModal(); }
       });

@@ -82,6 +82,8 @@ th .modelthumb{filter:none;}
 .note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
 .note.warn{border-left-color:#c77e00;background:#fff7e9;}
 .note b{color:var(--blue-dark);}
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
 /* ---- footer (dark, so white logo shows) ---- */
 .doc-footer{background:#0e2038;border-top:1px solid var(--line);padding:30px 0;color:#9bb0cc;font-size:.82rem;}
 .doc-footer .wrap{max-width:var(--wrap);}
@@ -166,8 +168,8 @@ th .modelthumb{filter:none;}
   <div class="ht">
     <div class="kicker">Product Data Sheet</div>
     <h1>Model 686 Arbitrary Waveform Generator</h1>
-    <p>The fastest 14-bit arbitrary waveform generator in the Berkeley Nucleonics line: sample rates from 1 Sa/s to 20 GS/s, 10 GHz of generation bandwidth, up to 9 Gpts of record length, and two or four analog channels with up to 32 optional digital channels in one instrument.</p>
-    <div class="ver">Model 686 &middot; Document rev. A &middot; Specifications typical, verify against published datasheet</div>
+    <p>A 14-bit arbitrary waveform generator with sample rates programmable from 1 S/s to 20 GS/s, up to 9 Gpts of waveform memory, and two or four analog channels with up to 32 optional digital channels in one instrument. Three operating modes (AFG, True Arb, and optional Pulse Pattern Generator) cover function generation, arbitrary waveforms, and serial pattern testing.</p>
+    <div class="ver">Model 686 &middot; Datasheet V1, 2024-04 &middot; Specifications typical, verify against published datasheet</div>
   </div>
   <div class="hero-img"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"></div>
 </div></section>
@@ -175,398 +177,648 @@ th .modelthumb{filter:none;}
 <div class="layout">
 <aside class="toc">
   <h4>Contents</h4>
-  <a href="#overview">1. Overview</a>
-  <a href="#features">2. Key Features</a>
-  <a href="#panels">3. Front &amp; Rear Panels</a>
-  <a href="#modes">4. Software Modes</a>
-  <a href="#general">5. General Specifications</a>
-  <a href="#truearb">6. TrueArb (Baseband)</a>
-  <a href="#afg">7. AFG Mode</a>
-  <a href="#ppg">8. Pulse Pattern Generator</a>
-  <a href="#timing">9. Timing &amp; Clock</a>
-  <a href="#digital">10. Digital Outputs</a>
-  <a href="#aux">11. Aux In / Out</a>
-  <a href="#system">12. Power &amp; System</a>
-  <a href="#ordering">13. Ordering &amp; Part Numbering</a>
-  <a href="#applications">14. Applications</a>
-  <a href="#software">15. Software &amp; Support</a>
+  <a href="#s1">Introduction</a>
+  <a href="#s2">User Interface &amp; Modes</a>
+  <a href="#s3">Available Models &amp; Memory</a>
+  <a href="#s4">Options &amp; Accessories</a>
+  <a href="#s5">General Specifications</a>
+  <a href="#s6">True Arb (Baseband)</a>
+  <a href="#s7">AFG Mode</a>
+  <a href="#s8">Pulse Pattern Generator</a>
+  <a href="#s9">Timing &amp; Clock</a>
+  <a href="#s10">Digital Outputs</a>
+  <a href="#s11">Auxiliary In / Out</a>
+  <a href="#s12">Power &amp; System</a>
+  <a href="#s13">Applications</a>
+  <a href="#s14">Document History</a>
 </aside>
 
 <main class="content">
 
-<section id="overview">
-  <h2><span class="num">1</span>Overview</h2>
-  <p>The Berkeley Nucleonics Model 686 is the fastest 14-bit arbitrary waveform generator in the line. A programmable sample rate from 1 Sa/s to 20 GS/s, 14-bit vertical resolution, and up to 9 Gpts of waveform memory let a single instrument reproduce nearly any signal, ideal or distorted, standard or fully custom. Two or four analog channels are available, each capable of 5 Vpp single-ended or 1.25 Vpp differential into 50 ohm, with rise and fall times as short as 50 ps and a 6.5 GHz sine output. The instrument reaches 10 GHz of generation bandwidth, so the real-world edges and pulse shapes demanded by frontier test cases come straight off the front panel.</p>
-  <p>The 686 was built for mixed-signal work. Four-channel models add up to 32 synchronized digital channels through an optional license, so analog stimulus and digital patterns run together for debugging and validating high-speed digital designs. When one chassis is not enough, up to four instruments synchronize over a dedicated bus to form a single 16 analog and 128 digital channel generator, with intra-chassis timing held tight across the group.</p>
-  <p>Operation is organized around three software modes that share one touch-driven platform. Simple Rider AFG provides a DDS function-generator interface for fast, conventional waveform setup. TrueArb is a variable-clock arbitrary mode for long, sequenced waveforms with loops, jumps, and conditional branches. The optional Pulse Pattern Generator (PPG) produces PRBS and custom serial patterns up to 6.5 Gbaud with arbitrarily shaped bit transitions. A 7-inch capacitive touchscreen, front-panel buttons, and a control knob handle local operation, while LAN, USB-TMC, and GPIB cover remote control and automation.</p>
-  <div class="fig"><figure><img src="figures/awg/686/686_x32_p1_728x332.jpeg" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator, three-quarter view"><figcaption>Model 686, three-quarter view showing the 7-inch touchscreen, control knob, and front-panel SMA output bank.</figcaption></figure></div>
-</section>
-
-<section id="features">
-  <h2><span class="num">2</span>Key Features</h2>
+<section id="s1">
+  <h2><span class="num">1</span>Introduction</h2>
+  <p>The Model 686 is a 14-bit arbitrary waveform generator. Sample rate can be programmed from 1 S/s up to 20 GS/s, with 14-bit vertical resolution, to ensure exceptional signal integrity. Arbitrary waveform memory reaches up to 9 Gpts.</p>
+  <p>Mixed signal generation is built in: 2 or 4 analog channels with up to 32 synchronized digital channels for debugging and validating digital design. The instrument offers three operation modes, Simple Rider AFG (DDS AFG mode), True Arb (variable clock arbitrary AWG mode), and PPG (pulse/serial pattern generator, optional). Digital outputs provide up to 10 Gb/s data rate in programmable CML standard, and a CML to LVTTL adapter is available.</p>
+  <p>An advanced sequencer with up to 16,384 user-defined waveforms makes it possible to generate complex signal scenarios with the most efficient memory usage. The Windows-based platform uses a 7 inch touchscreen with front panel buttons and a knob. The compact form factor is convenient for benchtop use and fully fits the 3U, 19 inch rackmount standard. LAN, USB-TMC, and GPIB interfaces are provided for remote control.</p>
+  <h3>Features &amp; Benefits</h3>
   <ul>
-    <li><strong>Up to 20 GS/s, 14-bit.</strong> Sample rate programmable from 1 Sa/s to 20 GS/s with 14-bit vertical resolution for exceptional signal integrity.</li>
-    <li><strong>Deep memory.</strong> Arbitrary waveform memory up to 9 Gpts for long, complex playback without re-loading.</li>
-    <li><strong>Mixed-signal generation.</strong> 2 or 4 analog channels with up to 32 synchronized digital channels for debugging and validating digital designs.</li>
-    <li><strong>Three operation modes.</strong> Simple Rider AFG (DDS function generator), TrueArb (variable-clock arbitrary AWG), and PPG (pulse and serial pattern generator, optional).</li>
-    <li><strong>High-rate digital outputs.</strong> Up to 10 Gb/s per channel in programmable CML; a CML-to-LVTTL adapter is available.</li>
-    <li><strong>Advanced sequencer.</strong> Up to 16,384 user-defined waveform entries build complex signal scenarios with efficient memory use.</li>
-    <li><strong>Fast edges, high amplitude.</strong> 5 Vpp output with rise and fall times to 50 ps and 6.5 GHz sine, a strong amplitude-and-bandwidth combination.</li>
-    <li><strong>Synchronization to 16 / 128 channels.</strong> Up to four units lock together for 16 analog and 128 digital channels over a dedicated sync bus.</li>
-    <li><strong>Windows platform.</strong> 7-inch capacitive touchscreen, front-panel buttons and knob, Windows 10, and a compact 3U 19-inch rackmount form factor.</li>
-    <li><strong>Standard remote interfaces.</strong> LAN, USB-TMC, and GPIB for instrument control and automated programming.</li>
+    <li>Sample rate programmable from 1 S/s up to 20 GS/s, with 14-bit vertical resolution, ensures exceptional signal integrity</li>
+    <li>Arbitrary waveform memory up to 9 Gpts</li>
+    <li>Mixed signal generation, 2 or 4 analog channels with up to 32 synchronized digital channels for debugging and validating digital design</li>
+    <li>Three operation modes, Simple Rider AFG (DDS AFG mode), True Arb (variable clock arbitrary AWG mode), and PPG (pulse/serial pattern generator, optional)</li>
+    <li>Digital outputs provide up to 10 Gb/s data rate in programmable CML standard; CML to LVTTL adapter is available</li>
+    <li>Advanced sequencer with up to 16,384 user-defined waveforms for complex signal scenarios with efficient memory usage</li>
+    <li>Windows-based platform with 7 inch touchscreen, front panel buttons, and knob</li>
+    <li>Compact form factor, convenient for benchtop and fully fitting the 3U, 19 inch rackmount standard</li>
+    <li>LAN, USB-TMC, and GPIB interfaces for remote control</li>
+  </ul>
+  <h3>Applications</h3>
+  <ul>
+    <li>Optics, Photonics, RF Wireless</li>
+    <li>Quantum Applications</li>
+    <li>Automotive</li>
+    <li>Advanced Research Applications</li>
+    <li>Semiconductors Tests</li>
+    <li>Aerospace and Defense</li>
   </ul>
 </section>
 
-<section id="panels">
-  <h2><span class="num">3</span>Front &amp; Rear Panels</h2>
-  <p>The front panel groups the touchscreen, control knob, and numeric keypad on the left, with the analog output bank, marker outputs, and trigger inputs on the right. The rear panel carries the reference and sync clock connectors, the digital output pods, the QSFP synchronization links, the computing ports, and AC input.</p>
-  <div class="fig"><figure><img src="figures/awg/686/686_x105_p3_1250x511.jpeg" alt="Model 686 front panel"><figcaption>Model 686 front panel: 7-inch touchscreen and knob, AFG keypad, CH OUT SMA bank, marker outputs, and trigger inputs.</figcaption></figure></div>
-  <div class="fig"><figure><img src="figures/awg/686/686_x107_p3_1238x491.jpeg" alt="Model 686 rear panel"><figcaption>Model 686 rear panel: reference and sync clock SMA connectors, sync I/O, computing ports, digital output pods, and AC inlet.</figcaption></figure></div>
-</section>
-
-<section id="modes">
-  <h2><span class="num">4</span>Software Modes</h2>
-  <p>The 686 presents one touch-driven platform with three operating interfaces. Each is purpose-built for a class of signal generation, and all share the same instrument hardware.</p>
+<section id="s2">
+  <h2><span class="num">2</span>User Interface &amp; Operating Modes</h2>
   <h3>Simple Rider AFG: Function Generator Mode</h3>
-  <p>The AFG interface puts the capabilities of a modern function generator at the user's fingertips, with a tablet-style touch layout. A swipe gesture exposes the output waveform parameters, a touch-friendly numeric keypad speeds data entry, and shortcuts and intuitive icons streamline setup. Standard waveforms include sine, square, pulse, ramp, noise, DC, Sin(x)/x, Gaussian, Lorentz, exponential rise, exponential decay, and Haversine.</p>
-  <div class="fig"><figure><img src="figures/awg/686/686_x110_p4_650x392.jpeg" alt="Simple Rider AFG function generator interface"><figcaption>Simple Rider AFG: function-generator mode with carrier waveform, amplitude, frequency, phase, and run-mode controls.</figcaption></figure></div>
+  <p>The Simple Rider AFG UI is designed for touch and has been developed to put all the capabilities of modern waveform generators right at your fingertips. All instrument controls and parameters are accessed through an intuitive UI that recalls the simplicity of tablets and modern smart phones. Touch features and gestures are available to engineers and scientists to create advanced waveforms or digital patterns in a few touches. The swipe gesture gives easy access to the output waveform parameters, a touch-friendly virtual numeric keypad improves the experience when entering data, and time-saving shortcuts with intuitive icons simplify instrument setup.</p>
   <h3>Simple Rider TrueArb: AWG Mode</h3>
-  <p>TrueArb lets users define complex waveforms with up to 16,384 sequence entries of analog waveforms and digital patterns, and lay out execution flow with loops, jumps, and conditional branches. Waveform memory of up to 9 GSamples per channel, combined with sequence repeats up to 4,294,967,294, makes the 686 suited to the most demanding scenarios. Synchronized digital output paired with the analog signals provides an effective tool for troubleshooting and validating digital designs.</p>
-  <div class="figrow">
-    <figure class="fig"><img src="figures/awg/686/686_x111_p4_649x379.jpeg" alt="TrueArb analog sequencer interface"><figcaption>TrueArb analog sequencer: per-entry waveform selection (sine, DC, ramp, Gaussian) with repetition and length control.</figcaption></figure>
-    <figure class="fig"><img src="figures/awg/686/686_x112_p4_649x379.jpeg" alt="TrueArb digital pattern sequencer interface"><figcaption>TrueArb digital sequencer: synchronized digital pattern entries shown alongside the analog timeline.</figcaption></figure>
-  </div>
+  <p>In the Simple Rider True-Arb interface, users can define complex waveforms with up to 16,384 sequence entries of analog waveforms and digital patterns, and define their execution flow by means of loops, jumps, and conditional branches. Digital output combined and synchronized with analog output signals is an ideal tool to troubleshoot and validate digital design.</p>
+  <p>The waveform memory length of up to 9 GSamples on each channel, combined with up to 16,384 sequence entries and up to 4,294,967,294 repetitions, makes the Model 686 an ideal generator for the most demanding technical applications. Up to 4 instruments can be synchronized together to obtain a 16 analog, 128 digital channel generator. A dedicated synchronization bus guarantees intra-chassis synchronization. Arb Rider supports the standard Ethernet interface for remote control and easy customized instrument programming.</p>
   <h3>Simple Rider PPG: Pulse Pattern Generator Mode</h3>
-  <p>The optional PPG interface creates pattern scenarios in a few screen touches. It generates PRBS patterns and custom patterns up to 12 MSymbols, where bit transitions can take arbitrarily user-defined shapes, at rates up to 6.5 Gbaud. The architecture supports several generation modes and can modulate patterns with internal or external signals to introduce controlled impairments such as jitter and ripple.</p>
-  <div class="fig"><figure><img src="figures/awg/686/686_x121_p5_669x392.jpeg" alt="Simple Rider PPG pulse pattern generator interface"><figcaption>Simple Rider PPG: pattern carrier and transition data with programmable rise and fall times and run mode.</figcaption></figure></div>
+  <p>The touch screen display interface allows creating pattern scenarios in a few screen touches. The Pulse Pattern Generator provides the capability to generate PRBS patterns and up to 12 MSymbols custom patterns where bit transitions can have arbitrarily user-defined shapes. The Model 686 Pulse Pattern Generator can generate patterns up to 6.5 Gbaud. The software architecture makes it possible to generate the patterns in different generation modalities and also to modulate the patterns with internal or external signals, with the purpose of generating different effects of noise (jitter, ripple, and similar).</p>
 </section>
 
-<section id="general">
+<section id="s3">
+  <h2><span class="num">3</span>Table of Available Models</h2>
+  <table class="spec">
+    <tr><th>Model</th><th>Description</th></tr>
+    <tr><td>686-2C-SE</td><td>2 CH, 5 Vpp single-ended outputs, 20 GS/s</td></tr>
+    <tr><td>686-2CD</td><td>2 CH, 2.5 Vpp (1.25 Vpp single-ended) differential outputs, 20 GS/s</td></tr>
+    <tr><td>686-4C-SE</td><td>4 CH, 5 Vpp single-ended outputs, 20 GS/s</td></tr>
+    <tr><td>686-4CD</td><td>4 CH, 2.5 Vpp (1.25 Vpp single-ended) differential outputs, 20 GS/s</td></tr>
+  </table>
+  <h3>Memory vs. Model and Operating Modes</h3>
+  <p>Memory per channel (Msamples), Full Rate mode, 20 GS/s max sampling rate.</p>
+  <table class="spec">
+    <tr><th>Channel count</th><th>Model</th><th>CH1</th><th>CH2</th><th>CH3</th><th>CH4</th></tr>
+    <tr><td>2</td><td>686-2C-SE / 686-2CD</td><td>9600</td><td>1.17</td><td></td><td></td></tr>
+    <tr><td>4</td><td>686-4C-SE / 686-4CD</td><td>9600</td><td>0.589</td><td>9600</td><td>0.589</td></tr>
+  </table>
+</section>
+
+<section id="s4">
+  <h2><span class="num">4</span>Options and Accessories</h2>
+  <table class="spec">
+    <tr><th>Item</th><th>Description</th></tr>
+    <tr><td>686-PAT</td><td>Serial Pattern Generator (SPG)</td></tr>
+    <tr><td>686-8DIG</td><td>8 CH digital license (available only for 4-channel models)</td></tr>
+    <tr><td>686-16DIG</td><td>16 CH digital license (available only for 4-channel models)</td></tr>
+    <tr><td>686-32DIG</td><td>32 CH digital license (available only for 4-channel models)</td></tr>
+    <tr><td>686-FSS</td><td>Fast Sequence Switch</td></tr>
+    <tr><td>686-WAR</td><td>3 years warranty extension</td></tr>
+    <tr><td>RIDER-MINI-SAS-HD</td><td>Mini SAS HD cable for digital probe, 8 differential signals (available only for 4-channel models)</td></tr>
+    <tr><td>RIDER-686-SYNC</td><td>Synchronization cable for all 686 models</td></tr>
+    <tr><td>AT-DTTL8</td><td>LVDS to LVTTL digital adapter probe (available only for 4-channel models)</td></tr>
+    <tr><td>AT-LVDS-SMA8</td><td>CML to SMA digital adapter cable (available only for 4-channel models)</td></tr>
+    <tr><td>GP-IB / USB-TMC</td><td>GPIB and USB-TMC ports for remote control</td></tr>
+    <tr><td>RIDER-RACK</td><td>Rackmount kit for Rider instrument system</td></tr>
+  </table>
+</section>
+
+<section id="s5">
   <h2><span class="num">5</span>General Specifications</h2>
-  <p>All specifications are typical unless noted otherwise. Guaranteed performance refers to a calibrated instrument stored for at least 2 hours within the operating temperature range of 41 to 104 F (5 to 40 C), after a 45-minute warm-up, and within 18 F (10 C) of the auto-calibration temperature.</p>
+  <p>All specifications are typical unless noted otherwise. The guaranteed performances are referred to a calibrated instrument that has been stored for a minimum of 2 hours within the operating temperature range of 5 &deg;C to 40 &deg;C and after a 45-minute warm-up period, within &plusmn;10 &deg;C after auto-calibration.</p>
   <table class="spec">
     <tr><th>Parameter</th><th>686-2C-SE / 686-4C-SE</th><th>686-2CD / 686-4CD</th></tr>
-    <tr><td>Operating modes</td><td colspan="2">AFG mode, TrueArb mode, SPG / PPG mode (optional)</td></tr>
-    <tr><td>Analog channels</td><td colspan="2">2 (2-channel models) or 4 (4-channel models)</td></tr>
-    <tr><td>Markers</td><td colspan="2">2 (2-channel models) or 4 (4-channel models)</td></tr>
-    <tr><td>Digital channels</td><td colspan="2">Up to 32 (4-channel models, optional license)</td></tr>
-    <tr><td>Output type</td><td>Single-ended, DC coupled</td><td>Differential, DC coupled</td></tr>
-    <tr><td>Output impedance</td><td>50 ohm single-ended</td><td>50 ohm single-ended / 100 ohm differential</td></tr>
+    <tr><td>Operating Mode</td><td colspan="2">AFG Mode, True Arb Mode, SPG Mode (optional)</td></tr>
+    <tr><td>Analog channels</td><td colspan="2">2 (2C models), 4 (4C models)</td></tr>
+    <tr><td>Markers</td><td colspan="2">2 (2C models), 4 (4C models)</td></tr>
+    <tr><td>Digital Channels</td><td colspan="2">&ndash; (2C models), 32 (4C models)</td></tr>
+    <tr><td>Output Type</td><td>Single ended DC coupled</td><td>Differential DC coupled</td></tr>
+    <tr><td>Output Impedance</td><td>Single ended: 50 &Omega;</td><td>Single ended: 50 &Omega;<br>Differential: 100 &Omega;</td></tr>
     <tr><td>Connectors</td><td colspan="2">SMA on front panel</td></tr>
-    <tr><td>Vertical resolution</td><td colspan="2">14-bit</td></tr>
+    <tr><td>DC Amplitude range</td><td>&plusmn;2.5 V (into 50 &Omega;)</td><td>&plusmn;0.625 V Se. (into 50 &Omega;)<br>&plusmn;1.25 V Diff. (into 100 &Omega;)</td></tr>
+    <tr><td>Amplitude resolution</td><td>500 &micro;V (nom), 5 digits</td><td>100 &micro;V (nom), 5 digits</td></tr>
+    <tr><td>Amplitude accuracy</td><td>&plusmn;(1.5% of |setting| + 15 mV)<sup>3</sup></td><td>&plusmn;(1% of |setting| + 2 mV)<sup>3</sup></td></tr>
+    <tr><td>DC baseline hardware offset resolution</td><td colspan="2">&lt; 4 mV or 4 digits</td></tr>
+    <tr><td>Offset range (50 &Omega; into 50 &Omega;)</td><td>-2.5 V to +2.5 V</td><td>-2 V to +2 V</td></tr>
+    <tr><td>Offset range (50 &Omega; into High Z load)</td><td>-2.5 V to +2.5 V</td><td>-4 V to +4 V</td></tr>
+    <tr><td>Offset accuracy (50 &Omega; into 50 &Omega;) (guaranteed)</td><td>&plusmn;(1% of |setting| + 15 mV)</td><td>&plusmn;(1% of |setting| + 5 mV)</td></tr>
+    <tr><td>AC accuracy (1 kHz sine, 0 V offset, &gt; 5 mVp-p, 50 &Omega; load) (guaranteed)</td><td colspan="2">&plusmn;(1% of setting [Vpp] + 5 mV)<sup>3</sup></td></tr>
   </table>
-  <h3>DC Amplitude</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>686-2C-SE / 686-4C-SE</th><th>686-2CD / 686-4CD</th></tr>
-    <tr><td>Amplitude range</td><td>&plusmn;2.5 V (into 50 ohm)</td><td>&plusmn;0.625 V SE (into 50 ohm); &plusmn;1.25 V diff. (into 100 ohm)</td></tr>
-    <tr><td>Resolution</td><td>500 &micro;V nom, 5 digits</td><td>100 &micro;V nom, 5 digits</td></tr>
-    <tr><td>Amplitude accuracy</td><td>&plusmn;(1.5% of |setting| + 15 mV)</td><td>&plusmn;(1% of |setting| + 2 mV)</td></tr>
-  </table>
-  <h3>DC Baseline Hardware Offset (Common-Mode Offset)</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>686-2C-SE / 686-4C-SE</th><th>686-2CD / 686-4CD</th></tr>
-    <tr><td>Resolution</td><td colspan="2">Less than 4 mV or 4 digits</td></tr>
-    <tr><td>Range (50 ohm into 50 ohm)</td><td>-2.5 V to +2.5 V</td><td>-2 V to +2 V</td></tr>
-    <tr><td>Range (50 ohm into high-Z load)</td><td>-2.5 V to +2.5 V</td><td>-4 V to +4 V</td></tr>
-    <tr><td>Accuracy (50 ohm into 50 ohm), guaranteed</td><td>&plusmn;(1% of |setting| + 15 mV)</td><td>&plusmn;(1% of |setting| + 5 mV)</td></tr>
-    <tr><td>AC accuracy (1 kHz sine, 0 V offset, &gt;5 mVpp, 50 ohm), guaranteed</td><td colspan="2">&plusmn;(1% of setting [Vpp] + 5 mV)</td></tr>
-  </table>
-  <div class="note">Amplitude and AC accuracy specifications are guaranteed across 0% to 80% of full-scale output.</div>
+  <p class="note"><sup>3</sup> The specification is guaranteed in the range 0% to 80% of full scale output.</p>
 </section>
 
-<section id="truearb">
-  <h2><span class="num">6</span>TrueArb (Baseband) Specifications</h2>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Operating modes</td><td>Full Rate mode (variable clock), Half Rate mode (variable clock)</td></tr>
-    <tr><td>Sampling rate, Full Rate</td><td>1 Sa/s to 20 GS/s</td></tr>
-    <tr><td>Sampling rate, Half Rate</td><td>1 Sa/s to 10 GS/s</td></tr>
-    <tr><td>Sin(x)/x corner</td><td>8.85 GHz at 20 GS/s (686-2CD / 686-4CD)</td></tr>
-    <tr><td>Run modes</td><td>Continuous, triggered continuous, single/burst, stepped, advanced</td></tr>
-    <tr><td>Vertical resolution</td><td>14-bit</td></tr>
-    <tr><td>Max waveform memory, Full Rate, 2-channel</td><td>CH1: 9.6 Gsamples; CH2: 1.17 Msamples</td></tr>
-    <tr><td>Max waveform memory, Full Rate, 4-channel</td><td>CH1, CH3: 9.6 Gsamples; CH2, CH4: 589 ksamples</td></tr>
-    <tr><td>Waveform granularity</td><td>1 if entry length &gt; 8928 samples; 288 if entry length 288 to 8928 samples</td></tr>
-    <tr><td>Sequence length</td><td>1 to 16,384</td></tr>
-    <tr><td>Sequence repeat counter</td><td>1 to 4,294,967,294 or infinite</td></tr>
-    <tr><td>Timer range</td><td>17.6 ns to 429 ms</td></tr>
-    <tr><td>Timer resolution</td><td>&plusmn;1 sampling clock cycle</td></tr>
-  </table>
-  <h3>Analog Channel-to-Channel Skew</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Range</td><td>0 to 1.63 &micro;s</td></tr>
-    <tr><td>Resolution, 4-channel</td><td>CHx to CHx (x=1,2,3,4): 1 sampling clock cycle; CH1/CH2 to CH3/CH4: 100 fs</td></tr>
-    <tr><td>Resolution, 2-channel</td><td>CHx to CHx (x=1,2): 100 fs</td></tr>
-    <tr><td>Accuracy</td><td>&plusmn;(1% of setting + 20 ps)</td></tr>
-    <tr><td>Initial skew</td><td>Less than 20 ps</td></tr>
-  </table>
-  <h3>Bandwidth, SFDR, and Edges</h3>
+<section id="s6">
+  <h2><span class="num">6</span>True Arb &ndash; Baseband Mode Specifications</h2>
   <table class="spec">
     <tr><th>Parameter</th><th>686-2C-SE / 686-4C-SE</th><th>686-2CD / 686-4CD</th></tr>
-    <tr><td>Calculated bandwidth (0.35 / rise or fall, 10-90)</td><td>&ge; 5 GHz</td><td>&ge; 5.8 GHz</td></tr>
-    <tr><td>Measured 3 dB bandwidth (Sin(x)/x compensated)</td><td colspan="2">5.8 GHz</td></tr>
-    <tr><td>SFDR at 100 MHz (Fs = 20 GS/s)</td><td colspan="2">Less than -65 dBc</td></tr>
-    <tr><td>SFDR, 18 mHz to 100 MHz (Fs = 20 GS/s)</td><td colspan="2">Less than -65 dBc</td></tr>
-    <tr><td>Rise/fall time (1 Vpp SE, 20% to 80%)</td><td>&le; 50 ps</td><td>&le; 45 ps</td></tr>
-    <tr><td>Rise/fall time (1 Vpp SE, 10% to 90%)</td><td>&le; 70 ps</td><td>&le; 60 ps</td></tr>
-    <tr><td>Overshoot (1 Vpp SE)</td><td>Less than 8%</td><td>Less than 6%</td></tr>
-    <tr><td>Random jitter on clock pattern</td><td colspan="2">Less than 2 ps</td></tr>
+    <tr><td>Operating Modes</td><td colspan="2">Full Rate Mode (variable clock), Half Rate Mode (variable clock)</td></tr>
+    <tr><td>Sampling Rate, Full Rate Mode</td><td colspan="2">1 S/s to 20 GS/s<sup>4</sup></td></tr>
+    <tr><td>Sampling Rate, Half Rate Mode</td><td colspan="2">1 S/s to 10 GS/s<sup>4</sup></td></tr>
+    <tr><td>Sin(x)/x</td><td colspan="2">8.85 GHz @ 20 GS/s (686-2CD / 686-4CD)</td></tr>
+    <tr><td>Run Modes</td><td colspan="2">Continuous, triggered continuous, single/burst, stepped, advanced</td></tr>
+    <tr><td>Vertical Resolution</td><td colspan="2">14 bit</td></tr>
+    <tr><td>Max waveform memory, Full Rate (20 GS/s), 686-2C-SE / 686-2CD</td><td colspan="2">CH1: 9.6 Gsamples; CH2: 1.17 Msamples</td></tr>
+    <tr><td>Max waveform memory, Full Rate (20 GS/s), 686-4C-SE / 686-4CD</td><td colspan="2">CH1, CH3: 9.6 Gsamples; CH2, CH4: 589 ksamples</td></tr>
+    <tr><td>Waveform Granularity</td><td colspan="2">1 if the entry length is &gt; 8928 samples; 288 if entry length is &ge; 288 and &le; 8928 samples</td></tr>
+    <tr><td>Sequence Length</td><td colspan="2">1 to 16384</td></tr>
+    <tr><td>Sequence Repeat Counter</td><td colspan="2">1 to 4294967294 or infinite</td></tr>
+    <tr><td>Timer range</td><td colspan="2">17.6 ns to 429 ms</td></tr>
+    <tr><td>Timer resolution</td><td colspan="2">&plusmn;1 sampling clock cycle</td></tr>
+    <tr><td>Analog channel to channel skew, range</td><td colspan="2">0 to 1.63 &micro;s</td></tr>
+    <tr><td>Skew resolution</td><td colspan="2">4C models: CHx to CHx (x=1,2,3,4): 1 sampling clock cycle; CH1/CH2 couple to CH3/CH4 couple: 100 fs. 2CH models: CHx to CHx (x=1,2): 100 fs</td></tr>
+    <tr><td>Skew accuracy</td><td colspan="2">&plusmn;(1% of setting + 20 ps)</td></tr>
+    <tr><td>Initial skew</td><td colspan="2">&lt; 20 ps</td></tr>
+    <tr><td>Calculated bandwidth (0.35 / rise or fall time<sub>10-90</sub>)</td><td>&ge; 5 GHz</td><td>&ge; 5.8 GHz</td></tr>
+    <tr><td>Measured 3 dB bandwidth (sin(x)/x compensated)</td><td colspan="2">5.8 GHz</td></tr>
+    <tr><td>SFDR @ 100 MHz<sup>5</sup> (DC to Fs/2, Fs = 20 GSa/s)</td><td colspan="2">&lt; -65 dBc</td></tr>
+    <tr><td>SFDR (DC to Fs/2, Fs = 20 GSa/s, 18 mHz to &le; 100 MHz)</td><td colspan="2">&lt; -65 dBc</td></tr>
+    <tr><td>Rise/fall time (1 Vp-p single-ended 20% to 80%)</td><td>&le; 50 ps</td><td>&le; 45 ps</td></tr>
+    <tr><td>Rise/fall time (1 Vp-p single-ended 10% to 90%)</td><td>&le; 70 ps</td><td>&le; 60 ps</td></tr>
+    <tr><td>Overshoot (1 Vp-p single-ended)</td><td>&lt; 8%</td><td>&lt; 6%</td></tr>
+    <tr><td>Random jitter on clock pattern</td><td colspan="2">&lt; 2 ps</td></tr>
   </table>
-  <div class="note">SFDR is measured across DC to Fs/2, excluding Fs &minus; 2&middot;fout, Fs &minus; 3&middot;fout, and harmonics.</div>
-  <div class="fig"><figure><img src="figures/awg/686/686_x131_p8_1337x820.png" alt="Model 686 waveform memory per channel in Full Rate mode"><figcaption>Waveform memory per channel in Full Rate mode (20 GS/s): CH1 and CH3 reach 9.6 Gsamples; secondary channels carry shorter playback memory.</figcaption></figure></div>
+  <p class="note"><sup>4</sup> When using the External Clock Input the Sample Rate must be in the range 0 to 20 GHz, but the entire Sample Rate interval is not continuous (see the corresponding section in the User Manual). <sup>5</sup> Measured excluding Fs &ndash; 2&middot;fout and Fs &ndash; 3&middot;fout and excluding harmonics.</p>
 </section>
 
-<section id="afg">
+<section id="s7">
   <h2><span class="num">7</span>AFG Mode Specifications</h2>
   <table class="spec">
     <tr><th>Parameter</th><th>686-2C-SE / 686-4C-SE</th><th>686-2CD / 686-4CD</th></tr>
-    <tr><td>Amplitude range</td><td>0 to 5 Vpp (into 50 ohm)</td><td>0 to 2.5 Vpp diff. (into 100 ohm); 0 to 1.25 Vpp SE (into 50 ohm)</td></tr>
-    <tr><td>Resolution</td><td>500 &micro;V nom, 5 digits</td><td>100 &micro;V nom, 5 digits</td></tr>
-    <tr><td>Operating mode</td><td colspan="2">DDS mode</td></tr>
-    <tr><td>Standard waveforms</td><td colspan="2">Sine, square, pulse, ramp, noise, DC, Sin(x)/x, Gaussian, Lorentz, exponential rise, exponential decay, Haversine</td></tr>
-    <tr><td>Run modes</td><td colspan="2">Continuous, modulation, sweep, burst</td></tr>
-    <tr><td>Arbitrary mode</td><td colspan="2">14-bit vertical resolution; waveform length 16,384 points</td></tr>
-  </table>
-  <h3>Internal Trigger Timer</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Range</td><td>6.5 ns to 100 s</td></tr>
-    <tr><td>Resolution</td><td>31.25 ps</td></tr>
-    <tr><td>Accuracy</td><td>&plusmn;(0.1% setting + 5 ps)</td></tr>
+    <tr><td>Amplitude range</td><td>0 to 5 Vpp (into 50 &Omega;)</td><td>0 to 2.5 Vpp Diff. (into 100 &Omega;)<br>0 to 1.25 Vpp Se. (into 50 &Omega;)</td></tr>
+    <tr><td>Amplitude resolution</td><td>500 &micro;V (nom), 5 digits</td><td>100 &micro;V (nom), 5 digits</td></tr>
+    <tr><td>Operating Mode</td><td colspan="2">DDS Mode</td></tr>
+    <tr><td>Standard Waveforms</td><td colspan="2">Sine, Square, Pulse, Ramp, more (Noise, DC, Sin(x)/x, Gaussian, Lorentz, Exponential Rise, Exponential Decay, Haversine)</td></tr>
+    <tr><td>Run Modes</td><td colspan="2">Continuous, modulation, sweep, burst</td></tr>
+    <tr><td>Arbitrary Modes</td><td colspan="2">Vertical resolution: 14-bit; Waveform length: 16,384 points</td></tr>
+    <tr><td>Internal trigger timer range</td><td colspan="2">6.5 ns to 100 s</td></tr>
+    <tr><td>Internal trigger timer resolution</td><td colspan="2">31.25 ps</td></tr>
+    <tr><td>Internal trigger timer accuracy</td><td colspan="2">&plusmn;(0.1% setting + 5 ps)</td></tr>
   </table>
   <h3>Sine Waves</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>686-2C-SE / 686-4C-SE</th><th>686-2CD / 686-4CD</th></tr>
-    <tr><td>Max frequency</td><td colspan="2">6.5 GHz</td></tr>
-    <tr><td>Frequency range vs. amplitude</td><td>18 mHz to 3.5 GHz: 5 Vpp; 3.5 to 4.5 GHz: 4 Vpp; 4.5 to 6.5 GHz: 3 Vpp</td><td>18 mHz to 6.5 GHz: 2.5 Vpp diff.; 18 mHz to 6.5 GHz: 1.25 Vpp SE</td></tr>
-    <tr><td>Flatness</td><td>DC to 6 GHz: &plusmn;0.5 dB (1 Vpp, ref. 1 kHz)</td><td>DC to 6.5 GHz: &plusmn;0.5 dB (1 Vpp diff., ref. 1 kHz)</td></tr>
-    <tr><td>Harmonic distortion (1 Vpp)</td><td colspan="2">18 mHz to 1 MHz: &lt; -60 dBc; 1 MHz to 1 GHz: &lt; -50 dBc; 1 GHz to 6.5 GHz: &lt; -40 dBc</td></tr>
-    <tr><td>Total harmonic distortion (1 Vpp)</td><td colspan="2">10 Hz to 20 kHz: &lt; 0.2%</td></tr>
-    <tr><td>Spurious (18 mHz to 1 MHz, Fs = 20 GS/s)</td><td colspan="2">Less than -60 dBc</td></tr>
-    <tr><td>Phase noise (1 Vpp, 10 kHz offset)</td><td colspan="2">20 MHz: &lt; -127 dBc/Hz typ.; 100 MHz: &lt; -124 dBc/Hz typ.; 1 GHz: &lt; -105 dBc/Hz typ.</td></tr>
+    <tr><td>Max Frequency</td><td colspan="2">6.5 GHz</td></tr>
+    <tr><td>Frequency Range Sine (50 &Omega; into 50 &Omega;)</td><td>18 mHz to &le; 3.5 GHz: 5 Vpp<br>3.5 GHz to &le; 4.5 GHz: 4 Vpp<br>4.5 GHz to &le; 6.5 GHz: 3 Vpp</td><td>18 mHz to &le; 6.5 GHz: 2.5 Vpp Diff.<br>18 mHz to &le; 6.5 GHz: 1.25 Vpp Se.</td></tr>
+    <tr><td>Flatness</td><td>DC to 6 GHz: &plusmn;0.5 dB (1 Vpp, relative to 1 kHz)</td><td>DC to 6.5 GHz: &plusmn;0.5 dB (1 Vpp diff., relative to 1 kHz)</td></tr>
+    <tr><td>Harmonic Distortion (1 Vp-p)</td><td colspan="2">18 mHz to &le; 1 MHz: &lt; -60 dBc; 1 MHz to &le; 1 GHz: &lt; -50 dBc; 1 GHz to &le; 6.5 GHz: &lt; -40 dBc</td></tr>
+    <tr><td>Total Harmonic Distortion (1 Vp-p)</td><td colspan="2">10 Hz to 20 kHz: &lt; 0.2%</td></tr>
+    <tr><td>Spurious<sup>6</sup> (DC to Fs/2, Fs = 20 GSa/s)</td><td colspan="2">18 mHz to &le; 1 MHz: &lt; -60 dBc</td></tr>
+    <tr><td>Phase Noise (1 Vp-p, 10 kHz offset)</td><td colspan="2">20 MHz: &lt; -127 dBc/Hz typ.; 100 MHz: &lt; -124 dBc/Hz typ.; 1 GHz: &lt; -105 dBc/Hz typ.</td></tr>
   </table>
-  <div class="note">For single-ended models, spurious are evaluated at 1 Vpp single-ended nominal output amplitude.</div>
-  <h3>Square, Pulse, and Double-Pulse Waves</h3>
+  <p class="note"><sup>6</sup> For single-ended models, the spurious are evaluated @ 1 Vpp single-ended nominal output amplitude.</p>
+  <h3>Square Waves</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Square frequency range</td><td>18 mHz to 2.5 GHz (all channels)</td></tr>
-    <tr><td>Square rise/fall (10% to 90%)</td><td>120 ps</td></tr>
-    <tr><td>Square rise/fall (20% to 80%)</td><td>90 ps</td></tr>
-    <tr><td>Square overshoot / jitter (1 Vpp)</td><td>Less than 2% / less than 2 ps rms</td></tr>
-    <tr><td>Pulse frequency range</td><td>18 mHz to 2.5 GHz</td></tr>
-    <tr><td>Pulse width</td><td>150 ps to (Period &minus; 150 ps)</td></tr>
+    <tr><td>Channels with Square Wave</td><td>All Channels</td></tr>
+    <tr><td>Frequency Range</td><td>18 mHz to &le; 2.5 GHz</td></tr>
+    <tr><td>Rise/fall time (10% to 90%)</td><td>120 ps</td></tr>
+    <tr><td>Rise/fall time (20% to 80%)</td><td>90 ps</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+    <tr><td>Jitter (rms)</td><td>&lt; 2 ps</td></tr>
+  </table>
+  <h3>Pulse Waves</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Channel with Pulse Wave</td><td>All Channels</td></tr>
+    <tr><td>Frequency Range</td><td>18 mHz to &le; 2.5 GHz</td></tr>
+    <tr><td>Pulse Width</td><td>150 ps to (Period &ndash; 150 ps)<sup>7</sup></td></tr>
     <tr><td>Pulse width resolution</td><td>20 ps or 15 digits</td></tr>
-    <tr><td>Pulse duty</td><td>0.1% to 99.9% (pulse-width limits apply)</td></tr>
-    <tr><td>Leading/trailing edge transition (10% to 90%)</td><td>120 ps to 1000 s</td></tr>
+    <tr><td>Pulse duty</td><td>0.1% to 99.9% (limitations of pulse width apply)</td></tr>
+    <tr><td>Leading/trailing edge transition time (10% to 90%)</td><td>120 ps to 1000 s</td></tr>
     <tr><td>Transition time resolution</td><td>2 ps or 15 digits</td></tr>
-    <tr><td>Double-pulse range (Vpp = |Vpp1| + |Vpp2|)</td><td>18 mHz to 1.25 GHz: 10 Vpp; 5 Vpp diff.; 2.5 Vpp SE</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+    <tr><td>Jitter (rms, with rise and fall time &ge; 400 ps)</td><td>&lt; 2 ps</td></tr>
   </table>
-  <div class="note">Below 150 ps width, the pulse amplitude reduces somewhat relative to the set value.</div>
-  <h3>Ramp, Other Waves, and Noise</h3>
+  <p class="note"><sup>7</sup> Below 150 ps width, the pulse amplitude will have some reduction with respect to the set value.</p>
+  <h3>Double Pulse Waves</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Ramp frequency range</td><td>18 mHz to 250 MHz</td></tr>
-    <tr><td>Ramp linearity (&lt; 10 kHz, 1 Vpp, 100%)</td><td>&le; 0.1%</td></tr>
-    <tr><td>Ramp symmetry</td><td>0% to 100%</td></tr>
-    <tr><td>Exponential rise / decay range</td><td>18 mHz to 250 MHz</td></tr>
-    <tr><td>Sin(x)/x, Gaussian, Lorentz, Haversine range</td><td>18 mHz to 500 MHz</td></tr>
-    <tr><td>Additive noise bandwidth (-3 dB)</td><td>4 GHz</td></tr>
-    <tr><td>Additive noise level</td><td>0 V to 2.5 V &minus; |carrier max [Vpk]| (SE: to 0.625 V; diff.: to 1.25 V)</td></tr>
-    <tr><td>Arbitrary samples / frequency range</td><td>2 to 16,384 / 1 &micro;Hz to 2.5 GHz</td></tr>
-    <tr><td>Arbitrary analog bandwidth (-3 dB)</td><td>2.9 GHz</td></tr>
-    <tr><td>Frequency accuracy (non-ARB)</td><td>&plusmn;2.0 ppm of setting; &plusmn;500 ppb of setting (opt.)</td></tr>
+    <tr><td>Frequency Range (Vpp = |Vpp1| + |Vpp2|)</td><td>18 mHz to &le; 1.25 GHz: 10 Vpp; 18 mHz to &le; 1.25 GHz: 5 Vpp Diff. (18 mHz to &le; 1.25 GHz: 2.5 Vpp Se.)</td></tr>
+    <tr><td>Other Pulse Parameters</td><td>Same as Pulse Waves</td></tr>
   </table>
-  <h3>Modulation and Sweep</h3>
+  <h3>Ramp Waves</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Modulation types</td><td>AM, FM, PM, FSK, PSK, PWM</td></tr>
-    <tr><td>Modulation source</td><td>Internal or external</td></tr>
-    <tr><td>Internal modulating frequency</td><td>18 mHz to 80 MHz (external: 1 GHz max.)</td></tr>
+    <tr><td>Frequency Range</td><td>18 mHz to 250 MHz</td></tr>
+    <tr><td>Linearity (&lt; 10 kHz, 1 Vp-p, 100%)</td><td>&le; 0.1%</td></tr>
+    <tr><td>Symmetry</td><td>0% to 100%</td></tr>
+  </table>
+  <h3>Other Waves</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Frequency Range</th></tr>
+    <tr><td>Exponential Rise, Exponential Decay</td><td>18 mHz to 250 MHz</td></tr>
+    <tr><td>Sin(x)/x, Gaussian, Lorentz, Haversine</td><td>18 mHz to 500 MHz</td></tr>
+  </table>
+  <h3>Additive Noise</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Bandwidth (-3 dB)</td><td>4 GHz</td></tr>
+    <tr><td>Level</td><td>0 V to 2.5 V - abs(carrier max value [Vpk]); 0 V to 0.625 V single-ended - abs(carrier max value [Vpk]); 0 V to 1.25 V differential - abs(carrier max value [Vpk])</td></tr>
+    <tr><td>Resolution</td><td>1 mV</td></tr>
+  </table>
+  <h3>Arbitrary</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Number of Samples</td><td>2 to 16384</td></tr>
+    <tr><td>Frequency Range</td><td>1 &micro;Hz to 2.5 GHz</td></tr>
+    <tr><td>Analog Bandwidth (-3 dB)</td><td>2.9 GHz</td></tr>
+    <tr><td>Rise/fall time (10% to 90%)</td><td>120 ps</td></tr>
+    <tr><td>Rise/fall time (20% to 80%)</td><td>90 ps</td></tr>
+    <tr><td>Jitter (rms)</td><td>&lt; 2 ps</td></tr>
+  </table>
+  <h3>Frequency</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Frequency Resolution (Sine, square, pulse, arbitrary, Sin(x)/x)</td><td>18 mHz or 15 digits</td></tr>
+    <tr><td>Frequency Resolution (Gaussian, Lorentz, Exponential Rise, Exponential Decay, Haversine)</td><td>18 mHz or 14 digits</td></tr>
+    <tr><td>Frequency Accuracy, Non-ARB</td><td>&plusmn;2.0 ppm of setting | &plusmn;500 ppb of setting (Opt.)</td></tr>
+    <tr><td>Frequency Accuracy, ARB</td><td>&plusmn;2.0 ppm of setting &plusmn;1 &micro;Hz | &plusmn;500 ppb of setting &plusmn;1 &micro;Hz (Opt.)</td></tr>
+  </table>
+  <h3>Modulations</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Amplitude Modulation (AM), carrier waveforms</td><td>Standard waveforms (except Pulse, DC and Noise), ARB</td></tr>
+    <tr><td>AM modulation source</td><td>Internal or external</td></tr>
+    <tr><td>AM internal modulating waveforms</td><td>Sine, Square, Ramp, Noise, ARB</td></tr>
+    <tr><td>AM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
     <tr><td>AM depth</td><td>0.00% to 120.00%</td></tr>
+    <tr><td>Frequency Modulation (FM), carrier waveforms</td><td>Standard waveforms (except Pulse, Square, DC and Noise), ARB</td></tr>
+    <tr><td>FM modulation sources</td><td>Internal or external</td></tr>
+    <tr><td>FM internal modulating waveforms</td><td>Sine, Square, Ramp, Noise, ARB</td></tr>
+    <tr><td>FM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
     <tr><td>FM peak deviation</td><td>DC to 6.5 GHz</td></tr>
-    <tr><td>PM phase deviation</td><td>0&deg; to 360&deg;</td></tr>
+    <tr><td>Phase Modulation (PM), carrier waveforms</td><td>Standard waveforms (except Pulse, Square, DC and Noise), ARB</td></tr>
+    <tr><td>PM modulation source</td><td>Internal or external</td></tr>
+    <tr><td>PM internal modulating waveforms</td><td>Sine, square, ramp, noise, ARB</td></tr>
+    <tr><td>PM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>PM phase deviation range</td><td>0&deg; to 360&deg;</td></tr>
+    <tr><td>Frequency Shift Keying (FSK), carrier waveforms</td><td>Standard waveforms (except Pulse, Square, DC and Noise), ARB</td></tr>
+    <tr><td>FSK modulation source</td><td>Internal or external</td></tr>
+    <tr><td>FSK internal modulating waveforms</td><td>Square</td></tr>
+    <tr><td>FSK key rate</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
     <tr><td>FSK hop frequency</td><td>1 &micro;Hz to 6.5 GHz</td></tr>
-    <tr><td>Sweep types</td><td>Linear, logarithmic, staircase, user defined</td></tr>
-    <tr><td>Sweep time</td><td>4 ns &le; rise + hold + fall &le; 2000 s</td></tr>
+    <tr><td>FSK number of keys</td><td>2</td></tr>
+    <tr><td>Phase Shift Keying (PSK), carrier waveforms</td><td>Standard waveforms (except Pulse, Square, DC and Noise), ARB</td></tr>
+    <tr><td>PSK modulation source</td><td>Internal and external</td></tr>
+    <tr><td>PSK internal modulating waveform</td><td>Square</td></tr>
+    <tr><td>PSK key rate</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>PSK hop phase</td><td>0&deg; to +360&deg;</td></tr>
+    <tr><td>PSK number of keys</td><td>2</td></tr>
+    <tr><td>Pulse Width Modulation (PWM), carrier waveforms</td><td>Pulse</td></tr>
+    <tr><td>PWM modulation source</td><td>Internal or external</td></tr>
+    <tr><td>PWM internal modulating waveforms</td><td>Sine, Square, Ramp, Noise, ARB</td></tr>
+    <tr><td>PWM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>PWM deviation range</td><td>0% to 50% of pulse period</td></tr>
+  </table>
+  <h3>Sweep</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Type</td><td>Linear, Logarithmic, staircase, and user defined</td></tr>
+    <tr><td>Waveforms</td><td>Standard waveforms (except Pulse, DC and Noise), ARB</td></tr>
+    <tr><td>Sweep time</td><td>4 ns &le; Rise time + Hold time + Fall time &le; 2000 s</td></tr>
+    <tr><td>Rise/Hold/return times</td><td>0 to 2000 s</td></tr>
+    <tr><td>Rise/Hold/return time resolution</td><td>1 ps or 12 digits</td></tr>
     <tr><td>Total sweep time accuracy</td><td>&le; 0.4%</td></tr>
-    <tr><td>Burst count</td><td>1 to 4,294,967,295 cycles or infinite</td></tr>
+    <tr><td>Start/stop frequency range</td><td>18 mHz to Max Waveform frequency (see Frequency Range for the specific waveform)</td></tr>
+    <tr><td>Trigger Source</td><td>Internal/External</td></tr>
+  </table>
+  <h3>Burst</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Waveforms</td><td>Standard waveforms (except DC and Noise), ARB</td></tr>
+    <tr><td>Type</td><td>Trigger or gated</td></tr>
+    <tr><td>Burst count</td><td>1 to 4,294,967,295 cycles or Infinite</td></tr>
   </table>
 </section>
 
-<section id="ppg">
-  <h2><span class="num">8</span>Pulse Pattern Generator (PPG) Specifications &mdash; Optional</h2>
+<section id="s8">
+  <h2><span class="num">8</span>Pulse Pattern Generator (PPG) Specifications &ndash; Optional</h2>
+  <h3>General Specifications</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Operating mode</td><td>NRZ, RZ, or R1 bitstream pattern generator</td></tr>
-    <tr><td>Pattern types</td><td>Clock, custom, PRBS, Go-Through, pulse</td></tr>
-    <tr><td>Run modes</td><td>Continuous, modulation, burst (triggered, gated, continuous triggered)</td></tr>
-    <tr><td>Internal trigger timer</td><td>6.5 ns to 100 s, 31.25 ps resolution, &plusmn;(0.1% setting + 5 ps)</td></tr>
-    <tr><td>Transition shapes</td><td>Arbitrary or predefined (sine, square, pulse, ramp up/down, DC, Sin(x)/x, Gaussian, Lorentz, exp. rise/decay, Haversine)</td></tr>
+    <tr><td>Operating Mode</td><td>NRZ, RZ or R1 bitstream pattern generator</td></tr>
+    <tr><td>Pattern types</td><td>Clock Pattern, Custom Pattern, PRBS Pattern, Go-Through Pattern, Pulse Pattern</td></tr>
+    <tr><td>Run Modes</td><td>Continuous, modulation, burst (Triggered, Gated, Continuous triggered)</td></tr>
+    <tr><td>Internal trigger timer range</td><td>6.5 ns to 100 s</td></tr>
+    <tr><td>Internal trigger timer resolution</td><td>31.25 ps</td></tr>
+    <tr><td>Internal trigger timer accuracy</td><td>&plusmn;(0.1% setting + 5 ps)</td></tr>
+  </table>
+  <h3>Transition Specifications</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Transition peculiarity</td><td>Arbitrarily user-defined transition shapes; programmable duration for any transition</td></tr>
+    <tr><td>Transition types</td><td>Arbitrary, predefined</td></tr>
     <tr><td>Transitions memory length</td><td>64 points</td></tr>
-    <tr><td>Transition duration</td><td>150 ps to symbol duration (custom, PRBS, Go-Through)</td></tr>
+    <tr><td>Predefined transition shapes</td><td>Sine, Square, Pulse, Ramp_up, Ramp_down, DC, Sin(x)/x, Gaussian, Lorentz, Exponential Rise, Exponential Decay, Haversine</td></tr>
+    <tr><td>Transition duration [0-100%]</td><td>150 ps to Symbol duration for Custom, PRBS and Go-Through pattern; 150 ps to Period/2 for Clock Pattern; 150 ps to (Period &ndash; 150 ps) for Pulse Pattern</td></tr>
   </table>
-  <h3>Pattern Types</h3>
-  <table class="spec">
-    <tr><th>Pattern</th><th>Specification</th></tr>
-    <tr><td>Clock pattern</td><td>Max 3.25 GHz, 2 levels, overshoot &lt; 2%, jitter &lt; 2 ps rms</td></tr>
-    <tr><td>Custom pattern rate</td><td>Up to 6.5 Gbaud; 2, 3, or 4 levels</td></tr>
-    <tr><td>Custom pattern memory</td><td>Up to 12 Mbit (2 levels) / 6 MSymbols (3 or 4 levels) on 2-channel models; up to 6 Mbit / 3 MSymbols on 4-channel models</td></tr>
-    <tr><td>Custom pattern length</td><td>Min 16 bits, 1-bit resolution</td></tr>
-    <tr><td>PRBS pattern rate / types</td><td>Up to 6.5 Gbaud; PRBS-7, 9, 11, 15, 23, 31; 2 levels</td></tr>
-    <tr><td>Go-Through pattern rate</td><td>Up to 6.5 Gbaud; 2, 3, or 4 levels; max external pattern rate 1 Gbit/s</td></tr>
-    <tr><td>Pulse pattern</td><td>Up to 3.25 GHz; min rise/fall 150 ps; min pulse width 300 ps</td></tr>
-  </table>
-  <h3>Pattern Modulation and Burst</h3>
+  <h3>Clock Pattern</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Modulation types</td><td>AM, FM, PM, FSK, PSK</td></tr>
-    <tr><td>Internal modulating frequency</td><td>18 mHz to 80 MHz (external: 1 GHz max.)</td></tr>
+    <tr><td>Max clock pattern frequency</td><td>3.25 GHz</td></tr>
+    <tr><td>Pattern levels</td><td>2 levels</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+    <tr><td>Jitter (rms)</td><td>&lt; 2 ps</td></tr>
+  </table>
+  <h3>Custom Pattern</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Max custom pattern rate</td><td>Up to 6.5 Gbaud</td></tr>
+    <tr><td>Pattern levels</td><td>2, 3 or 4 levels</td></tr>
+    <tr><td>Predefined custom patterns</td><td>Zero, one, clock, counter</td></tr>
+    <tr><td>Pattern memory channel</td><td>Up to 12 MBit (2 levels), up to 6 MSymbols (3 or 4 levels) for 2-channel models; up to 6 MBit (2 levels), up to 3 MSymbols (3 or 4 levels) for 4-channel models</td></tr>
+    <tr><td>Pattern length resolution</td><td>1 bit</td></tr>
+    <tr><td>Min pattern length</td><td>16 bits</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+  </table>
+  <h3>PRBS Pattern</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Max PRBS pattern rate</td><td>Up to 6.5 Gbaud</td></tr>
+    <tr><td>Pattern levels</td><td>2 levels</td></tr>
+    <tr><td>PRBS types</td><td>PRBS -7, 9, 11, 15, 23, 31</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+  </table>
+  <h3>Go-Through Pattern</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Max Go-Through pattern rate</td><td>Up to 6.5 Gbaud</td></tr>
+    <tr><td>Pattern levels</td><td>2, 3, or 4 levels</td></tr>
+    <tr><td>Max External Pattern Rate</td><td>Up to 1 Gbit/s</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+  </table>
+  <h3>Pulse Pattern</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Max pulse pattern frequency</td><td>Up to 3.25 GHz</td></tr>
+    <tr><td>Pattern levels</td><td>2 levels</td></tr>
+    <tr><td>Min Rise/Fall time (0-100%)</td><td>150 ps</td></tr>
+    <tr><td>Min Pulse Width</td><td>300 ps</td></tr>
+    <tr><td>Overshoot (1 Vp-p)</td><td>&lt; 2%</td></tr>
+  </table>
+  <h3>Pattern Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Amplitude Modulation (AM), carrier patterns</td><td>All types</td></tr>
+    <tr><td>AM modulation sources</td><td>Internal or external</td></tr>
+    <tr><td>AM internal modulating waveforms</td><td>Sine, Square, Triangular, Ramp_up, Ramp_down, DC, Sin(x)/x, Gaussian, Lorentz, Exponential Rise, Exponential Decay, Haversine, Noise, ARB</td></tr>
+    <tr><td>AM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
     <tr><td>AM depth</td><td>0.00% to 120.00%</td></tr>
-    <tr><td>FSK hop symbol rate</td><td>1 &micro;Symbol/s to 6.5 GSymbol/s (custom, PRBS); 18 mHz to 3.25 GHz (clock)</td></tr>
-    <tr><td>Burst type / count</td><td>Block mode or bit mode; 1 to 4,294,967,295 cycles or infinite</td></tr>
+    <tr><td>Frequency Modulation (FM), carrier patterns</td><td>All types</td></tr>
+    <tr><td>FM modulation source</td><td>Internal or external</td></tr>
+    <tr><td>FM internal modulating waveforms</td><td>Sine, Square, Triangular, Ramp_up, Ramp_down, DC, Sin(x)/x, Gaussian, Lorentz, Exponential Rise, Exponential Decay, Haversine, Noise, ARB</td></tr>
+    <tr><td>FM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>FM peak deviation</td><td>DC to 6.5 GSymbols/s</td></tr>
+    <tr><td>Phase Modulation (PM), carrier patterns</td><td>All types</td></tr>
+    <tr><td>PM modulation source</td><td>Internal or external</td></tr>
+    <tr><td>PM internal modulating waveforms</td><td>Sine, Square, Pulse, Ramp_up, Ramp_down, DC, Sin(x)/x, Gaussian, Lorentz, Exponential Rise, Exponential Decay, Haversine, Noise, ARB</td></tr>
+    <tr><td>PM modulating frequency</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>PM phase deviation range</td><td>0&deg; to 360&deg;</td></tr>
+    <tr><td>Frequency Shift Keying (FSK), carrier patterns</td><td>All types</td></tr>
+    <tr><td>FSK modulation source</td><td>Internal or external</td></tr>
+    <tr><td>FSK internal modulating waveforms</td><td>Square</td></tr>
+    <tr><td>FSK key rate</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>FSK hop symbol rate</td><td>1 &micro;Symbols/s to 6.5 GSymbols/s for Custom and PRBS pattern; 18 mHz to 3.25 GHz for Clock pattern</td></tr>
+    <tr><td>FSK number of keys</td><td>2</td></tr>
+    <tr><td>Phase Shift Keying (PSK), carrier patterns</td><td>All types</td></tr>
+    <tr><td>PSK modulation source</td><td>Internal or external</td></tr>
+    <tr><td>PSK internal modulating waveforms</td><td>Square</td></tr>
+    <tr><td>PSK key rate</td><td>Internal: 18 mHz to 80 MHz; External: 1 GHz max.</td></tr>
+    <tr><td>PSK hop phase</td><td>0&deg; to +360&deg;</td></tr>
+    <tr><td>PSK number of keys</td><td>2</td></tr>
   </table>
-</section>
-
-<section id="timing">
-  <h2><span class="num">9</span>Timing &amp; Clock</h2>
+  <h3>Burst</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Sampling rate range</td><td>1 Sa/s to 20 GS/s</td></tr>
-    <tr><td>Sampling rate resolution</td><td>64 Hz</td></tr>
-    <tr><td>Sampling rate accuracy</td><td>&plusmn;2.0 ppm; &plusmn;500 ppb (opt.)</td></tr>
-    <tr><td>Reference clock input</td><td>SMA rear panel, 50 ohm AC coupled, 5 MHz to 500 MHz, 0.2 to 3.3 Vpp</td></tr>
-    <tr><td>Reference clock output</td><td>SMA rear panel, 10 MHz TCXO (100 MHz VCOCXO optional), 1.65 Vpp</td></tr>
-    <tr><td>Reference initial accuracy at 77 F (25 C)</td><td>&plusmn;1.0 ppm; &plusmn;500 ppb (opt.)</td></tr>
-    <tr><td>Reference aging</td><td>&plusmn;1.0 ppm/year; &plusmn;500 ppb/year (opt.)</td></tr>
-    <tr><td>External clock input</td><td>SMA rear panel, 50 ohm AC coupled, +0 to +10 dBm</td></tr>
-    <tr><td>Sync clock output</td><td>SMA rear panel, 50 ohm AC coupled, 1 Vpp into 50 ohm</td></tr>
+    <tr><td>Patterns</td><td>All types</td></tr>
+    <tr><td>Type</td><td>Block mode or bit mode</td></tr>
+    <tr><td>Burst count</td><td>1 to 4,294,967,295 cycles or Infinite</td></tr>
   </table>
 </section>
 
-<section id="digital">
+<section id="s9">
+  <h2><span class="num">9</span>Timing and Clock</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Sampling Rate range</td><td>1 S/s to 20 GS/s</td></tr>
+    <tr><td>Sampling Rate resolution</td><td>64 Hz</td></tr>
+    <tr><td>Sampling Rate accuracy</td><td>&plusmn; 2.0 ppm | &plusmn; 500 ppb (Opt.)</td></tr>
+  </table>
+</section>
+
+<section id="s10">
   <h2><span class="num">10</span>Digital Outputs</h2>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Connectors</td><td>Mini-SAS HD on rear panel (custom pin-out), 4 connectors</td></tr>
-    <tr><td>Number of outputs</td><td>32 bits</td></tr>
-    <tr><td>Output impedance</td><td>100 ohm differential</td></tr>
-    <tr><td>Output type</td><td>CML with programmable peak-to-peak amplitude</td></tr>
-    <tr><td>Maximum update rate</td><td>10 Gb/s per channel</td></tr>
+    <tr><td>Connectors</td><td>Mini-SAS HD connector on rear panel (custom pin-out)</td></tr>
+    <tr><td>Number of connectors</td><td>4</td></tr>
+    <tr><td>Number of outputs</td><td>32-bits</td></tr>
+    <tr><td>Output impedance</td><td>100 &Omega; differential</td></tr>
+    <tr><td>Output type</td><td>CML with programmable pk-pk amplitude</td></tr>
+    <tr><td>Maximum update rate</td><td>10 Gbps per channel</td></tr>
     <tr><td>Memory depth</td><td>4.5 Gbit per digital channel</td></tr>
   </table>
-  <div class="note">Digital channels are available on 4-channel models through an optional license (8, 16, or 32 channels). The AT-DTTL8 adapter probe converts 8 bits of LVDS to LVTTL, and the AT-LVDS-SMA8 cable breaks a Mini-SAS HD pod out to SMA.</div>
-</section>
-
-<section id="aux">
-  <h2><span class="num">11</span>Auxiliary Input and Output</h2>
+  <h3>8 bit CML to LVTTL Converter Probe (Optional AT-DTLL8)</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Sync in / out</td><td>QSFP connector on rear panel (custom pinout)</td></tr>
-    <tr><td>Modulation input (MOD_IN)</td><td>SMA front panel, 50 ohm, &plusmn;1 V window; 2 (2-ch) or 4 (4-ch) connectors</td></tr>
-    <tr><td>Marker output</td><td>SMA front panel, 50 ohm; voltage window -0.5 V to 1.65 V; amplitude 100 mVpp to 2.15 Vpp</td></tr>
-    <tr><td>Marker accuracy / resolution</td><td>&plusmn;(5% setting + 25 mV) / 1 mV</td></tr>
-    <tr><td>Marker max update rate (TrueArb)</td><td>20 Gb/s; &gt; 4 Gb/s at 1 Vpp swing</td></tr>
-    <tr><td>Marker rise/fall (10% to 90%, 2 Vpp)</td><td>&lt; 150 ps</td></tr>
-    <tr><td>Trigger / event inputs</td><td>SMA front panel; 50 ohm or 1 kohm; 2 (2-ch) or 4 (4-ch)</td></tr>
-    <tr><td>Trigger input range</td><td>&plusmn;3.5 V (50 ohm); &plusmn;10 V (1 kohm)</td></tr>
-    <tr><td>Trigger threshold control</td><td>-8 V to 8 V, 10 mV resolution, &plusmn;100 mV accuracy</td></tr>
-    <tr><td>Trigger minimum pulse width (1 Vpp)</td><td>1 ns</td></tr>
-    <tr><td>Trigger programmable delay</td><td>0 ps to 2418 ps, 78 ps resolution</td></tr>
+    <tr><td>Output Connector</td><td>20 position 2.54 mm 2 Row IDC Header</td></tr>
+    <tr><td>Output type</td><td>LVTTL</td></tr>
+    <tr><td>Output impedance</td><td>50 &Omega; nominal</td></tr>
+    <tr><td>Output voltage</td><td>0.8 V to 3.8 V programmable in group of 8 bits</td></tr>
+    <tr><td>Maximum Update Rate</td><td>125 Mbps @ 0.8 V and 400 Mbps @ 3.6 V</td></tr>
+    <tr><td>Dimensions</td><td>W 52 mm, H 22 mm, D 76 mm</td></tr>
+    <tr><td>Input Connector</td><td>Proprietary standard</td></tr>
+    <tr><td>Cable Length</td><td>1 meter</td></tr>
+    <tr><td>Cable Type</td><td>Proprietary standard</td></tr>
   </table>
-</section>
-
-<section id="system">
-  <h2><span class="num">12</span>Power &amp; System</h2>
+  <h3>Proprietary Mini SAS HD to SMA cable (Optional) (TBD)</h3>
   <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Source voltage and frequency</td><td>100 to 240 VAC &plusmn;10% at 45 to 66 Hz</td></tr>
-    <tr><td>Max power consumption</td><td>250 W</td></tr>
-    <tr><td>Operating temperature</td><td>41 to 104 F (5 to 40 C)</td></tr>
-    <tr><td>Non-operating temperature</td><td>-4 to 140 F (-20 to 60 C)</td></tr>
-    <tr><td>Operating humidity</td><td>5% to 80% RH, non-condensing (de-rates at upper temperature)</td></tr>
-    <tr><td>Operating altitude</td><td>9,842 ft (3,000 m) max at or below 77 F (25 C)</td></tr>
-    <tr><td>Safety</td><td>EN 61010-1</td></tr>
-    <tr><td>EMC</td><td>EN 61326-1:2013</td></tr>
-    <tr><td>Display</td><td>7-inch, 1024 x 600, capacitive touch LCD</td></tr>
-    <tr><td>Operating system</td><td>Windows 10</td></tr>
-    <tr><td>Processor / memory / storage</td><td>Intel Pentium Gold G6400 4 GHz or better / 32 GB or better / 1 TB SSD or better</td></tr>
-    <tr><td>External dimensions</td><td>17.5 x 5.3 x 12.6 in (445 x 135 x 320 mm), 3U 19-inch rackmount</td></tr>
-    <tr><td>Weight</td><td>Max 26.45 lb (12 kg)</td></tr>
-    <tr><td>Remote interfaces</td><td>LAN (10/100/1000BaseT, RJ45), USB-TMC, GPIB</td></tr>
+    <tr><td>Output Connector</td><td>SMA</td></tr>
+    <tr><td>Output Type</td><td>CML</td></tr>
+    <tr><td>Number of SMA</td><td>16 (8 differential bits)</td></tr>
+    <tr><td>Cable type</td><td>Proprietary standard</td></tr>
+    <tr><td>Cable length</td><td>1 meter</td></tr>
+    <tr><td>Rise/fall time (10% to 90%)</td><td>&lt; 300 ps</td></tr>
+    <tr><td>Jitter (rms)</td><td>&lt; 5 ps</td></tr>
   </table>
 </section>
 
-<section id="ordering">
-  <h2><span class="num">13</span>Ordering &amp; Part Numbering</h2>
-  <p>The base instrument is selected by channel count and output type. Single-ended models deliver 5 Vpp into 50 ohm; differential models deliver 2.5 Vpp differential, equivalent to 1.25 Vpp single-ended. Digital channels, the serial pattern generator, fast sequence switch, and synchronization are added as options.</p>
-  <div class="fig"><figure><img src="figures/awg/awg-686-partnumbering.jpg" alt="Model 686 part numbering"><figcaption>Model 686 configuration and part numbering.</figcaption></figure></div>
-  <h3>Available Models</h3>
-  <table class="matrix">
-    <thead><tr><th>Model</th><th>Description</th></tr></thead>
-    <tbody>
-      <tr><td>686-2C-SE</td><td>2 channels, 5 Vpp single-ended outputs, 20 GS/s</td></tr>
-      <tr><td>686-2CD</td><td>2 channels, 2.5 Vpp differential (1.25 Vpp single-ended) outputs, 20 GS/s</td></tr>
-      <tr><td>686-4C-SE</td><td>4 channels, 5 Vpp single-ended outputs, 20 GS/s</td></tr>
-      <tr><td>686-4CD</td><td>4 channels, 2.5 Vpp differential (1.25 Vpp single-ended) outputs, 20 GS/s</td></tr>
-    </tbody>
+<section id="s11">
+  <h2><span class="num">11</span>Auxiliary Input and Output Characteristics</h2>
+  <h3>Sync In / Out</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector Type</td><td>QSFP connector on rear panel (custom pinout)</td></tr>
   </table>
-  <h3>Options</h3>
-  <table class="matrix">
-    <thead><tr><th>Item</th><th>Description</th></tr></thead>
-    <tbody>
-      <tr><td>686-PAT</td><td>Serial Pattern Generator (SPG)</td></tr>
-      <tr><td>686-8DIG</td><td>8-channel digital license (4-channel models only)</td></tr>
-      <tr><td>686-16DIG</td><td>16-channel digital license (4-channel models only)</td></tr>
-      <tr><td>686-32DIG</td><td>32-channel digital license (4-channel models only)</td></tr>
-      <tr><td>686-FSS</td><td>Fast Sequence Switch</td></tr>
-      <tr><td>686-WAR</td><td>3-year warranty extension</td></tr>
-      <tr><td>RIDER-MINI-SAS-HD</td><td>Mini-SAS HD cable for digital probe, 8 differential signals (4-channel models only)</td></tr>
-      <tr><td>RIDER-686-SYNC</td><td>Synchronization cable for all 686 models</td></tr>
-      <tr><td>GP-IB / USB-TMC</td><td>GPIB and USB-TMC ports for remote control</td></tr>
-    </tbody>
+  <h3>Modulation Input (MOD_IN)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on front panel</td></tr>
+    <tr><td>Number of connectors</td><td>2 (for 2 channel models), 4 (for 4 channel models)</td></tr>
+    <tr><td>Input impedance</td><td>50 &Omega;</td></tr>
+    <tr><td>Voltage Window</td><td>&plusmn; 1 V</td></tr>
   </table>
-  <h3>Accessories</h3>
-  <table class="matrix">
-    <thead><tr><th>Item</th><th>Description</th></tr></thead>
-    <tbody>
-      <tr><td>DTTL8 (AT-DTTL8)</td><td>8-bit LVDS to LVTTL converter probe (4-channel models only)</td></tr>
-      <tr><td>LVDS-SMA8 (AT-LVDS-SMA8)</td><td>Mini-SAS HD to 16 SMA cable, 8 differential bits (4-channel models only)</td></tr>
-      <tr><td>RIDER-RACK</td><td>Rackmount kit for the Rider instrument system</td></tr>
-    </tbody>
+  <h3>Marker Output</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on front panel</td></tr>
+    <tr><td>Number of connectors</td><td>2 (for 2 channel models), 4 (for 4 channel models)</td></tr>
+    <tr><td>Output impedance</td><td>50 &Omega;</td></tr>
+    <tr><td>Output level voltage window (into 50 &Omega;)</td><td>-0.5 V to 1.65 V</td></tr>
+    <tr><td>Amplitude</td><td>100 mVpp to 2.15 Vpp</td></tr>
+    <tr><td>Resolution</td><td>1 mV</td></tr>
+    <tr><td>Accuracy</td><td>&plusmn;(5% setting + 25 mV)</td></tr>
+    <tr><td>Max Update Rate (True Arb Mode)</td><td>20 Gbps</td></tr>
+    <tr><td>Max Data Rate (True Arb Mode)</td><td>&gt; 4 Gbps @ 1 Vpp swing</td></tr>
+    <tr><td>Max Frequency (AFG Mode)</td><td>125 MHz (continuous mode)</td></tr>
+    <tr><td>Rise/Fall time (10% to 90%, 2 Vpp)</td><td>&lt; 150 ps</td></tr>
+    <tr><td>Jitter (rms)</td><td>&lt; 10 ps</td></tr>
+    <tr><td>Marker out to analog channel skew, range</td><td>True Arb Mode: 0 to 1.368 &micro;s; AFG Mode: 0 to 8.5 sec. in Contin. Mode, 0 to 1.8 &micro;s in Trig. Mode</td></tr>
+    <tr><td>Skew resolution</td><td>True Arb Mode: 1/64 of DAC sampling period; AFG Mode: 1.5625 ps</td></tr>
+    <tr><td>Skew accuracy</td><td>&plusmn;(1% of setting + 50 ps)</td></tr>
+    <tr><td>Initial skew</td><td>&lt; 20 ps</td></tr>
+    <tr><td>Marker Width value/range</td><td>True Arb Mode (Marker Automatic Mode): 36 sampling clock cycles (Full Rate Mode), 18 sampling clock cycles (Half Rate Mode). AFG Mode (Continuous Mode): 50% of waveform period (Automatic Marker Width Mode), 500 ps to waveform period &ndash; 2.1 ns (Manual Marker Width Mode). AFG Mode (Burst/Sweep Mode): Burst duration or half of sweep duration</td></tr>
+  </table>
+  <h3>Trigger / Event Inputs</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector</td><td>SMA on the front panel</td></tr>
+    <tr><td>Number of Trigger Inputs</td><td>2 (for 2 channel models), 4 (for 4 channel models)</td></tr>
+    <tr><td>Input Impedance</td><td>50 &Omega; / 1 k&Omega;</td></tr>
+    <tr><td>Slope/Polarity</td><td>Positive or negative or both</td></tr>
+    <tr><td>Range</td><td>&plusmn; 3.5 V (50 Ohm input impedance); &plusmn; 10 V (1K Ohm input impedance)</td></tr>
+    <tr><td>Threshold control level</td><td>-8 V to 8 V</td></tr>
+    <tr><td>Threshold control resolution</td><td>10 mV</td></tr>
+    <tr><td>Threshold control accuracy</td><td>&plusmn; 100 mV</td></tr>
+    <tr><td>Minimum pulse width (1 Vp-p)</td><td>1 ns</td></tr>
+    <tr><td>Trigger/gate input to Analog Output Delay, slow (synchronous) trigger</td><td>AFG mode: &lt; 205 ns (&lt; 240 ns in triggered sweep mode); True Arb mode: &lt; 4392 &times; DAC clock period (ns) + 17.6 ns</td></tr>
+    <tr><td>Trigger/gate input to Analog Output Delay, fast (asynchronous) trigger</td><td>AFG mode: &lt; 195 ns (&lt; 230 ns in triggered sweep mode); True Arb mode: &lt; 4392 &times; DAC clock period (ns) + 17.6 ns</td></tr>
+    <tr><td>Trigger In to Output jitter (rms)</td><td>AFG mode: &lt; 20 ps; True Arb mode: 0.29 &times; DAC clock period</td></tr>
+    <tr><td>Trigger In programmable delay range</td><td>0 ps to 2418 ps</td></tr>
+    <tr><td>Trigger In programmable delay resolution</td><td>78 ps</td></tr>
+    <tr><td>Maximum Frequency</td><td>AFG: 75 MTps on Rising/Falling Edge, 100 MTps on Both Edges; True Arb mode: 1 / (Period of the Analog Waveform + 293 DAC Clock period). MTps = Mega Transitions per second</td></tr>
+  </table>
+  <h3>Reference Clock Input</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on rear panel</td></tr>
+    <tr><td>Input Impedance</td><td>50 &Omega;, AC coupled</td></tr>
+    <tr><td>Input voltage range</td><td>0.2 Vpp to 3.3 Vpp</td></tr>
+    <tr><td>Damage level</td><td>Maximum input voltage: 3.6 Vpp; Maximum input power: 15 dBm (50 &Omega;)</td></tr>
+    <tr><td>Frequency range</td><td>5 MHz to 500 MHz</td></tr>
+    <tr><td>Frequency resolution</td><td>1 Hz</td></tr>
+  </table>
+  <h3>Reference Clock Output</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on rear panel</td></tr>
+    <tr><td>Output impedance</td><td>50 &Omega;, AC coupled</td></tr>
+    <tr><td>Frequency</td><td>10 MHz TCXO | 100 MHz VCOCXO (Optional)</td></tr>
+    <tr><td>Initial accuracy @ 25 &deg;C</td><td>&plusmn; 1.0 ppm | &plusmn; 500 ppb (Opt.)</td></tr>
+    <tr><td>Aging</td><td>&plusmn; 1.0 ppm/year | &plusmn; 500 ppb/year (Opt.)</td></tr>
+    <tr><td>Stability vs. temperature</td><td>&plusmn; 1 ppm | &plusmn; 50 ppb (Opt.)</td></tr>
+    <tr><td>Amplitude</td><td>1.65 Vpp</td></tr>
+    <tr><td>Phase Noise @ 10 MHz carrier</td><td>-120 dBc/Hz at 100 Hz; -140 dBc/Hz at 1 kHz; -150 dBc/Hz at 10 kHz</td></tr>
+  </table>
+  <h3>External Clock Input</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on rear panel</td></tr>
+    <tr><td>Input impedance</td><td>50 &Omega;, AC coupled</td></tr>
+    <tr><td>Frequency<sup>8</sup></td><td>True Arb: SampleRate / N where N = 8, 16, 32, 64 for every SampleRate. AFG: 312.5 MHz, 625 MHz, 1250 MHz or 2500 MHz (selectable)</td></tr>
+    <tr><td>Input power range</td><td>+0 dBm to +10 dBm</td></tr>
+    <tr><td>Damage level</td><td>15 dBm</td></tr>
+  </table>
+  <h3>Sync Clk Out</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on rear panel</td></tr>
+    <tr><td>Output impedance</td><td>50 &Omega;, AC coupled</td></tr>
+    <tr><td>Frequency</td><td>AFG Mode: 20 GHz / N where N = 40, 80, 160, ..., 5120; AWG Mode: Sampling Rate / N, N = 64, 128, ..., 8192</td></tr>
+    <tr><td>Amplitude</td><td>1 Vpp into 50 Ohm</td></tr>
+  </table>
+  <h3>External Modulation Input (AFG only)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector Type</td><td>SMA on front panel (MOD.IN)</td></tr>
+    <tr><td>Input Impedance</td><td>50 &Omega;</td></tr>
+    <tr><td>Number of inputs</td><td>2 (for 2 channel models), 4 (for 4 channel models)</td></tr>
+    <tr><td>Bandwidth</td><td>1 GHz</td></tr>
+    <tr><td>Input voltage range</td><td>1 Vpp (-0.5 V to 0.5 V)</td></tr>
+    <tr><td>Vertical resolution</td><td>14-bit</td></tr>
+  </table>
+  <h3>Pattern Jump In (optional)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>DSUB15</td></tr>
+    <tr><td>Input signals</td><td>DATA[0..7] + Data_Select + Load</td></tr>
+    <tr><td>Internal Data Width</td><td>14 bit, multiplexed using Data_Select</td></tr>
+    <tr><td>Number of addressable entries</td><td>16384</td></tr>
+    <tr><td>Data Range</td><td>DC to 1 MHz</td></tr>
+    <tr><td>Input Range</td><td>VIL = 0 V to 0.8 V / VIH = 2 V to 3.3 V</td></tr>
+    <tr><td>Impedance</td><td>Internal 1 k&Omega; pull-up resistor to Vcc (3.3 V)</td></tr>
+  </table>
+  <p class="note"><sup>8</sup> When using the External Clock Input the SampleRate must be in the range 0 to 20 GHz, but the entire Sample Rate interval is not continuous (see the corresponding section in the User Manual).</p>
+</section>
+
+<section id="s12">
+  <h2><span class="num">12</span>Power, Environmental &amp; System Specifications</h2>
+  <h3>Power</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Source voltage and frequency</td><td>100 to 240 VAC &plusmn; 10% @ 45-66 Hz</td></tr>
+    <tr><td>Max. power consumption</td><td>Max. 250 W</td></tr>
+  </table>
+  <h3>Environmental Characteristics</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Temperature (operating)</td><td>+5 &deg;C to +40 &deg;C (+41 &deg;F to 104 &deg;F)</td></tr>
+    <tr><td>Temperature (non-operating)</td><td>-20 &deg;C to +60 &deg;C (-4 &deg;F to 140 &deg;F)</td></tr>
+    <tr><td>Humidity (operating)</td><td>5% to 80% relative humidity with a maximum wet bulb temperature of 29 &deg;C at or below +40 &deg;C (upper limit de-rates to 20.6% relative humidity at +40 &deg;C). Non-condensing.</td></tr>
+    <tr><td>Humidity (non-operating)</td><td>5% to 95% relative humidity with a maximum wet bulb temperature of 40 &deg;C at or below +60 &deg;C (upper limit de-rates to 29.8% relative humidity at +60 &deg;C). Non-condensing.</td></tr>
+    <tr><td>Altitude (operating)</td><td>3,000 meters (9,842 feet) maximum at or below 25 &deg;C</td></tr>
+    <tr><td>Altitude (non-operating)</td><td>12,000 meters (39,370 feet) maximum</td></tr>
+  </table>
+  <h3>EMC and Safety</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Safety</td><td>EN61010-1</td></tr>
+    <tr><td>Main Standards</td><td>EN 61326-1:2013, Electrical equipment for measurement, control and laboratory use, EMC requirements, Part 1: General requirements</td></tr>
+    <tr><td>Immunity</td><td>EN 61326-1:2013</td></tr>
+  </table>
+  <h3>System Specifications</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Display</td><td>7 inch, 1024x600, capacitive touch LCD</td></tr>
+    <tr><td>Operating System</td><td>Windows 10</td></tr>
+    <tr><td>External Dimensions</td><td>W 445 mm, H 135 mm, D 320 mm (3U 19 inch rackmount)</td></tr>
+    <tr><td>Weight</td><td>Max. 26.45 lbs (12 kg)</td></tr>
+    <tr><td>Front panel connectors</td><td>CH N OUTPUT (SMA), MOD N INPUT (SMA), MARKER N OUT (SMA), TRG IN N (SMA) where N=2,4 depending on the model; 2 USB 3.0 ports</td></tr>
+    <tr><td>Rear panel connectors</td><td>Ref. Clk. IN (SMA); Ref. Clk. Out (SMA); Sync Clk Out (SMA); Ext Clk IN (SMA); Sync IN (QSFP cable); Sync OUT (QSFP cable); Pattern Jump In (DSUB15) (AWG-7000-FSS opt. only); POD X[7..0] where X=A,B,C,D (Customized Mini SAS HD); External Monitor ports (one or more); 2 USB 2.0 ports or more; 4 USB 3.0 ports; Ethernet port (10/100/1000BaseT, RJ45); 2 PS/2 keyboard and mouse ports; 2 DPI ports; 1 DVI port</td></tr>
+    <tr><td>Hard Disk</td><td>1 TB SSD or better</td></tr>
+    <tr><td>Processor</td><td>Intel&reg; Pentium Gold G6400 4 GHz (or better)</td></tr>
+    <tr><td>Processor Memory</td><td>32 GB or better</td></tr>
   </table>
 </section>
 
-<section id="applications">
-  <h2><span class="num">14</span>Applications</h2>
-  <p>The Model 686 pairs fast edges, high amplitude, and deep sequencing to emulate real-world signals across research, communications, and defense work.</p>
-  <ul>
-    <li><strong>Quantum and QKD.</strong> Pulse shaping for quantum sensing and quantum key distribution, cold-atom experiments, and manipulation of nitrogen-vacancy color centers in diamond.</li>
-    <li><strong>Optics and photonics.</strong> Driving electro-optic and acousto-optic modulators, pulsed laser diodes, and quantum-optics emitters with narrow, high-amplitude pulses.</li>
-    <li><strong>Radar and electronic warfare.</strong> RF, IF, and IQ waveform synthesis, modulated radar emulation, and complex EW scenario generation through the advanced sequencer.</li>
-    <li><strong>LiDAR and automotive.</strong> Physical-layer, transmitter, receiver, and channel testing for camera, LiDAR, radar, and ultrasound sensor systems.</li>
-    <li><strong>High-speed serial.</strong> PRBS and multi-level PAM stimulus for SATA, USB, and PCI Express compliance and debug work.</li>
-    <li><strong>High-energy and pulsed-power timing.</strong> Signal emulation for accelerators, tokamaks, and synchrotrons, including pulsed electron-beam, X-ray source, and HEL/ICF timing applications.</li>
-  </ul>
-  <div class="figrow">
-    <figure class="fig"><img src="figures/awg/686/686_x36_p1_365x414.jpeg" alt="Optics and photonics laser bench"><figcaption>Optics and photonics: driving modulators and pulsed laser sources on an optical bench.</figcaption></figure>
-    <figure class="fig"><img src="figures/awg/686/686_x124_p6_744x465.jpeg" alt="Quantum key distribution and secure communication"><figcaption>Quantum sensing and quantum key distribution for secure communication.</figcaption></figure>
-  </div>
-  <div class="figrow">
-    <figure class="fig"><img src="figures/awg/686/686_x126_p6_598x315.jpeg" alt="Large-scale physics experiment"><figcaption>Advanced research: signal emulation for accelerators, tokamaks, and synchrotrons.</figcaption></figure>
-    <figure class="fig"><img src="figures/awg/686/686_x128_p7_636x392.jpeg" alt="Semiconductor device under test"><figcaption>Semiconductor test: high-speed serial stimulus and fast-edge device characterization.</figcaption></figure>
-  </div>
-  <div class="fig"><figure><img src="figures/awg/686/686_x129_p7_470x305.jpeg" alt="Aerospace and defense platform"><figcaption>Aerospace and defense: radar, LiDAR, and sonar emulation and avionics testing.</figcaption></figure></div>
+<section id="s13">
+  <h2><span class="num">13</span>Applications</h2>
+  <h3>Optics &amp; Photonics, RF Wireless</h3>
+  <p>The Model 686 is an ideal choice for the frontier of science and technology experiments and cutting-edge challenges like High Energy Physics, optical, laser and photonics, and RF Wireless communication. The Model 686 series instrument can create virtually any signal, analog or digital, ideal or distorted, standard or custom. You can build complex RF/IF/IQ waveforms, extremely small-width high-amplitude pulses to drive electro/acousto-optic modulators and pulsed laser diodes, or use it in quantum optics experiments such as manipulating nitrogen vacancy color centers in diamond.</p>
+  <p>Highlights: drive electro-optic modulator; modulating and driving laser diode; quantum optics emitters testing; RF Wireless digital modulation.</p>
+  <h3>Quantum Applications</h3>
+  <p>Emerging quantum technologies such as Quantum Sensing and Quantum Key Distribution will be fundamental tools for secure communication and for how we measure, navigate, study, explore, see, and interact with the world by sensing changes in motion and in electric and magnetic fields. The Model 686 generates pulses with ultra-fast rise and fall time, Gaussian shapes, multi-level PAM and PRBS signals, complex pulse trains, and pulsed RF signals with impairments that are key factors for these tests.</p>
+  <p>Highlights: PRBS signal generation; QKD and Quantum sensing; cold atoms; manipulate nitrogen vacancy color center in diamond; minimum delay between Trigger In and Analog Out; up to 16 analog channels and 128 digital channels fully synchronized; built-in sequencer with conditional/unconditional/dynamic jump features, two independent trigger inputs, up to 4 marker outputs.</p>
+  <h3>Automotive</h3>
+  <p>Next-generation advanced driver-assistance systems (ADAS) require camera and radar systems with increasingly high resolution. Camera, LIDAR, Radar, and Ultrasound devices need higher bandwidth and lower latency. The Model 686 combines 20 GS/s with 14-bit vertical resolution, an ideal instrument for generating the real-world signals necessary to emulate the most demanding testing cases.</p>
+  <p>Highlights: electrical standards emulation up to 5 V; physical layer testing; sensor testing; EMI debugging, troubleshooting, and testing.</p>
+  <h3>Advanced Research Applications</h3>
+  <p>The Model 686 offers an excellent balance between signal amplitude and bandwidth: you can generate 5 Vpp pulses with more than 6.5 GHz of analog bandwidth. The combination of ultra-fast edge and minimum pulse width generation, excellent dynamic range, and an easy-to-use interface suits scientists and engineers working on large experiments such as accelerators, tokamaks, or synchrotrons. Pulses can be generated for applications such as Pulse Electron Beam or X-Ray sources, Flash X-ray radiography, lighting pulse simulators, and high power microwave modulators.</p>
+  <p>Highlights: emulation of detectors; emulation of signal sources adding noise; generation/playback of real-world signals.</p>
+  <h3>Semiconductors Test</h3>
+  <p>Smaller footprints, higher data throughput, and lower power requirements enable technologies such as SATA, USB, and PCI Express. The Model 686 series allows testing of these high-speed devices, providing up to 16 analog output channels with a maximum data rate of 8 Gbps and PCI-Express Gen. 3 debugging. Fast edges and pulse generation can be used to characterize fast power devices.</p>
+  <p>Highlights: high-speed serial testing; semiconductor characterization; high-speed clock generation; frequency response, intermodulation distortion, and noise-figure measurements; pulse pattern generator.</p>
+  <h3>Aerospace and Defense</h3>
+  <p>Radar, Lidar, and Sonar design and testing match the Model 686 series. The capability to generate high-bandwidth signals can be used on digital modulation systems for radio applications or other I/Q signal modulation. High-speed signal generation combined with the advanced sequencer and its fast sequence switch feature enables emulation of complex real-world signal scenarios.</p>
+  <p>Highlights: Radar and Lidar RF modulated signals emulation; Electronic Warfare complex scenarios generation; avionics testing.</p>
 </section>
 
-<section id="software">
-  <h2><span class="num">15</span>Software &amp; Support</h2>
-  <p>The Model 686 is programmed with the 686 SDK, which exposes the instrument's modes and sequencing to custom test software. <a href="https://www.berkeleynucleonics.com/download/38602/" target="_blank" rel="noopener">Download the 686 SDK</a> to integrate the generator into an automated test framework over LAN, USB-TMC, or GPIB.</p>
-  <p>For a quote, configuration help, or application support, reach the Berkeley Nucleonics team.</p>
-  <p><strong>Email:</strong> <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a><br>
-  <strong>Phone:</strong> 800-234-7858</p>
-  <div class="note"><b>Need the complete document set?</b> To request the full datasheet or the product manual, <a href="../contact.html" target="_blank" rel="noopener">contact Berkeley Nucleonics</a> and a specialist will follow up.</div>
+<section id="s14">
+  <h2><span class="num">14</span>Document History</h2>
+  <table class="spec">
+    <tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr>
+    <tr><td>V1</td><td>2024-04</td><td>At</td><td>Created datasheet</td></tr>
+  </table>
+  <p>Berkeley Nucleonics Corporation &middot; 2955 Kerner Blvd., San Rafael, CA 94901 &middot; Phone: (415) 453-9955 &middot; info@berkeleynucleonics.com &middot; berkeleynucleonics.com</p>
 </section>
 
 </main>
@@ -637,6 +889,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 686 Arbitrary Waveform Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

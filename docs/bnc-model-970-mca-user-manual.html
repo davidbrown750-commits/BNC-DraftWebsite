@@ -162,179 +162,694 @@ th .modelthumb{filter:none;}
   <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search&#8230;" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">User Manual</div><h1>Model 970 Portable Multi-Channel Analyzer User Manual</h1><p>Operating guide for the Model 970-X portable MCA and the included SNAP-MCA software. Covers detector connection, high voltage and shaping setup, spectrum acquisition, energy calibration, region-of-interest analysis, and data export for gamma, neutron, and x-ray applications.</p><div class="ver">Document: Model 970 User Manual &middot; Berkeley Nucleonics Corporation</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/images/products/970_transparent.png" alt="Berkeley Nucleonics Model 970 Portable Multi-Channel Analyzer"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">User Manual</div><h1>Model 970 Portable Multi-Channel Analyzer User Manual</h1><p>Operating guide for the Model 970 portable MCA and the included SNAP-MCA software. Covers hardware setup and powering, detector connection, high voltage, gain, threshold and shaping setup, spectrum acquisition, energy and shape calibration, regions of interest, efficiency calibration, MCS mode, and the SNAP-MCA library editor.</p><div class="ver">Model 970 User Manual &middot; Document Version 1.0 &middot; Software Release 2.1.3 &middot; Print Code 31025070 &middot; Berkeley Nucleonics Corporation</div></div><div class="hero-img"><img src="../figures/_heroes/bnc-model-970-mca.png" alt="Berkeley Nucleonics Model 970 Portable Multi-Channel Analyzer"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Safety</a>
-  <a href="#s2">2. What's in the Box</a>
-  <a href="#s3">3. Hardware Overview</a>
-  <a href="#s4">4. Connecting a Detector</a>
-  <a href="#s5">5. SNAP-MCA Software</a>
-  <a href="#s6">6. Acquiring &amp; Analyzing a Spectrum</a>
-  <a href="#s7">7. Saving &amp; Exporting Data</a>
-  <a href="#s8">8. Maintenance</a>
-  <a href="#s9">9. Specifications Summary</a>
-  <a href="#s10">10. Support</a>
+  <a href="#s1">1. Introduction</a>
+  <a href="#s2">2. Hardware Description and Controls</a>
+  <a href="#s3">3. Powering the Model 970</a>
+  <a href="#s4">4. General Operation</a>
+  <a href="#s5">5. Functions, Controls, and Displays</a>
+  <a href="#s6">6. Using the Library Editor</a>
+  <a href="#s7">7. Using MCS Mode</a>
+  <a href="#s8">8. Procedures</a>
+  <a href="#s9">9. Support Programs</a>
+  <a href="#s10">10. Specifications</a>
+  <a href="#s11">11. Contact Us</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Safety</h2>
-  <p>Read this section before powering the instrument. The Model 970-X supplies <strong>detector bias voltage up to 2000 V positive</strong>. Treat every detector input, cable, and connector as live whenever the unit is on. Switch the unit off and confirm the high voltage has discharged before connecting or disconnecting a detector.</p>
-  <h3>General precautions</h3>
+  <h2><span class="num">1</span>Introduction</h2>
+  <p>Thank you for purchasing a Model 970 Portable Multi-Channel Analyzer (MCA). A lot of time and effort was spent trying to make the Model 970 hardware, software, and this manual, as user-friendly and error-free as possible, but we cannot guarantee that no mistakes or omissions are present. All software (and manuals, for that matter) are "works-in-progress," and will be updated from time to time. These updates will be posted on our website, <a href="https://www.berkeleynucleonics.com" target="_blank" rel="noopener">http://www.berkeleynucleonics.com</a>, where the most recent versions can be downloaded. There is also a link to the Model 970 support website under the Help menu.</p>
+  <p>If you find any errors or omissions or would like additional features in the instrument, please let us know.</p>
+
+  <h3>1.1 Model 970 System Requirements</h3>
+  <p>Pentium-II computer with at least 64 MB of ram and available high-speed serial port (16550 UART or higher), running Windows&reg; 98 or higher. (An available USB port is also acceptable if USB-to-RS232 adapter is used.) Monitor with resolution of at least 800 by 600 pixels.</p>
+  <p>This software has been tested on Windows 98, ME, NT, 2000, XP, and Windows 7.</p>
+
+  <h4>1.1.1 Model 970 Technical Specification</h4>
   <ul>
-    <li>Connect detectors only with the unit powered off. The active high voltage supply is enabled and set in software, so verify the bias is at 0 V before you handle cables.</li>
-    <li>Use the correct connector for each input. Input 1 carries signal and high voltage on one series "C" connector. Input 2 separates them across an SHV connector for high voltage and a BNC connector for signal.</li>
-    <li>Do not exceed the rated bias for the connected detector. Set bias to the detector manufacturer's recommended operating voltage.</li>
-    <li>Keep the instrument dry. It is laboratory and field electronics, not a sealed submersible enclosure.</li>
-    <li>Service and internal access should be performed by qualified personnel only.</li>
+    <li>Internal 4096 channel successive approximation analog to digital converter.</li>
+    <li>Internal positive High Voltage supply, variable from 0 to 2000 V. Negative High Voltage supply is also available.</li>
+    <li>Model 970 accepts positive, negative, or pre-shaped (positive) pulses. Pulse heights should not exceed approximately 5 volts.</li>
+    <li>Uses 110 VAC or 220 VAC to 12 V DC adapter (1.25 A), or runs on 6 internally recharged NiMH "AA" batteries. Rechargeable battery life is approximately 4 hours, but will vary considerably based on the power requirements of the specific detector used. Battery charging circuitry can be suppressed via a switch in the battery compartment to allow the use of standard alkaline batteries.</li>
+    <li>&plusmn;12 V DC power for preamplifiers is available through the 7-pin mini DIN connector. This connector can also provide +5 V DC as well as logical outputs controlled by the software's alarm functions.</li>
   </ul>
-  <div class="note"><b>Battery note.</b> An internal switch in the battery compartment suppresses charging when non-rechargeable batteries are installed. Confirm the switch matches the battery type in use before connecting external power.</div>
 </section>
 
 <section id="s2">
-  <h2><span class="num">2</span>What's in the Box</h2>
-  <p>The Model 970-X ships with the items needed to install the software and connect to a host computer. The detector is selected and supplied separately to match the application.</p>
-  <ul>
-    <li><strong>Model 970-X portable MCA</strong></li>
-    <li><strong>SNAP-MCA software</strong> (Simple Nuclear Analysis Program), single-user license</li>
-    <li><strong>Carrying case</strong></li>
-    <li><strong>USB-to-serial adapter</strong></li>
-  </ul>
-  <p>Inspect the carrying case and instrument on arrival. Shipping weight is approximately 9 lbs in an 18 x 18 x 13 inch carton. Report any transit damage before powering the unit.</p>
+  <h2><span class="num">2</span>Hardware Description and Controls</h2>
+  <figure class="fig"><img src="../figures/970-mca-man/fig-005.png" alt="Model 970 front panel connector and control diagram"><figcaption>Front panel controls and connectors. (1) On/Off Switch, (2) Power On LED, (3) Charge Mode Switch (Slow/Fast), (4) Fast Charge Indicator LED, (5) External Power Indicator LED, (6) SHV Connector (Input 2 HV), (7) BNC Connector (Input 2 Signal), (8) Series "C" Connector (Input 1 HV &amp; Signal), (9) Mini DIN-7 Connector, (10) DB9 Connector.</figcaption></figure>
+
+  <h3>2.1 Front Panel</h3>
+  <ol>
+    <li><strong>On/Off Switch.</strong></li>
+    <li><strong>Power On LED.</strong> Glows red when the Model 970 is powered on.</li>
+    <li><strong>Charge Mode Switch.</strong>
+      <ul>
+        <li><strong>Slow Charge:</strong> Internal NiMH batteries are recharged using a trickle current which will fully charge depleted batteries in about 14 hours and safely maintain them at full capacity indefinitely.</li>
+        <li><strong>Fast Charge:</strong> Internal NiMH batteries are undergoing a fast charge. Batteries will be fully charged in about three to four hours. Unless a fast charge is required, this switch should be left in the Slow position to maximize NiMH battery life.</li>
+      </ul>
+    </li>
+    <li><strong>Fast Charge Indicator LED.</strong> Glows green when Fast charge is in operation. This LED turns off when the fast charge is complete, indicating that the Charge Mode switch can be set back to the Slow position.</li>
+    <li><strong>External Power Indicator LED.</strong> Glows red when external power is connected, regardless of whether the 970 is powered on or off.</li>
+    <li><strong>SHV Connector.</strong> This provides the High Voltage output only for INPUT2 (i.e., will not accept a coupled signal).</li>
+    <li><strong>BNC Connector.</strong> This provides the signal input only for INPUT2 (i.e., does not carry High Voltage).</li>
+    <li><strong>Series "C" Connector.</strong> This provides High Voltage and accepts coupled signal for INPUT1.</li>
+    <li><strong>Mini DIN-7 Connector.</strong> This provides &plusmn;12-volt power if needed for detector preamplifiers. Also provides +5 volts as well as logical outputs coupled to ALARM0 and ALARM1 in the Model SNAP-MCA software.</li>
+    <li><strong>DB9 Connector.</strong> Communication port for connecting the 970 with a controlling device (e.g., computer).</li>
+  </ol>
+
+  <h3>2.2 Rear Panel</h3>
+  <ol>
+    <li><strong>External Power Input.</strong> Accepts 12 VDC at 1.25 A. Input voltage should never exceed 15 V, as damage to the Model 970 could result.</li>
+    <li><strong>Fan.</strong> The fan runs anytime the 970 is connected to external power. It does not run (and is not needed) when running on batteries.</li>
+  </ol>
+
+  <h3>2.3 Battery Compartment</h3>
+  <ol>
+    <li><strong>Battery Type Selection Switch.</strong>
+      <ul>
+        <li><strong>Recharge position:</strong> Allows NiMH batteries to be charged.</li>
+        <li><strong>Standard position:</strong> The battery charging circuitry is disabled so that non-rechargeable alkaline batteries can be kept in the Model 970 while it is connected to external power.</li>
+      </ul>
+    </li>
+  </ol>
 </section>
 
 <section id="s3">
-  <h2><span class="num">3</span>Hardware Overview</h2>
-  <p>The Model 970-X is a compact, modular pMCA built for real-time processing of gamma, neutron, and x-ray data. It runs as a benchtop laboratory instrument, a process monitor, or an integrated component inside an existing control system.</p>
-  <h3>Detector inputs</h3>
-  <p>The unit provides <strong>two detector inputs</strong>, with the active input selected in software:</p>
-  <ul>
-    <li><strong>Input 1:</strong> standard series "C" connector. Signal is joined with the high voltage supply on a single connector.</li>
-    <li><strong>Input 2:</strong> separate connections, an SHV connector for high voltage and a BNC connector for signal.</li>
-  </ul>
-  <p>The inputs accept negative, positive, or pre-shaped (positive) signals, which supports a broad range of detector front ends.</p>
-  <h3>High voltage supply</h3>
-  <p>The internal bias supply delivers <strong>0 to 2000 V positive</strong> with an output capacity up to <strong>0.5 mA</strong>. Negative high voltage is available on request. Set the bias value in software to match the connected detector.</p>
-  <h3>Amplifier and shaping</h3>
-  <p>Shaping time is adjustable from <strong>0.25 to 10 microseconds</strong>. Gain ranges from <strong>x1 to x25</strong> through coarse and fine gain controls, which lets you place the spectrum of interest across the available channels.</p>
-  <h3>External connector and USB</h3>
-  <p>An external connector supplies <strong>+5 V, +12 V, and -12 V</strong> for external preamplifiers and provides two logic signals for external alarm device notification. The unit connects to the host computer through the supplied USB-to-serial adapter.</p>
-  <h3>Controls and indicators</h3>
-  <p>Front controls include a power On/Off switch and a Fast/Normal charging rate switch. Three LEDs report On/Off status, external power availability, and fast charge activation.</p>
+  <h2><span class="num">3</span>Powering the Model 970</h2>
+
+  <h3>3.1 AC Power Supply</h3>
+  <p>A 110 VAC or 220 VAC to 12 VDC power supply is provided with the Model 970. If you need to replace this for some reason, make sure the output is regulated 12 VDC, capable of delivering at least 1.25 A continuous current. The center pin is positive. Under no circumstances allow greater than 15 VDC (or any AC voltage) into this connector, or damage to the Model 970 will likely result.</p>
+
+  <h3>3.2 Charging the Internal NiMH Batteries</h3>
+  <p>The 970 uses six "AA" 1800 mAh nickel metal hydride (NiMH) batteries. These are charged at either a slow or fast rate, determined by the position of the Charge Mode Switch. Generally speaking, it is preferable to charge these at the slow rate whenever possible. When charging for the first time, use the Slow Charge method. This will help extend the lifetime of the NiMH batteries. In the slow charge mode, completely drained batteries will be fully charged overnight, or in approximately 14 hours. In Fast Charge mode, completely drained batteries will be fully charged in three to four hours.</p>
+  <p>In order to fast charge the batteries, the Charge Mode Switch must be in the Fast position. If the position of this switch is changed to Fast while the Model 970 is connected to external power, the 970 must be switched from the Off to the On position, or the External Power connector must be unplugged from the 970, and plugged back in again in order to initiate the fast charging sequence. When fast charging, the Fast Charge Indicator LED will glow green and will turn off when the Model 970 senses that the batteries are fully charged. At the end of the fast charge sequence, the Model 970 reverts to slow charging to maintain the charge in the batteries. Make sure to change the Charge Mode Switch to the Slow position to prevent initiating a new fast charge sequence on batteries that are already fully charged.</p>
+  <p>A fast charge should never be initiated when the batteries are cold. Allow them to warm up to near-room temperature before initiating a fast charge sequence to prevent damaging the batteries.</p>
+  <p>The NiMH batteries should power the 970 for about four hours. Note however that this figure can change dramatically based on the current draw of the detector, High Voltage, other Hardware Settings, ambient temperature, and age and condition of the batteries.</p>
+  <p>The expected useful lifetime of NiMH batteries under the best of circumstances is about one year.</p>
+  <div class="note warn"><b>Caution.</b> Do not attempt to charge NiCad batteries in the Model 970. Doing so will damage the instrument.</div>
+  <p>There is no problem with using the 970 while charging the batteries.</p>
+
+  <h3>3.3 Using Alkaline Batteries</h3>
+  <p>It is not a problem using non-rechargeable batteries in the Model 970. Remove the four screws on the Rear Panel and replace the NiMH batteries with AA alkaline batteries. However, you must be absolutely sure to switch the Battery Type Selection Switch to the Standard position to bypass the 970's internal charging circuitry. <strong>Failure to do this may result in catastrophic damage to the Model 970.</strong> Switch back to the Recharge position when NiMH batteries are reinstalled.</p>
+
+  <h3>3.4 Alternative External Power</h3>
+  <p>If the Model 970 is being operated far from an AC power source for extended periods (i.e., longer than the internal NiMH batteries can support), then it can also be powered from a number of other external sources. All that is required is that a DC voltage in the range of 12 to 15 volts is provided to the unit. If the NiMH batteries will be fast charged by this power supply, then at least 1.25 A must be available. If the NiMH batteries will be trickle charged by this power supply, then at least 750 mA must be available. If the battery charging circuitry is bypassed, then at least 600 mA must be available.</p>
+  <p>DC power from most motor vehicles can meet these specifications, and the 970 can be powered directly by a motor vehicle cigarette lighter adapter.</p>
+  <p>The center pin of the External Power Input is positive. Incorrectly applying voltage to the Model 970 will likely damage it.</p>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Connecting a Detector</h2>
-  <p>The Model 970-X supports several scintillation detector chemistries. Choose the input and connector that match your detector, then set bias and shaping in software.</p>
-  <h3>Supported detector chemistries</h3>
-  <ul>
-    <li><strong>Sodium Iodide, NaI(Tl):</strong> widely used for standard gamma spectroscopy, high light output, well matched to photomultiplier sensitivity.</li>
-    <li><strong>Cesium Iodide, CsI(Tl):</strong> rugged and non-hygroscopic, a robust alternative to NaI(Tl) across broad applications.</li>
-    <li><strong>Cerium Bromide, CeBr3:</strong> high resolution with fast decay and low intrinsic background, approximately 4% FWHM at 662 keV.</li>
-    <li><strong>Lanthanum Bromide, LaBr3(Ce):</strong> excellent energy resolution, 2.6% FWHM for a 2 inch diameter by 2 inch crystal, with an enhanced version at 2.2% FWHM at 662 keV.</li>
-  </ul>
-  <h3>Connection steps</h3>
+  <h2><span class="num">4</span>General Operation</h2>
+  <p>The Model 970 hardware and SNAP-MCA software are designed to connect the 970 to a computer as painlessly as possible. The 970 must be connected to a serial port via a serial cable. The computer must be using Windows 98, Windows 98 SE, Windows ME, Windows 2000, Windows XP, or Windows 7. The COM port must utilize a 16550 (or higher) high-speed UART; this is standard on virtually all Pentium (and higher) class motherboards. Alternatively, an RS-232-to-USB adapter can be used; just make sure the adapter's drivers have been properly installed before trying to use it.</p>
+  <p>It is not strictly necessary to have the Model 970 connected to start the software. If a 970 is not found, you will be given the option of starting in Offline Mode. Should you start by doing this, there won't be much to see or do with the software other than load previously acquired spectra (a couple have been included with the installation package).</p>
+
+  <h3>4.1 Initial Start Up</h3>
   <ol>
-    <li>Power the unit off and confirm bias is at 0 V.</li>
-    <li>For a combined signal and high voltage detector cable, use <strong>Input 1</strong> (series "C" connector). For separate cabling, use <strong>Input 2</strong>, with high voltage on the SHV connector and signal on the BNC connector.</li>
-    <li>Power on, launch SNAP-MCA, and select the active detector input in software.</li>
-    <li>Set the bias to the detector manufacturer's recommended operating voltage, within the 0 to 2000 V range.</li>
-    <li>Set shaping time within the 0.25 to 10 microsecond range. Shorter shaping suits higher count rates; longer shaping favors resolution at lower rates.</li>
-    <li>Adjust coarse and fine gain (x1 to x25) so the energy region of interest falls across the available channels.</li>
+    <li>Load the SNAP-MCA software.</li>
+    <li>Attach the Model 970 to the computer via the serial connector.</li>
+    <li>Connect the detector to Input 1 or Input 2.</li>
+    <li>Plug in and power on the 970.</li>
+    <li>Start the software. SNAP-MCA searches all COM ports for the 970 automatically.</li>
+    <li>A detector must be entered before the 970 can be opened. Many of the 970's calibration files are tied to the specific 970/detector combination.</li>
+    <li>Click the OK button.</li>
+    <li>The Add New Detector window will open and contain some default "generic" data the first time it is used. If you are in a hurry to try out the 970, you can accept these values by clicking the Add button. It is recommended, that you take a few moments and fill in the information for the detector you will be using. All fields must contain information. If you click the Cancel button, SNAP-MCA will revert to the Select Detector window, which will be blank. Your only options then will be to either close the application or go back to the Add New Detector window.</li>
+    <li>Click the Add button after you have completed entering the information for your detector.</li>
+    <li>The Select Detector window is now displayed, showing the detector just entered. Click Use This Detector.</li>
+    <li>A window showing the serial number of the Model 970 and the number of the COM port being used is displayed. Click Yes to enable the High Voltage to the displayed value or No to start SNAP-MCA with the High Voltage turned off. It is recommended that you enable the High Voltage at this time unless you have some reason to believe that enabling the High Voltage to the value displayed might damage the detector (e.g., the HV is higher than you think it should be or you don't actually have the detector connected yet).</li>
+    <li>The SNAP-MCA Main Window will now be displayed. At this point, whether the first use or not, SNAP-MCA may appear to pause for a few moments while it adjusts the 970's on-board Hardware Settings and while it loads various associated files including the library file, the last used ROI Set, Energy and Efficiency Calibrations.</li>
   </ol>
-  <div class="note">For complete procedures, refer to the official Berkeley Nucleonics manual; contact info@berkeleynucleonics.com.</div>
+  <figure class="fig"><img src="../figures/970-mca-man/fig-009.png" alt="Add New Detector dialog in SNAP-MCA"><figcaption>The Add New Detector window. Fields marked with an asterisk (*) cannot be changed once the detector data have been added.</figcaption></figure>
+  <p>Note that field names that are marked with an asterisk cannot be changed or edited once the detector data have been added. For instance, if after capturing and storing spectra, you choose to change the Number of Channels, a new detector must be added in order to select the number of channels to be used.</p>
+  <p>The "Add New Detector" window can also be selected from the Utility | Detector&hellip; menu discussed later. In the "Base New Detector on" field, you may select an existing detector set up and make minor edits or you may start from scratch. Your system can have a number of different detectors or the same detector with a different number of channels.</p>
+  <p>Placing these parameters in the Add New Detector screen is the only way to change the number of channels in the Spectrum Display.</p>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>SNAP-MCA Software</h2>
-  <p><strong>SNAP-MCA</strong> (Simple Nuclear Analysis Program) is the included acquisition and analysis package. It reads data from the Model 970 and most MCAs, presents a Windows-style toolbar interface, and performs both qualitative and quantitative analysis.</p>
-  <h3>Installation</h3>
-  <ol>
-    <li>Connect the Model 970-X to the host computer using the supplied USB-to-serial adapter.</li>
-    <li>Install SNAP-MCA from the supplied media on a compatible Windows host. The software runs on Windows 95 and higher, and supports Windows Mobile devices (Jornada, iPAQ, TDS Recon) and Windows CE environments.</li>
-    <li>Launch SNAP-MCA and confirm the application detects the instrument over the serial connection.</li>
-  </ol>
-  <h3>Channel configuration</h3>
-  <p>The Model 970-X provides <strong>4096 channels</strong>, configurable for <strong>256, 512, 1024, or 2048 channels</strong>. Higher channel counts give finer spectral detail; lower counts can speed screening tasks. Select the channel configuration that matches your detector resolution and throughput needs.</p>
-  <h3>Acquiring a spectrum</h3>
-  <p>With the detector connected and bias applied, start an acquisition from the toolbar. The histogram fills in real time as counts accumulate across channels. Use the live display to confirm the spectrum is centered and the peaks of interest fall within range before committing to a long count.</p>
-  <h3>Regions of interest (ROI)</h3>
-  <p>Define a <strong>region of interest</strong> by marking the channel boundaries around a peak. SNAP-MCA reports the integrated counts within each ROI, which supports peak quantification and isotope identification against the standard library of 387 isotopes (editable).</p>
-  <h3>Energy calibration</h3>
-  <p>Calibrate the channel-to-energy relationship using a source with known gamma lines. Acquire a spectrum from the calibration source, identify the known peaks, and assign their energies to the corresponding channels so the horizontal axis reads in keV.</p>
-  <div class="note">For complete menu-by-menu procedures, including peak search, library editing, and the dual-channel emulator and ASCII modes, refer to the official Berkeley Nucleonics manual; contact info@berkeleynucleonics.com.</div>
+  <h2><span class="num">5</span>Functions, Controls, and Displays</h2>
+
+  <h3>5.1 SNAP-MCA Main Window</h3>
+  <figure class="fig"><img src="../figures/970-mca-man/fig-011.png" alt="Annotated SNAP-MCA Main Window"><figcaption>The SNAP-MCA Main Window, the starting point for all Model 970 functions, with the Menu Bar, Button Bar, Hardware Status Bar, New User Hints Bar, Spectrum Display, Spectrum Status Bar, Acquisition Controls and Indicators, Spectrum Smoothing, and Button Panel labeled.</figcaption></figure>
+  <p>This window is the starting point for all Model 970 functions. This section describes in general terms the controls and displays on the main window. Virtually all functions can be performed using either the mouse or combinations of keystrokes.</p>
+
+  <h3>5.2 Menu Bar</h3>
+  <p>Essentially all SNAP-MCA functions can be accessed through the Menu Bar, including those triggered by buttons on the SNAP-MCA Main Window.</p>
+
+  <h4>File Menu</h4>
+  <p>The first menu item <strong>Save Spectrum as File</strong> is for saving a displayed spectrum as a 970 spectrum file (*.usf). The next two, <strong>Save Spectrum and Load as Background</strong> and <strong>Save Spectrum and Load to Static Display</strong>, also save the spectrum but additionally load the spectrum as the Background Spectrum or to the Secondary Spectrum display.</p>
+  <p>The next two menu items, <strong>Capture Screen to Clipboard</strong> and <strong>Save Spectrum as Graphic</strong>, relate to the graphical representation of the spectrum, referred to in this document as the Chart. These allow the Chart to be copied to the Clipboard (and subsequently pasted into a word processing or graphics program) or saved as a graphics file. These relate only to the Chart exactly as displayed, and do not carry over any other portion of the window. Note: If you want to capture an image of the entire window, use Alt + Print Screen to copy a picture of the active window to the clipboard, and then paste into another application.</p>
+  <p>The next group of three menu items, <strong>Load Spectrum to Live</strong>, <strong>Load Spectrum as Background</strong>, and <strong>Load Spectrum to Static Display</strong>, concern the loading of Stored Spectra. Any previously saved spectrum captured using the same 970/detector combination can be reloaded as a "live" spectrum for re-analysis, or as the Background Spectrum, or to capture additional Acquisition time. Warning screens may be displayed if the spectrum was acquired using different Hardware Settings than are currently being used. Any spectrum in the *.usf format can be displayed in the Secondary Spectrum. Note: If a saved spectrum is loaded to "live," any spectrum currently displayed will be lost without warning unless you explicitly save it before loading the saved spectrum. Note: When a Background is loaded, it will automatically be subtracted from the visual Spectrum Display until cleared or de-selected from the View Menu. A loaded Background Spectrum will be subtracted from all subsequent analyses until the Background Spectrum is explicitly cleared, another one is loaded, or SNAP-MCA is closed.</p>
+  <p>The <strong>Clear Background</strong> menu item completely removes any loaded Background file, not just from the visual display (e.g., the Background data also will not be used in subsequent analysis of spectra).</p>
+  <p>The next three menu items relate to the printing of spectra currently displayed. <strong>Printer Setup</strong> accesses the Windows&reg; Printer Settings dialog to alter paper type and layout, quality of the printing, etc. <strong>Print Spectrum Preview (color)</strong> allows the user to view the printer output prior to printing, adjust margins, etc. before printing the Chart. <strong>Print Spectrum Preview (B+W)</strong> does the same, but alters the displayed colors to a black spectrum on a white background in order to save printer ink. This is the recommended method of printing Charts.</p>
+  <p>The final menu item, <strong>Exit</strong>, closes SNAP-MCA. Warnings will occur if the currently displayed spectrum has not been saved, and the user must confirm that the program should close.</p>
+
+  <h4>Utility Menu</h4>
+  <p>The first four menu items <strong>Start (or Restart) Acquisition</strong>, <strong>Stop Acquisition</strong>, <strong>Clear Spectrum</strong>, and <strong>Clear Spectrum and Start New Acquisition</strong> are for beginning, continuing, and stopping spectrum Acquisition as well as clearing the currently displayed Live Spectrum. These items are identical in function to the four buttons along the top of the Acquisition Controls and Indicators portion of the screen. Note: No warnings are given if the current spectrum has not been saved!</p>
+  <p><strong>Detector Status</strong> displays a small window displaying current information about the detector being used, loaded ROI and library files, as well as the state of Energy and Efficiency Calibrations.</p>
+  <p>The <strong>Detector</strong> menu item opens a sub-menu containing various utilities for working with detectors:</p>
+  <ul>
+    <li><strong>Add</strong> allows new detectors to be added in the same manner as during SNAP-MCA startup, without the need to shut down and re-start SNAP-MCA.</li>
+    <li><strong>Remove Detector</strong> allows deletion of any detector entered except the one currently in use.</li>
+    <li><strong>Select/Change</strong> automatically disables the 970's HV supply to allow for safe changing of detectors. A new detector is selected from the list in a manner similar to that performed during SNAP-MCA startup. Once a new detector has been selected, that detector's settings (Hardware Settings, Energy and Efficiency Calibrations, and the last-used ROI with that detector) are loaded, and the HV is enabled.</li>
+  </ul>
+  <p>If the <strong>Disable High Voltage</strong> menu item is selected, the 970's HV will be set to zero volts and the Hardware Status Bar will display that the HV is off. This menu item will change to Enable High Voltage and, if selected, will re-set the HV to the last-used Hardware Setting.</p>
+  <p><strong>Fine Tune</strong> opens a window to begin an automatic Fine Gain adjustment routine.</p>
+  <p><strong>Energy Calibrate</strong> opens a window for performing an Energy Calibration.</p>
+  <p>The next seven menu items (Full Screen through Sample Data Panel) are identical in function to the seven buttons in the Button Panel on the lower right of the Spectrum Display. Each of these opens a panel for a specific function along the bottom of the Spectrum Display, except for Full Screen, which closes any displayed panel and restores the Spectrum Display to the largest possible size. The functions contained in these panels are discussed in detail in the Button Panel section.</p>
+  <p><strong>Multi Channel Scaling Mode</strong> disables and hides the SNAP-MCA Main Window, and opens a new window for performing multi-channel scaling. This function is discussed in detail in Section 7 of this Manual.</p>
+  <p><strong>Load ROI Set</strong> is a redundant function (from the ROI-based Analysis Panel) repeated here for convenience.</p>
+  <p><strong>970 COM Port</strong> displays which COM port the 970 is currently connected through. The 970 can be used on COM 1 through COM 16.</p>
+
+  <h4>Alarms Menu</h4>
+  <p><strong>Alarm Settings</strong> opens a window where various alarms can be set. Alarms will only be active if Enable Alarms is checked. Alarms can be set for any ROI in the currently loaded ROI Set or for the overall spectrum. Alarms can be set for either a gross count rate or for an increase in gross count rate over a specified period of time. Any two alarms can also be attached to the logical alarm outputs on the Mini DIN-7 connector. The outputs go "high" (+5 V) in an alarm condition.</p>
+  <p><strong>Show Alarm Window</strong> opens the same window that is automatically opened when any alarm condition occurs.</p>
+
+  <h4>Misc Menu</h4>
+  <p>This menu item is for special functions that do not easily fit into other categories. All of these items have been suggested or requested by users.</p>
+  <p><strong>Collect Multiple Sequential Spectra</strong> opens a window where the Model 970 can be told to collect a fixed number of spectra (or to sample continuously). At the end of each Acquisition, the spectrum file is saved with a sequential file name. Alternatively (or, additionally), a brief ROI report can be saved.</p>
+  <p><strong>Simple ROI Report</strong> generates a minimal ROI-based report containing primarily count rate data for each ROI.</p>
+  <p><strong>View Spectrum as Spreadsheet</strong> first prompts the user to save the spectrum as a .csv file (comma separated values), then opens the spreadsheet using your computer's default application for opening .csv files. In most cases, this application is a spreadsheet program such as Microsoft Excel.</p>
+  <p><strong>Save Spectrum on End of Acquisition</strong> will, when checked, save the spectrum to a file each time an acquisition is ended. This occurs when an acquisition is ended by any method. The files are saved to the "Spectra" subdirectory (located within whatever directory the SNAP-MCA software is located). The filename of the spectrum will be based on the date and time in the format yyyy mm dd hh-nn-ss, where yyyy is the four digit year, mm is the two-digit month, dd is the two digit day of the month, hh is the two-digit hour in 24-hour format, nn is the two-digit minutes past the hour, and ss is the two-digit seconds past the minute.</p>
+  <p><strong>Disable ADC Corrections</strong> will, when checked, disable the corrections made in the 970's microcontroller to compensate for the analog-to-digital converter's differential non-linearity.</p>
+
+  <h4>View Menu</h4>
+  <p><strong>Show New User Hints</strong> enables/disables the New User Hints Bar, which displays a sentence or two briefly describing the function for any display or control the mouse cursor is currently over. Disabling (i.e., un-checking) this menu item hides the New User Hints Bar, making the Spectrum Display slightly larger.</p>
+  <p><strong>Show Hints</strong> enables/disables displays of small pop-up windows containing a very brief description of a control or display when the cursor is over it for longer than one second.</p>
+  <p>When <strong>Show Background Subtracted</strong> is checked, the loaded Background Spectrum is visually removed from the Live Spectrum. It does not affect display of a Live Spectrum. Regardless of this visual setting, if a Background has been loaded, it is subtracted in all analysis functions. This menu item will be unavailable if no Background Spectrum has been loaded.</p>
+  <p>When <strong>Show ROIs</strong> is checked, regions of interest from the current ROI file are colored differently than the rest of the spectrum (unless color settings are altered by the user). Additionally when this is checked, the ROI section of the Spectrum Status Bar will display the ROI name and number of total counts for the ROI currently under the cursor.</p>
+  <p>If <strong>Spectrum Quick Grow</strong> is checked, the left axis of the Spectrum Display will be set to a minimal value when the spectrum is cleared. This allows the fastest visual indication of peaks forming within the spectrum.</p>
+  <p><strong>Show Static Spectrum</strong> will show/hide the Live Spectrum if one has been loaded. <strong>Save Current Spectrum to Static Display</strong> does just that, without removing or altering the current Live Spectrum. This function does not save the Live Spectrum in any way, and no analysis can be performed on a spectrum statically displayed; it is used for visual reference or comparison only.</p>
+  <p>In the next two menu items, the Primary Spectrum and the Static Spectrum display modes can be changed between a line display (default), a bar graph, or pixels.</p>
+  <p><strong>Grid Display Settings</strong> allows a grid to be overlaid (or not) on the Spectrum Display. Additionally, axis labels can be displayed (or not).</p>
+  <p><strong>Show Isotope Data</strong> and <strong>Show Isotope Lines</strong> are redundant functions (from the Button Bar) repeated here for convenience.</p>
+  <p><strong>Linear Y Axis</strong> and <strong>Logarithmic Y Axis</strong> change the display of the left axis.</p>
+  <p>The <strong>Colors</strong> menu item opens a sub-menu allowing most display colors to be altered. The <strong>Reset to Default Colors</strong> menu item restores SNAP-MCA visual settings to the "first use" state. The default colors were selected to reduce eye strain, especially on large monitors, but may not be ideal for all users or purposes (e.g., printing).</p>
+  <p><strong>Undo Zoom</strong> gives a method for restoring the zoomed state of the spectrum to "none" without requiring the use of a mouse. The spectrum can only be zoomed by using the mouse to drag a rectangle (from upper-left to lower-right) on the Spectrum Display. Dragging any rectangle from lower-right to upper-left will un-zoom the spectrum.</p>
+
+  <h4>Sound Menu</h4>
+  <p>Three options exist for audible notification to the user that the acquiring of a spectrum has been completed. First is <strong>No Sound</strong>, i.e. the Acquisition just stops. In the second, <strong>Ring Once on Acquisition End</strong>, a single notification sound (the Windows "default" sound, usually a "ding") is made upon completion of an Acquisition. In the third option, the sound repeats approximately every second until the user explicitly acknowledges the fact that the Acquisition has completed by clicking the Acknowledged! button.</p>
+
+  <h4>Library Menu</h4>
+  <p><strong>Load Library</strong> allows the user to load one of the provided photon-emitting isotope libraries, or one created by the user.</p>
+  <p><strong>Open Library Editor</strong> opens an editor for modifying the 970 library files. Using the Library Editor is discussed in Section 6 of this manual.</p>
+
+  <h4>Transfer Menu</h4>
+  <p>These functions allow easy copying of calibration files from one computer to another or to a disk for transfer. An example would be calibrating a 970/detector combination on a desktop computer and transferring that data to a laptop for field use. Transfer of these calibration files onto another computer should be performed using the separate "SNAP-MCA Cal File Xfer" program provided, while SNAP-MCA is not running. Functionally, this is identical to copying all of the files contained in the "CalFiles" subdirectory onto a floppy disk.</p>
+
+  <h4>Help Menu</h4>
+  <p>The <strong>Help</strong> menu item opens the SNAP-MCA Help file. (Note: The Help file has not yet been distributed as of SNAP-MCA version 2.0.1.)</p>
+  <p>The <strong>970 Support Website</strong> is a hyperlink to (you guessed it!) the 970 Support Website.</p>
+  <p>The <strong>About</strong> function opens a window containing information about SNAP-MCA software and the Model 970 hardware. <strong>Version Information</strong> simply displays the version number of the SNAP-MCA software.</p>
+
+  <h3>5.3 Button Bar</h3>
+  <p>The left two buttons (<strong>Fine</strong> and <strong>MCS</strong>) on this portion of the SNAP-MCA Main Window provide quick access to the Energy Calibration window and the Multi Channel Scaling mode. These functions are discussed in Section 8.4 and Section 7, respectively, in this manual.</p>
+  <p>The dropdown menu contains a list of all isotopes in the currently loaded library that are enabled. Selecting one of these isotopes allows data to be displayed as a table and/or as lines on the Spectrum Display.</p>
+  <p>Clicking the <strong>Data</strong> button opens a window that shows the name and half life of the isotope, as well as the specific data for all specific energies that are enabled in the library file. This window can be resized by moving the mouse cursor on an edge until the cursor becomes a double-headed arrow and dragging until the desired size is achieved. The window can be moved to any convenient location by clicking the blue bar and dragging. When this window is displayed, the button caption becomes Hide, and clicking on it (or on the "x" in the upper right corner) will close the window. The order of the display can be based on energy or yield, ascending or descending. Change this by clicking on the top of the relevant column. Note: The information in this display can be altered by using the Library Editor, detailed in Section 6 of this manual.</p>
+  <p>The <strong>Show</strong> button will only be enabled if an Energy Calibration has been performed. Clicking the Show button displays marker lines at the energies where enabled library peaks for the current isotope should reside. When the marker lines are displayed, the button caption becomes Hide. If Yield is also selected, the heights of these lines are proportional to the yield for each energy. If an Efficiency Calibration has been performed, Eff x may be selected. This displays the line heights proportional to the yield for each energy times the efficiency at that energy times the value in the box to the immediate right. Selecting Full displays each energy line at the full height of the spectrum, regardless of yield. Checking Log scales the heights of the energy lines against a logarithmic axis. Checking Labels displays a small box over each energy line displaying the energy of that line in keV.</p>
+
+  <h3>5.4 Hardware Status Bar</h3>
+  <p>This section along the top of the Spectrum Display shows information about the hardware currently being used by SNAP-MCA. This includes the serial number of the Model 970, the status of the High Voltage supply (currently on or off), and the serial number and description of the current detector.</p>
+  <p>The Power section displays the voltage being supplied to the 970 power supply. This value is updated during SNAP-MCA startup, and about every minute or two during an Acquisition. If the voltage drops below 6 V a warning will be displayed, and at 5.5 V a message will be shown that the battery condition is now critical and batteries should be replaced immediately.</p>
+
+  <h3>5.5 New User Hints Bar</h3>
+  <p>If Show New User Hints has been enabled in the View menu on the Menu Bar, a sentence or two appears here that briefly describes the function for any display or control the mouse cursor is currently over.</p>
+
+  <h3>5.6 Spectrum Display</h3>
+  <p>This area graphically displays the spectrum data collected. This area can be zoomed by using and clicking the mouse and "dragging a box" around the area of interest, from upper-left to lower-right. This will not work if the starting or ending points of the box are outside the Spectrum Display area. Once a spectrum is zoomed, it can be panned by right-clicking the mouse within the Spectrum Display and dragging it. Un-zoom by dragging a box (any size) anywhere on the Spectrum Display from lower-right towards the upper-left.</p>
+
+  <h3>5.7 Spectrum Status Bar</h3>
+  <p>This section along the bottom of the SNAP-MCA Main Window displays information about the displayed spectrum, whether currently acquiring or not, and whether or not the spectrum has been loaded to a file. This display reflects no information about any secondary spectrum that is displayed.</p>
+  <p>The first group of three boxes (towards the left) reflect data for the individual channel over which the mouse cursor is located. These are the channel number, the energy associated with that channel (only if an Energy Calibration has been performed), and the number of counts in that particular channel. If a Background Spectrum has been loaded, the count displayed will reflect the Background-subtracted counts if Show Background Subtracted has been selected under the View menu on the Menu Bar.</p>
+  <p>The second group of two boxes (in the center) shows data for whatever ROI the cursor is over, if an ROI Set is loaded and Show ROIs is checked under the View menu. If no ROI Set is loaded, Show ROIs is not checked, or the cursor is not over an ROI, these boxes will be blank. The first of these two, displays the name given to the ROI, and the second shows the total (integrated) number of counts in that ROI. If a Background Spectrum has been loaded, the count displayed will reflect the Background-subtracted counts if Show Background Subtracted has been selected under the View menu on the Menu Bar.</p>
+  <p>The final two boxes (towards the right) display overall data for the spectrum. The first of these two boxes, displays the total number of counts for the spectrum, and the second box displays an approximation of the overall count rate based on an average of the last 20 seconds of spectrum data. The overall count data will not reflect Background subtraction. The overall count rate box may display misleading data for approximately the first 20 seconds following the start of an Acquisition.</p>
+
+  <h3>5.8 Acquisition Controls and Indicators</h3>
+  <p>The four buttons along the top of this section control the Acquisition of spectra. From left to right, these are <strong>Start</strong>, <strong>Stop</strong>, <strong>Clear</strong>, and <strong>Clear and Restart</strong>.</p>
+  <p>The <strong>Start</strong> button begins an Acquisition. If a spectrum is currently displayed but is not currently accumulating, the Acquisition will re-start, adding data to the existing spectrum. If a spectrum is currently accumulating, this button will have no effect.</p>
+  <p>The <strong>Stop</strong> button ceases spectrum Acquisition. No data is destroyed, and the Acquisition can be restarted if desired. This button has no effect if the Acquisition has previously been stopped.</p>
+  <p>The <strong>Clear</strong> button erases all data from the spectrum, and resets the elapsed time to zero. If a spectrum is currently acquiring, Acquisition will stop. No warning is given before data is deleted.</p>
+  <p>The <strong>Clear and Restart</strong> button is equivalent to pressing the Clear button followed by the Start button, and is provided for convenience. Again, no warning is given before data is deleted.</p>
+  <p>Immediately below these buttons are two status displays. The top one of these will always be visible, and gives some information about the status of the Model 970. The text of this display may be:</p>
+  <table class="spec">
+    <tr><th>Status</th><th>Meaning</th></tr>
+    <tr><td>Spectrum Clear (red background)</td><td>Indicates that the Spectrum Display contains no data, and the 970 is not acquiring data.</td></tr>
+    <tr><td>Acquiring (light green background)</td><td>Indicates that a spectrum is currently accumulating.</td></tr>
+    <tr><td>Acquisition Stopped (yellow background)</td><td>Indicates that the 970 is not currently acquiring data, but the Spectrum Display contains data.</td></tr>
+    <tr><td>Spectrum Loaded (yellow background)</td><td>Indicates that the 970 is not currently acquiring data, but the Spectrum Display contains data that has been loaded to Live from a file.</td></tr>
+  </table>
+  <p>The second (and lower) of these displays gives information about the Background Spectrum, and will only be visible if a Background Spectrum has been loaded. The text of this display may be:</p>
+  <table class="spec">
+    <tr><th>Background Status</th><th>Meaning</th></tr>
+    <tr><td>Bkgd Subtracted (green background)</td><td>Indicates that a Background Spectrum has been loaded and is currently being subtracted from the visual Spectrum Display. It will also be subtracted from any spectral analysis performed, including peak searches.</td></tr>
+    <tr><td>Bkgd Loaded (green background)</td><td>Indicates that a Background Spectrum has been loaded but is not being subtracted from the visual Spectrum Display. The Background Spectrum will still be subtracted from any spectral analysis performed.</td></tr>
+  </table>
+  <p>Moving downward, the next object is the white Time (sec) input box, with a checkbox immediately to its left. If the checkbox is checked, the 970 will stop acquiring a spectrum when the total counting time equals this value. Time units are in seconds. An Acquisition cannot be started or continued if the checkbox is checked and the Acquisition time equals or exceeds the amount of time in the input box. Typing in the Time (sec) box will immediately un-check it; pressing Enter on the keyboard after changing the Time (sec) value will re-check it.</p>
+  <p>Directly underneath the Time (sec) input box is the white Total Counts input box, with a checkbox immediately to its left. If the checkbox is checked, the 970 will stop acquiring a spectrum when the total number of accumulated counts equals this value. An Acquisition cannot be started or continued if the checkbox is checked and the total accumulated overall counts equals or exceeds the number of counts in the input box. Typing in the Total Counts box will immediately un-check it; pressing Enter on the keyboard after changing the Total Counts value will re-check it.</p>
+  <p>The final item in this area is the gray Time (sec) box. This displays the total counting time, in seconds, for the spectrum currently displayed. If a spectrum has been loaded to Live from a file, this display will reflect the amount of time for which that spectrum was counted.</p>
+
+  <h3>5.9 Spectrum Smoothing</h3>
+  <p>The photomultiplier tubes used in NaI (Tl) gamma detectors (as well as many others) do not supply a smooth continuum of energies. This fact is not apparent when the spectrum is displayed in 256 or 512 channels. SNAP-MCA's 4096 channels of data can be filtered to give a smoother representation of the energy continuum.</p>
+  <p>Try using different values of smoothing to get the "best looking" Spectrum Display. Smoothing is applied only to the visual display and has no affect whatsoever in performing peak searches and analysis.</p>
+
+  <h3>5.10 Button Panel</h3>
+  <p>The Button Panel provides access to the primary "workhorse" functions of SNAP-MCA. Each of these is described fully below.</p>
+
+  <h4>Full Screen</h4>
+  <p>This hides all panels and makes the Spectrum Display as large as possible within the confines of the window borders.</p>
+
+  <h4>Hardware</h4>
+  <figure class="fig"><img src="../figures/970-mca-man/fig-024.png" alt="SNAP-MCA Hardware Settings panel"><figcaption>The Hardware Panel for adjusting the 970 hardware controls (High Voltage, Coarse Gain, Fine Gain, Threshold, Input and Polarity, and Shaping Time). The Allow Edit checkbox must be checked to adjust settings.</figcaption></figure>
+  <p>This displays the Hardware Panel for adjusting the 970 hardware controls. To adjust other Hardware Settings, the Allow Edit checkbox must be checked.</p>
+  <p><strong>High Voltage</strong> can be adjusted by either directly entering a number in the High Voltage input box or by using the up/down buttons immediately to its right. When entering the value directly, you can use any value between 0 and 2000 V, including decimal values. When using the up/down buttons, HV is increased/decreased in 1 V increments. After changing the displayed HV value, the Set HV button will become enabled. Pressing this button will apply the setting to the 970. If an Acquisition is currently underway, it will automatically pause while the new setting is applied, then resume using the new setting.</p>
+  <p>If <strong>Ramp HV</strong> is not checked, the High Voltage will change as instantaneously as possible. This is usually fine for most detectors. If needed, Ramp HV can be checked and the detector supply voltage will always be changed at the rate displayed. This can range from 6 to 219 seconds per 100 volts.</p>
+  <p>The detector <strong>Input and Polarity</strong> can be selected from the dropdown menu. INPUT1 is the series "C" connector where signal and detector supply voltage are carried on the same line. INPUT2 is the pair of separate connectors for signal and detector supply voltage, BNC and SHV respectively. If "Shaped Input, Positive Polarity" is selected, either of the inputs can be used. Note: If a shaped input is used, Coarse and Fine Gain controls will have no effect on the spectrum input. Also, take care to ensure that shaped pulses are kept in the 0 to 5 V range; an attenuator may be required.</p>
+  <p><strong>Coarse Gain</strong> is adjusted using the Coarse Gain dropdown menu. The Gain ranges are x2, x4, x15, x35, x125, and x250. Coarse Gain times Fine Gain equals Overall Gain. After changing the Coarse Gain value, the Set Gain button will become enabled. Pressing this button will apply the setting to the Model 970. If an Acquisition is currently underway, it will automatically pause while the new setting is applied then resume using the new setting.</p>
+  <p><strong>Fine Gain</strong> can be adjusted either by clicking on the slider bar or by clicking the arrow keys to the right and left of the control. The Fine Gain can be adjusted in 255 steps from (approximately) x0.004 to (approximately) x1, and the approximate Gain value is displayed immediately above and to the left. Overall Gain (Coarse Gain times Fine Gain) is displayed immediately above and to the right. After changing the Fine Gain value, the Set Fine button will become enabled. Pressing this button will apply the setting to the Model 970. If an Acquisition is currently underway, it will automatically pause while the new setting is applied then resume using the new setting.</p>
+  <p>Use the Fine Gain control to perform small "nudges" to compensate for spectrum drift caused by temperature changes in the detector. If an even smaller shift in Gain is needed, try adjusting the High Voltage by tiny increments (including decimal values).</p>
+  <p><strong>Threshold</strong> can be adjusted by either directly entering a number in the Threshold input box or by using the up/down buttons immediately to its right. When entering the value directly, you can use any whole number between 0 and 2498 mV. When using the up/down buttons, Threshold is increased/decreased in 1 mV increments. After changing the displayed Threshold value, the Set Thsh button will become enabled. Pressing this button will apply the setting to the Model 970. If an Acquisition is currently underway, it will automatically pause while the new setting is applied then resume using the new setting. Note: High values of Gain will likely necessitate increasing the Threshold.</p>
+  <p><strong>Shaping Time</strong> can be adjusted using the dropdown menu. Possible values are 0.25, 0.5, 1, 2, 4, 6, 8, and 10 &micro;seconds. For the vast majority of cases, a shaping of 1 &micro;sec is appropriate. After changing the Shaping Time value, the Set S.T. button will become enabled. Pressing this button will apply the setting to the Model 970. If an Acquisition is currently underway, it will automatically pause while the new setting is applied then resume using the new setting.</p>
+
+  <h4>ROI Panel</h4>
+  <p>This displays the ROI Panel, for creating or adjusting ROIs (Regions of Interest). You will not be able to open this panel until an Energy Calibration has been performed.</p>
+  <p><strong>Current ROI Set Name:</strong> displays the filename of the currently loaded ROI Set. If no file is displayed, then no ROI Set is currently loaded. Note: A small display will appear below Current ROI Set Name: that flags the fact that the current ROI Set has been altered but not yet been saved.</p>
+  <p>The small panel (Drag cursor to) immediately below this normally has Zoom (normal) checked. This means that clicking and dragging on the spectrum will have the normal effect of zooming and un-zooming the display. If Set ROI is checked instead, clicking and dragging in the spectrum will define an ROI. After setting an ROI this way, the panel will revert to Zoom (normal).</p>
+  <p>Moving down and to the left is a small gray box displaying the current ROI # with "left" and "right" arrow buttons. This box displays which specific ROI is being edited within the greater ROI Set. Click the arrow buttons to change the specific ROI. The currently selected ROI is shown in fuchsia on the Spectrum Display. To create a new specific ROI, advance the ROI # to an ROI that does not yet contain data. Up to 50 ROIs may be defined within an ROI Set.</p>
+  <p>Immediately below the ROI # is the ROI Name input box. Use this section to provide a descriptive name for each individual ROI within the greater ROI Set. This name becomes the one displayed in the Spectrum Status Bar, and is also used to identify individual ROIs in any analysis reports.</p>
+  <p>Approximately in the middle of the ROI Panel are two radio button controls, Dbl Click to Set Starting Energy (keV) and Dbl Click to Set Ending Energy (keV). When the ROI Panel is visible, double clicking on the spectrum will set either the lower or upper bound of an ROI (depending on which of these controls is selected).</p>
+  <p>The controls immediately below provide a display of the lower and upper bounds of a specific ROI. Using the buttons with the single arrow will advance the boundary of the specific ROI up or down by one channel; the buttons with the double arrow will advance the boundary up or down by 10 channels. The energy associated with this channel will be updated in the input box.</p>
+  <p>The <strong>Kill ROI</strong> button will completely delete the currently selected specific ROI, without giving any additional warning.</p>
+  <p><strong>Load ROI Set</strong> opens a dialog box to select an ROI Set. If the current ROI Set has not been saved since it was last altered, a warning will be displayed and you will be given an opportunity to save the current ROI Set before continuing. If the ROI Set is not explicitly saved, all changes will be lost when a new ROI Set is loaded.</p>
+  <p>The <strong>Cancel</strong> button will only be enabled when the current ROI Set has been altered or edited in any way since when it was last saved. Using this function will re-load the current ROI Set as it was last saved.</p>
+  <p>The <strong>New ROI Set</strong> button clears the current ROI Set from SNAP-MCA (if it has not been saved, you will be given the opportunity to do this first) so that a new ROI Set can be created. You will be prompted to first name the ROI Set, which you must do in order to continue.</p>
+
+  <h4>Efficiency</h4>
+  <p>This displays the Efficiency Calibration Panel. This Efficiency Calibration is based on an ROI Set, but the same calibration is also used when performing peak-based or library-based spectrum analyses. An ROI Set, therefore, must be created and/or loaded before this panel is available. Efficiency Calibrations are unique to specific 970/ROI file/Detector combinations.</p>
+  <p><strong>Current ROI Set Name:</strong> displays the filename of the currently loaded ROI Set. It is not recommended that an Efficiency Calibration be performed using an unsaved ROI Set.</p>
+  <p>If the <strong>Allow Edit</strong> box is checked, the controls on this panel will be unlocked for editing. If this box is not checked, the data for the last calibration can be viewed, but not altered.</p>
+  <p>The arrow buttons will change the currently selected specific ROI within the greater ROI Set and the data on this panel will reflect only that specific ROI, as will any modifications. The currently selected ROI will be displayed in fuchsia. The gray boxes display specific ROI data, including the Efficiency (as a percentage of counts detected per disintegration), if a calibration has been previously performed.</p>
+  <p>The <strong>Assign ROI as Unknown</strong> checkbox allows a specific ROI within an ROI Set to be designated as one that is not contained in the Efficiency Calibration source being used.</p>
+  <p>The <strong>Associated Nuclide</strong> control contains a dropdown list of all enabled nuclides in the current library. Prior to performing an Efficiency Calibration, a nuclide must be assigned to each specific ROI within the ROI Set by clicking on one of the items in the list. If the needed nuclide is not in this list, the library must be edited to enable this nuclide.</p>
+  <p>The <strong>Associated Peak</strong> control contains a dropdown list of all enabled peaks (for the nuclide selected as the associated nuclide) in the current library. Prior to performing an Efficiency Calibration, one of these peaks must be assigned to each specific ROI within the ROI Set by clicking on one of the items in the list. If a needed peak or multiplet is not on the list, the library must be edited to enable or add this peak or multiplet.</p>
+  <p>Enter the activity of the specific isotope in the <strong>Activity</strong> input box. This must be performed for all ROIs within the ROI Set prior to performing an Efficiency Calibration. Use the Units dropdown list to assign units to the activity. Note: The activity units must be the same for all activities entered. Changing the units for one specific ROI will change the units assigned to all other ROIs within the ROI Set.</p>
+  <p>The <strong>ROI Eff. Cal!</strong> button performs an Efficiency Calibration by applying the data entered on the Efficiency Calibration Panel against the currently displayed spectrum. If no data is contained in the spectrum, or if all the fields are not filled in, errors will be generated and the Efficiency Calibration will be aborted.</p>
+  <p>The <strong>Cancel</strong> button will make any alterations made on the Efficiency Calibration Panel revert back to the ones used in the most recent Efficiency Calibration.</p>
+  <p>Every time an Efficiency Calibration is performed, a report is generated and stored in the 970 Cal Files directory. This report can be viewed, printed, or saved by clicking the Report&hellip; button.</p>
+
+  <h4>Peak-Based</h4>
+  <p>This displays the Peak-Based Panel for performing peak searches, and for performing isotopic identification and peak-based Quantitative Analysis.</p>
+  <p>Clicking the <strong>Find Peaks</strong> button causes SNAP-MCA to search the currently displayed spectrum for identifiable peaks. These will be displayed on the spectrum in green, with a line indicating the peak centroid. The collection of found peaks acts a bit like a temporary ROI Set, and the currently selected peak (which will be the leftmost one immediately following a peak search) will be displayed in fuchsia.</p>
+  <p>Clicking the <strong>Report&hellip;</strong> button makes SNAP-MCA perform a Qualitative Analysis. If an Efficiency Calibration has been performed, a Quantitative Analysis will also be performed. This will then be displayed on a "report" screen, where it can be viewed, printed, or saved.</p>
+  <p>The <strong>Clear Peaks</strong> button will erase all found peaks. The <strong>Make ROI</strong> button allows the user to take a group of found peaks and convert them to an ROI Set.</p>
+  <p>The <strong>Peak Search Sensitivity</strong> control affects how "distinct" a peak needs to be before it is flagged as "found." If it appears that too many peaks have been identified in a peak search, try lowering the value of Peak Search Sensitivity. Conversely, if too few peaks have been identified, raise the value of Peak Search Sensitivity.</p>
+  <p>Placing a dot associated with one of the four radio buttons will determine which method is used in identifying the nuclide associated with a peak. The top item will associate a peak with a nuclide if the library energy is within the stated energy range of the peak's centroid. The next item, if selected, will associate a peak with a nuclide if the library energy is within the stated percentage of the library energy. The third item, if selected, will associate a peak with a nuclide if the library energy is anywhere within the area of the found peak. The fourth item, if selected, will associate a peak with a nuclide if the library energy is anywhere within the FWHM (full width at half maximum) calculated for the found peak.</p>
+  <p>There has been no computer program ever written that surpasses an experienced human eye at discriminating whether a given portion of a spectrum represents a peak or not. Therefore, SNAP-MCA allows the user wide latitude in editing (or ignoring) the results of the computerized peak search.</p>
+  <p>If the <strong>Allow Edit</strong> box is selected, the controls for editing the found peaks are enabled. When <strong>Double Click Adds Peak</strong> is selected, double clicking on a portion of the spectrum will add a "found peak." This new peak is treated the same as the others found by the computerized search, and this method of adding "found peaks" may be used instead of, or as a supplement to, the computerized search.</p>
+  <p>The arrow buttons below Selected Peak change the currently selected found peak, which is indicated by the displayed number, and highlighted in fuchsia in the Spectrum Display. Data that is displayed and edits that are made will apply only to the currently selected found peak. Values of Left Edge, and Right Edge for the Centroid, can be altered by using the single and double arrow buttons. The single arrow buttons will move the relevant value up or down the spectrum by one channel, and the double arrow buttons will move the relevant value up or down the spectrum by 10 channels. The current value will be displayed (in keV) in the associated gray box.</p>
+  <p>Finally, the <strong>Kill Peak</strong> button will permanently delete the currently selected found peak (whether found by the computer search or manually assigned).</p>
+
+  <h4>ROI-Based</h4>
+  <p>This displays the ROI-Based Quantitative Analysis Panel.</p>
+  <p>Clicking the <strong>ROI Analysis</strong> button performs an ROI-by-ROI analysis of the currently displayed spectrum, and calculates the activities for each ROI. A summary of this data is displayed for each ROI. Change the currently selected ROI (indicated by fuchsia on the Spectrum Display) by clicking the arrow buttons.</p>
+  <p>Clicking the <strong>Report&hellip;</strong> button displays the detailed results of the ROI-based Quantitative Analysis. From the "report" screen, this data can be viewed, printed, or saved.</p>
+
+  <h4>Sample Info</h4>
+  <p>This displays the Sample Data Panel for entering sample descriptions and quantities.</p>
+  <p>The <strong>Sample Description</strong> input box allows the entry of a brief description or note. This will be displayed in all subsequent analyses and generated reports, and saved with the spectrum file.</p>
+  <p>If <strong>Use Sample Quantity</strong> is checked, two controls will be enabled that allow entry of a sample quantity and the associated units. These values will be saved with the spectrum, and used and displayed in subsequent analyses.</p>
+  <p>Eight checkboxes with radiological units are displayed. Any combination of these may be checked, and activity results in subsequent reports generated will be displayed in all of the units selected. If none of these are checked, no Quantitative Analysis results will be displayed in subsequently displayed reports.</p>
+  <p>The <strong>Save Spectrum</strong> button performs the same function as if selected under the File Menu. It is also included here for convenience. The <strong>Clear Fields</strong> button deletes the data entered in the Sample Description and Sample Quantity.</p>
+
+  <h4>The "Print Preview" or "Report" Screen</h4>
+  <p>This screen is used to display, save, and print all reports generated by SNAP-MCA.</p>
+  <p>The <strong>Print</strong> button will send the report to any printer via the Windows operating system. The report should print exactly as displayed.</p>
+  <p>The <strong>Save</strong> button allows the report to be saved as either a rich text file (rtf) or a plain text file (txt). Both formats can be used with most word processors; saving as an .rtf keeps the look of the file exactly as it is displayed (i.e., changes in font sizes, bold, tabs).</p>
+  <p>The up and down arrows are the same as page up and page down keys, which can also be used. The "-" and "+" magnifying glasses, along with the slider, allow the size or zoom of the report display to be changed. The <strong>Return</strong> button closes the report window.</p>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Acquiring &amp; Analyzing a Spectrum</h2>
-  <p>A typical measurement runs from setup to a reportable result in a few steps.</p>
-  <ol>
-    <li><strong>Prepare.</strong> Connect and bias the detector, select the channel configuration, and confirm the energy calibration is current for that detector.</li>
-    <li><strong>Acquire.</strong> Position the source or sample in a consistent geometry and start the acquisition. Count long enough to build clear peak statistics for the isotopes of interest.</li>
-    <li><strong>Identify.</strong> Use peak search and the isotope library to label peaks. The library supports radionuclide identification for qualitative spectroscopy.</li>
-    <li><strong>Quantify.</strong> For activity measurements (spectrometry), quantify based on ROIs or peak search. Quantitative activity work in Curies or Becquerel requires efficiency calibration and a defined sample geometry.</li>
-  </ol>
-  <div class="note">For complete procedures, refer to the official Berkeley Nucleonics manual; contact info@berkeleynucleonics.com.</div>
+  <h2><span class="num">6</span>Using the Library Editor</h2>
+  <p>Two libraries are distributed with SNAP-MCA and SNAP-MCA Full. As a general rule, SNAP-MCA is intended for NaI (Tl) detectors, and SNAP-MCA Full is intended for detectors with higher resolution. Both were created from the same information, contained in "Radioactive Decay Data Tables" by David C. Kocher, Report DOE/TIC-11026. The data was originally formatted for computer by Grove Engineering from information provided by RSIC. SNAP-MCA Full contains all information, while SNAP-MCA has had photons with lower energies and yields that are unlikely to be seen by NaI (Tl) detectors removed to improve performance. Both libraries contain many calculated multiplets as an aid. These can, of course, be edited or disabled.</p>
+  <p>Either library can be edited and saved under a different name, in order to create a new library file. Isotopes and specific photon energies can be added, edited, or deleted.</p>
+  <p>The Library Editor can be opened by selecting Open Library Editor&hellip; under the Library Menu from the SNAP-MCA Main Window.</p>
+  <p>When the Library Editor is opened, there is no Library file initially loaded for editing. Click on the <strong>Open Lib.</strong> button and select a library file for editing.</p>
+  <p>Once a library has been opened, select an individual isotope from the drop down list. All isotopes in the Library are displayed in the list, and those that are currently enabled are shown with an asterisk. After an isotope is selected, the screen will update to display that isotope's information. Use the <strong>Enabled</strong> or <strong>Disabled</strong> radio buttons to determine whether the particular isotope will be used in the Library. Only enabled isotopes will be available in SNAP-MCA.</p>
+  <p>Use the <strong>Save Lib.</strong> button to save the library as it exists, reflecting any changes that have been made. This can also be used to save the Library under a different name.</p>
+  <p>The <strong>Cancel</strong> button can be used to close the Library Editor without saving any changes that have been made since the previous save. If no changes have been made since the previous save, the button will read Close.</p>
+  <p>Check <strong>Allow Edit of Nuclide Name and Half Life</strong> to allow editing of those values, if needed.</p>
+  <p>Use the <strong>Add Energy</strong> button to add a Photon Energy to the currently displayed isotope. Click on any Photon Energy in the grid and use the <strong>Kill Energy</strong> button to completely delete that Photon Energy from the currently displayed isotope. Use the <strong>Add Isotope</strong> button to add a new isotope to the current Library. At least one Photon Energy must be added in order to add the isotope. Click on the <strong>Kill Isotope</strong> to completely delete the entire isotope currently displayed from the Library.</p>
+  <p>The grid contains a display of each Photon Energy for the currently selected isotope, and each Photon Energy can be edited here also. The fields are as follows:</p>
+  <table class="spec">
+    <tr><th>Field</th><th>Description</th></tr>
+    <tr><td>Isotope</td><td>Display of the isotope abbreviation. This should be the same for each displayed photon.</td></tr>
+    <tr><td>Use</td><td>Checkboxes that indicate whether that particular photon or energy will be used (assuming the isotope itself is also enabled).</td></tr>
+    <tr><td>Pri.</td><td>This column of radio buttons is used to indicate which energy is designated as the "primary peak" for the isotope. The primary peak MUST be present in a spectrum (in addition to the secondary peak) in order to positively identify the isotope and activity will be calculated based in the primary peak. Therefore, the energy with the highest yield is usually designated as the primary peak. It is acceptable to designate the same energy as both the primary and secondary peaks, but the energy must be enabled.</td></tr>
+    <tr><td>Sec.</td><td>This column of radio buttons is used to indicate which energy is designated as the "secondary peak" for the isotope. The secondary peak MUST be present in a spectrum (in addition to the primary peak) in order to positively identify the isotope. It is acceptable to designate the same energy as both the primary and secondary peaks, but the energy must be enabled.</td></tr>
+    <tr><td>Energy (keV)</td><td>This column displays each specific energy, in keV, of the currently selected isotope.</td></tr>
+    <tr><td>Yield (%)</td><td>This column displays the specific yield (or abundance) of each specific energy, expressed as a percent (photons per 100 disintegrations at that energy).</td></tr>
+    <tr><td>Comment</td><td>This column provides a section for users to enter a comment or note regarding the particular energy. For example, all multiplets contain "MUL" in the comment field.</td></tr>
+  </table>
+  <p>Once a Library has been edited and saved, it must be specifically loaded into SNAP-MCA (using Load Library&hellip; under the Library Menu) for the changes to be seen.</p>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Saving &amp; Exporting Data</h2>
-  <p>SNAP-MCA includes a <strong>Data Exporter</strong> that sends spectra to <strong>N42 or Excel files</strong> for archiving, reporting, or secondary review. Save the raw spectrum with its calibration and ROI definitions so the analysis can be reproduced later.</p>
-  <ul>
-    <li>Export to <strong>N42</strong> for a standard spectrum interchange format suitable for reachback and downstream analysis tools.</li>
-    <li>Export to <strong>Excel</strong> for tabular review, plotting, and record keeping.</li>
-    <li>SNAP-MCA is networkable to multiple sensor platforms, which supports centralized collection where required.</li>
-  </ul>
+  <h2><span class="num">7</span>Using MCS Mode</h2>
+  <p>The Multi Channel Scaling mode is used for the application of watching or recording changes in count rate over time. An analog meter-style display also shows the current count rate. MCS mode allows you complete control over how the data is accumulated and displayed.</p>
+  <figure class="fig"><img src="../figures/970-mca-man/fig-035.png" alt="SNAP MCS multi-channel scaling window"><figcaption>The SNAP MCS window, showing the count-rate Chart, the analog ratemeter, and the MCS Acquisition Controls and Indicators.</figcaption></figure>
+
+  <h3>7.1 Menu Bar</h3>
+  <h4>File Menu</h4>
+  <p>The first menu item, <strong>Save Chart as csv&hellip;</strong> saves all the data collected in the current Acquisition to a comma separated value (csv) file. Csv files can be opened by most spreadsheet and word processing programs.</p>
+  <p>The next two menu items (<strong>Capture Chart to Clipboard</strong> and <strong>Save Chart as Graphic&hellip;</strong>) relate to the graphical representation of the display. These allow the Chart to be copied to the Clipboard (and subsequently pasted into a word processing or graphics program), or saved as a graphics file. These relate only to the Chart exactly as displayed, and do not carry over to any other portion of the window. Note: If you want to capture an image of the entire window, use Alt+PrintScreen to copy a picture of the active window to the clipboard, then paste into another application.</p>
+  <p>The next two menu items relate to the printing of the Chart currently displayed. <strong>Printer Setup&hellip;</strong> accesses the Windows printer settings dialog to alter paper type and layout, quality of the printing, etc. <strong>Print Chart as Graphic</strong> allows the user to view the printer output, adjust margins, etc. and print the Chart.</p>
+  <p><strong>Exit</strong> closes the 970 MCS window and returns to the SNAP-MCA main screen.</p>
+
+  <h4>Utility Menu</h4>
+  <p>The first four menu items <strong>Start (or Restart) Acquisition</strong>, <strong>Stop Acquisition</strong>, <strong>Clear Spectrum</strong>, and <strong>Clear Spectrum and Start New Acquisition</strong> are self-explanatory, and their functions are identical to the four buttons near the upper right of the Chart display.</p>
+
+  <h4>View Menu</h4>
+  <p><strong>Show New User Hints</strong> enables/disables the New User Hints Bar, which displays a sentence or two briefly describing the function for any display or control the mouse cursor is currently over. Disabling (i.e., un-checking) this menu item hides the New User Hints Bar, making the Spectrum Display slightly larger.</p>
+  <p><strong>Show Hints</strong> enables/disables displays of small pop-up windows containing very brief description of a control or display when the cursor is over it for longer than one second.</p>
+  <p>The <strong>Show Trace as&hellip;</strong> menu item opens a sub-menu allowing the Chart trace to be displayed as a line, as points, as a line with points (the default), bars, or as an area graph.</p>
+  <p>The next three menu items (<strong>Chart Background Color&hellip;</strong>, <strong>Chart Trace Color&hellip;</strong> and <strong>Chart Labels Color&hellip;</strong>) allow the referenced display colors to be altered. The <strong>Reset to Default Colors</strong> menu item restores the 970 MCS visual settings to the "first use" state. The default colors were selected to reduce eyestrain, especially on large monitors, but may not be ideal for all users or purposes (e.g., printing). Use common sense in applying different colors. For example, if the Chart Background Color is set to be the same as the Chart Trace Color, the display will appear blank.</p>
+
+  <h4>Help Menu</h4>
+  <p>The <strong>Help</strong> menu item opens the SNAP-MCA Help file. (Note: The Help file has not yet been distributed as of SNAP-MCA version 2.0.2.)</p>
+  <p>The <strong>About&hellip;</strong> function opens a window containing information about SNAP-MCA and the 970 hardware. <strong>Version Information&hellip;</strong> simply displays the version number of SNAP-MCA software.</p>
+
+  <h3>7.2 MCS Acquisition Controls and Indicators</h3>
+  <p>The four buttons along the top of this section control the acquiring of spectra. From left to right, these are Start, Stop, Clear, and Clear and Restart. The functions of these buttons are mostly self-evident and they are identical to the functions described in Section 5.8.</p>
+  <p>Immediately below the four buttons is a status display showing the current status of data acquisition.</p>
+  <p>Moving downward, the next object is the white Time (sec) input box, with a checkbox immediately to its left. If the checkbox is checked, the 970 will stop acquiring a spectrum when the total counting time equals this value. Time units are in seconds. An Acquisition cannot be started or continued if the checkbox is checked and the Acquisition time equals or exceeds the amount of time in the input box. Typing in the Time (sec) box will immediately un-check it; pressing Enter on the keyboard after changing the Time (sec) value will re-check it.</p>
+  <p>Directly underneath the Time (sec) input box are two displays. The first shows the total elapsed Time in the data acquisition, and the second shows the Total number of Counts collected.</p>
+  <p>The next item down is the <strong>Dwell Time</strong> control. This determines how frequently data is posted on the Chart, what period of time each data point represents, and the sum of time that each data point represents. This value can be altered from 1 to 60 seconds. This control can be changed while an Acquisition is in progress.</p>
+  <p>Below that is a box labeled <strong>Display Data as</strong>. The left axis Chart units can be changed between counts (accumulated in each dwell time period), cpm or cps (averaged over the dwell time period). This cannot be changed after an Acquisition has been started, or until the Chart is cleared.</p>
+  <p>The next set of controls (<strong>Scroll Width</strong>) affect the bottom axis of the Chart display. If Scroll Width is checked, then the width of the bottom axis will be the number of seconds displayed in the input box immediately below. If Scroll Width is not checked, then the width of the bottom axis will reflect all of the data points collected. Note that performance may suffer if a very large number of data points (1500 or so) are displayed.</p>
+  <p>The controls in the next area are the <strong>Autosave</strong> features. If Autosave Every is checked, then the accumulated data will be saved to sequential files at a frequency determined by the value in the box immediately below. If Low Activity Sample is checked in the Utility Menu, you will be able to choose whether to Autosave just the low activity data (i.e., only non-zero values) or both.</p>
+
+  <h3>7.3 MCS Analog Panel</h3>
+  <p>This panel displays an analog-style meter movement of the current Acquisition. The settings for this panel can be altered independently of the Chart display.</p>
+  <p>If <strong>Alarm at:</strong> is checked, the analog display will turn red and an audible alarm will sound, if the count rate exceeds the value contained in the input box. The alarm will reset when the count rate falls below the alarm level, or when the box is unchecked.</p>
+  <p><strong>Meter Response Time</strong> changes the number of seconds of data over which the analog display is averaged. Higher values will result in a "smoother" meter action, but slower response to changes in the count rate. This can be varied between 1 and 60 seconds.</p>
+  <p>If <strong>Autorange</strong> is checked, the meter scale will change automatically based on the count rate. <strong>Scale Max</strong> changes the base value for the upper limit of the analog display. The x 1 through x 10,000 radio buttons are scale ranges for the analog display. <strong>Ratemeter units</strong> allows the capability to change the analog display between units of counts per minute (cpm), or counts per second (cps).</p>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Maintenance</h2>
-  <p>The Model 970-X needs little routine maintenance. Keep it clean, keep its software current, and verify calibration on a regular schedule.</p>
-  <ul>
-    <li>Wipe the enclosure with a soft, dry or lightly dampened cloth. Do not let liquid enter the connectors.</li>
-    <li>Inspect detector cables and connectors for wear before each session. Damaged cabling degrades resolution and can compromise the high voltage path.</li>
-    <li>Re-run energy calibration periodically and whenever you change detectors or shaping settings.</li>
-    <li>Set the battery compartment charging switch to match the installed battery type. Use the Fast/Normal charging rate switch as appropriate for the cells in use.</li>
-    <li>Store the unit in its carrying case in a dry environment when not in use.</li>
-  </ul>
-  <div class="note">For service, calibration intervals, and repair, refer to the official Berkeley Nucleonics manual; contact info@berkeleynucleonics.com.</div>
+  <h2><span class="num">8</span>Procedures</h2>
+
+  <h3>8.1 Calibrating a Detector with Model 970</h3>
+  <p>In order to use the Model 970 with a given detector, the following must be done (in this order):</p>
+  <ol>
+    <li>Adjust Hardware Settings.</li>
+    <li>Perform Energy Calibration.</li>
+    <li>Perform a Shape Calibration. Following this step, the 970 is ready to provide Qualitative Analysis.</li>
+    <li>Create a "Regions of Interest" (ROI) Set. This is in preparation for Efficiency Calibration, which must be coupled to an ROI Set.</li>
+    <li>Perform Efficiency Calibration. Once an Efficiency Calibration has been performed, the 970 is ready to perform Quantitative Analysis.</li>
+  </ol>
+
+  <h3>8.2 Adjust Hardware Settings</h3>
+  <p>Hardware Settings are used to adjust Input and Polarity, High Voltage (HV), Threshold, Coarse Gain, Fine Gain, and Shaping Time.</p>
+  <p>Hardware Settings are unique to each 970/detector combination. The specific settings are loaded when a specific detector is selected. If you intend to use the same detector at different Hardware Settings, you can define separate detectors with different descriptions.</p>
+  <p>Since the Model 970 was designed to work with essentially any radiation detector (or more specifically, in the case of SNAP-MCA Full, essentially any gamma detector), the software cannot make any assumptions regarding the operating characteristics of the detector and therefore cannot contain automated hardware adjustment. Discovering the appropriate Hardware Settings for a particular detector is essentially a trial-and-error process. Fortunately, this process is neither difficult nor time consuming.</p>
+  <p>The process for determining appropriate Hardware Settings consists of placing a known radiation source of modest activity in front of the detector, adjusting one or more of the Hardware Settings, and beginning an Acquisition. Repeat this process until a satisfactory spectrum is achieved.</p>
+
+  <h4>8.2.1 Radiation Source and Detector</h4>
+  <p>For most gamma scintillation detectors that will be used with Model 970, an approximately 1 &micro;Ci <sup>137</sup>Cs source is probably the best to use in performing the hardware setup. It provides two distinct peaks; a low-energy multiplet centered around 32.89 keV and a higher energy gamma at 661.65 keV. Another isotope can be used provided that the expected spectrum is known, but the procedures in this manual assume that <sup>137</sup>Cs will be used. Whatever source is used, be cautious of using one with too great an activity. Many scintillation detectors, especially those originally designed for hand-held battery powered instruments have a high resistance dynode string (e.g., 120 M&Omega;) to minimize the current draw from the HV power supply. Unfortunately, this also has the effect of causing peaks to shift as a function of the incoming count rate. If you are purchasing a new detector for use with your 970, it is recommended that a dynode string of about 6 M&Omega; be specified. The general thumb rule for spectroscopy is that lower is better, but do not use a detector with a dynode string less than 4 M&Omega;. If you are using a detector with a high resistance dynode string, the best way around this is to perform Energy and Efficiency Calibrations at approximately the same count rate as the samples you will be analyzing.</p>
+
+  <h4>8.2.2 Input and Polarity</h4>
+  <p>The 970 has two detector inputs. INPUT 1 is the series "C" connector right next to the DB9 serial connector. This input has the signal and the High Voltage coupled just as on most hand-held instruments. If your detector has only one connector, INPUT 1 is the one you should use. If your detector has two connectors, one for High Voltage and one for the signal, you should use INPUT 2. The SHV connector carries the High Voltage for INPUT 2 and the BNC connector accepts INPUT 2's signal. Only one of the inputs should be connected to a detector at any one time.</p>
+  <p>Most single-connector detectors produce negative pulses, so negative polarity should be chosen. Many two-connector detectors (especially those with internal preamplifiers) produce positive pulses, but this cannot be taken for granted. You can either consult the detector manufacturer as to the pulse polarity or just try both polarities and see which one works.</p>
+  <p>If your detector requires voltage for an internal preamplifier, the 970 can provide positive and negative 12 volt DC through the mini DIN-7 connector and the (included) adapter. The pin out of this adapter follows the NIM standard and should couple directly to the detector.</p>
+  <p>The 970 can also accept pre-shaped positive pulses through either input. Note: pulses exceeding about 5 V in magnitude (whether positive or negative) will be clipped. If you use this feature, an attenuator may be required.</p>
+
+  <h4>8.2.3 High Voltage</h4>
+  <p>If you have past experience with the detector, the voltage at which it was operated is a good starting point for the 970. This is also often referred to as "Bias Voltage." Alternatively, you can check with the detector's manufacturer for an approximate Bias Voltage or at least a "Not-to-exceed" voltage. Failing that, you can just increase the High Voltage to the detector until you get a decent looking spectrum.</p>
+  <p>The detector Bias Voltage used for spectroscopy is generally a bit lower than the "plateau" voltage used in many gross-count instruments.</p>
+  <p>With scintillation detectors the Bias Voltage also provides Gain, so essentially the same spectrum can be obtained using a lower Bias Voltage and higher Gain or a higher Bias Voltage and a lower Gain. If the Bias Voltage is higher than optimal, the spectrum will appear distorted.</p>
+
+  <h4>8.2.4 Threshold</h4>
+  <p>The Threshold, sometimes called input sensitivity or discrimination, is the minimum pulse height in millivolts (mV) that will be recorded by 970 as a count. Since the 970 can accept pulses of either polarity, the Threshold is entered as an absolute value. This can range from 0 to 2047 mV.</p>
+  <p>Photomultiplier tubes, cables, AC power, and the power supply and other circuitry within the 970 all generate electronic noise that can be erroneously interpreted as counts. This noise tends towards the low energy region of the spectrum and can be removed by setting the Threshold sufficiently high to block it. If a large peak occurs toward the left of the spectrum, (i.e., one that overpowers "real" peaks in the spectrum), the Threshold should be adjusted to a higher value. If you desire to observe the lower energy portion of the spectrum, the Threshold can be brought closer to zero until the noise becomes apparent. Changes to the HV or Gain may cause the location of the noise line to shift, requiring a readjustment of the Threshold. The two highest Gain ranges will usually require a Threshold to be set in the 100 to 200 mV range unless the detector is unusually "quiet."</p>
+
+  <h4>8.2.5 Coarse Gain and Fine Gain</h4>
+  <p>The Coarse Gain and Fine Gain controls are used to increase the signal from a detector to the point where it can be displayed usefully as a spectrum. These two controls are used together to create an overall Gain. The overall Gain is generally the value you should follow.</p>
+  <p>It is worth mentioning that the Gain settings are arbitrary and not absolute. In other words, if you put in a pulse of exactly 1000 mV with an overall Gain of x1, the pulse will not necessarily appear in channel 1000. Similarly, a positive pulse of exactly 1000 mV will not necessarily appear in the same channel of a negative but otherwise identical pulse. This is normal and is only mentioned here so no surprise is experienced if you put a pulse generator on the 970. Relative Gain values are reasonably accurate.</p>
+  <p>You should avoid using the extreme low end of the Fine Gain control to the extent possible. For example, you can obtain an overall Gain of x3.391 with a Coarse Gain of x2 and a Fine Gain of x0.848. You can obtain nearly the same overall Gain value using a Coarse Gain of x125 and a Fine Gain of x0.027. The latter settings will produce a distorted spectrum, however. As a general rule, the lowest Coarse Gain setting possible should be used.</p>
+
+  <h4>8.2.6 Shaping Time</h4>
+  <p>Shaping Time is usually specific to classes of detectors. Virtually all common scintillation and CdZnTe semiconductor detectors use a Shaping Time of 1 &micro;sec. If you are not sure, try various Shaping Time settings until you get the best looking spectrum. Also, changing the Shaping Time will usually necessitate changing the Gain settings as well.</p>
+
+  <h4>8.2.7 Determining Initial Hardware Settings</h4>
+  <p><strong>Prerequisites.</strong> This procedure assumes that the detector is attached to the Model 970, the 970 is switched on, SNAP-MCA software has been successfully started, and a <sup>137</sup>Cs of approximately 1 &micro;Ci is on the detector. It is also assumed that the detector to be used is capable of seeing both the 32 and 662 keV peaks.</p>
+  <p><strong>Discussion.</strong> Hardware Settings cannot be adjusted until the Allow Edit box is checked. Generally speaking, most adjustments to expand the separation between peaks should be performed using the HV (High Voltage) adjust. Start increasing the Gain only if the peak separation remains too small even at the maximum HV recommended for the particular detector. Increase the Gain until the peak separation is slightly wider than desired, and then reduce the HV as needed. If the peaks are in a good location but appear distorted, try lowering the HV and increasing the Gain. Adjust the Threshold lower if too much of the low energy portion of the spectrum is being cut off. Adjust the Threshold higher if noise is apparent in the lowest regions of the spectrum.</p>
+  <p>In using the Hardware Setting adjustments, the associated Set button will become enabled, indicating that the value has been changed from those at which the 970 is currently set. For example, if you change the HV the Set HV becomes enabled. Clicking the associated Set button will (1) pause the current Acquisition if one is occurring, (2) set all Hardware Settings that have been changed, not just the one the particular button is associated with, and (3) restart the Acquisition (if one had been occurring) with the new settings without clearing the previous spectrum.</p>
+  <p>Although it is completely up to the user (and subject to the characteristics of the detector being used), it has been generally found that adjusting the Hardware Settings such that the 662 keV peak is at about channel 1200 will give an overall energy range coverage to about 2,300 keV. Hardware Settings are automatically saved and applied to a specific 970/detector combination any time a Set button is pressed. If different sets of Hardware Settings are desired for the same detector, create a "new" detector based on that detector, changing the description to reflect the different purpose.</p>
+  <p><strong>Procedure.</strong></p>
+  <ol>
+    <li>Click on the Hardware button on the 970 Button Panel. This will open the Hardware Settings Panel along the bottom of the Spectrum Display.</li>
+    <li>Check the Allow Edit check box to enable the Hardware Settings.</li>
+    <li>Ensure that the HV is set to a reasonable value. For relatively new 970 users, Coarse Gain should be at x2 (the lowest setting) and the Fine Gain should be at x0.500 for an overall Gain of x1; the Threshold should be at 50 mV.</li>
+    <li>Click the Start Acquisition button to begin counting the source. Allow the source to count long enough to see the relative locations of the two <sup>137</sup>Cs peaks. NOTE: If excessive noise is clearly visible in the lowest portion of the spectrum, increase the Threshold, clear the spectrum, then restart the Acquisition. Repeat this process as needed.</li>
+    <li>If no peaks are visible, increase the HV and go back to step 4.</li>
+    <li>If both <sup>137</sup>Cs peaks are not visible:</li>
+    <li>If there are very few counts to the right of the visible peak but many to the left (i.e., only the 662 keV peak is visible) and it is towards the right of the Spectrum Display, increase the HV and go back to step 4.</li>
+    <li>If there are many counts to the right of the visible peak (i.e., only the 32 keV peak is visible and the 662 keV peak is out of view to the right), decrease the HV and go back to step 4.</li>
+    <li>If there are very few counts to the right of the visible peak but many to the left (i.e., only the 662 keV peak is visible) but the peak is in close to the desired location on the spectrum, adjust the Threshold closer to zero and go back to step 4.</li>
+    <li>If both <sup>137</sup>Cs peaks are visible, but are farther apart than wanted, decrease the HV and go back to step 4.</li>
+    <li>If both <sup>137</sup>Cs peaks are visible, but are closer together than wanted, increase the HV and go back to step 4.</li>
+    <li>If the HV is at the highest HV recommended by the detector manufacturer (or if it is higher than you are comfortable with, or is obviously distorting the spectrum), leave the HV where it is, increase the overall Gain and go back to step 4.</li>
+    <li>When the two peaks are in their optimal locations, uncheck the Allow Edit box.</li>
+    <li>Click the Full Screen button on the Button Panel to close the Hardware Settings Panel and restore the spectrum to the largest possible viewable area.</li>
+  </ol>
+  <p>Once all the Hardware Settings are finalized, an Energy Calibration can be performed.</p>
+
+  <h3>8.3 Perform Energy Calibration</h3>
+  <p><strong>Prerequisites.</strong> This procedure assumes that the detector is attached to the Model 970, the 970 is switched on, SNAP-MCA software has been successfully started, a radioactive source of known isotopic composition is on the detector, and the 970 Hardware Settings have been set appropriately. Note: The Energy Calibration is unique to each 970/detector combination. The specific Energy Calibration settings are loaded when a specific detector is selected. If you intend to use the same detector with different Energy Calibration values (e.g., to account for differing source geometries), you can define separate detectors with different descriptions.</p>
+  <p><strong>Discussion.</strong> SNAP-MCA uses a linear interpolation between Energy Calibration points. More sophisticated modeling was not implemented because the wide range of characteristics in the detectors supported by the 970 makes it impossible to accurately model for all possible energy response. It was also determined that there were certain advantages to using this method, especially in the low-energy range. In short, the more data points entered, the more accurate the Energy Calibration will be. If there is a limited energy region in which you are interested, adding additional data points in those areas will increase the accuracy in that area without skewing the Energy Calibration in other regions of the spectrum. Be careful, however, of energies that are extrapolated very far beyond calibrated points.</p>
+  <p>If an estimate of the energies for the lowest and/or highest energies on the spectrum (i.e., energies at channels 1 and/or 4094) can be made, it is a good idea to enter these as Energy Calibration points to reduce extrapolation error. Additional Energy Calibration points, up to a total of 14, can be added or altered at any time during the operation of SNAP-MCA, and will be reflected in all subsequent analyses. At least two calibration points must be entered to perform an Energy Calibration.</p>
+  <p>It is not necessary to stop a spectrum Acquisition to perform or alter an Energy Calibration, although Acquisition may automatically pause briefly and restart. Calibration points may be entered in any order; they will be arranged by order of energy when the Enrgy Cal! button is pressed.</p>
+  <p>If this step is begun immediately following the Hardware Settings procedure above, and the final <sup>137</sup>Cs spectrum is displayed, that spectrum can be used instead of acquiring a new one (skipping step 1 below). The spectrum can be zoomed in or out at any point as desired by using the mouse to drag a box on the Spectrum Display.</p>
+  <figure class="fig"><img src="../figures/970-mca-man/fig-044.png" alt="Energy Calibration window over a Cs-137 spectrum"><figcaption>Performing an Energy Calibration. The Energy Cal window assigns the 32.89 keV and 661.7 keV <sup>137</sup>Cs peaks to channels; a yellow line on the spectrum marks each calibration point.</figcaption></figure>
+  <p><strong>Procedure.</strong></p>
+  <ol>
+    <li>Acquire a spectrum with known peaks. It is usually a good idea to start with a relatively simple spectrum, such as <sup>137</sup>Cs.</li>
+    <li>From the Utility menu, select Energy Calibrate&hellip; The Energy Calibration window will appear. If this is the first Energy Calibration for this detector, the energies for the two <sup>137</sup>Cs peaks will be present. The Energy Calibration window can be moved around the screen by clicking on the blue bar along the top and dragging it to the desired location.</li>
+    <li>Assuming a <sup>137</sup>Cs spectrum is displayed, assign channels to the energies by:</li>
+    <li>Clicking the radio button next to "32.89" keV. The keV box and the channel box to its immediate right will turn yellow.</li>
+    <li>Move the mouse cursor over the 32.89 keV peak on the Spectrum Display and double click. A yellow line will appear on the spectrum indicating the location of this Energy Calibration point, and the channel number will appear in the channel box.</li>
+    <li>If the Energy Calibration point is not in the optimal location, adjust its location by double clicking in a different location, clicking on the relevant Channel box and entering the desired channel number using the keyboard, or using the spin buttons to the immediate right of the relevant "Channel" box to move the data point up or down one channel at a time.</li>
+    <li>Click the radio button next to "661.7" keV. The keV box and the Channel box to its immediate right will turn yellow.</li>
+    <li>Move the mouse cursor over the 661.7 keV peak on the Spectrum Display and double click. A yellow line will appear on the spectrum indicating the location of this Energy Calibration point. Adjust the location of the yellow line as in step 3.c.</li>
+    <li>Click the Enrgy Cal! button. This will perform an Energy Calibration based on the initial two data points. The Energy Calibration window will remain open. At this point, when the cursor is moved over the Spectrum Display, the energy associated for the cursor location will be displayed in the Spectrum Status Bar in addition to the status bar.</li>
+    <li>Acquire additional spectra and add additional Energy Calibration data points as desired. When finished, click the Close button to hide the Energy Calibration window.</li>
+  </ol>
+
+  <h3>8.4 Perform a Shape Calibration</h3>
+  <p><strong>Prerequisites.</strong> This procedure assumes that the detector is attached to the Model 970, the 970 is switched on, SNAP-MCA software has been successfully started, a radioactive source of known isotopic composition is on the detector, the 970 Hardware Settings have been set appropriately, and an Energy Calibration has been performed.</p>
+  <p><strong>Discussion.</strong> For NaI (Tl) detectors, the Full Width at Half Maximum (FWHM) is proportional to the square root of the centroid energy as is the overall peak area. The Shape Calibration helps determine the exact multipliers for the FWHM for the specific detector.</p>
+  <p><strong>Procedure.</strong></p>
+  <ol>
+    <li>Acquire a spectrum with known peaks. It is usually a good idea to start with a relatively simple spectrum, such as <sup>137</sup>Cs.</li>
+    <li>From the Utility menu, select Shape Calibrate&hellip; The Shape Calibration window will appear. The Shape Calibration window can be moved around the screen by clicking on the blue bar along the top and dragging it to the desired location.</li>
+    <li>On the Spectrum Display, double click near the center of a well-defined peak. This will put a red line in the centroid of the peak as well as calculate and display the FWHM multiplier. Two additional red lines will also be displayed estimating the bounds of the peak area.</li>
+    <li>Use the group of four buttons to adjust the outer red lines to accurately reflect the boundaries of the peak.</li>
+    <li>Click the Shape Cal button.</li>
+  </ol>
+  <p>The Shape Calibrations are now complete.</p>
+
+  <h3>8.5 Create a Regions of Interest (ROI) Set</h3>
+  <p><strong>Prerequisites.</strong> This procedure assumes that the detector is attached to the Model 970, the 970 is switched on, SNAP-MCA software has been successfully started, a radioactive source of known isotopic composition is on the detector, the 970 Hardware Settings have been set appropriately, and an Energy Calibration has been performed.</p>
+  <p><strong>Discussion.</strong> An ROI Set must be created in order to perform a detector Efficiency Calibration. You will also be able to use ROI Set later for performing a Quantitative Analysis of a spectrum.</p>
+  <p>There are two ways to create an ROI Set. In the first method, a spectrum is acquired and the Find Peaks button is pressed from the Peak-Based Panel, edited as desired, then saved as an ROI Set. The ROI Set can be further edited from the ROI Panel, including adding or removing specific ROIs to or from the set. In the second method, ROIs are created from scratch by manually selecting portions of the spectrum.</p>
+  <p>ROI Sets are based on energy, not channel. This allows an ROI Set to be used with more than one detector. The channel locations for the starting and ending points are re-calculated from the stored energy values each time the ROI Set is loaded and when an Energy Calibration is performed. ROIs will be sorted by energy, from lowest to highest, when an Efficiency Calibration is performed.</p>
+  <p><strong>Procedure: Creating an ROI Set Using Find Peaks ("Automatic Method").</strong></p>
+  <ol>
+    <li>Acquire a spectrum with known peaks. It is usually a good idea to start with a relatively simple spectrum such as <sup>137</sup>Cs.</li>
+    <li>Click on Peak-Based on the SNAP-MCA Button Panel. This will open the Peak Settings Panel along the bottom of the Spectrum Display.</li>
+    <li>From the Peak-Based Panel, click on Find Peaks. The peaks and their ROIs will be highlighted automatically in green.</li>
+    <li>The found peaks can now be edited, if desired, by clicking on the Allow Edit box. The user can now adjust the centroid and the left and right edges of each peak region. Peaks can also be added as well as deleted.</li>
+    <li>To add a peak, simply click on the Double Click Adds Peak box. Locate a peak on the spectrum with the mouse and double click. Another peak region will appear.</li>
+    <li>To adjust the centroid, left or right edges of any peak region:</li>
+    <li>Select a peak using the Selected Peak arrow set. (Default designates the left-most peak as #1.) The selected peak will appear in purple highlight, while the remaining peaks will be highlighted in green.</li>
+    <li>Using the Centroid (keV), Left Edge (keV), and Right Edge (keV) arrow sets, adjust accordingly. (Double arrows adjust the settings in approximately 5 keV increments, while the single arrows adjust the settings in approximately 0.5 keV increments.)</li>
+    <li>To delete a peak, first select the peak to be deleted using the Selected Peak arrow set. Once the peak is highlighted, click on the Kill Peak button.</li>
+    <li>When finished editing found peaks, click on Make ROI on the Peak Panel to convert the found peaks into an ROI Set. A message will display indicating that the ROI Set should be given a name. Naming the ROI Set can be put off until later, but it is highly recommended that a name be given now.</li>
+    <li>Type a name in the Save ROI Set dialog, and click the Save button.</li>
+    <li>Once the set has been saved, the panel along the bottom of the Spectrum Display will switch over to the ROI Panel to allow additional editing, if desired.</li>
+    <li>Editing the ROI Set from the ROI Panel is described in the next section.</li>
+  </ol>
+  <p><strong>Procedure: Manually Creating or Editing an ROI Set ("Manual Method").</strong></p>
+  <ol>
+    <li>Acquire a spectrum with known peaks. It is usually a good idea to start with a relatively simple spectrum such as <sup>137</sup>Cs.</li>
+    <li>Click on ROI Panel on the SNAP-MCA Button Panel. This will open the ROI Edit Settings Panel along the bottom of the Spectrum Display.</li>
+    <li>To create a new ROI Set, click on the New ROI Set button to assign a file name to the new set. (If this is not done before the following steps, a "Not Saved!" warning will be displayed as a reminder. This warning will also be shown any time the ROI as displayed is different from the saved ROI file.)</li>
+    <li>To create an ROI by dragging on the Spectrum Display:</li>
+    <li>Use the left and right arrow buttons to either select an existing ROI to edit (it will be displayed on the spectrum in fuchsia) or select a "blank" ROI (input fields will be blank and no fuchsia will be present on the Spectrum Display).</li>
+    <li>Click on the Set ROI radio button.</li>
+    <li>Use the cursor to locate the edge of the desired region. Click and drag the fuchsia box to encompass the desired region.</li>
+    <li>To create an ROI by double clicking each edge:</li>
+    <li>Use the left and right arrow buttons to either select an existing ROI to edit (it will be displayed on the spectrum in fuchsia), or select a "blank" ROI (input fields will be blank and no fuchsia will be present on the Spectrum Display).</li>
+    <li>To set the left edge, check the Double Click to set Starting Energy (keV) radio button. To set the right edge, check the Double Click to set Ending Energy (keV) radio button.</li>
+    <li>Position the cursor at the suitable location on the Spectrum Display and double click.</li>
+    <li>The energy and associated channel will be displayed in the appropriate boxes on the ROI Panel.</li>
+    <li>When both edges have been entered, the ROI will be displayed on the spectrum in fuchsia.</li>
+    <li>ROIs can be edited by using the relevant arrow and double arrow keys. Arrows move the edge of the ROI by a single channel; double arrows move the ROI by ten channels.</li>
+    <li>Type a name for the ROI in the ROI Name box. While it is not strictly required that each ROI be given a name, it is strongly recommended. Individual ROI names can be up to 24 characters long.</li>
+    <li>Repeat as needed for additional ROIs.</li>
+    <li>You can acquire a new spectrum to add additional ROIs.</li>
+    <li>After editing, don't forget to save the ROI Set.</li>
+  </ol>
+  <p>You are now ready to perform an Efficiency Calibration.</p>
+
+  <h3>8.6 Performing an Efficiency Calibration</h3>
+  <p><strong>Prerequisites.</strong> An Energy Calibration must be completed and an ROI Set loaded before an Efficiency Calibration can be performed. ROIs will be sorted by energy, from lowest to highest, when an Efficiency Calibration is performed.</p>
+  <p><strong>Discussion.</strong> Efficiency Calibrations are attached to specific ROI Sets. Known activities of known isotopes are assigned to specific energies in the spectrum. SNAP-MCA uses a linear interpolation between Efficiency Calibration points to allow Quantification of isotopes for which no specific calibration source is available. The same Efficiency Calibration is used when performing ROI, peak, or library-based Quantification.</p>
+  <p>Note that the ROI Set can contain isotopes that are not included in the Efficiency Calibration source. These must be designated as "unknowns," however, so that SNAP-MCA knows to calculate efficiencies for these ROIs from interpolated data. The perfect Efficiency Calibration source matches exactly the type of samples you will be quantifying in isotopic composition, activity, and physical makeup. A good Efficiency Calibration source contains isotopes with energies similar to or at least bracketing those you are interested in. Isotopes and specific peaks must be assigned to all ROIs including "unknowns." The selections for these are limited to those enabled in the library currently being used.</p>
+  <p><strong>Procedure.</strong></p>
+  <ol>
+    <li>Acquire a spectrum of your Efficiency Calibration source. A Background Spectrum should also be subtracted from the display if that is how your samples will be analyzed.</li>
+    <li>Click on Efficiency on the SNAP-MCA Button Panel. This will open the Efficiency Calibration Panel along the bottom of the Spectrum Display.</li>
+    <li>To calibrate, click on the Allow Edit box.</li>
+    <li>Select a specific ROI using the ROI # arrows.</li>
+    <li>If the ROI is one contained in the calibration source:</li>
+    <li>Select the nuclide for the ROI from the Associated Nuclide drop-down list.</li>
+    <li>Select the peak energy for the ROI from the Associated Peak drop-down list.</li>
+    <li>Enter the activity of the source being used in the Activity box.</li>
+    <li>Select the appropriate units from the Units drop-down list. NOTE: The units must be the same for all isotope activities entered for the calibration!</li>
+    <li>If the ROI is not contained in the calibration source:</li>
+    <li>Check the Assign ROI as Unknown box.</li>
+    <li>Select the nuclide for the ROI from the Associated Nuclide drop-down list.</li>
+    <li>Select the peak energy for the ROI from the Associated Peak drop-down list.</li>
+    <li>Click on the ROI Eff. Cal! button.</li>
+    <li>Click on the Report button to view, save, or print the Efficiency Calibration report. This report is available any time following the Efficiency Calibration, until replaced by a new Efficiency Calibration.</li>
+  </ol>
+
+  <h3>8.7 Fine Tuning Hardware Settings</h3>
+  <p><strong>Prerequisites.</strong> This procedure assumes that an Energy Calibration has been performed.</p>
+  <p><strong>Discussion.</strong> The Fine Tuning procedure provides an automated way of adjusting the Fine Gain to compensate for small shifts in the spectrum due to changes in the temperature, etc., of the detector. This procedure can also be done manually. In many cases, it is quicker to manually adjust the Fine Gain setting.</p>
+  <p><strong>Procedure.</strong> Click on the Fine button on the Button Bar. A small window will pop up and display an isotope selection drop-down menu and an energy peak selection drop-down menu. The Hardware Settings Panel will also open along the bottom of the Spectrum Display, but only the Fine Gain Adjust (64) will be active.</p>
+  <ol>
+    <li>Select an isotope and an energy peak from the drop-down menus.</li>
+    <li>Click on the Fine Tune button. Note: The corresponding isotope source must be on the detector in order for Fine Tuning to be successful.</li>
+    <li>A series of Acquisitions will follow until the most accurate Fine Gain adjustment is achieved. This can take several minutes.</li>
+    <li>A "Fine Gain Adjustment Complete" message will appear when the procedure is done.</li>
+  </ol>
 </section>
 
 <section id="s9">
-  <h2><span class="num">9</span>Specifications Summary</h2>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Channel configuration</td><td>4096 channels (configurable for 256, 512, 1024, or 2048 channels)</td></tr>
-    <tr><td>Internal bias voltage supply</td><td>0 to 2000 V positive</td></tr>
-    <tr><td>HV output capacity</td><td>Up to 0.5 mA</td></tr>
-    <tr><td>Negative high voltage</td><td>Available upon request</td></tr>
-    <tr><td>Shaping time</td><td>Adjustable, 0.25 to 10 microseconds</td></tr>
-    <tr><td>Gain range</td><td>x1 to x25 (coarse and fine gain controls)</td></tr>
-    <tr><td>Detector inputs</td><td>Two inputs; Input 1 series "C" connector (signal joined with HV); Input 2 SHV connector (HV) and BNC connector (signal); active input selected via software</td></tr>
-    <tr><td>Accepted signals</td><td>Negative, positive, or pre-shaped (positive)</td></tr>
-    <tr><td>External connector</td><td>Provides +5 V, +12 V, and -12 V for external preamplifiers; two logic signals for external alarm notification</td></tr>
-    <tr><td>Controls</td><td>Power On/Off switch; Fast/Normal charging rate switch; internal battery-compartment switch to suppress charging for non-rechargeable batteries</td></tr>
-    <tr><td>Indicators</td><td>LEDs for On/Off status, external power availability, and fast charge activation</td></tr>
-    <tr><td>Isotope library</td><td>Standard libraries include 387 isotopes (editable)</td></tr>
-    <tr><td>Minimum system requirements</td><td>486 computer running Windows 95 or higher; Windows Mobile device with serial connector</td></tr>
-    <tr><td>Software included</td><td>SNAP-MCA (single-user license); Data Exporter to N42 or Excel</td></tr>
-    <tr><td>Shipping dimensions</td><td>18 x 18 x 13 inches</td></tr>
-    <tr><td>Shipping weight</td><td>9 lbs</td></tr>
-  </table>
+  <h2><span class="num">9</span>Support Programs</h2>
+  <p>Several levels of technical support are available for users of the Model 970.</p>
+
+  <h3>9.1 Factory Technical Support</h3>
+  <p>Berkeley Nucleonics offers fast and efficient support from our headquarters in California, as well as several satellite offices domestically and abroad. Visit our website at <a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener">http://www.berkeleynucleonics.com/</a> for the support and service center nearest you, or call 800-234-7858. Technical support programs range from First Responder end user support to advanced Health Physics technical assistance.</p>
+
+  <h3>9.2 Protocol Development</h3>
+  <p>Radiation Detection is a growing field, and many organizations are developing new protocols to address applications for interdiction of illegal transportation to confirmation of medical treatments. Conventional applications such as environmental remediation are also faced with new challenges. To assist in the development of protocols around your application, Berkeley Nucleonics can offer seasoned Health Physicists to work closely with your team. Contact our factory to discuss the details of your application. Domestic or International, Classified or Non-Classified, we have an on-site support team available to assist.</p>
+
+  <h3>9.3 Vendor Enhanced Reachback Program</h3>
+  <p>For applications when expedited support and spectroscopic analysis is required, Berkeley Nucleonics has established an around-the-clock support program available to customers of the Model 970 Portable Multi-Channel Analyzer. Access to spectroscopists can give your decision making management team, and your mitigation activities added credibility. Whether you are considering the event itself, or the documentation requirements that follow, enlist our team of spectroscopists with an Enhanced Reachback Program.</p>
+
+  <h3>9.4 State or Federal Agency Support</h3>
+  <p>Several State and Federal agencies are available to support your application. Our knowledgeable team will assist you in setting up your instruments to automatically condition the data in formats required by these agencies. Data can be exported automatically, or via electronic mail, to allow remote experts to analyze the information. A current list of email addresses, phone numbers, and contact names can be obtained from the factory, at 800-234-7858.</p>
 </section>
 
 <section id="s10">
-  <h2><span class="num">10</span>Support</h2>
-  <p>For technical support, calibration, service, and replacement parts, contact Berkeley Nucleonics Corporation.</p>
+  <h2><span class="num">10</span>Specifications</h2>
+
+  <h3>Preamplifier</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Type</td><td>Charge Sensitive</td></tr>
+    <tr><td>Input</td><td>Negative Current (anode)</td></tr>
+    <tr><td>Output</td><td>Positive HV supply variable 0 V to 2000 V (0.5 mA); Negative HV supply also available</td></tr>
+  </table>
+
+  <h3>ADC</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Type</td><td>4096 channel, 14-bit pipelined</td></tr>
+    <tr><td>Speed</td><td>50 MHz</td></tr>
+  </table>
+
+  <h3>Pulse Processing</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Type</td><td>Digital, Trapezoidal Shaping</td></tr>
+    <tr><td>Shaping</td><td>250 ns to 10 &micro;s</td></tr>
+    <tr><td>Gain</td><td>Digital, x1, x2, x4, x15, x35, x125, and x250</td></tr>
+    <tr><td>LLD</td><td>0 to 100 % of full scale digitally adjustable in .006 % intervals</td></tr>
+    <tr><td>ULD</td><td>0 to 100 % of full scale digitally adjustable in .006 % intervals</td></tr>
+    <tr><td>Zero</td><td>-5 % to +5 % of full scale, digitally adjustable</td></tr>
+  </table>
+
+  <h3>Spectrum Conversion</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Collection Mode</td><td>Linear &ndash; 16384 Channels</td></tr>
+    <tr><td>Conversion Modes</td><td>Linear &ndash; 4096 Channels</td></tr>
+  </table>
+
+  <h3>System Controller</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Processor</td><td>PPC405 CPU at 50 MHz</td></tr>
+    <tr><td>Controls</td><td>SNAP-MCA and SNAP-MCA Full software</td></tr>
+    <tr><td>I/O</td><td>RS-232 (16550 UART or higher); USB port is also acceptable if USB-to-RS232 adapter is used</td></tr>
+  </table>
+
+  <h3>Input Power</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Batteries</td><td>Internal, 6 x 1800 mAh NiMH AA batteries</td></tr>
+    <tr><td>AC</td><td>110 VAC or 220 VAC to 12 V DC adapter (1.25 A)</td></tr>
+    <tr><td>Motor Vehicle</td><td>12 V, 1.25 A if Fast Charge, 750 mA if Slow Charge</td></tr>
+  </table>
+
+  <h3>Output Power</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Logic and Alarms</td><td>+5 V, +12 V and -12 V via Mini DIN-7 connector</td></tr>
+  </table>
+
+  <h3>Gamma Detector</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Crystal</td><td>2" x 2" or 3" x 3" NaI; or 1" x 1" or 1.5" x 1.5" CeBr</td></tr>
+    <tr><td>Bias</td><td>Integral HV supply from 0 &ndash; 2000 V; Actual operating voltage calibrated to each detector</td></tr>
+    <tr><td>Connection</td><td>Input 1 &ndash; Series "C" connector; Input 2 &ndash; SHV connector (supply) and BNC connector (signal)</td></tr>
+  </table>
+
+  <h3>Neutron Detector (if present)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Type</td><td><sup>6</sup>LiI or <sup>3</sup>He</td></tr>
+    <tr><td>Moderator</td><td>1 cm polypropylene</td></tr>
+    <tr><td>Discriminator</td><td>Digital pulse shape and energy discrimination</td></tr>
+  </table>
+
+  <h3>Physical</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Temperature</td><td>32&deg;&ndash;122&deg;F (0&deg; to 50&deg;C)</td></tr>
+    <tr><td>Weight</td><td>391 grams (13.8 oz.)</td></tr>
+    <tr><td>Size</td><td>157 x 90 x 44 mm (6.2 x 3.5 x 1.7 in.)</td></tr>
+  </table>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>Contact Us</h2>
+  <p><strong>Berkeley Nucleonics Corporation</strong></p>
   <ul>
+    <li>Phone: (415) 453-9955</li>
+    <li>Address: 2955 Kerner Blvd., San Rafael, CA 94901</li>
     <li>Email: <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a></li>
-    <li>Phone: 800-234-7858</li>
-    <li>Web: <a href="https://www.berkeleynucleonics.com/support-overview/" target="_blank" rel="noopener">berkeleynucleonics.com/support-overview</a></li>
+    <li>Web: <a href="https://www.berkeleynucleonics.com" target="_blank" rel="noopener">www.berkeleynucleonics.com</a></li>
   </ul>
-  <div class="note">For complete procedures, current firmware, software, and the full published manual, refer to the official Berkeley Nucleonics manual; contact info@berkeleynucleonics.com.</div>
+  <p>Model 970 User Manual &middot; Document Version Number: 1.0 &middot; Software Release: 2.1.3 &middot; Print Code: 31025070</p>
 </section>
 
 </main>

@@ -91,6 +91,9 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
 </style>
 
 
@@ -164,186 +167,303 @@ th .modelthumb{filter:none;}
   <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search…" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 577 Digital Delay / Pulse Generator</h1><p>A benchtop pulse and delay generator with four or eight independent channels, 250 ps resolution, and a repetition range from 0.001 Hz to 20 MHz. Deep gating and triggering, a field-programmable FPGA, and a wide choice of output modules make it a flexible synchronization hub for the lab.</p><div class="ver">Berkeley Nucleonics Corporation</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/images/products/577_pulse_and_delay_generator_front.png" alt="Berkeley Nucleonics Model 577 digital delay and pulse generator, front panel"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 577 Digital Delay / Pulse Generator</h1><p>A benchtop pulse and delay generator with four or eight independent channels, 250 ps resolution, and a repetition range from 0.001 Hz to 20 MHz. Deep gating and triggering, a field-programmable FPGA, and a wide choice of output modules make it a flexible synchronization hub for the lab.</p><div class="ver">Model 577 Datasheet &middot; Berkeley Nucleonics Corporation</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/images/products/577_pulse_and_delay_generator_front.png" alt="Berkeley Nucleonics Model 577 digital delay and pulse generator, front panel"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Channels &amp; Timing Architecture</a>
-  <a href="#s4">4. Specifications</a>
-  <a href="#s5">5. Triggering &amp; I/O</a>
-  <a href="#s6">6. Options &amp; Configurations</a>
-  <a href="#s7">7. Applications</a>
-  <a href="#s8">8. Ordering / In the Box</a>
+  <a href="#s1">1. Description</a>
+  <a href="#s2">2. Features &amp; Applications</a>
+  <a href="#s3">3. Capabilities &amp; Options</a>
+  <a href="#s4">4. Internal Rate Generator</a>
+  <a href="#s5">5. Timing Generator</a>
+  <a href="#s6">6. Standard Module Specification</a>
+  <a href="#s7">7. Trigger / Gate Dual Input Module</a>
+  <a href="#s8">8. Output Module Options</a>
+  <a href="#s9">9. Optical Inputs / Outputs &amp; Other Options</a>
+  <a href="#s-perf">10. Typical Performance Curves</a>
+  <a href="#s10">11. Memory &amp; Connectivity</a>
+  <a href="#s11">12. Physical &amp; Environmental</a>
 </nav>
 <main class="content">
 
+
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <div class="note warn"><b>Verification notes.</b> Values are drawn from the Model 577 datasheet and ordering guide. Confirm against the current released datasheet before quoting. Output-module figures (AT20, TZ50, AT35, TZ35, AT45, optical) depend on the modules ordered; the tables below reproduce the published values for each module. The Stanford DG535 / DG645 comparison is a positioning reference, not a specification.</div>
-  <p>The Model 577 is a benchtop precision pulse and delay generator. It offers four or eight independent output channels, each with 250 ps resolution on delay and pulse width. Delay ranges from 0 ns to 1000 s, pulse width from 10 ns to 1000 s, and repetition rate from 0.001 Hz to 20 MHz, with timing accuracy of 1 ns plus 0.0001 times the set value.</p>
-  <p>Beyond raw timing, the 577 is built for synchronization. Any channel can be OR'd to any output, gating can be applied per channel or across the system, and burst, nested-burst, and duty-cycle modes cover repetitive sequencing. A field-programmable FPGA keeps the feature set current, and 16 memory locations store full instrument configurations.</p>
+  <h2><span class="num">1</span>Description</h2>
+  <p>The Model 577 Digital Delay / Pulse Generator represents the latest in timing capabilities. With up to 8 outputs configurations as varied as the applications the product serves, the Model 577 is clearly our most versatile instrument.</p>
+  <p>The 250 ps width and delay resolution and 50 ps internal jitter give gating, triggering, delaying, clocking and synchronizing a precision sufficient for nearly every application. Add to this performance: optical or electrical outputs and inputs, pulse picking capabilities, selectable external clocks and USB/RS232 programming.</p>
 </section>
 
 <section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">2</span>Features &amp; Applications</h2>
+  <h3>Features</h3>
   <ul>
-    <li>Four or eight independent output channels</li>
-    <li>250 ps resolution on delay and pulse width</li>
-    <li>Delay range 0 ns to 1000 s, pulse width 10 ns to 1000 s</li>
-    <li>Repetition rate 0.001 Hz to 20 MHz</li>
-    <li>Accuracy of 1 ns + 0.0001 times the setpoint</li>
-    <li>Channel-to-channel jitter below 50 ps RMS</li>
-    <li>Burst, nested-burst, and duty-cycle modes</li>
-    <li>Channel multiplexing: OR any channel to any output</li>
-    <li>USB and RS-232 standard; optional Ethernet and GPIB</li>
-    <li>External clock sync, 10 MHz to 100 MHz</li>
-    <li>Field-programmable FPGA and 16 memory locations</li>
+    <li>Outputs: 4 or 8 Independent Channel Outputs</li>
+    <li>Pulse Width: 10 ns - 1000 s</li>
+    <li>Pulse Delay: 0 ns - 1000 s</li>
+    <li>Pulse and Delay Resolution: 250 ps</li>
+  </ul>
+  <h3>Applications</h3>
+  <ul>
+    <li>ICCD/PIV Testing</li>
+    <li>Laser Triggering / Gating</li>
+    <li>Pulse DUTs and Pump Lasers</li>
+    <li>Radar / Sonar Simulation</li>
+    <li>High Speed Photography</li>
   </ul>
 </section>
 
 <section id="s3">
-  <h2><span class="num">3</span>Channels &amp; Timing Architecture</h2>
-  <p>The Model 577 ships as a four-channel (577-4C) or eight-channel (577-8C) instrument. A single internal rate generator sets the system period (T0), and each channel runs its own delay, width, and output mode against that time base. Because any or all channels can be OR'd to any or all output BNCs, a single pulse can be steered to several outputs, or several channels can be combined onto one.</p>
-  <p>The time base is a 200 MHz low-jitter PLL driven from a 50 MHz, 50 ppm crystal oscillator, with selectable external clock reference from 10 MHz to 100 MHz. Negative delay, individual per-channel rates, and per-channel gating give the instrument the flexibility to act as the timing backbone of a multi-instrument setup.</p>
-  <figure class="fig"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/images/products/577_pulse_and_delay_generator_back.png" alt="Model 577 rear panel"><figcaption>Rear panel. Channel output BNCs, trigger and gate inputs, and clock reference connections.</figcaption></figure>
+  <h2><span class="num">3</span>Capabilities &amp; Options</h2>
+  <h3>Selectable Clock Reference</h3>
+  <p>The Model 577 offers additional inputs and outputs for external clock syncing. Specify your input / output reference frequency (10 MHz to 100 MHz). Sync with the Mode Lock Oscillator of a laser, or phase lock multiple units with one clock.</p>
+  <h3>Flexible Gating Options</h3>
+  <p>The Model 577 is packed with gating options for almost any setup. You may gate with a channel or on any input. You may gate individual channels or gate all. Gate immediately (output inhibit) or gate after a pulse (pulse inhibit).</p>
+  <h3>Individual Rates</h3>
+  <p>Each channel may have patterns that may be continuous, a single burst, a series of repetitive bursts, a sub-harmonic of a previous channel, a single timed pulse. All the while the pulses have their own delay and widths. A typical application is to have a channel issue series of pulses to trigger flashlamps or laser diodes. Other channels can trigger Q-switches, detectors and cameras with single timed pulses synchronized to the pulse series in the first.</p>
+  <h3>Auto-Save</h3>
+  <p>Forgot to save your settings? The Model 577 stores your setup configurations while powering down. Recall is automatic on power-up.</p>
+  <h3>Dual Input Panel Connectors</h3>
+  <p>The Model 577 offers two inputs for triggering or gating. User may specify electrical or optical input signals, and configure any trigger / gate combination. Use Trigger #2 to disable a triggered pulse train.</p>
+  <h3>Front Panel Optical</h3>
+  <p>Many applications benefit from optical signals. For noisy environments, or communications applications, we offer an LED output stage at the front panel. This modular option can be configured for 2, 4, or 8 outputs at 820 nm or 1300 nm.</p>
+  <h3>Front Panel High Voltage</h3>
+  <p>Our modular architecture allows us to offer expanded functionality on user-selected front panel outputs. We offer a front panel High Voltage option (adjustable from 5 V to 45 V, 200 mV steps) on 2 or 4 channels.</p>
+  <h3>Combined Output Types</h3>
+  <p>The outputs are configured in modules and output types are combined in pairs. Thus one may select optical, standard electrical or high voltage electrical in pairs for their instrument. For example, an 8 channel unit may have optical, standard electrical and high voltage outputs all on one instrument. Custom or additional output modules may be added as the need arises.</p>
+  <h3>Field Programmability</h3>
+  <p>The instrument can now have functions upgraded in the field, such as a special or custom feature upgrade via a fully programmable FPGA.</p>
+  <h3>Pulse Picking</h3>
+  <p>Using an external modulation up to 100 MHz, you may select 1 out of every X pulses for a given channel.</p>
+  <p class="xref">See <a href="#s-perf">Figure 1</a> (pulse picking input / output timing) in Typical Performance Curves.</p>
+  <h3>Custom Output Modes</h3>
+  <p>Custom modules give users an expanded list of capabilities with the Model 577. One example is our TZ-50 option, which allows customers to output at a 4 V TTL signal into 50 ohms load.</p>
+  <h3>Negative Delay</h3>
+  <p>Use the handy negative delay feature to reference one channel with respect to another channel in positive or negative time increments. By allowing a channel to reference another channel as its trigger, you can synchronize the channels with respect to each other.</p>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Specifications</h2>
-  <h3>Internal Rate Generator</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>Rate (T0 period)</td><td>0.001 Hz to 20.000 MHz (1000 s to 50 ns)</td></tr>
-    <tr><td>Resolution</td><td>5 ns</td></tr>
-    <tr><td>Accuracy</td><td>5 ns + (0.0001 x period)</td></tr>
-    <tr><td>T0 period jitter</td><td>&lt; 50 ps RMS</td></tr>
-    <tr><td>Time base</td><td>200 MHz low-jitter PLL</td></tr>
-    <tr><td>Oscillator</td><td>50 MHz, 50 ppm crystal</td></tr>
-    <tr><td>System output modes</td><td>Single, normal, burst, duty cycle, external gate/trigger</td></tr>
-    <tr><td>Burst mode</td><td>1 to 10,000,000 pulses</td></tr>
-  </table>
-  <h3>Timing Generator</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>Pulse width range</td><td>10 ns to 1000 s</td></tr>
-    <tr><td>Width accuracy</td><td>1 ns + 0.0001 x width setting</td></tr>
-    <tr><td>Width resolution</td><td>250 ps</td></tr>
-    <tr><td>Pulse delay range</td><td>0 to 1000 s</td></tr>
-    <tr><td>Delay accuracy</td><td>1 ns + 0.0001 x delay setting</td></tr>
-    <tr><td>Delay resolution</td><td>250 ps</td></tr>
-    <tr><td>Jitter (channel to channel)</td><td>&lt; 50 ps RMS</td></tr>
-    <tr><td>Output multiplexer</td><td>Any/all channels may be OR'd to any/all outputs</td></tr>
-    <tr><td>Channel output modes</td><td>Single, normal, burst, duty cycle</td></tr>
-  </table>
-  <h3>Standard Output Module (AT20)</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>TTL/CMOS Mode</th><th>Adjustable Mode</th></tr>
-    <tr><td>Output / source impedance</td><td>High impedance</td><td>&mdash;</td></tr>
-    <tr><td>Output level</td><td>4.0 V typ into 1 k&Omega;</td><td>2 V to 20 VDC into 1 k&Omega; or 1 V to 10 VDC into 50 &Omega;</td></tr>
-    <tr><td>Rise time (10% to 90%)</td><td>&lt; 3 ns (1.5 ns typ)</td><td>15 ns typ @ 20 V into Hi-Z (25 ns typ @ 10 V into 50 &Omega;)</td></tr>
-    <tr><td>Jitter</td><td>&lt; 50 ps RMS channel to channel</td><td>&mdash;</td></tr>
-    <tr><td>Amplitude resolution</td><td>&mdash;</td><td>10 mV</td></tr>
-    <tr><td>Current</td><td>&mdash;</td><td>200 mA typ, 400 mA (short pulses)</td></tr>
-    <tr><td>Slew rate</td><td>&mdash;</td><td>0.1 V/ns</td></tr>
-  </table>
-  <h3>Optional 45 V Output Module (AT45)</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>Amplitude</td><td>4 V to 45 V</td></tr>
-    <tr><td>Resolution</td><td>20 mV</td></tr>
-    <tr><td>Accuracy</td><td>&plusmn;1.5%</td></tr>
-    <tr><td>Rise time (10% to 90%)</td><td>&lt; 2 ns into 50 &Omega; typ / &lt; 9 ns into Hi-Z typ</td></tr>
-    <tr><td>Frequency (internal and external)</td><td>DC to 100 kHz</td></tr>
-    <tr><td>Max current</td><td>35 mA (Hi-Z @ 10 ms width) / 900 mA (50 &Omega; @ 10 ms width)</td></tr>
-    <tr><td>Note</td><td>Maximum of four AT45 channels per unit</td></tr>
-  </table>
-  <h3>Physical and Environmental</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Value</th></tr>
-    <tr><td>Dimensions</td><td>10.5 x 8.25 x 5.5 in [267 x 210 x 140 mm]</td></tr>
-    <tr><td>Weight</td><td>8 lbs [3.6 kg]</td></tr>
-    <tr><td>Power</td><td>100 to 240 VAC, 50/60 Hz, &lt; 3 A</td></tr>
-    <tr><td>Operating temperature</td><td>32 to 104 &deg;F [0 to 40 &deg;C]</td></tr>
-    <tr><td>Memory storage</td><td>16 memory locations</td></tr>
-    <tr><td>External clock in/out</td><td>10 MHz to 100 MHz, user selectable</td></tr>
-    <tr><td>Warranty</td><td>Full 3-year warranty with lifetime no-cost firmware upgrades</td></tr>
-  </table>
+  <h2><span class="num">4</span>Internal Rate Generator</h2>
+<table class="spec">
+<tbody>
+<tr><td>Rate (T0 period)</td><td>0.001 Hz to 20.000 MHz (1000 s &ndash; 50 ns)</td></tr>
+<tr><td>Resolution</td><td>5 ns</td></tr>
+<tr><td>Accuracy</td><td>1 ns + (0.0001 x period)</td></tr>
+<tr><td>T0 Period Jitter</td><td>&lt; 50 ps RMS</td></tr>
+<tr><td>Time Base</td><td>100 MHz, low jitter PLL</td></tr>
+<tr><td>Oscillator</td><td>50 MHz, 50 ppm crystal oscillator</td></tr>
+<tr><td>System Output Modes</td><td>Single, Normal, Burst, Duty Cycle, External Gate/Trigger</td></tr>
+<tr><td>Burst Mode</td><td>1 to 10,000,000 pulses</td></tr>
+<tr><td>Duty Cycle Mode</td><td>1 to 10,000,000 pulses ON and/or OFF</td></tr>
+<tr><td>Pulse Control Modes</td><td>Internally triggered, externally triggered or external gate</td></tr>
+</tbody></table>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>Triggering &amp; I/O</h2>
-  <p>The standard electrical input module (IA15) handles trigger and gate functions. The trigger input generates individual pulses, starts a burst, or starts a continuous stream; the gate input applies pulse inhibit or output inhibit, with active-high or active-low polarity. An optional dual-trigger input (DT15) adds a second input.</p>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Trigger Input (IA15)</th></tr>
-    <tr><td>Rate</td><td>DC to 1/(200 ns + longest active pulse), max 5 MHz</td></tr>
-    <tr><td>Slope</td><td>Rising or falling</td></tr>
-    <tr><td>Threshold</td><td>200 mV to 15 VDC</td></tr>
-    <tr><td>Maximum input</td><td>60 V peak</td></tr>
-    <tr><td>Resolution</td><td>10 mV</td></tr>
-    <tr><td>Trigger accuracy</td><td>&plusmn;3% of threshold voltage</td></tr>
-    <tr><td>Impedance</td><td>1.2 k&Omega;</td></tr>
-    <tr><td>Trigger jitter</td><td>&lt; 800 ps RMS</td></tr>
-    <tr><td>Insertion delay</td><td>&lt; 110 ns</td></tr>
-    <tr><td>Minimum pulse width</td><td>20 ns</td></tr>
-  </table>
-  <p>USB 1.0 and an RS-232 DE-9F connector are standard. Optical input and output modules (820 nm or 1300 nm, ST connector, up to 5 MBd over 1.5 km) are available for electrically isolated links.</p>
+  <h2><span class="num">5</span>Timing Generator</h2>
+<table class="spec">
+<tbody>
+<tr><td>Pulse Width Range</td><td>10 ns - 1000 s</td></tr>
+<tr><td>Width Accuracy</td><td>1 ns + 0.0001 x width setting</td></tr>
+<tr><td>Width Resolution</td><td>250 ps</td></tr>
+<tr><td>Pulse Delay Range</td><td>0 - 1000 s</td></tr>
+<tr><td>Delay Accuracy</td><td>1 ns + 0.0001 x delay setting</td></tr>
+<tr><td>Delay Resolution</td><td>250 ps</td></tr>
+<tr><td>Jitter (channel to channel)</td><td>&lt; 50 ps RMS</td></tr>
+<tr><td>Output Multiplexer</td><td>Any/all channels may be OR’d to any/all outputs.</td></tr>
+<tr><td>Time Base</td><td>Same as the internal rate generator</td></tr>
+<tr><td>Channel Output Modes</td><td>Single, Normal, Burst, Duty Cycle</td></tr>
+<tr><td>Burst Mode</td><td>1 to 10,000,000 pulses</td></tr>
+<tr><td>Duty Cycle Mode</td><td>1 to 10,000,000 pulses ON and/or OFF</td></tr>
+<tr><td>Wait Counts</td><td>1 to 10,000,000 pulses</td></tr>
+<tr><td>Channel Control Modes</td><td>Internally triggered or external gated. Each channel may be independently set to either mode.</td></tr>
+</tbody></table>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Options &amp; Configurations</h2>
-  <p>Channel output modules are selected per pair (A&amp;B, C&amp;D, E&amp;F, G&amp;H), so a single instrument can mix output types across its channels.</p>
-  <h4>Channel output modules</h4>
-  <ul>
-    <li>AT20: TTL (Hi-Z) / 2 to 20 V adjustable (Hi-Z), standard</li>
-    <li>TZ50: TTL (50 &Omega;) / 2 to 20 V adjustable (Hi-Z)</li>
-    <li>AT35: TTL (Hi-Z) / 5 to 35 V adjustable (50 &Omega;)</li>
-    <li>TZ35: TTL (50 &Omega;) / 5 to 35 V adjustable (50 &Omega;)</li>
-    <li>AT45: 4 to 45 V adjustable (Hi-Z / 50 &Omega;)</li>
-    <li>L82: 820 nm optical output; L130: 1300 nm optical output</li>
-  </ul>
-  <h4>Trigger / gate input and system options</h4>
-  <ul>
-    <li>IA15 electrical 15 V adjustable threshold input, standard</li>
-    <li>IL82 / IL130 optical input</li>
-    <li>DT15 dual trigger input</li>
-    <li>COM: add LAN and GPIB port</li>
-    <li>US 115 V or EU 230 V power cord</li>
-    <li>P/N6923 single rack mount; P/N6978 dual rack mount</li>
-  </ul>
+  <h2><span class="num">6</span>Standard Module Specification</h2>
+  <h3>TTL/Adjustable Dual Channel Output Module (Standard)</h3>
+<table class="spec">
+<thead><tr><th colspan="2">TTL/CMOS Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Impedance</td><td>50 &Omega;</td></tr>
+<tr><td>Output Level</td><td>4.0 V (typical) into 1 k&Omega;</td></tr>
+<tr><td>Rise Time</td><td>&lt; 3 ns (1.5 ns typical)</td></tr>
+<tr><td>Jitter (channel to channel)</td><td>&lt; 50 ps RMS</td></tr>
+</tbody></table><table class="spec">
+<thead><tr><th colspan="2">Adjustable Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Level</td><td>2 V to 20 VDC into Hi-Z<br>1 V to 10 VDC into 50 &Omega;</td></tr>
+<tr><td>Amplitude Resolution</td><td>10 mV</td></tr>
+<tr><td>Current</td><td>200 mA typical, 400 mA (short pulses)</td></tr>
+<tr><td>Rise Time</td><td>15 ns (typical) @ 20 V into Hi-Z<br>25 ns typ @ 10 V into 50 &Omega;</td></tr>
+<tr><td>Slew Rate</td><td>&gt; 0.1 V/ns</td></tr>
+<tr><td>Overshoot</td><td>&lt; 1 V + 10% of pulse amplitude</td></tr>
+</tbody></table>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Applications</h2>
-  <ul>
-    <li>Laser systems</li>
-    <li>Research applications</li>
-    <li>Synchronization across multiple instruments</li>
-    <li>Test setups</li>
-    <li>Particle image velocimetry (PIV)</li>
-  </ul>
-  <figure class="fig">
-    <img src="../figures/pdg/500-series/app-channel-mux.png" alt="Oscilloscope capture of four channels multiplexed into a single combined output">
-    <figcaption>Channel multiplexing on a scope. Active-high outputs from channels A, B, and C combine into a single active-low waveform, one of many configurations the channel modes allow.</figcaption>
-  </figure>
-  <figure class="fig">
-    <img src="../figures/pdg/500-series/app-internal-operation.png" alt="Block diagram of a synchronizer delay generator driving eight independent channels with per-channel delay and pulse width">
-    <figcaption>Inside the 577. A single synchronizer drives up to eight independent channels, each with its own delay and pulse width at 250 ps resolution.</figcaption>
-  </figure>
+  <h2><span class="num">7</span>Trigger / Gate Dual Input Module (Standard)</h2>
+<table class="spec">
+<thead><tr><th colspan="2">Trigger Input</th></tr></thead>
+<tbody>
+<tr><td>Function</td><td>Generate individual pulses, start a burst or continuous stream</td></tr>
+<tr><td>Rate</td><td>DC to 1 / (200 ns + longest active pulse). Maximum of 5 MHz</td></tr>
+<tr><td>Slope</td><td>Rising or Falling</td></tr>
+<tr><td>Threshold</td><td>200 mV to 15 VDC</td></tr>
+<tr><td>Maximum Input</td><td>60 V Peak</td></tr>
+<tr><td>Resolution</td><td>10 mV</td></tr>
+<tr><td>Trigger Accuracy</td><td>&plusmn;3% of Threshold Voltage</td></tr>
+<tr><td>Impedance</td><td>1.2K ohm</td></tr>
+<tr><td>Trigger Jitter</td><td>&lt; 800 ps RMS</td></tr>
+<tr><td>Insertion Delay</td><td>&lt; 110 ns</td></tr>
+<tr><td>Minimum Pulse Width</td><td>20 ns</td></tr>
+<tr><td>Pulse Inhibit Delay</td><td>&lt; 150 ns RMS</td></tr>
+<tr><td>Output Inhibit Delay</td><td>&lt; 100 ns RMS</td></tr>
+</tbody></table><table class="spec">
+<thead><tr><th colspan="2">Gate Input</th></tr></thead>
+<tbody>
+<tr><td>Mode</td><td>Pulse Inhibit or Output Inhibit</td></tr>
+<tr><td>Polarity</td><td>Active High or Active Low</td></tr>
+</tbody></table>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Ordering / In the Box</h2>
-  <p>Specify channel count and the output module for each channel pair when ordering, along with any input, communication, and rack-mount options. The instrument ships with power cord and a calibration certificate, and carries a full 3-year warranty with lifetime no-cost firmware upgrades.</p>
-  <table class="spec">
-    <tr><th>Item</th><th>Detail</th></tr>
-    <tr><td>577-4C</td><td>Four independent output channels</td></tr>
-    <tr><td>577-8C</td><td>Eight independent output channels</td></tr>
-  </table>
-  <p>To configure or quote, contact Berkeley Nucleonics at <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> or 800-234-7858.</p>
+  <h2><span class="num">8</span>Output Module Options</h2>
+  <h3>Option TZ50 - TTL 50 &Omega; Output Impedance</h3>
+<table class="spec">
+<thead><tr><th colspan="2">TTL/CMOS Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Level</td><td>4.0 V typ into 50 &Omega;</td></tr>
+<tr><td>Rise Time</td><td>&lt; 3 ns (2 ns typical)</td></tr>
+<tr><td>Slew Rate</td><td>0.5 V/ns</td></tr>
+<tr><td>Jitter - Channel to Channel</td><td>&lt; 50 ps RMS</td></tr>
+</tbody></table><table class="spec">
+<thead><tr><th colspan="2">Adjustable Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Level</td><td>2 V to 20 VDC into 1 k&Omega; or 1 V to 10 VDC into 50 &Omega;</td></tr>
+<tr><td>Amplitude Resolution</td><td>10 mV</td></tr>
+<tr><td>Current</td><td>200 mA typical, 400 mA (short pulses)</td></tr>
+<tr><td>Rise Time (10% - 90%)</td><td>15 ns (typical) @ 20 V into Hi-Z (25 ns typ @ 10 V into 50 &Omega;)</td></tr>
+<tr><td>Slew Rate</td><td>&gt; 0.1 V/ns</td></tr>
+<tr><td>Overshoot</td><td>&lt; 1 V + 10% of pulse amplitude</td></tr>
+</tbody></table>
+  <h3>Option AT35 - 35V Adjustable Output</h3>
+<table class="spec">
+<thead><tr><th colspan="2">TTL/CMOS Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Level</td><td>4.0 V typ into Hi-Z</td></tr>
+<tr><td>Rise Time</td><td>&lt; 3 ns (2 ns typical)</td></tr>
+<tr><td>Slew Rate</td><td>0.5 V/ns</td></tr>
+<tr><td>Jitter - Channel to Channel</td><td>50 ps RMS</td></tr>
+</tbody></table><table class="spec">
+<thead><tr><th colspan="2">Adjustable Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Amplitude</td><td>5 V &ndash; 35 V into 50 &Omega; load at 200 Hz</td></tr>
+<tr><td>Resolution</td><td>10 mV</td></tr>
+<tr><td>Rise Time (10% - 90%)</td><td>&lt; 30 ns</td></tr>
+<tr><td>Accuracy</td><td>500 mV</td></tr>
+<tr><td>Max. Frequency (Internal &amp; External)</td><td>4 kHz</td></tr>
+</tbody></table>
+  <h3>Option TZ35 - TTL 50 &Omega; Output Impedance + 35V Adjustable Output</h3>
+<table class="spec">
+<thead><tr><th colspan="2">TTL/CMOS Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Level</td><td>4.0 V typ into 50 &Omega;</td></tr>
+<tr><td>Rise Time</td><td>&lt; 3 ns (2 ns typical)</td></tr>
+<tr><td>Slew Rate</td><td>0.5 V/ns</td></tr>
+<tr><td>Jitter - Channel to Channel</td><td>&lt; 50 ps RMS</td></tr>
+</tbody></table><table class="spec">
+<thead><tr><th colspan="2">Adjustable Mode</th></tr></thead>
+<tbody>
+<tr><td>Output Amplitude</td><td>5 V &ndash; 35 V into 50 &Omega; load at 200 Hz</td></tr>
+<tr><td>Resolution</td><td>10 mV</td></tr>
+<tr><td>Rise Time (10% - 90%)</td><td>&lt; 30 ns</td></tr>
+<tr><td>Accuracy</td><td>500 mV</td></tr>
+<tr><td>Max. Frequency (Internal &amp; External)</td><td>4 kHz</td></tr>
+</tbody></table>
+  <h3>Option AT45 - 45V High and Low Impedance</h3>
+<table class="spec">
+<tbody>
+<tr><td>Amplitude</td><td>4 V - 45 V</td></tr>
+<tr><td>Resolution</td><td>20 mV</td></tr>
+<tr><td>Accuracy</td><td>+/-1.5%</td></tr>
+<tr><td>Rise Time (10%-90%)</td><td>&lt; 2 ns into 50 &Omega; (typ)<br>&lt; 9 ns into Hi-Z (typ)</td></tr>
+<tr><td>Fall Time (90%-10%)</td><td>&lt; 9 ns into 50 &Omega; (typ)<br>&lt; 9 ns into Hi-Z (typ)</td></tr>
+<tr><td>Frequency (Internal &amp; External)</td><td>DC &ndash; 100 kHz</td></tr>
+<tr><td>Overshoot</td><td>&lt; 35% Typical for Fast Rise Time</td></tr>
+<tr><td>Polarity</td><td>High Impedance Mode: Active High or Active Low<br>Low Impedance (50 &Omega;) Mode: Active High Only</td></tr>
+<tr><td>Pulse Width Range</td><td>High Impedance Mode: 10 ns to DC<br>Low Impedance (50 &Omega;) Mode: 10 ns to 10 seconds</td></tr>
+<tr><td>Max Current</td><td>35 mA (Hi-Z @ 10 ms width)<br>900 mA (50 &Omega; @ 10 ms width)</td></tr>
+</tbody></table>
+  <p class="xref">See <a href="#s-perf">Figure 2</a> (AT45 pulse shape, High-Z load at 45 V) in Typical Performance Curves.</p>
+  <div class="note"><b>Notes.</b> Due to the power consumption and heat restrictions, a maximum of four AT45 channels can be installed on a single unit. Option AT45 deletes TTL and ADJUSTABLE mode selection and replaces them with LOW and HIGH Impedance selection.</div>
 </section>
+
+<section id="s9">
+  <h2><span class="num">9</span>Optical Inputs / Outputs &amp; Other Options</h2>
+  <h3>Option L82 or Option L130 - Optical Outputs</h3>
+<table class="spec">
+<tbody>
+<tr><td>Wavelength</td><td>820 nm or 1300 nm</td></tr>
+<tr><td>Maximum Signal Rate</td><td>5 MBd</td></tr>
+<tr><td>Maximum Link Dist.</td><td>1.5 km</td></tr>
+<tr><td>Connector Type</td><td>ST</td></tr>
+</tbody></table>
+  <h3>Option IL82 or Option IL130 - Optical Inputs</h3>
+<table class="spec">
+<tbody>
+<tr><td>Wavelength</td><td>820 nm or 1300 nm</td></tr>
+<tr><td>Maximum Signal Rate</td><td>5 MBd</td></tr>
+<tr><td>Maximum Link Dist.</td><td>1.5 km</td></tr>
+<tr><td>Connector Type</td><td>ST</td></tr>
+<tr><td>Insertion Delay</td><td>&lt; 300 ns</td></tr>
+<tr><td>Jitter</td><td>&lt; 1.4 ns RMS</td></tr>
+</tbody></table>
+  <h3>Additional Options</h3>
+<table class="spec">
+<tbody>
+<tr><td>DT15</td><td>Dual Trigger. Enable Gate Input to act as second trigger</td></tr>
+<tr><td>COM</td><td>Extended Communications &ndash; Adds Ethernet &amp; GPIB</td></tr>
+<tr><td>EU</td><td>Replace North American Cord with European Cord</td></tr>
+</tbody></table>
+</section>
+
+<section id="s-perf">
+  <h2>Typical Performance Curves</h2>
+  <p>Representative timing and pulse-shape illustrations reproduced from the Model 577 datasheet. Curves are typical and not guaranteed.</p>
+  <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid var(--line);border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:var(--muted);margin-top:8px;line-height:1.4}</style>
+  <div class="ds-figgrid">
+  <figure class="ds-fig"><img src="figures/577-ds/577-pulse-picking.png" alt="Figure 1: Pulse picking input / output timing" loading="lazy"><figcaption>Figure 1: Pulse picking &mdash; input pulse train versus selected output pulses.</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/577-ds/577-at45-pulse-shape.png" alt="Figure 2: AT45 output pulse shape, High-Z load at 45 V" loading="lazy"><figcaption>Figure 2: AT45 output pulse shape, High-Z load at 45 V.</figcaption></figure>
+  </div>
+</section>
+
+<section id="s10">
+  <h2><span class="num">11</span>Memory &amp; Connectivity</h2>
+<table class="spec">
+<tbody>
+<tr><td>Memory Storage</td><td>16 Memory Location</td></tr>
+<tr><td>USB</td><td>USB 2.0 Standard</td></tr>
+<tr><td>RS-232</td><td>DE-9F Connector using RS-232 Communications Standard</td></tr>
+<tr><td>External Clock In</td><td>10 MHz &ndash; 100 MHz user selectable in discrete values</td></tr>
+<tr><td>External Clock Out</td><td>To or Ref out (10 to 100 MHz) user selectable in discrete values</td></tr>
+</tbody></table>
+</section>
+
+<section id="s11">
+  <h2><span class="num">12</span>Physical &amp; Environmental</h2>
+<table class="spec">
+<tbody>
+<tr><td>Dimensions</td><td>10.5&rdquo; x 8.25&rdquo; x 5.5&rdquo; [267 x 210 x 140 mm]</td></tr>
+<tr><td>Weight</td><td>8 lbs [3.6 kg]</td></tr>
+<tr><td>Power</td><td>100 - 240 VAC 50/60 Hz &lt; 3 A</td></tr>
+<tr><td>Fuse</td><td>3.15 A, 250 V Time-lag (Qty 2)</td></tr>
+<tr><td>Operating Temp</td><td>32 - 104&deg;F [0 - 40&deg;C]</td></tr>
+<tr><td>Transportation &amp; Storage Temp</td><td>-40 - 158&deg;F [-40 - 70&deg;C]</td></tr>
+</tbody></table>
+</section>
+
 
 </main>
 </div>
@@ -413,6 +533,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 577 Digital Delay / Pulse Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

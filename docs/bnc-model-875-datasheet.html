@@ -91,6 +91,9 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
+.content h4,.article h4{font-size:.96rem;color:var(--ink);margin:1em 0 .2em;}
 </style>
 
 
@@ -164,180 +167,1061 @@ th .modelthumb{filter:none;}
   <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search…" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 875 10 MHz to 40 GHz Multi-Channel Vector Signal Generator</h1><p>A vector-modulated signal generator covering 10 MHz to 40 GHz continuously, with an internal I/Q modulator, deep waveform memory, and real-time Pulse Descriptor Word playback for radar and EW emulation. Phase-coherent across up to four channels, switching down to 200 ns.</p><div class="ver">10 MHz to 40 GHz &middot; internal I/Q vector modulation &middot; PDW playback &middot; 1&ndash;4 channels</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/875_front_tilt_web2.jpg" alt="Berkeley Nucleonics Model 875 multi-channel vector signal generator"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 875 10 MHz to 40 GHz Multi-Channel Vector Signal Generator</h1><p>A vector-modulated signal generator covering 10 MHz to 40 GHz continuously, with an internal I/Q modulator, deep waveform memory, and real-time Pulse Descriptor Word playback for radar and EW emulation. Phase-coherent across up to four channels, switching down to 200 ns.</p><div class="ver">Specifications reproduced from Model 875 datasheet V132 (2024-07-16). Warranted at 23 &plusmn;5 &deg;C after 30-minute warm-up unless stated.</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/875_front_tilt_web2.jpg" alt="Berkeley Nucleonics Model 875 multi-channel vector signal generator"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Frequency &amp; Output Power</a>
-  <a href="#s4">4. Phase Noise &amp; Spectral Purity</a>
-  <a href="#s5">5. Vector / I-Q &amp; Pulse Descriptor Word</a>
-  <a href="#s6">6. Frequency Switching &amp; Sweep</a>
-  <a href="#s7">7. Specifications</a>
-  <a href="#s8">8. Interfaces &amp; Form Factor</a>
-  <a href="#s9">9. Options &amp; Configurations</a>
-  <a href="#s10">10. Applications</a>
-  <a href="#s11">11. Ordering</a>
+  <a href="#s1">Introduction</a>
+  <a href="#s2">Available Options</a>
+  <a href="#s3">Frequency Parameters &amp; Range</a>
+  <a href="#s4">Frequency Reference</a>
+  <a href="#s5">Level Performance</a>
+  <a href="#s6">Power Uncertainty &amp; VSWR</a>
+  <a href="#s7">Phase Noise</a>
+  <a href="#s8">Spectral Purity</a>
+  <a href="#s9">Sweeping Capability</a>
+  <a href="#s10">Phase Coherence</a>
+  <a href="#s11">Analog Modulation</a>
+  <a href="#s12">Pulse Descriptor Word</a>
+  <a href="#s13">I/Q Modulator &amp; Baseband</a>
+  <a href="#s14">Vector &amp; Multicarrier</a>
+  <a href="#s15">Avionics (AVIO)</a>
+  <a href="#s16">AWGN</a>
+  <a href="#s17">Triggers &amp; I/O</a>
+  <a href="#s18">FCP, AIQ &amp; SD</a>
+  <a href="#s-perf">Performance Curves</a>
+  <a href="#s19">Connectors</a>
+  <a href="#s20">Ordering Information</a>
+  <a href="#s21">General Characteristics</a>
+  <a href="#s22">Document History</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <p>The Model 875 is a vector-modulated signal generator covering 10 MHz to 40 GHz continuously. It supports ultra-fast switching down to 200 ns and enables rapid CW sweeps, chirping, intra-pulse modulation, pulse shaping, and low phase noise operation in a single instrument.</p>
-  <p>At its core is an internal I/Q modulator that produces custom and standards-based waveforms at ultra-high I/Q data rates from deep waveform memory. Real-time Pulse Descriptor Word playback lets the 875 emulate complex radar and electronic warfare environments, and multiple units run phase-coherent across up to four channels. Frequency coverage is selectable by model, from 4 GHz through the full 40 GHz span.</p>
-</section>
-
-<section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">1</span>Introduction</h2>
+  <p>The Model 875 is an ultra-fast-switching, vector-modulated signal generator series covering continuous frequency ranges from 10 MHz (100 kHz with option 100K) to 4, 6, 12, 20, or 40 GHz, respectively, with 0.001 Hz resolution and 400 MHz RF modulation bandwidth.</p>
+  <p>The Model 875 is the corresponding multi-channel product series, up to 4 channels per device. This specification applies to single channel models as well as to the independent channels of multi-channel models.</p>
+  <p>A high performance internal I/Q modulator enables customized waveforms as modulation signals and supports a variety of modulation schemes including avionics modulation. The digital I/Q modulator ensures excellent carrier suppression and a very high image suppression. The standard Model 875 enables ultra-fast CW frequency sweeping, chirping, intra-pulse modulation, and pulse shaping with very low phase noise. <strong>Multi-channel models exhibit exceptionally high phase stability between channels synchronized by the same common reference.</strong></p>
+  <p>Among others, the following use cases are supported:</p>
   <ul>
-    <li><strong>Internal I/Q modulator</strong> for custom and standards-based vector waveforms.</li>
-    <li><strong>Ultra-fast switching and modulation</strong> down to 200 ns.</li>
-    <li><strong>Deep memory and wideband support</strong> at ultra-high I/Q data rates.</li>
-    <li><strong>PDW playback</strong> with real-time input over the Fast Control Port.</li>
-    <li><strong>Multi-channel synchronization</strong>, phase-coherent across up to four channels.</li>
-    <li><strong>Excellent phase noise</strong> and wideband linear chirp.</li>
-    <li><strong>Digital modulation schemes</strong>: ASK, FSK, MSK, PSK, plus GSM/EDGE, 3GPP FDD, HSDPA, GPS, and CDMA2000.</li>
+    <li>Upload multiple formats of I/Q data into the Model 875 memory. A Model 875 GUI supports data formats from various vendors. The internal RAM can store up to 512 MS (32 bits per I/Q sample) of I/Q data. The Model 875 internal AWG can play selected sections of the RAM upon a user trigger.</li>
+    <li>Use the Model 875 to synthesize and play predefined digital modulation formats (option IVM).</li>
+    <li>Use the analog I &amp; Q inputs (option AIQ) with up to 50 MHz analog bandwidth.</li>
+    <li>Use the FCP interface (option FCP) to: live stream digital I/Q data; instantaneously switch between pre-loaded I/Q data segments; control ultra-fast frequency hopping (additionally, option UFS required).</li>
+  </ul>
+  <p>All models operate with an ultra-stable temperature-compensated frequency reference (OCXO) that can be phase-locked to an external reference. The compact device can be controlled by the touch display and a PC user interface.</p>
+  <h3>Definitions</h3>
+  <p>The specifications describe the warranted performance of the instrument for 23 &plusmn;5 &deg;C after a 30-minute warm-up period, unless otherwise stated.</p>
+  <ul>
+    <li><strong>Min/Max:</strong> Parameter range that is guaranteed by product design and/or production tested. Warranted performance specifications include guard-bands to account for the expected statistical performance distribution, measurement uncertainties, and changes in performance due to environmental conditions.</li>
+    <li><strong>Typical:</strong> Expected mean values, not warranted performance.</li>
+  </ul>
+  <h3>Features</h3>
+  <ul>
+    <li>Excellent phase noise</li>
+    <li>Ultra-fast switching</li>
+    <li>Ultra-high I/Q data rates, deep internal memory</li>
+    <li>Various digital modulation supported</li>
+  </ul>
+  <h3>Applications</h3>
+  <ul>
+    <li>Arbitrary I/Q waveform</li>
+    <li>Radar signal simulation</li>
+    <li>Receiver testing</li>
+    <li>Avionic modulation emulation</li>
+    <li>High speed antenna testing</li>
   </ul>
 </section>
 
-<section id="s3">
-  <h2><span class="num">3</span>Frequency &amp; Output Power</h2>
-  <p>The 875 covers 10 MHz to 40 GHz with 0.001 Hz resolution. Five frequency-range models let you buy only the coverage a program needs. Output power spans &minus;50 to +20 dBm, extendable down to &minus;90 dBm with a step attenuator option.</p>
+<section id="s2">
+  <h2><span class="num">2</span>Available Options</h2>
+  <p>The 875 is configured from hardware options, software licenses, and accessories. See <a href="#s20">Ordering Information</a> for the full option list and applicability per model. Key options referenced throughout these specifications:</p>
   <table class="spec">
-    <tr><th>Model</th><th>Frequency Range</th></tr>
-    <tr><td>875-4</td><td>10 MHz to 4 GHz</td></tr>
-    <tr><td>875-6</td><td>10 MHz to 6 GHz</td></tr>
-    <tr><td>875-12</td><td>10 MHz to 12 GHz</td></tr>
-    <tr><td>875-20</td><td>10 MHz to 20 GHz</td></tr>
-    <tr><td>875-40</td><td>10 MHz to 40 GHz</td></tr>
-  </table>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Frequency resolution</td><td>0.001 Hz</td></tr>
-    <tr><td>Output power</td><td>&minus;50 to +20 dBm (&minus;90 dBm optional)</td></tr>
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td>100K</td><td>Frequency range extension to 100 kHz</td></tr>
+    <tr><td>LN / LN+</td><td>Enhanced close-in phase noise &amp; frequency stability (LN+ adds further enhanced long-term frequency stability)</td></tr>
+    <tr><td>PE / PE2 / PE4</td><td>Mechanical and electronic step attenuators for extended level range (down to -90 dBm / -120 dBm / electronic)</td></tr>
+    <tr><td>FILT</td><td>Harmonic filtering (per channel), option PE4-XX required</td></tr>
+    <tr><td>UFS</td><td>Ultra-fast switching speed (software license)</td></tr>
+    <tr><td>PHS</td><td>Phase-coherent switching</td></tr>
+    <tr><td>PCM</td><td>Firmware for Phase Calibratable Mode (option PHS required)</td></tr>
+    <tr><td>SYNC</td><td>Multi-device synchronization ports</td></tr>
+    <tr><td>PDW</td><td>Pulse Descriptor Word (per channel)</td></tr>
+    <tr><td>MOD</td><td>Internal analog modulations</td></tr>
+    <tr><td>IVM</td><td>Internal digital modulation schemes (per channel)</td></tr>
+    <tr><td>AVIO</td><td>Internal avionics modulations (per channel)</td></tr>
+    <tr><td>AWGN</td><td>Additive white Gaussian noise generator (per channel)</td></tr>
+    <tr><td>FCP</td><td>Fast control port, external digital I/Q data streaming (per channel)</td></tr>
+    <tr><td>AIQ</td><td>External analog I/Q inputs (per channel)</td></tr>
+    <tr><td>GPIB</td><td>GPIB interface</td></tr>
+    <tr><td>SD</td><td>MicroSD card support for non-volatile storage of I/Q data</td></tr>
+    <tr><td>VREF</td><td>Variable external reference</td></tr>
   </table>
 </section>
 
-<section id="s4">
-  <h2><span class="num">4</span>Phase Noise &amp; Spectral Purity</h2>
-  <p>The 875 pairs vector modulation with low phase noise. At a 1 GHz carrier it reaches &minus;130 dBc/Hz at a 1 kHz offset, falling to &minus;150 dBc/Hz at 100 kHz. Option LN improves the 10 Hz close-in figure from &minus;87 to &minus;100 dBc/Hz.</p>
+<section id="s3">
+  <h2><span class="num">3</span>Frequency Parameters &amp; Range</h2>
   <table class="spec">
-    <tr><th>Offset (1 GHz)</th><th>Phase Noise</th></tr>
-    <tr><td>10 Hz</td><td>&minus;87 dBc/Hz (&minus;100 dBc/Hz with option LN)</td></tr>
-    <tr><td>1 kHz</td><td>&minus;130 dBc/Hz</td></tr>
-    <tr><td>20 kHz</td><td>&minus;145 dBc/Hz</td></tr>
-    <tr><td>100 kHz</td><td>&minus;150 dBc/Hz</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="6">Frequency Range</td><td>100 kHz</td><td></td><td></td><td>Option 100K</td></tr>
+    <tr><td>10 MHz</td><td></td><td>4 GHz</td><td>875-04</td></tr>
+    <tr><td>10 MHz</td><td></td><td>6 GHz</td><td>875-06</td></tr>
+    <tr><td>10 MHz</td><td></td><td>12 GHz</td><td>875-12</td></tr>
+    <tr><td>10 MHz</td><td></td><td>20 GHz</td><td>875-20</td></tr>
+    <tr><td>10 MHz</td><td></td><td>40 GHz</td><td>875-40</td></tr>
+    <tr><td rowspan="6">Settable Frequency Range<sup>1</sup></td><td>100 kHz</td><td></td><td></td><td>Option 100K</td></tr>
+    <tr><td>10 MHz</td><td></td><td>4.15 GHz</td><td>875-04</td></tr>
+    <tr><td>10 MHz</td><td></td><td>6.6 GHz</td><td>875-06</td></tr>
+    <tr><td>10 MHz</td><td></td><td>12 GHz</td><td>875-12</td></tr>
+    <tr><td>10 MHz</td><td></td><td>20 GHz</td><td>875-20</td></tr>
+    <tr><td>10 MHz</td><td></td><td>43.5 GHz</td><td>875-40</td></tr>
+    <tr><td>Phase Adjustment Range</td><td>0 deg</td><td></td><td>360 deg</td><td></td></tr>
+    <tr><td>Frequency Resolution</td><td></td><td>0.001 Hz</td><td></td><td></td></tr>
+    <tr><td>Phase Resolution</td><td></td><td>0.01 deg</td><td></td><td></td></tr>
+    <tr><td rowspan="3">Frequency &amp; Amplitude Switching Time</td><td></td><td>500 &micro;s</td><td></td><td>875-04, 875-20, 875-40</td></tr>
+    <tr><td></td><td>1 &micro;s</td><td></td><td>875-04 Option UFS</td></tr>
+    <tr><td></td><td>2 &micro;s</td><td></td><td>875-20, 875-40 Option UFS</td></tr>
+  </table>
+  <p><sup>1</sup> Performance above frequency range not guaranteed.</p>
+</section>
+
+<section id="s4">
+  <h2><span class="num">4</span>Frequency Reference</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="2">Internal Reference Frequency</td><td></td><td>100 MHz</td><td></td><td></td></tr>
+    <tr><td></td><td>10 MHz</td><td></td><td>Options LN / LN+</td></tr>
+    <tr><td>Initial Calibrated Accuracy</td><td></td><td>&plusmn;10 ppb</td><td></td><td>At 23 &plusmn; 3 &deg;C</td></tr>
+    <tr><td>Temperature Stability 0 to 50 &deg;C</td><td></td><td>&plusmn;100 ppb</td><td></td><td></td></tr>
+    <tr><td></td><td></td><td>&plusmn;20 ppb</td><td></td><td>Options LN / LN+</td></tr>
+    <tr><td rowspan="2">Aging after 1st Year</td><td></td><td>1 ppm</td><td></td><td></td></tr>
+    <tr><td></td><td>30 ppb</td><td></td><td>Option LN</td></tr>
+    <tr><td></td><td></td><td>20 ppb</td><td></td><td>Option LN+</td></tr>
+    <tr><td rowspan="2">Aging per Day</td><td></td><td>5 ppb</td><td></td><td>After 30 days operation</td></tr>
+    <tr><td></td><td>0.5 ppb</td><td></td><td>Options LN / LN+</td></tr>
+    <tr><td>Warm-up Time</td><td></td><td>5 min</td><td></td><td></td></tr>
+    <tr><td colspan="5"><strong>Reference Output</strong></td></tr>
+    <tr><td>Output Frequency</td><td></td><td>10 MHz, 100 MHz</td><td></td><td></td></tr>
+    <tr><td rowspan="2">Output Power</td><td></td><td>0 dBm</td><td></td><td>10 MHz</td></tr>
+    <tr><td></td><td>9 dBm</td><td></td><td>100 MHz</td></tr>
+    <tr><td>Output Impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
+    <tr><td colspan="5"><strong>External Reference Input</strong></td></tr>
+    <tr><td>Input Frequency Range</td><td>5 MHz</td><td>10 MHz</td><td>250 MHz</td><td>Option VREF</td></tr>
+    <tr><td>Frequency Resolution</td><td></td><td>1 MHz</td><td></td><td>Option VREF</td></tr>
+    <tr><td>Input Impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
+    <tr><td>Input Power Level</td><td>-5 dBm</td><td>0 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>Lock Range</td><td></td><td>&plusmn;1.5 ppm</td><td></td><td></td></tr>
   </table>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>Vector / I-Q &amp; Pulse Descriptor Word</h2>
-  <p>The 875 is built around vector modulation. An internal I/Q modulator generates custom and standards-based waveforms at ultra-high I/Q data rates from deep waveform memory, which supports arbitrary I/Q waveform playback, wideband linear chirp, and intra-pulse modulation. Standards-based digital schemes include ASK, FSK, MSK, and PSK, along with GSM/EDGE, 3GPP FDD, HSDPA, GPS, and CDMA2000. Option AIQ adds external analog I/Q inputs for driving the modulator from an external source.</p>
-  <p>For radar and electronic warfare emulation, the 875 plays back Pulse Descriptor Words. Each PDW specifies pulse width, amplitude, frequency, angle, and time of arrival, and PDWs upload over Ethernet or USB. With the Fast Control Port option, PDWs stream in real time, so the instrument can render dense, agile pulse trains on the fly. Phase-coherent operation across up to four channels supports MIMO and phased-array test.</p>
+  <h2><span class="num">5</span>Level Performance</h2>
+  <p>Output power range by model and attenuator option. Level (power) resolution is 0.01 dB. Check maximum output power plots in the Typical Performance Curves section.</p>
+  <p class="xref">See <a href="#s-perf">Figures 1&ndash;3</a> (maximum output power, 875-04 / 875-06 / 875-20/40) in Typical Performance Curves.</p>
+  <h3>Output Power Level 875</h3>
   <table class="spec">
-    <tr><th>Capability</th><th>Specification</th></tr>
-    <tr><td>Vector modulation</td><td>Internal I/Q modulator, ultra-high I/Q data rates</td></tr>
-    <tr><td>Waveform memory</td><td>Deep memory for custom and standards-based waveforms</td></tr>
-    <tr><td>Digital schemes</td><td>ASK, FSK, MSK, PSK; GSM/EDGE, 3GPP FDD, HSDPA, GPS, CDMA2000</td></tr>
-    <tr><td>PDW parameters</td><td>Pulse width, amplitude, frequency, angle, time of arrival</td></tr>
-    <tr><td>PDW upload</td><td>Ethernet or USB; real-time via Fast Control Port (option FCP)</td></tr>
-    <tr><td>External I/Q</td><td>Analog I/Q inputs with option AIQ</td></tr>
+    <tr><th>Frequency</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td>100 kHz to 10 MHz</td><td>-20 dBm</td><td>+15 dBm</td><td>Option 100K</td></tr>
+  </table>
+  <h4>875-04</h4>
+  <table class="spec">
+    <tr><th>Frequency</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="4">10 to 100 MHz</td><td>-20 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>-55 dBm</td><td>+8 dBm</td><td>Option PE4</td></tr>
+    <tr><td>-90 dBm</td><td>+10 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+10 dBm</td><td>Option PE2</td></tr>
+    <tr><td rowspan="4">0.1 to 4 GHz</td><td>-20 dBm</td><td>+18 dBm</td><td></td></tr>
+    <tr><td>-55 dBm</td><td>+17 dBm</td><td>Option PE4</td></tr>
+    <tr><td>-90 dBm</td><td>+17 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+17 dBm</td><td>Option PE2</td></tr>
+  </table>
+  <h4>875-06</h4>
+  <table class="spec">
+    <tr><th>Frequency</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="4">10 to 100 MHz</td><td>-20 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>-55 dBm</td><td>+8 dBm</td><td>Option PE4</td></tr>
+    <tr><td>-90 dBm</td><td>+10 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+10 dBm</td><td>Option PE2</td></tr>
+    <tr><td rowspan="4">0.1 to 6 GHz</td><td>-20 dBm</td><td>+15 dBm</td><td></td></tr>
+    <tr><td>-55 dBm</td><td>+15 dBm</td><td>Option PE4</td></tr>
+    <tr><td>-90 dBm</td><td>+15 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+15 dBm</td><td>Option PE2</td></tr>
+  </table>
+  <h4>875-12</h4>
+  <table class="spec">
+    <tr><th>Frequency</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="4">10 to 100 MHz</td><td>-20 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>-55 dBm</td><td>+8 dBm</td><td>Option PE4</td></tr>
+    <tr><td>-90 dBm</td><td>+10 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+10 dBm</td><td>Option PE2</td></tr>
+  </table>
+  <h4>875-20</h4>
+  <table class="spec">
+    <tr><th>Frequency</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="3">10 to 100 MHz</td><td>-20 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>-90 dBm</td><td>+10 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+10 dBm</td><td>Option PE2</td></tr>
+    <tr><td rowspan="3">0.1 to 20 GHz</td><td>-20 dBm</td><td>+17 dBm</td><td></td></tr>
+    <tr><td>-90 dBm</td><td>+16 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+16 dBm</td><td>Option PE2</td></tr>
+  </table>
+  <h4>875-40</h4>
+  <table class="spec">
+    <tr><th>Frequency</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="3">10 to 100 MHz</td><td>-20 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>-90 dBm</td><td>+10 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+10 dBm</td><td>Option PE2</td></tr>
+    <tr><td rowspan="3">0.1 to 20 GHz</td><td>-20 dBm</td><td>+17 dBm</td><td></td></tr>
+    <tr><td>-90 dBm</td><td>+16 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+16 dBm</td><td>Option PE2</td></tr>
+    <tr><td rowspan="3">20 to 26 GHz</td><td>-20 dBm</td><td>+16 dBm</td><td></td></tr>
+    <tr><td>-90 dBm</td><td>+15 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+14 dBm</td><td>Option PE2</td></tr>
+    <tr><td rowspan="3">26 to 40 GHz</td><td>-20 dBm</td><td>+15 dBm</td><td></td></tr>
+    <tr><td>-90 dBm</td><td>+13 dBm</td><td>Option PE</td></tr>
+    <tr><td>-120 dBm</td><td>+12 dBm</td><td>Option PE2</td></tr>
+    <tr><td>Power Resolution</td><td colspan="2">0.01 dB (typical)</td><td></td></tr>
   </table>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Frequency Switching &amp; Sweep</h2>
-  <p>CW switching is under 500 &micro;s, dropping below 2 &micro;s with option UFS. In vector and modulation modes the 875 switches in 200 ns, fast enough for intra-pulse agility. Complex list sweeps sequence frequency, power, and modulation states for automated test.</p>
+  <h2><span class="num">6</span>Power Uncertainty &amp; VSWR</h2>
+  <h3>Power Level Uncertainty</h3>
   <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Switching speed (CW)</td><td>&lt;500 &micro;s (&lt;2 &micro;s with option UFS)</td></tr>
-    <tr><td>Switching speed (vector/modulation)</td><td>200 ns</td></tr>
-    <tr><td>Sweeps</td><td>Complex lists</td></tr>
+    <tr><th>Frequency</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>&lt; 4 GHz</td><td>0.25 dB</td><td>0.7 dB</td><td>&gt; -20 dBm</td></tr>
+    <tr><td>4 to 6 GHz</td><td>0.3 dB</td><td>1.0 dB</td><td>&gt; -20 dBm</td></tr>
+    <tr><td>6 to 20 GHz</td><td>0.3 dB</td><td>1.3 dB</td><td>&gt; -20 dBm</td></tr>
+    <tr><td>20 to 40 GHz</td><td>0.3 dB</td><td>1.5 dB</td><td>&gt; -20 dBm</td></tr>
+    <tr><td>&lt; 4 GHz</td><td>0.3 dB</td><td>0.8 dB</td><td>P<sub>min</sub> to -20 dBm</td></tr>
+    <tr><td>4 to 6 GHz</td><td>0.35 dB</td><td>1.2 dB</td><td>P<sub>min</sub> to -20 dBm</td></tr>
+    <tr><td>6 to 20 GHz</td><td>0.4 dB</td><td>1.4 dB</td><td>P<sub>min</sub> to -20 dBm</td></tr>
+    <tr><td>20 to 40 GHz</td><td>0.5 dB</td><td>1.6 dB</td><td>P<sub>min</sub> to -20 dBm</td></tr>
   </table>
+  <p class="xref">See <a href="#s-perf">Figures 4&ndash;7</a> (power level accuracy, 875-12 / 875-20 / 875-40) in Typical Performance Curves.</p>
+  <h3>Reverse Power Protection and VSWR</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Reverse power protection &mdash; DC voltage</td><td></td><td>&plusmn;10 V</td><td></td></tr>
+    <tr><td>Reverse power protection &mdash; RF power</td><td></td><td>+26 dBm</td><td></td></tr>
+    <tr><td>Output Impedance</td><td>50 &Omega;</td><td></td><td></td></tr>
+    <tr><td>VSWR</td><td>1.8</td><td></td><td>See performance curves</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 8</a> (typical VSWR, 875-04) in Typical Performance Curves.</p>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Specifications</h2>
+  <h2><span class="num">7</span>Phase Noise</h2>
   <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Channels</td><td>1 (desktop); 2, 3, or 4 (2U rackmount)</td></tr>
-    <tr><td>Frequency range</td><td>10 MHz to 40 GHz (model dependent)</td></tr>
-    <tr><td>Frequency resolution</td><td>0.001 Hz</td></tr>
-    <tr><td>Output power</td><td>&minus;50 to +20 dBm (&minus;90 dBm optional)</td></tr>
-    <tr><td>Switching speed</td><td>&lt;500 &micro;s (&lt;2 &micro;s with option UFS); 200 ns (vector/modulation)</td></tr>
-    <tr><td>Phase noise @ 1 GHz, 10 Hz</td><td>&minus;87 dBc/Hz (&minus;100 dBc/Hz with option LN)</td></tr>
-    <tr><td>Phase noise @ 1 GHz, 1 kHz</td><td>&minus;130 dBc/Hz</td></tr>
-    <tr><td>Phase noise @ 1 GHz, 20 kHz</td><td>&minus;145 dBc/Hz</td></tr>
-    <tr><td>Phase noise @ 1 GHz, 100 kHz</td><td>&minus;150 dBc/Hz</td></tr>
-    <tr><td>Modulation</td><td>I/Q (vector); pulse; analog (AM, FM, PM); internal digital schemes; avionics (DME, VOR, ILS)</td></tr>
-    <tr><td>Sweeps</td><td>Complex lists</td></tr>
-    <tr><td>Remote control</td><td>Ethernet, USB; optional GPIB; SCPI v1999</td></tr>
-    <tr><td>Reference input</td><td>10 MHz, or variable 5 MHz to 250 MHz (option VREF)</td></tr>
-    <tr><td>Reference output</td><td>10 MHz / 100 MHz</td></tr>
-    <tr><td>Benchtop dimensions (W &times; L &times; H)</td><td>6.77&Prime; &times; 11.412&Prime; &times; 4.12&Prime; [172 &times; 290 &times; 105 mm]</td></tr>
-    <tr><td>Benchtop weight</td><td>6.0 lbs (8.0 lbs shipping)</td></tr>
-    <tr><td>Rackmount dimensions (2U)</td><td>17.5&Prime; &times; 24&Prime; &times; 3.5&Prime; [444 &times; 610 &times; 88 mm]</td></tr>
-    <tr><td>Rackmount weight</td><td>40.0 lbs (42.0 lbs shipping)</td></tr>
-    <tr><td>Power supply</td><td>Not specified (verify)</td></tr>
+    <tr><th>Carrier / Offset</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td colspan="4"><strong>SSB Phase Noise at 1 GHz, +10 dBm</strong></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-87 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-98 dBc/Hz</td><td>-84 dBc/Hz</td><td>Option LN</td></tr>
+    <tr><td>1 kHz from carrier</td><td>-130 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>20 kHz from carrier</td><td>-145 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>100 kHz from carrier</td><td>-150 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td colspan="4"><strong>SSB Phase Noise at 4 GHz, +10 dBm</strong></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-74 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-90 dBc/Hz</td><td>-74 dBc/Hz</td><td>Option LN</td></tr>
+    <tr><td>1 kHz from carrier</td><td>-121 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>20 kHz from carrier</td><td>-133 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>100 kHz from carrier</td><td>-138 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td colspan="4"><strong>SSB Phase Noise at 10 GHz, +10 dBm (875-20 &amp; 875-40)</strong></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-66 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-76 dBc/Hz</td><td>-65 dBc/Hz</td><td>Option LN</td></tr>
+    <tr><td>1 kHz from carrier</td><td>-104 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>20 kHz from carrier</td><td>-115 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>10 MHz from carrier</td><td>-118 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td colspan="4"><strong>SSB Phase Noise at 20 GHz, +10 dBm (875-20 &amp; 875-40)</strong></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-60 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>10 Hz from carrier</td><td>-70 dBc/Hz</td><td>-59 dBc/Hz</td><td>Option LN</td></tr>
+    <tr><td>1 kHz from carrier</td><td>-104 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>20 kHz from carrier</td><td>-115 dBc/Hz</td><td></td><td></td></tr>
+    <tr><td>10 MHz from carrier</td><td>-118 dBc/Hz</td><td></td><td></td></tr>
   </table>
-  <div class="note warn"><b>Verification notes.</b> The power supply input is not specified on the product page and is marked <b>(verify)</b>. Confirm power input, and any model-specific output power and phase noise figures, against the latest released 875 datasheet before quoting.</div>
+  <p class="xref">See <a href="#s-perf">Figure 10</a> (SSB phase noise, 875-20/40 CW) and <a href="#s-perf">Figures 11&ndash;12</a> (low-frequency phase noise and amplitude noise) in Typical Performance Curves.</p>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Interfaces &amp; Form Factor</h2>
-  <p>The 875 controls over Ethernet and USB, with optional GPIB, using SCPI v1999. A 10 MHz reference input is standard, with a variable 5 MHz to 250 MHz input available through option VREF, and reference output at 10 MHz or 100 MHz. The Fast Control Port streams real-time PDWs for live EW scenarios.</p>
-  <p>A single-channel unit ships in a desktop chassis measuring 6.77&Prime; &times; 11.412&Prime; &times; 4.12&Prime; at about 6.0 lbs. Two, three, and four-channel configurations ship in a 2U rackmount measuring 17.5&Prime; &times; 24&Prime; &times; 3.5&Prime; at about 40.0 lbs, with phase-coherent operation across channels.</p>
+  <h2><span class="num">8</span>Spectral Purity</h2>
+  <h3>Harmonics at 0 dBm</h3>
+  <table class="spec">
+    <tr><th>Model / Range</th><th>Typical</th><th>Max</th></tr>
+    <tr><td colspan="3"><strong>875-04</strong></td></tr>
+    <tr><td>0.01 to 2 GHz</td><td>-55 dBc</td><td>-48 dBc</td></tr>
+    <tr><td>2 to 4 GHz</td><td>-45 dBc</td><td>-40 dBc</td></tr>
+    <tr><td colspan="3"><strong>875-06</strong></td></tr>
+    <tr><td>0.01 to 4 GHz</td><td>-45 dBc</td><td>-40 dBc</td></tr>
+    <tr><td>4 to 6 GHz</td><td>-35 dBc</td><td>-30 dBc</td></tr>
+    <tr><td colspan="3"><strong>875-12</strong></td></tr>
+    <tr><td>0.01 to 4 GHz</td><td>-45 dBc</td><td>-40 dBc</td></tr>
+    <tr><td>4 to 7 GHz</td><td>-35 dBc</td><td>-30 dBc</td></tr>
+    <tr><td>7 to 12 GHz</td><td>-55 dBc</td><td>-50 dBc</td></tr>
+    <tr><td colspan="3"><strong>875-20</strong></td></tr>
+    <tr><td>0.01 to 4.5 GHz</td><td>-50 dBc</td><td>-40 dBc</td></tr>
+    <tr><td>4.5 to 10.5 GHz</td><td>-40 dBc</td><td>-30 dBc</td></tr>
+    <tr><td>&gt; 10.5 GHz</td><td>-55 dBc</td><td>-48 dBc</td></tr>
+    <tr><td colspan="3"><strong>875-40</strong></td></tr>
+    <tr><td>0.01 to 4.5 GHz</td><td>-50 dBc</td><td>-40 dBc</td></tr>
+    <tr><td>4.5 to 20 GHz</td><td>-40 dBc</td><td>-30 dBc</td></tr>
+    <tr><td>&gt; 20 GHz</td><td>-35 dBc</td><td>-30 dBc</td></tr>
+  </table>
+  <h3>Non-Harmonic Spurious</h3>
+  <p>At 0 dBm output, &gt; 10 kHz offset.</p>
+  <table class="spec">
+    <tr><th>Range</th><th>Typical</th><th>Max</th></tr>
+    <tr><td>&lt; 1.2 GHz</td><td>-90 dBc</td><td>-75 dBc</td></tr>
+    <tr><td>1.2 to 2.5 GHz</td><td>-80 dBc</td><td>-70 dBc</td></tr>
+    <tr><td>2.5 to 4 GHz</td><td>-80 dBc</td><td>-50 dBc</td></tr>
+    <tr><td>4 to 12 GHz</td><td>-70 dBc</td><td>-50 dBc</td></tr>
+    <tr><td>12 to 20 GHz</td><td>-60 dBc</td><td>-50 dBc</td></tr>
+    <tr><td>&gt; 20 GHz</td><td>-55 dBc</td><td>-50 dBc</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 13</a> (875-06 harmonic performance) and <a href="#s-perf">Figure 14</a> (875-20 harmonic performance) in Typical Performance Curves.</p>
 </section>
 
 <section id="s9">
-  <h2><span class="num">9</span>Options &amp; Configurations</h2>
-  <p>Channel configurations: one channel in a desktop chassis, or two, three, or four channels in a 2U rackmount.</p>
+  <h2><span class="num">9</span>Sweeping Capability</h2>
   <table class="spec">
-    <tr><th>Option</th><th>Description</th></tr>
-    <tr><td>-LN</td><td>Enhanced close-in phase noise</td></tr>
-    <tr><td>-LN+</td><td>Enhanced close-in phase noise and long-term stability</td></tr>
-    <tr><td>-100k</td><td>Frequency extension down to 100 kHz</td></tr>
-    <tr><td>-AWGN</td><td>Additive white Gaussian noise</td></tr>
-    <tr><td>-UFS</td><td>Ultra-fast switching</td></tr>
-    <tr><td>-FCP</td><td>Fast Control Port (real-time PDW input)</td></tr>
-    <tr><td>-PHS</td><td>Phase-coherent switching (per output)</td></tr>
-    <tr><td>-MOD</td><td>Analog modulation</td></tr>
-    <tr><td>-IVM</td><td>Internal digital modulation schemes</td></tr>
-    <tr><td>-PE / -PE2 / -PE4</td><td>Step attenuators (down to &minus;90 dBm, &minus;120 dBm; electrical)</td></tr>
-    <tr><td>-AVIO</td><td>Avionics modulation (DME, VOR, ILS)</td></tr>
-    <tr><td>-PDW</td><td>Pulse Descriptor Word</td></tr>
-    <tr><td>-SYNC</td><td>Multi-device synchronization</td></tr>
-    <tr><td>-VREF</td><td>Variable external reference input</td></tr>
-    <tr><td>-AIQ</td><td>External analog I/Q inputs</td></tr>
-    <tr><td>-SD</td><td>MicroSD card slot</td></tr>
-    <tr><td>-RM</td><td>19&Prime; 2U rackmount chassis</td></tr>
-    <tr><td>-GPIB</td><td>GPIB interface</td></tr>
-    <tr><td>-EB</td><td>External battery bank [P/N 7146]</td></tr>
-    <tr><td>P/N 7091</td><td>19&Prime; 3U single/dual rackmount kit</td></tr>
-    <tr><td>P/N 7143</td><td>Spare power supply</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Sweep Type</td><td colspan="3">Digital sweep in discrete steps</td><td></td></tr>
+    <tr><td>Automatic Level Control (ALC) Mode</td><td colspan="3">OFF</td><td></td></tr>
+    <tr><td rowspan="2">Power Level Uncertainty</td><td></td><td>0.5 dB</td><td>1 dB</td><td>875-04</td></tr>
+    <tr><td></td><td>TBD</td><td>TBD</td><td>875-06/12/20/40</td></tr>
+    <tr><td rowspan="3">Frequency &amp; Amplitude Switching Transient Time<br><span style="font-weight:400;color:var(--muted)">(can be blanked during "Delay Time")</span></td><td></td><td>1 &micro;s</td><td></td><td></td></tr>
+    <tr><td></td><td>500 &micro;s</td><td></td><td>875-04 Option UFS</td></tr>
+    <tr><td></td><td>2 &micro;s</td><td></td><td>875-20, 875-40 Option UFS</td></tr>
+    <tr><td>Sweep Spacing</td><td colspan="3">Linear</td><td></td></tr>
+    <tr><td>Sweep Shape</td><td colspan="3">Sawtooth</td><td></td></tr>
+    <tr><td>Sweep Parameters</td><td colspan="3">Frequency, Power</td><td></td></tr>
+    <tr><td rowspan="2">Sweep Range</td><td colspan="3">Full specified range</td><td>Frequency sweep</td></tr>
+    <tr><td colspan="3">-20 to +15 dBm</td><td>Power sweep, 875-04</td></tr>
+    <tr><td rowspan="2">Step Size Setting Resolution</td><td colspan="3">0.001 Hz</td><td>Frequency sweep</td></tr>
+    <tr><td colspan="3">0.01 dB</td><td>Power sweep</td></tr>
+    <tr><td rowspan="3">Dwell Time Setting Range</td><td>500 &micro;s</td><td></td><td>34.35 s</td><td></td></tr>
+    <tr><td>800 ns</td><td></td><td>34.35 s</td><td>875-04 Option UFS</td></tr>
+    <tr><td>TBD</td><td></td><td>34.35 s</td><td>875-20, 875-40 Option UFS</td></tr>
+    <tr><td rowspan="2">Delay (off) Time Setting Range</td><td>200 ns</td><td></td><td>34.35 s</td><td>875-04</td></tr>
+    <tr><td>200 ns</td><td></td><td>34.35 s</td><td>875-20, 875-40</td></tr>
+    <tr><td>Dwell/Delay Time Resolution</td><td>8 ns</td><td></td><td></td><td></td></tr>
+    <tr><td>Sweep Count</td><td colspan="3">Infinite, 1 to 1 M</td><td></td></tr>
+    <tr><td>Trigger Type</td><td colspan="3">Normal (full sweep), Point (one step)</td><td>Check with BNC support</td></tr>
+    <tr><td>Trigger Parameters</td><td colspan="3">See Trigger Capability</td><td></td></tr>
+    <tr><td>Retrigger Setup Time</td><td>200 ns</td><td></td><td></td><td></td></tr>
+    <tr><td rowspan="2">External Trigger Event to RF Output Delay</td><td></td><td>TBD</td><td></td><td>875-04, Option UFS</td></tr>
+    <tr><td></td><td>TBD</td><td></td><td>875-20, 875-40, Option UFS</td></tr>
   </table>
 </section>
 
 <section id="s10">
-  <h2><span class="num">10</span>Applications</h2>
-  <ul>
-    <li>Arbitrary I/Q waveform generation</li>
-    <li>Radar signal simulation (PDW / EW)</li>
-    <li>Receiver testing</li>
-    <li>Avionics modulation emulation</li>
-    <li>Pulse Descriptor Word agility</li>
-    <li>Mobile radio chip (multi-standard) testing</li>
-    <li>IEEE 802.11 a/b/g test and R&amp;D</li>
-    <li>MIMO (multiple input, multiple output)</li>
-  </ul>
+  <h2><span class="num">10</span>Phase Coherence</h2>
+  <h3>Phase-Coherent Modes</h3>
+  <table class="spec">
+    <tr><th>Mode</th><th>Description</th><th>Remarks</th></tr>
+    <tr><td>Phase coherent switching<sup>2</sup> (Multi-channel mode)</td><td>Phase coherent switching guarantees deterministic and reproducible phase relationships between multiple individual channels across multiple individual units.</td><td>Option PHS</td></tr>
+    <tr><td>Phase coherent switching<sup>2</sup> (Multi-device mode)</td><td>Also enables synchronous playback of I/Q waveforms on multiple channels and multiple devices.</td><td>Options SYNC + PHS</td></tr>
+    <tr><td>Phase Memory</td><td>With phase memory the RF output phase behaves as if switching between individual, continuously running RF sources.</td><td>Option PHS</td></tr>
+    <tr><td>Phase calibratable mode</td><td>Combinations of phase correction and calibratable mode are available. Phase correction off / calibratable off (default): channel-to-channel relative phases are stable and repeatable, but not zero and vary over power and frequency. Phase correction off / calibratable on: linear relative phase variation over frequency and static phase over power. Phase correction on / calibratable on: correction values interpolated between points, enabling true zero phase offset between channels over any frequency/power range (up to a device's full power and frequency range).</td><td>Option PCM</td></tr>
+  </table>
+  <p><sup>2</sup> Limitations: as the synthesized signal undergoes further routing and amplitude control (filtering and amplitude control), it is subject to electrical delays before reaching the RF output. Those delays vary with RF amplitude and frequency but are otherwise stable. The relative phase between channels will not be zero, but is deterministic and reproducible: for any fixed combination of frequency and amplitude settings, the resulting relative phase between channels will always be the same, even over power cycles.</p>
+  <p class="xref">See <a href="#s-perf">Figure 15</a> (phase-coherent switching) and <a href="#s-perf">Figure 16</a> (phase memory) in Typical Performance Curves.</p>
+  <h3>Multi-Channel Performance</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Typical</th><th>Note</th></tr>
+    <tr><td>Isolation between channels</td><td>&gt; 90 dB</td><td></td></tr>
+    <tr><td>Relative Phase Stability</td><td>TBD</td><td></td></tr>
+    <tr><td>Trigger Source</td><td>Synchronous (initiate and trigger multiple channels)</td><td></td></tr>
+    <tr><td>Additional Delay to Asynchronous Characterizations</td><td>1 &micro;s &plusmn;100 ns</td><td></td></tr>
+    <tr><td>Channel to Channel Jitter</td><td>&plusmn;10 ps typ.</td><td></td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figures 17&ndash;18</a> (phase coherence performance at 38 GHz and 15 GHz) and <a href="#s-perf">Figure 19</a> (channel-to-channel phase error vs other device) in Typical Performance Curves.</p>
+  <h3>Multi-Device Performance (Option SYNC)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Typical</th></tr>
+    <tr><td>Multi-Device Synchronization</td><td>TBD</td></tr>
+    <tr><td>Relative Phase Stability</td><td>TBD</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 20</a> (connections for multi-device synchronization) in Typical Performance Curves. The reference clock uses SMA connectors (cable and connectors must support at least 6 GHz). The synchronization signals A, B, C use SMB connectors (at least 3 GHz).</p>
 </section>
 
 <section id="s11">
-  <h2><span class="num">11</span>Ordering</h2>
-  <p>Select a frequency-range model (875-4 through 875-40) and channel count (one desktop channel, or two to four in a 2U rackmount). Add PDW and FCP for real-time pulse descriptor playback, AIQ for external I/Q drive, LN or LN+ for phase noise, UFS for fast switching, and AVIO for avionics modulation. For configuration help, pricing, or a quotation, contact Berkeley Nucleonics at <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> or 800-234-7858.</p>
+  <h2><span class="num">11</span>Analog Modulation (Option MOD)</h2>
+  <h3>Pulse Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Modulation Source</td><td colspan="3">Internal pulse generator, external</td><td></td></tr>
+    <tr><td>Modulator</td><td colspan="3">RF, BB (baseband)</td><td></td></tr>
+    <tr><td>Pulse Rise/Fall Time</td><td></td><td>5 ns</td><td></td><td>10% / 90% of amplitude</td></tr>
+    <tr><td rowspan="3">On/Off Ratio</td><td>90 dB</td><td>95 dB</td><td></td><td>BB pulse modulator</td></tr>
+    <tr><td>40 dB</td><td>45 dB</td><td></td><td>&lt; 4 GHz RF pulse modulator</td></tr>
+    <tr><td>TBD dB</td><td>TBD dB</td><td></td><td>&gt; 4 GHz RF pulse modulator</td></tr>
+    <tr><td>Pulse Overshoot</td><td></td><td></td><td>1 dB</td><td></td></tr>
+    <tr><td rowspan="2">Video Feedthrough</td><td></td><td>-70 dB</td><td></td><td>1 GHz; 0 dBm, PRF 500 kHz, 50% duty cycle, BB pulse modulator</td></tr>
+    <tr><td></td><td>-50 dB</td><td></td><td>20 GHz</td></tr>
+    <tr><td>Polarity / Video Polarity</td><td colspan="3">Normal, inverted</td><td>Independently selectable</td></tr>
+    <tr><td>External Pulse Input to Video Output Delay</td><td>20 ns</td><td></td><td></td><td></td></tr>
+    <tr><td rowspan="2">Video Output to RF Output Delay</td><td>5 ns</td><td></td><td></td><td>RF modulator</td></tr>
+    <tr><td>400 ns</td><td></td><td></td><td>BB modulator</td></tr>
+    <tr><td>External Trigger to Video Output Delay</td><td>TBD</td><td></td><td></td><td></td></tr>
+    <tr><td rowspan="3">Pulse Jitter</td><td></td><td></td><td>&lt; 1 ps</td><td>Internal</td></tr>
+    <tr><td></td><td>&lt; 10 ps</td><td></td><td>External, RF pulse modulator</td></tr>
+    <tr><td></td><td>&plusmn;8 ns</td><td></td><td>External, BB pulse modulator</td></tr>
+    <tr><td colspan="5"><strong>Internal Pulse Generator</strong></td></tr>
+    <tr><td>Pulse Mode</td><td colspan="3">Single pulse</td><td></td></tr>
+    <tr><td>Pulse Period Setting Range</td><td>2 &times; min pulse width setting</td><td></td><td>10 s</td><td></td></tr>
+    <tr><td>Pulse Period Setting Resolution</td><td>8 ns</td><td></td><td></td><td></td></tr>
+    <tr><td rowspan="2">Pulse Width Setting Range</td><td>96 ns</td><td></td><td></td><td></td></tr>
+    <tr><td>8 ns</td><td></td><td>10 s</td><td>Option UFS</td></tr>
+    <tr><td>Pulse Width Setting Resolution</td><td>8 ns</td><td></td><td></td><td></td></tr>
+    <tr><td>Pulse Width Accuracy</td><td colspan="3">Same as time base</td><td></td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figures 21&ndash;24</a> (pulsed chirp and pulse modulation) in Typical Performance Curves.</p>
+  <h3>Amplitude Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="2">Modulation Source</td><td></td><td>Internal</td><td></td><td></td></tr>
+    <tr><td></td><td>External</td><td></td><td>Option AIQ</td></tr>
+    <tr><td>Modulation Depth</td><td>0%</td><td></td><td>99.9%</td><td>Output is clipped at max power level</td></tr>
+    <tr><td>Deviation Accuracy</td><td></td><td>0.1%</td><td>1%</td><td>1 kHz rate, 80% depth</td></tr>
+    <tr><td>Deviation Resolution</td><td></td><td>0.1%</td><td></td><td></td></tr>
+    <tr><td>Distortion (THD)</td><td></td><td></td><td>1%</td><td></td></tr>
+    <tr><td>Modulation Frequency Range</td><td>0.1 Hz</td><td></td><td>100 MHz</td><td></td></tr>
+    <tr><td>Modulation Waveforms</td><td colspan="3">Sine</td><td></td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 25</a> (amplitude modulation, 1 kHz rate, 80% depth) in Typical Performance Curves.</p>
+  <h3>Frequency Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="2">Modulation Source</td><td></td><td>Internal</td><td></td><td></td></tr>
+    <tr><td></td><td>External</td><td></td><td>Option AIQ</td></tr>
+    <tr><td>Maximum Frequency Deviation (peak)</td><td></td><td>200 MHz</td><td></td><td>Output is clipped at max power level</td></tr>
+    <tr><td>Deviation Accuracy</td><td></td><td>0.5%</td><td>1%</td><td></td></tr>
+    <tr><td>Distortion (THD)</td><td></td><td>&lt; 1%</td><td></td><td></td></tr>
+    <tr><td>Modulation Frequency Range</td><td>0.1 Hz</td><td></td><td>100 MHz</td><td></td></tr>
+    <tr><td>Modulation Waveforms</td><td colspan="3">Sine</td><td></td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 26</a> (wideband FM, 1 MHz rate, 200 MHz deviation) in Typical Performance Curves.</p>
+  <h3>Phase Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="2">Modulation Source</td><td></td><td>Internal</td><td></td><td></td></tr>
+    <tr><td></td><td>External</td><td></td><td>Option AIQ</td></tr>
+    <tr><td>Phase Deviation (peak)</td><td>0</td><td></td><td>100 rad</td><td></td></tr>
+    <tr><td>Deviation Accuracy</td><td></td><td>0.5%</td><td>1%</td><td></td></tr>
+    <tr><td>Modulation Frequency Range</td><td>0.1 Hz</td><td></td><td>100 MHz</td><td></td></tr>
+    <tr><td>Modulation Waveforms</td><td colspan="3">Sine</td><td></td></tr>
+    <tr><td>Distortion (THD)</td><td></td><td>&lt; 1%</td><td></td><td>1 kHz rate &amp; N &times; rad deviation</td></tr>
+  </table>
 </section>
+
+<section id="s12">
+  <h2><span class="num">12</span>Pulse Descriptor Word (Option PDW)</h2>
+  <p>The PDW is an operating mode of the 875 which takes control of the RF output. Other 875 features cannot be used simultaneously unless their settings are available as PDW parameters. The PDW feature supports several methods for uploading parameters to the device, including PDW list files in .csv format and streaming through FCP.</p>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Typical</th><th>Note</th></tr>
+    <tr><td colspan="3"><strong>PDW Format</strong> &mdash; see App Note AN6008 for PDW details</td></tr>
+    <tr><td rowspan="2">PDW Mode</td><td>List</td><td></td></tr>
+    <tr><td>Stream</td><td>Option FCP</td></tr>
+    <tr><td>PDW Time Mode</td><td>Relative, absolute</td><td></td></tr>
+    <tr><td>Controllable Parameters</td><td>Start time, pulse width, frequency, power, phase, waveform segment ID</td><td></td></tr>
+    <tr><td rowspan="4">Parameter Range</td><td>Full specified range</td><td>RF Frequency / RF Phase</td></tr>
+    <tr><td>-20 to +15 dBm</td><td>RF Power</td></tr>
+    <tr><td>8 ns to 208 d</td><td>Start Time</td></tr>
+    <tr><td>8 ns to 208 d</td><td>Pulse Width</td></tr>
+    <tr><td rowspan="4">Parameter Setting Resolution</td><td>1/2<sup>9</sup> Hz</td><td>RF Frequency</td></tr>
+    <tr><td>1/2<sup>7</sup> dB</td><td>RF Power</td></tr>
+    <tr><td>0.0055 deg</td><td>RF Phase</td></tr>
+    <tr><td>8 ns</td><td>Start Time / Pulse Width</td></tr>
+    <tr><td>Automatic Level Control (ALC) Mode</td><td>OFF</td><td></td></tr>
+    <tr><td rowspan="2">Power Level Uncertainty</td><td>0.5 dB (max 1 dB)</td><td>875-04</td></tr>
+    <tr><td>TBD</td><td>875-20, 875-40</td></tr>
+    <tr><td colspan="3"><strong>PDW Timing</strong> &mdash; see AN6008 for timing details</td></tr>
+    <tr><td rowspan="3">Switching Time (transient)</td><td>500 &micro;s</td><td>875-06/12/20/40 Option UFS</td></tr>
+    <tr><td>TBD (= 20 &micro;s)</td><td>875-04 Option UFS &amp; Option PHS</td></tr>
+    <tr><td>2 &micro;s / 3.2 &micro;s</td><td>875-04 Option UFS</td></tr>
+    <tr><td rowspan="2">Pulse Width</td><td>32 ns (min)</td><td></td></tr>
+    <tr><td>8 ns (min)</td><td>Option UFS</td></tr>
+    <tr><td>Play Time</td><td>up to 208 d</td><td>Absolute Time Mode</td></tr>
+    <tr><td>Simulation Trigger Setup Time</td><td>32 ns</td><td></td></tr>
+    <tr><td>Trigger Parameters</td><td>See Trigger Capability</td><td></td></tr>
+    <tr><td>PDW Buffer Size</td><td>1 to 1024 PDW</td><td>For both PDW modes</td></tr>
+    <tr><td>PDW List Count</td><td>Infinite, 1 to 65 M</td><td></td></tr>
+  </table>
+  <h3>Mode Overview</h3>
+  <table class="spec">
+    <tr><th>PDW Mode</th><th>Input Interface</th><th>PDW Upload</th><th>Device Storage</th><th>Simulation</th></tr>
+    <tr><td>List</td><td>875 GUI / SCPI commands</td><td>Before simulation starts</td><td>PDW Memory</td><td>All PDWs in list, optionally repeat list</td></tr>
+    <tr><td>Stream</td><td>FCP / SCPI commands</td><td>Before and during simulation</td><td>PDW Buffer (FIFO)</td><td>PDWs in order of upload, repeating</td></tr>
+  </table>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>I/Q Modulator &amp; Baseband Generator</h2>
+  <h3>I/Q Modulator</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>RF Modulation Bandwidth</td><td></td><td>400 MHz</td><td></td><td></td></tr>
+    <tr><td rowspan="3">I/Q Frequency Response over full 400 MHz</td><td></td><td>&plusmn;1.0 dB</td><td>&plusmn;1.5 dB</td><td>&lt; 6 GHz</td></tr>
+    <tr><td></td><td>&plusmn;1.5 dB</td><td>&plusmn;2.5 dB</td><td>6 to 20 GHz</td></tr>
+    <tr><td></td><td>&plusmn;2.0 dB</td><td>&plusmn;3.5 dB</td><td>20 to 40 GHz</td></tr>
+    <tr><td>Carrier Leakage</td><td></td><td>-90 dBc</td><td>-70 dBc</td><td></td></tr>
+    <tr><td>Image Sideband Rejection</td><td>65 dBc</td><td>85 dBc</td><td></td><td></td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figures 27&ndash;28</a> (I/Q relative response, 875-04 and 875-20) and <a href="#s-perf">Figure 29</a> (carrier suppression) in Typical Performance Curves.</p>
+  <h3>Internal I/Q Baseband Generator</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Sample Resolution</td><td></td><td>16 bits</td><td></td><td></td></tr>
+    <tr><td>Clock Source</td><td></td><td>Internal</td><td></td><td></td></tr>
+    <tr><td>Sample Rate</td><td>10 Hz</td><td></td><td>500 MHz</td><td></td></tr>
+    <tr><td>Sample Rate Resolution</td><td></td><td>1 Hz</td><td></td><td></td></tr>
+    <tr><td rowspan="2">Waveform Length (number of samples)</td><td>96*</td><td></td><td>512 M</td><td></td></tr>
+    <tr><td>246*</td><td></td><td>334 M</td><td>Marker signals active</td></tr>
+    <tr><td colspan="5"><strong>Segment Mode</strong></td></tr>
+    <tr><td>Number of Segments</td><td>1</td><td></td><td>65 k</td><td></td></tr>
+    <tr><td>Segment Changeover</td><td colspan="3">Seamless, immediate</td><td></td></tr>
+    <tr><td>Trigger Modes</td><td colspan="3">Same segment, next segment, addressed segment</td><td></td></tr>
+    <tr><td>Sequencer Play List Length</td><td>1</td><td></td><td>2048</td><td></td></tr>
+    <tr><td>Sequence Segment Repetitions</td><td>1</td><td></td><td>10 M</td><td></td></tr>
+    <tr><td>Changeover Time</td><td></td><td>2 &micro;s</td><td></td><td>500 MHz sample rate, after trigger event, immediate changeover</td></tr>
+    <tr><td colspan="5"><strong>Arbitrary Trigger</strong></td></tr>
+    <tr><td>Trigger Type</td><td colspan="3">Normal, next segment, next sequence</td><td>Check with BNC support</td></tr>
+    <tr><td>Trigger Parameters</td><td colspan="3">See Trigger Capability</td><td></td></tr>
+    <tr><td>External Trigger Event to RF Output Delay</td><td></td><td>0.5 &micro;s &plusmn;100 ns</td><td></td><td>500 MHz sample rate</td></tr>
+    <tr><td colspan="5"><strong>Marker Signals</strong> (defined during waveform generation)</td></tr>
+    <tr><td>Number of Markers</td><td></td><td>4</td><td></td><td></td></tr>
+    <tr><td>Type</td><td></td><td>Waveform</td><td></td><td></td></tr>
+    <tr><td>Marker Delay Setting Range / Resolution</td><td></td><td>TBD</td><td></td><td></td></tr>
+    <tr><td rowspan="2">Marker Duration Minimum Value</td><td></td><td>1 sample</td><td></td><td>Sample rate &le; 125 MHz</td></tr>
+    <tr><td></td><td>4 samples</td><td></td><td>Sample rate &ge; 125 MHz</td></tr>
+    <tr><td rowspan="2">Marker Duration Variation</td><td></td><td></td><td>&plusmn;1 sample</td><td>Sample rate &le; 125 MHz</td></tr>
+    <tr><td></td><td></td><td>&plusmn;8 ns</td><td>Sample rate &ge; 125 MHz</td></tr>
+    <tr><td rowspan="2">Marker Jitter</td><td></td><td></td><td>&plusmn;1 sample</td><td>Sample rate &le; 125 MHz</td></tr>
+    <tr><td></td><td></td><td>&plusmn;8 ns</td><td>Sample rate &ge; 125 MHz</td></tr>
+    <tr><td>Marker Polarity</td><td colspan="3">Normal, inverted</td><td></td></tr>
+    <tr><td>Marker Output to RF Output Delay</td><td></td><td>TBD</td><td></td><td></td></tr>
+  </table>
+  <p>* Shorter waveforms will be automatically extended by cyclically repeating the waveform.</p>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>Vector &amp; Multicarrier Generation</h2>
+  <h3>Internal Vector Modulation (Option IVM)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Modulation Schemes</td><td colspan="2">8QAM, 16QAM, 32QAM, 64QAM, 128QAM, 256QAM, 512QAM, 1024QAM, 2048QAM, 4096QAM</td><td></td></tr>
+    <tr><td>Symbol Rate</td><td>10 S/s</td><td>200 MS/s</td><td></td></tr>
+    <tr><td>Filter Type</td><td colspan="2">Cosine, root cosine, gaussian, rectangular, dirac, rectangular asymmetric</td><td></td></tr>
+    <tr><td rowspan="2">Filter Parameter Range</td><td>0.05</td><td>1</td><td>Cosine, root cosine (parameter &alpha;)</td></tr>
+    <tr><td>0.05</td><td>2.5</td><td>Gaussian (parameter B &times; T)</td></tr>
+    <tr><td>Data Source</td><td colspan="2">PRBS generator, user data list, external real-time data</td><td></td></tr>
+    <tr><td>Data Lists</td><td>8 bits</td><td>256 Mbits</td><td>Option, check with BNC support</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figures 30&ndash;31</a> (256QAM and 16QAM constellations) and <a href="#s-perf">Figures 32&ndash;34</a> (EVM vs output power, symbol rate, and RF frequency) in Typical Performance Curves.</p>
+  <h3>Multicarrier Generation (Option IVM)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Number of Carriers</td><td>1</td><td>1 k</td><td></td></tr>
+    <tr><td>Frequency Offset</td><td>-200 MHz</td><td>200 MHz</td><td></td></tr>
+    <tr><td>Power Offset</td><td>-60 dB</td><td>0 dB</td><td>0.1 dB resolution</td></tr>
+    <tr><td>Tone Initial Phase Offset</td><td>0 deg</td><td>360 deg</td><td>0.1 deg resolution</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figures 35&ndash;36</a> (64-tone 400 MHz bandwidth signal and two-tone sideband rejection) in Typical Performance Curves.</p>
+</section>
+
+<section id="s15">
+  <h2><span class="num">15</span>Avionics Modulation (Option AVIO)</h2>
+  <h3>DME Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Operating Modes</td><td colspan="3">Interrogation &amp; reply</td><td></td></tr>
+    <tr><td>DME Channel</td><td colspan="3">X, Y</td><td></td></tr>
+    <tr><td>Frequency Range</td><td>960 MHz</td><td></td><td>1215 MHz</td><td></td></tr>
+    <tr><td>Pulse Pattern Repetition Rate</td><td>10 Hz</td><td></td><td>5000 Hz</td><td></td></tr>
+    <tr><td>Pulse Pattern Repetition Resolution</td><td></td><td>0.1 Hz</td><td></td><td></td></tr>
+    <tr><td>Pulse Pattern Repetition Accuracy</td><td></td><td></td><td>&plusmn;0.1 Hz</td><td></td></tr>
+    <tr><td>Pulse-to-Pulse Level Range</td><td>-80 dB</td><td></td><td>+80 dB</td><td></td></tr>
+    <tr><td>Pulse-to-Pulse Level Accuracy</td><td></td><td></td><td>&plusmn;0.2 dB</td><td></td></tr>
+    <tr><td>Pulse On/Off Ratio</td><td>80 dB</td><td>100 dB</td><td></td><td></td></tr>
+    <tr><td colspan="5"><strong>Main Pulse Pair</strong> (up to 4 additional pulses/pairs)</td></tr>
+    <tr><td>Main Pulse Width</td><td>100 ns</td><td></td><td>100 &micro;s</td><td></td></tr>
+    <tr><td>Main Pulse Resolution</td><td></td><td>0.1 ns</td><td></td><td></td></tr>
+    <tr><td>Main Pulse Accuracy</td><td></td><td></td><td>&plusmn;1 ns</td><td></td></tr>
+    <tr><td>Main Pulse Rise/Fall Time</td><td>100 ns</td><td></td><td>100 &micro;s</td><td></td></tr>
+    <tr><td>Main Pulse Rise/Fall Time Resolution</td><td></td><td>0.1 ns</td><td></td><td></td></tr>
+    <tr><td>Main Pulse Rise/Fall Time Accuracy</td><td></td><td></td><td>&plusmn;17 ns</td><td></td></tr>
+    <tr><td>Main Pulse Pair Spacing</td><td>100 ns</td><td></td><td>100 &micro;s</td><td></td></tr>
+    <tr><td>Main Pulse Spacing Resolution</td><td></td><td>0.1 ns</td><td></td><td></td></tr>
+    <tr><td>Main Pulse Spacing Accuracy</td><td></td><td></td><td>&plusmn;17 ns</td><td></td></tr>
+    <tr><td colspan="5"><strong>Echo Pulse Pairs</strong></td></tr>
+    <tr><td>Echo Delay</td><td>2000 ns</td><td></td><td>8000 ns</td><td></td></tr>
+    <tr><td>Echo Delay Resolution</td><td></td><td>0.1 ns</td><td></td><td></td></tr>
+    <tr><td>Echo Delay Accuracy</td><td></td><td></td><td>&plusmn;17 ns</td><td></td></tr>
+    <tr><td>Echo Attenuation Range</td><td>-3 dB</td><td></td><td>+12 dB</td><td></td></tr>
+    <tr><td>Echo Attenuation Resolution</td><td></td><td>0.001 dB</td><td></td><td></td></tr>
+    <tr><td>Echo Attenuation Accuracy</td><td></td><td></td><td>&plusmn;0.1 dB</td><td></td></tr>
+    <tr><td colspan="5"><strong>Interference</strong></td></tr>
+    <tr><td>Interference Delay</td><td>1000 ns</td><td></td><td>8000 ns</td><td></td></tr>
+    <tr><td>Interference Delay Resolution</td><td></td><td>0.1 ns</td><td></td><td></td></tr>
+    <tr><td>Interference Delay Accuracy</td><td></td><td></td><td>&plusmn;17 ns</td><td></td></tr>
+    <tr><td>Interference Attenuation Range</td><td>0 dB</td><td></td><td>+30 dB</td><td></td></tr>
+    <tr><td>Interference Attenuation Resolution</td><td></td><td>0.001 dB</td><td></td><td></td></tr>
+    <tr><td>Interference Attenuation Accuracy</td><td></td><td></td><td>&plusmn;0.2 dB</td><td></td></tr>
+    <tr><td colspan="5"><strong>Receiver Dead Time Test Pulse Pair</strong></td></tr>
+    <tr><td>Delay</td><td>10 &micro;s</td><td></td><td>100 &micro;s</td><td></td></tr>
+    <tr><td>Resolution</td><td></td><td>0.1 ns</td><td></td><td></td></tr>
+    <tr><td>Accuracy</td><td></td><td></td><td>&plusmn;17 ns</td><td></td></tr>
+    <tr><td>Identification Code Transmission</td><td colspan="3">Repetition period, Morse dot length</td><td>3-character code</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 37</a> (DME spectrum, X channel, raised cosine filter) in Typical Performance Curves.</p>
+  <h3>VOR Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Frequency Range</td><td>108 MHz</td><td></td><td>118 MHz</td><td>Carrier frequency range</td></tr>
+    <tr><td>VOR State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>Bearing Direction</td><td colspan="3">From/To</td><td></td></tr>
+    <tr><td>Bearing Accuracy</td><td></td><td>&plusmn;0.75&deg;</td><td></td><td></td></tr>
+    <tr><td colspan="5"><strong>AM0 Component</strong> (nominal 30 Hz navigation variable signal)</td></tr>
+    <tr><td>State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM Depth Range</td><td>0</td><td></td><td>50%</td><td></td></tr>
+    <tr><td>AM Range Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td>AM Distortion (THD)</td><td></td><td></td><td>2%</td><td></td></tr>
+    <tr><td colspan="5"><strong>AM1 Component</strong> (9,960 Hz navigation reference subcarrier)</td></tr>
+    <tr><td>State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM Depth Range</td><td>0</td><td></td><td>50%</td><td></td></tr>
+    <tr><td>AM Range Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td>AM Frequency</td><td>5000 Hz</td><td></td><td>15000 Hz</td><td></td></tr>
+    <tr><td>AM Frequency Resolution</td><td></td><td>0.1</td><td></td><td></td></tr>
+    <tr><td>AM Frequency Accuracy</td><td></td><td></td><td>&plusmn;1 mHz</td><td></td></tr>
+    <tr><td>AM Distortion (THD)</td><td></td><td></td><td>2%</td><td></td></tr>
+    <tr><td colspan="5"><strong>FM Component</strong> (nominal 30 Hz navigation reference signal)</td></tr>
+    <tr><td>FM Index</td><td>0</td><td></td><td>33.3</td><td></td></tr>
+    <tr><td>FM Index Resolution</td><td></td><td>0.01</td><td></td><td></td></tr>
+    <tr><td>FM Index Accuracy</td><td></td><td></td><td>&plusmn;0.033</td><td></td></tr>
+    <tr><td>FM Deviation Accuracy 480 Hz</td><td></td><td></td><td>1 Hz</td><td></td></tr>
+    <tr><td colspan="5"><strong>Identification Code Component</strong> (4-character code)</td></tr>
+    <tr><td>State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM Frequency</td><td>300 Hz</td><td></td><td>1740 Hz</td><td></td></tr>
+    <tr><td>AM Frequency Resolution</td><td></td><td>0.1 Hz</td><td></td><td></td></tr>
+    <tr><td>AM Frequency Accuracy</td><td></td><td></td><td>&plusmn;1 mHz</td><td></td></tr>
+    <tr><td>AM Depth</td><td>0</td><td></td><td>50%</td><td></td></tr>
+    <tr><td>AM Depth Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Depth Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+  </table>
+  <h3>ILS Modulation</h3>
+  <p>Generation of ILS Localizer (ILS-LOC) and ILS Glideslope (ILS-GS) signals.</p>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td colspan="5"><strong>ILS LOC</strong></td></tr>
+    <tr><td>Frequency Range</td><td>108 MHz</td><td></td><td>118 MHz</td><td>Carrier frequency range</td></tr>
+    <tr><td>DDM Range</td><td>-193.5 &micro;A</td><td></td><td>+193.5 &micro;A</td><td></td></tr>
+    <tr><td>DDM Resolution</td><td></td><td>0.1 &micro;A</td><td></td><td></td></tr>
+    <tr><td>DDM Accuracy</td><td></td><td></td><td>&plusmn;4.8 &micro;A</td><td></td></tr>
+    <tr><td>SDM Range</td><td>20%</td><td></td><td>60%</td><td></td></tr>
+    <tr><td>SDM Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>SDM Accuracy</td><td></td><td></td><td>&plusmn;1%</td><td></td></tr>
+    <tr><td colspan="5"><strong>AM0 Component</strong> (nominal 90 Hz beam)</td></tr>
+    <tr><td>Beam State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM0 Depth (change DDM/SDM)</td><td>10%</td><td></td><td>30%</td><td></td></tr>
+    <tr><td>AM0 Depth Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM0 Depth Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td>Frequency</td><td>88 Hz</td><td></td><td>92 Hz</td><td></td></tr>
+    <tr><td>Frequency Resolution</td><td></td><td>0.0005 Hz</td><td></td><td></td></tr>
+    <tr><td>Frequency Accuracy</td><td></td><td></td><td>&plusmn;500 &micro;Hz</td><td></td></tr>
+    <tr><td colspan="5"><strong>AM1 Component</strong> (nominal 150 Hz beam)</td></tr>
+    <tr><td>Beam State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM1 Depth (change DDM/SDM)</td><td>10%</td><td></td><td>30%</td><td></td></tr>
+    <tr><td>AM1 Depth Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Depth Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td>Frequency</td><td>147 Hz</td><td></td><td>154 Hz</td><td></td></tr>
+    <tr><td>Frequency Resolution</td><td></td><td>0.0005 Hz</td><td></td><td></td></tr>
+    <tr><td>Frequency Accuracy</td><td></td><td></td><td>&plusmn;500 &micro;Hz</td><td></td></tr>
+    <tr><td>Range of Relative Phase to AM0 Component</td><td>0</td><td></td><td>360&deg;</td><td></td></tr>
+    <tr><td>Resolution of Relative Phase to AM0 Component</td><td></td><td>0.001</td><td></td><td></td></tr>
+    <tr><td>Accuracy of Relative Phase to AM0 Component</td><td></td><td></td><td>&plusmn;1&deg;</td><td></td></tr>
+    <tr><td colspan="5"><strong>Identification Code Component</strong> (4-character code)</td></tr>
+    <tr><td>Identification State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM Frequency</td><td>300 Hz</td><td></td><td>1740 Hz</td><td></td></tr>
+    <tr><td>AM Frequency Resolution</td><td></td><td>0.0005 Hz</td><td></td><td></td></tr>
+    <tr><td>AM Frequency Accuracy</td><td></td><td></td><td>&plusmn;500 &micro;Hz</td><td></td></tr>
+    <tr><td>AM Depth</td><td>0</td><td></td><td>50%</td><td></td></tr>
+    <tr><td>AM Depth Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Depth Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td colspan="5"><strong>ILS GS</strong></td></tr>
+    <tr><td>Frequency Range</td><td>329 MHz</td><td></td><td>335 MHz</td><td>Carrier frequency range</td></tr>
+    <tr><td>DDM Range</td><td>-342.8 &micro;A</td><td></td><td>+342.8 &micro;A</td><td></td></tr>
+    <tr><td>DDM Resolution</td><td></td><td>0.1 &micro;A</td><td></td><td></td></tr>
+    <tr><td>DDM Accuracy</td><td></td><td></td><td>&plusmn;4.8 &micro;A</td><td></td></tr>
+    <tr><td>SDM Range</td><td>40%</td><td></td><td>120%</td><td></td></tr>
+    <tr><td>SDM Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>SDM Accuracy</td><td></td><td></td><td>&plusmn;1%</td><td></td></tr>
+    <tr><td colspan="5"><strong>AM0 Component</strong> (nominal 90 Hz upper beam)</td></tr>
+    <tr><td>Beam State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM0 Depth (change DDM/SDM)</td><td>20%</td><td></td><td>60%</td><td></td></tr>
+    <tr><td>AM0 Depth Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Depth Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td>Frequency</td><td>88 Hz</td><td></td><td>92 Hz</td><td></td></tr>
+    <tr><td>Frequency Resolution</td><td></td><td>0.0005 Hz</td><td></td><td></td></tr>
+    <tr><td>Frequency Accuracy</td><td></td><td></td><td>&plusmn;500 &micro;Hz</td><td></td></tr>
+    <tr><td colspan="5"><strong>AM1 Component</strong> (nominal 150 Hz lower beam)</td></tr>
+    <tr><td>Beam State</td><td colspan="3">On/Off</td><td></td></tr>
+    <tr><td>AM1 Depth (change DDM/SDM)</td><td>20%</td><td></td><td>60%</td><td></td></tr>
+    <tr><td>AM1 Depth Resolution</td><td></td><td>0.01%</td><td></td><td></td></tr>
+    <tr><td>AM Depth Accuracy</td><td></td><td></td><td>&plusmn;0.5%</td><td></td></tr>
+    <tr><td>Frequency</td><td>147 Hz</td><td></td><td>154 Hz</td><td></td></tr>
+    <tr><td>Frequency Resolution</td><td></td><td>0.0005 Hz</td><td></td><td></td></tr>
+    <tr><td>Frequency Accuracy</td><td></td><td></td><td>&plusmn;500 &micro;Hz</td><td></td></tr>
+    <tr><td>Range of Relative Phase to AM0 Component</td><td>0</td><td></td><td>360&deg;</td><td></td></tr>
+    <tr><td>Resolution of Relative Phase to AM0 Component</td><td></td><td>0.001</td><td></td><td></td></tr>
+    <tr><td>Accuracy of Relative Phase to AM0 Component</td><td></td><td></td><td>&plusmn;1&deg;</td><td></td></tr>
+  </table>
+  <h3>Marker Beacon</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Typical</th><th>Note</th></tr>
+    <tr><td>AM Tone Accuracy (95% AM)</td><td>5% of setting</td><td></td></tr>
+    <tr><td>AM Tone Distortion (95% AM)</td><td>5%</td><td></td></tr>
+  </table>
+</section>
+
+<section id="s16">
+  <h2><span class="num">16</span>Additive White Gaussian Noise (Option AWGN)</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Typical</th><th>Min</th><th>Max</th><th>Note</th></tr>
+    <tr><td colspan="5"><strong>Noise</strong></td></tr>
+    <tr><td>Distribution Density</td><td colspan="3">Gaussian, statistical, &mu; = 0, &sigma;<sup>2</sup> = 1</td><td>Separate for I and Q</td></tr>
+    <tr><td>Crest Factor</td><td>&le; 21.07 dB</td><td></td><td></td><td>Depending on C/N ratio</td></tr>
+    <tr><td>Periodicity</td><td>&gt; 7&times;10<sup>64</sup> s</td><td></td><td></td><td></td></tr>
+    <tr><td colspan="5"><strong>Carrier to Noise Ratio C/N</strong></td></tr>
+    <tr><td>Range</td><td></td><td>-60 dB</td><td>90 dB</td><td>Limited by the RF output power</td></tr>
+    <tr><td>Resolution</td><td>0.01 dB</td><td></td><td></td><td>See application note AN6005</td></tr>
+    <tr><td colspan="5"><strong>Noise Bandwidth</strong></td></tr>
+    <tr><td>Dependency</td><td colspan="3">0.8 of I/Q baseband generator sample rate / manually</td><td>Any modulation active / all modulations inactive</td></tr>
+    <tr><td>Range</td><td></td><td>10 Hz</td><td>400 MHz</td><td></td></tr>
+    <tr><td>Resolution</td><td>1 Hz</td><td></td><td></td><td></td></tr>
+    <tr><td>Power Control Mode</td><td colspan="3">Total, carrier, noise</td><td></td></tr>
+  </table>
+</section>
+
+<section id="s17">
+  <h2><span class="num">17</span>Triggers &amp; Multi-Function I/O</h2>
+  <h3>Trigger Capability</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Trigger Mode</td><td colspan="3">Single, continuous</td><td></td></tr>
+    <tr><td>Trigger Source</td><td colspan="3">Internal (immediate, bus), external</td><td></td></tr>
+    <tr><td colspan="5"><strong>External Trigger Input</strong></td></tr>
+    <tr><td>Connector Type</td><td colspan="3">MF1 IN, MF2 IN</td><td>See External Multi-Function Inputs</td></tr>
+    <tr><td>Delay Setting Range</td><td>0 s</td><td></td><td>8.5 s</td><td></td></tr>
+    <tr><td>Delay Setting Resolution</td><td></td><td>2 ns</td><td></td><td></td></tr>
+    <tr><td>Jitter</td><td></td><td>&plusmn;2 ns</td><td></td><td></td></tr>
+    <tr><td>Slope</td><td colspan="3">Rising, falling</td><td></td></tr>
+    <tr><td colspan="5"><strong>Trigger Output</strong></td></tr>
+    <tr><td>Connector Type</td><td colspan="3">MF1 OUT, MF2 OUT</td><td>See External Multi-Function Outputs</td></tr>
+    <tr><td>Polarity</td><td colspan="3">Normal, inverted</td><td></td></tr>
+    <tr><td>Delay Setting Range</td><td>0 s</td><td></td><td>2 &micro;s</td><td></td></tr>
+    <tr><td>Delay Setting Resolution</td><td></td><td>2 ns</td><td></td><td></td></tr>
+    <tr><td>Pulse Width Setting Range</td><td>8 ns</td><td></td><td>16 &micro;s</td><td></td></tr>
+    <tr><td>Pulse Width Setting Resolution</td><td></td><td>8 ns</td><td></td><td></td></tr>
+  </table>
+  <h3>External Multi-Function Inputs</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Connector</td><td colspan="3">MF1 IN, MF2 IN</td><td>See Connectors</td></tr>
+    <tr><td>Application</td><td colspan="3">External pulse modulation, external trigger</td><td></td></tr>
+    <tr><td>Nominal Input Impedance</td><td colspan="3">DC 10 k&Omega; and AC 50 &Omega;</td><td></td></tr>
+    <tr><td>Threshold Voltage</td><td>0.85 V</td><td>0.9 V</td><td>0.95 V</td><td></td></tr>
+    <tr><td>Nominal Input Voltage</td><td>0 V</td><td></td><td>3.3 V</td><td>TTL compatible</td></tr>
+    <tr><td>Hysteresis</td><td></td><td>60 mV</td><td></td><td></td></tr>
+  </table>
+  <h3>External Multi-Function Outputs</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Connector</td><td colspan="3">MF1 OUT, MF2 OUT</td><td>See Connectors</td></tr>
+    <tr><td>Application</td><td colspan="3">Pulse video signal, trigger, marker signals (1&ndash;4)</td><td></td></tr>
+    <tr><td>Nominal Output Impedance</td><td colspan="3">TBD</td><td></td></tr>
+    <tr><td>Nominal Output Voltage</td><td>0 V</td><td></td><td>3.3 V</td><td>LVTTL</td></tr>
+  </table>
+</section>
+
+<section id="s18">
+  <h2><span class="num">18</span>Fast Control Port, Analog Inputs &amp; SD Card</h2>
+  <h3>Fast Control Port (Option FCP)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value / Note</th></tr>
+    <tr><td>Interface</td><td>Parallel, bidirectional LVDS with 100 &Omega; termination at receiver</td></tr>
+    <tr><td>Common Mode Level</td><td>Typ. 1.2 V</td></tr>
+    <tr><td>Differential Input Threshold</td><td>Typ. &plusmn;100 mV</td></tr>
+    <tr><td>Differential Output Voltage</td><td>Typ. 300 mV</td></tr>
+    <tr><td>Connector</td><td>FCP I/O &mdash; see Connectors</td></tr>
+    <tr><td colspan="2"><strong>Mode: I/Q Data Streaming</strong></td></tr>
+    <tr><td>Sample Rate</td><td>125 and 250 MHz</td></tr>
+    <tr><td>Input/Output Format</td><td>Data (16 bits), clock signal, valid signal</td></tr>
+    <tr><td>Valid I/Q Data Input to RF Output Delay</td><td>Typ. TBD ns</td></tr>
+    <tr><td colspan="2"><strong>Mode: Segment ID Streaming</strong></td></tr>
+    <tr><td>Input Format</td><td>Data (16 bits), valid signal (signal must be static low or high)</td></tr>
+    <tr><td>Valid Segment ID Input to RF Output Delay (immediate segment changeover)</td><td>Typ. TBD ns</td></tr>
+    <tr><td>Valid Segment ID Jitter</td><td>&plusmn;8 ns</td></tr>
+    <tr><td colspan="2"><strong>Mode: CDW Streaming</strong> &mdash; 875-04 Option FCP &amp; UFS. CDW is an operating mode of the 875 which takes control of the RF output. Other 875 features cannot be used simultaneously unless their settings are available as CDW parameters.</td></tr>
+    <tr><td>Parameter</td><td>Frequency (up to 48 bit), power, phase, segment ID</td></tr>
+    <tr><td>Parameter Range and Resolution</td><td>See Pulse Descriptor Word</td></tr>
+    <tr><td>Input Format</td><td>Address (8 bits), data (8 bits), valid signal</td></tr>
+    <tr><td>Sampling Rate</td><td>250 MHz</td></tr>
+    <tr><td>Valid Signal Level Min. Period</td><td>8 ns</td></tr>
+    <tr><td>Valid Signal Setup and Hold Time</td><td>8 ns</td></tr>
+    <tr><td>Automatic Level Control (ALC) Mode</td><td>OFF</td></tr>
+  </table>
+  <h3>External Analog Inputs (Option AIQ)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Connector</td><td colspan="3">I IN, Q IN</td><td>See Connectors</td></tr>
+    <tr><td>Analog Bandwidth</td><td></td><td>50 MHz</td><td></td><td></td></tr>
+    <tr><td>Maximum Input Voltage</td><td>-2 V</td><td></td><td>+2 V</td><td></td></tr>
+    <tr><td>Nominal Input Voltage Range</td><td></td><td>&plusmn;0.5 V</td><td></td><td>90%</td></tr>
+    <tr><td>Input Impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
+    <tr><td>Additional Features</td><td colspan="3">Individual gain and DC offset adjustment, overrange detection</td><td></td></tr>
+    <tr><td>Application</td><td colspan="3">Analog I/Q data modulation, external AM, FM, PM modulation</td><td>Option AIQ / Option AIQ &amp; MOD</td></tr>
+  </table>
+  <h3>SD Card (Option SD)</h3>
+  <table class="spec">
+    <tr><th>Type</th><th>Support</th></tr>
+    <tr><td>SD</td><td>Up to 2 GB with FAT 12 or FAT 16</td></tr>
+    <tr><td>SDHC</td><td>Up to 32 GB with FAT 32</td></tr>
+  </table>
+</section>
+
+    <section id="s-perf">
+      <h2>Typical Performance Curves</h2>
+      <p>Representative measured performance, reproduced from the Model 875 datasheet. Curves are typical and not guaranteed.</p>
+      <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid #d6d3d1;border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:#57534e;margin-top:8px;line-height:1.4}</style>
+      <div class="ds-figgrid">
+      <figure class="ds-fig"><img src="figures/875-ds/fig01-03_maxoutput_p7.png" alt="Figures 1-3: Maximum Output Power 875-04, 875-06, 875-20/40" loading="lazy"><figcaption>Figures 1&ndash;3: Maximum Output Power, 875-04 (top left), 875-06 (top right), 875-20/40 (bottom)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig04_poweracc875-12_p7.png" alt="Figure 4: Power Level Accuracy 875-12 vs frequency" loading="lazy"><figcaption>Figure 4: Power Level Accuracy 875-12 (level error vs frequency)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig05_poweracc875-12_p7.png" alt="Figure 5: Power Level Accuracy 875-12 vs power set" loading="lazy"><figcaption>Figure 5: Power Level Accuracy 875-12 (level error vs power set)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig06_poweracc875-40_p8.png" alt="Figure 6: Power Level Accuracy 875-40" loading="lazy"><figcaption>Figure 6: Power Level Accuracy 875-40</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig07_poweracc875-20_p8.png" alt="Figure 7: Power Level Accuracy 875-20" loading="lazy"><figcaption>Figure 7: Power Level Accuracy 875-20</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig08_vswr875-04_p8.png" alt="Figure 8: Typical VSWR 875-04" loading="lazy"><figcaption>Figure 8: Typical VSWR, 875-04</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig10_phasenoise_p9.png" alt="Figure 10: SSB Phase Noise Performance 875-20/40" loading="lazy"><figcaption>Figure 10: SSB Phase Noise Performance, 875-20/40, CW without option LN, Pout = +10 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig11_phasenoise_lf_p10.png" alt="Figure 11: SSB Phase Noise Performance, low frequency CW" loading="lazy"><figcaption>Figure 11: SSB Phase Noise Performance, 875-XX, low frequency CW without option LN, Pout = +10 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig12_amplitudenoise_p10.png" alt="Figure 12: Amplitude Noise, 2 GHz" loading="lazy"><figcaption>Figure 12: Amplitude Noise, 2 GHz, Pout = +10 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig13_harmonics875-06_p11.png" alt="Figure 13: 875-06 Harmonic Performance" loading="lazy"><figcaption>Figure 13: 875-06 Harmonic Performance at Pout = 0 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig14_harmonics875-20_p12.png" alt="Figure 14: 875-20 Harmonic Performance" loading="lazy"><figcaption>Figure 14: 875-20 Harmonic Performance at Pout = 0 dBm</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig15_phasecoherentswitching_p13.png" alt="Figure 15: Phase-Coherent Switching" loading="lazy"><figcaption>Figure 15: Phase-Coherent Switching. The relative phase between channels 1 and 2 remains the same after channel 2 temporarily switched to a different frequency.</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig16_phasememory_p13.png" alt="Figure 16: Phase Memory" loading="lazy"><figcaption>Figure 16: Phase Memory. The signal returns to the same absolute phase when returning to the previous frequency and amplitude setting.</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig17_phasecoherence38_p14.png" alt="Figure 17: Phase coherence performance at 38 GHz" loading="lazy"><figcaption>Figure 17: Phase coherence performance at 38 GHz</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig18_phasecoherence15_p14.png" alt="Figure 18: Phase coherence performance at 15 GHz" loading="lazy"><figcaption>Figure 18: Phase coherence performance at 15 GHz</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig19_phaseerror_p14.png" alt="Figure 19: channel-to-channel phase error vs other device" loading="lazy"><figcaption>Figure 19: 875 typical channel-to-channel phase error, CH1 @0.5 GHz mixed with CH2 @2.5 GHz vs 2 GHz from another device</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig20_syncconnections_p15.png" alt="Figure 20: Connections for multi-device synchronization" loading="lazy"><figcaption>Figure 20: Connections for multi-device synchronization (reference clock on SMA, sync signals A/B/C on SMB)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig21-24_pulse_p16.png" alt="Figures 21-24: Pulsed chirp and pulse modulation" loading="lazy"><figcaption>Figures 21&ndash;24: Pulsed chirp (10 &micro;s, 400 MHz bandwidth) and pulse modulation (16 ns at 10 GHz and 40 GHz)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig25_am_p17.png" alt="Figure 25: Amplitude Modulation" loading="lazy"><figcaption>Figure 25: Amplitude Modulation (1 kHz rate, 80% depth)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig26_widebandfm_p17.png" alt="Figure 26: Wideband FM" loading="lazy"><figcaption>Figure 26: Wideband FM (1 MHz rate, 200 MHz deviation)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig27_iqresponse875-04_p19.png" alt="Figure 27: I/Q Relative Response 875-04" loading="lazy"><figcaption>Figure 27: I/Q Relative Response (measured), 875-04</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig28_iqresponse875-20_p19.png" alt="Figure 28: I/Q Relative Response 875-20" loading="lazy"><figcaption>Figure 28: I/Q Relative Response (measured), 875-20</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig29_carriersuppression_p20.png" alt="Figure 29: Carrier suppression" loading="lazy"><figcaption>Figure 29: Carrier suppression -80 dBc for 0 dBm 6-tone signal at 10 GHz carrier</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig30_256qam_p21.png" alt="Figure 30: 256QAM 10 MS/s" loading="lazy"><figcaption>Figure 30: 256QAM, 10 MS/s</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig31_16qam_p21.png" alt="Figure 31: 16QAM 250 MS/s" loading="lazy"><figcaption>Figure 31: 16QAM, 250 MS/s</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig32_evm_power_p22.png" alt="Figure 32: EVM vs Output Power" loading="lazy"><figcaption>Figure 32: EVM vs. Output Power, 16QAM, 10 MS/s, 2.5 GHz</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig33_evm_symbolrate_p22.png" alt="Figure 33: EVM vs Symbol Rate" loading="lazy"><figcaption>Figure 33: EVM vs. Symbol Rate, 16QAM</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig34_evm_rffreq_p22.png" alt="Figure 34: EVM vs RF Frequency" loading="lazy"><figcaption>Figure 34: EVM vs. RF Frequency, 16QAM, 10 MSymbols/s</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig35_64tone_p23.png" alt="Figure 35: 64-tone 400 MHz Bandwidth Signal" loading="lazy"><figcaption>Figure 35: 64-tone 400 MHz Bandwidth Signal (measured 875-04 spectrum)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig36_twotone_p23.png" alt="Figure 36: Two-tone Sideband Rejection" loading="lazy"><figcaption>Figure 36: Two-tone Sideband Rejection</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/875-ds/fig37_dmespectrum_p27.png" alt="Figure 37: DME Spectrum" loading="lazy"><figcaption>Figure 37: DME Spectrum (X channel, raised cosine filter)</figcaption></figure>
+      </div>
+    </section>
+
+<section id="s19">
+  <h2><span class="num">19</span>Connectors</h2>
+  <h3>Single Channel Model</h3>
+  <h4>Front Panel</h4>
+  <table class="spec">
+    <tr><th>Label</th><th>Type</th><th>Description</th><th>Option / Model</th></tr>
+    <tr><td rowspan="3">RF 50 &Omega;</td><td>Type N Female</td><td>RF output</td><td>875-04 / -06 / -12</td></tr>
+    <tr><td>SMA Female</td><td>RF output</td><td>875-20</td></tr>
+    <tr><td>K (2.92 mm) Female</td><td>RF output</td><td>875-40</td></tr>
+  </table>
+  <h4>Rear Panel</h4>
+  <table class="spec">
+    <tr><th>Label</th><th>Type</th><th>Description</th><th>Option</th></tr>
+    <tr><td>DC24V</td><td>DC power plug, female</td><td>Power of instrument</td><td></td></tr>
+    <tr><td></td><td>M4</td><td>Ground reference screw</td><td></td></tr>
+    <tr><td>USB</td><td>USB type B</td><td>Remote programming interface</td><td></td></tr>
+    <tr><td>LAN</td><td>RJ-45</td><td>Remote programming interface</td><td></td></tr>
+    <tr><td>CLK IN</td><td>SMA, female</td><td>High-stability reference input</td><td>SYNC</td></tr>
+    <tr><td>CLK OUT</td><td>SMA, female</td><td>High-stability reference output</td><td>SYNC</td></tr>
+    <tr><td>SYNC IN, SYNC OUT</td><td>SMB, male</td><td>Multi-device synchronization ports</td><td>SYNC</td></tr>
+    <tr><td>SD</td><td>MicroSD</td><td>Card slot for non-volatile storage of I/Q data</td><td></td></tr>
+    <tr><td>REF IN</td><td>BNC female</td><td>Reference frequency input</td><td></td></tr>
+    <tr><td>REF OUT</td><td>BNC female</td><td>Reference frequency output</td><td></td></tr>
+    <tr><td>MF1 IN, MF2 IN</td><td>SMB male</td><td>Multi-function digital inputs (user-configurable)</td><td></td></tr>
+    <tr><td>MF1 OUT, MF2 OUT</td><td>SMB male</td><td>Multi-function digital outputs (user-configurable)</td><td></td></tr>
+    <tr><td>I IN, Q IN</td><td>BNC female</td><td>Analog inputs (user-configurable)</td><td>AIQ</td></tr>
+    <tr><td>FCP</td><td>36-pin mini-D female / 3M MDR 102 Series</td><td>Fast control port, external digital I/Q data streaming (per channel)</td><td>FCP</td></tr>
+  </table>
+  <h3>2U Multi-Channel Model</h3>
+  <h4>Front Panel</h4>
+  <table class="spec">
+    <tr><th>Label</th><th>Type</th><th>Description</th><th>Model</th></tr>
+    <tr><td rowspan="2">RF OUT (per channel)</td><td>SMA Female</td><td>RF output</td><td>875-20-X</td></tr>
+    <tr><td>K (2.92 mm) Female</td><td>RF output</td><td>875-40-X</td></tr>
+  </table>
+  <h4>Rear Panel</h4>
+  <table class="spec">
+    <tr><th>Label</th><th>Type</th><th>Description</th><th>Option</th></tr>
+    <tr><td></td><td>C13</td><td>Power of instrument</td><td></td></tr>
+    <tr><td></td><td>M4</td><td>Ground reference screw (earth)</td><td></td></tr>
+    <tr><td>USB</td><td>USB type B</td><td>Remote programming interface</td><td></td></tr>
+    <tr><td>LAN</td><td>RJ-45</td><td>Remote programming interface</td><td></td></tr>
+    <tr><td>GPIB</td><td>24-pin female</td><td>Remote programming interface</td><td></td></tr>
+    <tr><td>SD</td><td>MicroSD</td><td>Card slot for non-volatile storage of I/Q data</td><td></td></tr>
+    <tr><td>REF IN</td><td>BNC female</td><td>Reference frequency input</td><td></td></tr>
+    <tr><td>REF OUT</td><td>BNC female</td><td>Reference frequency output</td><td></td></tr>
+    <tr><td>CLK IN</td><td>SMA female</td><td>High-stability reference input</td><td>SYNC</td></tr>
+    <tr><td>CLK OUT</td><td>SMA female</td><td>High-stability reference output</td><td>SYNC</td></tr>
+    <tr><td>FCP (per channel)</td><td>36-pin mini-D female / 3M MDR 102 Series</td><td>Fast control port</td><td>FCP</td></tr>
+    <tr><td>MF1 IN, MF2 IN (per channel)</td><td>SMB male</td><td>Multi-function inputs (user-configurable)</td><td></td></tr>
+    <tr><td>MF1 OUT, MF2 OUT (per channel)</td><td>SMB male</td><td>Multi-function outputs (user-configurable)</td><td></td></tr>
+    <tr><td>I IN, Q IN (per channel)</td><td>SMB male</td><td>Analog inputs (user-configurable)</td><td>AIQ</td></tr>
+    <tr><td>SYNC IN, SYNC OUT</td><td>SMB, male</td><td>Multi-device synchronization ports</td><td>SYNC</td></tr>
+  </table>
+</section>
+
+<section id="s20">
+  <h2><span class="num">20</span>Ordering Information</h2>
+  <h3>Host Models</h3>
+  <table class="spec">
+    <tr><th>Host Model</th><th>Product</th><th>Description</th></tr>
+    <tr><td rowspan="5">875 &mdash; single channel model</td><td>875-04</td><td>4 GHz model</td></tr>
+    <tr><td>875-06</td><td>6 GHz model</td></tr>
+    <tr><td>875-12</td><td>12 GHz model</td></tr>
+    <tr><td>875-20</td><td>20 GHz model</td></tr>
+    <tr><td>875-40</td><td>40 GHz model</td></tr>
+    <tr><td rowspan="5">875-X &mdash; 2U rack-mount model<br><span style="font-weight:400;color:var(--muted)">-X: channels = (1), 2, 3 or 4</span></td><td>875-04-X</td><td>4 GHz model</td></tr>
+    <tr><td>875-06-X</td><td>6 GHz model</td></tr>
+    <tr><td>875-12-X</td><td>12 GHz model</td></tr>
+    <tr><td>875-20-X</td><td>20 GHz model</td></tr>
+    <tr><td>875-40-X</td><td>40 GHz model</td></tr>
+  </table>
+  <h3>Hardware Options</h3>
+  <table class="spec">
+    <tr><th>Applicability</th><th>Product</th><th>Description</th></tr>
+    <tr><td>875(-X)</td><td>Option LN</td><td>Enhanced close-in phase noise &amp; frequency stability</td></tr>
+    <tr><td>875(-X)</td><td>Option LN+</td><td>Enhanced close-in phase noise &amp; further enhanced long-term frequency stability</td></tr>
+    <tr><td>875(-X)</td><td>Option SYNC</td><td>Multi-device synchronization ports</td></tr>
+    <tr><td>875(-X)</td><td>Option FCP</td><td>Fast control port, external digital I/Q data streaming (per channel)</td></tr>
+    <tr><td>875(-X)</td><td>Option AIQ</td><td>External analog I/Q inputs (per channel)</td></tr>
+    <tr><td>875</td><td>Option GPIB</td><td>GPIB interface</td></tr>
+    <tr><td>875(-X)</td><td>Option 100K</td><td>Frequency range extension to 100 kHz</td></tr>
+    <tr><td>875-04(-X)</td><td>Option PE4-04</td><td>Electronic step attenuator</td></tr>
+    <tr><td>875-06/12/20(-X)</td><td>Option PE4-20</td><td>Electronic step attenuator</td></tr>
+    <tr><td>875-40(-X)</td><td>Option PE4-40</td><td>Electronic step attenuator</td></tr>
+    <tr><td>875-04/06/12/20(-X)</td><td>Option PE-20</td><td>Mechanical step attenuator (down to -90 dBm)</td></tr>
+    <tr><td>875-40(-X)</td><td>Option PE-40</td><td>Mechanical step attenuator (down to -90 dBm)</td></tr>
+    <tr><td>875-04/06/12/20(-X)</td><td>Option PE2-20</td><td>Mechanical step attenuator (down to -120 dBm)</td></tr>
+    <tr><td>875-40(-X)</td><td>Option PE2-40</td><td>Mechanical step attenuator (down to -120 dBm)</td></tr>
+    <tr><td>875-06/12/20(-X)</td><td>Option FILT-20</td><td>Harmonic filtering (per channel), option PE4-XX required</td></tr>
+    <tr><td>875-40(-X)</td><td>Option FILT-40</td><td>Harmonic filtering (per channel), option PE4-XX required</td></tr>
+  </table>
+  <h3>Software Licenses</h3>
+  <table class="spec">
+    <tr><th>Applicability</th><th>Product</th><th>Description</th></tr>
+    <tr><td>875(-X)</td><td>Option UFS</td><td>Ultra-fast switching speed</td></tr>
+    <tr><td>875(-X)</td><td>Option PHS</td><td>Phase-coherent switching</td></tr>
+    <tr><td>875(-X)</td><td>Option PCM</td><td>Firmware for Phase Calibratable Mode (per channel), option PHS required</td></tr>
+    <tr><td>875(-X)</td><td>Option PDW</td><td>Pulse descriptor word (per channel)</td></tr>
+    <tr><td>875(-X)</td><td>Option MOD</td><td>Internal analog modulations</td></tr>
+    <tr><td>875(-X)</td><td>Option IVM</td><td>Internal digital modulation schemes (per channel)</td></tr>
+    <tr><td>875(-X)</td><td>Option AVIO</td><td>Internal avionics modulations (per channel)</td></tr>
+    <tr><td>875(-X)</td><td>Option AWGN</td><td>Additive white Gaussian noise generator (per channel)</td></tr>
+    <tr><td>875(-X)</td><td>Option SD</td><td>MicroSD card support for non-volatile storage of I/Q data</td></tr>
+    <tr><td>875(-X)</td><td>Option VREF</td><td>Variable external reference</td></tr>
+  </table>
+  <h3>Accessories</h3>
+  <table class="spec">
+    <tr><th>Applicability</th><th>Product</th><th>Description</th></tr>
+    <tr><td>875</td><td>Option EB</td><td>External battery with adapter cable</td></tr>
+  </table>
+  <p>For a configured quote, contact Berkeley Nucleonics Corporation &middot; info@berkeleynucleonics.com &middot; 415-453-9955.</p>
+</section>
+
+<section id="s21">
+  <h2><span class="num">21</span>General Characteristics</h2>
+  <h3>Remote Programming Interfaces</h3>
+  <table class="spec">
+    <tr><th>Characteristic</th><th>Specification</th></tr>
+    <tr><td>Interfaces</td><td>Ethernet 100BaseT LAN interface; USB 2.0 device interface; GPIB (IEEE-488.2, 1987) with listen and talk (Option GPIB)</td></tr>
+    <tr><td>Control language</td><td>SCPI version 1999.0</td></tr>
+  </table>
+  <h3>Power Requirements &mdash; Single Channel Model</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value</th><th>Note</th></tr>
+    <tr><td>Input Voltage Range</td><td>24 VDC &plusmn;3.0 V</td><td></td></tr>
+    <tr><td rowspan="2">Power Consumption (typ, without options)</td><td>45 W</td><td>875-04</td></tr>
+    <tr><td>65 W</td><td>875-06 to 875-40</td></tr>
+    <tr><td rowspan="2">Main Adapter Supplied (without options)</td><td>100&ndash;240 VAC 50/60 Hz; 24 VDC, 65 W max</td><td>875-04</td></tr>
+    <tr><td>100&ndash;240 VAC 50/60 Hz; 24 VDC, 160 W max</td><td>875-06 to 875-40</td></tr>
+  </table>
+  <h3>Power Requirements &mdash; Multi-Channel Model</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Value</th><th>Note</th></tr>
+    <tr><td>Input Voltage Range</td><td>100&ndash;240 VAC 50/60 Hz</td><td></td></tr>
+    <tr><td>Fuse Rating</td><td>5&times;20 mm, 250 V, 6.3 AT</td><td>2-poles, each</td></tr>
+    <tr><td rowspan="2">Power Consumption (max)</td><td>200 W</td><td>875-04-X, 875-06-X, 875-12-2, 875-20-2, 875-40-2</td></tr>
+    <tr><td>400 W</td><td>875-06-2, 875-12-04, 875-20-4, 875-40-4</td></tr>
+  </table>
+  <h3>Environmental</h3>
+  <table class="spec">
+    <tr><th>Characteristic</th><th>Specification</th></tr>
+    <tr><td>Environmental</td><td>Levels similar to MIL-PRF-28800F Class 3/4. Samples of this product have been type tested to be robust against the environmental stresses of storage, transportation, and end-use (temperature, humidity, shock, vibration, altitude, and power line conditions).</td></tr>
+    <tr><td>Operating temperature range</td><td>0 to 45 &deg;C</td></tr>
+    <tr><td>Storage temperature range</td><td>-40 to 70 &deg;C</td></tr>
+    <tr><td>Operating and storage altitude</td><td>Up to 15,000 feet (4600 m)</td></tr>
+    <tr><td>EMC</td><td>Complies with EMC regulations and directives for emission and immunity to interference (EN 61326-1 Industrial, EN/IEC 61326-2-1)</td></tr>
+    <tr><td>Safety</td><td>Complies with applicable safety regulation IEC/EN 61010-1</td></tr>
+    <tr><td>RoHS</td><td>Complies with directive 2011/65/EU</td></tr>
+    <tr><td>Recommended calibration cycle</td><td>24 months</td></tr>
+  </table>
+  <h3>Physical &mdash; Single Channel (portable / benchtop)</h3>
+  <table class="spec">
+    <tr><th>Characteristic</th><th>Specification</th></tr>
+    <tr><td>Weight</td><td>6 lbs [2.7 kg] to 9.7 lbs [4.4 kg] net, without main adapter</td></tr>
+    <tr><td>Dimensions (incl. rubber)</td><td>4.88 in H &times; 7.17 in W &times; 11.85 in L [124 mm H &times; 182 mm W &times; 301 mm L]</td></tr>
+    <tr><td>Dimensions (with RF output connector type N)</td><td>4.88 in H &times; 7.17 in W &times; 12.20 in L [124 mm H &times; 182 mm W &times; 310 mm L]</td></tr>
+  </table>
+  <h3>Physical &mdash; Multi-Channel (rack-mountable 19" 2HU enclosure)</h3>
+  <table class="spec">
+    <tr><th>Characteristic</th><th>Specification</th></tr>
+    <tr><td>Weight</td><td>37 lbs [18 kg] net, &le; 55 lbs [25 kg] shipping</td></tr>
+    <tr><td>Dimensions (body)</td><td>3.39 in H &times; 17.5 in W &times; 22.5 in L [86 mm H &times; 444 mm W &times; 572 mm L]</td></tr>
+  </table>
+</section>
+
+<section id="s22">
+  <h2><span class="num">22</span>Document History</h2>
+  <table class="spec">
+    <tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr>
+    <tr><td>V110</td><td>2019-10-28</td><td>Jk</td><td>Update</td></tr>
+    <tr><td>V111</td><td>2020-02-20</td><td>Yg/Jk</td><td>Update</td></tr>
+    <tr><td>V113</td><td>2020-03-31</td><td>Jk</td><td>Analog modulations revised, option E I/Q added, measurement plot added</td></tr>
+    <tr><td>V114</td><td>2020-04-31</td><td>Jk</td><td>New plots added</td></tr>
+    <tr><td>V120</td><td>2020-11-10</td><td>Jk</td><td>Extended to multi-channel, 12 GHz model</td></tr>
+    <tr><td>V121</td><td>2021-01-10</td><td>Jk</td><td>Power specs refined, data plots added</td></tr>
+    <tr><td>V122</td><td>2021-05-03</td><td>Rp</td><td>Pulse modulation, marker, multi-function in/outputs specs refined</td></tr>
+    <tr><td>V123</td><td>2021-06-21</td><td>Ee</td><td>Updated product images</td></tr>
+    <tr><td>V124</td><td>2021-06-25</td><td>Jk</td><td>Refined power images</td></tr>
+    <tr><td>V125</td><td>2021-07-20</td><td>Rp</td><td>Updated FCP / baseband generator</td></tr>
+    <tr><td>V126</td><td>2022-02-04</td><td>Jk</td><td>Plot updated</td></tr>
+    <tr><td>V127</td><td>2022-03-21</td><td>Jk/rp</td><td>Update</td></tr>
+    <tr><td>V128</td><td>2022-03-29</td><td>Jk</td><td>Option PE2 for 875-06/12, option PE4, option LN+, reference bypass info</td></tr>
+    <tr><td>V129</td><td>2022-10-29</td><td>Jk</td><td>Updated product images</td></tr>
+    <tr><td>V130</td><td>2023-03-30</td><td>Rp / Re</td><td>Update on sweep data, SD card, internal pulse generator; option PDW added</td></tr>
+    <tr><td>V131</td><td>2023-12-08</td><td>Ap</td><td>Added harmonics plot for 875-06</td></tr>
+    <tr><td>V132</td><td>2024-07-16</td><td>AT</td><td>Added new enclosure, AVIO modulation data refined</td></tr>
+  </table>
+  <p>Berkeley Nucleonics Corporation &middot; 2955 Kerner Blvd., San Rafael, CA 94901 &middot; Phone: 415-453-9955 &middot; info@berkeleynucleonics.com &middot; berkeleynucleonics.com</p>
+</section>
+
 
 </main>
 </div>
@@ -407,6 +1291,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 875 10 MHz to 40 GHz Multi-Channel Vector Signal Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

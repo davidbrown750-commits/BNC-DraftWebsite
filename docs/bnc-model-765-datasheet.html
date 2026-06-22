@@ -91,6 +91,9 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+
+.content .xref,.article .xref{font-size:.85rem;color:var(--blue-dark);font-style:italic;margin:2px 0 10px;padding-left:10px;border-left:2px solid var(--blue);}
+.content .xref a,.article .xref a{font-style:normal;font-weight:600;}
 </style>
 
 
@@ -164,153 +167,284 @@ th .modelthumb{filter:none;}
   <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">Get a Quote/Demo</a><div class="ss-wrap"><input class="ss-input" type="search" placeholder="Search…" aria-label="Search the site" autocomplete="off"><div class="ss-panel" role="listbox"></div></div><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 765 High-Performance Fast Pulse Generator</h1><p>An 800 MHz pulse and delay generator with sub-70 ps rise time, 4 ps RMS period jitter, and 10 ps timing resolution across two or four fully independent channels. Built for work where the edge has to be fast and the timing has to be exact.</p><div class="ver">Berkeley Nucleonics Corporation</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/765_front_dimension_v2-1.png" alt="Berkeley Nucleonics Model 765 pulse and delay generator, front panel"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 765 High-Performance Fast Pulse Generator</h1><p>An 800 MHz pulse and delay generator with sub-70 ps rise time, 4 ps RMS period jitter, and 10 ps timing resolution across two or four fully independent channels. Built for work where the edge has to be fast and the timing has to be exact.</p><div class="ver">Specifications reproduced from Model 765 datasheet V1.22 (2025-03-27).</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/765_front_dimension_v2-1.png" alt="Berkeley Nucleonics Model 765 pulse and delay generator, front panel"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Channels &amp; Timing Architecture</a>
-  <a href="#s4">4. Specifications</a>
-  <a href="#s5">5. Triggering &amp; I/O</a>
-  <a href="#s6">6. Options &amp; Configurations</a>
-  <a href="#s7">7. Applications</a>
-  <a href="#s8">8. Ordering / In the Box</a>
+  <a href="#s1">1. Introduction</a>
+  <a href="#s2">2. Inputs &amp; Outputs</a>
+  <a href="#s3">3. Application Ideas</a>
+  <a href="#s4">4. Ordering Information</a>
+  <a href="#s5">5. Specifications &mdash; Timing</a>
+  <a href="#s6">6. Specifications &mdash; Output</a>
+  <a href="#s7">7. Specifications &mdash; Trigger</a>
+  <a href="#s8">8. Programmability, Power &amp; Environmental</a>
+  <a href="#s-perf">Typical Performance Curves</a>
+  <a href="#s9">9. General Characteristics</a>
+  <a href="#s10">10. Document History</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <div class="note warn"><b>Verification notes.</b> Values are drawn from the Model 765 datasheet (v1.2). Confirm against the current released datasheet before quoting. The dossier lists max pulse frequency as <b>800 MHz (Quad Mode)</b> and a 40 MHz maximum trigger frequency; both are reproduced as published. The AVTECH replacement positioning is a marketing claim, not a specification.</div>
-  <p>The Model 765 is the fast-edge member of the Berkeley Nucleonics pulse and delay generator family. It produces pulses with a standard rise and fall time below 70 ps (20% to 80%), repetition rates to 800 MHz per channel, and period jitter of 4 ps RMS. Pulse amplitude is programmable from 10 mVpp to 5 Vpp with an adjustable baseline offset of plus or minus 2.5 V.</p>
-  <p>Each channel carries its own delay, width, amplitude, and offset, set with 10 ps resolution. A redesigned analog front end holds overshoot below 5% and keeps ringing minimal, so the pulse you program is close to the pulse you measure. Setup runs through a 7-inch touchscreen GUI backed by push-buttons and a rotary encoder. Advanced pulse modes cover single, double, triple, and quadruple output as well as external-width operation.</p>
-</section>
-
-<section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">1</span>Introduction</h2>
+  <p>The Model 765 Pulse Generator is a feature-rich pulse and delay generator with 2 or 4 channels of completely programmable pulse and delay generation. The instrument offers many improvements over our previous design: faster transition times, narrow pulses, broader and more accurate amplitude control, and a redesigned user interface. Take control of your time and amplitude domain.</p>
+  <h3>Intuitive User Interface</h3>
+  <p>The front panel controls for the Model 765 Pulse Generator include a 7&quot; touchscreen and tactile controls for most operations. The touchscreen was designed to drive simplicity in operating and programming by giving users smartphone-like architecture complete with gesture control. The primary channel controls and programming options are easy to navigate, with a swipe gesture to move from channel to channel. Handy features like combining multiple pulses on one output can be graphically controlled and are easily identified on the screen. In addition, a rotary encoder and backlit pushbuttons provide an alternative yet familiar experience to users needing front panel controls.</p>
+  <p><strong>Rotary Encoder:</strong> The Model 765 front panel encoder is ideal for fine tuning pulse parameters on the fly. Dialing the encoder will change the value in continuous, analog fashion. Pushing the encoder in will move the value adjustment from fine to coarse adjust, further simplifying setup and on-the-fly adjustments.</p>
+  <h3>Fast Rise Times and Plenty of Range</h3>
+  <p>The Model 765 offers 70 ps rise and fall times (@ 5.0 V pk-pk) over a large time domain. Our front end electronics circuit and new analog edge converter have been integrated into the pulse generator using a proprietary technology that virtually eliminates overshoot (&lt; 5.0% typical) and ringing.</p>
+  <p class="xref">See <a href="#s-perf">Figure 1</a> (70 ps Tr @ 5.0 V) in Typical Performance Curves.</p>
+  <h3>Programming</h3>
+  <p>The Model 765 offers several useful remote programming options. In addition, the networking feature allows users to use a VXI-11 LAN protocol to network the instrument for printing, file sharing, internet access, and remote login. The remote programming uses common SCPI commands, ensuring compatibility with a wide range of development environments. Visual Studio, .NET, LabView, LabWindows/CVI, Microsoft Visual Studio, and MatLab are all supported. Berkeley Nucleonics provides a comprehensive Software Development Kit (SDK) at no additional charge.</p>
+  <h3>Applications</h3>
   <ul>
-    <li>Rise and fall time below 70 ps (20% to 80%)</li>
-    <li>Pulse width from 300 ps to more than 7 seconds</li>
-    <li>800 MHz repetition rate per channel with 4 ps RMS jitter</li>
-    <li>Two or four fully independent channels</li>
-    <li>10 ps resolution on both width and delay</li>
-    <li>Adjustable pulse amplitude from 10 mVpp to 5 Vpp</li>
-    <li>Plus or minus 2.5 V adjustable baseline offset</li>
-    <li>7-inch touchscreen with push-buttons and rotary encoder</li>
+    <li>Big physics</li>
+    <li>Collider experiments</li>
+    <li>Laser modulation</li>
+    <li>Radar and sonar systems</li>
+    <li>Semiconductor test</li>
   </ul>
 </section>
 
+<section id="s2">
+  <h2><span class="num">2</span>Inputs &amp; Outputs</h2>
+  <p><strong>Pulse Out:</strong> The Model 765 offers inputs and outputs on the front and rear panel to accommodate users with rackmount or benchtop applications. The Pulse Out connectors are DC-coupled SMA connectors with 50 Ohm impedance and strain-relief panel mounts. The pulse out settings can be independently positive or negative (0 V to +/-5 V, adjustable). The following table shows the parameter limits for pulse outputs:</p>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Max</th></tr>
+    <tr><td>Voltage</td><td>-5.0 V</td><td>+5.0 V</td></tr>
+    <tr><td>Amplitude</td><td>10 mVpp</td><td>5 Vpp</td></tr>
+    <tr><td>Offset</td><td>-2.5 V</td><td>+2.5 V</td></tr>
+    <tr><td>Width</td><td>300 ps</td><td>8 sec</td></tr>
+    <tr><td>Duty Cycle</td><td>&lt; 1%</td><td>&gt; 99%</td></tr>
+    <tr><td>Period</td><td>5 ns</td><td>8 sec</td></tr>
+    <tr><td>Frequency</td><td>0.125 Hz</td><td>200 MHz</td></tr>
+    <tr><td>Delay</td><td>0 sec</td><td>8 sec</td></tr>
+    <tr><td>Burst N</td><td>1</td><td>4,294,967,295</td></tr>
+  </table>
+  <p style="font-size:.82rem;color:var(--muted);margin-top:-6px;">Table 1: Pulse Out Limits</p>
+  <p><strong>Trigger In / Out:</strong> The Model 765 Trigger Input is an SMA connector with a programmable impedance and threshold (50 Ohm / 1k Ohm, -10.0 V to +10.0 V). The programmable trigger threshold has a resolution of 4 mV, ensuring precise triggering. The Model 765 can trigger on signals down to 50 mV and as narrow as 1 ns, and a convenient Autosense function will measure the current trigger input level. The Model 765 also measures the Trigger In frequency and displays the result in the Trigger Setup Window. The Trigger Out is an SMA connector with 50 Ohm impedance and an output voltage range of 1.8 V to 3.3 V (adjustable).</p>
+  <p><strong>USB:</strong> There are 2 handy USB 3.0 ports on the front panel for auxiliary equipment such as a keyboard, additional storage, or other system requirements.</p>
+  <p><strong>Rear Panel:</strong> Additional input and output connectors on the rear panel include PS/2 mouse and keyboard connectors, external monitor ports (HDMI, VGA), LAN, and Audio.</p>
+  <p><strong>Multi-pulse Mode:</strong> The Model 765 allows users to combine four digitally programmed pulses on each output. This allows complex timing sequences and repetition rates to 800 MHz. The graphical user interface allows users an easy representation of the outputs on a given channel. Below is a simple example showing different delay and width settings from a common trigger.</p>
+  <p class="xref">See <a href="#s-perf">Figure 2</a> (Output 1: PULSE1 + PULSE2) in Typical Performance Curves.</p>
+</section>
+
 <section id="s3">
-  <h2><span class="num">3</span>Channels &amp; Timing Architecture</h2>
-  <p>The Model 765 ships in a two-channel or four-channel configuration. Every channel is independent: delay, width, amplitude, and baseline offset are set per channel, and the channel-to-channel jitter stays below 10 ps. That independence lets one instrument drive several points in a timing chain without a separate box for each edge.</p>
-  <p>Timing is referenced to an internal time base accurate to plus or minus 2 ppm, with an external reference clock input from 10 MHz to 100 MHz for locking to a system clock. Delay covers 0 ps to 8 seconds, and pulse period spans 5 ns to 8 seconds, both at 10 ps resolution. Multiple-pulse modes (single, double, triple, quadruple, and external width) let a single channel emit pulse groups for sequencing and burst work.</p>
-  <figure class="fig"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/pulsert-2.jpg" alt="Model 765 measured rise-time waveform"><figcaption>Measured rise-time edge. Sub-70 ps transitions with low overshoot and ringing.</figcaption></figure>
+  <h2><span class="num">3</span>Application Ideas</h2>
+  <h3>Semiconductor Test</h3>
+  <p>Characterization of non-volatile memory cells requires very precise pulse control, both in amplitude and time domains. The Model 765, with 10 ps time resolution and 10 mV amplitude resolution, allows just that. R&amp;D in memory devices is leading to cell types which have the speed of RAM and the data retention of mass memory. Emerging R&amp;D exists also in FeRAM (Ferroelectric RAM), ReRAM (Resistive RAM), MRAM (Magnetoresistive RAM), STT-MRAM (Spin-Transfer Torque Magnetoresistive RAM), and PCM (Phase Change Memory). This R&amp;D is based on changing the conductivity of a material using different stimuli principles. Examples include formation and destruction of a thin wire into a material stack, changing the material structure from amorphous to polycrystalline, alignment of magnetic fields, and similar approaches. Accurate front-end control in all these processes is critical for successful results.</p>
+  <p>MRAM memory cells use Magnetic Tunnel Junctions (MTJ) that consist of two ferromagnets separated by a thin insulator. If the magnetic fields of the two ferromagnets are oriented in the same direction, electrons can tunnel from one ferromagnet to the other through the insulator. The first ferromagnet has a fixed magnetic field and the second can be changed by applying a current pulse. Inverting the magnetic field orientation changes the conductivity of the stack. To program or erase a bit, a current pulse is applied through the stack. The efficiency of the program/erase process depends on the duration and amplitude of the pulse, so R&amp;D engineers are testing different combinations of pulse widths and amplitudes (and repetition rates). In the scope trace below, the 50 ns pulse @ 3.3 V is used to erase a single cell and the 100 ns pulse @ 3.3 V is used to erase an array of cells.</p>
+  <p class="xref">See <a href="#s-perf">Figure 3</a> (50 ns @ 3.3 V, 100 ns @ 3.3 V) in Typical Performance Curves.</p>
+  <h3>Radar</h3>
+  <p>In radar testing, many situations make actual target measurements impractical. Simulating moving targets is a solution for expediting the R&amp;D, calibration, and test of radar systems. The typical radar system measures the time of flight of the signal and calculates the distance from the target using the following equation: Distance (km) = (DelayTime (sec) / 2) &times; 3&times;10<sup>5</sup> km/s, where 3&times;10<sup>5</sup> km/s is an approximation of the speed of light.</p>
+  <p>The delay between transmitted and received signals is dependent on distance. In complex systems, multiple targets are detected and the radar system is required to distinguish between various targets. A multi-channel pulse generator is used to test the detection ability of the radar without requiring actual field measurements of moving targets. The Model 765 is capable of multiple pulses per pulse period, allowing up to 4 pulses with different widths and delays to be generated on a single output. A repetition rate of 200 MHz allows testing the real time frequency capabilities of the radar system. With resolution of 10 ps and jitter &lt; 10 ps RMS, the pulse generator can verify and calibrate a radar system with resolution under 1 centimeter. Shown below is an example of Quad-Pulse mode, 4 different narrow pulses with unique delays from the Trigger In, simulating the detection of multiple targets.</p>
+  <p class="xref">See <a href="#s-perf">Figure 4</a> (Quad-Pulse Mode) in Typical Performance Curves.</p>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Specifications</h2>
-  <h3>Timing and Period</h3>
+  <h2><span class="num">4</span>Ordering Information</h2>
   <table class="spec">
-    <tr><th>Parameter</th><th>Model 765</th></tr>
-    <tr><td>Channels</td><td>2 or 4 independent</td></tr>
-    <tr><td>Pulse period range</td><td>5 ns to 8 s</td></tr>
-    <tr><td>Pulse period resolution</td><td>10 ps</td></tr>
-    <tr><td>Pulse period jitter</td><td>4 ps</td></tr>
-    <tr><td>Max pulse frequency</td><td>800 MHz (Quad mode)</td></tr>
-    <tr><td>Time-base accuracy</td><td>&plusmn;2 ppm</td></tr>
-    <tr><td>Pulse modes</td><td>Single, double, triple, quadruple, external width</td></tr>
+    <tr><th>Model / Part No.</th><th>Description</th></tr>
+    <tr><td>Model 765-2C</td><td>2 Channel Pulse Generator</td></tr>
+    <tr><td>Model 765-4C</td><td>4 Channel Pulse Generator</td></tr>
+    <tr><td>P/N 765-RMKit</td><td>19&quot; Rack Mount Kit for the 765-X</td></tr>
+    <tr><td>P/N 765-SSKit</td><td>1 TB Solid State Storage Drive for 765-X</td></tr>
   </table>
-  <h3>Width and Delay</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Model 765</th></tr>
-    <tr><td>Pulse width range</td><td>300 ps to 8 s</td></tr>
-    <tr><td>Pulse width resolution</td><td>10 ps</td></tr>
-    <tr><td>Pulse width accuracy</td><td>&plusmn;0.1% + 30 ps</td></tr>
-    <tr><td>Pulse width jitter</td><td>&lt; 10 ps</td></tr>
-    <tr><td>Pulse delay range</td><td>0 ps to 8 s</td></tr>
-    <tr><td>Pulse delay resolution</td><td>10 ps</td></tr>
-    <tr><td>Pulse delay accuracy</td><td>&plusmn;0.1% + 100 ps</td></tr>
-    <tr><td>Channel-to-channel jitter</td><td>&lt; 10 ps</td></tr>
-  </table>
-  <h3>Amplitude and Edges</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Model 765</th></tr>
-    <tr><td>Pulse amplitude range</td><td>10 mVpp to 5 Vpp</td></tr>
-    <tr><td>Amplitude resolution (250 mVpp to 5 Vpp)</td><td>4 mV</td></tr>
-    <tr><td>Amplitude resolution (10 mVpp to 250 mVpp)</td><td>1 mV</td></tr>
-    <tr><td>Baseline offset range</td><td>&plusmn;2.5 V</td></tr>
-    <tr><td>Baseline offset resolution</td><td>2 mV</td></tr>
-    <tr><td>Rise time (20% to 80%)</td><td>&lt; 70 ps</td></tr>
-    <tr><td>Rise time (10% to 90%)</td><td>&lt; 95 ps (1 Vpp); &lt; 105 ps (5 Vpp)</td></tr>
-    <tr><td>Fall time (20% to 80%)</td><td>&lt; 70 ps</td></tr>
-    <tr><td>Fall time (10% to 90%)</td><td>&lt; 95 ps (1 Vpp); &lt; 105 ps (5 Vpp)</td></tr>
-    <tr><td>Overshoot</td><td>&lt; 5%</td></tr>
-    <tr><td>Output impedance</td><td>50 &Omega;</td></tr>
-  </table>
-  <h3>Power, Physical, and Compliance</h3>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Model 765</th></tr>
-    <tr><td>Power input</td><td>100 to 240 VAC &plusmn;10%, 47 to 63 Hz</td></tr>
-    <tr><td>Power consumption</td><td>120 W</td></tr>
-    <tr><td>Operating temperature</td><td>5 &deg;C to 40 &deg;C</td></tr>
-    <tr><td>Display</td><td>7-inch touch LCD</td></tr>
-    <tr><td>Connectivity</td><td>HDMI, VGA, USB, RS-232, LAN</td></tr>
-    <tr><td>Dimensions (W x H x D)</td><td>17.5 x 5.3 x 12.6 in [445 x 135 x 320 mm], 3U 19-inch rackmount</td></tr>
-    <tr><td>Weight</td><td>21.7 lbs [9.7 kg]</td></tr>
-    <tr><td>Safety / EMC</td><td>EN61010-1, EN61326-1:2013</td></tr>
-  </table>
+  <p>For a configured quote, contact Berkeley Nucleonics Corporation &middot; info@berkeleynucleonics.com &middot; 415-453-9955.</p>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>Triggering &amp; I/O</h2>
-  <p>Trigger modes cover single, continuous, burst, and gated operation. The trigger input impedance is selectable between 50 &Omega; and 1 k&Omega;, accepting plus or minus 3.5 V into 50 &Omega; or plus or minus 10 V into 1 k&Omega;, with a minimum detectable amplitude below 50 mVpp. The trigger threshold is adjustable across plus or minus 8 V at 10 mV resolution.</p>
+  <h2><span class="num">5</span>Specifications &mdash; Timing</h2>
+  <h3>Pulse Period</h3>
   <table class="spec">
-    <tr><th>Parameter</th><th>Model 765</th></tr>
-    <tr><td>Trigger modes</td><td>Single, continuous, burst, gated</td></tr>
-    <tr><td>Trigger input impedance</td><td>50 &Omega; or 1 k&Omega; selectable</td></tr>
-    <tr><td>Trigger input range</td><td>&plusmn;3.5 V (50 &Omega;); &plusmn;10 V (1 k&Omega;); &lt; 50 mVpp min</td></tr>
-    <tr><td>Trigger threshold</td><td>&plusmn;8 V, 10 mV resolution, &plusmn;100 mV accuracy</td></tr>
-    <tr><td>Maximum trigger frequency</td><td>40 MHz</td></tr>
-    <tr><td>Minimum trigger pulse width</td><td>1 ns</td></tr>
-    <tr><td>Trigger jitter</td><td>&lt; 30 ps (Trig IN to OUT, &le; 15 MHz)</td></tr>
-    <tr><td>Reference clock input</td><td>10 MHz to 100 MHz, 50 &Omega;, &minus;5 to 4 dBm</td></tr>
-    <tr><td>Reference clock output</td><td>10 MHz or input frequency, 50 &Omega;, square 0 to 1.25 V (50 &Omega;) or 0 to 2.5 V (Hi-Z)</td></tr>
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Range (spec.)</td><td>5 ns to 8 sec</td></tr>
+    <tr><td>Resolution (spec.)</td><td>10 ps</td></tr>
+    <tr><td>RMS Jitter<sup>1</sup> (Integration Range 100 Hz to 10 MHz, F<sub>out</sub> = 200 MHz)</td><td>4 ps</td></tr>
+  </table>
+  <h3>Pulse Frequency</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td rowspan="4">Range (spec.)</td><td>0.125 Hz to 200 MHz (single pulse mode)</td></tr>
+    <tr><td>0.25 Hz to 400 MHz (double pulse mode)</td></tr>
+    <tr><td>0.375 Hz to 600 MHz (triple pulse mode)</td></tr>
+    <tr><td>0.5 Hz to 800 MHz (quadruple pulse mode)</td></tr>
+    <tr><td>Accuracy</td><td>&plusmn; 2 ppm max</td></tr>
+  </table>
+  <h3>Pulse Width</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Range (spec.)<sup>2</sup></td><td>300 ps to (period &minus; 300 ps)</td></tr>
+    <tr><td>Resolution (spec.)</td><td>10 ps</td></tr>
+    <tr><td>Accuracy</td><td>&plusmn; (0.1% + 30 ps)</td></tr>
+    <tr><td>RMS Jitter<sup>1</sup></td><td>&lt; 10 ps</td></tr>
+  </table>
+  <h3>Pulse Delay (single / double / triple / quadruple)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Range (spec.)</td><td>0 ps to period</td></tr>
+    <tr><td>Resolution (spec.)</td><td>10 ps</td></tr>
+    <tr><td>Accuracy</td><td>&plusmn; (0.1% + 100 ps)</td></tr>
   </table>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Options &amp; Configurations</h2>
-  <ul>
-    <li>Two-channel or four-channel configuration</li>
-    <li>Related high-voltage variant: Model 765-HV, one or two channels, up to plus or minus 50 Vpp, 400 MHz</li>
-  </ul>
-  <p>For applications that need amplitude above 5 Vpp, the Model 765-HV shares the same family architecture while driving up to plus or minus 50 Vpp into 50 &Omega;.</p>
+  <h2><span class="num">6</span>Specifications &mdash; Output (50 Ohm load)</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Impedance</td><td>50 Ohm nominal</td></tr>
+    <tr><td>Amplitude &mdash; Range pk-pk (spec.)</td><td>10 mVpp to 5 Vpp</td></tr>
+    <tr><td>Amplitude &mdash; Resolution (spec.)</td><td>4 mV (250 mVpp to 5 Vpp), 1 mV (10 mVpp to 250 mVpp)</td></tr>
+    <tr><td>Amplitude &mdash; Absolute accuracy (spec.)</td><td>&plusmn; (1% of amplitude p-p + 1% of |DC Offset| + 20 mV)</td></tr>
+    <tr><td>DC Offset (HV only) &mdash; Range (spec.)</td><td>0 V or &plusmn; 25 V adjustable</td></tr>
+    <tr><td>DC Offset (HV only) &mdash; Resolution (spec.)</td><td>10 mV</td></tr>
+    <tr><td>Baseline Offset &mdash; Range (spec.)</td><td>&plusmn; 2.5 V adjustable</td></tr>
+    <tr><td>Baseline Offset &mdash; Resolution (spec.)</td><td>2 mV</td></tr>
+    <tr><td>Rise/Fall Time (20% to 80%)</td><td>&lt; 70 ps</td></tr>
+    <tr><td>Rise/Fall Time (10% to 90%)</td><td>&lt; 95 ps (1 Vpp amplitude), &lt; 105 ps (5 Vpp amplitude)</td></tr>
+    <tr><td>Overshoot</td><td>&lt; 5%</td></tr>
+    <tr><td>Channel to Channel RMS Jitter<sup>1</sup></td><td>&lt; 10 ps</td></tr>
+    <tr><td>Initial Delay</td><td>0 s to 8 s (retriggerable delay off); 0 s to 2.5 us (retriggerable delay on)</td></tr>
+  </table>
+  <p style="font-size:.82rem;color:var(--muted);">
+    <sup>1</sup> All channels at the same frequency in Single Pulse mode and Continuous mode.<br>
+    <sup>2</sup> With Offset &ne; 0 V the width can deviate from this specification depending on the Offset voltage and other parameters.
+  </p>
+  <p class="xref">See <a href="#s-perf">Figure 1</a> (70 ps Tr @ 5.0 V) in Typical Performance Curves.</p>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Applications</h2>
-  <ul>
-    <li>Radar and sonar systems</li>
-    <li>Semiconductors and lasers</li>
-    <li>High-precision timing</li>
-    <li>Big physics, including photomultipliers and colliders</li>
-    <li>High-speed detectors and comparators</li>
-    <li>Strip silicon emulation</li>
-    <li>Mass spectroscopy</li>
-  </ul>
+  <h2><span class="num">7</span>Specifications &mdash; Trigger</h2>
+  <h3>Trigger Input</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Impedance</td><td>50 Ohm or 1k Ohm programmable</td></tr>
+    <tr><td rowspan="2">Range (spec.)</td><td>&plusmn; 3.5 V (50 Ohm input impedance)</td></tr>
+    <tr><td>&plusmn; 10 V (1k Ohm input impedance)</td></tr>
+    <tr><td>Minimum detectable amplitude (spec.)</td><td>&lt; 50 mVpp</td></tr>
+    <tr><td>Threshold &mdash; Range (spec.)</td><td>&plusmn; 8 V</td></tr>
+    <tr><td>Threshold &mdash; Resolution (spec.)</td><td>10 mV</td></tr>
+    <tr><td>Threshold &mdash; Accuracy</td><td>&plusmn; 100 mV</td></tr>
+    <tr><td>Max. input frequency (spec.)</td><td>40 MHz</td></tr>
+    <tr><td>Min. pulse width (spec.)</td><td>1 ns</td></tr>
+    <tr><td>Max. external width mode input frequency (spec.)</td><td>1 GHz</td></tr>
+    <tr><td>Edge selection</td><td>Positive, negative, both</td></tr>
+    <tr><td>Prescaler (for every channel)</td><td>0 to 65535</td></tr>
+  </table>
+  <h3>Trigger Output</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Impedance</td><td>50 Ohm nominal</td></tr>
+    <tr><td>Amplitude (open load) &mdash; Range (spec.)</td><td>1.8 V to 3.3 V adjustable</td></tr>
+    <tr><td>Amplitude (open load) &mdash; Resolution (spec.)</td><td>1 mV</td></tr>
+    <tr><td>Amplitude (open load) &mdash; Accuracy</td><td>&plusmn; 1%</td></tr>
+    <tr><td>Delay (trigger in to trigger out)</td><td>&lt; 100 ns</td></tr>
+    <tr><td>RMS jitter (trigger in to trigger out)</td><td>&lt; 30 ps (Trigger IN frequency &le; 15 MHz)</td></tr>
+    <tr><td>Width</td><td>10 ns (single, burst mode); Period/2 (continuous mode)</td></tr>
+    <tr><td>Initial delay</td><td>0 s to 8 s (continuous mode); 0 s to 2.5 us (single, burst, gated mode)</td></tr>
+  </table>
+  <h3>Internal Timer</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Time range (frequency range)</td><td>25 ns to 42.9 sec (40 MHz to 23.3 mHz)</td></tr>
+    <tr><td>Time resolution</td><td>1 ps</td></tr>
+    <tr><td>Frequency accuracy</td><td>&plusmn; 2 ppm max</td></tr>
+  </table>
+  <h3>External Clock IN</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on rear panel</td></tr>
+    <tr><td>Input impedance</td><td>50 &Omega;, AC coupled</td></tr>
+    <tr><td>Input voltage range</td><td>-5 dBm to 4 dBm sine or square wave (rise time T10-90 &lt; 1 ns and duty cycle from 40% to 60%)</td></tr>
+    <tr><td>Damage level</td><td>+8 dBm or &plusmn; 15 VDC max</td></tr>
+    <tr><td>Frequency range</td><td>10 MHz to 100 MHz</td></tr>
+  </table>
+  <h3>External Clock OUT</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Connector type</td><td>SMA on rear panel</td></tr>
+    <tr><td>Output impedance</td><td>50 &Omega;, DC coupled</td></tr>
+    <tr><td>Frequency</td><td>10 MHz or External Clock IN frequency</td></tr>
+    <tr><td>Accuracy</td><td>&plusmn; 2 ppm max</td></tr>
+    <tr><td>Aging</td><td>&plusmn; 1.0 ppm/year max</td></tr>
+    <tr><td>Amplitude</td><td>Square wave: 0 V to 1.25 V into 50 &Omega;, 0 V to 2.5 V into High Z</td></tr>
+  </table>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Ordering / In the Box</h2>
-  <p>Specify channel count (two or four) when ordering. The instrument ships as a 3U 19-inch rackmount unit with power cord and a calibration certificate. Shipping dimensions are 24 x 19 x 13 in at 28 lbs.</p>
+  <h2><span class="num">8</span>Specifications &mdash; Programmability, Power &amp; Environmental</h2>
+  <h3>Programmability</h3>
   <table class="spec">
-    <tr><th>Item</th><th>Detail</th></tr>
-    <tr><td>Model 765, 2-channel</td><td>800 MHz, &lt; 70 ps rise time, two independent channels</td></tr>
-    <tr><td>Model 765, 4-channel</td><td>800 MHz, &lt; 70 ps rise time, four independent channels</td></tr>
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Trigger modes</td><td>Single, continuous, burst, gated</td></tr>
+    <tr><td>Multiple pulse modes</td><td>Single, double, triple, quadruple, external width</td></tr>
   </table>
-  <p>To configure or quote, contact Berkeley Nucleonics at <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> or 800-234-7858.</p>
+  <h3>Power</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Voltage range</td><td>100-240 VAC &plusmn; 10%</td></tr>
+    <tr><td>Frequency range</td><td>47-63 Hz</td></tr>
+    <tr><td>Max. power consumption</td><td>120 W</td></tr>
+  </table>
+  <h3>Environmental Characteristics</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Temperature (operating)</td><td>+5 &deg;C to +40 &deg;C (+41 &deg;F to 104 &deg;F)</td></tr>
+    <tr><td>Temperature (non-operating)</td><td>-20 &deg;C to +60 &deg;C (-4 &deg;F to 140 &deg;F)</td></tr>
+    <tr><td>Humidity (operating)</td><td>5% to 80% relative humidity with a maximum wet bulb temperature of 29 &deg;C at or below +40 &deg;C (upper limit de-rates to 20.6% relative humidity at +40 &deg;C). Non-condensing.</td></tr>
+    <tr><td>Humidity (non-operating)</td><td>5% to 95% relative humidity with a maximum wet bulb temperature of 40 &deg;C at or below +60 &deg;C (upper limit de-rates to 29.8% relative humidity at +60 &deg;C). Non-condensing.</td></tr>
+    <tr><td>Altitude (operating)</td><td>3,000 meters (9,842 feet) maximum at or below 25&deg;</td></tr>
+    <tr><td>Altitude (non-operating)</td><td>12,000 meters (39,370 feet) maximum</td></tr>
+  </table>
+  <h3>EMC and Safety</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Safety</td><td>EN61010-1</td></tr>
+    <tr><td>Main Standards</td><td>EN 61326-1:2013 &mdash; Electrical equipment for measurement, control and laboratory use &mdash; EMC requirements &mdash; Part 1: General requirements</td></tr>
+    <tr><td>Immunity</td><td>EN 61326-1:2013</td></tr>
+  </table>
 </section>
+
+    <section id="s-perf">
+      <h2>Typical Performance Curves</h2>
+      <p>Representative measured performance and timing examples, reproduced from the Model 765 datasheet. Curves are typical and not guaranteed.</p>
+      <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid #d6d3d1;border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:#57534e;margin-top:8px;line-height:1.4}</style>
+      <div class="ds-figgrid">
+      <figure class="ds-fig"><img src="figures/765-ds/fig1-rise-70ps.png" alt="Figure 1: 70 ps Tr @ 5.0 V" loading="lazy"><figcaption>Figure 1: 70 ps Tr @ 5.0 V</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/765-ds/fig2-multipulse-output.png" alt="Figure 2: Output 1 (PULSE1 + PULSE2)" loading="lazy"><figcaption>Figure 2: Output 1 (PULSE1 + PULSE2)</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/765-ds/fig3-mram-erase.png" alt="Figure 3: 50 ns @ 3.3 V, 100 ns @ 3.3 V" loading="lazy"><figcaption>Figure 3: 50 ns @ 3.3 V, 100 ns @ 3.3 V</figcaption></figure>
+      <figure class="ds-fig"><img src="figures/765-ds/fig4-quad-pulse.png" alt="Figure 4: Quad-Pulse Mode" loading="lazy"><figcaption>Figure 4: Quad-Pulse Mode</figcaption></figure>
+      </div>
+    </section>
+
+<section id="s9">
+  <h2><span class="num">9</span>General Characteristics</h2>
+  <table class="spec">
+    <tr><th>Characteristic</th><th>Specification</th></tr>
+    <tr><td>Display</td><td>7 inch, 1024x600, capacitive touch LCD</td></tr>
+    <tr><td>Operating system</td><td>Windows 10</td></tr>
+    <tr><td>External dimensions</td><td>W 445 mm &times; H 135 mm &times; D 320 mm (3U 19&quot; rackmount)</td></tr>
+    <tr><td>Weight</td><td>21.4 lbs (9.7 kg)</td></tr>
+    <tr><td>Front panel connectors</td><td>All Output (SMA), TRG.IN (SMA), TRG.OUT (SMA), 2 USB 3.0 ports</td></tr>
+    <tr><td>Rear panel connectors</td><td>External Monitor ports (HDMI, VGA); 2 USB 2.0 ports; 2 USB 3.0 ports; 3 COM ports; 2 Ethernet ports (10/100/1000BaseT Ethernet, RJ45 port); Audio In/Out ports; 2 PS/2 keyboard and mouse ports; External Clock IN (SMA); External Clock OUT (SMA)</td></tr>
+    <tr><td>Hard disk</td><td>128 GB SSD</td></tr>
+    <tr><td>Processor</td><td>Intel&reg; Celeron J1900, 2 GHz (or better)</td></tr>
+    <tr><td>Processor memory</td><td>8 GB</td></tr>
+  </table>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>Document History</h2>
+  <table class="spec">
+    <tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr>
+    <tr><td>V1.1</td><td>4/29/24</td><td>AT</td><td>New format</td></tr>
+    <tr><td>V1.2</td><td>12/19/24</td><td>AT</td><td>Data changes</td></tr>
+    <tr><td>V1.22</td><td>3/27/25</td><td>AT</td><td>Split datasheet</td></tr>
+  </table>
+  <p>Berkeley Nucleonics Corporation &middot; 2955 Kerner Blvd., San Rafael, CA 94901 &middot; Phone: 415-453-9955 &middot; info@berkeleynucleonics.com &middot; berkeleynucleonics.com</p>
+</section>
+
 
 </main>
 </div>
@@ -380,6 +514,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 765 High-Performance Fast Pulse Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>

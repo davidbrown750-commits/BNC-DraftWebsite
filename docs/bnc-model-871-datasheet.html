@@ -165,174 +165,524 @@ th .modelthumb{filter:none;}
 </div></header>
 
 
-<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 871 Single &amp; Multi-Channel Signal Generator</h1><p>Phase-coherent RF and microwave generation from 1 kHz to 51 GHz, in one to four channels, with 10 µs switching and clean, accurately leveled output.</p><div class="ver">Model 871 &middot; 1 kHz / 10 MHz to 51 GHz &middot; 1&ndash;4 channels &middot; Data Sheet</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/871_front_flat_web2.jpg" alt="Berkeley Nucleonics Model 871 signal generator, front view"></div></div></section>
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 871 Single &amp; Multi-Channel Signal Generator</h1><p>Phase-coherent RF and microwave generation from 1 kHz to 51 GHz, in one to four channels, with 10 µs switching and clean, accurately leveled output.</p><div class="ver">Specifications reproduced from Model 871 datasheet V018 (2024-05-17). Warranted at 23 &plusmn;5 &deg;C after 30-minute warm-up unless stated.</div></div><div class="hero-img"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/871_front_flat_web2.jpg" alt="Berkeley Nucleonics Model 871 signal generator, front view"></div></div></section>
 
 <div class="layout">
 <nav class="toc">
   <h4>Contents</h4>
-  <a href="#s1">1. Overview</a>
-  <a href="#s2">2. Key Features</a>
-  <a href="#s3">3. Frequency &amp; Output Power</a>
-  <a href="#s4">4. Phase Noise &amp; Spectral Purity</a>
-  <a href="#s5">5. Modulation</a>
-  <a href="#s6">6. Frequency Switching &amp; Sweep</a>
-  <a href="#s7">7. Specifications</a>
-  <a href="#s8">8. Interfaces &amp; Form Factor</a>
-  <a href="#s9">9. Options &amp; Configurations</a>
-  <a href="#s10">10. Applications</a>
-  <a href="#s11">11. Ordering</a>
+  <a href="#s1">Introduction</a>
+  <a href="#s2">Signal Specifications</a>
+  <a href="#s3">Frequency Reference</a>
+  <a href="#s4">Spectral Purity</a>
+  <a href="#s5">Phase Noise &amp; Jitter</a>
+  <a href="#s6">Harmonics &amp; Spurious</a>
+  <a href="#s7">Level Performance</a>
+  <a href="#s8">Power Level Error</a>
+  <a href="#s9">Modulation Capabilities</a>
+  <a href="#s10">Sweeping Capability</a>
+  <a href="#s11">Trigger &amp; Multi-Purpose Output</a>
+  <a href="#s-perf">Performance Curves</a>
+  <a href="#s12">Connectors</a>
+  <a href="#s13">Mechanical Specifications</a>
+  <a href="#s14">Ordering Information</a>
+  <a href="#s15">General Characteristics</a>
+  <a href="#s16">Document History</a>
 </nav>
 <main class="content">
 
 <section id="s1">
-  <h2><span class="num">1</span>Overview</h2>
-  <p>The Model 871 is the widest multichannel microwave source Berkeley Nucleonics builds. It delivers phase-coherent generation in single- or multi-channel configurations of up to four channels, reaching 51 GHz with consistent phase alignment between outputs. The series targets work where precise power control, clean signals, and tight inter-channel phase matter as much as raw frequency reach.</p>
-  <p>Each channel pairs a built-in OCXO with a wide, accurately leveled power range and fast 10 µs switching. Two dedicated 3 GHz high-frequency clock ports let multiple channels and multiple units lock together for phased-array and beamforming work. The instrument ships as a compact desktop unit or a 19-inch 2U rack chassis holding up to four channels.</p>
-</section>
-
-<section id="s2">
-  <h2><span class="num">2</span>Key Features</h2>
+  <h2><span class="num">1</span>Introduction</h2>
+  <p>The Model 871 is a series of phase-coherent, single or multi-channel, ultra-fast switching and ultra-low phase noise signal generators with a frequency range from 1 kHz to 12, 20, 40, and 51 GHz. It is ideally suited for a wide range of applications, where good signal quality, accurate and wide output power ranges, and very stable phase coherence among all channels are required. Outstanding phase noise is combined with good spurious, harmonic rejection and leading-edge switching speed of 5 &micro;s.</p>
+  <p>A high-stability OCXO reference provides excellent frequency accuracy and stability. The generator accepts a wide range of external references including the commonly used 10 and 100 MHz for higher phase synchronization, and a flexible reference choice in the range of 1-250 MHz for those applications with customer- or system-specific reference frequencies. Moreover, the Model 871 features a pair of BNC-specific high-frequency CLK ports (3 GHz, one input and one output) that enables excellent phase synchronization among the outputs of multiple BNC instruments with similar ports.</p>
+  <p>The Model 871 comes in a desktop enclosure (single-channel) or 19-inch 2U (up to 4 channels) rack-mountable module form. It can be intuitively controlled by a PC based GUI Software. Moreover, the instrument offers various communication interfaces like USB, LAN or GPIB. Each interface allows for easy and fast communication using SCPI 1999 command set. Remote control of the instrument can be quickly achieved from any host system. A customer-supplied application programming interface (API) or programming examples for MATLAB, LabVIEW, C++ and other commercially available tools make the control implementation very straightforward.</p>
+  <h3>Definitions</h3>
+  <p>The specifications in the following pages describe the warranted performance of the instrument for 23 &plusmn;5 &deg;C after a 30-minute warm-up period.</p>
   <ul>
-    <li>Coverage from 1 kHz to 51 GHz with 10 µs frequency switching (option FS).</li>
-    <li>Phase-coherent generation across one to four channels with consistent phase alignment.</li>
-    <li>Built-in OCXO for accurate, stable frequency control.</li>
-    <li>Wide, accurately leveled output power range with 0.01 dB resolution.</li>
-    <li>Strong spurious and harmonic suppression with superior phase noise.</li>
-    <li>Two 3 GHz clock ports (input and output) for multi-channel and multi-unit phase alignment.</li>
-    <li>User-programmable external reference from 1 to 250 MHz; standard 10/100 MHz inputs.</li>
-    <li>Sweep and trigger functions for swept and stepped measurements.</li>
-    <li>Touch-display control, PC GUI software, and a customer-accessible API.</li>
-    <li>Programming examples in MATLAB, LabVIEW, and C++.</li>
-    <li>Desktop or 19-inch 2U rack-mount housing with low power consumption.</li>
+    <li><strong>Typical:</strong> Expected mean values, not warranted performance.</li>
+    <li><strong>Min and Max:</strong> Parameter range that is guaranteed by product design, and/or production tested. Warranted performance specifications include guard-bands to account for the expected statistical performance distribution, measurement uncertainties, and changes in performance due to environmental conditions.</li>
+  </ul>
+  <h3>Features</h3>
+  <ul>
+    <li>Wide &amp; accurately leveled output power range</li>
+    <li>Fast switching of 5 &micro;s (option FS)</li>
+    <li>Outstanding phase noise, harmonic, and spurious performance</li>
+    <li>Sweep, trigger function, and user-programmable external reference frequency from 1 to 250 MHz</li>
+  </ul>
+  <h3>Applications</h3>
+  <ul>
+    <li>ATE</li>
+    <li>Production testing</li>
+    <li>R&amp;D low noise signal source</li>
+    <li>Defense &amp; Aerospace</li>
   </ul>
 </section>
 
-<section id="s3">
-  <h2><span class="num">3</span>Frequency &amp; Output Power</h2>
-  <p>Frequency reach is set by model variant. The 871-50 extends to 51 GHz and, with option 1K, starts as low as 1 kHz. Output power is leveled across the band, and mechanical step attenuators extend the floor to -120 dBm per channel.</p>
+<section id="s2">
+  <h2><span class="num">2</span>Signal Specifications</h2>
   <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>871-12</td><td>10 MHz to 12.75 GHz</td></tr>
-    <tr><td>871-20</td><td>10 MHz to 20 GHz</td></tr>
-    <tr><td>871-40</td><td>10 MHz to 40 GHz</td></tr>
-    <tr><td>871-50</td><td>1 kHz to 51 GHz (Option 1K: 1 kHz to f<sub>max</sub>)</td></tr>
-    <tr><td>Frequency resolution</td><td>&lt;0.001 Hz</td></tr>
-    <tr><td>Output power range</td><td>-120 to +20 dBm</td></tr>
-    <tr><td>Power resolution</td><td>0.01 dB</td></tr>
-    <tr><td>Channels</td><td>1 to 4 (single or multi-channel; up to 4 in 2U rack)</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Channels</td><td>1</td><td></td><td>4</td><td></td></tr>
+    <tr><td><strong>Frequency Ranges</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>871-12</td><td>10 MHz</td><td></td><td>12.75 GHz</td><td></td></tr>
+    <tr><td>871-20</td><td>10 MHz</td><td></td><td>20 GHz</td><td></td></tr>
+    <tr><td>871-40</td><td>10 MHz</td><td></td><td>40 GHz</td><td></td></tr>
+    <tr><td>871-50</td><td>10 MHz</td><td></td><td>51 GHz</td><td></td></tr>
+    <tr><td></td><td>1 kHz</td><td></td><td></td><td>Option 1K</td></tr>
+    <tr><td>Resolution</td><td></td><td>&lt;0.001 Hz</td><td></td><td></td></tr>
+    <tr><td>Phase Adjustment Range</td><td>0 deg</td><td></td><td>360 deg</td><td>Individually adjustable per channel</td></tr>
+    <tr><td>Phase Resolution</td><td></td><td>0.1 deg</td><td></td><td></td></tr>
+    <tr><td rowspan="2"><strong>Switching Time</strong><br>CW Mode</td><td></td><td>1.5 ms</td><td></td><td>Frequency &gt; 10 MHz<br>After SCPI command received</td></tr>
+    <tr><td>Sweep/List Mode</td><td></td><td>3 &micro;s</td><td>100 &micro;s<br>5 &micro;s</td><td>Option FS</td></tr>
+    <tr><td>Thermal Drift</td><td></td><td>0.015 dB / &deg;C</td><td></td><td></td></tr>
+  </table>
+</section>
+
+<section id="s3">
+  <h2><span class="num">3</span>Frequency Reference</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td rowspan="2">Internal Reference Frequency</td><td></td><td>100 MHz</td><td></td><td></td></tr>
+    <tr><td></td><td>10 MHz</td><td></td><td>Option LN(+)</td></tr>
+    <tr><td rowspan="2">Temperature stability 0 to 50 &deg;C</td><td></td><td></td><td>&plusmn;100 ppb</td><td></td></tr>
+    <tr><td></td><td></td><td>&plusmn;20 ppb</td><td>Option LN(+)</td></tr>
+    <tr><td rowspan="3">Aging 1<sup>st</sup> year</td><td></td><td></td><td>1000 ppb</td><td></td></tr>
+    <tr><td></td><td></td><td>30 ppb</td><td>Option LN</td></tr>
+    <tr><td></td><td></td><td>20 ppb</td><td>Option LN+</td></tr>
+    <tr><td rowspan="3">Aging per day</td><td></td><td></td><td>5 ppb</td><td>After 30 days operations</td></tr>
+    <tr><td></td><td></td><td>0.5 ppb</td><td>Option LN</td></tr>
+    <tr><td></td><td></td><td>&lt; 0.5 ppb</td><td>Option LN+</td></tr>
+    <tr><td>Warm-up time</td><td></td><td>5 min</td><td></td><td></td></tr>
+    <tr><td>Output of internal reference</td><td></td><td>1, 5, 10, 20, 25, 50, 100 MHz</td><td></td><td>REF OUT port<br>High phase synchronous mode</td></tr>
+    <tr><td>Output of High Frequency Clock</td><td></td><td>3 GHz</td><td></td><td>CLK OUT port<br>High phase synchronous mode</td></tr>
+    <tr><td rowspan="2">Output Power</td><td>+10 dBm</td><td></td><td>+13 dBm</td><td>3 GHz</td></tr>
+    <tr><td>+5 dBm</td><td></td><td>+10 dBm</td><td>1-100 MHz</td></tr>
+    <tr><td>Output Impedance</td><td></td><td>50 Ohms</td><td></td><td></td></tr>
+    <tr><td rowspan="2">Phase lock to external reference</td><td></td><td>10, 100 MHz<br>Integer MHz</td><td></td><td>STD or Option LN(+)<br>Option VREF</td></tr>
+    <tr><td>1 MHz</td><td></td><td>250 MHz</td><td>High phase synchronous mode</td></tr>
+    <tr><td>High Frequency Clock Input<br>(Bypass Internal References)</td><td></td><td>3 GHz</td><td></td><td>CLK IN port<br>High phase synchronous mode</td></tr>
+    <tr><td><strong>Reference input level</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>1 to 250 MHz</td><td>-10 dBm</td><td>0 dBm</td><td>+10 dBm</td><td></td></tr>
+    <tr><td>3 GHz</td><td>+10 dBm</td><td></td><td>+13 dBm</td><td></td></tr>
+    <tr><td><strong>Lock Range</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>LN(+), LN(+)+VREF</td><td></td><td></td><td>&plusmn;0.3 ppm</td><td></td></tr>
+    <tr><td>STD, STD+VREF</td><td></td><td></td><td>&plusmn;1.5 ppm</td><td></td></tr>
+    <tr><td>Reference Input Impedance</td><td></td><td>50 &Omega;</td><td></td><td></td></tr>
   </table>
 </section>
 
 <section id="s4">
-  <h2><span class="num">4</span>Phase Noise &amp; Spectral Purity</h2>
-  <p>The 871 is built for low phase noise, with enhanced close-in options (LN and LN plus) for the most demanding sources. Per-offset phase noise figures are published in the released datasheet PDF rather than the product page.</p>
+  <h2><span class="num">4</span>Spectral Purity</h2>
+  <h3>Absolute SSB Phase Noise in dBc/Hz</h3>
+  <p>Specified values in plain text, typical values in brackets. CW, level = 10 dBm or maximum available output power, whichever is lower.</p>
   <table class="spec">
-    <tr><th>Offset from carrier</th><th>Phase noise</th></tr>
-    <tr><td>10 Hz</td><td>(verify)</td></tr>
-    <tr><td>1 kHz</td><td>(verify)</td></tr>
-    <tr><td>100 kHz</td><td>(verify)</td></tr>
-    <tr><td>10 MHz</td><td>(verify)</td></tr>
+    <tr><th>Offset &rarr;<br>Frequency &darr;</th><th>10 Hz</th><th>100 Hz</th><th>1 kHz</th><th>20 kHz</th><th>100 kHz</th><th>1 MHz</th><th>10 MHz</th></tr>
+    <tr><td>100 MHz</td><td>-100 (-105)</td><td>-130 (-135)</td><td>-154 (-159)</td><td>-150 (-155)</td><td>-156 (-161)</td><td>-156 (-161)</td><td>-156 (-161)</td></tr>
+    <tr><td>1 GHz</td><td>-80 (-85)</td><td>-110 (-115)</td><td>-143 (-145)</td><td>-150 (-153)</td><td>-150 (-152)</td><td>-153 (-155)</td><td>-153 (-155)</td></tr>
+    <tr><td>4 GHz</td><td>-68 (-73)</td><td>-98 (-103)</td><td>-132 (-135)</td><td>-144 (-147)</td><td>-147 (-150)</td><td>-153 (-156)</td><td>-153 (-155)</td></tr>
+    <tr><td>10 GHz</td><td>-60 (-65)</td><td>-90 (-95)</td><td>-124 (-127)</td><td>-136 (-139)</td><td>-140 (-143)</td><td>-145 (-148)</td><td>-144 (-146)</td></tr>
+    <tr><td>20 GHz</td><td>-54 (-59)</td><td>-84 (-89)</td><td>-118 (-121)</td><td>-130 (-133)</td><td>-134 (-137)</td><td>-139 (-142)</td><td>-138 (-140)</td></tr>
+    <tr><td>40 GHz</td><td>-48 (-53)</td><td>-78 (-83)</td><td>-112 (-115)</td><td>-124 (-127)</td><td>-128 (-131)</td><td>-133 (-136)</td><td>-132 (-134)</td></tr>
+    <tr><td>50 GHz</td><td>-46 (-51)</td><td>-76 (-81)</td><td>-110 (-113)</td><td>-122 (-127)</td><td>-126 (-129)</td><td>-131 (-134)</td><td>-130 (-132)</td></tr>
   </table>
-  <div class="note warn"><b>Verification notes.</b> Per-offset phase noise for the Model 871 is <b>not published on the product page</b> and must be confirmed against the released Model 871 Signal Generator Datasheet (v1.0). Harmonic and spurious figures are likewise <b>(verify)</b>, drawn from the datasheet PDF. Do not quote a number until it is confirmed.</div>
+  <h3>Absolute SSB Phase Noise with LN(+) Option in dBc/Hz</h3>
+  <p>Specified values in plain text, typical values in brackets. CW, level = 10 dBm or maximum available output power, whichever is lower.</p>
+  <table class="spec">
+    <tr><th>Offset &rarr;<br>Frequency &darr;</th><th>10 Hz</th><th>100 Hz</th><th>1 kHz</th><th>20 kHz</th><th>100 kHz</th><th>1 MHz</th><th>10 MHz</th></tr>
+    <tr><td>100 MHz</td><td>-120 (-123)</td><td>-130 (-135)</td><td>-154 (-159)</td><td>-150 (-155)</td><td>-156 (-161)</td><td>-156 (-161)</td><td>-156 (-161)</td></tr>
+    <tr><td>1 GHz</td><td>-100 (-103)</td><td>-110 (-115)</td><td>-143 (-145)</td><td>-150 (-153)</td><td>-150 (-152)</td><td>-153 (-155)</td><td>-153 (-155)</td></tr>
+    <tr><td>4 GHz</td><td>-88 (-91)</td><td>-98 (-103)</td><td>-132 (-135)</td><td>-144 (-147)</td><td>-147 (-150)</td><td>-153 (-156)</td><td>-153 (-155)</td></tr>
+    <tr><td>10 GHz</td><td>-80 (-83)</td><td>-90 (-95)</td><td>-124 (-127)</td><td>-136 (-139)</td><td>-140 (-143)</td><td>-145 (-148)</td><td>-144 (-146)</td></tr>
+    <tr><td>20 GHz</td><td>-74 (-77)</td><td>-84 (-89)</td><td>-118 (-121)</td><td>-130 (-133)</td><td>-134 (-137)</td><td>-139 (-142)</td><td>-138 (-140)</td></tr>
+    <tr><td>40 GHz</td><td>-68 (-71)</td><td>-78 (-83)</td><td>-112 (-115)</td><td>-124 (-127)</td><td>-128 (-131)</td><td>-133 (-136)</td><td>-132 (-134)</td></tr>
+    <tr><td>50 GHz</td><td>-66 (-69)</td><td>-76 (-81)</td><td>-110 (-113)</td><td>-122 (-127)</td><td>-126 (-129)</td><td>-131 (-134)</td><td>-130 (-132)</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 1</a> (phase noise at different frequencies, Option LN(+)) and <a href="#s-perf">Figure 2</a> (3 GHz CLK out signal phase noise) in Typical Performance Curves.</p>
 </section>
 
 <section id="s5">
-  <h2><span class="num">5</span>Modulation</h2>
-  <p>The 871 generates pulse and CW signals as standard. Analog amplitude, frequency, and phase modulation are added with the MOD option, and a dedicated PULSE option covers pulse modulation. Vector modulation is not described on the product page.</p>
+  <h2><span class="num">5</span>Phase Noise &amp; Jitter</h2>
+  <h3>Harmonics, Subharmonics, Non-Harmonics</h3>
   <table class="spec">
-    <tr><th>Mode</th><th>Availability</th></tr>
-    <tr><td>Pulse, CW</td><td>Standard</td></tr>
-    <tr><td>AM, FM, PM (analog)</td><td>Option MOD</td></tr>
-    <tr><td>Pulse modulation</td><td>Option PULSE</td></tr>
-    <tr><td>Vector modulation</td><td>(verify)</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td><strong>Harmonics</strong></td><td></td><td></td><td></td><td>At +10 dBm output power</td></tr>
+    <tr><td>1 kHz to 350 MHz</td><td></td><td>-35 dBc</td><td>-30 dBc</td><td></td></tr>
+    <tr><td>350 MHz to 8 GHz</td><td></td><td>-60 dBc</td><td>-50 dBc</td><td></td></tr>
+    <tr><td>8 GHz to 22 GHz</td><td></td><td>-60 dBc</td><td>-55 dBc</td><td></td></tr>
+    <tr><td>22 GHz to 30 GHz</td><td></td><td>-25 dBc</td><td>-20 dBc</td><td></td></tr>
+    <tr><td>30 GHz to 51 GHz</td><td></td><td>-60 dBc</td><td>-50 dBc</td><td></td></tr>
+    <tr><td><strong>Sub-Harmonics</strong></td><td></td><td></td><td></td><td>At +10 dBm output power</td></tr>
+    <tr><td>1 kHz to 350 MHz</td><td></td><td>-80 dBc</td><td></td><td></td></tr>
+    <tr><td>350 MHz to 12.75 GHz</td><td></td><td>-75 dBc</td><td>-65 dBc</td><td>Incl. high-order subharmonics</td></tr>
+    <tr><td>12.75 GHz to 51 GHz</td><td></td><td>-70 dBc</td><td>-50 dBc</td><td></td></tr>
+    <tr><td><strong>Non-Harmonic Spurious</strong></td><td></td><td></td><td></td><td>10 kHz to 0.5 GHz offset from carrier</td></tr>
+    <tr><td>1 kHz to 350 MHz</td><td></td><td>-90 dBc</td><td>-80 dBc</td><td></td></tr>
+    <tr><td>350 MHz to 4.5 GHz</td><td></td><td>-85 dBc</td><td>-80 dBc</td><td></td></tr>
+    <tr><td>4.5 GHz to 12.75 GHz</td><td></td><td>-80 dBc</td><td>-75 dBc</td><td></td></tr>
+    <tr><td>12.75 GHz to 25.5 GHz</td><td></td><td>-75 dBc</td><td>-70 dBc</td><td></td></tr>
+    <tr><td>25.5 GHz to 51 GHz</td><td></td><td>-70 dBc</td><td>-65 dBc</td><td></td></tr>
   </table>
+  <p class="xref">See <a href="#s-perf">Figure 4</a> (2nd harmonic levels) and <a href="#s-perf">Figure 5</a> (3rd harmonic levels) in Typical Performance Curves.</p>
+  <h3>RMS Jitter</h3>
+  <table class="spec">
+    <tr><th>Carrier Frequency</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>155 MHz</td><td></td><td>11 fs</td><td>15 fs</td><td>BW 100 Hz to 1.5 MHz</td></tr>
+    <tr><td>622 MHz</td><td></td><td>8.5 fs</td><td>10 fs</td><td>BW 1 kHz to 5 MHz</td></tr>
+    <tr><td>1 GHz</td><td></td><td>15 fs</td><td>20 fs</td><td>BW 10 Hz to 10 MHz</td></tr>
+    <tr><td>2.488 GHz</td><td></td><td>8.5 fs</td><td>10 fs</td><td>BW 5 kHz to 20 MHz</td></tr>
+    <tr><td>9.9S2</td><td></td><td>8.5 fs</td><td>10 fs</td><td>BW 10 kHz to 80 MHz</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 3</a> (amplitude noise at different frequencies, power level +10 dBm) in Typical Performance Curves.</p>
 </section>
 
 <section id="s6">
-  <h2><span class="num">6</span>Frequency Switching &amp; Sweep</h2>
-  <p>Standard configurations switch frequency quickly, and option FS brings switching down to 10 µs for fast swept and stepped tests. Sweep modes cover frequency, list, phase, and power. Option PHS adds phase-coherent switching for multi-channel synchronization.</p>
-  <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Switching speed</td><td>10 µs (option FS)</td></tr>
-    <tr><td>Sweep / list modes</td><td>Frequency, List, Phase, Power</td></tr>
-    <tr><td>Phase-coherent switching</td><td>Option PHS</td></tr>
-    <tr><td>External reference</td><td>1 to 250 MHz, user-programmable (10/100 MHz standard)</td></tr>
-  </table>
+  <h2><span class="num">6</span>Harmonics &amp; Spurious</h2>
+  <p>Harmonic, subharmonic, and non-harmonic spurious specifications are detailed in <a href="#s5">Phase Noise &amp; Jitter</a> above. The plots below characterize 2nd and 3rd harmonic levels across output power and carrier frequency.</p>
+  <p class="xref">See <a href="#s-perf">Figure 4</a> (2nd harmonic levels at different output power levels) and <a href="#s-perf">Figure 5</a> (3rd harmonic levels at different output power levels) in Typical Performance Curves.</p>
 </section>
 
 <section id="s7">
-  <h2><span class="num">7</span>Specifications</h2>
+  <h2><span class="num">7</span>Level Performance</h2>
   <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Frequency range</td><td>871-12: 10 MHz to 12.75 GHz; 871-20: 10 MHz to 20 GHz; 871-40: 10 MHz to 40 GHz; 871-50: 1 kHz to 51 GHz (Option 1K)</td></tr>
-    <tr><td>Frequency resolution</td><td>&lt;0.001 Hz</td></tr>
-    <tr><td>Number of channels</td><td>1 to 4 (up to 4 in 2U rack-mount)</td></tr>
-    <tr><td>Output power range</td><td>-120 to +20 dBm</td></tr>
-    <tr><td>Power resolution</td><td>0.01 dB</td></tr>
-    <tr><td>Switching speed</td><td>10 µs (option FS)</td></tr>
-    <tr><td>Phase noise @ offsets</td><td>(verify, see datasheet PDF)</td></tr>
-    <tr><td>Harmonics / spurious</td><td>(verify, see datasheet PDF)</td></tr>
-    <tr><td>Modulation</td><td>Pulse &amp; CW; AM, FM, PM (option MOD)</td></tr>
-    <tr><td>Vector modulation</td><td>(verify)</td></tr>
-    <tr><td>Sweeps / list</td><td>Frequency, List, Phase, Power</td></tr>
-    <tr><td>Reference</td><td>Built-in OCXO; external 1 to 250 MHz; two 3 GHz clock ports</td></tr>
-    <tr><td>Interfaces</td><td>Ethernet, USB (standard); GPIB optional; LAN; SCPI 1999</td></tr>
-    <tr><td>Form factor</td><td>Benchtop/portable or 19-inch 2U rack (up to 4 channels)</td></tr>
-    <tr><td>Dimensions (benchtop)</td><td>9.1 &times; 15.5 &times; 3.8 in; &le;22 lbs</td></tr>
-    <tr><td>Dimensions (rackmount)</td><td>17.5 &times; 23.4 &times; 3.5 in; &le;39.7 lbs</td></tr>
-    <tr><td>Power requirements</td><td>(verify)</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td><strong>Output Power Level</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>1 kHz to 1 MHz</td><td>-20 dBm</td><td></td><td>+10 dBm</td><td></td></tr>
+    <tr><td>1 MHz to 10 MHz</td><td>-20 dBm</td><td></td><td>+12 dBm</td><td></td></tr>
+    <tr><td>10 MHz to 2.5 GHz</td><td>-20 dBm</td><td></td><td>+18 dBm</td><td></td></tr>
+    <tr><td>2.5 GHz to 44 GHz</td><td>-20 dBm</td><td></td><td>+19 dBm</td><td></td></tr>
+    <tr><td>44 GHz to 51 GHz</td><td>-20 dBm</td><td></td><td>+15 dBm</td><td></td></tr>
+    <tr><td><strong>Output Power Level</strong></td><td></td><td></td><td></td><td>Option PE2</td></tr>
+    <tr><td>1 kHz to 1 MHz</td><td>-120 dBm</td><td></td><td>+10 dBm</td><td></td></tr>
+    <tr><td>1 MHz to 10 MHz</td><td>-120 dBm</td><td></td><td>+12 dBm</td><td></td></tr>
+    <tr><td>10 MHz to 2.5 GHz</td><td>-120 dBm</td><td></td><td>+16 dBm</td><td></td></tr>
+    <tr><td>2.5 GHz to 44 GHz</td><td>-120 dBm</td><td></td><td>+18 dBm</td><td></td></tr>
+    <tr><td>44 GHz to 51 GHz</td><td>-110 dBm</td><td></td><td>+12 dBm</td><td></td></tr>
+    <tr><td>Power Resolution</td><td></td><td>0.01 dB</td><td></td><td></td></tr>
+    <tr><td><strong>Reverse Power Protection</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>DC Voltage</td><td></td><td></td><td>0 V</td><td></td></tr>
+    <tr><td>RF Power</td><td></td><td></td><td>26 dBm</td><td></td></tr>
+    <tr><td>Output Impedance</td><td></td><td>50 Ohms</td><td></td><td></td></tr>
+    <tr><td rowspan="3">VSWR</td><td></td><td>1.3</td><td>1.5</td><td>&lt;15 GHz</td></tr>
+    <tr><td></td><td>1.6</td><td>1.8</td><td>15 to 35 GHz</td></tr>
+    <tr><td></td><td>1.9</td><td>2.2</td><td>&gt; 35 GHz</td></tr>
   </table>
+  <p class="xref">See <a href="#s-perf">Figure 6</a> (maximum power level statistics over 20 devices) in Typical Performance Curves.</p>
 </section>
 
 <section id="s8">
-  <h2><span class="num">8</span>Interfaces &amp; Form Factor</h2>
-  <p>Control is local through a touch display or remote through the PC GUI and a SCPI 1999 command set. Ethernet and USB are standard; GPIB is optional. A customer-accessible API and MATLAB, LabVIEW, and C++ examples support custom integration into automated test systems.</p>
-  <p>The 871 housing is a compact desktop unit or a 19-inch 2U rack chassis. Multi-channel builds of up to four channels share the rack form factor, with rear-panel clock ports for inter-unit synchronization.</p>
-  <figure class="fig"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/multi-channel_front_pannel_both2.jpg" alt="Model 871 multi-channel front panel"><figcaption>Multi-channel front panel configuration.</figcaption></figure>
-  <figure class="fig"><img src="https://www.berkeleynucleonics.com/wp-content/uploads/870-871-875_back_flat_web_02.jpg" alt="Model 871 rear panel"><figcaption>Rear panel with reference and clock I/O.</figcaption></figure>
+  <h2><span class="num">8</span>Power Level Error</h2>
+  <h3>Power Level Error</h3>
+  <p>Specified values in plain text, typical values in brackets.</p>
+  <table class="spec">
+    <tr><th>Frequency Range</th><th>-110 to -50 dBm<br>Option PE2</th><th>-50 to -15 dBm<br>Option PE2</th><th>-15 to +15 dBm</th><th>+15 dBm to Max Power</th></tr>
+    <tr><td>1 kHz to 10 MHz</td><td>2.0 dB</td><td>1.2 dB</td><td>1 dB (0.5 dB)</td><td>1.3 dB</td></tr>
+    <tr><td>10 MHz to 1 GHz</td><td>2.0 dB</td><td>1.3 dB</td><td>0.8 dB (0.15 dB)</td><td>1.3 dB</td></tr>
+    <tr><td>1 to 22 GHz</td><td>2.0 dB</td><td>1.8 dB</td><td>0.5 dB (0.2 dB)</td><td>2.0 dB</td></tr>
+    <tr><td>22 to 42 GHz</td><td>2.3 dB</td><td>2.0 dB</td><td>1.2 dB (0.4 dB)</td><td>2.0 dB</td></tr>
+    <tr><td>42 to 51 GHz</td><td>2.5 dB</td><td>2.0 dB</td><td>1.3 dB (0.4 dB)</td><td>2.5 dB</td></tr>
+  </table>
+  <h3>Relative Power Level Error (0.1 dB steps)</h3>
+  <p>Specified values in plain text, typical values in brackets.</p>
+  <table class="spec">
+    <tr><th>Frequency Range</th><th>-110 to -50 dBm<br>Option PE2</th><th>-50 to -15 dBm<br>Option PE2</th><th>-15 to +15 dBm</th><th>+15 dBm to Max Power</th></tr>
+    <tr><td>1 kHz to 10 MHz</td><td>2.0 dB</td><td>1.2 dB</td><td>1 dB (0.5 dB)</td><td>1.3 dB</td></tr>
+    <tr><td>10 MHz to 1 GHz</td><td>2.0 dB</td><td>1.3 dB</td><td>0.8 dB (0.15 dB)</td><td>1.3 dB</td></tr>
+    <tr><td>1 to 22 GHz</td><td>2.0 dB</td><td>1.8 dB</td><td>0.5 dB (0.2 dB)</td><td>2.0 dB</td></tr>
+    <tr><td>22 to 42 GHz</td><td>2.3 dB</td><td>2.0 dB</td><td>1.2 dB (0.4 dB)</td><td>2.0 dB</td></tr>
+    <tr><td>42 to 51 GHz</td><td>2.5 dB</td><td>2.0 dB</td><td>1.3 dB (0.4 dB)</td><td>2.5 dB</td></tr>
+  </table>
+  <h3>Relative Power Level Error (0.1 dB step)</h3>
+  <p>Specified values in plain text, typical values in brackets.</p>
+  <table class="spec">
+    <tr><th>Frequency Range</th><th>-110 to -50 dBm<br>Option PE2</th><th>-50 to -15 dBm<br>Option PE2/PE4</th><th>-15 to +15 dBm</th><th>+15 dBm to Max Power</th></tr>
+    <tr><td>1 kHz to 10 MHz</td><td>(&lt; 0.1 dB)</td><td>0.5 dB (&lt; 0.1 dB)</td><td>0.5 dB (&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td></tr>
+    <tr><td>10 MHz to 1 GHz</td><td>(&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td></tr>
+    <tr><td>1 to 51 GHz</td><td>(&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td><td>(&lt; 0.1 dB)</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 7</a> (power level error between -15 and +15 dBm over frequency) and <a href="#s-perf">Figure 8</a> (absolute power level error at different frequencies) in Typical Performance Curves.</p>
 </section>
 
 <section id="s9">
-  <h2><span class="num">9</span>Options &amp; Configurations</h2>
+  <h2><span class="num">9</span>Modulation Capabilities</h2>
+  <h3>Pulse Modulation</h3>
   <table class="spec">
-    <tr><th>Option</th><th>Description</th></tr>
-    <tr><td>-LN</td><td>Enhanced close-in phase noise</td></tr>
-    <tr><td>-LN plus</td><td>Low noise with improved long-term stability</td></tr>
-    <tr><td>-1k</td><td>Frequency extension down to 1 kHz</td></tr>
-    <tr><td>-MOD</td><td>Analog modulation (AM, FM, PM)</td></tr>
-    <tr><td>-VREF</td><td>Variable external reference</td></tr>
-    <tr><td>-PULSE</td><td>Pulse modulation</td></tr>
-    <tr><td>-PHS</td><td>Phase-coherent switching</td></tr>
-    <tr><td>-PE2</td><td>Mechanical step attenuator to -120 dBm (per channel)</td></tr>
-    <tr><td>-PE2-50</td><td>Mechanical step attenuator to -110 dBm (per channel)</td></tr>
-    <tr><td>-GPIB</td><td>GPIB communication port</td></tr>
-    <tr><td>-FLASH</td><td>MicroSD card slot</td></tr>
-    <tr><td>-RM</td><td>2U rackmount chassis</td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Pulse Modulation</td><td></td><td></td><td></td><td>Option Pulse</td></tr>
+    <tr><td>Modulation Source</td><td></td><td>Internal / external</td><td></td><td></td></tr>
+    <tr><td>External input amplitude</td><td></td><td>TTL</td><td></td><td></td></tr>
+    <tr><td>Pulse rise/fall time</td><td></td><td>3 ns</td><td>5 ns</td><td></td></tr>
+    <tr><td>On/off ratio (power&gt;=+5 dBm)</td><td>80 dB</td><td>95 dB</td><td></td><td></td></tr>
+    <tr><td>Pulse overshoot</td><td></td><td></td><td>10%</td><td></td></tr>
+    <tr><td>Pulse delay</td><td></td><td>20 ns</td><td></td><td></td></tr>
+    <tr><td>Pulse polarity</td><td></td><td>Normal, inverse</td><td></td><td>Selectable</td></tr>
   </table>
+  <h3>Internal Pulse Generator</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Repetition Frequency (PRF)</td><td>0.1 Hz</td><td></td><td>50 MHz</td><td>= 1/T</td></tr>
+    <tr><td>Duty Cycle</td><td>1% to 99%<br>in 1% steps</td><td></td><td></td><td>Within specified minimum pulse width</td></tr>
+    <tr><td>Pulse Pattern Modulation &amp; Staggered PRF</td><td></td><td></td><td></td><td>Using internal pattern generator</td></tr>
+    <tr><td>Pulse width</td><td>10 ns</td><td></td><td>20 s</td><td></td></tr>
+    <tr><td>Programmable pattern length</td><td>2</td><td></td><td>65536</td><td></td></tr>
+    <tr><td>Duty cycle</td><td>0.05%</td><td></td><td>99.95%</td><td></td></tr>
+    <tr><td>Pulse width resolution</td><td></td><td>5 ns</td><td></td><td></td></tr>
+    <tr><td>Pulse period (T) accuracy</td><td></td><td>5&middot;10<sup>-6</sup>&middot;T+ 3ns</td><td></td><td></td></tr>
+    <tr><td>Pulse width accuracy</td><td></td><td>5<sup>-6</sup>x T +5ns</td><td></td><td></td></tr>
+    <tr><td>Pulse jitter</td><td></td><td>2 ns</td><td>5 ns</td><td></td></tr>
+    <tr><td>Polarity</td><td></td><td>Selectable</td><td></td><td></td></tr>
+  </table>
+  <h3>Amplitude Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Amplitude Modulation</td><td></td><td></td><td></td><td>Option MOD</td></tr>
+    <tr><td>Modulation source</td><td></td><td>Internal</td><td></td><td></td></tr>
+    <tr><td>Modulation depth</td><td>0</td><td></td><td>100%</td><td></td></tr>
+    <tr><td>Depth accuracy</td><td></td><td></td><td>0.05&middot;Depth +2</td><td></td></tr>
+    <tr><td>Depth resolution</td><td></td><td>1%</td><td></td><td></td></tr>
+    <tr><td>Distortion (THD)</td><td></td><td></td><td>3%</td><td></td></tr>
+    <tr><td>Modulation rate</td><td>DC</td><td></td><td>30 kHz</td><td></td></tr>
+    <tr><td>Modulation waveforms</td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <h3>Frequency Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Frequency Modulation</td><td></td><td></td><td></td><td>Option MOD</td></tr>
+    <tr><td>Modulation source</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Maximum frequency deviation (peak)</td><td></td><td></td><td>N&middot;5 MHz</td><td>See Deviation Table Below</td></tr>
+    <tr><td>Deviation accuracy</td><td></td><td>0.01&middot;Dev +2Hz</td><td></td><td></td></tr>
+    <tr><td>Distortion (THD)</td><td></td><td></td><td>3%</td><td></td></tr>
+    <tr><td>Modulation rate</td><td>DC</td><td></td><td>30 kHz</td><td></td></tr>
+    <tr><td>Modulation waveforms</td><td></td><td>Sine</td><td></td><td></td></tr>
+  </table>
+  <h3>Phase Modulation</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Phase modulation</td><td></td><td></td><td></td><td>Option MOD</td></tr>
+    <tr><td>Modulation source</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Phase deviation (peak)</td><td></td><td></td><td>N&middot;100 rad</td><td></td></tr>
+    <tr><td>Deviation accuracy</td><td></td><td>0.01&middot;Dev +1 mrad</td><td></td><td></td></tr>
+    <tr><td>Modulation rate</td><td>DC</td><td></td><td>30 kHz</td><td></td></tr>
+    <tr><td>Distortion (THD)</td><td></td><td></td><td>3%</td><td></td></tr>
+    <tr><td>Modulation waveforms</td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <h3>Deviation Table</h3>
+  <table class="spec">
+    <tr><th>Output Frequency</th><th>N Value</th></tr>
+    <tr><td>1 kHz to &lt;350 MHz</td><td>1</td></tr>
+    <tr><td>350 to &lt;562.5 MHz</td><td>1/16</td></tr>
+    <tr><td>562.5 to &lt;1125 MHz</td><td>1/8</td></tr>
+    <tr><td>1.125 to &lt;2.25 GHz</td><td>1/4</td></tr>
+    <tr><td>2.25 to &lt;4.5 GHz</td><td>1/2</td></tr>
+    <tr><td>4.5 to &lt;12.75 GHz</td><td>1</td></tr>
+    <tr><td>12.75 to &lt;25.5 GHz</td><td>2</td></tr>
+    <tr><td>25.5 to 51 GHz</td><td>4</td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">Figure 9</a> (pulse modulation ON/OFF ratio over frequency), <a href="#s-perf">Figure 10</a> (10 GHz pulse-modulated signal) and <a href="#s-perf">Figure 11</a> (50 GHz pulse-modulated signal) in Typical Performance Curves.</p>
 </section>
 
 <section id="s10">
-  <h2><span class="num">10</span>Applications</h2>
-  <ul>
-    <li>Automated test equipment and high-volume production testing.</li>
-    <li>R&amp;D low-noise signal source and signal simulation.</li>
-    <li>Defense and aerospace, service and maintenance.</li>
-    <li>Phased-array radar testing and beamforming networks.</li>
-    <li>MIMO system validation and multi-channel receiver development.</li>
-    <li>Electronic warfare simulation.</li>
-  </ul>
+  <h2><span class="num">10</span>Sweeping Capability</h2>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Sweep Parameters</td><td colspan="3">Frequency, power, phase, list</td><td></td></tr>
+    <tr><td>Sweep Type</td><td colspan="3">Linear</td><td></td></tr>
+    <tr><td rowspan="2">Step time (t<sub>step</sub> = t<sub>dwell</sub> + t<sub>off</sub>)</td><td>500 &micro;s</td><td></td><td>19998 s</td><td></td></tr>
+    <tr><td>5 &micro;s</td><td></td><td>19998 s</td><td>Option FS</td></tr>
+    <tr><td>Dwell time (t<sub>dwell</sub>)</td><td>0 &micro;s</td><td></td><td>9999 s</td><td></td></tr>
+    <tr><td>Off time (t<sub>off</sub>)</td><td>0 &micro;s</td><td></td><td>9999 s</td><td></td></tr>
+    <tr><td>Time resolution</td><td></td><td>5 ns</td><td></td><td></td></tr>
+    <tr><td>Timing delay (t<sub>de</sub>)</td><td></td><td>50 ns</td><td></td><td></td></tr>
+    <tr><td>Transient time (t<sub>inv</sub>)</td><td></td><td></td><td>5 &micro;s</td><td></td></tr>
+    <tr><td>Timing accuracy per point</td><td></td><td>5 ns</td><td></td><td></td></tr>
+    <tr><td>Number of points</td><td>2</td><td></td><td>10000</td><td>Per channel</td></tr>
+  </table>
 </section>
 
 <section id="s11">
-  <h2><span class="num">11</span>Ordering</h2>
-  <p>Specify the frequency variant (871-12, 871-20, 871-40, or 871-50), channel count, and options when requesting a quote. For configuration help, pricing, or a demonstration, contact Berkeley Nucleonics.</p>
+  <h2><span class="num">11</span>Trigger &amp; Multi-Purpose Output</h2>
+  <h3>Trigger (TRIG IN)</h3>
   <table class="spec">
-    <tr><th>Contact</th><th>Detail</th></tr>
-    <tr><td>Email</td><td><a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a></td></tr>
-    <tr><td>Phone</td><td>800-234-7858</td></tr>
-    <tr><td>Quote / demo</td><td><a href="../get-quote.html" target="_blank" rel="noopener">berkeleynucleonics.com/get-quote</a></td></tr>
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td>Trigger types</td><td colspan="3">Continuous, Single (point), Gated, Gated, direction</td><td></td></tr>
+    <tr><td>Trigger source</td><td colspan="3">External, Bus (LAN, USB)</td><td></td></tr>
+    <tr><td>Trigger modes</td><td colspan="3">Continuous free run, Trigger and run, Reset and run</td><td></td></tr>
+    <tr><td>Trigger latency</td><td></td><td>5 ns</td><td></td><td></td></tr>
+    <tr><td>Trigger uncertainty</td><td></td><td>10 ns</td><td></td><td></td></tr>
+    <tr><td>External trigger delay</td><td>50 ns</td><td></td><td>40 s</td><td>settable</td></tr>
+    <tr><td>External delay resolution</td><td></td><td>5 ns</td><td></td><td></td></tr>
+    <tr><td>Trigger modulo</td><td>1</td><td></td><td>255</td><td>Execute only on Nth trigger event</td></tr>
+    <tr><td>Trigger polarity</td><td colspan="3">Rising, Falling</td><td></td></tr>
+    <tr><td>External trigger input threshold</td><td>0.85 V</td><td>0.9 V</td><td>0.95 V</td><td>TTL compatible</td></tr>
+    <tr><td>External trigger input voltage range</td><td>-0.5 V</td><td></td><td>+5.5 V</td><td>TTL compatible</td></tr>
+    <tr><td>External trigger input hysteresis</td><td></td><td>60 mV</td><td></td><td></td></tr>
   </table>
-  <div class="note"><b>Configuration note.</b> Frequency reach, channel count, phase-noise grade, and attenuation floor are all configurable. Confirm the exact build and all performance figures against the released Model 871 datasheet before ordering.</div>
+  <h3>Multi-Purpose Output (FUNC OUT)</h3>
+  <table class="spec">
+    <tr><th>Parameter</th><th>Min</th><th>Typical</th><th>Max</th><th>Note</th></tr>
+    <tr><td><strong>PULM VIDEO OUTPUT</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Output</td><td></td><td>CMOS</td><td></td><td></td></tr>
+    <tr><td>Period</td><td>30 ns</td><td></td><td>50 s</td><td></td></tr>
+    <tr><td>Pulse width</td><td>15 ns</td><td></td><td>50 s</td><td></td></tr>
+    <tr><td>RF delay</td><td></td><td>10 ns</td><td></td><td></td></tr>
+    <tr><td><strong>TRIGGER OUT Synchronization Mode for Multiple Sources</strong></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Modes</td><td colspan="3">Trigger on sweep start<br>Trigger on each point<br>Signal valid</td><td></td></tr>
+  </table>
+  <p class="xref">See <a href="#s-perf">trigger input / output timing diagram</a> in Typical Performance Curves.</p>
+</section>
+
+<section id="s-perf">
+  <h2><span class="num">12</span>Typical Performance Curves</h2>
+  <style>.ds-figgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0 4px}.ds-fig{margin:0;border:1px solid #d6d3d1;border-radius:8px;background:#fff;padding:10px;overflow:hidden}.ds-fig img{width:100%;height:auto;display:block;border-radius:4px}.ds-fig figcaption{font-size:.82rem;color:#57534e;margin-top:8px;line-height:1.4}</style>
+  <div class="ds-figgrid">
+  <figure class="ds-fig"><img src="figures/871-ds/fig01-phase-noise.png" alt="Figure 1: Phase noise at different frequencies. Option LN(+). (20 dBm or maximum power whichever is lower)" loading="lazy"><figcaption>Figure 1: Phase noise at different frequencies. Option LN(+). (20 dBm or maximum power whichever is lower)</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig02-clk-phase-noise.png" alt="Figure 2: 3 GHz CLK out signal phase noise. Option LN(+)" loading="lazy"><figcaption>Figure 2: 3 GHz CLK out signal phase noise. Option LN(+)</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig03-amplitude-noise.png" alt="Figure 3: Amplitude noise at different frequencies. Power level +10 dBm" loading="lazy"><figcaption>Figure 3: Amplitude noise at different frequencies. Power level +10 dBm</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig04-2nd-harmonic.png" alt="Figure 4: 2nd harmonic levels at different output power levels (+20 dBm or maximum power whichever is lower)" loading="lazy"><figcaption>Figure 4: 2nd harmonic levels at different output power levels (+20 dBm or maximum power whichever is lower)</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig05-3rd-harmonic.png" alt="Figure 5: 3rd harmonic levels at different output power levels (+20 dBm or maximum power whichever is lower)" loading="lazy"><figcaption>Figure 5: 3rd harmonic levels at different output power levels (+20 dBm or maximum power whichever is lower)</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig06-max-power-stats.png" alt="Figure 6: Maximum power level statistics over 20 devices" loading="lazy"><figcaption>Figure 6: Maximum power level statistics over 20 devices</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig07-power-level-error.png" alt="Figure 7: Power level error between -15 and +15 dBm over frequency" loading="lazy"><figcaption>Figure 7: Power level error between -15 and +15 dBm over frequency</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig08-abs-power-error.png" alt="Figure 8: Absolute power level error at different frequencies" loading="lazy"><figcaption>Figure 8: Absolute power level error at different frequencies</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig09-pulm-onoff.png" alt="Figure 9: Pulse Modulation ON/OFF Ratio over frequency at different output power levels (+20 dBm or maximum power whichever is lower)" loading="lazy"><figcaption>Figure 9: Pulse Modulation ON/OFF Ratio over frequency at different output power levels (+20 dBm or maximum power whichever is lower)</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig10-10ghz-pulse.png" alt="Figure 10: 10 GHz pulse-modulated signal" loading="lazy"><figcaption>Figure 10: 10 GHz pulse-modulated signal</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig11-50ghz-pulse.png" alt="Figure 11: 50 GHz pulse-modulated signal" loading="lazy"><figcaption>Figure 11: 50 GHz pulse-modulated signal</figcaption></figure>
+  <figure class="ds-fig"><img src="figures/871-ds/fig-timing-diagram.png" alt="Trigger input / output timing (TRIG IN, TRIG OUT signal valid, RF valid)" loading="lazy"><figcaption>Trigger input / output timing (TRIG IN, TRIG OUT signal valid, RF valid)</figcaption></figure>
+  </div>
+</section>
+
+<section id="s12">
+  <h2><span class="num">13</span>Connectors</h2>
+  <h3>Single-Channel Front Panel (Desktop enclosure)</h3>
+  <ul>
+    <li>Power switch</li>
+    <li>Rotary knob</li>
+    <li>RF outputs:
+      <ul>
+        <li>871-12/20: 3.5 mm male (female flange-mount optional)</li>
+        <li>871-40: 2.92 mm male hand-tight (female flange-mount optional)</li>
+        <li>871-50: 1.85/2.4 mm male hand-tight (female flange-mount optional)</li>
+      </ul>
+    </li>
+  </ul>
+  <h3>Single-Channel Rear Panel (Desktop enclosure)</h3>
+  <ul>
+    <li>Trigger output (TRIG OUT): BNC female</li>
+    <li>PULSE IN: Pulse modulation input: BNC female</li>
+    <li>Reference input (REF IN): BNC female</li>
+    <li>High Stability Reference input (CLK IN, 3 GHz): SMA female</li>
+    <li>Trigger input (TRIG IN): BNC female</li>
+    <li>Reference output (REF OUT): BNC female</li>
+    <li>High Stability Reference output (CLK OUT, 3 GHz): SMA female</li>
+    <li>GPIB: IEEE-488.2, 1987 with listen and talk (optional)</li>
+    <li>LAN connection: RJ-45</li>
+    <li>USB 2.0 device</li>
+    <li>Card slot (SD)</li>
+    <li>100-240V AC power plug</li>
+    <li>Ground reference screw (earth) M4</li>
+  </ul>
+  <h3>Multi-Channel Front Panel (19" 2 U)</h3>
+  <ul>
+    <li>RF outputs:
+      <ul>
+        <li>871-12/20: SMA female</li>
+        <li>871-40: 2.92 mm female</li>
+        <li>871-50: 1.85/2.4 mm female</li>
+      </ul>
+    </li>
+  </ul>
+  <h3>Multi-Channel Rear Panel (19" 2 U)</h3>
+  <ul>
+    <li>Unit-to-unit synchronization signal input (SYNC IN): SMA female</li>
+    <li>Unit-to-unit synchronization signal output (SYNC OUT): SMA female</li>
+    <li>Channel 1, 2, 3, 4 PULM input: BNC female</li>
+    <li>High Stability Reference input (CLK IN, 3 GHz): SMA female</li>
+    <li>High Stability Reference output (CLK OUT, 3 GHz): SMA female</li>
+    <li>Trigger input (TRIG IN): BNC female</li>
+    <li>Trigger output (TRIG OUT): BNC female</li>
+    <li>Reference input (REF IN): BNC female</li>
+    <li>Reference output (REF OUT): BNC female</li>
+    <li>GPIB: IEEE-488.2, 1987 with listen and talk (optional)</li>
+    <li>LAN connection: RJ-45</li>
+    <li>USB 2.0 device</li>
+    <li>Card slot (SD)</li>
+    <li>FUSE (3.15 A)</li>
+    <li>100-240V AC power plug</li>
+    <li>Power switch</li>
+    <li>Ground reference screw (earth) M4</li>
+  </ul>
+</section>
+
+<section id="s13">
+  <h2><span class="num">14</span>Mechanical Specifications</h2>
+  <h3>Desktop enclosure: Dimensions &amp; weight</h3>
+  <table class="spec">
+    <tr><td>Including connectors</td><td>W x L x H = 9.1 x 15.5 x 3.8 in [232 x 393 x 96.75 mm], &le;22 lbs [10 kg]</td></tr>
+  </table>
+  <h3>Rackmount 19" 2 U: Dimensions &amp; Weight</h3>
+  <table class="spec">
+    <tr><td>Including connectors</td><td>W x L x H = 17.5 x 23.4 x 3.5 in [444 x 594 x 88 mm], &le;39.7 lbs [18 kg]</td></tr>
+  </table>
+</section>
+
+<section id="s14">
+  <h2><span class="num">15</span>Ordering Information</h2>
+  <table class="spec">
+    <tr><th>Host Model No.</th><th>Product</th><th>Description</th></tr>
+    <tr><td>871</td><td>871-12</td><td>High performance signal generator up to 12.75 GHz</td></tr>
+    <tr><td>871</td><td>871-20</td><td>High performance signal generator up to 20 GHz</td></tr>
+    <tr><td>871</td><td>871-40</td><td>High performance signal generator up to 40 GHz</td></tr>
+    <tr><td>871</td><td>871-50</td><td>High performance signal generator up to 51 GHz</td></tr>
+    <tr><td>871-XX-X</td><td>871-XX-1</td><td>1-channel signal generator, 19" 1U rack-mount module</td></tr>
+    <tr><td>871-XX-X</td><td>871-XX-2</td><td>2-channel signal generator, 19" 1U rack-mount module</td></tr>
+    <tr><td>871-XX-X</td><td>871-XX-3</td><td>3-channel signal generator, 19" 1U rack-mount module</td></tr>
+    <tr><td>871-XX-X</td><td>871-XX-4</td><td>4-channel signal generator, 19" 1U rack-mount module</td></tr>
+    <tr><td>871-XX-X</td><td>Option FS</td><td>Ultra-fast frequency/power switching</td></tr>
+    <tr><td>871-XX-X</td><td>Option 1K</td><td>Frequency range extension up to 1 kHz</td></tr>
+    <tr><td>871-XX-X</td><td>Option LN</td><td>Enhanced close in phase noise and frequency stability</td></tr>
+    <tr><td>871-XX-X</td><td>Option LN+</td><td>Option LN with improved long term frequency stability</td></tr>
+    <tr><td>871-XX-X</td><td>Option VREF</td><td>External reference frequency in range 1 to 250 MHz</td></tr>
+    <tr><td>871-XX-X</td><td>Option MOD</td><td>Analog modulations</td></tr>
+    <tr><td>871-XX-X</td><td>Option PULSE</td><td>Pulse modulation</td></tr>
+    <tr><td>871-XX-X</td><td>Option PE2-12/20/40</td><td>Mechanical step attenuator down to -120 dBm for 12, 20 and 40 GHz models</td></tr>
+    <tr><td>871-XX-X</td><td>Option PE2-50</td><td>Mechanical step attenuator down to -110 dBm for 51 GHz models</td></tr>
+    <tr><td>871-XX-X</td><td>Option FLASH</td><td>MicroSD card slot for removable SD memory</td></tr>
+    <tr><td>871-XX-X</td><td>Option GBIB</td><td>GPIB interface</td></tr>
+  </table>
+</section>
+
+<section id="s15">
+  <h2><span class="num">16</span>General Characteristics</h2>
+  <h4>Remote programming interfaces:</h4>
+  <ul>
+    <li>Gbit Ethernet interface</li>
+    <li>USB 2.0 device</li>
+    <li>GPIB (IEEE-488.2,1987) with listen and talk (Option GPIB)</li>
+    <li>Control Language SCPI Version 1999.0</li>
+  </ul>
+  <p><strong>Power requirements:</strong> 100 - 240 VAC, 50 or 60 Hz, 280W maximum (80W + 50W per channel)</p>
+  <p><strong>Environmental:</strong> Levels similar to MIL-PRF-28800F Class &frac34;</p>
+  <p>Safety/EMC comply with applicable Safety and EMC regulations and directives. CE marked.</p>
+  <p><strong>Weight:</strong><br>
+  Multi-Channel: 19" 2U HI enclosure 39.7 lbs. (18 kg)<br>
+  Single-Channel: desktop enclosure &le;22 lbs. (10 kg)</p>
+  <p><strong>Dimensions:</strong><br>
+  Multi-Channel: 19" 2U HI enclosure W x L x H = 17.5 x 23.4 x 3.5 in [444 x 594 x 88 mm]<br>
+  Single-Channel: Desktop enclosure W x L x H = 9.1 x 15.5 x 3.8 in [232 x 393 x 96.75 mm]</p>
+</section>
+
+<section id="s16">
+  <h2><span class="num">17</span>Document History</h2>
+  <table class="spec">
+    <tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr>
+    <tr><td>V000</td><td>2023-6-27</td><td>AT</td><td>First release</td></tr>
+    <tr><td>V010</td><td>2024-1-16</td><td>AT</td><td>Preliminary specs and plots added for: Maxpower, Harmonics, Subharmonics, PULM. Options list updated. 871-12 added</td></tr>
+    <tr><td>V011</td><td>2024-1-17</td><td>AT</td><td>Changed power level uncertainties. Changed harmonic specs for 22-30 GHz. Updated tables formatting. Updated sweep specs.</td></tr>
+    <tr><td>V012</td><td>2024-1-18</td><td>AT</td><td>Updated power consumption</td></tr>
+    <tr><td>V013</td><td>2024-01-24</td><td>AT</td><td>Changed harmonics plot colors, changed power error plot limits, changed pulse-modulated plot from 1 to 10 GHz, updated pulse width form PULM</td></tr>
+    <tr><td>V014</td><td>2024-2-20</td><td>AT</td><td>Updated harmonics/subharmonics specs. Harmonics and subharmonics plots updated/added. PULM specs updated. PULM on/off plots added. AM noise plots added. Updated PhN plot and specs. Updated spur specs.</td></tr>
+    <tr><td>V015</td><td>2024-2-21</td><td>AT</td><td>Jitter specs, CLK output phase noise plot added</td></tr>
+    <tr><td>V016</td><td>2024-3-14</td><td>JM</td><td>Added mechanical specs</td></tr>
+    <tr><td>V017</td><td>2024-4-3</td><td>AT</td><td>Updated MOD parameters. Updated power specs. Updated max power specs. Updated power specs. Updated harmonics plots.</td></tr>
+    <tr><td>V018</td><td>2024-5-17</td><td>AT</td><td>Updated harmonics, PULM on/off ratio plots, MOD, Max power specs</td></tr>
+  </table>
 </section>
 
 </main>
@@ -403,6 +753,7 @@ inp.addEventListener("keydown",function(ev){var its=panel.querySelectorAll(".ss-
 function mark(its){for(var i=0;i<its.length;i++){its[i].classList.toggle("active",i===active);}}
 document.addEventListener("click",function(e){if(!wrap.contains(e.target))panel.className="ss-panel";});})();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 871 Single &amp; Multi-Channel Signal Generator"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 </body>
 </html>
