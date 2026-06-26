@@ -54,6 +54,40 @@
     return (Clerk && Clerk.user && Clerk.user.primaryEmailAddress)
       ? Clerk.user.primaryEmailAddress.emailAddress : null;
   }
+  // Webmaster/internal notes ([data-webmaster]): visible ONLY to these BNC logins;
+  // hidden from everyone else, including logged-out visitors.
+  var WM_EMAILS = ['davidbrown750@gmail.com','david.brown@berkeleynucleonics.com','meraly.rodas@berkeleynucleonics.com'];
+  function applyWebmasterGate() {
+    if (!document.getElementById('bnc-wm-style')) {
+      var st = document.createElement('style'); st.id = 'bnc-wm-style';
+      st.textContent = '[data-webmaster]{display:none!important}body.bnc-wm-ok [data-webmaster]{display:revert!important}';
+      (document.head || document.documentElement).appendChild(st);
+    }
+    var em = (userEmail() || '').toLowerCase();
+    if (document.body) document.body.classList.toggle('bnc-wm-ok', WM_EMAILS.indexOf(em) !== -1);
+  }
+  // Formspree return: remember the last real (non-form/non-auth) page, and on the
+  // form pages set _next so a submission returns the visitor to the product page
+  // they came from, not back to the form.
+  function applyFormReturn() {
+    var p = location.pathname.toLowerCase();
+    var isForm = /(get-quote|contact|rma-form)\.html$/.test(p);
+    if (!isForm) {
+      if (!/(sign-in|sign-up)\.html$/.test(p)) { try { sessionStorage.setItem('bncPrevPage', location.href); } catch (e) {} }
+      return;
+    }
+    function ok(u){ try { var x=new URL(u, location.href);
+      return x.origin===location.origin && !/(get-quote|contact|rma-form|sign-in|sign-up)\.html$/.test(x.pathname.toLowerCase());
+    } catch(e){ return false; } }
+    var ret=''; try { ret = sessionStorage.getItem('bncPrevPage') || ''; } catch(e){}
+    if (!ok(ret)) ret = ok(document.referrer) ? document.referrer : (location.origin + '/home.html');
+    var forms = document.querySelectorAll('form[action*="formspree.io"]');
+    Array.prototype.forEach.call(forms, function (f) {
+      var i = f.querySelector('input[name="_next"]');
+      if (!i) { i = document.createElement('input'); i.type='hidden'; i.name='_next'; f.appendChild(i); }
+      i.value = ret;
+    });
+  }
   function toast(msg) {
     var t = el('div', 'bnc-toast', msg);
     document.body.appendChild(t);
@@ -121,6 +155,11 @@
 
   /* ---------- manual page-7 gate ------------------------------------------ */
   function applyManualGate() {
+    // Always-public pages are never gated: the FAQ, plus any page that opts out
+    // with <body data-no-gate> or <main data-no-gate>.
+    if (/(?:^|\/)faq\.html$/i.test(location.pathname)) return;
+    if (document.body && (document.body.hasAttribute('data-no-gate') ||
+        document.querySelector('main[data-no-gate]'))) return;
     // Works on both manual layouts: newer (main.man-body / section.ch) and
     // older (main.content / section[id]).
     var body = document.querySelector('main.man-body') || document.querySelector('main.content');
@@ -402,6 +441,8 @@
     applyDownloadGate();
     applyPricingGate();
     prefillForms();
+    applyWebmasterGate();
+    applyFormReturn();
   }
 
   /* ---------- boot -------------------------------------------------------- */
@@ -465,4 +506,38 @@
       if (window.console) console.warn('[bnc-auth]', err && err.message);
     });
   });
+})();
+
+
+/* ===========================================================================
+   CTA auth gate. When a logged-OUT visitor clicks a quote/contact CTA (the
+   header "Get a Quote/Demo" button, or any link to get-quote.html / contact.html
+   such as "Talk to an Engineer"), open the Clerk sign-up/sign-in modal FIRST,
+   then redirect to the original destination after auth (where the existing
+   prefill fills the form). Signed-in visitors navigate normally.
+   =========================================================================== */
+(function () {
+  'use strict';
+  function ctaLink(t) {
+    var a = t && t.closest ? t.closest('a') : null;
+    if (!a) return null;
+    if (a.classList && a.classList.contains('sitenav-cta')) return a;
+    var href = a.getAttribute('href') || '';
+    if (/(?:^|\/)(?:contact|get-quote)\.html(?:[#?]|$)/i.test(href)) return a;
+    return null;
+  }
+  function signedIn() { try { return !!(window.Clerk && window.Clerk.user); } catch (e) { return false; } }
+  document.addEventListener('click', function (e) {
+    var a = ctaLink(e.target);
+    if (!a) return;
+    if (signedIn()) return;                                   // already signed in -> let it navigate
+    if (!(window.Clerk && window.Clerk.openSignUp)) return;   // Clerk not ready -> let it through
+    e.preventDefault();
+    e.stopPropagation();
+    var dest = a.href;                                        // absolute URL
+    window.Clerk.openSignUp({
+      afterSignInUrl: dest, afterSignUpUrl: dest,
+      signInForceRedirectUrl: dest, signUpForceRedirectUrl: dest, fallbackRedirectUrl: dest
+    });
+  }, true);
 })();

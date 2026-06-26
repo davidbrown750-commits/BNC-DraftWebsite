@@ -48,7 +48,9 @@
     return h2s.map(function(h, i){
       var nodes = [h], n = h.nextElementSibling;
       while (n && !set.has(n)) { nodes.push(n); n = n.nextElementSibling; }
-      var title = h.textContent.replace(/\s+/g, " ").trim();
+      var raw = h.textContent.replace(/\s+/g, " ").trim();
+      var nm = raw.match(/^(\d{1,3})\b[.\s]*(.*)$/);
+      var title = nm ? (nm[1] + ". " + nm[2]) : raw;
       var num = (title.match(/^\s*(\d+)\./) || [])[1];
       var desc = DESC_MAP[num] || DESC_MAP[title] || deriveDesc(nodes);
       return { i: i, title: title, desc: desc, nodes: nodes };
@@ -202,43 +204,71 @@
             document: DOC_TITLE, chapters: sel.map(function(c){ return c.title; }).join("; ") }) });
       } catch (e) {}
 
+      // Open the print window inside the click handler (needed for pop-up allowance).
       var w = window.open("", "_blank");
       if (!w) { msg.style.color = "#c0392b"; msg.textContent = "Please allow pop-ups so we can open your PDF."; go.disabled = false; return; }
+      // Paint a visible loading state at once so the new tab is never a blank white screen
+      // (the previous build handed the page to an external paginator that could leave it blank).
+      try {
+        w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Preparing your PDF…</title>' +
+          '<style>@keyframes pdfspin{to{transform:rotate(360deg)}}</style></head>' +
+          '<body style="font-family:Arial,Helvetica,sans-serif;margin:0;display:flex;height:100vh;align-items:center;justify-content:center;background:#f4f7fb;color:#113163">' +
+          '<div style="text-align:center"><div style="width:34px;height:34px;border:4px solid #cfe0f2;border-top-color:#0655a3;border-radius:50%;margin:0 auto 14px;animation:pdfspin 1s linear infinite"></div>Building your custom PDF…</div>' +
+          '</body></html>');
+      } catch (e) {}
 
+      // Inherit the page's own styles so tables, figures and callouts render correctly,
+      // but skip this widget's own UI styles.
       var heads = "";
-      Array.prototype.forEach.call(document.querySelectorAll('style, link[rel="stylesheet"]'), function(n){ heads += n.outerHTML; });
+      Array.prototype.forEach.call(document.querySelectorAll('style, link[rel="stylesheet"]'), function(n){
+        if (n.id === "pdfcfg-css") return;
+        heads += n.outerHTML;
+      });
       var content = "";
       sel.forEach(function(c){ c.nodes.forEach(function(n){ content += n.outerHTML; }); });
 
-      // Paged.js paginates with a real running footer (logo + page number) and reserves the
-      // footer margin, so content never overlaps it and the page count is correct.
-      var pcss = "@page{size:letter;margin:18mm 16mm 24mm 16mm;" +
-          "@bottom-left{content:element(pdffoot);}" +
-          "@bottom-right{content:\"Page \" counter(page);font-family:Arial,Helvetica,sans-serif;font-size:8pt;color:#54627a;}}" +
-        "html,body{margin:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}" +
+      // Native print pipeline: the browser's own "Save as PDF" handles pagination, so there is
+      // no external script that can blank the page. A fixed-position footer repeats on every
+      // printed page; per-chapter page breaks come from break-before. The content is visible
+      // the instant it renders, and a Save-as-PDF button stays available if auto-print is blocked.
+      var pcss = "@page{size:letter;margin:16mm 14mm 22mm 14mm;}" +
+        "html,body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#16233a;-webkit-print-color-adjust:exact;print-color-adjust:exact;}" +
         "img{max-width:100%!important;height:auto!important;}" +
         "table{max-width:100%!important;}" +
-        ".pdffoot{position:running(pdffoot);display:flex;align-items:center;gap:6px;}" +
-        ".pdffoot svg{height:5mm;width:auto;display:block;}" +
-        ".pdffoot .s{font-size:7.5pt;color:#8593a6;font-family:Arial,Helvetica,sans-serif;}" +
-        ".pdfcfg-cover{border-bottom:2px solid " + BRAND_BLUE + ";padding-bottom:4mm;margin-bottom:9mm;display:flex;justify-content:space-between;align-items:flex-end;}" +
-        ".pdfcfg-cover .b{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:700;color:" + BRAND_DARK + ";font-size:13pt;letter-spacing:.03em;}" +
-        ".pdfcfg-cover .t{font-size:8.5pt;color:#667;text-align:right;line-height:1.45;}" +
-        "h2{break-before:page;} h2:first-of-type{break-before:avoid;} h2,h3,h4{break-after:avoid;}" +
-        "figure,img,table,.note{break-inside:avoid;}" +
-        ".sitenav,.gfoot,nav,header,footer,.toc,.doc-hero,.pdfcfg-overlay,.pdfcfg-trigger{display:none!important;}";
+        ".pdfcfg-cover{border-bottom:2px solid " + BRAND_BLUE + ";padding-bottom:4mm;margin:0 0 8mm;display:flex;justify-content:space-between;align-items:flex-end;}" +
+        ".pdfcfg-cover .b{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:700;color:" + BRAND_DARK + ";font-size:15pt;letter-spacing:.03em;}" +
+        ".pdfcfg-cover .t{font-size:9pt;color:#667;text-align:right;line-height:1.45;}" +
+        "h2{break-before:page;page-break-before:always;} h2:first-of-type{break-before:avoid;page-break-before:avoid;}" +
+        "h2,h3,h4{break-after:avoid;page-break-after:avoid;}" +
+        "figure,img,table,tr,.note{break-inside:avoid;page-break-inside:avoid;}" +
+        ".pdfcfg-bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:" + BRAND_DARK + ";color:#fff;padding:11px 16px;}" +
+        ".pdfcfg-bar button{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:700;font-size:.9rem;background:" + BRAND_BLUE + ";color:#fff;border:none;border-radius:5px;padding:8px 16px;cursor:pointer;}" +
+        ".pdfcfg-bar button:hover{background:#fff;color:" + BRAND_DARK + ";}" +
+        ".pdfcfg-bar span{font-size:.8rem;color:#cfe0f5;}" +
+        ".pdfcfg-main{padding:14mm 14mm 0;max-width:210mm;margin:0 auto;}" +
+        ".pdffoot{display:none;}" +
+        ".sitenav,.gfoot,nav,header,footer,.toc,.doc-hero,.pdfcfg-holder,.pdfcfg-overlay,.pdfcfg-trigger{display:none!important;}" +
+        "@media print{" +
+          ".pdfcfg-bar{display:none!important;}" +
+          ".pdfcfg-main{padding:0;max-width:none;}" +
+          ".pdffoot{display:flex;position:fixed;left:14mm;right:14mm;bottom:8mm;align-items:center;gap:6px;}" +
+          ".pdffoot svg{height:5mm;width:auto;display:block;}" +
+          ".pdffoot .s{font-size:7.5pt;color:#8593a6;font-family:Arial,Helvetica,sans-serif;}" +
+        "}";
 
-      var fname = DOC_TITLE + "_user configured";
-      var foot = '<div class="pdffoot">' + LOGO + '<span class="s">berkeleynucleonics.com</span></div>';
+      var fname = (DOC_TITLE + " - custom excerpt").replace(/[\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
+      var foot = '<div class="pdffoot">' + LOGO + '<span class="s">Berkeley Nucleonics Corp &middot; 2955 Kerner Blvd, San Rafael, CA 94901 &middot; berkeleynucleonics.com</span></div>';
+      var bar = '<div class="pdfcfg-bar"><button type="button" onclick="window.focus();window.print();">Save as PDF / Print</button>' +
+        '<span>Choose &ldquo;Save as PDF&rdquo; as the destination in the print dialog.</span></div>';
       var cover = '<div class="pdfcfg-cover"><span class="b">BERKELEY NUCLEONICS</span>' +
         '<span class="t">' + esc(DOC_TITLE) + '<br>Custom excerpt</span></div>';
       var doc = '<!DOCTYPE html><html><head><meta charset="utf-8"><base href="' + location.href + '">' +
-        '<title>' + esc(fname) + '</title>' + heads + '<style>' + pcss + '</style>' +
-        '<script>window.PagedConfig={auto:true,after:function(){setTimeout(function(){try{window.focus();window.print();}catch(e){}},500);}};<\/script>' +
-        '<script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"><\/script>' +
-        '</head><body>' + foot + cover + content + '</body></html>';
+        '<title>' + esc(fname) + '</title>' + heads + '<style>' + pcss + '</style></head>' +
+        '<body>' + bar + foot + '<div class="pdfcfg-main content">' + cover + content + '</div>' +
+        '<script>window.addEventListener("load",function(){setTimeout(function(){try{window.focus();window.print();}catch(e){}},450);});<\/script>' +
+        '</body></html>';
       w.document.open(); w.document.write(doc); w.document.close();
-      msg.style.color = "#0a7"; msg.textContent = "Building your PDF… the print dialog opens when it is ready.";
+      msg.style.color = "#0a7"; msg.textContent = "Your custom PDF opened in a new tab. Use “Save as PDF” in the print dialog.";
       setTimeout(function(){ go.disabled = false; }, 1500);
     });
   });
