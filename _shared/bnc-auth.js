@@ -158,6 +158,7 @@
     // Always-public pages are never gated: the FAQ, plus any page that opts out
     // with <body data-no-gate> or <main data-no-gate>.
     if (/(?:^|\/)faq\.html$/i.test(location.pathname)) return;
+    if (/-datasheet\.html$/i.test(location.pathname)) return;  // datasheets are public, no sign-up gate
     if (document.body && (document.body.hasAttribute('data-no-gate') ||
         document.querySelector('main[data-no-gate]'))) return;
     // Works on both manual layouts: newer (main.man-body / section.ch) and
