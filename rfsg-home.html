@@ -86,14 +86,10 @@
   .hero .specstrip div{font-family:var(--font-h);}
   .hero .specstrip .n{font-size:1.7rem;font-weight:700;color:#fff;}
   .hero .specstrip .l{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--soft-2);}
-  .hero-spin{position:absolute;top:130px;right:4%;width:32%;max-width:440px;z-index:3;pointer-events:none;perspective:1500px;}
-  .hero-spin .turn{position:relative;z-index:2;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 62%,transparent 80%);mask-image:radial-gradient(circle at 50% 50%,#000 62%,transparent 80%);}
-  .hero-spin .turn img{width:100%;height:auto;display:block;filter:drop-shadow(0 22px 40px rgba(0,0,0,.6));transform-style:preserve-3d;}
-  .hero-spin::before{content:"";position:absolute;inset:-14%;background:radial-gradient(circle,rgba(55,182,240,.34),transparent 62%);filter:blur(24px);z-index:0;}
-  .hero-spin::after{content:"";position:absolute;inset:-22%;border-radius:50%;z-index:1;background:conic-gradient(from 0deg,transparent 0deg,rgba(95,208,255,.55) 75deg,rgba(63,208,196,.32) 150deg,transparent 215deg);-webkit-mask:radial-gradient(circle,transparent 53%,#000 57%,#000 70%,transparent 77%);mask:radial-gradient(circle,transparent 53%,#000 57%,#000 70%,transparent 77%);animation:heroRing 9s linear infinite;filter:blur(2px);}
-  @keyframes heroTurn{0%{transform:rotateY(-26deg);}50%{transform:rotateY(26deg);}100%{transform:rotateY(-26deg);}}
-  @keyframes heroRing{to{transform:rotate(360deg);}}
-  @media(prefers-reduced-motion:reduce){.hero-spin .turn img,.hero-spin::after{animation:none;}}
+  .hero-spin{position:absolute;top:118px;right:3%;width:46%;max-width:600px;z-index:3;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 72% 76% at 50% 50%,#000 52%,transparent 87%);mask-image:radial-gradient(ellipse 72% 76% at 50% 50%,#000 52%,transparent 87%);}
+  .hero-spin video{width:100%;height:auto;display:block;}
+  .hero-spin::before{content:"";position:absolute;inset:-12%;background:radial-gradient(circle,rgba(55,182,240,.32),transparent 62%);filter:blur(24px);z-index:-1;}
+  @media(prefers-reduced-motion:reduce){.hero-spin video{filter:none;}}
   @media(max-width:1040px){.hero-spin{display:none;}}
 
   /* ===== Sections ===== */
@@ -277,7 +273,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ===== Hero ===== -->
 <section class="hero">
   <div class="bg with-img"></div>
-  <div class="hero-spin"><div class="turn"><img src="figures/home/spin/870.png" alt="Berkeley Nucleonics Model 870A microwave signal generator"></div></div>
+  <div class="hero-spin"><video class="spinvid" src="figures/rfsg-871-loop.mp4" poster="figures/rfsg-871-poster.jpg" autoplay muted loop playsinline aria-label="Berkeley Nucleonics Model 871 microwave signal generator rotating"></video></div>
   <div class="wrap">
     <div class="eyebrow">RF &amp; Microwave Signal Generators</div>
     <h1>RF &amp; Microwave Signal Generators<span class="sub-mark">Clean signals from kilohertz to 54 gigahertz.</span></h1>
