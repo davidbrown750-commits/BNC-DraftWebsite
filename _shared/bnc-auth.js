@@ -57,14 +57,21 @@
   // Webmaster/internal notes ([data-webmaster]): visible ONLY to these BNC logins;
   // hidden from everyone else, including logged-out visitors.
   var WM_EMAILS = ['davidbrown750@gmail.com','david.brown@berkeleynucleonics.com','meraly.rodas@berkeleynucleonics.com'];
+  // Staff-only elements ([data-bnc-staff], e.g. the Support > Employee Portal menu):
+  // visible to ANY login whose email ends in @berkeleynucleonics.com.
+  var STAFF_DOMAIN = '@berkeleynucleonics.com';
   function applyWebmasterGate() {
     if (!document.getElementById('bnc-wm-style')) {
       var st = document.createElement('style'); st.id = 'bnc-wm-style';
-      st.textContent = '[data-webmaster]{display:none!important}body.bnc-wm-ok [data-webmaster]{display:revert!important}';
+      st.textContent = '[data-webmaster]{display:none!important}body.bnc-wm-ok [data-webmaster]{display:revert!important}'
+        + '[data-bnc-staff]{display:none!important}body.bnc-staff-ok [data-bnc-staff]{display:revert!important}';
       (document.head || document.documentElement).appendChild(st);
     }
     var em = (userEmail() || '').toLowerCase();
-    if (document.body) document.body.classList.toggle('bnc-wm-ok', WM_EMAILS.indexOf(em) !== -1);
+    if (document.body) {
+      document.body.classList.toggle('bnc-wm-ok', WM_EMAILS.indexOf(em) !== -1);
+      document.body.classList.toggle('bnc-staff-ok', em.length > STAFF_DOMAIN.length && em.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN);
+    }
   }
   // Formspree return: remember the last real (non-form/non-auth) page, and on the
   // form pages set _next so a submission returns the visitor to the product page

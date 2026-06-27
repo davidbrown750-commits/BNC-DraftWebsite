@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Web Visitor Review — Berkeley Nucleonics</title>
+<style>
+  :root{
+    --navy:#0a1626; --blue:#0655a3; --ink:#113163; --line:#e3e7ee;
+    --bg:#f4f7fb; --muted:#5b6677; --hot:#c0392b; --warm:#9a5b00; --cool:#0a7d6b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#1c2c46;font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+  a{color:var(--blue)}
+  .top{background:var(--navy);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px}
+  .top svg{height:30px;width:auto;display:block}
+  .top .t{font-family:'Myriad Pro',Arial;font-weight:700;font-size:17px;letter-spacing:.01em}
+  .top .t span{color:#37b6f0}
+  .rule{height:3px;background:linear-gradient(90deg,#89AACC,#4E85BF)}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 18px 60px}
+  h1{font-family:'Myriad Pro',Arial;color:var(--ink);font-size:21px;margin:14px 0 2px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:14px}
+  .controls input[type=search]{flex:1 1 280px;min-width:200px;padding:9px 12px;border:1px solid #cdd5e0;border-radius:6px;font-size:14px}
+  .controls select{padding:9px 10px;border:1px solid #cdd5e0;border-radius:6px;font-size:13.5px;background:#fff}
+  .controls label.chk{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px}
+  .controls button{background:var(--blue);color:#fff;border:0;border-radius:6px;padding:9px 16px;font-size:13.5px;font-weight:700;cursor:pointer}
+  .controls button.sec{background:#fff;color:var(--blue);border:1px solid #cdd5e0;font-weight:600}
+  .statline{font-size:12.5px;color:var(--muted);margin:0 2px 12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px 16px;margin:0 0 11px;cursor:pointer}
+  .card:hover{border-color:#b9c6da}
+  .cardhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .who{font-family:'Myriad Pro',Arial;font-weight:700;color:var(--ink);font-size:15.5px}
+  .who .anon{color:var(--muted);font-weight:600}
+  .badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:#e6f0fb;color:var(--blue)}
+  .badge.anon{background:#eef0f3;color:var(--muted)}
+  .co{color:var(--muted);font-size:13px;margin-top:1px}
+  .metrics{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:12.5px;margin:8px 0 2px}
+  .metrics b{color:var(--ink)}
+  .chips{margin:7px 0 0;display:flex;flex-wrap:wrap;gap:5px}
+  .chip{font-size:11px;background:#eef3f9;color:var(--ink);border:1px solid #dde6f1;border-radius:999px;padding:2px 9px}
+  .contact{font-size:12.5px;margin-top:7px}
+  .contact a{text-decoration:none}
+  .detail{margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;display:none}
+  .card.open .detail{display:block}
+  .detail h4{font-family:'Myriad Pro',Arial;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin:0 0 6px}
+  table.pg{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:12px}
+  table.pg th{text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:4px 6px;font-size:11.5px}
+  table.pg td{padding:4px 6px;border-bottom:1px solid #f0f3f7;vertical-align:top}
+  table.pg td.n{color:var(--muted);white-space:nowrap}
+  .tl{font-size:12px;color:#2a3850}
+  .tl .row{display:flex;gap:10px;padding:3px 0;border-bottom:1px solid #f4f6f9}
+  .tl .row .d{color:var(--muted);white-space:nowrap;min-width:128px}
+  .empty{background:#fff;border:1px dashed #cdd5e0;border-radius:8px;padding:26px;text-align:center;color:var(--muted)}
+  .gate{position:fixed;inset:0;background:rgba(10,22,38,.92);display:flex;align-items:center;justify-content:center;z-index:50;padding:18px}
+  .gate .box{background:#fff;border-radius:10px;max-width:380px;width:100%;padding:24px;text-align:center}
+  .gate h2{font-family:'Myriad Pro',Arial;color:var(--ink);margin:0 0 6px;font-size:18px}
+  .gate p{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .gate input{width:100%;padding:10px;border:1px solid #cdd5e0;border-radius:6px;font-size:14px;margin-bottom:10px}
+  .gate button{width:100%;background:var(--blue);color:#fff;border:0;border-radius:6px;padding:10px;font-weight:700;cursor:pointer}
+  .gate .err{color:var(--hot);font-size:12.5px;min-height:16px;margin-top:8px}
+  .foot{color:var(--muted);font-size:11px;margin-top:24px;border-top:1px solid var(--line);padding-top:10px}
+  html.embed .top,html.embed .rule,html.embed h1{display:none}
+  html.embed body{background:#fff}
+  html.embed .wrap{padding:8px 2px 24px;max-width:100%}
+  html.embed .sub{margin-top:0}
+</style>
+</head>
+<body>
+<div class="top">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg>
+  <div class="t">BERKELEY NUCLEONICS <span>· Web Visitor Review</span></div>
+</div>
+<div class="rule"></div>
+
+<div class="wrap">
+  <h1>Web Visitor Review</h1>
+  <p class="sub">Live view of website traffic from the visit database. Search by name, email, company, or product line to see who has been on the site, when they were last on, and their full page history.</p>
+
+  <div class="controls">
+    <input type="search" id="q" placeholder="Search name, email, company, or page…" autocomplete="off">
+    <select id="product">
+      <option value="">All product lines</option>
+      <option>Pulse &amp; Delay Generators</option>
+      <option>PVP-Series HV Pulse</option>
+      <option>RF Signal Generators</option>
+      <option>Arbitrary Waveform Gen</option>
+      <option>ScintIQ</option>
+      <option>ICX FieldHawk (RTSA)</option>
+      <option>VSG-Mini</option>
+      <option>Isotope ID &amp; Radiation</option>
+      <option>Signal Sources (12000)</option>
+      <option>765 HV Pulse</option>
+      <option>Pricing</option>
+      <option>Contact</option>
+    </select>
+    <label class="chk"><input type="checkbox" id="idOnly"> Identified only</label>
+    <button id="go">Search</button>
+    <button id="clear" class="sec">Reset</button>
+  </div>
+
+  <div class="statline">
+    <span id="stat">Loading…</span>
+    <span id="updated"></span>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="foot">Internal Berkeley Nucleonics tool. Visitor data is confidential — do not share outside the company. Traffic is captured site-wide; identities appear when a visitor submits a form or signs in.</div>
+</div>
+
+<!-- Simple access gate (replaced by the Employee Portal's Clerk login when embedded). -->
+<div class="gate" id="gate">
+  <div class="box">
+    <h2>Web Visitor Review</h2>
+    <p>Berkeley Nucleonics internal tool. Enter the access password to continue.</p>
+    <input type="password" id="pw" placeholder="Access password" autocomplete="current-password">
+    <button id="enter">Enter</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var API = "/api/visitors";
+  var TKEY = "bnc_ve_token";
+  // token sources, in order: URL hash (#t=…, used by the Employee Portal iframe),
+  // ?token= query, then a previously-entered password in sessionStorage.
+  var hashTok = (location.hash.match(/[#&]t=([^&]+)/) || [])[1];
+  var qTok = new URLSearchParams(location.search).get("token");
+  var embed = new URLSearchParams(location.search).get("embed") === "1";
+  var token = (hashTok && decodeURIComponent(hashTok)) || qTok || sessionStorage.getItem(TKEY) || "";
+  if (embed) document.documentElement.classList.add("embed");
+
+  function fmtDur(s){
+    s = Math.round(s||0);
+    if(s < 60) return s + "s";
+    if(s < 3600) return Math.floor(s/60) + "m " + (s%60) + "s";
+    return Math.floor(s/3600) + "h " + Math.floor((s%3600)/60) + "m";
+  }
+  function rel(iso){
+    if(!iso) return "—";
+    var d = new Date(iso), now = new Date(), ms = now - d;
+    var day = 86400000;
+    if(ms < 0) return "just now";
+    if(ms < 3600000) return Math.max(1,Math.floor(ms/60000)) + " min ago";
+    if(ms < day) return Math.floor(ms/3600000) + " hr ago";
+    if(ms < 2*day) return "yesterday";
+    if(ms < 30*day) return Math.floor(ms/day) + " days ago";
+    return d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+  }
+  function when(iso){
+    if(!iso) return "";
+    var d = new Date(iso);
+    return d.toLocaleDateString(undefined,{month:"short",day:"numeric"}) + " " +
+           d.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+  }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+
+  function card(v){
+    var name = v.identified ? esc(v.name || v.email)
+      : '<span class="anon">Anonymous visitor</span>';
+    var badge = v.identified ? '<span class="badge">Identified</span>'
+      : '<span class="badge anon">Anonymous</span>';
+    var chips = (v.product_lines||[]).map(function(p){return '<span class="chip">'+esc(p)+'</span>';}).join("");
+    var contact = "";
+    if(v.email) contact += 'Email: <a href="mailto:'+esc(v.email)+'">'+esc(v.email)+'</a>';
+    if(v.company) contact += (contact?' &nbsp;·&nbsp; ':'') + 'Company: '+esc(v.company);
+    if(!contact) contact = '<span style="color:var(--muted)">No contact captured yet · visitor id '+esc(String(v.key).slice(0,10))+'…</span>';
+
+    var pages = (v.pages||[]).slice(0,12).map(function(p){
+      return '<tr><td>'+esc(p.title||p.path)+'<br><span class="n" style="font-size:11px">'+esc(p.path)+'</span></td>'+
+             '<td class="n">'+p.count+'×</td><td class="n">'+when(p.last)+'</td></tr>';
+    }).join("");
+    var tl = (v.timeline||[]).slice(0,30).map(function(t){
+      return '<div class="row"><span class="d">'+when(t.at)+'</span><span>'+esc(t.title||t.path)+
+             (t.dwell?' <span style="color:var(--muted)">· '+fmtDur(t.dwell)+'</span>':'')+'</span></div>';
+    }).join("");
+
+    return '<div class="card" data-k="'+esc(v.key)+'">'+
+      '<div class="cardhead"><span class="who">'+name+'</span>'+badge+'</div>'+
+      (v.company? '<div class="co">'+esc(v.company)+'</div>':'')+
+      '<div class="metrics">'+
+        '<span><b>Last on site:</b> '+rel(v.last_seen)+'</span>'+
+        '<span><b>Visits:</b> '+v.visit_days+' day'+(v.visit_days==1?'':'s')+'</span>'+
+        '<span><b>Pageviews:</b> '+v.hits+'</span>'+
+        '<span><b>Engaged time:</b> '+fmtDur(v.dwell_seconds)+'</span>'+
+        '<span><b>First seen:</b> '+rel(v.first_seen)+'</span>'+
+      '</div>'+
+      (chips? '<div class="chips">'+chips+'</div>':'')+
+      '<div class="contact">'+contact+'</div>'+
+      '<div class="detail">'+
+        '<h4>Pages viewed</h4><table class="pg"><tr><th>Page</th><th>Views</th><th>Last</th></tr>'+pages+'</table>'+
+        '<h4>Recent activity</h4><div class="tl">'+(tl||'<span style="color:var(--muted)">No detail.</span>')+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function render(data){
+    var r = document.getElementById("results");
+    var vs = data.visitors||[];
+    if(!vs.length){ r.innerHTML = '<div class="empty">No visitors match this search yet.</div>'; }
+    else { r.innerHTML = vs.map(card).join(""); }
+    document.getElementById("stat").textContent =
+      "Showing " + vs.length + " of " + (data.total_visitors||vs.length) + " visitors · " +
+      (data.total_rows||0) + " page-events in the database";
+    document.getElementById("updated").textContent = "Updated " + when(data.generated_at);
+    Array.prototype.forEach.call(r.querySelectorAll(".card"), function(c){
+      c.addEventListener("click", function(){ c.classList.toggle("open"); });
+    });
+  }
+
+  // When embedded in the Employee Portal, ask the parent for a fresh Clerk session
+  // token on each request (Clerk tokens are short-lived). Standalone uses the password.
+  function getFreshToken(cb){
+    if(!embed){ cb(token); return; }
+    var done=false;
+    function onMsg(e){
+      if(e.data && e.data.type==="bnc-token"){
+        done=true; window.removeEventListener("message",onMsg);
+        token = e.data.token||""; cb(token);
+      }
+    }
+    window.addEventListener("message",onMsg);
+    (window.parent||window).postMessage({type:"bnc-need-token"}, "*");
+    setTimeout(function(){ if(!done){ window.removeEventListener("message",onMsg); cb(token); } }, 4000);
+  }
+
+  function load(){
+    var q = document.getElementById("q").value.trim();
+    var product = document.getElementById("product").value;
+    var idOnly = document.getElementById("idOnly").checked ? "1" : "";
+    document.getElementById("stat").textContent = "Loading…";
+    getFreshToken(function(t){
+      var url = API + "?token=" + encodeURIComponent(t) +
+        (q? "&q="+encodeURIComponent(q):"") +
+        (product? "&product="+encodeURIComponent(product):"") +
+        (idOnly? "&identified=1":"");
+      fetch(url).then(function(res){
+        if(res.status===401){ showGate("That password was not accepted."); throw new Error("auth"); }
+        if(!res.ok) throw new Error("http "+res.status);
+        return res.json();
+      }).then(render).catch(function(e){
+        if(e.message!=="auth")
+          document.getElementById("stat").textContent = "Could not load data ("+e.message+").";
+      });
+    });
+  }
+
+  // ---- access gate ----
+  function showGate(msg){
+    if(embed){ // inside the Employee Portal: no password box, just a hint
+      document.getElementById("stat").textContent =
+        msg || "Sign in with your @berkeleynucleonics.com account to view visitor data.";
+      return;
+    }
+    document.getElementById("gate").style.display="flex";
+    document.getElementById("gateErr").textContent = msg||"";
+  }
+  function hideGate(){ document.getElementById("gate").style.display="none"; }
+  function tryToken(t){
+    token = t; sessionStorage.setItem(TKEY,t); hideGate(); load();
+  }
+  document.getElementById("enter").addEventListener("click", function(){
+    var t = document.getElementById("pw").value.trim();
+    if(t) tryToken(t);
+  });
+  document.getElementById("pw").addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("enter").click(); });
+
+  // ---- controls ----
+  var deb;
+  document.getElementById("q").addEventListener("input", function(){ clearTimeout(deb); deb=setTimeout(load,350); });
+  document.getElementById("product").addEventListener("change", load);
+  document.getElementById("idOnly").addEventListener("change", load);
+  document.getElementById("go").addEventListener("click", load);
+  document.getElementById("clear").addEventListener("click", function(){
+    document.getElementById("q").value=""; document.getElementById("product").value="";
+    document.getElementById("idOnly").checked=false; load();
+  });
+
+  // boot
+  if(embed || token){ hideGate(); load(); } else { showGate(); }
+})();
+</script>
+</body>
+</html>

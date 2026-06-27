@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Employee Portal — Berkeley Nucleonics</title>
+<!--bnc-auth-->
+<link rel="stylesheet" href="_shared/bnc-auth.css">
+<script src="_shared/bnc-auth-config.js"></script>
+<script defer src="_shared/bnc-auth.js"></script><script defer src="_shared/bnc-visit.js"></script>
+<!--/bnc-auth-->
+<style>
+  :root{--navy:#0a1626;--blue:#0655a3;--ink:#113163;--line:#e3e7ee;--bg:#f4f7fb;--muted:#5b6677;--warm:#9a5b00;--green:#0a7d6b}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#1c2c46;font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+  a{color:var(--blue)}
+  .top{background:var(--navy);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px}
+  .top svg{height:30px;width:auto;display:block}
+  .top .t{font-family:'Myriad Pro',Arial;font-weight:700;font-size:17px}
+  .top .t span{color:#37b6f0}
+  .rule{height:3px;background:linear-gradient(90deg,#89AACC,#4E85BF)}
+  .tabs{background:#fff;border-bottom:1px solid var(--line);padding:0 18px;display:flex;gap:4px}
+  .tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:13px 16px;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Myriad Pro',Arial}
+  .tabs button.active{color:var(--ink);border-bottom-color:var(--blue)}
+  .wrap{max-width:1080px;margin:0 auto;padding:18px}
+  .panel{display:none}.panel.active{display:block}
+  iframe{width:100%;border:0;min-height:78vh}
+  h2{font-family:'Myriad Pro',Arial;color:var(--ink);font-size:18px;margin:4px 0 2px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+  .pa-stat{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+  .pa{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px 16px;margin:0 0 11px;display:flex;gap:12px;align-items:flex-start}
+  .pa.done{opacity:.55}
+  .pa input[type=checkbox]{margin-top:3px;width:17px;height:17px;flex:0 0 auto}
+  .pa .body{flex:1}
+  .pa .h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .pa .ttl{font-family:'Myriad Pro',Arial;font-weight:700;color:var(--ink);font-size:14.5px}
+  .pa.done .ttl{text-decoration:line-through}
+  .pa .vflag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:#fff4e6;color:var(--warm);border-radius:999px;padding:2px 8px}
+  .pa .note{font-size:12.5px;color:#2a3850;margin:6px 0 0;padding-left:10px;border-left:2px solid #ecdcc2}
+  .pa .open{font-size:12.5px;font-weight:700;white-space:nowrap}
+  .locked{max-width:460px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:10px;padding:30px;text-align:center}
+  .locked h2{margin:0 0 8px}.locked p{color:var(--muted);font-size:13.5px;margin:0 0 16px}
+  .locked button{background:var(--blue);color:#fff;border:0;border-radius:6px;padding:10px 20px;font-weight:700;cursor:pointer}
+  .hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="top">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg>
+  <div class="t">BERKELEY NUCLEONICS <span>· Employee Portal</span></div>
+</div>
+<div class="rule"></div>
+
+<!-- Locked state: shown until a @berkeleynucleonics.com user is detected -->
+<div id="locked" class="locked">
+  <h2>Employee Portal</h2>
+  <p>This area is for Berkeley Nucleonics staff. Sign in with your <b>@berkeleynucleonics.com</b> account to continue.</p>
+  <button id="signin">Sign in</button>
+  <p id="lockmsg" style="margin-top:14px;font-size:12.5px"></p>
+</div>
+
+<!-- Portal (revealed for staff) -->
+<div id="portal" class="hide">
+  <div class="tabs">
+    <button data-tab="visitors" class="active">Website Visitor Review</button>
+    <button data-tab="pending">Website Pending Actions</button>
+  </div>
+  <div class="wrap">
+    <div class="panel active" id="tab-visitors">
+      <iframe id="veframe" title="Web Visitor Review" src="about:blank"></iframe>
+    </div>
+    <div class="panel" id="tab-pending">
+      <h2>Website Pending Actions</h2>
+      <p class="sub">Every engineering verification and webmaster note across the site, in one place. Open a page to review the note in context, then approve or supply the missing spec. Check it off here when it's handled (saved in your browser).</p>
+      <div class="pa-stat" id="paStat">Loading…</div>
+      <div id="paList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var STAFF_DOMAIN = "@berkeleynucleonics.com";
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+  function bncEmail(){
+    var u = window.Clerk && window.Clerk.user;
+    var e = u && u.primaryEmailAddress && u.primaryEmailAddress.emailAddress;
+    return e ? e.toLowerCase() : null;
+  }
+  function isStaff(){
+    var e = bncEmail();
+    return !!(e && e.length > STAFF_DOMAIN.length && e.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN);
+  }
+  function waitForClerk(cb, tries){
+    tries = tries || 0;
+    if (window.Clerk && (window.Clerk.loaded || window.Clerk.user !== undefined)) { cb(); return; }
+    if (tries > 60) { cb(); return; }   // ~12s
+    setTimeout(function(){ waitForClerk(cb, tries+1); }, 200);
+  }
+
+  // ---- tabs ----
+  function showTab(name){
+    Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(b){
+      b.classList.toggle("active", b.getAttribute("data-tab")===name); });
+    Array.prototype.forEach.call(document.querySelectorAll(".panel"), function(p){
+      p.classList.toggle("active", p.id==="tab-"+name); });
+    if(name==="pending") loadPending();
+    if(location.hash.slice(1)!==name) history.replaceState(null,"","#"+name);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(b){
+    b.addEventListener("click", function(){ showTab(b.getAttribute("data-tab")); });
+  });
+
+  // ---- visitor explorer iframe ----
+  function loadExplorer(){
+    document.getElementById("veframe").src = "/web-visitors.html?embed=1";
+  }
+  // Serve a FRESH Clerk session token to the embedded explorer whenever it asks
+  // (Clerk session tokens are short-lived, so we mint one per request).
+  window.addEventListener("message", function(e){
+    if(!e.data || e.data.type!=="bnc-need-token") return;
+    var frame = document.getElementById("veframe");
+    function reply(t){ if(frame && frame.contentWindow) frame.contentWindow.postMessage({type:"bnc-token", token:t||""}, "*"); }
+    if(window.Clerk && window.Clerk.session && window.Clerk.session.getToken){
+      window.Clerk.session.getToken().then(reply).catch(function(){ reply(""); });
+    } else reply("");
+  });
+
+  // ---- pending actions ----
+  var paLoaded=false;
+  function paKey(file){ return "bnc_pa_done:"+file; }
+  function loadPending(){
+    if(paLoaded) return; paLoaded=true;
+    fetch("/pending-actions.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){
+      var list=document.getElementById("paList");
+      var entries=d.entries||[];
+      if(!entries.length){ list.innerHTML='<div class="pa"><div class="body">No pending notes. Everything is cleared.</div></div>';
+        document.getElementById("paStat").textContent=""; return; }
+      var doneCount=0;
+      list.innerHTML = entries.map(function(e){
+        var done = localStorage.getItem(paKey(e.file))==="1"; if(done) doneCount++;
+        var notes = (e.notes||[]).map(function(n){
+          return '<div class="note">'+(n.verify?'<span class="vflag">verify</span> ':'')+esc(n.text)+'</div>'; }).join("");
+        return '<div class="pa'+(done?' done':'')+'" data-f="'+esc(e.file)+'">'+
+          '<input type="checkbox"'+(done?' checked':'')+'>'+
+          '<div class="body"><div class="h"><span class="ttl">'+esc(e.title)+'</span>'+
+          '<a class="open" href="'+esc(e.link)+'" target="_blank" rel="noopener">Open page &rsaquo;</a></div>'+
+          notes+'</div></div>';
+      }).join("");
+      function updateStat(){
+        document.getElementById("paStat").textContent =
+          doneCount+" of "+entries.length+" pages cleared · "+d.total_notes+" notes total";
+      }
+      updateStat();
+      Array.prototype.forEach.call(list.querySelectorAll(".pa"), function(card){
+        var cb=card.querySelector("input");
+        cb.addEventListener("change", function(){
+          var f=card.getAttribute("data-f");
+          if(cb.checked){ localStorage.setItem(paKey(f),"1"); card.classList.add("done"); doneCount++; }
+          else { localStorage.removeItem(paKey(f)); card.classList.remove("done"); doneCount--; }
+          updateStat();
+        });
+      });
+    }).catch(function(e){ document.getElementById("paStat").textContent="Could not load pending actions ("+e.message+")."; });
+  }
+
+  // ---- gate ----
+  function reveal(){
+    document.getElementById("locked").classList.add("hide");
+    document.getElementById("portal").classList.remove("hide");
+    loadExplorer();
+    var initial = (location.hash.slice(1)==="pending") ? "pending" : "visitors";
+    showTab(initial);
+  }
+  function lock(msg){
+    document.getElementById("portal").classList.add("hide");
+    document.getElementById("locked").classList.remove("hide");
+    if(msg) document.getElementById("lockmsg").textContent=msg;
+  }
+  document.getElementById("signin").addEventListener("click", function(){
+    if(window.Clerk && window.Clerk.openSignIn) window.Clerk.openSignIn({});
+    else location.href="/home.html";
+  });
+
+  waitForClerk(function(){
+    if(isStaff()) reveal();
+    else if(bncEmail()) lock("Signed in as "+bncEmail()+" — that account is not a @berkeleynucleonics.com address.");
+    else lock("");
+    if(window.Clerk && window.Clerk.addListener){
+      window.Clerk.addListener(function(){ if(isStaff()) reveal(); });
+    }
+  });
+})();
+</script>
+</body>
+</html>
