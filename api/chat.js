@@ -185,6 +185,7 @@ module.exports = async function handler(req, res) {
       hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
       model: MODEL,
       hasSupabase: !!(SUPA && SKEY),
+      hasSendgrid: !!(process.env.SENDGRID_API_KEY && process.env.LEAD_NOTIFY_TO && process.env.LEAD_NOTIFY_FROM),
     });
     return;
   }
