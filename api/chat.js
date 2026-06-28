@@ -57,7 +57,8 @@ RULES:
 - Link to the relevant page using its URL from the sources when helpful.
 - Keep answers concise and concrete. Use short paragraphs or tight bullet lists. No emoji. No em dashes.
 - For export-control, ITAR/EAR, or "can I buy/ship to X country" questions, do not make a determination; say a BNC representative (David Brown / John Reynolds) will advise.
-- If the user seems ready to buy, wants a quote, pricing, or to talk to a person, invite them to leave their name and email and tell them a BNC engineer will follow up. Be helpful, not pushy.
+- If the user seems ready to buy, wants a quote, or wants to talk to a person, tell them they can click "Chat with a BNC engineer" at the top of this chat window to reach someone live, or leave their name and email for a follow-up. Be helpful, not pushy.
+- If you cannot answer from the sources, say so and point them to "Chat with a BNC engineer" at the top of the window.
 
 BNC SOURCES:
 ${context}`;
@@ -130,6 +131,17 @@ async function captureLead(session) {
 }
 
 module.exports = async function handler(req, res) {
+  // Safe diagnostic: GET /api/chat?diag=1 -> booleans only (never reveals secrets)
+  if (req.method === "GET") {
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).json({
+      ok: true,
+      hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
+      model: MODEL,
+      hasSupabase: !!(SUPA && SKEY),
+    });
+    return;
+  }
   if (req.method !== "POST") { res.status(405).json({ error: "POST only" }); return; }
 
   let body;

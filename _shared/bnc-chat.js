@@ -47,6 +47,9 @@
       '#bncChatHead{background:' + NAVY + ';color:#fff;padding:13px 14px;display:flex;align-items:center;gap:10px;}' +
       '#bncChatHead .t{font-weight:700;font-size:15px;line-height:1.1;}#bncChatHead .s{font-size:11.5px;opacity:.8;}' +
       '#bncChatHead button{margin-left:auto;background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;opacity:.85;line-height:1;}' +
+      '#bncChatPerson{display:flex;align-items:center;gap:6px;padding:7px 14px;background:#eef3f8;border-bottom:1px solid #e3e8ee;font-size:12px;color:#42566b;}' +
+      '#bncChatPerson a{color:' + NAVY + ';font-weight:700;cursor:pointer;text-decoration:none;margin-left:auto;}' +
+      '#bncChatPerson a:hover{text-decoration:underline;}' +
       '#bncChatBody{flex:1;overflow-y:auto;padding:14px;background:#f4f6f9;}' +
       '.bncMsg{margin:0 0 12px;display:flex;}' +
       '.bncMsg .b{max-width:84%;padding:10px 12px;border-radius:8px;font-size:13.5px;line-height:1.5;color:#1d2733;}' +
@@ -133,6 +136,10 @@
     var close = el('button', null, '&times;'); close.setAttribute('aria-label', 'Close chat');
     close.onclick = function () { panel.style.display = 'none'; launcher.style.display = 'flex'; };
     head.appendChild(close);
+    var person = el('div', null); person.id = 'bncChatPerson';
+    person.innerHTML = '<span>Prefer to talk to someone?</span>';
+    var plink = el('a', null, 'Chat with a BNC engineer'); plink.setAttribute('role', 'button');
+    plink.onclick = talkToPerson; person.appendChild(plink);
     body = el('div', null); body.id = 'bncChatBody';
     chips = el('div', null); chips.id = 'bncChatChips';
     ['Help me pick a pulse generator', 'RF signal generator specs', 'What is the ICX-FieldHawk?', 'Get a quote'].forEach(function (q) {
@@ -146,9 +153,19 @@
     sendBtn = el('button', null, SENDICON); sendBtn.id = 'bncChatSend'; sendBtn.setAttribute('aria-label', 'Send');
     sendBtn.onclick = function () { send(input.value); };
     foot.appendChild(input); foot.appendChild(sendBtn);
-    panel.appendChild(head); panel.appendChild(body); panel.appendChild(chips); panel.appendChild(foot);
+    panel.appendChild(head); panel.appendChild(person); panel.appendChild(body); panel.appendChild(chips); panel.appendChild(foot);
     document.body.appendChild(panel);
     addMsg('assistant', 'Hi, I am the BNC assistant. Ask me about any Berkeley Nucleonics instrument: specs, model selection, applications, pricing, or support. I answer from our actual datasheets.');
+  }
+
+  function talkToPerson() {
+    if (window.bncOpenLiveChat) {
+      if (panel) panel.style.display = 'none';
+      if (launcher) launcher.style.display = 'none';
+      window.bncOpenLiveChat(); // boots + opens Nutshell live chat on demand
+    } else {
+      window.location.href = '/contact.html';
+    }
   }
 
   var launcher;
