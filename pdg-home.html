@@ -200,7 +200,20 @@
     .sitenav.open .nav-item>a{height:auto;padding:13px 24px;border-top:1px solid rgba(120,170,225,.12);}
     .sitenav.open .nav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:rgba(255,255,255,.03);padding:4px 0 10px;min-width:0;border-radius:0;}
     .sitenav.open .nav-drop a{padding:8px 38px;white-space:normal;}
-  }</style>
+  }
+  /* === s2r-hero (sketch-to-real) === */
+  .s2r{position:absolute;top:50%;right:4%;transform:translateY(-50%);width:32.0%;max-width:460px;aspect-ratio:4/3;z-index:2;pointer-events:none;}
+  .s2r::before{content:"";position:absolute;inset:-12%;background:radial-gradient(circle,rgba(55,182,240,.28),transparent 62%);filter:blur(26px);z-index:0;opacity:0;transition:opacity 1.4s ease;}
+  .s2r.real::before{opacity:.38;}
+  .s2r .mat,.s2r .real{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;}
+  .s2r .mat{z-index:2;transform-origin:center;transform:scale(.5);}
+  .s2r.run .mat{animation:s2rgrow 3.4s cubic-bezier(.22,.7,.2,1) forwards;}
+  @keyframes s2rgrow{from{transform:scale(.5);}to{transform:scale(1);}}
+  .s2r .real{z-index:1;opacity:0;transition:opacity 1.2s ease;filter:drop-shadow(0 20px 38px rgba(0,0,0,.5));}
+  .s2r.real .mat{opacity:0;}
+  .s2r.real .real{opacity:1;}
+  @media(max-width:1040px){.s2r{display:none;}}
+</style>
 
 <style id="nav-cascade-css">.nav-drop.nav-casc{min-width:206px;padding:7px;transition-delay:.20s;}.nav-item:hover .nav-drop.nav-casc,.nav-item:focus-within .nav-drop.nav-casc{transition-delay:0s;}.nav-grp2{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp2:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp2 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub{position:absolute;top:-7px;left:100%;min-width:238px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:6;}.nav-grp2:hover .nav-sub,.nav-grp2:focus-within .nav-sub{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub a:hover{background:rgba(55,182,240,.14);color:#fff;}.sitenav-menu .nav-item:last-child .nav-drop.nav-casc{left:auto;right:0;}.sitenav-menu .nav-item:last-child .nav-sub{left:auto;right:100%;transform:translateX(-8px);}.sitenav-menu .nav-item:last-child .nav-grp2:hover .nav-sub,.sitenav-menu .nav-item:last-child .nav-grp2:focus-within .nav-sub{transform:translateX(0);}@media(max-width:1040px){.sitenav.open .nav-drop.nav-casc{min-width:0;}.sitenav.open .nav-grp2{display:block;font-weight:700;color:#8fb4dd;text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:10px 24px 4px;}.sitenav.open .nav-grp2 .nc{display:none;}.sitenav.open .nav-sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub a{padding:8px 38px;white-space:normal;}}</style>
 <style id="ss-css">.ss-wrap{position:relative;margin-left:10px;}.ss-input{width:150px;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,225,.35);color:#dce8f7;font:inherit;font-size:.82rem;padding:.5em .8em;border-radius:6px;outline:none;transition:width .18s,border-color .18s;}.ss-input::placeholder{color:#7f9bc0;}.ss-input:focus{width:220px;border-color:#37b6f0;}.ss-panel{position:absolute;top:42px;right:0;width:340px;max-width:84vw;background:#0e2038;border:1px solid rgba(120,170,225,.28);border-radius:10px;box-shadow:0 18px 44px -12px rgba(0,0,0,.7);padding:6px;display:none;max-height:70vh;overflow:auto;z-index:300;}.ss-panel.open{display:block;}.ss-item{display:block;padding:9px 11px;border-radius:7px;text-decoration:none;}.ss-item:hover,.ss-item.active{background:rgba(55,182,240,.14);}.ss-item .st{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:600;font-size:.9rem;color:#fff;display:block;}.ss-item .sc{font-size:.69rem;text-transform:uppercase;letter-spacing:.07em;color:#5f9fe0;}.ss-none{padding:12px;color:#8aa0bd;font-size:.85rem;}@media(max-width:1040px){.ss-wrap{order:6;width:100%;margin:8px 0 0;}.ss-input,.ss-input:focus{width:100%;}.ss-panel{width:100%;}}</style>
@@ -282,6 +295,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section class="hero">
   <div class="bg"></div>
   <div class="heroart"></div>
+  <div class="s2r"><video class="mat" src="figures/577-materialize.mp4" muted playsinline preload="auto"></video><img class="real" src="figures/577-real-clear.png" alt="Berkeley Nucleonics Model 577 pulse and delay generator"></div>
+
   <div class="hero-spin"><img class="spinvid" src="figures/pdg-577-static.png" alt="Berkeley Nucleonics Model 577 pulse and delay generator" style="width:100%;height:auto;display:block;"></div>
   <div class="wrap">
     <div class="eyebrow">Pulse &amp; Delay Generators</div>
@@ -527,5 +542,21 @@ window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function 
 })();</script>
 <style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
 <script defer src="_shared/bnc-nutshell.js"></script>
+<script>/* s2r-js */(function(){
+var spin=document.querySelector('.s2r'); if(!spin) return;
+var v=spin.querySelector('.mat'), DUR=8, done=false, tmr=null, started=false;
+function toReal(){ if(done) return; done=true; spin.classList.add('real'); v.style.transition='opacity 1.1s ease'; v.style.opacity=0; }
+function run(){ started=true; done=false; spin.classList.remove('real'); spin.classList.add('run');
+  v.style.transition=''; v.style.opacity=1; try{v.currentTime=0;}catch(e){}
+  v.style.animation='none'; void v.offsetWidth; v.style.animation='';
+  var p=v.play(); if(p&&p.catch) p.catch(function(){});
+  clearTimeout(tmr); tmr=setTimeout(toReal,(DUR-0.4)*1000); }
+function autostart(){ if(started) return; run(); }
+v.addEventListener('timeupdate',function(){ if(v.currentTime>DUR-0.7) toReal(); });
+v.addEventListener('ended',toReal);
+v.addEventListener('loadeddata',autostart);
+window.addEventListener('load',function(){ setTimeout(autostart,400); });
+if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && done){ started=false; run(); } }); },{threshold:.35}).observe(spin); }
+})();</script>
 </body>
 </html>
