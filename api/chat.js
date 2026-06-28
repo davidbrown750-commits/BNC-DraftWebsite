@@ -130,6 +130,48 @@ async function captureLead(session) {
   } catch (e) { /* non-fatal */ }
 }
 
+// Store a "talk to a human" request as a high-priority lead.
+async function storeHumanLead(b) {
+  if (!SUPA || !SKEY) return;
+  try {
+    const row = {
+      session_id: b.sessionId || null,
+      email: (b.email || "").toLowerCase() || null,
+      name: b.name || null,
+      first_question: b.message || null,
+      transcript: { phone: b.phone || null, wants_human: true, message: b.message || null, convo: b.transcript || null },
+      product_interest: "Human request",
+      updated_at: new Date().toISOString(),
+    };
+    await fetch(SUPA + "/rest/v1/bnc_chat_leads?on_conflict=session_id", {
+      method: "POST",
+      headers: { apikey: SKEY, Authorization: "Bearer " + SKEY, "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify(row),
+    });
+  } catch (e) { /* non-fatal */ }
+}
+
+// Optional instant email alert to the team (set SENDGRID_API_KEY + LEAD_NOTIFY_TO + LEAD_NOTIFY_FROM).
+async function notifyHuman(b) {
+  const key = process.env.SENDGRID_API_KEY, to = process.env.LEAD_NOTIFY_TO, from = process.env.LEAD_NOTIFY_FROM;
+  if (!key || !to || !from) return;
+  try {
+    const text = 'New "talk to a human" request from the website chat.\n\n' +
+      "Name: " + (b.name || "-") + "\nEmail: " + (b.email || "-") + "\nPhone: " + (b.phone || "-") +
+      "\nMessage: " + (b.message || "-") + "\nSession: " + (b.sessionId || "-");
+    await fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        personalizations: [{ to: to.split(",").map(function (e) { return { email: e.trim() }; }) }],
+        from: { email: from }, subject: "Website chat: talk-to-a-human request",
+        content: [{ type: "text/plain", value: text }],
+      }),
+    });
+  } catch (e) { /* non-fatal */ }
+}
+
 module.exports = async function handler(req, res) {
   // Safe diagnostic: GET /api/chat?diag=1 -> booleans only (never reveals secrets)
   if (req.method === "GET") {
@@ -139,8 +181,6 @@ module.exports = async function handler(req, res) {
       hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
       model: MODEL,
       hasSupabase: !!(SUPA && SKEY),
-      // names only (no values) of anthropic/claude/key-ish vars the function actually sees
-      matchingEnvNames: Object.keys(process.env).filter(function (k) { return /anthropic|claude/i.test(k); }),
     });
     return;
   }
@@ -148,6 +188,16 @@ module.exports = async function handler(req, res) {
 
   let body;
   try { body = await readBody(req); } catch (e) { res.status(400).json({ error: "bad json" }); return; }
+
+  // "Talk to a human" request (bypasses Nutshell): store the lead + optional email alert
+  if (body.action === "human") {
+    await storeHumanLead(body);
+    await notifyHuman(body);
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).json({ ok: true });
+    return;
+  }
+
   const messages = Array.isArray(body.messages) ? body.messages : [];
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
   if (!lastUser) { res.status(400).json({ error: "no user message" }); return; }
