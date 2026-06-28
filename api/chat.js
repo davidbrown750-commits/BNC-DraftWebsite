@@ -13,6 +13,7 @@
 // Fail-soft: if ANTHROPIC_API_KEY is missing, returns a friendly message instead
 // of erroring, so the widget degrades gracefully until the key is added.
 
+// (deploy nonce: force a fresh build so newly-added env vars are applied)
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
 const SUPA = process.env.SUPABASE_URL;
 const SKEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
