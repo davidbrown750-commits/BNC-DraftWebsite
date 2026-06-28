@@ -1,3 +1,78 @@
-# DRAFT / STAGING - block all indexing until production cutover
+# =========================================
+# robots.txt for Berkeley Nucleonics (production)
+# AI-Friendly + SEO Optimized
+# =========================================
+
+# --- Global Rules ---
 User-agent: *
-Disallow: /
+Content-Signal: ai-train=yes, search=yes, ai-input=no
+Allow: /
+
+# Block internal search and parameter spam
+Disallow: /*?s=
+Disallow: /*?replytocom=
+
+# Optional crawl delay for aggressive bots
+Crawl-delay: 2
+
+# =========================================
+# AI Crawlers (explicit allowlist)
+# =========================================
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: MistralBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# =========================================
+# Traditional Search Engines
+# =========================================
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# =========================================
+# Sitemap
+# =========================================
+Sitemap: https://www.berkeleynucleonics.com/sitemap.xml
