@@ -139,6 +139,8 @@ module.exports = async function handler(req, res) {
       hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
       model: MODEL,
       hasSupabase: !!(SUPA && SKEY),
+      // names only (no values) of anthropic/claude/key-ish vars the function actually sees
+      matchingEnvNames: Object.keys(process.env).filter(function (k) { return /anthropic|claude/i.test(k); }),
     });
     return;
   }
