@@ -157,17 +157,21 @@ async function notifyHuman(b) {
   const key = process.env.SENDGRID_API_KEY, to = process.env.LEAD_NOTIFY_TO, from = process.env.LEAD_NOTIFY_FROM;
   if (!key || !to || !from) return;
   try {
-    const text = 'New "talk to a human" request from the website chat.\n\n' +
-      "Name: " + (b.name || "-") + "\nEmail: " + (b.email || "-") + "\nPhone: " + (b.phone || "-") +
-      "\nMessage: " + (b.message || "-") + "\nSession: " + (b.sessionId || "-");
+    const text = 'A visitor asked to talk to a person from the website chat assistant.\n\n' +
+      "Name:    " + (b.name || "-") + "\nEmail:   " + (b.email || "-") + "\nPhone:   " + (b.phone || "-") +
+      "\nMessage: " + (b.message || "-") + "\n\nReply to this email to respond directly to the visitor." +
+      "\n(session " + (b.sessionId || "-") + ")";
+    const payload = {
+      personalizations: [{ to: to.split(",").map(function (e) { return { email: e.trim() }; }) }],
+      from: { email: from, name: "BNC Website Chat" },
+      subject: "Website callback request" + (b.name ? " - " + b.name : "") + (b.email ? " (" + b.email + ")" : ""),
+      content: [{ type: "text/plain", value: text }],
+    };
+    if (b.email && /@/.test(b.email)) payload.reply_to = { email: b.email, name: b.name || undefined };
     await fetch("https://api.sendgrid.com/v3/mail/send", {
       method: "POST",
       headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        personalizations: [{ to: to.split(",").map(function (e) { return { email: e.trim() }; }) }],
-        from: { email: from }, subject: "Website chat: talk-to-a-human request",
-        content: [{ type: "text/plain", value: text }],
-      }),
+      body: JSON.stringify(payload),
     });
   } catch (e) { /* non-fatal */ }
 }
