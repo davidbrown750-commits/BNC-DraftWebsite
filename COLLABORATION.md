@@ -6,9 +6,20 @@ no separate staging step: `main` is production. Every change is a commit and eve
 deploy is retained, so nothing here is ever unrecoverable. If something looks wrong,
 rollback is one click (see the last section).
 
+## Push straight to `main` — do NOT open pull requests
+
+You have Write access and `main` is not protected, so **commit directly to `main` and
+`git push origin main`.** A push deploys to `www` in about one to two minutes. Do not
+create feature branches or pull requests for routine changes: PRs and preview builds
+add delay and flood the owner's inbox with no benefit here. Review and revert are
+handled after the fact (see the rollback section), not by a PR gate.
+
+If you are using an AI coding agent (Claude, etc.), tell it explicitly: **work on
+`main`, commit, and `git push origin main` — no branches, no pull requests.**
+
 ## Make a change
 
-1. Edit the files in this repo.
+1. Edit the files in this repo (on `main`).
 2. Commit with a clear message describing what changed and why.
 3. `git push origin main`.
 4. Vercel auto-builds and publishes to `www` within a couple of minutes.
