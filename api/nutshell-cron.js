@@ -15,7 +15,9 @@ const SKEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 function authorized(req) {
   if (!process.env.CRON_SECRET) return true; // not enforced until you set it
-  return req.headers.authorization === "Bearer " + process.env.CRON_SECRET;
+  if (req.headers.authorization === "Bearer " + process.env.CRON_SECRET) return true; // Vercel cron
+  if (req.query && req.query.key === process.env.CRON_SECRET) return true;             // manual browser run
+  return false;
 }
 
 module.exports = async function handler(req, res) {
@@ -52,7 +54,10 @@ module.exports = async function handler(req, res) {
 
   let created = 0, noted = 0, errors = 0;
   const errSamples = [];
-  const emails = Object.keys(byEmail);
+  let emails = Object.keys(byEmail);
+  // Optional cap for a small manual test run: ?max=2
+  const max = req.query && req.query.max ? parseInt(req.query.max, 10) : 0;
+  if (max > 0) emails = emails.slice(0, max);
 
   for (const email of emails) {
     const visits = byEmail[email];
