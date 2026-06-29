@@ -54,6 +54,25 @@
     return (Clerk && Clerk.user && Clerk.user.primaryEmailAddress)
       ? Clerk.user.primaryEmailAddress.emailAddress : null;
   }
+  // Push the signed-in visitor to Nutshell once per session. The server verifies the
+  // Clerk session token before writing, so this cannot be spoofed.
+  function syncNutshell() {
+    try { if (sessionStorage.getItem('bncNsSynced')) return; } catch (e) {}
+    if (!Clerk || !Clerk.user || !Clerk.session) return;
+    var u = Clerk.user;
+    var email = (u.primaryEmailAddress && u.primaryEmailAddress.emailAddress) || null;
+    if (!email) return;
+    var name = u.fullName || ((u.firstName || '') + ' ' + (u.lastName || '')).trim() || null;
+    var phone = (u.primaryPhoneNumber && u.primaryPhoneNumber.phoneNumber) || null;
+    Clerk.session.getToken().then(function (token) {
+      if (!token) return;
+      fetch('/api/nutshell-sync', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token, email: email, name: name, phone: phone })
+      }).then(function () { try { sessionStorage.setItem('bncNsSynced', '1'); } catch (e) {} })
+        .catch(function () {});
+    }).catch(function () {});
+  }
   // Webmaster/internal notes ([data-webmaster]): visible ONLY to these BNC logins;
   // hidden from everyone else, including logged-out visitors.
   var WM_EMAILS = ['davidbrown750@gmail.com','david.brown@berkeleynucleonics.com','meraly.rodas@berkeleynucleonics.com'];
@@ -139,6 +158,7 @@
     }
     acct.innerHTML = '';
     if (isSignedIn()) {
+      syncNutshell();
       var w = el('span', 'bnc-welcome', 'Welcome back, <b>' + escapeHtml(userName()) + '</b>');
       var btnWrap = el('span', 'bnc-userbtn');
       acct.appendChild(w); acct.appendChild(btnWrap);
