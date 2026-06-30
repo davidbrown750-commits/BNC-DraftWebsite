@@ -85,7 +85,8 @@
     if (!document.getElementById('bnc-wm-style')) {
       var st = document.createElement('style'); st.id = 'bnc-wm-style';
       st.textContent = '[data-webmaster]{display:none!important}body.bnc-wm-ok [data-webmaster]{display:revert!important}'
-        + '[data-bnc-staff]{display:none!important}body.bnc-staff-ok [data-bnc-staff]{display:revert!important}';
+        + '[data-bnc-staff]{display:none!important}body.bnc-staff-ok [data-bnc-staff]{display:revert!important}'
+        + 'body.bnc-staff-ok .nav-grp2[data-bnc-staff]{display:flex!important}';
       (document.head || document.documentElement).appendChild(st);
     }
     var em = (userEmail() || '').toLowerCase();
