@@ -32,6 +32,34 @@ function titleCase(s) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+// ---- internal / test-account detection (so the explorer can hide our own people) ----
+// Mirrors the exclusion list used by the Web Visitor Battle Cards daily pull.
+const TEST_EMAILS = new Set([
+  "yvonnewebersfromholland@gmail.com", "yvonnefromholland@gmail.com",
+  "basketballdavid@yahoo.com", "davidbrown750@gmail.com",
+]);
+const TEST_PREFIX = /^(basketballdavid|davidbrown750|yvonnefromholland|yvonnewebersfromholland|test|demo|qa|staging)/;
+function isInternal(email) {
+  if (!email) return false;
+  const e = String(email).toLowerCase().trim();
+  if (e.endsWith("@berkeleynucleonics.com")) return true;   // BNC staff
+  if (TEST_EMAILS.has(e)) return true;                       // known test logins
+  if (TEST_PREFIX.test(e)) return true;                      // test-pattern local parts
+  return false;
+}
+// Free-mail domains that are not useful as a "company" for prospecting.
+const FREEMAIL = new Set([
+  "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com", "icloud.com",
+  "live.com", "msn.com", "me.com", "comcast.net", "proton.me", "protonmail.com",
+  "ymail.com", "mail.com", "gmx.com", "yandex.com", "qq.com", "163.com", "126.com",
+]);
+function companyFromEmail(email) {
+  if (!email) return null;
+  const dom = String(email).toLowerCase().split("@")[1];
+  if (!dom || FREEMAIL.has(dom)) return null;
+  return dom;
+}
+
 // ---- Clerk session verification (RS256 against the public JWKS, no npm deps) ----
 const crypto = require("crypto");
 const CLERK_ISSUER = "https://clerk.berkeleynucleonics.com";
@@ -150,8 +178,13 @@ module.exports = async function handler(req, res) {
       key: g.key,
       email: g.email,
       company: g.company,
+      // Best company we can show for prospecting: the captured company, otherwise the
+      // corporate email domain (free-mail domains are dropped). Null for anonymous rows.
+      company_label: g.company || companyFromEmail(g.email),
+      company_source: g.company ? "captured" : (companyFromEmail(g.email) ? "email" : null),
       name: g.email ? titleCase(g.email.split("@")[0]) : null,
       identified: !!g.email,
+      internal: isInternal(g.email),
       first_seen: g.first,
       last_seen: g.last,
       hits: g.hits,
@@ -167,8 +200,10 @@ module.exports = async function handler(req, res) {
     const q = ((req.query && req.query.q) || "").toLowerCase().trim();
     const product = ((req.query && req.query.product) || "").trim();
     const idOnly = ((req.query && req.query.identified) || "") === "1";
+    const hideInternal = ((req.query && req.query.hideInternal) || "") === "1";
     if (product) visitors = visitors.filter((v) => v.product_lines.includes(product));
     if (idOnly) visitors = visitors.filter((v) => v.identified);
+    if (hideInternal) visitors = visitors.filter((v) => !v.internal);
     if (q) visitors = visitors.filter((v) => {
       const hay = [v.email || "", v.company || "", v.name || "",
         v.product_lines.join(" "),
@@ -178,6 +213,7 @@ module.exports = async function handler(req, res) {
 
     visitors.sort((a, b) => (a.last_seen < b.last_seen ? 1 : -1));
     const total = visitors.length;
+    const internal_count = visitors.filter((v) => v.internal).length;
     const limit = Math.min(parseInt((req.query && req.query.limit) || "300", 10) || 300, 500);
     visitors = visitors.slice(0, limit);
 
@@ -185,6 +221,7 @@ module.exports = async function handler(req, res) {
       generated_at: new Date().toISOString(),
       total_rows: rows.length,
       total_visitors: total,
+      internal_count: internal_count,
       returned: visitors.length,
       visitors,
     });

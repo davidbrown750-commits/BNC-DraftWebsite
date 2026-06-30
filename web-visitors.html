@@ -35,7 +35,10 @@
   .who .anon{color:var(--muted);font-weight:600}
   .badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:#e6f0fb;color:var(--blue)}
   .badge.anon{background:#eef0f3;color:var(--muted)}
-  .co{color:var(--muted);font-size:13px;margin-top:1px}
+  .badge.intern{background:#fdeaea;color:#9a3b2f}
+  .co{font-size:13px;margin-top:2px;color:var(--ink)}
+  .co b{color:var(--ink)} .co .src{color:var(--muted);font-weight:400;font-size:11.5px}
+  .co .none{color:var(--muted)}
   .metrics{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:12.5px;margin:8px 0 2px}
   .metrics b{color:var(--ink)}
   .chips{margin:7px 0 0;display:flex;flex-wrap:wrap;gap:5px}
@@ -96,6 +99,7 @@
       <option>Contact</option>
     </select>
     <label class="chk"><input type="checkbox" id="idOnly"> Identified only</label>
+    <label class="chk"><input type="checkbox" id="hideInternal"> Hide BNC employees &amp; test accounts</label>
     <button id="go">Search</button>
     <button id="clear" class="sec">Reset</button>
   </div>
@@ -163,10 +167,19 @@
       : '<span class="anon">Anonymous visitor</span>';
     var badge = v.identified ? '<span class="badge">Identified</span>'
       : '<span class="badge anon">Anonymous</span>';
+    if(v.internal) badge += ' <span class="badge intern">BNC / test</span>';
     var chips = (v.product_lines||[]).map(function(p){return '<span class="chip">'+esc(p)+'</span>';}).join("");
+    // Company column: captured company, else corporate email domain, else unknown.
+    var companyLine;
+    if(v.company_label){
+      companyLine = '<div class="co"><b>Company:</b> '+esc(v.company_label)+
+        (v.company_source==="email" ? ' <span class="src">(from email domain)</span>' : '')+'</div>';
+    } else {
+      companyLine = '<div class="co none"><b style="color:var(--muted)">Company:</b> unknown'+
+        (v.identified ? '' : ' (anonymous — needs reverse-IP or a form submit)')+'</div>';
+    }
     var contact = "";
     if(v.email) contact += 'Email: <a href="mailto:'+esc(v.email)+'">'+esc(v.email)+'</a>';
-    if(v.company) contact += (contact?' &nbsp;·&nbsp; ':'') + 'Company: '+esc(v.company);
     if(!contact) contact = '<span style="color:var(--muted)">No contact captured yet · visitor id '+esc(String(v.key).slice(0,10))+'…</span>';
 
     var pages = (v.pages||[]).slice(0,12).map(function(p){
@@ -180,7 +193,7 @@
 
     return '<div class="card" data-k="'+esc(v.key)+'">'+
       '<div class="cardhead"><span class="who">'+name+'</span>'+badge+'</div>'+
-      (v.company? '<div class="co">'+esc(v.company)+'</div>':'')+
+      companyLine+
       '<div class="metrics">'+
         '<span><b>Last on site:</b> '+rel(v.last_seen)+'</span>'+
         '<span><b>Visits:</b> '+v.visit_days+' day'+(v.visit_days==1?'':'s')+'</span>'+
@@ -202,8 +215,11 @@
     var vs = data.visitors||[];
     if(!vs.length){ r.innerHTML = '<div class="empty">No visitors match this search yet.</div>'; }
     else { r.innerHTML = vs.map(card).join(""); }
+    var hidNote = document.getElementById("hideInternal").checked
+      ? ""
+      : (data.internal_count ? " · " + data.internal_count + " are BNC/test" : "");
     document.getElementById("stat").textContent =
-      "Showing " + vs.length + " of " + (data.total_visitors||vs.length) + " visitors · " +
+      "Showing " + vs.length + " of " + (data.total_visitors||vs.length) + " visitors" + hidNote + " · " +
       (data.total_rows||0) + " page-events in the database";
     document.getElementById("updated").textContent = "Updated " + when(data.generated_at);
     Array.prototype.forEach.call(r.querySelectorAll(".card"), function(c){
@@ -231,12 +247,14 @@
     var q = document.getElementById("q").value.trim();
     var product = document.getElementById("product").value;
     var idOnly = document.getElementById("idOnly").checked ? "1" : "";
+    var hideInternal = document.getElementById("hideInternal").checked ? "1" : "";
     document.getElementById("stat").textContent = "Loading…";
     getFreshToken(function(t){
       var url = API + "?token=" + encodeURIComponent(t) +
         (q? "&q="+encodeURIComponent(q):"") +
         (product? "&product="+encodeURIComponent(product):"") +
-        (idOnly? "&identified=1":"");
+        (idOnly? "&identified=1":"") +
+        (hideInternal? "&hideInternal=1":"");
       fetch(url).then(function(res){
         if(res.status===401){ showGate("That password was not accepted."); throw new Error("auth"); }
         if(!res.ok) throw new Error("http "+res.status);
@@ -273,10 +291,12 @@
   document.getElementById("q").addEventListener("input", function(){ clearTimeout(deb); deb=setTimeout(load,350); });
   document.getElementById("product").addEventListener("change", load);
   document.getElementById("idOnly").addEventListener("change", load);
+  document.getElementById("hideInternal").addEventListener("change", load);
   document.getElementById("go").addEventListener("click", load);
   document.getElementById("clear").addEventListener("click", function(){
     document.getElementById("q").value=""; document.getElementById("product").value="";
-    document.getElementById("idOnly").checked=false; load();
+    document.getElementById("idOnly").checked=false;
+    document.getElementById("hideInternal").checked=false; load();
   });
 
   // boot
