@@ -32,20 +32,12 @@ function titleCase(s) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-// ---- internal / test-account detection (so the explorer can hide our own people) ----
-// Mirrors the exclusion list used by the Web Visitor Battle Cards daily pull.
-const TEST_EMAILS = new Set([
-  "yvonnewebersfromholland@gmail.com", "yvonnefromholland@gmail.com",
-  "basketballdavid@yahoo.com", "davidbrown750@gmail.com",
-]);
-const TEST_PREFIX = /^(basketballdavid|davidbrown750|yvonnefromholland|yvonnewebersfromholland|test|demo|qa|staging)/;
+// ---- BNC-staff detection (so the explorer can hide our own people) ----
+// "Hide BNC" hides only @berkeleynucleonics.com emails. Outside test logins on
+// gmail/yahoo are left visible as ordinary identified visitors.
 function isInternal(email) {
   if (!email) return false;
-  const e = String(email).toLowerCase().trim();
-  if (e.endsWith("@berkeleynucleonics.com")) return true;   // BNC staff
-  if (TEST_EMAILS.has(e)) return true;                       // known test logins
-  if (TEST_PREFIX.test(e)) return true;                      // test-pattern local parts
-  return false;
+  return String(email).toLowerCase().trim().endsWith("@berkeleynucleonics.com");
 }
 // Free-mail domains that are not useful as a "company" for prospecting.
 const FREEMAIL = new Set([

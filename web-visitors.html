@@ -99,7 +99,7 @@
       <option>Contact</option>
     </select>
     <label class="chk"><input type="checkbox" id="idOnly"> Identified only</label>
-    <label class="chk"><input type="checkbox" id="hideInternal"> Hide BNC employees &amp; test accounts</label>
+    <label class="chk"><input type="checkbox" id="hideInternal"> Hide BNC</label>
     <button id="go">Search</button>
     <button id="clear" class="sec">Reset</button>
   </div>
@@ -167,7 +167,7 @@
       : '<span class="anon">Anonymous visitor</span>';
     var badge = v.identified ? '<span class="badge">Identified</span>'
       : '<span class="badge anon">Anonymous</span>';
-    if(v.internal) badge += ' <span class="badge intern">BNC / test</span>';
+    if(v.internal) badge += ' <span class="badge intern">BNC</span>';
     var chips = (v.product_lines||[]).map(function(p){return '<span class="chip">'+esc(p)+'</span>';}).join("");
     // Company column: captured company, else corporate email domain, else unknown.
     var companyLine;
@@ -217,7 +217,7 @@
     else { r.innerHTML = vs.map(card).join(""); }
     var hidNote = document.getElementById("hideInternal").checked
       ? ""
-      : (data.internal_count ? " · " + data.internal_count + " are BNC/test" : "");
+      : (data.internal_count ? " · " + data.internal_count + " are BNC" : "");
     document.getElementById("stat").textContent =
       "Showing " + vs.length + " of " + (data.total_visitors||vs.length) + " visitors" + hidNote + " · " +
       (data.total_rows||0) + " page-events in the database";
