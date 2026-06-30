@@ -57,7 +57,7 @@ const crypto = require("crypto");
 const CLERK_ISSUER = "https://clerk.berkeleynucleonics.com";
 const STAFF_DOMAIN = "@berkeleynucleonics.com";
 // Outside collaborators granted staff-equivalent access (treated like a @berkeleynucleonics.com login).
-const STAFF_EXTRA = new Set(["jsaldi@regencyinteractive.com"]);
+const STAFF_EXTRA = new Set(["jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"]);
 let _jwks = null, _jwksAt = 0;
 async function getJwks() {
   if (_jwks && Date.now() - _jwksAt < 3600000) return _jwks;

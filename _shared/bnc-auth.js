@@ -80,7 +80,7 @@
   // visible to ANY login whose email ends in @berkeleynucleonics.com.
   var STAFF_DOMAIN = '@berkeleynucleonics.com';
   // Outside collaborators granted staff-equivalent access (treated like a @berkeleynucleonics.com login).
-  var STAFF_EXTRA = ['jsaldi@regencyinteractive.com'];
+  var STAFF_EXTRA = ['jsaldi@regencyinteractive.com', 'rcabe@regencyinteractive.com'];
   function applyWebmasterGate() {
     if (!document.getElementById('bnc-wm-style')) {
       var st = document.createElement('style'); st.id = 'bnc-wm-style';
