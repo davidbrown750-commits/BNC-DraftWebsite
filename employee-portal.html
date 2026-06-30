@@ -82,6 +82,8 @@
 <script>
 (function(){
   var STAFF_DOMAIN = "@berkeleynucleonics.com";
+  // Outside collaborators granted staff-equivalent access (treated like a @berkeleynucleonics.com login).
+  var STAFF_EXTRA = ["jsaldi@regencyinteractive.com"];
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 
   function bncEmail(){
@@ -91,7 +93,7 @@
   }
   function isStaff(){
     var e = bncEmail();
-    return !!(e && e.length > STAFF_DOMAIN.length && e.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN);
+    return !!(e && ((e.length > STAFF_DOMAIN.length && e.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN) || STAFF_EXTRA.indexOf(e) !== -1));
   }
   function waitForClerk(cb, tries){
     tries = tries || 0;

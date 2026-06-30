@@ -79,6 +79,8 @@
   // Staff-only elements ([data-bnc-staff], e.g. the Support > Employee Portal menu):
   // visible to ANY login whose email ends in @berkeleynucleonics.com.
   var STAFF_DOMAIN = '@berkeleynucleonics.com';
+  // Outside collaborators granted staff-equivalent access (treated like a @berkeleynucleonics.com login).
+  var STAFF_EXTRA = ['jsaldi@regencyinteractive.com'];
   function applyWebmasterGate() {
     if (!document.getElementById('bnc-wm-style')) {
       var st = document.createElement('style'); st.id = 'bnc-wm-style';
@@ -89,7 +91,7 @@
     var em = (userEmail() || '').toLowerCase();
     if (document.body) {
       document.body.classList.toggle('bnc-wm-ok', WM_EMAILS.indexOf(em) !== -1);
-      document.body.classList.toggle('bnc-staff-ok', em.length > STAFF_DOMAIN.length && em.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN);
+      document.body.classList.toggle('bnc-staff-ok', (em.length > STAFF_DOMAIN.length && em.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN) || STAFF_EXTRA.indexOf(em) !== -1);
     }
   }
   // Formspree return: remember the last real (non-form/non-auth) page, and on the

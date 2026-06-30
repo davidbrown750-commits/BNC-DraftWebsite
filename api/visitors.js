@@ -56,6 +56,8 @@ function companyFromEmail(email) {
 const crypto = require("crypto");
 const CLERK_ISSUER = "https://clerk.berkeleynucleonics.com";
 const STAFF_DOMAIN = "@berkeleynucleonics.com";
+// Outside collaborators granted staff-equivalent access (treated like a @berkeleynucleonics.com login).
+const STAFF_EXTRA = new Set(["jsaldi@regencyinteractive.com"]);
 let _jwks = null, _jwksAt = 0;
 async function getJwks() {
   if (_jwks && Date.now() - _jwksAt < 3600000) return _jwks;
@@ -97,7 +99,7 @@ async function isAuthorized(token, sharedToken) {
       // BNC Clerk instance is accepted (the portal page gates who can reach it by
       // domain client-side, matching the site's existing internal-notes model).
       if (!em) return true;
-      return em.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN;
+      return em.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN || STAFF_EXTRA.has(em);
     }
   }
   if (sharedToken && token === sharedToken) return true;
