@@ -47,6 +47,10 @@
   .contact a{text-decoration:none}
   .detail{margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;display:none}
   .card.open .detail{display:block}
+  .expand{text-align:center;margin-top:9px;padding-top:7px;border-top:1px solid #eef3f9;color:var(--cool);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;user-select:none}
+  .expand .x-close{display:none}
+  .card.open .expand .x-open{display:none}
+  .card.open .expand .x-close{display:inline}
   .detail h4{font-family:'Myriad Pro',Arial;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin:0 0 6px}
   table.pg{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:12px}
   table.pg th{text-align:left;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:4px 6px;font-size:11.5px}
@@ -82,7 +86,7 @@
   <p class="sub">Live view of website traffic from the visit database. Search by name, email, company, or product line to see who has been on the site, when they were last on, and their full page history.</p>
 
   <div class="controls">
-    <input type="search" id="q" placeholder="Search name, email, company, or page…" autocomplete="off">
+    <input type="text" id="q" name="ve-q-nofill" placeholder="Search name, email, company, or page…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')">
     <select id="product">
       <option value="">All product lines</option>
       <option>Pulse &amp; Delay Generators</option>
@@ -207,6 +211,7 @@
         '<h4>Pages viewed</h4><table class="pg"><tr><th>Page</th><th>Views</th><th>Last</th></tr>'+pages+'</table>'+
         '<h4>Recent activity</h4><div class="tl">'+(tl||'<span style="color:var(--muted)">No detail.</span>')+'</div>'+
       '</div>'+
+      '<div class="expand"><span class="x-open">Expand &#9662;</span><span class="x-close">Collapse &#9652;</span></div>'+
     '</div>';
   }
 
