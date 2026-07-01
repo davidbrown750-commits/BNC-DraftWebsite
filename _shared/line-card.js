@@ -491,16 +491,18 @@
       q('.qmodels').innerHTML='Quote request for: '+ms.map(function(m){return '<b>'+esc(m.model)+'</b>';}).join(', ');
       q('.qStatus').textContent=''; prefillFromLogin(); openOv('quoteOv'); }
     q('.quoteBtn').addEventListener('click',openQuote); q('.quoteBtn2').addEventListener('click',openQuote);
-    q('.qSend').addEventListener('click',function(){ var email=q('.qEmail').value.trim(), st=q('.qStatus');
+    q('.qSend').addEventListener('click',function(){ var email=q('.qEmail').value.trim(), st=q('.qStatus'), b=q('.qSend');
       if(!/.+@.+\..+/.test(email)){ st.className='qStatus'; st.style.color='#b3261e'; st.textContent='Please enter a valid email so we can send your quote.'; return; }
       var ms=selectedModels(); st.className='qStatus'; st.style.color='var(--muted)'; st.textContent='Sending…';
+      b.disabled=true; var lbl=b.textContent; b.textContent='Sending…';
+      function done(){ b.disabled=false; b.textContent=lbl; }
       fetch(QUOTE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
         body:JSON.stringify({email:email,name:q('.qName').value.trim(),message:q('.qMsg').value.trim(),
           _subject:'Quote request: '+ms.map(function(m){return m.model;}).join(', '),product_line:cfg.productLine||cfg.title,
           models:ms.map(function(m){return m.model+' ('+m.sum+')';}).join('; ')})})
-       .then(function(r){ if(r.ok){ st.className='qok'; st.textContent='Thank you. Your quote request was sent. We will be in touch shortly.'; }
+       .then(function(r){ done(); if(r.ok){ st.className='qok'; st.textContent='Thank you. Your quote request was sent. We will be in touch shortly.'; }
          else { st.style.color='#b3261e'; st.textContent='That did not send. Please try again or email info@berkeleynucleonics.com.'; } })
-       .catch(function(){ st.style.color='#b3261e'; st.textContent='Could not reach the server. Email info@berkeleynucleonics.com.'; }); });
+       .catch(function(){ done(); st.style.color='#b3261e'; st.textContent='Could not reach the server. Email info@berkeleynucleonics.com.'; }); });
 
     var closes=root.querySelectorAll('[data-close]');
     for(var j=0;j<closes.length;j++){ (function(b){ b.addEventListener('click',function(){ b.closest('.ov').classList.remove('on'); }); })(closes[j]); }
