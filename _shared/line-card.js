@@ -315,8 +315,6 @@
     vals:{form:"Hand-held",detection:"Gamma, Neutron, *Alpha + Beta",detector:"NaI, CeBr2, LBC",crystal:"1.5×1.5, 2×2",energy:"20 keV – 10 MeV"}, sort:{form:1,detection:1,detector:3,crystal:1,energy:4}},
    {num:950, model:"SAM 950", sum:"Rugged handheld RIID, shockproof enclosure", ds:"bnc-sam-950-datasheet.html",
     vals:{form:"Hand-held",detection:"Gamma & Neutron",detector:"NaI, CeBr3, LBC",crystal:"1.5×1.5, 2×2, 3×3",energy:"20 keV – 3.0 MeV"}, sort:{form:1,detection:1,detector:3,crystal:4,energy:3}},
-   {num:945, model:"SAM 945", sum:"Handheld RIID, smartphone-linked interface", ds:"bnc-sam-945-datasheet.html",
-    vals:{form:"Hand-held",detection:"Gamma & Neutron",detector:"NaI, CeBr",crystal:"2×2",energy:"20 keV – 3.0 MeV"}, sort:{form:1,detection:1,detector:2,crystal:2,energy:3}},
    {num:120, model:"SAMpack 120 (RD-120)", sum:"Backpack RIID, wearable field solution", ds:"bnc-sampack-120-datasheet.html",
     vals:{form:"Backpack",detection:"Gamma & Neutron",detector:"NaI, LaBr, CeBr",crystal:"2×2, 3×3",energy:"20 keV – 3.0 MeV"}, sort:{form:2,detection:1,detector:3,crystal:3,energy:3}},
    {num:150, model:"SAMmobile 150 (RD-150)", sum:"Vehicle mounted detection system", ds:"bnc-sammobile-150-datasheet.html",
