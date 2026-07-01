@@ -133,7 +133,7 @@
    {num:845.1, model:"Model 845-OEM", sum:"OEM design for embedded systems", ds:"bnc-model-845oem-datasheet.html",
     vals:{type:"Signal Generator",freq:"100 kHz to 26.5 GHz",channels:"—",switch:"400 µs (<30 µs opt. FS)",power:"-20 to +15 dBm"},
     sort:{type:1,freq:4,switch:3,power:5}},
-   {num:1000, model:"RFS-1000", sum:"42 GHz CW and sweep", ds:"bnc-rfs-1000-datasheet.html",
+   {num:1420, model:"RFS-1420", sum:"42 GHz CW and sweep", ds:"bnc-rfs-1000-datasheet.html",
     vals:{type:"Signal Generator",freq:"100 MHz to 42 GHz",channels:"1",switch:"252 ms",power:"Up to +15 dBm"},
     sort:{type:1,freq:8,channels:1,switch:9,power:8}},
    {num:866, model:"Model 866-M", sum:"Compact 40 GHz frequency synthesizer", ds:"bnc-model-866m-datasheet.html",
