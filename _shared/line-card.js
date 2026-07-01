@@ -54,7 +54,17 @@
    + ".bnc-lc-root .qmodels{background:var(--green-soft);border:1px solid #cfe7da;border-radius:6px;padding:10px 14px;margin:0 0 14px;font-size:13.5px}.bnc-lc-root .qmodels b{color:var(--green)}"
    + ".bnc-lc-root .fld{margin:0 0 12px}.bnc-lc-root .fld label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:0 0 4px}"
    + ".bnc-lc-root .fld input,.bnc-lc-root .fld textarea{width:100%;border:1px solid #cdd3dc;border-radius:6px;padding:9px 11px;font-family:inherit;font-size:14px;color:var(--ink)}.bnc-lc-root .fld textarea{min-height:70px;resize:vertical}"
-   + ".bnc-lc-root .qok{color:var(--green);font-weight:600;font-size:14px}";
+   + ".bnc-lc-root .qok{color:var(--green);font-weight:600;font-size:14px}"
+   // --- dark-page theme: collapsed banner blends into a dark hero; expands to the white card ---
+   + ".bnc-lc-root.lc-dark .lc{background:transparent;border-color:rgba(150,195,235,.22)}"
+   + ".bnc-lc-root.lc-dark .lc-head{background:transparent}"
+   + ".bnc-lc-root.lc-dark .lc-head:hover{background:rgba(255,255,255,.06)}"
+   + ".bnc-lc-root.lc-dark .lc-title{color:#eaf2fb}"
+   + ".bnc-lc-root.lc-dark .lc-cta{color:#9fb3c9}"
+   + ".bnc-lc-root.lc-dark .lc-head.open{background:#fff}"
+   + ".bnc-lc-root.lc-dark .lc-head.open .lc-title{color:var(--accent)}"
+   + ".bnc-lc-root.lc-dark .lc-head.open .lc-cta{color:var(--muted)}"
+   + ".bnc-lc-root.lc-dark .lc-body{background:#fff}";
 
   var BNC_LC_CONFIGS = /*__CONFIGS__*/ {
 "pdg": {
@@ -423,6 +433,7 @@
     function sortVal(m,k){ if(k==="num")return m.num; var s=m.sort&&m.sort[k]; return s==null?9999:s; }
     var colHead=COLS.map(function(c){return '<th data-k="'+c.key+'"><span class="arr">↕</span>'+esc(c.label)+'</th>';}).join('');
     var root=document.createElement('div'); root.className='bnc-lc-root';
+    if((mount.getAttribute('data-theme')||'')==='dark') root.className+=' lc-dark';
     root.innerHTML =
       '<div class="lc"><button type="button" class="lc-head" aria-expanded="false">'+
         '<span class="lc-title">Line-Card <span class="lc-dot">&middot;</span> '+esc(cfg.title)+'</span>'+
