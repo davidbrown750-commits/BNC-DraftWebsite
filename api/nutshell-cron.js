@@ -10,6 +10,7 @@
 // Manual check:  GET /api/nutshell-cron?diag=1   (dry run, writes nothing)
 
 const N = require("../lib/nutshell");
+const classify = require("../lib/classify");
 const SUPA = process.env.SUPABASE_URL;
 const SKEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -52,8 +53,8 @@ module.exports = async function handler(req, res) {
     (byEmail[e] = byEmail[e] || []).push(v);
   }
 
-  let created = 0, noted = 0, errors = 0;
-  const errSamples = [];
+  let created = 0, noted = 0, classified = 0, errors = 0;
+  const errSamples = [], clsSamples = [];
   let emails = Object.keys(byEmail);
   // Optional cap for a small manual test run: ?max=2
   const max = req.query && req.query.max ? parseInt(req.query.max, 10) : 0;
@@ -61,20 +62,34 @@ module.exports = async function handler(req, res) {
 
   for (const email of emails) {
     const visits = byEmail[email];
-    const pages = visits.length;
+    const pageCount = visits.length;
     const dwellMin = Math.round(visits.reduce((a, v) => a + (v.dwell_seconds || 0), 0) / 60);
     const company = (visits.find((v) => v.company) || {}).company || null;
     const top = [...new Set(visits.map((v) => v.page_title || v.path).filter(Boolean))].slice(0, 10);
-    const note =
-      "Website activity " + day + ": " + pages + " page view" + (pages === 1 ? "" : "s")
-      + (dwellMin ? (", ~" + dwellMin + " min on site") : "") + ".\n"
-      + "Pages: " + top.join("; ");
 
-    if (diag) continue; // dry run: count groups, write nothing
+    // Auto-classify Product Line + Contact Type from the pages viewed.
+    const cls = classify.classify(email, company, visits.map((v) => ({ path: v.path, title: v.page_title })));
+
+    const note =
+      "Website activity " + day + ": " + pageCount + " page view" + (pageCount === 1 ? "" : "s")
+      + (dwellMin ? (", ~" + dwellMin + " min on site") : "") + ".\n"
+      + "Pages: " + top.join("; ") + "\n" + cls.flag;
+
+    if (diag) { // dry run: preview classification, write nothing
+      if (clsSamples.length < 8) clsSamples.push({ email, company, productLine: cls.productLine, contactType: cls.contactType });
+      continue;
+    }
 
     try {
       const { contact, created: wasCreated } = await N.upsertContact({ email, company });
-      if (wasCreated) created++;
+      if (wasCreated) {
+        created++;
+        // Only set fields on records WE create, so we never overwrite a rep's manual enrichment.
+        try {
+          await N.setContactCustomFields(contact.id, { "Product Line": cls.productLine, "Contact Type": cls.contactType });
+          classified++;
+        } catch (e) { if (errSamples.length < 3) errSamples.push({ email, step: "customFields", error: e.rpc || e.message }); }
+      }
       await N.addNote(contact.id, note);
       noted++;
     } catch (e) {
@@ -88,8 +103,10 @@ module.exports = async function handler(req, res) {
     visitsRead: rows.length,
     identifiedVisitors: emails.length,
     contactsCreated: created,
+    contactsClassified: classified,
     notesAdded: noted,
     errors, errSamples,
+    classificationPreview: diag ? clsSamples : undefined,
     dryRun: !!diag,
   });
 };
