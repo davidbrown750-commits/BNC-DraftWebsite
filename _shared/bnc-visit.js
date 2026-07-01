@@ -27,11 +27,21 @@
     else { lastResume = Date.now(); }
   });
 
+  function canonicalTitle() {
+    // Prefer og:title: browser auto-translate rewrites document.title (and the
+    // visible page) into the reader's language, but never touches meta tags,
+    // so this keeps the visitor log in the site's canonical English.
+    try {
+      var m = document.querySelector('meta[property="og:title"]');
+      if (m && m.content && m.content.trim()) return m.content.trim();
+    } catch (e) {}
+    return document.title;
+  }
   function payload() {
     if (document.visibilityState !== "hidden") { active += Date.now() - lastResume; lastResume = Date.now(); }
     return JSON.stringify({
       visitor_id: VID, user_id: userId(), email: email(),
-      path: location.pathname, page_title: document.title,
+      path: location.pathname, page_title: canonicalTitle(),
       referrer: document.referrer || "", dwell_seconds: Math.round(active / 1000),
     });
   }
