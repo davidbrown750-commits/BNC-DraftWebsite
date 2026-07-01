@@ -14,6 +14,19 @@ const classify = require("../lib/classify");
 const SUPA = process.env.SUPABASE_URL;
 const SKEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+// Never sync internal staff, test accounts, or known vendors (David: no follow-up
+// on Regency Interactive). Competitors are still synced but tagged Contact Type=Competitor.
+const SKIP_DOMAINS = ["berkeleynucleonics.com", "regencyinteractive.com"];
+const SKIP_EMAILS = new Set([
+  "basketballdavid@yahoo.com", "davidbrown750@gmail.com",
+  "yvonnewebersfromholland@gmail.com", "yvonnefromholland@gmail.com",
+]);
+function skipEmail(e) {
+  const em = String(e || "").toLowerCase();
+  const dom = em.split("@")[1] || "";
+  return SKIP_EMAILS.has(em) || SKIP_DOMAINS.some((d) => dom === d || dom.endsWith("." + d));
+}
+
 function authorized(req) {
   if (!process.env.CRON_SECRET) return true; // not enforced until you set it
   if (req.headers.authorization === "Bearer " + process.env.CRON_SECRET) return true; // Vercel cron
@@ -55,7 +68,8 @@ module.exports = async function handler(req, res) {
 
   let created = 0, noted = 0, classified = 0, errors = 0;
   const errSamples = [], clsSamples = [];
-  let emails = Object.keys(byEmail);
+  let emails = Object.keys(byEmail).filter((e) => !skipEmail(e));
+  const skipped = Object.keys(byEmail).length - emails.length;
   // Optional cap for a small manual test run: ?max=2
   const max = req.query && req.query.max ? parseInt(req.query.max, 10) : 0;
   if (max > 0) emails = emails.slice(0, max);
@@ -102,6 +116,7 @@ module.exports = async function handler(req, res) {
     window: "24h", day,
     visitsRead: rows.length,
     identifiedVisitors: emails.length,
+    skippedInternalVendorTest: skipped,
     contactsCreated: created,
     contactsClassified: classified,
     notesAdded: noted,
