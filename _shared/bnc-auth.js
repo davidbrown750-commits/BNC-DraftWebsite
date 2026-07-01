@@ -109,7 +109,7 @@
       return x.origin===location.origin && !/(get-quote|contact|rma-form|sign-in|sign-up)\.html$/.test(x.pathname.toLowerCase());
     } catch(e){ return false; } }
     var ret=''; try { ret = sessionStorage.getItem('bncPrevPage') || ''; } catch(e){}
-    if (!ok(ret)) ret = ok(document.referrer) ? document.referrer : (location.origin + '/thank-you.html');
+    if (!ok(ret)) ret = ok(document.referrer) ? document.referrer : (location.origin + '/home.html');
     var forms = document.querySelectorAll('form[action*="formspree.io"]');
     Array.prototype.forEach.call(forms, function (f) {
       var i = f.querySelector('input[name="_next"]');
