@@ -16,7 +16,8 @@ const SKEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Never sync internal staff, test accounts, or known vendors (David: no follow-up
 // on Regency Interactive). Competitors are still synced but tagged Contact Type=Competitor.
-const SKIP_DOMAINS = ["berkeleynucleonics.com", "regencyinteractive.com"];
+// Known vendors / no-follow-up domains (extend as more are identified).
+const SKIP_DOMAINS = ["berkeleynucleonics.com", "regencyinteractive.com", "kentlangley.com"];
 const SKIP_EMAILS = new Set([
   "basketballdavid@yahoo.com", "davidbrown750@gmail.com",
   "yvonnewebersfromholland@gmail.com", "yvonnefromholland@gmail.com",
