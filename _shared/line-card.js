@@ -479,9 +479,19 @@
       var dsrow='<tr><td>Datasheet</td>'+ms.map(function(m){return '<td><a href="'+DSBASE+m.ds+'" style="color:var(--accent)">Open &rarr;</a></td>';}).join('')+'</tr>';
       q('.cmpTbl').innerHTML=head+'<tbody>'+body+dsrow+'</tbody>'; openOv('cmpOv'); });
 
+    function prefillFromLogin(){
+      try{
+        var u = window.Clerk && window.Clerk.user; if(!u) return;
+        var em = u.primaryEmailAddress && u.primaryEmailAddress.emailAddress;
+        var nm = u.fullName || ((u.firstName||'')+' '+(u.lastName||'')).trim();
+        var eF=q('.qEmail'), nF=q('.qName');
+        if(em && eF && !eF.value) eF.value=em;
+        if(nm && nF && !nF.value) nF.value=nm;
+      }catch(e){}
+    }
     function openQuote(){ var ms=selectedModels();
       q('.qmodels').innerHTML='Quote request for: '+ms.map(function(m){return '<b>'+esc(m.model)+'</b>';}).join(', ');
-      q('.qStatus').textContent=''; openOv('quoteOv'); }
+      q('.qStatus').textContent=''; prefillFromLogin(); openOv('quoteOv'); }
     q('.quoteBtn').addEventListener('click',openQuote); q('.quoteBtn2').addEventListener('click',openQuote);
     q('.qSend').addEventListener('click',function(){ var email=q('.qEmail').value.trim(), st=q('.qStatus');
       if(!/.+@.+\..+/.test(email)){ st.className='qStatus'; st.style.color='#b3261e'; st.textContent='Please enter a valid email so we can send your quote.'; return; }
