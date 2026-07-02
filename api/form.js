@@ -32,6 +32,11 @@ const TYPES = {
   newsletter:    "Newsletter Signup",
 };
 const DEFAULT_NOTIFY = "website@berkeleynucleonics.com";
+// Per-form-type recipients (override DEFAULT_NOTIFY; a FORM_NOTIFY_<TYPE> env var still wins over this).
+const TYPE_NOTIFY = {
+  rma: "operations@berkeleynucleonics.com",          // RMA repair / authorization request
+  "rma-status": "operations@berkeleynucleonics.com", // RMA status check
+};
 const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1, form: 1, token: 1, "cf-turnstile-response": 1, "g-recaptcha-response": 1 };
 
 function parseMultipart(buf, ct) {
@@ -88,7 +93,7 @@ function parseBody(req) {
 
 function notifyList(type) {
   const key = "FORM_NOTIFY_" + String(type || "").toUpperCase().replace(/[^A-Z]+/g, "_");
-  const raw = process.env[key] || process.env.FORM_NOTIFY_TO || DEFAULT_NOTIFY;
+  const raw = process.env[key] || TYPE_NOTIFY[type] || process.env.FORM_NOTIFY_TO || DEFAULT_NOTIFY;
   return raw.split(",").map((s) => s.trim()).filter(Boolean);
 }
 
