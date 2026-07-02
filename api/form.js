@@ -51,6 +51,25 @@ function parseMultipart(buf, ct) {
   return out;
 }
 
+function readRaw(req) {
+  return new Promise((resolve) => {
+    const chunks = [];
+    req.on("data", (c) => chunks.push(c));
+    req.on("end", () => resolve(Buffer.concat(chunks)));
+    req.on("error", () => resolve(Buffer.alloc(0)));
+  });
+}
+
+async function getBody(req) {
+  const ct = String(req.headers["content-type"] || "");
+  let body = parseBody(req);
+  // Vercel does not populate req.body for multipart/form-data — read the raw stream.
+  if ((!body || Object.keys(body).length === 0) && ct.indexOf("multipart/form-data") !== -1) {
+    try { body = parseMultipart(await readRaw(req), ct); } catch (_) {}
+  }
+  return body || {};
+}
+
 function parseBody(req) {
   let b = req.body;
   const ct = String(req.headers["content-type"] || "");
@@ -97,7 +116,7 @@ module.exports = async function handler(req, res) {
   if (req.method === "OPTIONS") { res.status(204).end(); return; }
   if (req.method !== "POST") { res.status(405).end(); return; }
 
-  const body = parseBody(req);
+  const body = await getBody(req);
   const accept = String(req.headers.accept || "");
   const wantsJson = accept.indexOf("application/json") !== -1;
   const next = body._next || body._redirect || "";
