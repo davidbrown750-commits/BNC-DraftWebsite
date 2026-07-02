@@ -3,7 +3,7 @@
    All styles live under .bnc-lc-root so nothing leaks into the host page.
    Config for every line is bundled below (BNC_LC_CONFIGS). */
 (function(){
-  var QUOTE_ENDPOINT = "https://formspree.io/f/mkolqnpr";
+  var QUOTE_ENDPOINT = "/api/form?form=quote-index";
   var DSBASE_DEFAULT = "https://www.berkeleynucleonics.com/docs/";
   var CMP_MAX = 4;
 
@@ -72,7 +72,7 @@
   productLine: "Pulse & Delay Generators",
   lede: "Compare the line at a glance and open any datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"channels", label:"Channels"},
     {key:"maxfreq", label:"Max Frequency"},
@@ -110,7 +110,7 @@
   productLine: "RF & Microwave Signal Generators",
   lede: "Berkeley Nucleonics RF and microwave signal generators run from kHz tones to beyond 50 GHz, in benchtop, OEM, and USB-powered formats. Compare the line at a glance and open any datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"type", label:"Type"},
     {key:"freq", label:"Frequency Range"},
@@ -177,7 +177,7 @@
   productLine: "Arbitrary Waveform Generators",
   lede: "Compare the line at a glance and open any datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"channels", label:"Channels"},
     {key:"sampling", label:"Sample Rate"},
@@ -248,7 +248,7 @@
   productLine: "DEI High-Current / High-Voltage Pulsers",
   lede: "Compare the line at a glance and open any datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"voltage", label:"Output Voltage"},
     {key:"current", label:"Output Current"},
@@ -312,7 +312,7 @@
   productLine: "Isotope ID & Radiation Detection",
   lede: "Compare the line at a glance and open any datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"form", label:"Form Factor"},
     {key:"detection", label:"Detection Type"},
@@ -346,7 +346,7 @@
   productLine: "ScintIQ Scintillation Detectors",
   lede: "Compare scintillator materials at a glance and open any datasheet. Click any column heading to sort. Select materials to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"res", label:"Energy Res. @ 662 keV"},
     {key:"density", label:"Density"},
@@ -394,7 +394,7 @@
   productLine: "PVP-Series HV Power Supplies",
   lede: "Compare the PVP-Series high-voltage DC supplies at a glance and open the datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
-  quoteEndpoint: "https://formspree.io/f/xeewaglw",
+  quoteEndpoint: "/api/form?form=quote-index",
   columns: [
     {key:"voltage", label:"Max Voltage"},
     {key:"current", label:"Max Current"},
