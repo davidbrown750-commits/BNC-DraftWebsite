@@ -14,6 +14,7 @@
 //   SMTP_HOST/PORT/USER/PASS/FROM, TURNSTILE_SECRET (optional),
 //   FORM_NOTIFY_TO (default website@berkeleynucleonics.com), FORM_NOTIFY_<TYPE> per-type overrides.
 
+const crypto = require("crypto");
 const N = require("../lib/nutshell");
 const { verifyClerkToken } = require("../lib/clerk");
 const { smtpConfigured, sendMail } = require("../lib/smtp");
@@ -114,6 +115,37 @@ async function turnstileOk(token, ip) {
 
 function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
+// Signed token for the "Block this sender" email link. HMAC-SHA256(lowercased email, BLOCK_KEY).
+// Returns "" when BLOCK_KEY is unset so the button is simply not rendered (feature stays inert).
+function blockToken(email) {
+  const key = process.env.BLOCK_KEY;
+  if (!key || !email) return "";
+  return crypto.createHmac("sha256", key).update(String(email).toLowerCase()).digest("hex");
+}
+
+// Is this email on the Supabase blocklist? Best-effort: any error -> not blocked (never break real forms).
+async function isBlocked(email) {
+  if (!email || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return false;
+  try {
+    const r = await fetch(process.env.SUPABASE_URL + "/rest/v1/bnc_blocked_emails?email=eq." + encodeURIComponent(email) + "&select=email&limit=1", {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: "Bearer " + process.env.SUPABASE_SERVICE_ROLE_KEY,
+      },
+    });
+    if (!r.ok) return false;
+    const j = await r.json();
+    return Array.isArray(j) && j.length > 0;
+  } catch (_) { return false; }
+}
+
+// Absolute base URL for the block link. Prefer the forwarded request host; fall back to production www.
+function baseUrl(req) {
+  const proto = String(req.headers["x-forwarded-proto"] || "https").split(",")[0].trim() || "https";
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "www.berkeleynucleonics.com").split(",")[0].trim();
+  return proto + "://" + host;
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -158,6 +190,10 @@ module.exports = async function handler(req, res) {
   let name = pick("name", "first_name", "fname", "full_name");
   const company = pick("company", "organization", "organisation", "org");
   const phone = pick("phone", "mobile phone", "mobile", "tel");
+
+  // 2b. Blocklist: a previously blocked sender gets the normal thank-you but nothing downstream
+  // (no Nutshell, no Supabase log, no notify). Best-effort — a lookup error just proceeds normally.
+  if (email && email.indexOf("@") > 0 && (await isBlocked(email))) { respondOk({ dropped: "blocked" }); return; }
 
   // 3. Clerk (optional): a verified session lets us trust the identity.
   let verified = false;
@@ -218,10 +254,19 @@ module.exports = async function handler(req, res) {
         .concat(Object.keys(extra).map((k) => [k, extra[k]]))
         .filter((r) => r[1])
         .map((r) => '<tr><td style="padding:4px 10px;border:1px solid #dde;background:#f6f8fb;font-weight:bold">' + esc(r[0]) + '</td><td style="padding:4px 10px;border:1px solid #dde">' + esc(r[1]).replace(/\n/g, "<br>") + "</td></tr>").join("");
+      // "Block this sender" button (only when there is an email AND BLOCK_KEY is configured).
+      const tok = blockToken(email);
+      const blockBtn = (email && tok)
+        ? '<p style="margin-top:18px">' +
+            '<a href="' + esc(baseUrl(req)) + "/api/block?email=" + encodeURIComponent(email) + "&t=" + tok + '" ' +
+            'style="display:inline-block;background:#b0242a;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;padding:9px 16px;border-radius:4px">Block this sender and delete the record</a>' +
+            '<br><span style="color:#6b7a90;font-size:11px">Blocks future submissions from this address and removes the Nutshell record.</span>' +
+          "</p>"
+        : "";
       const html = '<div style="font-family:Arial,sans-serif;color:#113163"><h2 style="color:#0655a3">' + esc(label) + "</h2>" +
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
-        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p></div>";
+        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + blockBtn + "</div>";
       await sendMail({
         to: notifyList(type),
         subject: (body._subject || ("[BNC] " + label)) + (name || email ? " — " + (name || email) : ""),
