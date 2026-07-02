@@ -259,7 +259,7 @@ module.exports = async function handler(req, res) {
       const blockBtn = (email && tok)
         ? '<p style="margin-top:18px">' +
             '<a href="' + esc(baseUrl(req)) + "/api/block?email=" + encodeURIComponent(email) + "&t=" + tok + '" ' +
-            'style="display:inline-block;background:#b0242a;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;padding:9px 16px;border-radius:4px">Block this sender and delete the record</a>' +
+            'style="display:inline-block;background:#b0242a;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:4px">Block this sender</a>' +
             '<br><span style="color:#6b7a90;font-size:11px">Blocks future submissions from this address and removes the Nutshell record.</span>' +
           "</p>"
         : "";

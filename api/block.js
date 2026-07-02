@@ -79,7 +79,9 @@ module.exports = async function handler(req, res) {
 
   const q = req.query || {};
   const email = String(q.email || "").toLowerCase().trim();
-  const t = String(q.t || "");
+  // Email clients line-wrap long URLs and can inject a space/newline into the token,
+  // which broke the signature. Keep only hex so a wrapped link still verifies.
+  const t = String(q.t || "").replace(/[^a-fA-F0-9]/g, "").toLowerCase();
 
   if (!email || !tokenOk(email, t)) {
     res.status(403).end('<!doctype html><meta charset="utf-8"><title>Invalid link</title>' +
