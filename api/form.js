@@ -12,7 +12,7 @@
 //
 // Vercel env: NUTSHELL_API_USER/KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
 //   SMTP_HOST/PORT/USER/PASS/FROM, TURNSTILE_SECRET (optional),
-//   FORM_NOTIFY_TO (default david.brown@), FORM_NOTIFY_<TYPE> per-type overrides.
+//   FORM_NOTIFY_TO (default info@berkeleynucleonics.com), FORM_NOTIFY_<TYPE> per-type overrides.
 
 const N = require("../lib/nutshell");
 const { verifyClerkToken } = require("../lib/clerk");
@@ -31,7 +31,7 @@ const TYPES = {
   quiz:          "Book Reader Quiz",
   newsletter:    "Newsletter Signup",
 };
-const DEFAULT_NOTIFY = "david.brown@berkeleynucleonics.com";
+const DEFAULT_NOTIFY = "info@berkeleynucleonics.com";
 const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1, form: 1, token: 1, "cf-turnstile-response": 1, "g-recaptcha-response": 1 };
 
 function parseMultipart(buf, ct) {
