@@ -519,7 +519,8 @@
         body:JSON.stringify({email:email,name:q('.qName').value.trim(),message:q('.qMsg').value.trim(),
           _subject:'Quote request: '+ms.map(function(m){return m.model;}).join(', '),product_line:cfg.productLine||cfg.title,
           models:ms.map(function(m){return m.model+' ('+m.sum+')';}).join('; ')})})
-       .then(function(r){ done(); if(r.ok){ st.className='qok'; st.textContent='Thank you. Your quote request was sent. We will be in touch shortly.'; }
+       .then(function(r){ done(); if(r.ok){ st.className='qok'; st.textContent='Thank you. Your quote request was sent. Taking you back to where you were…';
+           setTimeout(function(){ try{ history.go(-2); }catch(e){ try{ history.back(); }catch(_){} } }, 2500); }
          else { st.style.color='#b3261e'; st.textContent='That did not send. Please try again or email info@berkeleynucleonics.com.'; } })
        .catch(function(){ done(); st.style.color='#b3261e'; st.textContent='Could not reach the server. Email info@berkeleynucleonics.com.'; }); });
 
