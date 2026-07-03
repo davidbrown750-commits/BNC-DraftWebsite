@@ -89,7 +89,7 @@ const THANK_YOU_HTML = `<!doctype html>
 </body>`;
 
 const TYPES = {
-  contact:       "Contact Message",
+  contact:       "Contact Us Form",
   quote:         "Quote / Demo Request",
   "quote-index": "Quote Request (Product Index)",
   rma:           "RMA Request",
@@ -215,6 +215,22 @@ function baseUrl(req) {
   return proto + "://" + host;
 }
 
+// Readable name: if a single run-together name came in (bots + some forms send
+// "JaneDoe"), split the camelCase so the inbox preview shows "Jane Doe".
+function displayName(n) {
+  n = String(n || "").trim();
+  if (!n || /\s/.test(n)) return n;
+  return n.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Za-z])(\d)/g, "$1 $2");
+}
+
+// Best-effort model number for the preview: a product/model field, else a token
+// parsed from the page URL (e.g. bnc-845-datasheet.html -> 845, 7000-series -> 7000).
+function guessModel(fromField, pageUrl) {
+  if (fromField) return String(fromField).trim().slice(0, 40);
+  const m = String(pageUrl || "").match(/bnc-([a-z]?\d{3,4}[a-z0-9-]*)-|\/(\d{3,4})-series/i);
+  return m ? (m[1] || m[2]).toUpperCase() : "";
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -256,6 +272,12 @@ module.exports = async function handler(req, res) {
   let name = pick("name", "first_name", "fname", "full_name");
   const company = pick("company", "organization", "organisation", "org");
   const phone = pick("phone", "mobile phone", "mobile", "tel");
+  const modelField = pick("model", "product", "product_model", "model_number", "interested_in", "product_of_interest", "sku");
+
+  // 2a. Hard block: Russian-TLD senders (.ru / .su / .рф). This wave is casino/pharma
+  // bots and we do no business in Russia. Drop silently (bot sees the normal thank-you,
+  // nothing goes to Nutshell / Supabase / notify).
+  if (email && /@[^@]*\.(ru|su|xn--p1ai|рф)$/i.test(email)) { respondOk({ dropped: "ru" }); return; }
 
   // 2b. Blocklist: a previously blocked sender gets the normal thank-you but nothing downstream
   // (no Nutshell, no Supabase log, no notify). Best-effort — a lookup error just proceeds normally.
@@ -315,7 +337,22 @@ module.exports = async function handler(req, res) {
   // 5. SendGrid notification (best-effort; the lead is already saved above either way)
   if (smtpConfigured()) {
     try {
-      const rows = [["Type", label], ["Email", email], ["Name", name], ["Company", company], ["Phone", phone]]
+      // Preview-friendly fields: spaced name, best-effort model, and New vs Repeat
+      // (from whether Nutshell just created the contact). These lead the email so the
+      // inbox snippet reads "Jane Doe · jane@acme.com · Contact Us Form · Model 845 · New".
+      const nm = displayName(name);
+      const model = guessModel(modelField, req.headers.referer);
+      const newRepeat = nutshell && typeof nutshell.created === "boolean" ? (nutshell.created ? "New" : "Repeat") : "";
+      const previewParts = [];
+      if (nm) { previewParts.push(nm); if (email) previewParts.push(email); }
+      else if (email) previewParts.push(email);
+      previewParts.push(label);
+      if (model) previewParts.push("Model " + model);
+      if (newRepeat) previewParts.push(newRepeat);
+      const preview = previewParts.join("  ·  ");
+
+      // Table leads with Name/Email; "Type" is dropped (the heading already says it).
+      const rows = [["Name", nm || name], ["Email", email], ["Company", company], ["Phone", phone], ["Model", model], ["Status", newRepeat]]
         .concat(body.message ? [["Message", body.message]] : [])
         .concat(Object.keys(extra).map((k) => [k, extra[k]]))
         .filter((r) => r[1])
@@ -329,14 +366,17 @@ module.exports = async function handler(req, res) {
             '<br><span style="color:#6b7a90;font-size:11px">Blocks future submissions from this address and removes the Nutshell record.</span>' +
           "</p>"
         : "";
-      const html = '<div style="font-family:Arial,sans-serif;color:#113163"><h2 style="color:#0655a3">' + esc(label) + "</h2>" +
+      const html = '<div style="font-family:Arial,sans-serif;color:#113163">' +
+        // hidden preheader: controls the inbox preview snippet in most clients
+        '<span style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;max-height:0;max-width:0;overflow:hidden;mso-hide:all">' + esc(preview) + "</span>" +
+        '<h2 style="color:#0655a3;margin:0 0 10px">' + esc(label) + "</h2>" +
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
         '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + blockBtn + "</div>";
       await sendMail({
         to: notifyList(type),
-        subject: (body._subject || ("[BNC] " + label)) + (name || email ? " — " + (name || email) : ""),
-        html, text: label + " from " + (name || email),
+        subject: "[BNC Site] " + label + (nm || email ? " — " + (nm || email) : "") + (model ? " · Model " + model : "") + (newRepeat ? " · " + newRepeat : ""),
+        html, text: preview,
         replyTo: email || undefined,
       });
     } catch (_) {}
