@@ -208,6 +208,47 @@ async function isBlocked(email) {
   } catch (_) { return false; }
 }
 
+// Atomic dedup gate against the create-race that makes duplicate Nutshell contacts:
+// two rapid submits of the same email (bot double-fire, or Nutshell searchByEmail
+// indexing lag) both find nothing and both create. Postgres makes the first INSERT of
+// a given email win; a concurrent second INSERT conflicts. Returns:
+//   "claimed" — we inserted the row, so WE own creating the Nutshell contact
+//   "exists"  — another (concurrent or prior) submit already claimed this email; do NOT create
+//   "skip"    — Supabase/table not available -> fail open (behave as before, never break a real lead)
+// Needs table: create table if not exists bnc_contact_claims (email text primary key,
+//   nutshell_id text, claimed_at timestamptz not null default now());
+async function claimEmail(email) {
+  if (!email || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return "skip";
+  try {
+    const r = await fetch(process.env.SUPABASE_URL + "/rest/v1/bnc_contact_claims", {
+      method: "POST",
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: "Bearer " + process.env.SUPABASE_SERVICE_ROLE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "resolution=ignore-duplicates,return=representation",
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!r.ok && r.status !== 409) return "skip"; // table missing / error -> fail open
+    let arr = [];
+    try { arr = await r.json(); } catch (_) {}
+    return (Array.isArray(arr) && arr.length > 0) ? "claimed" : "exists";
+  } catch (_) { return "skip"; }
+}
+
+// Release a claim we took but could not turn into a Nutshell contact (create failed),
+// so a later legitimate submit can retry instead of being deduped forever.
+async function releaseEmailClaim(email) {
+  if (!email || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return;
+  try {
+    await fetch(process.env.SUPABASE_URL + "/rest/v1/bnc_contact_claims?email=eq." + encodeURIComponent(email), {
+      method: "DELETE",
+      headers: { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: "Bearer " + process.env.SUPABASE_SERVICE_ROLE_KEY },
+    });
+  } catch (_) {}
+}
+
 // Absolute base URL for the block link. Prefer the forwarded request host; fall back to production www.
 function baseUrl(req) {
   const proto = String(req.headers["x-forwarded-proto"] || "https").split(",")[0].trim() || "https";
@@ -327,11 +368,32 @@ module.exports = async function handler(req, res) {
     if (v != null && String(v).trim() !== "") extra[k] = String(v).slice(0, 4000);
   }
 
-  // 3b. Nutshell upsert-by-email + note (best-effort; single deduped CRM path)
+  // 3b. Nutshell find-or-create + note (best-effort; single deduped CRM path).
+  // Guarded by an atomic Supabase claim so two racing submits of the same email can't
+  // both create a contact (the root cause of the duplicate pairs).
   let nutshell = null;
   if (email && email.indexOf("@") > 0 && N.hasCreds()) {
     try {
-      const { contact, created } = await N.upsertContact({ email, name: name || null, phone: phone || null, company: company || null });
+      let contact = await N.findContactByEmail(email);
+      let created = false;
+      if (!contact) {
+        const claim = await claimEmail(email);
+        if (claim === "exists") {
+          // A concurrent (or prior) submit already owns creating this email. Re-check once
+          // in case it just landed; otherwise skip the create so we don't duplicate.
+          contact = await N.findContactByEmail(email);
+          if (!contact) nutshell = { deduped: true };
+        } else {
+          try {
+            contact = await N.createContact({ name: name || company || String(email).split("@")[0], email, phone });
+            created = true;
+          } catch (ce) {
+            if (claim === "claimed") await releaseEmailClaim(email); // let a later real submit retry
+            throw ce;
+          }
+        }
+      }
+      if (contact) {
       const lines = [label + " via website" + (verified ? " (signed in)" : "") + ".", "Email: " + email];
       if (company) lines.push("Company: " + company);
       if (phone) lines.push("Phone: " + phone);
@@ -339,6 +401,7 @@ module.exports = async function handler(req, res) {
       for (const k of Object.keys(extra)) lines.push(k + ": " + extra[k]);
       try { await N.addNote(contact.id, lines.join("\n")); } catch (_) {}
       nutshell = { contactId: contact.id, created };
+      }
     } catch (e) { nutshell = { error: e.rpc || e.message }; }
   }
 
