@@ -103,6 +103,23 @@ async function isAuthorized(token, sharedToken) {
     }
   }
   if (sharedToken && token === sharedToken) return true;
+  // Signed per-person link token (used by the daily brief so the two allowed people
+  // click through with NO password). Shape: base64url(email) + "." + HMAC-SHA256(email,
+  // VISITOR_LINK_KEY). Authorized only if the email is on VISITOR_ALLOW (default: David
+  // + Meraly). 2-part token so it never collides with a Clerk JWT (3 parts).
+  const linkKey = process.env.VISITOR_LINK_KEY;
+  const parts = token.split(".");
+  if (linkKey && parts.length === 2) {
+    try {
+      const email = Buffer.from(parts[0], "base64url").toString("utf8").toLowerCase().trim();
+      const allow = (process.env.VISITOR_ALLOW || "david.brown@berkeleynucleonics.com,meraly.rodas@berkeleynucleonics.com")
+        .split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+      if (!allow.includes(email)) return false;
+      const want = crypto.createHmac("sha256", linkKey).update(email).digest("hex");
+      const a = Buffer.from(want, "utf8"), b = Buffer.from(String(parts[1]), "utf8");
+      if (a.length === b.length && crypto.timingSafeEqual(a, b)) return true;
+    } catch (_) {}
+  }
   return false;
 }
 

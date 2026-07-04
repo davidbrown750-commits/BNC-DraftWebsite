@@ -192,6 +192,15 @@ function blockToken(email) {
   return crypto.createHmac("sha256", key).update(String(email).toLowerCase()).digest("hex");
 }
 
+// Signed token for the "Create contact" email button (routed gmail/yahoo/foreign leads
+// that we deliberately did NOT auto-create). HMAC-SHA256("create:"+submissionId, BLOCK_KEY),
+// namespaced so it can't be replayed as a block token. Empty when BLOCK_KEY is unset.
+function createContactToken(id) {
+  const key = process.env.BLOCK_KEY;
+  if (!key || !id) return "";
+  return crypto.createHmac("sha256", key).update("create:" + String(id)).digest("hex");
+}
+
 // Is this email on the Supabase blocklist? Best-effort: any error -> not blocked (never break real forms).
 async function isBlocked(email) {
   if (!email || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return false;
@@ -376,7 +385,12 @@ module.exports = async function handler(req, res) {
     try {
       let contact = await N.findContactByEmail(email);
       let created = false;
-      if (!contact) {
+      if (!contact && routeToDavid) {
+        // gmail/yahoo/consumer + foreign submissions: do NOT auto-create a contact.
+        // David's triage email gets a "Create contact" button so he decides, then routes
+        // to a rep. (An already-existing contact still gets the note below.)
+        nutshell = { skippedCreate: true };
+      } else if (!contact) {
         const claim = await claimEmail(email);
         if (claim === "exists") {
           // A concurrent (or prior) submit already owns creating this email. Re-check once
@@ -405,16 +419,18 @@ module.exports = async function handler(req, res) {
     } catch (e) { nutshell = { error: e.rpc || e.message }; }
   }
 
-  // 4. Supabase durable log (best-effort)
+  // 4. Supabase durable log (best-effort). Capture the row id so a routed submission's
+  // "Create contact" button can point back to this exact record.
+  let submissionId = "";
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     try {
-      await fetch(process.env.SUPABASE_URL + "/rest/v1/bnc_form_submissions", {
+      const r = await fetch(process.env.SUPABASE_URL + "/rest/v1/bnc_form_submissions", {
         method: "POST",
         headers: {
           apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
           Authorization: "Bearer " + process.env.SUPABASE_SERVICE_ROLE_KEY,
           "Content-Type": "application/json",
-          Prefer: "return=minimal",
+          Prefer: "return=representation",
         },
         body: JSON.stringify({
           form_type: type, email: email || null, name: name || null, company: company || null,
@@ -423,6 +439,7 @@ module.exports = async function handler(req, res) {
           verified, user_agent: String(req.headers["user-agent"] || "").slice(0, 300),
         }),
       });
+      try { const j = await r.json(); if (Array.isArray(j) && j[0] && j[0].id != null) submissionId = String(j[0].id); } catch (_) {}
     } catch (_) {}
   }
 
@@ -458,13 +475,24 @@ module.exports = async function handler(req, res) {
             '<br><span style="color:#6b7a90;font-size:11px">Blocks future submissions from this address and removes the Nutshell record.</span>' +
           "</p>"
         : "";
+      // "Create contact" button — only for routed (gmail/yahoo/foreign) leads we did NOT
+      // auto-create, when we have the submission id + BLOCK_KEY. Lets David add them to
+      // Nutshell on demand and then route to a rep.
+      const ctok = createContactToken(submissionId);
+      const createBtn = (nutshell && nutshell.skippedCreate && submissionId && ctok)
+        ? '<p style="margin-top:18px">' +
+            '<a href="' + esc(baseUrl(req)) + "/api/create-contact?id=" + encodeURIComponent(submissionId) + "&t=" + ctok + '" ' +
+            'style="display:inline-block;background:#1a8a5a;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;padding:6px 14px;border-radius:4px">Create contact in Nutshell</a>' +
+            '<br><span style="color:#6b7a90;font-size:11px">Not added automatically (consumer/foreign sender). Click to add them, then route to a rep in Nutshell.</span>' +
+          "</p>"
+        : "";
       const html = '<div style="font-family:Arial,sans-serif;color:#113163">' +
         // hidden preheader: controls the inbox preview snippet in most clients
         '<span style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;max-height:0;max-width:0;overflow:hidden;mso-hide:all">' + esc(preview) + "</span>" +
         '<h2 style="color:#0655a3;margin:0 0 10px">' + esc(label) + "</h2>" +
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
-        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + blockBtn + "</div>";
+        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + blockBtn + "</div>";
       // Route foreign-language / strange / consumer-mailbox submissions to David (he triages
       // them), everyone else to the normal per-type inbox. Tag the subject so it's obvious why.
       const to = routeToDavid ? ["david.brown@berkeleynucleonics.com"] : notifyList(type);
