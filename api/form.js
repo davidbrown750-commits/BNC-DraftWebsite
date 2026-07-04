@@ -223,6 +223,19 @@ function displayName(n) {
   return n.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Za-z])(\d)/g, "$1 $2");
 }
 
+// Script/spam signals in submitted text. Cyrillic anywhere, or a Russian-domain
+// (.ru / .su / .рф) link in the body, => Russian spam (this wave uses gmail/free
+// senders with a Cyrillic body + a .ru link, so the sender-TLD check misses them).
+// Other non-Latin scripts (CJK, Arabic, Hebrew, Thai, Devanagari, Greek, Hangul,
+// Japanese kana) => foreign-language, which we route to David rather than block.
+function scriptFlags(text) {
+  const s = String(text || "");
+  const cyrillic = /[Ѐ-ӿ]/.test(s);
+  const ruLink = /[a-z0-9][a-z0-9-]*\.(ru|su)\b/i.test(s) || /xn--p1ai/i.test(s) || /рф\b/.test(s);
+  const otherForeign = /[一-鿿぀-ヿ가-힯؀-ۿ֐-׿฀-๿ऀ-ॿ]/.test(s);
+  return { cyrillic, ruLink, otherForeign };
+}
+
 // Best-effort model number for the preview: a product/model field, else a token
 // parsed from the page URL (e.g. bnc-845-datasheet.html -> 845, 7000-series -> 7000).
 function guessModel(fromField, pageUrl) {
@@ -282,6 +295,22 @@ module.exports = async function handler(req, res) {
   // 2b. Blocklist: a previously blocked sender gets the normal thank-you but nothing downstream
   // (no Nutshell, no Supabase log, no notify). Best-effort — a lookup error just proceeds normally.
   if (email && email.indexOf("@") > 0 && (await isBlocked(email))) { respondOk({ dropped: "blocked" }); return; }
+
+  // 2c. Russian-language content: Cyrillic anywhere in the submission, or a .ru/.su link in
+  // the body. The .ru-TLD sender check above misses the current wave (gmail senders, Cyrillic
+  // body, .ru link in the message), so scan the text. Drop silently like the sender block.
+  const _vals = Object.keys(body).map((k) => (typeof body[k] === "string" ? body[k] : "")).join(" \n ");
+  const _blob = (name || "") + " \n " + _vals;
+  const _scr = scriptFlags(_blob);
+  if (_scr.cyrillic || _scr.ruLink) { respondOk({ dropped: "ru-content" }); return; }
+
+  // 2d. Route-to-David signals (keep the lead, just send the notice to David — he triages):
+  //   - foreign-language / strange-character body (non-Latin script or many non-ASCII chars)
+  //   - free consumer mailbox (gmail / yahoo / aol / ...) — B2B buyers use corporate email
+  const _nonAscii = (_blob.match(/[^\x00-\x7F]/g) || []).length;
+  const _freeMbox = /@(gmail|googlemail|yahoo|ymail|rocketmail|aol|hotmail|outlook|live|icloud|proton|protonmail|gmx)\.[a-z.]+$/i.test(email);
+  const routeToDavid = _scr.otherForeign || _nonAscii >= 8 || _freeMbox;
+  const routeReason = _scr.otherForeign || _nonAscii >= 8 ? "foreign/strange" : (_freeMbox ? "consumer-mailbox" : "");
 
   // 3. Clerk (optional): a verified session lets us trust the identity.
   let verified = false;
@@ -373,9 +402,13 @@ module.exports = async function handler(req, res) {
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
         '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + blockBtn + "</div>";
+      // Route foreign-language / strange / consumer-mailbox submissions to David (he triages
+      // them), everyone else to the normal per-type inbox. Tag the subject so it's obvious why.
+      const to = routeToDavid ? ["david.brown@berkeleynucleonics.com"] : notifyList(type);
+      const routeTag = routeToDavid ? (routeReason === "consumer-mailbox" ? " · Consumer email" : " · Foreign/strange") : "";
       await sendMail({
-        to: notifyList(type),
-        subject: "[BNC Site] " + label + (nm || email ? " — " + (nm || email) : "") + (model ? " · Model " + model : "") + (newRepeat ? " · " + newRepeat : ""),
+        to,
+        subject: "[BNC Site] " + label + (nm || email ? " — " + (nm || email) : "") + (model ? " · Model " + model : "") + (newRepeat ? " · " + newRepeat : "") + routeTag,
         html, text: preview,
         replyTo: email || undefined,
       });
