@@ -311,6 +311,27 @@
     sort:{voltage:0,current:6,freq:5,pw:2,risefall:4}}
   ]
 },
+"nim": {
+  title: "NIM Pulse Generators & Power Supplies",
+  productLine: "NIM Pulse Generators & Power Supplies",
+  lede: "Compare the line at a glance and open any datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
+  dsbase: "https://www.berkeleynucleonics.com/",
+  quoteEndpoint: "/api/form?form=quote-index",
+  columns: [
+    {key:"type", label:"Type"},
+    {key:"voltages", label:"Voltages"}
+  ],
+  models: [
+   {num:2, model:"DB-2", sum:"NIM random pulse generator", ds:"figures/nim/db-2-datasheet.pdf",
+    vals:{type:"Random Pulse Generator", voltages:"—"}, sort:{type:1, voltages:0}},
+   {num:5, model:"PB-5", sum:"Precision NIM pulse generator", ds:"figures/nim/pb-5-datasheet.pdf",
+    vals:{type:"Precision Pulse Generator", voltages:"—"}, sort:{type:2, voltages:0}},
+   {num:3, model:"AP-3", sum:"Portable NIM power supply, up to 6 modules", ds:"figures/nim/ap-3-datasheet.pdf",
+    vals:{type:"Portable Power Supply", voltages:"±6 V/4 A, ±12 V/1 A, ±24 V/500 mA"}, sort:{type:3, voltages:6}},
+   {num:4, model:"TB-4", sum:"NIM bin & power supply, up to 12 modules", ds:"figures/nim/tb-4-datasheet.pdf",
+    vals:{type:"Bin & Power Supply", voltages:"±6 V/8 A, ±12 V/2 A, ±24 V/1 A"}, sort:{type:4, voltages:8}}
+  ]
+},
 "riid": {
   title: "Isotope Identifiers & Radiation Detectors",
   productLine: "Isotope ID & Radiation Detection",
