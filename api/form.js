@@ -486,9 +486,12 @@ module.exports = async function handler(req, res) {
           "</p>"
         : "";
       const tok = blockToken(email);
+      // Pass the Nutshell contact id so Block can delete by id if searchByEmail hasn't
+      // indexed this fresh contact yet (block.js re-verifies the id carries this email).
+      const cidParam = (nutshell && nutshell.contactId) ? "&cid=" + encodeURIComponent(nutshell.contactId) : "";
       const blockBtn = (email && tok)
         ? '<p style="margin-top:18px">' +
-            '<a href="' + esc(baseUrl(req)) + "/api/block?email=" + encodeURIComponent(email) + "&t=" + tok + '" ' +
+            '<a href="' + esc(baseUrl(req)) + "/api/block?email=" + encodeURIComponent(email) + "&t=" + tok + cidParam + '" ' +
             'style="display:inline-block;background:#b0242a;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:4px">Block this sender</a>' +
             '<br><span style="color:#6b7a90;font-size:11px">Blocks future submissions from this address and removes the Nutshell record.</span>' +
           "</p>"
