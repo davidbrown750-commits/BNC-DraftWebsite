@@ -99,7 +99,8 @@ module.exports = async function handler(req, res) {
     crmAction = "skipped";
   } else {
     try {
-      const r = await N.removeSpamContactByEmail(email);
+      const cid = String((req.query && req.query.cid) || "").replace(/[^0-9-]/g, "");
+      const r = await N.removeSpamContactByEmail(email, cid);
       if (!r.found) { crmAction = "not-found"; }
       else if (r.action === "deleted") { crmAction = "deleted"; crmDetail = "Nutshell contact " + r.id + " deleted."; }
       else if (r.action === "flagged") { crmAction = "flagged"; crmDetail = "Nutshell contact " + r.id + " flagged (hard delete unavailable: " + (r.deleteError || "unknown") + ")."; }
