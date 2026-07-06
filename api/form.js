@@ -161,10 +161,22 @@ function parseBody(req) {
   return {};
 }
 
+// Always cc these addresses on a given form type, no matter where the base recipients
+// come from (env override, code map, or default). Lets us guarantee David is on RMA
+// request + status even though those recipients are set via a Vercel env override.
+const TYPE_ALWAYS_CC = {
+  rma: ["david.brown@berkeleynucleonics.com"],
+  "rma-status": ["david.brown@berkeleynucleonics.com"],
+};
+
 function notifyList(type) {
   const key = "FORM_NOTIFY_" + String(type || "").toUpperCase().replace(/[^A-Z]+/g, "_");
   const raw = process.env[key] || TYPE_NOTIFY[type] || process.env.FORM_NOTIFY_TO || DEFAULT_NOTIFY;
-  return raw.split(",").map((s) => s.trim()).filter(Boolean);
+  const list = raw.split(",").map((s) => s.trim()).filter(Boolean);
+  for (const cc of (TYPE_ALWAYS_CC[type] || [])) {
+    if (!list.some((e) => e.toLowerCase() === cc.toLowerCase())) list.push(cc);
+  }
+  return list;
 }
 
 async function turnstileOk(token, ip) {
