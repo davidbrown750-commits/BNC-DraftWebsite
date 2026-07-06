@@ -201,6 +201,14 @@ function createContactToken(id) {
   return crypto.createHmac("sha256", key).update("create:" + String(id)).digest("hex");
 }
 
+// Signed token for the "Flag as vendor" email button. HMAC-SHA256("vendor:"+lowercased
+// email, BLOCK_KEY), namespaced so it can't be replayed as a block token. Empty if unset.
+function vendorToken(email) {
+  const key = process.env.BLOCK_KEY;
+  if (!key || !email) return "";
+  return crypto.createHmac("sha256", key).update("vendor:" + String(email).toLowerCase()).digest("hex");
+}
+
 // Is this email on the Supabase blocklist? Best-effort: any error -> not blocked (never break real forms).
 async function isBlocked(email) {
   if (!email || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return false;
@@ -467,6 +475,16 @@ module.exports = async function handler(req, res) {
         .filter((r) => r[1])
         .map((r) => '<tr><td style="padding:4px 10px;border:1px solid #dde;background:#f6f8fb;font-weight:bold">' + esc(r[0]) + '</td><td style="padding:4px 10px;border:1px solid #dde">' + esc(r[1]).replace(/\n/g, "<br>") + "</td></tr>").join("");
       // "Block this sender" button (only when there is an email AND BLOCK_KEY is configured).
+      // "Flag as vendor" button (amber) - softer than block: keeps the Nutshell record but
+      // tags it Vendor and stops future submissions. Shows when there is an email + BLOCK_KEY.
+      const vtok = vendorToken(email);
+      const vendorBtn = (email && vtok)
+        ? '<p style="margin-top:14px">' +
+            '<a href="' + esc(baseUrl(req)) + "/api/vendor?email=" + encodeURIComponent(email) + "&t=" + vtok + '" ' +
+            'style="display:inline-block;background:#c77e00;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;padding:5px 12px;border-radius:4px">Flag as vendor</a>' +
+            '<br><span style="color:#6b7a90;font-size:11px">Not spam, but not a lead: tags the Nutshell record Vendor and blocks future submissions.</span>' +
+          "</p>"
+        : "";
       const tok = blockToken(email);
       const blockBtn = (email && tok)
         ? '<p style="margin-top:18px">' +
@@ -492,7 +510,7 @@ module.exports = async function handler(req, res) {
         '<h2 style="color:#0655a3;margin:0 0 10px">' + esc(label) + "</h2>" +
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
-        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + blockBtn + "</div>";
+        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + vendorBtn + blockBtn + "</div>";
       // Route foreign-language / strange / consumer-mailbox submissions to David (he triages
       // them), everyone else to the normal per-type inbox. Tag the subject so it's obvious why.
       const to = routeToDavid ? ["david.brown@berkeleynucleonics.com"] : notifyList(type);
