@@ -463,8 +463,11 @@ module.exports = async function handler(req, res) {
     } catch (_) {}
   }
 
-  // 5. SendGrid notification (best-effort; the lead is already saved above either way)
-  if (smtpConfigured()) {
+  // 5. SendGrid notification (best-effort; the lead is already saved above either way).
+  // Skip the datasheet CONFIGURATOR (pdf-config): it is now guaranteed to reach the daily
+  // Web Visitor Battle Card via bnc_form_submissions, so the real-time email is redundant.
+  // (It is still logged to Supabase + noted in Nutshell above.)
+  if (smtpConfigured() && type !== "pdf-config") {
     try {
       // Preview-friendly fields: spaced name, best-effort model, and New vs Repeat
       // (from whether Nutshell just created the contact). These lead the email so the
