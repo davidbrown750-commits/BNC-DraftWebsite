@@ -467,10 +467,11 @@ module.exports = async function handler(req, res) {
   }
 
   // 5. SendGrid notification (best-effort; the lead is already saved above either way).
-  // Skip the datasheet CONFIGURATOR (pdf-config): it is now guaranteed to reach the daily
-  // Web Visitor Battle Card via bnc_form_submissions, so the real-time email is redundant.
-  // (It is still logged to Supabase + noted in Nutshell above.)
-  if (smtpConfigured() && type !== "pdf-config") {
+  // Skip the datasheet CONFIGURATOR (pdf-config) and the Book Reader QUIZ: both are
+  // guaranteed to reach the daily Web Visitor Battle Card via bnc_form_submissions
+  // (quiz cards go to Meraly), so the real-time email is redundant.
+  // (They are still logged to Supabase + noted in Nutshell above.)
+  if (smtpConfigured() && type !== "pdf-config" && type !== "quiz") {
     try {
       // Preview-friendly fields: spaced name, best-effort model, and New vs Repeat
       // (from whether Nutshell just created the contact). These lead the email so the
