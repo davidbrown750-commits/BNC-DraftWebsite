@@ -479,6 +479,21 @@ module.exports = async function handler(req, res) {
       const nm = displayName(name);
       const model = guessModel(modelField, req.headers.referer);
       const newRepeat = nutshell && typeof nutshell.created === "boolean" ? (nutshell.created ? "New" : "Repeat") : "";
+      // "Repeat" means a Nutshell contact with this email already existed (usually from a
+      // website registration/sign-in or an earlier form). Pull that contact's name +
+      // primary email so the Status row shows WHO we matched, not just "Repeat".
+      let existingWho = "";
+      if (newRepeat === "Repeat" && nutshell && nutshell.contactId) {
+        try {
+          const cid = parseInt(String(nutshell.contactId).split("-")[0], 10);
+          const full = await N.rpc("getContact", { contactId: cid });
+          const pe = full && full.email && (full.email["--primary"] || full.email["0"] || full.email[0]);
+          const fn = full && full.name && (full.name.displayName || full.name);
+          const prevEmail = typeof pe === "string" ? pe : "";
+          existingWho = " (previously registered as " + (prevEmail || email) + (fn ? ", " + fn : "") + ")";
+        } catch (_) {}
+      }
+      const statusCell = newRepeat + existingWho;
       const previewParts = [];
       if (nm) { previewParts.push(nm); if (email) previewParts.push(email); }
       else if (email) previewParts.push(email);
@@ -488,7 +503,7 @@ module.exports = async function handler(req, res) {
       const preview = previewParts.join("  ·  ");
 
       // Table leads with Name/Email; "Type" is dropped (the heading already says it).
-      const rows = [["Name", nm || name], ["Email", email], ["Company", company], ["Phone", phone], ["Model", model], ["Status", newRepeat]]
+      const rows = [["Name", nm || name], ["Email", email], ["Company", company], ["Phone", phone], ["Model", model], ["Status", statusCell]]
         .concat(body.message ? [["Message", body.message]] : [])
         .concat(Object.keys(extra).map((k) => [k, extra[k]]))
         .filter((r) => r[1])
