@@ -63,3 +63,13 @@
     } catch (_) {}
   }, true);
 })();
+
+/* Make VSG-Mini-6 datasheet + user manual searchable in site search (added 2026-07-02; idempotent - a future reindex won't duplicate). */
+(function(){
+  var extra=[
+    {t:"VSG-Mini-6 USB Vector Signal Generator",u:"docs/bnc-vsg-mini-6-datasheet.html",c:"Berkeley Nucleonics · Data Sheet",k:"vsg-mini-6 vsg mini 6 vsgmini6 usb vector signal generator sga-60 rf microwave signal generator portable"},
+    {t:"VSG-Mini-6 USB Vector Signal Generator — User Manual",u:"docs/bnc-vsg-mini-6-user-manual.html",c:"Berkeley Nucleonics · Manual",k:"vsg-mini-6 vsg mini 6 vsgmini6 usb vector signal generator user manual sga-60 rf microwave"}
+  ];
+  function add(){ if(!window.SITE_INDEX||typeof window.SITE_INDEX.push!=="function") return false; for(var i=0;i<extra.length;i++){ var e=extra[i]; if(!window.SITE_INDEX.some(function(o){return o&&o.u===e.u;})) window.SITE_INDEX.push(e); } return true; }
+  if(!add()){ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",add);} setTimeout(add,1200); }
+})();
