@@ -72,9 +72,30 @@ def page_title(htmltext):
                              .replace(' | Berkeley Nucleonics', ''))
     return None
 
-def main():
+def load_manual():
+    """Hand-maintained entries (site-wide / cross-page issues that have no single
+    [data-webmaster] element). Kept in _shared/pending-manual.json so they survive
+    every regeneration; delete an entry there when resolved."""
+    mf = ROOT / '_shared' / 'pending-manual.json'
+    if not mf.exists():
+        return []
+    try:
+        data = json.loads(mf.read_text(encoding='utf-8'))
+    except Exception as e:
+        print(f"WARNING: pending-manual.json unreadable ({e}); skipping manual entries")
+        return []
     entries = []
-    total_notes = 0
+    for e in data.get('entries', []):
+        notes = e.get('notes', [])
+        for n in notes:
+            n['verify'] = bool(re.search(r'\(?\bverify\b\)?', n.get('text', ''), re.I))
+        e['verify_count'] = sum(1 for n in notes if n['verify'])
+        entries.append(e)
+    return entries
+
+def main():
+    entries = load_manual()
+    total_notes = sum(len(e.get('notes', [])) for e in entries)
     for f in discover():
         if '_shared' in f.parts or f.name == 'employee-portal.html':
             continue
