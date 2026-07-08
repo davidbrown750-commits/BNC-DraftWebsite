@@ -374,13 +374,15 @@ module.exports = async function handler(req, res) {
   const _scr = scriptFlags(_blob);
   if (_scr.cyrillic || _scr.ruLink) { respondOk({ dropped: "ru-content" }); return; }
 
-  // 2d. Route-to-David signals (keep the lead, just send the notice to David — he triages):
-  //   - foreign-language / strange-character body (non-Latin script or many non-ASCII chars)
-  //   - free consumer mailbox (gmail / yahoo / aol / ...) — B2B buyers use corporate email
+  // 2d. Triage-routing signals (keep the lead, just send the notice to a triager, not a rep):
+  //   - foreign-language / strange-character body (non-Latin script or many non-ASCII chars) -> David
+  //   - free consumer mailbox (gmail / yahoo / aol / ...) — B2B buyers use corporate email -> Meraly
+  //     (she flags spam / vendor, or creates the contact if it is a real lead)
   const _nonAscii = (_blob.match(/[^\x00-\x7F]/g) || []).length;
   const _freeMbox = /@(gmail|googlemail|yahoo|ymail|rocketmail|aol|hotmail|outlook|live|icloud|proton|protonmail|gmx)\.[a-z.]+$/i.test(email);
-  const routeToDavid = _scr.otherForeign || _nonAscii >= 8 || _freeMbox;
+  const routeToTriage = _scr.otherForeign || _nonAscii >= 8 || _freeMbox;
   const routeReason = _scr.otherForeign || _nonAscii >= 8 ? "foreign/strange" : (_freeMbox ? "consumer-mailbox" : "");
+  const TRIAGE_TO = { "foreign/strange": ["david.brown@berkeleynucleonics.com"], "consumer-mailbox": ["meraly.rodas@berkeleynucleonics.com"] };
 
   // 3. Clerk (optional): a verified session lets us trust the identity.
   let verified = false;
@@ -405,10 +407,11 @@ module.exports = async function handler(req, res) {
     try {
       let contact = await N.findContactByEmail(email);
       let created = false;
-      if (!contact && routeToDavid) {
+      if (!contact && routeToTriage) {
         // gmail/yahoo/consumer + foreign submissions: do NOT auto-create a contact.
-        // David's triage email gets a "Create contact" button so he decides, then routes
-        // to a rep. (An already-existing contact still gets the note below.)
+        // The triage email (Meraly for consumer mailboxes, David for foreign/strange)
+        // gets a "Create contact" button so the triager decides, then routes to a rep.
+        // (An already-existing contact still gets the note below.)
         nutshell = { skippedCreate: true };
       } else if (!contact) {
         const claim = await claimEmail(email);
@@ -512,8 +515,8 @@ module.exports = async function handler(req, res) {
           "</p>"
         : "";
       // "Create contact" button — only for routed (gmail/yahoo/foreign) leads we did NOT
-      // auto-create, when we have the submission id + BLOCK_KEY. Lets David add them to
-      // Nutshell on demand and then route to a rep.
+      // auto-create, when we have the submission id + BLOCK_KEY. Lets the triager add them
+      // to Nutshell on demand and then route to a rep.
       const ctok = createContactToken(submissionId);
       const createBtn = (nutshell && nutshell.skippedCreate && submissionId && ctok)
         ? '<p style="margin-top:18px">' +
@@ -529,10 +532,11 @@ module.exports = async function handler(req, res) {
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
         '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + vendorBtn + blockBtn + "</div>";
-      // Route foreign-language / strange / consumer-mailbox submissions to David (he triages
-      // them), everyone else to the normal per-type inbox. Tag the subject so it's obvious why.
-      const to = routeToDavid ? ["david.brown@berkeleynucleonics.com"] : notifyList(type);
-      const routeTag = routeToDavid ? (routeReason === "consumer-mailbox" ? " · Consumer email" : " · Foreign/strange") : "";
+      // Route triage submissions to their triager (consumer-mailbox -> Meraly, who flags
+      // spam / vendor or creates the contact; foreign/strange -> David), everyone else to
+      // the normal per-type inbox. Tag the subject so it's obvious why.
+      const to = routeToTriage ? (TRIAGE_TO[routeReason] || ["david.brown@berkeleynucleonics.com"]) : notifyList(type);
+      const routeTag = routeToTriage ? (routeReason === "consumer-mailbox" ? " · Consumer email" : " · Foreign/strange") : "";
       await sendMail({
         to,
         subject: "[BNC Site] " + label + (nm || email ? " — " + (nm || email) : "") + (model ? " · Model " + model : "") + (newRepeat ? " · " + newRepeat : "") + routeTag,
