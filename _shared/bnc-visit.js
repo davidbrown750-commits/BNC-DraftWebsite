@@ -73,3 +73,19 @@
   function add(){ if(!window.SITE_INDEX||typeof window.SITE_INDEX.push!=="function") return false; for(var i=0;i<extra.length;i++){ var e=extra[i]; if(!window.SITE_INDEX.some(function(o){return o&&o.u===e.u;})) window.SITE_INDEX.push(e); } return true; }
   if(!add()){ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",add);} setTimeout(add,1200); }
 })();
+
+/* Make bare model-number searches match lettered models in site search (865 -> 865B, 855 -> 855B, 588 -> 588B, 745 -> 745T). Idempotent. Added 2026-07-02. */
+(function(){
+  function aug(){
+    if(!window.SITE_INDEX||typeof window.SITE_INDEX.forEach!=="function") return false;
+    window.SITE_INDEX.forEach(function(o){
+      if(!o||!o.t) return;
+      var nums=o.t.match(/\d{3,4}(?=[a-z])/gi)||[];
+      nums.forEach(function(nb){
+        if(!new RegExp("(^|[^0-9a-z])"+nb+"([^0-9a-z]|$)","i").test(o.k||"")) o.k=(o.k||"")+" "+nb;
+      });
+    });
+    return true;
+  }
+  if(!aug()){ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",aug);} setTimeout(aug,1300); }
+})();
