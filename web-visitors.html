@@ -21,7 +21,20 @@
   .top .t{font-family:'Myriad Pro',Arial;font-weight:700;font-size:17px;letter-spacing:.01em}
   .top .t span{color:#37b6f0}
   .rule{height:3px;background:linear-gradient(90deg,#89AACC,#4E85BF)}
-  .wrap{max-width:1080px;margin:0 auto;padding:20px 18px 60px}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 18px 60px}
+  .vr-layout{display:flex;gap:22px;align-items:flex-start}
+  .vr-main{flex:1;min-width:0}
+  .drun{flex:0 0 186px;background:#fff;border:1px solid #d9e2ee;border-radius:10px;padding:14px 15px;position:sticky;top:14px}
+  .drun-h{font-weight:700;color:#0a2540;font-size:15px}
+  .drun-sub{color:#5b6677;font-size:11px;margin:3px 0 10px;line-height:1.4}
+  .drun-row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-top:1px solid #eef2f7;font-size:13px}
+  .drun-row:first-child{border-top:none}
+  .drun-row .d{color:#334}
+  .drun-row .n{font-weight:700;color:#0655a3;font-variant-numeric:tabular-nums}
+  .drun-row.today .d{font-weight:700;color:#0a2540}
+  .drun-row.today .d:after{content:" · today";font-weight:400;color:#8a94a3;font-size:11px}
+  .drun-empty{color:#8a94a3;font-size:12px}
+  @media(max-width:820px){.vr-layout{flex-direction:column}.drun{flex-basis:auto;width:100%;position:static}}
   h1{font-family:'Myriad Pro',Arial;color:var(--ink);font-size:21px;margin:14px 0 2px}
   .sub{color:var(--muted);font-size:13.5px;margin:0 0 16px}
   .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:14px}
@@ -88,6 +101,13 @@
   <h1>Web Visitor Review</h1>
   <p class="sub">Live view of website traffic from the visit database. Search by name, email, company, or product line to see who has been on the site, when they were last on, and their full page history.</p>
 
+  <div class="vr-layout">
+  <aside class="drun">
+    <div class="drun-h">Daily Run</div>
+    <div class="drun-sub">Unique identified, non-BNC visitors per day</div>
+    <div id="drun-list"><div class="drun-empty">Loading&hellip;</div></div>
+  </aside>
+  <div class="vr-main">
   <div class="controls">
     <input type="text" id="q" name="ve-q-nofill" placeholder="Search name, email, company, or page…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')">
     <select id="product">
@@ -117,6 +137,8 @@
   </div>
 
   <div id="results"></div>
+  </div><!-- /vr-main -->
+  </div><!-- /vr-layout -->
 
   <div class="foot">Internal Berkeley Nucleonics tool. Visitor data is confidential — do not share outside the company. Traffic is captured site-wide; identities appear when a visitor submits a form or signs in.</div>
 </div>
@@ -251,6 +273,17 @@
     setTimeout(function(){ if(!done){ window.removeEventListener("message",onMsg); cb(token); } }, 4000);
   }
 
+  function renderDaily(list){
+    var el = document.getElementById("drun-list");
+    if(!el) return;
+    if(!list || !list.length){ el.innerHTML = '<div class="drun-empty">No data.</div>'; return; }
+    var today = list[0].date;
+    el.innerHTML = list.map(function(r){
+      var lab = new Date(r.date + "T12:00:00Z").toLocaleDateString("en-US", { month:"short", day:"numeric", timeZone:"UTC" });
+      return '<div class="drun-row'+(r.date===today?" today":"")+'"><span class="d">'+lab+'</span><span class="n">'+r.count+'</span></div>';
+    }).join("");
+  }
+
   function load(){
     var q = document.getElementById("q").value.trim();
     var product = document.getElementById("product").value;
@@ -267,7 +300,7 @@
         if(res.status===401){ showGate("That password was not accepted."); throw new Error("auth"); }
         if(!res.ok) throw new Error("http "+res.status);
         return res.json();
-      }).then(render).catch(function(e){
+      }).then(function(d){ render(d); renderDaily(d && d.daily_run); }).catch(function(e){
         if(e.message!=="auth")
           document.getElementById("stat").textContent = "Could not load data ("+e.message+").";
       });

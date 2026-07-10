@@ -208,6 +208,28 @@ module.exports = async function handler(req, res) {
       timeline: g.timeline,
     }));
 
+    // Daily Run: per-day count of unique IDENTIFIED, NON-BNC visitors over the last 15
+    // days (a visitor counts on each day they were on the site). Computed from the raw
+    // rows in Pacific time, and independent of the search filters below so the trend
+    // panel always shows the full picture. (David 2026-07-09.)
+    const idNonBnc = new Set();
+    for (const g of map.values()) if (g.email && !isInternal(g.email)) idNonBnc.add(g.key);
+    const ptDay = (iso) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" });
+    const dayCounts = new Map(); // 'YYYY-MM-DD' (PT) -> Set of visitor keys
+    for (const v of rows) {
+      const k = v.visitor_id || v.user_id || (v.email && v.email.toLowerCase()) || "unknown";
+      if (!idNonBnc.has(k) || !v.visited_at) continue;
+      const d = ptDay(v.visited_at);
+      if (!dayCounts.has(d)) dayCounts.set(d, new Set());
+      dayCounts.get(d).add(k);
+    }
+    const daily_run = [];
+    const basePT = new Date(new Date().toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }) + "T12:00:00Z");
+    for (let i = 0; i < 15; i++) {
+      const key = new Date(basePT.getTime() - i * 86400000).toISOString().slice(0, 10);
+      daily_run.push({ date: key, count: (dayCounts.get(key) || new Set()).size });
+    }
+
     const q = ((req.query && req.query.q) || "").toLowerCase().trim();
     const product = ((req.query && req.query.product) || "").trim();
     const idOnly = ((req.query && req.query.identified) || "") === "1";
@@ -234,6 +256,7 @@ module.exports = async function handler(req, res) {
       total_visitors: total,
       internal_count: internal_count,
       returned: visitors.length,
+      daily_run,
       visitors,
     });
   } catch (e) {
