@@ -221,6 +221,14 @@ function vendorToken(email) {
   return crypto.createHmac("sha256", key).update("vendor:" + String(email).toLowerCase()).digest("hex");
 }
 
+// Signed token for the "Flag as Manufacturers Rep" buttons. kind is reseller-domestic or
+// reseller-international (a rep who represents other companies, not us). Namespaced "rep:".
+function repToken(email, kind) {
+  const key = process.env.BLOCK_KEY;
+  if (!key || !email || !kind) return "";
+  return crypto.createHmac("sha256", key).update("rep:" + kind + ":" + String(email).toLowerCase()).digest("hex");
+}
+
 // Is this email on the Supabase blocklist? Best-effort: any error -> not blocked (never break real forms).
 async function isBlocked(email) {
   if (!email || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) return false;
@@ -519,6 +527,20 @@ module.exports = async function handler(req, res) {
             '<br><span style="color:#6b7a90;font-size:11px">Not spam, but not a lead: tags the Nutshell record Vendor and blocks future submissions.</span>' +
           "</p>"
         : "";
+      // "Flag as Manufacturers Rep" buttons - a rep who represents OTHER companies (not us) and
+      // is not a customer. Tags Contact Type = Reseller (Domestic/International); does NOT block
+      // (a channel partner may follow up). BNC-Rep is reserved for reps who represent us.
+      const rTokD = repToken(email, "reseller-domestic");
+      const rTokI = repToken(email, "reseller-international");
+      const repBtn = "display:inline-block;background:#0a7d6b;color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:12px;font-weight:bold;padding:5px 12px;border-radius:4px;margin:6px 6px 0 0";
+      const repBtns = (email && rTokD && rTokI)
+        ? '<p style="margin-top:14px">' +
+            '<span style="color:#113163;font-size:12px;font-weight:bold">Flag as Manufacturers Rep (reps other companies, not us):</span><br>' +
+            '<a href="' + esc(baseUrl(req)) + "/api/rep?email=" + encodeURIComponent(email) + "&kind=reseller-domestic&t=" + rTokD + '" style="' + repBtn + '">Reseller &mdash; Domestic</a>' +
+            '<a href="' + esc(baseUrl(req)) + "/api/rep?email=" + encodeURIComponent(email) + "&kind=reseller-international&t=" + rTokI + '" style="' + repBtn + '">Reseller &mdash; International</a>' +
+            '<br><span style="color:#6b7a90;font-size:11px">Tags the Nutshell record as a reseller (a rep for other manufacturers, not a customer). Not blocked.</span>' +
+          "</p>"
+        : "";
       const tok = blockToken(email);
       // Pass the Nutshell contact id so Block can delete by id if searchByEmail hasn't
       // indexed this fresh contact yet (block.js re-verifies the id carries this email).
@@ -547,7 +569,7 @@ module.exports = async function handler(req, res) {
         '<h2 style="color:#0655a3;margin:0 0 10px">' + esc(label) + "</h2>" +
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
         (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
-        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + vendorBtn + blockBtn + "</div>";
+        '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + vendorBtn + repBtns + blockBtn + "</div>";
       // Route triage submissions to their triager (consumer-mailbox -> Meraly, who flags
       // spam / vendor or creates the contact; foreign/strange -> David), everyone else to
       // the normal per-type inbox. Tag the subject so it's obvious why.
