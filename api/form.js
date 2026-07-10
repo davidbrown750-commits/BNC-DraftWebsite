@@ -568,7 +568,7 @@ module.exports = async function handler(req, res) {
         '<span style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;max-height:0;max-width:0;overflow:hidden;mso-hide:all">' + esc(preview) + "</span>" +
         '<h2 style="color:#0655a3;margin:0 0 10px">' + esc(label) + "</h2>" +
         '<table style="border-collapse:collapse;font-size:14px">' + rows + "</table>" +
-        (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: ' + esc(nutshell.contactId) + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
+        (nutshell && nutshell.contactId ? '<p style="color:#6b7a90;font-size:12px">Nutshell: <a href="https://app.nutshell.com/person/' + encodeURIComponent(String(nutshell.contactId).split("-")[0]) + '" style="color:#0655a3">' + esc(nutshell.contactId) + "</a>" + (nutshell.created ? " (new)" : " (updated)") + "</p>" : "") +
         '<p style="color:#6b7a90;font-size:12px">Page: ' + esc(req.headers.referer || "") + "</p>" + createBtn + vendorBtn + repBtns + blockBtn + "</div>";
       // Route triage submissions to their triager (consumer-mailbox -> Meraly, who flags
       // spam / vendor or creates the contact; foreign/strange -> David), everyone else to
