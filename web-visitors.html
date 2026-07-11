@@ -217,7 +217,7 @@
     }).join("");
     var tl = (v.timeline||[]).slice(0,30).map(function(t){
       return '<div class="row"><span class="d">'+when(t.at)+'</span><span>'+esc(t.title||t.path)+
-             (t.dwell?' <span style="color:var(--muted)">· '+fmtDur(t.dwell)+'</span>':'')+'</span></div>';
+             (t.dwell?' <span style="color:var(--muted)">· '+fmtDur(t.dwell)+(t.idle_trimmed?'+ <span title="Tab sat open with no activity; idle time is not counted.">(went idle)</span>':'')+'</span>':'')+'</span></div>';
     }).join("");
 
     return '<div class="card" data-k="'+esc(v.key)+'">'+
