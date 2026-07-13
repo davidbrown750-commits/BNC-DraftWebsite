@@ -14,6 +14,11 @@
   var TEL = '+18002347858', TEL_DISP = '1-800-234-7858';
   var TEL2 = '+14154539955', TEL2_DISP = '+1 (415) 453-9955';
   var MAILTO = 'info@berkeleynucleonics.com';
+  // Front desk texting line (David 2026-07-13: the widget offers a text thread
+  // instead of mailto). CONFIRM this line is SMS-enabled; swap here if texting
+  // lives on another number. The ?&body= form works on both iOS and Android.
+  var SMS = '+14154539955';
+  var SMS_BODY = encodeURIComponent('Hi Berkeley Nucleonics, ');
 
   var SID = (function () {
     try {
@@ -154,7 +159,7 @@
       '<h4>Talk to a BNC engineer</h4>' +
       '<p>Reach us right now, or leave your details and we will get back to you quickly.</p>' +
       '<div class="now"><a class="call" href="tel:' + TEL + '">Call ' + TEL_DISP + '</a>' +
-      '<a class="mail" href="mailto:' + MAILTO + '?subject=Website%20inquiry">Email us</a></div>' +
+      '<a class="mail" href="sms:' + SMS + '?&body=' + SMS_BODY + '">Text us</a></div>' +
       '<label>Name</label><input id="bncHName" autocomplete="name">' +
       '<label>Email</label><input id="bncHEmail" type="email" autocomplete="email">' +
       '<label>Phone (optional)</label><input id="bncHPhone" type="tel" autocomplete="tel">' +
