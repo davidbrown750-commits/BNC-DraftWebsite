@@ -322,3 +322,42 @@
     xhr.send();
   });
 })();
+
+/* ---- Bioz badge: sticky companion (2026-07-13) ----------------------------
+ * On pages carrying an a.bioz-badge in the hero, a compact clone rides the
+ * pdf-configurator's sticky holder (left side) so the badge stays pinned under
+ * the nav while scrolling - same behavior as the PDF button. The clone hides
+ * while the hero badge is on screen (no doubling).
+ */
+(function(){
+  "use strict";
+  function ready(fn){ if (document.readyState !== "loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
+  ready(function(){
+    var src = document.querySelector("a.bioz-badge");
+    var holder = document.querySelector(".pdfcfg-holder");
+    if (!src || !holder) return;
+    holder.style.display = "flex";
+    holder.style.justifyContent = "space-between";
+    holder.style.alignItems = "flex-start";
+    var clone = src.cloneNode(true);
+    clone.classList.add("bioz-badge-sticky");
+    clone.style.pointerEvents = "auto";
+    clone.style.marginTop = "0";
+    clone.style.padding = "5px 11px";
+    clone.style.gap = "8px";
+    clone.style.boxShadow = "0 5px 16px -7px rgba(17,49,99,.5)";
+    clone.style.visibility = "hidden";
+    // slightly smaller text in the pinned form
+    Array.prototype.forEach.call(clone.querySelectorAll("span"), function(s){
+      if (s.style.font) s.style.font = s.style.font.replace("12.5px","11.5px").replace("11px Arial","10px Arial");
+    });
+    holder.insertBefore(clone, holder.firstChild);
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function(en){
+        clone.style.visibility = (en[0] && en[0].isIntersecting) ? "hidden" : "visible";
+      }, {threshold: 0}).observe(src);
+    } else {
+      clone.style.visibility = "visible";
+    }
+  });
+})();
