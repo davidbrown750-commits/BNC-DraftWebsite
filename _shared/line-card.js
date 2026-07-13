@@ -279,7 +279,7 @@
    {num:4210, model:"PVM-4210", sum:"Modular ±950 V versatile pulser", ds:"bnc-dei-pvm-4210-datasheet.html",
     vals:{voltage:"950 V",current:"—",freq:"Single-shot to 20 kHz (5 MHz burst)",pw:"<50 ns to DC",risefall:"≤ 25 ns (10%–90%)"},
     sort:{voltage:2,current:0,freq:3,pw:3,risefall:2}},
-   {num:4151, model:"PVX-4151", sum:"High-frequency ±1.5 kV continuous pulser",
+   {num:4151, model:"PVX-4151", sum:"High-frequency ±1.5 kV continuous pulser", ds:"bnc-dei-pvx-4151-datasheet.html",
     vals:{voltage:"1,500 V",current:"—",freq:"240 kHz (at max voltage)",pw:"<60 ns to DC",risefall:"<25 ns"},
     sort:{voltage:3,current:0,freq:7,pw:4,risefall:2}},
    {num:2506, model:"PVX-2506", sum:"Low-voltage +50 V precision pulser", ds:"bnc-dei-pvx-2506-datasheet.html",
