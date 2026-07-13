@@ -163,6 +163,18 @@
       '<span class="back" id="bncHBack">Back to the assistant</span>';
     panel.insertBefore(v, foot);
     document.getElementById('bncHMsg').value = lastQ || '';
+    // Signed-in visitors (Clerk) get name/email prefilled - fields stay editable.
+    try {
+      var cu = window.Clerk && window.Clerk.user;
+      if (cu) {
+        var nm = (cu.fullName || ((cu.firstName || '') + ' ' + (cu.lastName || '')).trim());
+        var em = cu.primaryEmailAddress && cu.primaryEmailAddress.emailAddress;
+        if (nm) document.getElementById('bncHName').value = nm;
+        if (em) document.getElementById('bncHEmail').value = em;
+        var ph = cu.primaryPhoneNumber && cu.primaryPhoneNumber.phoneNumber;
+        if (ph) document.getElementById('bncHPhone').value = ph;
+      }
+    } catch (e) {}
     document.getElementById('bncHBack').onclick = closeHuman;
     document.getElementById('bncHSubmit').onclick = submitHuman;
   }
