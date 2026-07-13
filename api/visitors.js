@@ -223,11 +223,19 @@ module.exports = async function handler(req, res) {
       if (!dayCounts.has(d)) dayCounts.set(d, new Set());
       dayCounts.get(d).add(k);
     }
+    // Brand-new = the visitor's FIRST-EVER visit (across the whole table) falls on
+    // that PT day. Split requested by David 2026-07-13: total / brand-new.
+    const firstDay = new Map(); // visitor key -> 'YYYY-MM-DD' (PT) of first-ever visit
+    for (const g of map.values())
+      if (idNonBnc.has(g.key) && g.first) firstDay.set(g.key, ptDay(g.first));
     const daily_run = [];
     const basePT = new Date(new Date().toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }) + "T12:00:00Z");
     for (let i = 0; i < 15; i++) {
       const key = new Date(basePT.getTime() - i * 86400000).toISOString().slice(0, 10);
-      daily_run.push({ date: key, count: (dayCounts.get(key) || new Set()).size });
+      const set = dayCounts.get(key) || new Set();
+      let brandNew = 0;
+      for (const k of set) if (firstDay.get(k) === key) brandNew++;
+      daily_run.push({ date: key, count: set.size, new_count: brandNew });
     }
 
     const q = ((req.query && req.query.q) || "").toLowerCase().trim();
