@@ -273,3 +273,52 @@
     });
   });
 })();
+
+/* ---- Legacy PDF download line (2026-07-12) --------------------------------
+ * Renders the bottom print-code line on datasheet/manual pages: document date
+ * code (Dc-...) left, "PDF download (size)" right. The file map is generated
+ * by the Legacy PDF Downloads rollout (docs/pdfs/pdf-map.json). The link is
+ * gated to signed-in visitors by bnc-auth.js's download gate (a.pdf-dl).
+ */
+(function () {
+  "use strict";
+  function ready(fn){ if (document.readyState !== "loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
+  ready(function () {
+    var page = location.pathname.split("/").pop();
+    if (!page) return;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "pdfs/pdf-map.json", true);
+    xhr.onload = function () {
+      if (xhr.status !== 200) return;
+      var map; try { map = JSON.parse(xhr.responseText); } catch (e) { return; }
+      var m = map[page];
+      if (!m) return;
+      var host = document.querySelector("main.content") || document.querySelector("main") || document.body;
+      var line = document.createElement("div");
+      line.className = "pdf-dl-line";
+      line.setAttribute("style",
+        "display:flex;justify-content:space-between;align-items:center;gap:14px;" +
+        "margin:34px auto 8px;padding:12px 2px 0;border-top:1px solid #dfe6f0;" +
+        "font-size:.8rem;color:#8b97a8;flex-wrap:wrap;");
+      var code = document.createElement("span");
+      code.textContent = m.c || "";
+      var a = document.createElement("a");
+      a.className = "pdf-dl";
+      a.href = m.f;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.setAttribute("style", "color:#0655a3;font-weight:600;text-decoration:none;margin-left:auto;");
+      a.textContent = "PDF download (" + m.s + ")";
+      a.addEventListener("mouseenter", function(){ a.style.textDecoration = "underline"; });
+      a.addEventListener("mouseleave", function(){ a.style.textDecoration = "none"; });
+      line.appendChild(code);
+      line.appendChild(a);
+      host.appendChild(line);
+      // If bnc-auth already ran its gate pass before this line existed, ask it
+      // to re-evaluate by dispatching the same event it listens for; harmless
+      // if unhandled - the gate also re-runs on every Clerk auth change.
+      try { document.dispatchEvent(new Event("bnc-auth-refresh")); } catch (e) {}
+    };
+    xhr.send();
+  });
+})();
