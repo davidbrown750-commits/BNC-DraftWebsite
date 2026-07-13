@@ -88,6 +88,7 @@
   html.embed body{background:#fff}
   html.embed .wrap{padding:8px 2px 24px;max-width:100%}
   html.embed .sub{margin-top:0}
+.drun-row .nn{color:#0655a3;font-weight:600;font-size:11px}
 </style>
 </head>
 <body>
@@ -104,7 +105,7 @@
   <div class="vr-layout">
   <aside class="drun">
     <div class="drun-h">Daily Run</div>
-    <div class="drun-sub">Unique identified, non-BNC visitors per day</div>
+    <div class="drun-sub">Unique identified, non-BNC visitors per day &middot; total / <span style="color:#0655a3;font-weight:600">brand new</span></div>
     <div id="drun-list"><div class="drun-empty">Loading&hellip;</div></div>
   </aside>
   <div class="vr-main">
@@ -280,7 +281,8 @@
     var today = list[0].date;
     el.innerHTML = list.map(function(r){
       var lab = new Date(r.date + "T12:00:00Z").toLocaleDateString("en-US", { month:"short", day:"numeric", timeZone:"UTC" });
-      return '<div class="drun-row'+(r.date===today?" today":"")+'"><span class="d">'+lab+'</span><span class="n">'+r.count+'</span></div>';
+      var nn = (typeof r.new_count === "number") ? ' <span class="nn" title="brand-new first-time visitors">/ '+r.new_count+'</span>' : '';
+      return '<div class="drun-row'+(r.date===today?" today":"")+'"><span class="d">'+lab+'</span><span class="n">'+r.count+nn+'</span></div>';
     }).join("");
   }
 
