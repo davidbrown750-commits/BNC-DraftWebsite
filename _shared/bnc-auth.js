@@ -280,7 +280,7 @@
 
   /* ---------- software-download gate -------------------------------------- */
   function applyDownloadGate() {
-    var rows = document.querySelectorAll('a.row[href*="/download/"]');
+    var rows = document.querySelectorAll('a.row[href*="/download/"], a.pdf-dl');
     [].slice.call(rows).forEach(function (a) {
       a.classList.toggle('bnc-locked-row', !isSignedIn());
       if (!a.__bncBound) {
@@ -294,6 +294,10 @@
       }
     });
   }
+
+  // Late-inserted download links (e.g. the datasheet PDF line) ask for a
+  // re-gate by dispatching this event after they mount.
+  document.addEventListener('bnc-auth-refresh', applyDownloadGate);
 
   /* ---------- expanded pricing (hard gate via Supabase) ------------------- */
   // Collapsible categories, served from Supabase only when signed in.
