@@ -352,6 +352,46 @@
       if (s.style.font) s.style.font = s.style.font.replace("12.5px","11.5px").replace("11px Arial","10px Arial");
     });
     holder.insertBefore(clone, holder.firstChild);
+    /* Click (hero badge or sticky clone) opens an in-page overlay with the live
+       Bioz Prime widget - visitors keep their place on the page. Href stays as a
+       real link so middle-click / JS-off still reach Bioz. */
+    function biozModal(href){
+      var ov = document.getElementById("bioz-modal");
+      if (!ov) {
+        ov = el("div", {id:"bioz-modal", style:
+          "position:fixed;inset:0;background:rgba(17,49,99,.55);backdrop-filter:blur(3px);"+
+          "z-index:9998;display:flex;align-items:center;justify-content:center;padding:22px"});
+        var box = el("div", {style:
+          "background:#fff;border-radius:10px;max-width:960px;width:100%;height:min(82vh,760px);"+
+          "display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px -20px rgba(0,0,0,.5)"});
+        var head = el("div", {style:
+          "display:flex;align-items:center;gap:10px;background:"+BRAND_DARK+";color:#fff;padding:12px 18px"},
+          "<b style='letter-spacing:.1em;font:700 13px Arial'>BIOZ</b>"+
+          "<span style='font:400 13px Arial'>Peer-reviewed research citing this instrument</span>"+
+          "<a id='bioz-ext' target='_blank' rel='noopener' style='margin-left:auto;color:#9dc2e8;font:400 12px Arial'>Open on Bioz</a>"+
+          "<button id='bioz-x' aria-label='Close' style='background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1'>&times;</button>");
+        var body = el("div", {id:"bioz-modal-body", style:"flex:1 1 auto;overflow:auto;background:#f6f8fb"});
+        box.appendChild(head); box.appendChild(body); ov.appendChild(box);
+        document.body.appendChild(ov);
+        function close(){ ov.style.display="none"; document.getElementById("bioz-modal-body").innerHTML=""; }
+        ov.addEventListener("click", function(e){ if(e.target===ov) close(); });
+        head.querySelector("#bioz-x").addEventListener("click", close);
+        document.addEventListener("keydown", function(e){ if(e.key==="Escape") close(); });
+      }
+      ov.querySelector("#bioz-ext").href = href;
+      ov.querySelector("#bioz-modal-body").innerHTML =
+        '<object type="text/html" data="'+href+'" style="width:100%;height:100%;border:0"></object>';
+      ov.style.display = "flex";
+    }
+    function bindBadge(a){
+      a.addEventListener("click", function(e){
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return; // let power users open a tab
+        e.preventDefault();
+        biozModal(a.href);
+      });
+    }
+    bindBadge(src); bindBadge(clone);
+
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function(en){
         clone.style.visibility = (en[0] && en[0].isIntersecting) ? "hidden" : "visible";
