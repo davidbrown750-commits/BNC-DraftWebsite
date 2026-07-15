@@ -162,44 +162,51 @@
 })();
 
 
-/* Search result badge colors by type: Data Sheet = light blue, Manual = purple (unchanged), Video = site green. */
+/* Search result badges: classify each result by its page type (data-u slug) and color it. Data Sheet = blue, Manual = purple, Video = green, Application Note (appnote-/brief-) = yellow, Technical Brief (article-) = orange. Only real data sheets keep the Data Sheet label. */
 (function(){
-  var C={ds:['rgba(56,132,208,0.18)','#6fb0ec'],video:['rgba(47,158,107,0.18)','#4fbf8a'],manual:['rgba(124,58,237,0.14)','#a78bfa']};
+  var COL={
+    ds:['rgba(56,132,208,0.18)','#6fb0ec'],
+    video:['rgba(47,158,107,0.18)','#4fbf8a'],
+    manual:['rgba(124,58,237,0.14)','#a78bfa'],
+    appnote:['rgba(240,199,60,0.16)','#f2c94c'],
+    tech:['rgba(242,153,74,0.18)','#f2994a']
+  };
+  function slug(t){return (t.getAttribute('data-u')||'').split('/').pop().toLowerCase();}
   function colorize(){
-    var list=document.querySelectorAll('.ss-gbadge');
-    for(var i=0;i<list.length;i++){
-      var b=list[i]; if(b.__typed) continue;
-      var t=(b.textContent||'').trim().toLowerCase();
-      var s=t.indexOf('data')===0?C.ds:(t.indexOf('video')===0?C.video:(t.indexOf('manual')===0?C.manual:null));
-      if(s){ b.style.background=s[0]; b.style.color=s[1]; b.__typed=true; }
+    var tiles=document.querySelectorAll('.ss-gtile');
+    for(var i=0;i<tiles.length;i++){
+      var tile=tiles[i], b=tile.querySelector('.ss-gbadge'); if(!b||b.__typed) continue;
+      var u=slug(tile), set=null;
+      if(u.indexOf('appnote-')===0||u.indexOf('brief-')===0){ set=COL.appnote; b.textContent='Application Note'; }
+      else if(u.indexOf('article-')===0){ set=COL.tech; b.textContent='Technical Brief'; }
+      else {
+        var t=(b.textContent||'').trim().toLowerCase();
+        set=t.indexOf('data')===0?COL.ds:(t.indexOf('video')===0?COL.video:(t.indexOf('manual')===0?COL.manual:null));
+      }
+      if(set){ b.style.background=set[0]; b.style.color=set[1]; b.__typed=true; }
     }
   }
-  function start(){
-    try{
-      colorize();
-      var mo=new MutationObserver(function(){ colorize(); });
-      mo.observe(document.body,{childList:true,subtree:true});
-    }catch(e){}
-  }
+  function start(){ try{ colorize(); new MutationObserver(function(){colorize();}).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
 })();
 
 
-/* Search: pin VSG-Mini-6 product pages (Data Sheet, then Manual) to the front of results. */
+/* Search: put a product's Data Sheet (then its User Manual) first in results, so number/model/product searches lead with the primary pages. */
 (function(){
-  function rank(t){var b=((t.querySelector('.ss-gbadge')||{}).textContent||'').toLowerCase();return b.indexOf('manual')===0?1:0;}
+  function u(t){return (t.getAttribute('data-u')||'').toLowerCase();}
   function reorder(){
     var wrap=document.querySelector('.ss-gwrap'); if(!wrap) return;
     var kids=[].filter.call(wrap.children,function(c){return c.classList&&c.classList.contains('ss-gtile');});
     if(kids.length<2) return;
-    var vsg=kids.filter(function(t){return /VSG-Mini-6/i.test(((t.querySelector('.ss-gtitle')||{}).textContent)||'');});
-    if(!vsg.length) return;
-    vsg.sort(function(a,b){return rank(a)-rank(b);});
+    var ds=null,man=null;
+    for(var i=0;i<kids.length;i++){ var s=u(kids[i]); if(!ds && /-datasheet\.html$/.test(s)) ds=kids[i]; if(!man && /-user-manual\.html$/.test(s)) man=kids[i]; }
+    var front=[]; if(ds) front.push(ds); if(man) front.push(man);
+    if(!front.length) return;
     var already=true;
-    for(var i=0;i<vsg.length;i++){ if(kids[i]!==vsg[i]){ already=false; break; } }
+    for(var j=0;j<front.length;j++){ if(kids[j]!==front[j]){ already=false; break; } }
     if(already) return;
     var anchor=kids[0];
-    for(var j=vsg.length-1;j>=0;j--){ if(vsg[j]!==anchor) wrap.insertBefore(vsg[j], anchor); }
+    for(var k=front.length-1;k>=0;k--){ if(front[k]!==anchor) wrap.insertBefore(front[k], anchor); }
   }
   function start(){ try{ reorder(); new MutationObserver(function(){reorder();}).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
