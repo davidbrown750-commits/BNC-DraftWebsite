@@ -120,3 +120,43 @@
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',rename); } else { rename(); }
   var t=0, iv=setInterval(function(){ rename(); if(++t>=5) clearInterval(iv); },400);
 })();
+
+
+/* VSG-Mini-6 search cover thumbnails: title on top, product photo on bottom; datasheet = navy, manual = lighter blue. Generated client-side and injected into the search cover map (SSIMG). */
+(function(){
+  var tries=0;
+  function build(){
+    try{
+      if(!window.SSIMG){ if(tries++<30) setTimeout(build,250); return; }
+      if(window.__vsgCoversDone) return;
+      var hero=new Image();
+      hero.onload=function(){
+        function cover(dark){
+          var W=720,H=360,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+          var g=x.createLinearGradient(0,0,0,H);
+          if(dark){g.addColorStop(0,'#0a2044');g.addColorStop(1,'#103264');}else{g.addColorStop(0,'#245a9e');g.addColorStop(1,'#3a7cc0');}
+          x.fillStyle=g;x.fillRect(0,0,W,H);
+          var by=150,bh=H-by,bw=W,ir=hero.naturalWidth/hero.naturalHeight,br=bw/bh,sw,sh,sx,sy;
+          if(ir>br){sh=hero.naturalHeight;sw=sh*br;sx=(hero.naturalWidth-sw)/2;sy=0;}else{sw=hero.naturalWidth;sh=sw/br;sx=0;sy=(hero.naturalHeight-sh)/2;}
+          x.drawImage(hero,sx,sy,sw,sh,0,by,bw,bh);
+          x.fillStyle='rgba(255,255,255,.18)';x.fillRect(0,by-2,W,3);
+          x.fillStyle='#fff';x.font='700 60px Arial';x.fillText('VSG-Mini-6',34,76);
+          x.fillStyle='#d3e2f6';x.font='600 26px Arial';x.fillText('USB Vector Signal Generator',36,116);
+          var label=dark?'DATA SHEET':'USER MANUAL';x.font='700 23px Arial';
+          var tw=x.measureText(label).width,pw=tw+32,ph=40,px=W-pw-26,py=24,r=20;
+          x.fillStyle=dark?'#3a7cc0':'#0a2044';
+          x.beginPath();x.moveTo(px+r,py);x.arcTo(px+pw,py,px+pw,py+ph,r);x.arcTo(px+pw,py+ph,px,py+ph,r);x.arcTo(px,py+ph,px,py,r);x.arcTo(px,py,px+pw,py,r);x.closePath();x.fill();
+          x.fillStyle='#fff';x.fillText(label,px+16,py+27);
+          return c.toDataURL('image/png');
+        }
+        try{
+          window.SSIMG['docs/bnc-vsg-mini-6-datasheet.html']=cover(true);
+          window.SSIMG['docs/bnc-vsg-mini-6-user-manual.html']=cover(false);
+          window.__vsgCoversDone=true;
+        }catch(e){}
+      };
+      hero.src='/docs/figures/vsg-mini-6-ds/vsg-mini-6-hero.png';
+    }catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(build,600);});}else{setTimeout(build,600);}
+})();
