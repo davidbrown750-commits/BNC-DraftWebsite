@@ -183,3 +183,24 @@
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
 })();
+
+
+/* Search: pin VSG-Mini-6 product pages (Data Sheet, then Manual) to the front of results. */
+(function(){
+  function rank(t){var b=((t.querySelector('.ss-gbadge')||{}).textContent||'').toLowerCase();return b.indexOf('manual')===0?1:0;}
+  function reorder(){
+    var wrap=document.querySelector('.ss-gwrap'); if(!wrap) return;
+    var kids=[].filter.call(wrap.children,function(c){return c.classList&&c.classList.contains('ss-gtile');});
+    if(kids.length<2) return;
+    var vsg=kids.filter(function(t){return /VSG-Mini-6/i.test(((t.querySelector('.ss-gtitle')||{}).textContent)||'');});
+    if(!vsg.length) return;
+    vsg.sort(function(a,b){return rank(a)-rank(b);});
+    var already=true;
+    for(var i=0;i<vsg.length;i++){ if(kids[i]!==vsg[i]){ already=false; break; } }
+    if(already) return;
+    var anchor=kids[0];
+    for(var j=vsg.length-1;j>=0;j--){ if(vsg[j]!==anchor) wrap.insertBefore(vsg[j], anchor); }
+  }
+  function start(){ try{ reorder(); new MutationObserver(function(){reorder();}).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
+})();
