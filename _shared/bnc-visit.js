@@ -168,6 +168,7 @@
     ds:['rgba(56,132,208,0.18)','#6fb0ec'],
     video:['rgba(47,158,107,0.18)','#4fbf8a'],
     manual:['rgba(124,58,237,0.14)','#a78bfa'],
+    faq:['rgba(255,255,255,0.16)','#ffffff'],
     appnote:['rgba(240,199,60,0.16)','#f2c94c'],
     tech:['rgba(242,153,74,0.18)','#f2994a']
   };
@@ -181,7 +182,7 @@
       else if(u.indexOf('article-')===0){ set=COL.tech; b.textContent='Technical Brief'; }
       else {
         var t=(b.textContent||'').trim().toLowerCase();
-        set=t.indexOf('data')===0?COL.ds:(t.indexOf('video')===0?COL.video:(t.indexOf('manual')===0?COL.manual:null));
+        set=t.indexOf('data')===0?COL.ds:(t.indexOf('video')===0?COL.video:(t.indexOf('manual')===0?COL.manual:(t.indexOf('faq')===0?COL.faq:null)));
       }
       if(set){ b.style.background=set[0]; b.style.color=set[1]; b.__typed=true; }
     }
