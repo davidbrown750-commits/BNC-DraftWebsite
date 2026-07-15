@@ -160,3 +160,26 @@
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(build,600);});}else{setTimeout(build,600);}
 })();
+
+
+/* Search result badge colors by type: Data Sheet = light blue, Manual = purple (unchanged), Video = site green. */
+(function(){
+  var C={ds:['rgba(56,132,208,0.18)','#6fb0ec'],video:['rgba(47,158,107,0.18)','#4fbf8a'],manual:['rgba(124,58,237,0.14)','#a78bfa']};
+  function colorize(){
+    var list=document.querySelectorAll('.ss-gbadge');
+    for(var i=0;i<list.length;i++){
+      var b=list[i]; if(b.__typed) continue;
+      var t=(b.textContent||'').trim().toLowerCase();
+      var s=t.indexOf('data')===0?C.ds:(t.indexOf('video')===0?C.video:(t.indexOf('manual')===0?C.manual:null));
+      if(s){ b.style.background=s[0]; b.style.color=s[1]; b.__typed=true; }
+    }
+  }
+  function start(){
+    try{
+      colorize();
+      var mo=new MutationObserver(function(){ colorize(); });
+      mo.observe(document.body,{childList:true,subtree:true});
+    }catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
+})();
