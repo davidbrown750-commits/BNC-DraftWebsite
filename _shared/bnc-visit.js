@@ -103,3 +103,20 @@
   document.addEventListener('DOMContentLoaded', rm);
   try{ var mo=new MutationObserver(rm); mo.observe(document.documentElement,{childList:true,subtree:true}); setTimeout(function(){try{mo.disconnect();}catch(e){}},10000); }catch(e){}
 })();
+
+
+/* Nav label rename: High Power/Current Pulsers -> High Voltage/Current Pulsers (2026-07) */
+(function(){
+  var OLD='High Power/Current Pulsers', NEW='High Voltage/Current Pulsers';
+  function rename(){
+    if(!document.body) return 0;
+    try{
+      var tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return (n.parentElement&&/SCRIPT|STYLE/.test(n.parentElement.tagName))?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});
+      var n,c=0;
+      while(n=tw.nextNode()){ if(n.nodeValue.indexOf(OLD)>-1){ n.nodeValue=n.nodeValue.split(OLD).join(NEW); c++; } }
+      return c;
+    }catch(e){ return 0; }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',rename); } else { rename(); }
+  var t=0, iv=setInterval(function(){ rename(); if(++t>=5) clearInterval(iv); },400);
+})();
