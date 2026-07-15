@@ -90,18 +90,16 @@
   if(!aug()){ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",aug);} setTimeout(aug,1300); }
 })();
 
-/* Remove discontinued Model 971 from the site nav (product retired 2026-07). One shared script instead of editing every baked-in nav. */
+/* Remove discontinued Model 971 from the site nav (product retired 2026-07). Robust: runs immediately, on DOMContentLoaded, and via MutationObserver to catch late/re-rendered nav. */
 (function(){
   function rm(){
-    var nav=document.querySelector('.sitenav-menu')||document.querySelector('.sitenav')||document.querySelector('nav')||document;
-    var links=nav.querySelectorAll('a');
-    for(var i=0;i<links.length;i++){
-      var a=links[i], href=a.getAttribute('href')||'';
-      if(a.textContent.trim()==='Model 971' || href.indexOf('bnc-model-971-datasheet')>-1){
-        if(a.parentNode) a.parentNode.removeChild(a);
-      }
+    var els=document.querySelectorAll('a');
+    for(var i=0;i<els.length;i++){
+      var a=els[i], href=a.getAttribute('href')||'';
+      if(a.textContent.trim()==='Model 971' || href.indexOf('bnc-model-971-datasheet')>-1){ if(a.parentNode) a.parentNode.removeChild(a); }
     }
   }
-  if(document.readyState!=='loading') rm(); else document.addEventListener('DOMContentLoaded', rm);
-  setTimeout(rm, 900);
+  rm();
+  document.addEventListener('DOMContentLoaded', rm);
+  try{ var mo=new MutationObserver(rm); mo.observe(document.documentElement,{childList:true,subtree:true}); setTimeout(function(){try{mo.disconnect();}catch(e){}},10000); }catch(e){}
 })();
