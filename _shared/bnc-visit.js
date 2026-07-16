@@ -212,3 +212,27 @@
   function start(){ try{ reorder(); new MutationObserver(function(){reorder();}).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
 })();
+
+
+/* Add existing DEI user manuals to site search + fix the PVP series user-manual category. */
+(function(){
+  var tries=0;
+  function run(){
+    if(!window.SITE_INDEX){ if(tries++<30) setTimeout(run,250); return; }
+    if(window.__deiIdxDone) return; window.__deiIdxDone=true;
+    try{
+      var add=[
+        {t:'PVX-4110 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4110-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4110 pvx4110 4110 dei pulse generator high voltage user manual'},
+        {t:'PVX-4150 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4150-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4150 pvx4150 4150 dei pulse generator high voltage user manual'},
+        {t:'PVX-4151 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4151-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4151 pvx4151 4151 dei pulse generator high voltage user manual'},
+        {t:'PCO-6131 Laser Diode Driver Module \u2014 User Manual', u:'docs/bnc-dei-pco-6131-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pco-6131 pco6131 6131 dei laser diode driver module user manual'},
+        {t:'PCO-6141 60 A CW/QCW Laser Diode Driver \u2014 User Manual', u:'docs/bnc-dei-pco-6141-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pco-6141 pco6141 6141 dei laser diode driver cw qcw user manual'},
+        {t:'PIM-Mini-200 Pulsed Current Source \u2014 User Manual', u:'docs/bnc-dei-pim-mini-200-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pim-mini-200 pim mini 200 dei pulsed current source user manual'}
+      ];
+      var have={}; for(var i=0;i<window.SITE_INDEX.length;i++){ if(window.SITE_INDEX[i]&&window.SITE_INDEX[i].u) have[window.SITE_INDEX[i].u]=1; }
+      for(var j=0;j<add.length;j++){ if(!have[add[j].u]) window.SITE_INDEX.push(add[j]); }
+      for(var m=0;m<window.SITE_INDEX.length;m++){ var e=window.SITE_INDEX[m]; if(e&&e.u&&e.u.indexOf('bnc-pvp-series-user-manual.html')>-1){ e.c='PVP-Series \u00b7 Manual'; } }
+    }catch(err){}
+  }
+  run();
+})();
