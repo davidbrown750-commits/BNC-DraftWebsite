@@ -237,3 +237,22 @@
   }
   run();
 })();
+
+
+/* Share product images across datasheet / user-manual / product search tiles: if one has an image, use it for the others. */
+(function(){
+  if(window.__ssimgPairDone) return; window.__ssimgPairDone=true;
+  function base(u){return String(u).replace(/^\/?(docs\/)?/,'').replace(/\.html.*$/,'').replace(/-(datasheet|user-manual|manual|product|index)$/,'');}
+  function fill(){
+    try{
+      var S=window.SSIMG, SI=window.SITE_INDEX;
+      if(!S||!SI) return;
+      var byBase={};
+      Object.keys(S).forEach(function(k){var b=base(k); if(S[k]&&!byBase[b]) byBase[b]=S[k];});
+      SI.forEach(function(e){ if(e&&e.u&&!S[e.u]){ var b=base(e.u); if(byBase[b]) S[e.u]=byBase[b]; } });
+    }catch(_){}
+  }
+  fill();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fill);
+  setTimeout(fill,1500);
+})();
