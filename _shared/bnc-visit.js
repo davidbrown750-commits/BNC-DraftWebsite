@@ -223,6 +223,7 @@
     try{
       var add=[
         {t:'PVX-4110 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4110-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4110 pvx4110 4110 dei pulse generator high voltage user manual'},
+        {t:'PVX-4140/4141 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4141-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4141 pvx4141 4141 pvx-4140 pvx4140 4140 dei pulse generator high voltage user manual'},
         {t:'PVX-4150 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4150-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4150 pvx4150 4150 dei pulse generator high voltage user manual'},
         {t:'PVX-4151 High-Voltage Pulse Generator \u2014 User Manual', u:'docs/bnc-dei-pvx-4151-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pvx-4151 pvx4151 4151 dei pulse generator high voltage user manual'},
         {t:'PCO-6131 Laser Diode Driver Module \u2014 User Manual', u:'docs/bnc-dei-pco-6131-user-manual.html', c:'Berkeley Nucleonics \u00b7 Manual', k:'pco-6131 pco6131 6131 dei laser diode driver module user manual'},
