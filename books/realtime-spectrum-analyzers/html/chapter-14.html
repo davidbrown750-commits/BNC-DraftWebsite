@@ -18,7 +18,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 14 - Labs: Hands-On Exercises with an RTSA</title>
+<title>Chapter 14 - Mission-Critical Applications</title>
 <link rel="stylesheet" href="light-touch.css">
 <style>
   /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
@@ -45,6 +45,16 @@
     border:1px solid var(--bnc-rule);border-radius:3px;text-align:center}
   code{background:#eef2f7;padding:2px 6px;border-radius:3px;
     font-family:'Courier New',monospace;font-size:.94em}
+  .quiz-cta{background:var(--bnc-light-steel);border:1px solid var(--bnc-rule);
+    border-left:4px solid var(--bnc-deep-navy);padding:18px 22px;margin:24px 0;border-radius:3px}
+  .quiz-cta .quiz-cta-num{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  .quiz-cta h3{color:var(--bnc-deep-navy);margin:4px 0 6px}
+  .quiz-cta p{margin:0 0 14px}
+  .quiz-cta .quiz-cta-btn{display:inline-block;font-family:Helvetica,Arial,sans-serif;
+    font-weight:700;letter-spacing:.5px;text-decoration:none;background:var(--bnc-deep-navy);
+    color:#fff;padding:11px 20px;border-radius:4px}
+  .quiz-cta .quiz-cta-btn:hover{background:var(--bnc-sky-blue)}
 </style>
   <script defer src="book-enhance-data.js"></script>
   <script defer src="book-enhance.js"></script>
@@ -59,322 +69,287 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="chapter-number">Chapter 14</div>
-<h1>Labs: Hands-on Exercises with an RTSA</h1>
+<h1>Mission-Critical Applications</h1>
 
-<blockquote>Reading about RF is education. Sitting at a bench with an analyzer is engineering. The difference is what you remember a year from now.</blockquote>
-
-<h2>How to Use This Chapter</h2>
-
-<p>Each lab gives you a goal, a list of equipment, a step-by-step procedure, the expected result, and discussion questions to verify understanding. Labs progress in difficulty: 1 through 4 are foundational, 5 through 7 build technique, 8 through 10 stretch the instrument.</p>
-
-<p>Equipment baseline for all labs unless noted otherwise: Aaronia SPECTRAN V6 PLUS (any model from ECO 100XA-6 up; flagship 2000XA-6 for advanced labs), host computer running RTSA Suite PRO (Windows, Linux, or macOS), appropriate antenna (HyperLOG, OmniLOG, or similar), Wi-Fi router or other test signal source, and for advanced labs an IsoLOG 3D DF antenna, second SPECTRAN unit, and GPSDO.</p>
-
-<p>Each lab takes 30 to 90 minutes. None require expensive consumables. Some require nothing more than a Wi-Fi router you already own.</p>
+<blockquote>Every application has its own RF demons. The instrument that wins is the one that exorcises the most demons in the most situations.</blockquote>
 
 <figure>
-  <object type="image/svg+xml" data="../figures/fig-14-01-lab-bench-setup.svg" style="width:100%;">Figure 14-1</object>
-  <figcaption>Figure 14-1. The standard lab bench setup. Solid lines show baseline equipment used in all ten labs (antenna, SPECTRAN V6 PLUS, host computer running RTSA Suite PRO, test signal source). Dashed lines show optional additions for advanced labs: external storage for Lab 9, IsoLOG 3D DF for Lab 8, and a second SPECTRAN for Lab 10.</figcaption>
+  <object type="image/svg+xml" data="../figures/fig-11-01-applications-radial.svg" style="width:100%;">Figure 11-1</object>
+  <figcaption>Figure 11-1. Eight mission-critical sectors orbit the same RTSA-based RF awareness hub. Each has characteristic RF problems and capability requirements that the SPECTRAN V6 PLUS plus IsoLOG 3D DF combination addresses.</figcaption>
 </figure>
 
-<div class="lab">
-<h2>Lab 1: First Capture - Power-on Through a Wi-Fi Spectrogram</h2>
-<div class="meta"><strong>Objective:</strong> complete the full setup-to-data path with a familiar signal. <strong>Equipment:</strong> baseline plus a Wi-Fi router.</div>
+<h2>14.1 Cellular, 5G, and Emerging 6G Networks</h2>
 
-<h3>Procedure</h3>
-<ol>
-<li>Connect the SPECTRAN to the host via USB-C. Power on. Confirm the device appears in RTSA Suite PRO.</li>
-<li>Connect a 2.4 GHz antenna to the RF input.</li>
-<li>In RTSA Suite PRO, set center frequency to 2.437 GHz (Wi-Fi channel 6) and span to 30 MHz.</li>
-<li>Set RBW to 100 kHz, FFT length to 4096, window to Hann.</li>
-<li>Enable the waterfall display.</li>
-<li>Watch as Wi-Fi traffic paints the waterfall. Observe beacons every 102.4 ms and data bursts in between.</li>
-</ol>
+<p>Cellular networks are the largest commercial RF deployment in human history. Hundreds of thousands of base stations, billions of user devices, dozens of frequency bands worldwide.</p>
 
-<h3>Expected Result</h3>
-<p>A clear waterfall image showing Wi-Fi beacons as periodic horizontal stripes and data activity in between. The 22 MHz Wi-Fi channel is clearly visible as a wide block of energy.</p>
-
-<h3>Discussion</h3>
+<h3>RF Problems</h3>
 <ul>
-<li>What is the average duty cycle of a Wi-Fi network you observe?</li>
-<li>How do beacons differ visually from data frames?</li>
-<li>What happens to the waterfall when you stream a video over the Wi-Fi?</li>
+<li><strong>Massive MIMO beamforming:</strong> 5G base stations form dozens of simultaneous narrow beams, each tracking a different user.</li>
+<li><strong>Carrier aggregation across bands:</strong> a modern UE may simultaneously use two or three bands.</li>
+<li><strong>Interference between operators:</strong> in dense urban environments, adjacent-channel and intermodulation interference between operators degrades performance.</li>
+<li><strong>EVM compliance:</strong> 5G NR specifies EVM tolerances tighter than any prior standard.</li>
+<li><strong>mmWave coverage holes:</strong> FR2 (24-40 GHz) signals propagate poorly.</li>
+<li><strong>Beam tracking on moving devices:</strong> handing off beams as users move requires verification.</li>
 </ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>100 to 400 MHz of RTBW for FR1, 400 to 1000 MHz for FR2 mmWave</li>
+<li>Phase noise low enough for 256-QAM and 1024-QAM EVM testing</li>
+<li>Multi-channel synchronous capture for MIMO and beamforming verification</li>
+<li>Modulation analysis with full 5G NR awareness</li>
+<li>Long-term recording for over-the-air drive testing</li>
+</ul>
+
+<p>The SPECTRAN V6 PLUS 2000XA-6 with 490 MHz of RTBW handles FR1 channels comfortably and reaches into FR2 with appropriate frequency extenders. RTSA Suite PRO's 5G NR preset automates EVM measurement against the 3GPP specification.</p>
+
+<h3>6G Research</h3>
+<p>6G is in the research and standardization phase as of 2026. Likely characteristics include channels in the 100-300 GHz sub-THz range, channel bandwidths of 1 to 10 GHz, integrated sensing-and-communication where the radio also acts as a radar, and AI-native air interfaces. Aaronia is involved in early 6G proof-of-concept testbeds with cascaded SPECTRAN units feeding research code.</p>
+
+<h2>14.2 Aerospace and Avionics</h2>
+
+<p>Aircraft electronics live in a dense, regulated, life-critical RF environment. Every system on the aircraft has to coexist with every other and with the surrounding airspace.</p>
+
+<h3>RF Problems</h3>
+<ul>
+<li><strong>ILS / VOR / DME / TACAN:</strong> legacy navigation systems on specific frequency allocations, with strict interference requirements.</li>
+<li><strong>Radar altimeters:</strong> 4.2-4.4 GHz, recently subject to controversy with adjacent 5G C-band cellular deployment.</li>
+<li><strong>ADS-B Out:</strong> aircraft transmit position on 1090 MHz; reception verification requires comparing ADS-B reports to actual physical position.</li>
+<li><strong>Weather radar:</strong> on-board X-band weather radars must coexist with ground-based weather and air traffic radars.</li>
+<li><strong>Cabin Wi-Fi and connectivity:</strong> passenger systems must not interfere with cockpit avionics.</li>
+<li><strong>Lightning EMP and HIRF:</strong> aircraft systems must survive intentional and natural electromagnetic events.</li>
+</ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>DO-160 environmental compliance for in-flight test instruments</li>
+<li>9 kHz to high-frequency coverage</li>
+<li>Pulse and CW analysis</li>
+<li>Long-term recording for post-event analysis</li>
+<li>Direction finding for tracking interference sources</li>
+</ul>
+
+<h2>14.3 Satellite and GNSS</h2>
+
+<p>Satellites and ground stations are RF systems where a small interference event can have outsized consequences. GPS spoofing, in particular, has become a recognized national-security issue.</p>
+
+<h3>RF Problems</h3>
+<ul>
+<li><strong>GPS L1, L2, L5 monitoring:</strong> detecting jamming or spoofing of position signals near airports, ports, and military bases.</li>
+<li><strong>Satellite uplink monitoring:</strong> verifying ground stations transmit at correct power, frequency, and modulation.</li>
+<li><strong>Cubesat and smallsat downlinks:</strong> increasingly populated 401 MHz, 433 MHz, 2.2 GHz, and 8 GHz bands.</li>
+<li><strong>Starlink and similar mega-constellations:</strong> dense Ku and Ka band signals from thousands of satellites overhead create new interference challenges.</li>
+<li><strong>Deep-space communications:</strong> 32 GHz Ka-band monitoring for NASA Deep Space Network tracking.</li>
+</ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>High dynamic range to capture weak satellite signals (down to -160 dBm)</li>
+<li>Long FFTs for narrow GNSS PRN code observation</li>
+<li>24/7 streaming for compliance recording and forensic playback</li>
+<li>Direction finding for locating ground-based jammers and spoofers</li>
+<li>Phase-coherent multi-channel capture for GNSS spoofing detection</li>
+</ul>
+
+<h2>14.4 Defense and Electronic Warfare</h2>
+
+<p>We covered the EW deep-dive in Chapter 10. This section places it in the larger defense application context.</p>
+
+<h3>RF Problems</h3>
+<ul>
+<li><strong>Threat emitter classification:</strong> identifying the radar type behind a pulse train</li>
+<li><strong>Jammer characterization</strong></li>
+<li><strong>Counter-UAS</strong></li>
+<li><strong>Friendly force coordination:</strong> avoiding friendly-friendly interference</li>
+<li><strong>Spectrum dominance:</strong> maintaining the ability to operate while denying it to the adversary</li>
+<li><strong>Cybersecurity at the RF layer:</strong> detecting unauthorized transmitters in secure facilities</li>
+</ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>10 ns POI for short pulse capture</li>
+<li>Wide RTBW for full-band coverage (490 MHz minimum, 1 GHz cascaded)</li>
+<li>Direction finding with elevation (IsoLOG 3D DF)</li>
+<li>24/7 forensic recording</li>
+<li>Ruggedized form factors for tactical deployment</li>
+<li>Open data formats (SigMF, KML) for fusion with other sensors</li>
+</ul>
+
+<p>This is the application set where the SPECTRAN V6 PLUS plus IsoLOG 3D DF combination has the most direct strategic value. Defense customers worldwide deploy this combination for tactical and strategic spectrum awareness.</p>
+
+<h2>14.5 Medical and Hospital Networks</h2>
+
+<p>Hospital RF environments are surprisingly dense. Wireless medical telemetry, infusion pumps, cardiac monitors, paging systems, staff radios, public Wi-Fi, cellular signal, IoT sensors, and increasingly diagnostic imaging equipment generate complex spectral environments where interference can be life-critical.</p>
+
+<h3>RF Problems</h3>
+<ul>
+<li><strong>WMTS protection:</strong> 608-614 MHz, 1395-1400 MHz, 1429-1432 MHz are protected for patient monitoring.</li>
+<li><strong>Bluetooth and Wi-Fi coexistence:</strong> dense ISM band traffic from hospital equipment, patients, and visitors.</li>
+<li><strong>MRI room interference:</strong> MRIs are sensitive RF environments.</li>
+<li><strong>Implanted device security:</strong> pacemakers, insulin pumps, and other implants increasingly have wireless interfaces.</li>
+<li><strong>5G in the 3.5 GHz band near hospitals:</strong> potential interference with newer wireless medical equipment.</li>
+</ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>Continuous monitoring of WMTS bands with FMT alarms for any interference</li>
+<li>Modulation analysis to identify which device is causing observed interference</li>
+<li>Direction finding to locate interferers</li>
+<li>Long-term recording for post-incident analysis</li>
+</ul>
+
+<p>The Aaronia SPECTRAN V6 PLUS 250XA paired with IsoLOG 3D DF makes a complete WMTS monitoring system for a typical hospital floor. Cost is in the few-tens-of-thousands range, comparable to other medical-grade equipment, with substantially higher capability than dedicated WMTS-only monitors.</p>
+
+<h2>14.6 Stadiums, Airports, and Public Venues</h2>
+
+<p>Public venues with tens of thousands of attendees create some of the densest RF environments on earth. Wi-Fi APs every 30 feet, public safety radios, broadcast crews, ticketing systems, payment terminals, attendee personal devices, drones, security systems, and increasingly autonomous robots all share the spectrum.</p>
+
+<h3>RF Problems</h3>
+<ul>
+<li><strong>Wi-Fi capacity collapse under load:</strong> at peak attendance, contention drives effective throughput to near-zero unless carefully engineered.</li>
+<li><strong>Public safety radio interference:</strong> critical when emergency response is needed.</li>
+<li><strong>Broadcast camera and microphone interference:</strong> live productions need clean spectrum.</li>
+<li><strong>Drone incursions:</strong> commercial events are increasingly targeted.</li>
+<li><strong>Ticket-scanning and mobile payment reliability:</strong> NFC and Bluetooth interference can stall entry.</li>
+</ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>Real-time monitoring of multiple ISM bands (2.4 GHz, 5 GHz, 6 GHz)</li>
+<li>Direction finding for locating drone incursions and interference sources</li>
+<li>Persistence displays to identify rare interferers across long events</li>
+<li>24/7 recording during the event for post-event analysis</li>
+<li>Integration with venue operations dashboards via MQTT or REST APIs</li>
+</ul>
+
+<h2>14.7 Counter-UAS and Drone Detection</h2>
+
+<p>We covered the technical workflow in Chapter 10. This section enumerates the deployment patterns by venue type:</p>
+
+<ul>
+<li><strong>Airports:</strong> full perimeter coverage with multiple IsoLOG 3D DF arrays, 24/7 monitoring, integration with air traffic control. The FAA in the US and equivalent agencies worldwide are increasingly mandating counter-UAS at major airports.</li>
+<li><strong>Prisons:</strong> contraband drones (delivering phones, drugs, weapons) are a major operational problem.</li>
+<li><strong>Stadiums and large venues:</strong> peak event monitoring, with deactivation coordinated with security teams.</li>
+<li><strong>Critical infrastructure (power plants, refineries, water treatment):</strong> 24/7 monitoring with automated alerts.</li>
+<li><strong>Government facilities:</strong> persistent monitoring with classified-band integration where required.</li>
+<li><strong>Military bases:</strong> tactical and strategic counter-UAS as part of base defense.</li>
+<li><strong>VIP protection:</strong> temporary deployments for visiting dignitaries.</li>
+</ul>
+
+<p>The Aaronia counter-UAS systems built around SPECTRAN V6 PLUS and IsoLOG 3D DF address all of these venues with a unified hardware-software stack.</p>
+
+<h2>14.8 Spectrum Regulatory and Enforcement</h2>
+
+<p>Behind every wireless deployment is a regulator. The FCC in the US, ETSI in Europe, MIC in Japan, MIIT in China, and ITU at the global level set the rules. Enforcement requires measurement.</p>
+
+<h3>RF Problems Regulators Face</h3>
+<ul>
+<li><strong>Unauthorized transmitters:</strong> pirate radio stations, illegal cellular boosters, jammers.</li>
+<li><strong>Adjacent-channel emissions:</strong> licensed operators emitting into bands they shouldn't.</li>
+<li><strong>Type approval:</strong> confirming new devices meet emissions specifications.</li>
+<li><strong>Compliance audits:</strong> verifying deployed equipment continues to meet specifications.</li>
+<li><strong>Spectrum-sharing enforcement:</strong> in shared regimes (CBRS in US), verifying sharing rules are obeyed.</li>
+</ul>
+
+<h3>RTSA Requirements</h3>
+<ul>
+<li>Absolute amplitude calibration with traceable certificates</li>
+<li>Wide frequency coverage (9 kHz to mmWave)</li>
+<li>Modulation analysis to verify type-approved devices</li>
+<li>Direction finding to locate unauthorized transmitters</li>
+<li>Long-term recording with tamper-evident timestamps</li>
+<li>Reports formatted for regulatory submission</li>
+</ul>
+
+<p>Regulators worldwide deploy Aaronia equipment for these purposes, often in mobile DF trucks for pirate-radio enforcement and in fixed sensor grids for compliance monitoring.</p>
+
+<div class="sidebar-deeper">
+<h3>Going Deeper: ITU and Global Coordination</h3>
+<p>The International Telecommunication Union (ITU) coordinates spectrum allocation globally through the Radio Regulations and the World Radiocommunication Conferences (WRC). Each country's regulator implements ITU allocations within their national framework. RTSA-based monitoring data feeds back into the ITU process: when a country shows a band is congested or polluted, ITU coordination committees may revise allocations. Modern regulators submit RTSA-derived spectrum surveys as evidence in WRC negotiations.</p>
 </div>
 
-<div class="lab">
-<h2>Lab 2: Finding a Transient with Persistence Display</h2>
-<div class="meta"><strong>Objective:</strong> see what persistence reveals that a single FFT cannot. <strong>Equipment:</strong> baseline plus any source of intermittent transmissions (Bluetooth device, microwave oven, garage door remote).</div>
+<h2>14.9 The Analyzer Takes Flight</h2>
 
-<h3>Procedure</h3>
-<ol>
-<li>Tune the SPECTRAN to the band of interest (2.4 GHz for Bluetooth, 2.45 GHz for microwave leakage, 315 or 433 MHz for garage doors).</li>
-<li>Set span and RBW appropriately.</li>
-<li>Enable the persistence display. Set integration time to 5 seconds.</li>
-<li>Trigger the device intermittently. Watch the persistence display accumulate.</li>
-</ol>
+<p>Every application covered so far keeps the analyzer on the ground. The newest ones do not. Published figures for the latest compact USB-format RTSAs put the instrument below 300 g and near 15 W, in an enclosure roughly the size of a paperback, with stripped-down OEM core modules lighter still. That is smartphone weight. A mid-size commercial drone lifts it without complaint, and the spectrum analyzer suddenly goes where the signal actually is: at aperture height, 300 m up a broadcast mast, inside the near field nobody could reach before.</p>
 
-<h3>Expected Result</h3>
-<p>Rare bursts that are nearly invisible on the live trace become bright dots on the persistence display. The same view shows continuous signals as bright bands and noise as a diffuse cloud.</p>
+<p>The airborne recipe has three ingredients: a compact USB analyzer, a single-board computer to run it, and a GNSS module to stamp every capture with position. The drone flies programmed orbits and vertical slices around the structure under test, sampling field strength at GNSS-tagged points, and post-processing reconstructs the horizontal and vertical radiation patterns (HRP and VRP) and the effective radiated power from the cloud of measurements. One drone-survey firm reports overall measurement uncertainty of roughly 1 to 2 dB with this method.</p>
 
-<h3>Discussion</h3>
-<ul>
-<li>Why does persistence reveal signals that single FFTs miss?</li>
-<li>What is the difference between persistence and a max-hold trace?</li>
-<li>When would you choose persistence over a waterfall?</li>
-</ul>
+<p>Flight profiles follow the mission. A broadcast pattern proof flies circular orbits at fixed radius for the HRP and vertical slices for the VRP. A coverage check flies a lawn-mower grid over the service area. Same payload, different flight plan.</p>
+
+<h3>Why Fly the Analyzer</h3>
+
+<p>Because the three alternatives are each bad in a different way. Sending a rigger up the tower is dangerous: NIOSH has estimated the fatal-injury risk for communication-tower workers at 49 to 468 deaths per 100,000, against roughly 5 per 100,000 across US industries generally. Chartering a helicopter with a measurement package is expensive and spatially coarse. Measuring from the ground gives the wrong geometry entirely: a vertical radiation pattern exists at aperture height, and no truck parked at the base of the tower can sample it there.</p>
+
+<p>Real-time capability earns its keep in the air, where flight time is the scarce resource. An analyzer with 100% probability of intercept down to microsecond-class signal durations (a spec-sheet capability for the current compact class, conditions apply) captures everything the antenna radiates in one pass. A swept instrument that missed a transient would need a second battery and a second flight.</p>
+
+<p>The economics have moved from novelty to policy. Broadcast trade coverage reports that one survey firm has measured more than 800 antenna patterns by drone since 2014, that a major antenna manufacturer ran more than 100 UHF and VHF nearfield drone comparison studies during the US broadcast repack, and that the FCC in May 2022 began accepting computer-generated pattern proofs with drone measurement as validation. Airborne measurement is now an accepted way to prove a pattern, not a stunt.</p>
+
+<div class="case">
+<h3>Field Vignette: The Tower Survey Nobody Climbed</h3>
+<p>A new panel antenna goes up on a regional broadcast mast. The installation crew signs off, the transmitter runs at licensed power, and coverage in one sector is inexplicably weak. A drone carrying a sub-300 g analyzer orbits the mast at aperture height, GNSS-stamping field-strength samples as it flies. The reconstructed horizontal pattern shows the main lobe rotated 10 degrees from the licensed azimuth: a panel-orientation error introduced during installation, invisible from the ground. This vignette is drawn from practice, not invented. One drone-survey firm's published work documents exactly such a 10-degree panel-orientation error revealed by a measured HRP after tower installation.</p>
 </div>
 
-<div class="lab">
-<h2>Lab 3: Building a Frequency Mask Trigger for an ISM Band</h2>
-<div class="meta"><strong>Objective:</strong> automate detection of out-of-envelope events. <strong>Equipment:</strong> baseline plus a clean RF environment in 2.4 GHz ISM.</div>
+<h2>14.10 Signal Hunting by Map</h2>
 
-<h3>Procedure</h3>
-<ol>
-<li>Set center 2.45 GHz, span 100 MHz.</li>
-<li>With no nearby active transmitters, observe the noise floor for one minute. This is your baseline.</li>
-<li>Open the FMT editor. Define a mask 10 dB above the noise floor across the entire span.</li>
-<li>Arm the trigger. Walk away.</li>
-<li>Have a friend turn on a Bluetooth device or other 2.4 GHz transmitter. The FMT should fire and capture the event.</li>
-<li>Replay the captured I/Q to confirm the event was captured.</li>
-</ol>
+<p>The same GNSS fusion that makes airborne survey work has changed interference hunting on the ground. Current analyzer software fuses every spectrum capture with GNSS position and renders the result as a live heat map: drive or walk the area and signal strength paints itself onto the streets, with channel power, occupied bandwidth, and RSSI overlaid at each point. One vehicle pass and the hot zone is visible. Nobody transcribes readings into a notebook, and nobody argues later about where reading number 47 was taken.</p>
 
-<h3>Expected Result</h3>
-<p>The mask trigger fires within milliseconds of any signal exceeding the threshold. The recorded I/Q shows pre-trigger samples (from the rolling buffer), the trigger event, and post-trigger samples.</p>
+<p>Bearing measurement received the same instrumentation. Handheld directional antennas now ship with an integrated electronic compass that streams azimuth and tilt to the analyzer along with the RF; published specifications for current models span 500 MHz to 20 GHz with roughly 16 dBi of typical active gain. Point at the suspect signal and the software draws the bearing line on the map automatically. Walk to a second street corner, then a third. Three bearing lines intersect on one rooftop. The geometry is exactly the cross-bearing triangulation of Chapter 11; what changed is that the map does the bookkeeping, so a hunt that once consumed an afternoon of manual plotting collapses into minutes.</p>
 
-<h3>Discussion</h3>
-<ul>
-<li>How would you tighten the mask if the noise floor varies with frequency?</li>
-<li>Could you use FMT as a regulatory enforcement tool?</li>
-<li>What is the latency between event and trigger fire? Why does it matter?</li>
-</ul>
+<p>The workflow also tolerates intermittent offenders, which are the ones that used to win. A duty-cycled transmitter that keys up for 2 ms every few seconds defeats a swept receiver and a human with a clipboard, but a real-time analyzer holds every event it saw at each GNSS-tagged point, so the heat map accumulates evidence instead of snapshots. The same discipline pays off in disputes: a GNSS-stamped capture showing the interferer active at a specific corner at a specific time is evidence, not anecdote.</p>
+
+<h2>14.11 Networks That Never Stop Listening</h2>
+
+<p>Hunting by map still requires a human with an antenna. Distributed monitoring removes that requirement too. The ingredients are receiver nodes built from the same compact RTSA class, packaged for fixed installation with Gigabit Ethernet, an API-first software interface, and a GNSS-disciplined reference for timing. Mount them on rooftops, connect them to the network, and monitoring runs continuously whether anyone is watching or not. The design philosophy inverts the traditional monitoring station: many inexpensive synchronized nodes beat one exquisite manned facility, because coverage and continuous time-on-air matter more than any single receiver's last decibel of performance.</p>
+
+<p>Node classes stratify by mission. Full-coverage nodes reach 40 GHz for satellite, radar, and mmWave bands, while lower-cost variants covering up to roughly 6 GHz densify urban grids where cellular and ISM traffic dominates. Published sweep figures for this class run to hundreds of gigahertz per second, so even a wideband node revisits its whole span many times a second.</p>
+
+<p>What a node streams is negotiable, which is the point of an API-first design. A regulator's grid might forward only channel-power statistics until an alarm fires, then switch the offending node to full IQ capture for evidence. A research deployment might stream continuous IQ from every node and process centrally. Same hardware in both cases; the software decides.</p>
+
+<p>Synchronized timing is what turns a pile of receivers into a geolocation system. When three or more nodes timestamp the same emission, each pair of arrival-time differences constrains the source to a hyperbola on the map, and the hyperbolas intersect at the emitter. Chapter 11 develops the TDOA math, the clock-synchronization requirements, and the accuracy limits; ITU-R Report SM.2211 remains the canonical comparison of TDOA and angle-of-arrival geolocation for regulatory monitoring. The operational consequence is the point here: when a jammer switches on anywhere inside the grid, the network fixes its position from recorded timestamps without dispatching a truck.</p>
+
+<p>Regulators are the natural first adopters, and the fixed sensor grids of Section 14.8 are exactly this architecture. Smart-city programs are next: a municipality that already instruments traffic and air quality adds rooftop RF nodes and gets standing interference enforcement as one more data layer, a trend Chapter 15 takes up in detail.</p>
+
+<div class="callout">
+<h4>In Practice</h4>
+<p>Compact RTSAs such as the BNC ICX family illustrate what this instrument class brings to all three roles: coverage to 40 GHz with 100 MHz of gap-free real-time bandwidth in a sub-300 g USB-format package, plus programming interfaces for Python, C/C++, C#, MATLAB, LabVIEW, and GNU Radio for drone, vehicle, and fixed-node integration.</p>
 </div>
 
-<div class="lab">
-<h2>Lab 4: Reading Raw I/Q and Plotting in Python</h2>
-<div class="meta"><strong>Objective:</strong> export RTSA-captured data and analyze it offline. <strong>Equipment:</strong> baseline plus a Python environment with NumPy and Matplotlib.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Capture a 100 millisecond I/Q recording at 2.45 GHz, span 80 MHz. Save as SigMF.</li>
-<li>In Python, install the <code>sigmf</code> package: <code>pip install sigmf</code>.</li>
-<li>Run this code:</li>
-</ol>
-
-<pre><code>from sigmf import sigmffile
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import spectrogram
-
-handle = sigmffile.fromfile('capture.sigmf-meta')
-fs = handle.get_global_field('core:sample_rate')
-iq = handle.read_samples()
-
-print(f"Loaded {len(iq)} samples at {fs/1e6:.1f} MHz")
-
-f, t, Sxx = spectrogram(iq, fs=fs, nperseg=1024, return_onesided=False)
-plt.pcolormesh(t * 1e3, np.fft.fftshift(f) / 1e6,
-               10*np.log10(np.fft.fftshift(Sxx, axes=0)), shading='auto')
-plt.xlabel('time (ms)')
-plt.ylabel('frequency (MHz from carrier)')
-plt.colorbar(label='dB')
-plt.title('Wi-Fi capture (offline analysis)')
-plt.show()</code></pre>
-
-<h3>Expected Result</h3>
-<p>A Matplotlib spectrogram nearly identical to the RTSA Suite PRO waterfall.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>What advantages does offline Python analysis have over the built-in display?</li>
-<li>How would you compute the average power in a specific channel programmatically?</li>
-<li>Could you use this workflow for automated production testing?</li>
-</ul>
-</div>
-
-<div class="lab">
-<h2>Lab 5: Windowing Comparison (Hann vs Flat-top)</h2>
-<div class="meta"><strong>Objective:</strong> see scalloping loss with your own eyes. <strong>Equipment:</strong> baseline plus a calibrated signal generator.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Connect a tone source generating a clean sinusoid at 2.401 GHz at -30 dBm.</li>
-<li>Tune the SPECTRAN to 2.4 GHz center, 2 MHz span.</li>
-<li>With the tone exactly on a bin center, measure the amplitude. Record.</li>
-<li>Shift the source frequency by half a bin (e.g., to 2.401001 GHz). Measure again. Record.</li>
-<li>Switch the window from Hann to Flat-top. Repeat steps 3 and 4.</li>
-</ol>
-
-<h3>Expected Result</h3>
-<p>With Hann, the off-bin reading is 1 to 2 dB lower than the on-bin reading. With Flat-top, both readings are within 0.05 dB of each other.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>Why is Flat-top the right choice for amplitude calibration?</li>
-<li>Why is Hann the better choice for general spectrum monitoring?</li>
-<li>When would you use Blackman-Harris instead of either?</li>
-</ul>
-</div>
-
-<div class="lab">
-<h2>Lab 6: EVM on a QPSK Signal</h2>
-<div class="meta"><strong>Objective:</strong> measure transmitter quality with a constellation diagram. <strong>Equipment:</strong> baseline plus a vector signal generator transmitting QPSK, OR a SPECTRAN V6 PLUS 500XA-6 with built-in vector signal generator.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Configure the source to transmit QPSK at 1 Msps with raised-cosine pulse shaping (rolloff 0.35), -30 dBm output.</li>
-<li>In RTSA Suite PRO, load the QPSK modulation analysis preset.</li>
-<li>Tune to the source's center frequency, set span to 5 MHz.</li>
-<li>Observe the constellation diagram and the running EVM value.</li>
-<li>Record the EVM in percent and dB.</li>
-<li>Increase the source power to drive the analyzer's front-end into compression. Observe what happens to outer constellation points.</li>
-</ol>
-
-<h3>Expected Result</h3>
-<p>Clean constellation with EVM in the 1 to 3 percent range. As compression sets in, outer points scatter while inner points remain tight.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>What is the EVM contribution of the analyzer itself?</li>
-<li>Could you separate transmitter EVM from receiver EVM?</li>
-<li>What other distortions would you expect to see in real transmitters?</li>
-</ul>
-</div>
-
-<div class="lab">
-<h2>Lab 7: Pulse Descriptor Word Extraction from a Radar Capture</h2>
-<div class="meta"><strong>Objective:</strong> extract structured pulse data from a radar-like signal. <strong>Equipment:</strong> baseline plus a pulse-mode signal generator.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Set up the source to generate 1 microsecond pulses at 1 kHz PRF, center 1 GHz, output -30 dBm.</li>
-<li>In RTSA Suite PRO, load the PDW extraction preset.</li>
-<li>Tune to 1 GHz center, span 10 MHz.</li>
-<li>Run for 5 seconds. Save the PDW table.</li>
-<li>Open the table in a spreadsheet. Verify pulse width measurements, PRI calculations, and amplitude readings.</li>
-</ol>
-
-<h3>Expected Result</h3>
-<p>PDW table with 5000 rows, each containing TOA (with nanosecond precision), pulse width close to 1 microsecond, and amplitude near -30 dBm. Computed PRI distribution is centered on 1 ms with sub-microsecond variance.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>How would the PDW extraction handle a frequency-hopping radar?</li>
-<li>What additional fields would you want in the PDW for EW analysis?</li>
-<li>How would deinterleaving work if you had two radars at different PRIs?</li>
-</ul>
-</div>
-
-<div class="lab">
-<h2>Lab 8: Direction Finding with IsoLOG 3D DF</h2>
-<div class="meta"><strong>Objective:</strong> locate a transmitter using an IsoLOG 3D DF antenna. <strong>Equipment:</strong> baseline plus IsoLOG 3D DF antenna and known transmitter at known location.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Mount the IsoLOG 3D DF antenna at a known surveyed position.</li>
-<li>Connect to the SPECTRAN via the appropriate RF and control connections.</li>
-<li>In RTSA Suite PRO, enable the DF mode and the 3D map view.</li>
-<li>Place a transmitter (any 2.4 GHz signal) at a measured distance and bearing from the antenna.</li>
-<li>Observe the bearing and elevation reported by the system.</li>
-<li>Compare to the actual position. Compute error in degrees.</li>
-</ol>
-
-<h3>Expected Result</h3>
-<p>Bearing within 1 to 3 degrees of true position. Elevation correctly distinguishes ground-level vs elevated transmitters.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>How does multipath affect the bearing accuracy?</li>
-<li>What is the optimal range for accurate DF with this antenna?</li>
-<li>How would you set up a two-site cross-bearing test?</li>
-</ul>
-</div>
-
-<div class="lab">
-<h2>Lab 9: 24/7 Recording and Search</h2>
-<div class="meta"><strong>Objective:</strong> demonstrate continuous I/Q recording and post-event analysis. <strong>Equipment:</strong> baseline plus an external SSD or NAS with at least 1 TB free.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Configure RTSA Suite PRO to stream I/Q at 80 MHz bandwidth, center 2.45 GHz, to the external storage.</li>
-<li>Start recording. Let it run for at least 1 hour.</li>
-<li>During the recording, intentionally trigger interference: turn on a microwave oven, run a wireless camera, etc.</li>
-<li>Stop recording. Note the file size (should be approximately 1.4 GB per minute, or 84 GB per hour).</li>
-<li>Use RTSA Suite PRO's search function to find time periods of high power. Replay the matching segments.</li>
-</ol>
-
-<h3>Expected Result</h3>
-<p>The recording captures every event during the hour. The search function locates them by power threshold or pattern matching, and replay shows them as if live.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>How would you scale this to multi-day recordings?</li>
-<li>What's the right compression strategy for long-term archives?</li>
-<li>How would you trigger automatic alerts during the recording?</li>
-</ul>
-</div>
-
-<div class="lab">
-<h2>Lab 10: Cascading Two SPECTRANs for Doubled RTBW</h2>
-<div class="meta"><strong>Objective:</strong> combine two SPECTRAN units for wider effective bandwidth. <strong>Equipment:</strong> two SPECTRAN V6 PLUS units, shared 10 MHz reference, wideband signal source.</div>
-
-<h3>Procedure</h3>
-<ol>
-<li>Connect the two units via Ethernet to the same network and via the 10 MHz reference cable to ensure phase coherence.</li>
-<li>In RTSA Suite PRO, configure the units for cascaded operation. Each unit covers a different center frequency, with the channels adjacent.</li>
-<li>With a signal source generating a wideband test signal (an OFDM modulator with wide bandwidth), capture using both units simultaneously.</li>
-<li>Verify that the stitched spectrum from both units shows a continuous wideband signal.</li>
-</ol>
-
-<h3>Expected Result</h3>
-<p>The two captures combine into a single coherent spectrum twice as wide as either unit alone. Phase relationships across the boundary are smooth.</p>
-
-<h3>Discussion</h3>
-<ul>
-<li>What synchronization is essential for cascading?</li>
-<li>How would the math change for four cascaded units?</li>
-<li>What applications justify the added cost and complexity?</li>
-</ul>
-</div>
-
-<h2>Going Further</h2>
-
-<p>Beyond these ten labs, the SPECTRAN V6 PLUS and RTSA Suite PRO support hundreds of additional measurement scenarios. Suggested next-steps:</p>
-
-<ul>
-<li><strong>Lab 11:</strong> Modulation classification on an unknown signal</li>
-<li><strong>Lab 12:</strong> 5G NR EVM measurement using the standards-aware preset</li>
-<li><strong>Lab 13:</strong> BLE advertising packet decoding with offline Python</li>
-<li><strong>Lab 14:</strong> TDOA geolocation across three sensor sites</li>
-<li><strong>Lab 15:</strong> Phase noise measurement with cross-correlation</li>
-<li><strong>Lab 16:</strong> Compliance test of a known device against FCC Part 15 limits</li>
-<li><strong>Lab 17:</strong> AI-assisted classification of captured I/Q signatures</li>
-</ul>
-
-<p>Each builds on the foundation of these ten. With the same hardware and software, the only limit is the time you spend exploring.</p>
+<p>One symmetry is worth savoring. Section 14.7 covered counter-UAS: detecting and locating drones by their RF emissions. The instrument class that does the hunting is the same class that now flies on drones to measure antennas, and published figures for this class note that 100 MHz of real-time bandwidth captures an entire consumer-drone video downlink (current links occupy 40 to 60 MHz) in a single acquisition. The drone is both detector and detected, depending on whose payload the analyzer happens to be. The airframe changed sides; the analyzer never cared.</p>
 
 <div class="summary">
 <h3>Chapter Summary</h3>
 <ul>
-  <li>Ten hands-on labs cover the full RTSA workflow from first capture through cascaded direction finding.</li>
-  <li>Labs 1-4 establish foundations: power-on, persistence, FMT, Python integration.</li>
-  <li>Labs 5-7 build measurement technique: windowing comparison, EVM measurement, PDW extraction.</li>
-  <li>Labs 8-10 stretch the instrument into advanced territory: direction finding, 24/7 recording, multi-unit cascading.</li>
-  <li>Each lab requires only baseline equipment for completion.</li>
-  <li>The same patterns generalize to dozens of additional scenarios for ongoing skill development.</li>
+  <li>Cellular and 5G/6G networks demand wide RTBW, low phase noise, and full standard-aware modulation analysis.</li>
+  <li>Aerospace and avionics RF environments require DO-160 environmental compliance, 9 kHz to high-tier coverage, and pulse-and-CW analysis.</li>
+  <li>Satellite and GNSS work demands high dynamic range for weak signals, long FFTs for narrow PRN codes, and phase-coherent multi-channel capture for spoofing detection.</li>
+  <li>Defense and EW combine wide RTBW, 10 ns POI, IsoLOG 3D DF integration, and ruggedized form factors.</li>
+  <li>Medical and hospital networks require continuous WMTS monitoring with FMT alarms, modulation analysis, and direction finding.</li>
+  <li>Stadiums and airports use multiple cascaded SPECTRAN units plus IsoLOG 3D DF for combined Wi-Fi management and counter-UAS coverage.</li>
+  <li>Counter-UAS deployments span airports, prisons, stadiums, critical infrastructure, government facilities, military bases, and VIP protection.</li>
+  <li>Regulatory enforcement worldwide uses RTSA-based mobile DF trucks and fixed sensor grids for unauthorized-transmitter location, type approval, and compliance auditing.</li>
+  <li>Drone-mounted compact RTSAs (sub-300 g, near 15 W per published figures) measure antenna patterns at aperture height, replacing tower climbs whose fatal-injury risk NIOSH estimated at 49 to 468 per 100,000; one survey firm reports more than 800 drone-measured patterns since 2014.</li>
+  <li>GNSS-fused heat maps plus compass-instrumented directional antennas collapse interference hunts to minutes: three auto-plotted bearings triangulate the emitter on the map.</li>
+  <li>Distributed Ethernet-connected nodes with GNSS-disciplined timing geolocate emitters by TDOA (hyperbola intersections; ITU-R SM.2211) for regulators and smart-city grids, without dispatching field teams.</li>
 </ul>
 </div>
 
+<div class="quiz-cta">
+<div class="quiz-cta-num">End-of-Chapter Quiz</div>
+<h3>Check your understanding</h3>
+<p>The Chapter 14 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<a class="quiz-cta-btn" href="quiz-chapter-14.html">Take the interactive quiz &rarr;</a>
+</div>
 <div class="next">
 <h3>What's Next</h3>
-<p>Chapter 15 is a collection of real-world case studies: actual RF incidents diagnosed and resolved using RTSA techniques. These cases ground the theoretical content of earlier chapters in operational reality.</p>
+<p>Chapter 15 looks forward: the future of RF awareness infrastructure. Smart cities and urban RF awareness, autonomous vehicles, hospitals as life-critical networks, AI-driven autonomous monitoring, and emerging business models like spectrum-as-a-service.</p>
 </div>
 
 
 <footer class="bnc-footer">
   <nav class="bnc-nav">
-    <a class="prev" href="chapter-13.html">&larr; Ch 13. Careers and the RF Workforce</a>
+    <a class="prev" href="chapter-13.html">&larr; Ch 13. RTSA Form Factors</a>
     <a class="mid"  href="index.html">Contents</a>
-    <a class="next" href="chapter-15.html">Ch 15. Case Studies &rarr;</a>
+    <a class="next" href="chapter-15.html">Ch 15. Future of RF Awareness &rarr;</a>
   </nav>
   <div class="bnc-meta">
     <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>

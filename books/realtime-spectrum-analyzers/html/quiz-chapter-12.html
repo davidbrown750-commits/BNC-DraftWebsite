@@ -18,7 +18,7 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chapter 12 Quiz - The Future of RF Awareness Infrastructure</title>
+<title>Chapter 12 Quiz - Calibration, Accuracy, and Measurement Uncertainty</title>
 <link rel="stylesheet" href="light-touch.css"/>
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
@@ -43,114 +43,114 @@ window.QUIZ_DATA = {
   title: "Chapter 12 Quiz",
   questions: [
     {
-      q: "Smart cities integrate RF monitoring with which other municipal sensor systems?",
+      q: "Absolute amplitude accuracy on a typical RTSA across full frequency range is approximately:",
       options: [
-        "Traffic and utilities only",
-        "Traffic, utilities, environmental, emergency response, and increasingly RF",
-        "RF only, separate from other systems",
-        "Smart cities don't include RF monitoring"
+        "plus or minus 0.01 dB",
+        "plus or minus 0.5 to 2 dB",
+        "plus or minus 10 dB",
+        "None at all"
       ],
       answer: 1,
-      explain: "Smart cities fold RF monitoring into the same fabric as traffic, utilities, environmental, and emergency-response sensing."
+      explain: "Across the full frequency range, typical absolute amplitude accuracy is about plus or minus 0.5 to 2 dB."
     },
     {
-      q: "Autonomous vehicles depend on which of these RF systems?",
+      q: "An external 10 MHz reference input on a SPECTRAN V6 PLUS allows users to:",
       options: [
-        "GPS only",
-        "GPS, cellular V2X, automotive radar, and roadside Wi-Fi units",
-        "Bluetooth only",
-        "Wi-Fi only"
+        "Increase RTBW",
+        "Lock to a rubidium or GPSDO for high-precision frequency measurements",
+        "Change ADC sample rate",
+        "Bypass the FFT engine"
       ],
       answer: 1,
-      explain: "Self-driving vehicles rely on GPS, cellular V2X, automotive radar, and roadside Wi-Fi together."
+      explain: "The 10 MHz reference input lets you lock to a rubidium standard or GPSDO for precise frequency measurements."
     },
     {
-      q: "The trend in hospital RF monitoring is toward:",
+      q: "Phase noise, expressed in dBc/Hz at an offset, describes:",
       options: [
-        "Less monitoring",
-        "Permanent always-on monitoring with integration to clinical alarm systems",
-        "Outsourcing to vendors",
-        "Removing wireless devices entirely"
+        "Total carrier power",
+        "The noise spectral density relative to the carrier at that offset",
+        "The trigger latency",
+        "The display refresh rate"
       ],
       answer: 1,
-      explain: "Hospitals are moving toward permanent always-on RF monitoring tied into clinical alarm systems."
+      explain: "Phase noise in dBc/Hz is the noise power density relative to the carrier at a given offset from it."
     },
     {
-      q: "AI-driven RTSA networks operate at:",
+      q: "Reciprocal mixing causes:",
       options: [
-        "The edge only",
-        "The aggregation layer only",
-        "Edge, aggregation, and orchestration layers",
-        "Cloud only"
+        "ADC clipping",
+        "Strong signals to smear via LO phase noise, limiting dynamic range close to carriers",
+        "The waterfall to scroll faster",
+        "Data corruption on disk"
+      ],
+      answer: 1,
+      explain: "Reciprocal mixing convolves LO phase noise onto strong signals, raising the noise skirt and limiting close-in dynamic range."
+    },
+    {
+      q: "The noise floor of an RTSA is determined by:",
+      options: [
+        "The display brightness",
+        "The system noise figure and the resolution bandwidth",
+        "The cable length",
+        "The window function only"
+      ],
+      answer: 1,
+      explain: "The displayed noise floor is set by the system noise figure together with the resolution bandwidth."
+    },
+    {
+      q: "SFDR is:",
+      options: [
+        "The maximum sample rate",
+        "The difference between the strongest signal and the strongest analyzer-generated spur",
+        "The signal-to-noise ratio",
+        "The carrier-to-interferer ratio"
+      ],
+      answer: 1,
+      explain: "Spurious-free dynamic range is the gap between the strongest signal and the largest spur the analyzer itself generates."
+    },
+    {
+      q: "IIP3 measures:",
+      options: [
+        "The maximum input before signal compression",
+        "The (extrapolated) input power where third-order intermod products equal the input signals",
+        "The noise figure",
+        "The phase noise floor"
+      ],
+      answer: 1,
+      explain: "The third-order input intercept point is the extrapolated input level where third-order products would equal the desired tones."
+    },
+    {
+      q: "A measurement uncertainty budget combines individual error contributions by:",
+      options: [
+        "Adding them linearly",
+        "Multiplying them",
+        "Summing in quadrature, then applying a coverage factor",
+        "Taking the maximum value"
       ],
       answer: 2,
-      explain: "AI-driven RTSA networks span the edge, aggregation, and orchestration layers."
+      explain: "Independent contributions are summed in quadrature, then scaled by a coverage factor for the desired confidence."
     },
     {
-      q: "Aaronia RTSA Suite PRO supports AI integration via:",
+      q: "The expanded uncertainty for 95 percent confidence is approximately:",
       options: [
-        "Hardware-only solutions",
-        "AI plugin blocks in the visual graph editor",
-        "Cloud APIs only",
-        "It does not support AI integration"
+        "The standard uncertainty divided by 2",
+        "The standard uncertainty multiplied by 2 (k=2)",
+        "The standard uncertainty multiplied by 10",
+        "The standard uncertainty itself"
       ],
       answer: 1,
-      explain: "AI is added through plugin blocks dropped into the visual graph editor."
+      explain: "A coverage factor of k equals 2 gives roughly 95 percent confidence, so expanded uncertainty is about twice the standard uncertainty."
     },
     {
-      q: "Public-utility spectrum monitoring is being piloted in:",
+      q: "RTSA Suite PRO's user calibration wizards support all the following except:",
       options: [
-        "The Pacific Northwest only",
-        "Several European cities and Singapore",
-        "Antarctica",
-        "No locations yet"
-      ],
-      answer: 1,
-      explain: "Public-utility spectrum monitoring pilots are running in several European cities and Singapore."
-    },
-    {
-      q: "Spectrum-as-a-Service business models include:",
-      options: [
-        "Per-site monitoring contracts",
-        "Compliance-as-a-Service",
-        "Counter-UAS-as-a-Service",
-        "All of the above"
+        "Image rejection calibration",
+        "Frequency response calibration",
+        "Amplitude calibration",
+        "Mechanical alignment of antenna arrays"
       ],
       answer: 3,
-      explain: "Spectrum-as-a-Service spans per-site monitoring, compliance-as-a-service, and counter-UAS-as-a-service offerings."
-    },
-    {
-      q: "The advantage of Spectrum-as-a-Service for buyers is:",
-      options: [
-        "Lower upfront capital expenditure",
-        "Access to expertise without building it in-house",
-        "Operating expense model instead of capital purchase",
-        "All of the above"
-      ],
-      answer: 3,
-      explain: "Buyers gain lower upfront cost, outside expertise, and an operating-expense model all at once."
-    },
-    {
-      q: "AI in RTSAs is most useful for:",
-      options: [
-        "Classifying anomalies, predicting incidents, triaging alarms, generating reports",
-        "Replacing human analysts entirely",
-        "Reducing the need for hardware",
-        "Decreasing the importance of monitoring"
-      ],
-      answer: 0,
-      explain: "AI adds the most value by classifying anomalies, predicting incidents, triaging alarms, and drafting reports."
-    },
-    {
-      q: "The political challenge to RTSAs as public utilities is:",
-      options: [
-        "Hardware availability",
-        "Governance: who runs, sees data, pays, and enforces",
-        "Software complexity",
-        "Antenna placement"
-      ],
-      answer: 1,
-      explain: "The hard problem is governance: who operates the network, sees the data, pays for it, and enforces the rules."
+      explain: "The calibration wizards cover image rejection, frequency response, and amplitude, but not mechanical alignment of antenna arrays."
     }
   ]
 };

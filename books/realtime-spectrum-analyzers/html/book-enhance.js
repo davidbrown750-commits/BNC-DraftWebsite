@@ -33,6 +33,7 @@
       '.bnc-resume .bnc-resume-k{display:block;font-size:8.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0078B6;margin:0 0 4px;}',
       '.bnc-resume a{color:#003D6B;font-weight:700;border-bottom:1px solid #C77E00;text-decoration:none;font-style:normal;}',
       '.bnc-resume a:hover{color:#0078B6;}',
+      '.bnc-resume .bnc-resume-now{color:#003D6B;font-weight:700;}',
       '@media(max-width:560px){.bnc-resume{float:none;width:auto;max-width:none;margin:14px 0;}}',
       '.bnc-resource{font-family:Helvetica,Arial,sans-serif;margin:26px 0 8px;padding:0;border:1px solid #dbe3ea;border-radius:8px;background:linear-gradient(180deg,#f7fbff,#eef4fb);overflow:hidden;position:relative;}',
       '.bnc-resource::before{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,#003D6B,#0078B6 45%,#00d4ff);}',
@@ -305,15 +306,22 @@
     }catch(e){}
   }
   function renderResume(){
-    var raw; try{ raw=localStorage.getItem(RKEY); }catch(e){ return; }
-    if(!raw) return;
-    var o; try{ o=JSON.parse(raw); }catch(e){ return; }
-    if(!o || !o.href) return;
+    var o=null;
+    try{ var raw=localStorage.getItem(RKEY); if(raw) o=JSON.parse(raw); }catch(e){}
     var cur=(location.pathname.split("/").pop()||"");
-    if(o.href===cur) return;
+    var label, href;
+    if(o && o.href && o.href!==cur){
+      label=o.title||"Continue reading"; href=o.href;            // returning reader: their last chapter
+    } else {
+      label="First time reader";                                 // first-time (or no saved spot)
+      var firstCh=document.querySelector("nav.toc a[href]");
+      href=firstCh?firstCh.getAttribute("href"):null;            // link to the first chapter if we can
+    }
     var p=document.createElement("p");
     p.className="bnc-resume";
-    p.innerHTML='<span class="bnc-resume-k">Pick up where you left off</span><a href="'+esc(o.href)+'">'+esc(o.title||"Continue reading")+' &rarr;</a>';
+    p.innerHTML='<span class="bnc-resume-k">Pick up where you left off</span>'+
+      (href? '<a href="'+esc(href)+'">'+esc(label)+' &rarr;</a>'
+           : '<span class="bnc-resume-now">'+esc(label)+'</span>');
     // place it top-right, right after the title so it floats beside the byline (never across an <hr>)
     var title=document.querySelector(".fm-title")||document.querySelector(".fm-titleblock h1");
     var h1s=document.querySelectorAll("h1");

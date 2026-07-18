@@ -18,11 +18,11 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chapter 7 Quiz - Pulse, Radar, and Electronic Warfare Measurements</title>
+<title>Chapter 7 Quiz - Phase Noise Measurements with a Real-Time Spectrum Analyzer</title>
 <link rel="stylesheet" href="light-touch.css"/>
+<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
-<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -43,114 +43,114 @@ window.QUIZ_DATA = {
   title: "Chapter 7 Quiz",
   questions: [
     {
-      q: "The product of pulse width and the first-null bandwidth of a sinc-shaped pulse spectrum is approximately:",
+      q: "Single-sideband phase noise L(f), expressed in dBc/Hz, is the ratio of:",
       options: [
-        "0",
-        "1",
-        "infinity",
-        "depends on PRF only"
-      ],
-      answer: 1,
-      explain: "For a rectangular pulse, pulse width times first-null bandwidth is about 1, the classic time-bandwidth relationship."
-    },
-    {
-      q: "Pulse repetition interval (PRI) is:",
-      options: [
-        "The duration of one pulse",
-        "The time between consecutive pulse starts",
-        "The pulse rise time",
-        "The carrier frequency divided by 1000"
-      ],
-      answer: 1,
-      explain: "PRI is the time from the start of one pulse to the start of the next."
-    },
-    {
-      q: "A PDW typically contains all the following except:",
-      options: [
-        "Time of arrival",
-        "Pulse width",
-        "Center frequency",
-        "The transmitter's serial number"
-      ],
-      answer: 3,
-      explain: "A pulse descriptor word records measured parameters like time of arrival, width, and frequency, not an emitter serial number."
-    },
-    {
-      q: "Deinterleaving is the process of:",
-      options: [
-        "Increasing the sample rate",
-        "Sorting interleaved PDWs back into per-emitter streams",
-        "Removing window function effects",
-        "Splitting I and Q channels"
-      ],
-      answer: 1,
-      explain: "Deinterleaving sorts a mixed stream of pulse descriptor words back into separate per-emitter sequences."
-    },
-    {
-      q: "Linear frequency modulation (LFM) on a waterfall display appears as:",
-      options: [
-        "A horizontal line",
-        "A vertical line",
-        "A diagonal stripe whose slope encodes the chirp rate",
-        "A circle"
+        "Total sideband power to total noise power",
+        "Carrier power to the analyzer noise floor",
+        "Noise power in a 1 Hz bandwidth at offset f to the total carrier power",
+        "Peak carrier power to average carrier power"
       ],
       answer: 2,
-      explain: "An LFM chirp sweeps frequency with time, drawing a diagonal stripe whose slope is the chirp rate."
+      explain: "L(f) compares the noise power in a 1 Hz bandwidth at a given offset to the total carrier power, in dB relative to the carrier per hertz."
     },
     {
-      q: "A barrage jammer is best described as:",
+      q: "A sideband marker reads -80 dBm in a 1 kHz RBW and the carrier reads 0 dBm. Ignoring detector corrections, the phase noise at that offset is approximately:",
       options: [
-        "A narrowband tone at a fixed frequency",
-        "A wide-bandwidth noise transmission covering the victim band",
-        "A repeated radar pulse",
-        "A frequency-hopping signal"
+        "-80 dBc/Hz",
+        "-110 dBc/Hz",
+        "-50 dBc/Hz",
+        "-83 dBc/Hz"
       ],
       answer: 1,
-      explain: "A barrage jammer floods a wide band with noise to cover the entire victim spectrum."
+      explain: "Normalizing a 1 kHz RBW to 1 Hz subtracts 10 log10(1000) = 30 dB, so -80 dBc becomes -110 dBc/Hz."
     },
     {
-      q: "DRFM jammers are difficult to characterize because:",
+      q: "If the device under test has exactly the same phase noise as the analyzer's own floor, the displayed level:",
       options: [
-        "They are too quiet to detect",
-        "They retransmit modified copies of the victim's own signal, looking like real returns",
-        "They use only narrow bandwidth",
-        "They emit only briefly"
-      ],
-      answer: 1,
-      explain: "Digital RF memory jammers capture and replay the victim's own waveform with tweaks, so they masquerade as genuine returns."
-    },
-    {
-      q: "A 10 nanosecond probability of intercept is essential for:",
-      options: [
-        "Capturing high-PRF radar pulses and short EW transients",
-        "Wi-Fi modulation analysis",
-        "Cellular signal monitoring",
-        "Audio-band measurements"
+        "Reads about 3 dB higher than the true device noise",
+        "Reads about 3 dB lower than the true device noise",
+        "Is unaffected, because the analyzer subtracts its own noise",
+        "Reads about 10 dB higher than the true device noise"
       ],
       answer: 0,
-      explain: "A 10 nanosecond probability of intercept is needed to reliably catch high-PRF radar pulses and brief EW transients."
+      explain: "Two equal, uncorrelated noise powers add, so the display reads 3 dB above the device's true level."
     },
     {
-      q: "The IsoLOG 3D DF antenna covers a frequency range of:",
+      q: "In the Leeson model, a region of the phase noise curve falling at -20 dB/decade corresponds to:",
       options: [
-        "100 MHz to 1 GHz",
-        "400 MHz to 40 GHz",
-        "1 GHz to 6 GHz",
-        "Audio band only"
-      ],
-      answer: 1,
-      explain: "The IsoLOG 3D DF antenna covers roughly 400 MHz to 40 GHz."
-    },
-    {
-      q: "Counter-UAS systems using SPECTRAN V6 PLUS and IsoLOG 3D DF detect drones primarily through:",
-      options: [
-        "Visual recognition",
-        "Acoustic signatures",
-        "RF emissions on control and video downlink bands plus 3D direction finding",
-        "Magnetic field sensors"
+        "White phase noise",
+        "Flicker phase noise",
+        "White FM noise",
+        "Random-walk FM noise"
       ],
       answer: 2,
-      explain: "They locate drones by detecting RF on the control and video downlink bands and direction-finding in 3D."
+      explain: "The 1/f-squared region, falling 20 dB per decade, is produced by white FM noise from thermal noise inside the oscillator loop."
+    },
+    {
+      q: "Beyond automating decade sweeps and corrections, a dedicated phase noise mode improves the measurement floor mainly by:",
+      options: [
+        "Adding a second cross-correlation receiver chain",
+        "Increasing the RF attenuation",
+        "Using a wider resolution bandwidth",
+        "Reconfiguring the receiver for spectral purity instead of tuning agility"
+      ],
+      answer: 3,
+      explain: "Locked on a known carrier, the mode trades tuning speed and gain agility for quieter synthesizer settings and a purer signal path, the same hardware reconfigured."
+    },
+    {
+      q: "With the device under test 10 dB above the analyzer's phase noise floor, the instrument contributes an error of about:",
+      options: [
+        "3 dB",
+        "0.4 dB",
+        "10 dB",
+        "1.8 dB"
+      ],
+      answer: 1,
+      explain: "At 10 dB of margin the floor adds 10 log10(1 + 0.1), about 0.4 dB, which is the basis of the 10 dB margin rule."
+    },
+    {
+      q: "A sampling clock with 1 ps RMS jitter digitizes a 100 MHz input. The jitter-limited SNR is approximately:",
+      options: [
+        "44 dB",
+        "84 dB",
+        "64 dB",
+        "100 dB"
+      ],
+      answer: 2,
+      explain: "SNR = -20 log10(2 pi x 100 MHz x 1 ps) = -20 log10(6.28e-4), which is about 64 dB."
+    },
+    {
+      q: "A cross-correlation phase noise analyzer running 100 correlation averages lowers its own noise contribution by about:",
+      options: [
+        "10 dB",
+        "20 dB",
+        "5 dB",
+        "3 dB"
+      ],
+      answer: 0,
+      explain: "Cross-correlation gain is 5 log10(N), so N = 100 averages buys 10 dB of floor improvement."
+    },
+    {
+      q: "Multiplying a 100 MHz reference up to 1 GHz (a factor of 10) changes its phase noise curve by:",
+      options: [
+        "Nothing, multiplication does not affect phase",
+        "Lowering it by 10 dB",
+        "Raising it by 10 dB",
+        "Raising it by 20 dB"
+      ],
+      answer: 3,
+      explain: "Frequency multiplication by N raises phase noise by 20 log10(N), so a factor of 10 adds 20 dB."
+    },
+    {
+      q: "A classic analyzer that log-averages Gaussian noise with a sample detector, without correction, will:",
+      options: [
+        "Over-read the noise by about 2.5 dB",
+        "Under-read the noise by about 2.5 dB",
+        "Read the noise exactly",
+        "Under-read the noise by about 10 dB"
+      ],
+      answer: 1,
+      explain: "Averaging the logarithm of a Gaussian noise envelope biases the result low by about 2.5 dB; RMS detection avoids the bias."
     }
   ]
 };

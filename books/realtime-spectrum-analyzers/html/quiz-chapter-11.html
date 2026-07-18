@@ -18,7 +18,7 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chapter 11 Quiz - Mission-Critical Applications</title>
+<title>Chapter 11 Quiz - Direction Finding, Geolocation, and Distributed Sensing</title>
 <link rel="stylesheet" href="light-touch.css"/>
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
@@ -43,114 +43,114 @@ window.QUIZ_DATA = {
   title: "Chapter 11 Quiz",
   questions: [
     {
-      q: "5G NR FR2 (mmWave) channel bandwidths reach up to:",
+      q: "Which DF method uses phase differences across spaced antennas?",
       options: [
-        "20 MHz",
-        "100 MHz",
-        "400 MHz",
-        "1 GHz"
+        "Amplitude DF",
+        "Phase interferometry",
+        "TDOA only",
+        "Frequency hopping"
+      ],
+      answer: 1,
+      explain: "Phase interferometry derives bearing from the phase difference of a wavefront arriving at spaced antennas."
+    },
+    {
+      q: "The Aaronia IsoLOG 3D DF antenna covers:",
+      options: [
+        "100 MHz to 1 GHz",
+        "400 MHz to 40 GHz",
+        "1 GHz to 6 GHz",
+        "mmWave only"
+      ],
+      answer: 1,
+      explain: "The IsoLOG 3D DF antenna covers roughly 400 MHz to 40 GHz."
+    },
+    {
+      q: "The flagship IsoLOG 3D DF has how many sectors and antennas?",
+      options: [
+        "8 sectors, 16 antennas",
+        "12 sectors, 24 antennas",
+        "16 sectors, 32 antennas",
+        "24 sectors, 48 antennas"
       ],
       answer: 2,
-      explain: "5G NR FR2 mmWave channels reach up to 400 MHz of bandwidth."
+      explain: "The flagship configuration uses 16 sectors with 32 antennas."
     },
     {
-      q: "What aircraft system was at the center of recent controversy with adjacent 5G C-band cellular deployment?",
+      q: "The angular accuracy of the IsoLOG 3D DF when paired with SPECTRAN V6 PLUS is approximately:",
       options: [
-        "ADS-B Out",
-        "Radar altimeter (4.2-4.4 GHz)",
-        "ILS Localizer",
-        "VOR"
-      ],
-      answer: 1,
-      explain: "The radar altimeter at 4.2 to 4.4 GHz sits adjacent to 5G C-band, which drove the interference controversy."
-    },
-    {
-      q: "Wireless medical telemetry (WMTS) protected bands include:",
-      options: [
-        "600 MHz cellular",
-        "608-614 MHz, 1395-1400 MHz, 1429-1432 MHz",
-        "2.4 GHz ISM",
-        "5G NR n78"
-      ],
-      answer: 1,
-      explain: "WMTS protects the 608-614, 1395-1400, and 1429-1432 MHz bands for medical telemetry."
-    },
-    {
-      q: "Phase-coherent multi-channel capture is critical for which application?",
-      options: [
-        "Single-tone amplitude measurement",
-        "GNSS spoofing detection",
-        "Wi-Fi modulation analysis",
-        "Audio band measurements"
-      ],
-      answer: 1,
-      explain: "Detecting GNSS spoofing relies on comparing phase across channels, which needs phase-coherent capture."
-    },
-    {
-      q: "The classic mobile DF truck workflow is used by:",
-      options: [
-        "Hospitals to monitor cardiac telemetry",
-        "Spectrum regulators to locate pirate radio stations and unauthorized transmitters",
-        "Stadiums to manage Wi-Fi",
-        "Cellular operators to verify EVM"
-      ],
-      answer: 1,
-      explain: "Spectrum regulators use the mobile DF truck to hunt pirate stations and unauthorized transmitters."
-    },
-    {
-      q: "Counter-UAS at airports is primarily mandated by:",
-      options: [
-        "Local fire departments",
-        "The FAA in the US (and equivalent aviation authorities elsewhere)",
-        "Health departments",
-        "Building inspectors"
-      ],
-      answer: 1,
-      explain: "In the US the FAA, and equivalent authorities abroad, drive counter-UAS requirements at airports."
-    },
-    {
-      q: "The Aaronia SPECTRAN V6 PLUS 2000XA-6 supports which 5G NR band class natively?",
-      options: [
-        "FR1 (sub-6 GHz)",
-        "FR2 (mmWave with appropriate front-end)",
-        "Both",
-        "Neither"
+        "10 degrees",
+        "5 degrees",
+        "1 degree",
+        "0.01 degree"
       ],
       answer: 2,
-      explain: "With the appropriate front-end the 2000XA-6 covers both FR1 sub-6 GHz and FR2 mmWave."
+      explain: "Paired with the SPECTRAN V6 PLUS, angular accuracy is on the order of 1 degree."
     },
     {
-      q: "ITU coordination of global spectrum allocation occurs through:",
+      q: "Why does 3D direction finding (with elevation) improve counter-UAS performance?",
       options: [
-        "National laws only",
-        "World Radiocommunication Conferences",
-        "UN General Assembly",
-        "WTO"
+        "Drones produce different colors on the waterfall.",
+        "Elevation distinguishes airborne emitters from ground RF noise.",
+        "Elevation lowers the noise figure.",
+        "It does not."
       ],
       answer: 1,
-      explain: "The ITU coordinates global spectrum allocation through the World Radiocommunication Conferences."
+      explain: "Adding elevation lets the system separate airborne drone emissions from clutter at ground level."
     },
     {
-      q: "Counter-UAS deployments commonly include all the following except:",
+      q: "Two-site cross-bearing geometry is most accurate when:",
       options: [
-        "Airports",
-        "Prisons",
-        "Stadiums and large venues",
-        "Submarines underwater"
-      ],
-      answer: 3,
-      explain: "Airports, prisons, and stadiums are common counter-UAS sites. Underwater submarines are not an RF drone-defense scenario."
-    },
-    {
-      q: "For type approval and compliance audits, RTSA reports must be:",
-      options: [
-        "Plotted in colorful format",
-        "Backed by absolute amplitude calibration with traceable certificates",
-        "Limited to dB readings only",
-        "Approved by hardware vendors"
+        "The two sites are very close together.",
+        "The two sites are spaced at roughly the range to the target, with bearings near 90 degrees.",
+        "The bearing angles are nearly parallel.",
+        "The target is very far away."
       ],
       answer: 1,
-      explain: "Compliance reports must rest on absolute amplitude calibration backed by traceable certificates."
+      explain: "Cross-bearing is sharpest when the baseline matches the target range and the bearings cross near a right angle."
+    },
+    {
+      q: "TDOA geolocation requires synchronized clocks. GPS-disciplined oscillators provide approximately:",
+      options: [
+        "1 millisecond",
+        "1 microsecond",
+        "10 to 30 nanoseconds",
+        "1 femtosecond"
+      ],
+      answer: 2,
+      explain: "GPS-disciplined oscillators hold timing to roughly 10 to 30 nanoseconds, tight enough for TDOA."
+    },
+    {
+      q: "A typical RTSA Suite PRO map overlay format for Google Earth integration is:",
+      options: [
+        "CSV",
+        "KML / KMZ",
+        "SQL",
+        "PDF"
+      ],
+      answer: 1,
+      explain: "KML and KMZ are the standard overlay formats for Google Earth integration."
+    },
+    {
+      q: "The integration interface for an IsoLOG 3D DF antenna is:",
+      options: [
+        "Ethernet plus power only",
+        "USB and HDMI",
+        "Coaxial cable to each sector individually",
+        "Wireless link to a base station"
+      ],
+      answer: 0,
+      explain: "The antenna integrates over Ethernet plus power, simplifying field deployment."
+    },
+    {
+      q: "The mobile DF truck workflow is classically used for:",
+      options: [
+        "Building Wi-Fi networks",
+        "Tracking pirate radio stations and unauthorized transmitters",
+        "Repairing cellular towers",
+        "Programming radios"
+      ],
+      answer: 1,
+      explain: "The mobile direction-finding truck is the classic tool for hunting pirate stations and unauthorized transmitters."
     }
   ]
 };

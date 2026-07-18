@@ -18,10 +18,11 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 8 - Direction Finding, Geolocation, and Distributed Sensing</title>
+<title>Chapter 8 - Harmonics, Tracking Generators, and Scalar Network Measurements</title>
 <script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <link rel="stylesheet" href="light-touch.css">
+<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 <style>
   /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
   .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
@@ -62,7 +63,6 @@
   <script defer src="book-enhance.js"></script>
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
-<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -71,125 +71,210 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="chapter-number">Chapter 8</div>
-<h1>Direction Finding, Geolocation, and Distributed Sensing</h1>
+<h1>Harmonics, Tracking Generators, and Scalar Network Measurements</h1>
 
-<blockquote>Spectrum tells you what was transmitted. Direction finding tells you where it came from. Geolocation tells you exactly who. Each step adds a dimension that changes what you can do with the data.</blockquote>
+<blockquote>Any analyzer can draw a spectrum. The one you trust is the one that can prove the distortion on its screen came from your device and not from its own front end.</blockquote>
 
-<h2>8.1 Direction Finding Fundamentals</h2>
+<h2>8.1 Distortion Is Where Analyzers Earn Trust</h2>
 
-<p>Direction finding (DF) is the art of measuring where a radio signal came from. It is older than radio itself in concept (lighthouses use the same trick) and has been engineered into modern hardware in four major flavors.</p>
+<p>Noise floor and sweep speed sell instruments. Distortion measurements are where instruments earn trust. When you report that a power amplifier's second harmonic sits at &minus;54 dBc, someone downstream acts on that number: a systems engineer signs off an emissions budget, a production line ships a unit, a regulator closes a file. The measurement had better be right.</p>
 
-<p><strong>Amplitude DF</strong> is the simplest. Use a directional antenna, rotate it, and find the angle at which the received signal is strongest. Slow, ambiguous, and limited in accuracy, but it works for the basics.</p>
+<p>It is also the measurement most likely to be subtly wrong, because the analyzer contains the same physics as the device it is testing. The first mixer in any spectrum analyzer is a deliberately nonlinear component being driven by your signal. Feed it a strong fundamental and it will manufacture harmonics of its own, indistinguishable on screen from the ones your device actually produced. A distortion measurement is therefore two problems in one: measuring the device, and proving the instrument is not contaminating the answer.</p>
 
-<p><strong>Phase DF (interferometry)</strong> compares the phase of a signal arriving at two antennas separated by a known distance. The phase difference encodes the angle of arrival via simple geometry:</p>
+<p>This chapter works through both, then adds a third capability that shares the same hardware: the tracking generator, which turns a spectrum analyzer from a passive listener into a stimulus-response instrument that can sweep filters, cables, and amplifiers. By the end you will know where harmonics come from, how to measure them in dBc without fooling yourself, why frequency range matters more for harmonic work than for anything else in this book, and what scalar network analysis can and cannot do compared with a vector network analyzer.</p>
 
-<div class="math-display">$$\Delta\phi = \frac{2\pi d \sin\theta}{\lambda}$$</div>
+<h2>8.2 Where Harmonics Come From</h2>
 
-<p>where $d$ is the antenna spacing, $\theta$ is the angle of arrival, $\lambda$ is the wavelength, and $\Delta\phi$ is the measured phase difference. Phase DF is fast (one capture, no rotation), accurate (sub-degree with multi-element arrays), and unambiguous over a range that depends on antenna spacing. The challenge is phase calibration: cable lengths, RF connectors, and front-end electronics all introduce phase shifts that vary with temperature and frequency.</p>
+<p>Every real component is slightly nonlinear. Model its transfer function as a power series:</p>
 
-<p><strong>Time-difference-of-arrival (TDOA)</strong> uses multiple receivers spaced apart, each with a synchronized clock. Measure the time at which the same signal arrives at each receiver. The differences in arrival time, combined with known receiver positions, give a hyperbolic constraint on the source position. Three or more receivers triangulate to a point. TDOA is the workhorse of large-scale geolocation. It scales to city-sized deployments. Its accuracy depends on clock synchronization (typically GPS-disciplined oscillators give tens of nanoseconds) and on signal bandwidth (wider signals give better timing resolution).</p>
+<div class="math-display">$$v_{out} = a_1 v_{in} + a_2 v_{in}^2 + a_3 v_{in}^3 + \cdots$$</div>
 
-<p><strong>Angle-of-arrival (AOA) with arrays</strong> combines phase DF and amplitude DF in multi-element antenna arrays. With many elements (16, 32, 64), the array can form multiple narrow beams simultaneously, each pointing in a different direction. With element-level phase information, the array can reach sub-degree accuracy. This is the architecture used by the Aaronia IsoLOG 3D DF system.</p>
+<p>The $a_1$ term is the linear gain you designed for. The higher-order terms are the ones that generate distortion. Drive the device with a clean sine wave, $v_{in} = V\cos(\omega_0 t)$, and the squared term expands to</p>
 
-<h2>8.2 IsoLOG 3D DF Array Architecture</h2>
+<div class="math-display">$$a_2 V^2 \cos^2(\omega_0 t) = \frac{a_2 V^2}{2}\left(1 + \cos(2\omega_0 t)\right)$$</div>
 
-<p>The IsoLOG 3D DF antenna family is Aaronia's flagship direction-finding hardware.</p>
+<p>A DC offset plus a brand-new tone at exactly twice the input frequency: the second harmonic. The cubed term expands the same way and produces a component at $3\omega_0$ (the third harmonic) plus a term at $\omega_0$ that subtracts from the fundamental, which is where gain compression comes from. The pattern generalizes. The nth-order term of the series generates the nth harmonic, a tone at exactly $n \cdot f_0$.</p>
 
-<p><strong>Sectored design.</strong> Rather than a single rotating antenna or a fully active array, IsoLOG 3D DF uses 16 sectors, each containing 2 antennas (32 antennas total in flagship configurations). Each sector covers approximately 22.5 degrees of azimuth. The advantage is robustness: a failure in one sector affects only that 22.5-degree slice, not the whole system.</p>
+<p>Where does the nonlinearity live in practice? Amplifiers running near compression are the classic source. Mixers are nonlinear by design; that is how they mix. Oscillators and frequency multipliers produce harmonic ladders as a side effect of how they work. Saturating output stages, overdriven ADC front ends, and magnetic components all contribute. Even a corroded or loose connector can act as a crude diode and generate measurable harmonics from a clean signal passing through it, which is why harmonic and intermodulation checks are a standard diagnostic for aging cable plants and antenna systems.</p>
 
-<p><strong>Frequency coverage.</strong> 400 MHz to 40 GHz across the family. This single span covers every cellular allocation, every Wi-Fi band, every commercial drone control link, every consumer ISM band, and most defense and EW bands of interest.</p>
+<h3>The Slopes That Give the Game Away</h3>
 
-<p><strong>Bearing speed.</strong> 8 microseconds per sector bearing. Across all 16 sectors, a complete azimuth scan is on the order of 130 microseconds. For frequency-hopping signals, this matters: a drone hopping every 10 ms has 10,000 microseconds of dwell time at each frequency. The IsoLOG resolves bearing in less than 1 percent of that time, so every hop produces a fresh bearing without ambiguity.</p>
+<p>Look at the amplitude dependence in those expansions. The second harmonic is proportional to $V^2$, so when the fundamental rises 1 dB, the second harmonic rises 2 dB. The third harmonic is proportional to $V^3$ and rises 3 dB for every 1 dB of fundamental. These slopes, 2 dB/dB for second order and 3 dB/dB for third order, are the fingerprint of nonlinear distortion and the foundation of the intercept-point concept.</p>
 
-<p><strong>Tracking accuracy.</strong> 1 to 3 degrees angular accuracy across the operating range, dropping to 1 degree when paired with SPECTRAN V6 PLUS RTSAs. At a target range of 1 km, 1 degree corresponds to 17 meters of position uncertainty. Combined with elevation and cross-bearings from a second site, this drops to a few meters in practice.</p>
+<p>Extrapolate the fundamental (slope 1) and a harmonic (slope 2 or 3) on a dB-versus-dB plot and the lines eventually cross. The crossing is a fiction, since real devices compress long before reaching it, but the extrapolated intercept is a compact, drive-level-independent way to specify linearity. The second harmonic intercept (SHI) characterizes second-order behavior; the third-order intercept (TOI or IP3) characterizes third-order behavior. One number per mechanism, valid across the device's linear operating range. Hold that thought: in Section 8.4 the same math describes the analyzer itself.</p>
 
-<p><strong>Integration.</strong> Ethernet plus power. That is it. The radome is watertight, shock-resistant, and heat-resistant, so installation is "bolt to a mast and run two cables."</p>
+<h2>8.3 Measuring Harmonics Right</h2>
 
-<figure>
-  <object type="image/svg+xml" data="../figures/fig-08-01-isolog-3d-df-array.svg" style="width:100%;">Figure 8-1</object>
-  <figcaption>Figure 8-1. The IsoLOG 3D DF array: 16 sectors of 22.5 degrees azimuth each, with two antennas per sector (32 total) stacked at different elevations. The geometry produces both azimuth and elevation in a single capture, with elevation distinguishing airborne emitters from the dense ground RF noise.</figcaption>
-</figure>
+<p>The standard way to express a harmonic is dBc, decibels relative to the carrier:</p>
 
-<h2>8.3 Real-Time 3D Bearing with Elevation</h2>
+<div class="math-display">$$P_{harmonic}\,[\text{dBc}] = P_{harmonic}\,[\text{dBm}] - P_{fundamental}\,[\text{dBm}]$$</div>
 
-<p>The "3D" in IsoLOG 3D DF means it measures both azimuth (compass direction) and elevation (angle above the horizon). This is the feature that distinguishes it from older 2D-only DF antennas.</p>
+<p>A fundamental at +10 dBm with a second harmonic at &minus;44 dBm gives a second harmonic of &minus;54 dBc. The measurement procedure is marker arithmetic. Put a marker on the fundamental at $f_0$, put a delta marker on $2f_0$, and read the difference directly. Repeat at $3f_0$, $4f_0$, and as far up as your specification requires. Modern analyzers automate the walk, but it is worth doing manually at least once so you know what the automation is doing.</p>
 
-<p><strong>Why elevation matters.</strong> A signal arriving at 1 degree above the horizon is probably a distant ground emitter. A signal arriving at 30 degrees is probably a drone or aircraft. A signal at 80 degrees is probably directly overhead, perhaps a satellite or a balloon. Without elevation, every signal looks like it is at horizon level. With elevation, the analyst sees the threat picture as it actually exists in three dimensions.</p>
+<p>Two practical settings matter. First, resolution bandwidth. Harmonics of a CW signal are themselves CW tones, so narrowing the RBW lowers the displayed noise floor without changing the tone amplitudes at all, exactly the RBW behavior Chapter 5 derived from the FFT bin width. Narrow RBW is how you dig a &minus;70 dBc harmonic out of the noise; the cost is sweep or acquisition time. Second, reference level. Keep the fundamental near the top of the screen but comfortably below the analyzer's compression point, for reasons the next section makes painful.</p>
 
-<p><strong>How the array measures elevation.</strong> The two antennas in each sector are stacked vertically and tilted at different elevation angles. The relative amplitudes and phases across the pair encode the arrival elevation, similar to how azimuth is encoded across sectors.</p>
+<h3>THD or Per-Harmonic?</h3>
 
-<p><strong>Counter-UAS at airports.</strong> The killer application for 3D DF is drone detection at airports. Ground-based RF signals (cellular, Wi-Fi, taxi radios, ground service vehicles) are everywhere. They arrive at low elevation. Drones, by definition, fly. They arrive at elevation greater than zero. A 3D DF system can immediately filter out the entire ground RF noise floor and focus on airborne emitters.</p>
+<p>Audio and power engineers often summarize distortion as total harmonic distortion:</p>
 
-<div class="callout warning">
-<h3>Aaronia in Practice: The Math Behind the Bearing</h3>
-<p>The IsoLOG 3D DF system delivers bearing accuracy of less than 1 degree when paired with SPECTRAN V6 PLUS analyzers. Combined with the 8 microsecond per-sector tracking speed, this produces effectively real-time 3D direction finding suitable for tracking moving targets at high update rates. RTSA Suite PRO renders the bearings on a 3D map view that includes topography, building models, and RF propagation simulation, so the analyst sees exactly where the emitter is located in geographic terms.</p>
+<div class="math-display">$$\text{THD} = \frac{\sqrt{V_2^2 + V_3^2 + V_4^2 + \cdots}}{V_1}$$</div>
+
+<p>expressed as a percentage or in dB. THD is a fine pass/fail number, but it throws away the most diagnostic information a spectrum analyzer gives you: which harmonic dominates. A distortion signature dominated by the second harmonic points at an asymmetric transfer function, a bias-point error, or a single-ended stage. A signature dominated by the third harmonic points at symmetric compression, the kind a well-balanced push-pull stage or a saturating amplifier produces. Two devices with identical THD can have entirely different problems. Measure each harmonic individually in dBc; compute THD afterward if a specification demands it.</p>
+
+<h3>The Frequency-Range Rule</h3>
+
+<p>Here is the constraint that catches more people than any other. To measure the nth harmonic of $f_0$, the analyzer must tune to $n \cdot f_0$. There is no workaround. A device operating at 10 GHz puts its second harmonic at 20 GHz and its third at 30 GHz. A Ku-band transmitter at 13.5 GHz puts its third harmonic at 40.5 GHz. The rule of thumb is that harmonic work needs an analyzer with 2 to 3 times the reach of the device under test, which means a 20 GHz analyzer, generous as it sounds, cannot finish third-harmonic verification on anything above about 6.7 GHz.</p>
+
+<table class="bnc">
+<thead>
+<tr><th>Device operating frequency</th><th>2nd harmonic</th><th>3rd harmonic</th><th>Analyzer reach needed (through 3rd)</th></tr>
+</thead>
+<tbody>
+<tr><td>2.4 GHz (ISM)</td><td>4.8 GHz</td><td>7.2 GHz</td><td>7.2 GHz</td></tr>
+<tr><td>5.8 GHz (ISM)</td><td>11.6 GHz</td><td>17.4 GHz</td><td>17.4 GHz</td></tr>
+<tr><td>10 GHz (X-band)</td><td>20 GHz</td><td>30 GHz</td><td>30 GHz</td></tr>
+<tr><td>13.5 GHz (Ku-band)</td><td>27 GHz</td><td>40.5 GHz</td><td>40.5 GHz</td></tr>
+<tr><td>15 GHz (Ku-band)</td><td>30 GHz</td><td>45 GHz</td><td>45 GHz</td></tr>
+</tbody>
+</table>
+
+<p>This is where a 40 GHz instrument earns its keep. X-band and Ku-band harmonic verification is routine work in satellite communications, radar, and point-to-point links, and it is simply out of reach for the mid-range analyzers that stop at 7.5, 13.6, or 20 GHz. The measurement itself is not exotic. The frequency range is the whole game.</p>
+
+<div class="callout">
+<h4>ICX in Practice: Harmonic Analysis to 40 GHz</h4>
+<p>Compact RTSAs such as the BNC ICX family reach 40 GHz with 100 MHz of gap-free bandwidth, which covers second-harmonic work on anything up to 20 GHz and third-harmonic work through Ku-band. The manufacturer's analysis software includes a dedicated harmonic-analysis mode that parks measurement markers on $n \cdot f_0$ automatically and tabulates each harmonic in dBc, per the published datasheet. The frequency-range rule still applies; the point of a 40 GHz compact instrument is that the rule stops being the bottleneck.</p>
 </div>
 
-<h2>8.4 Cross-Bearings, Mobile Trucks, and GPS Position Solving</h2>
+<h2>8.4 When the Analyzer Lies</h2>
 
-<p>A single DF site gives a bearing, which is a line in space. Two or more sites give intersecting lines, which converge to a point. This is geolocation by triangulation.</p>
+<p>Now the uncomfortable part. The analyzer's first mixer, driven hard by your fundamental, generates its own second harmonic through exactly the $a_2 v^2$ mechanism of Section 8.2. That internally generated tone lands at $2f_0$, precisely on top of the harmonic you are trying to measure. The screen shows the sum, and nothing on the screen tells you which part is real.</p>
 
-<p><strong>Two-site cross-bearing.</strong> Two IsoLOG 3D DF sites at known positions each measure a bearing to the same emitter. The emitter sits at the intersection of the two lines. Position accuracy depends on bearing accuracy and the geometry. Two sites that are far apart produce more accurate intersections than two sites that are close together. A "good" cross-bearing geometry has the two sites spaced at roughly the range to the target, giving 90-degree intersection angles.</p>
+<p>Manufacturers specify this self-distortion through the second harmonic intercept. The internally generated second harmonic, relative to the fundamental, is</p>
 
-<p><strong>Three or more sites.</strong> Adding a third site provides a redundant cross-check and dramatically improves accuracy. With three or more bearings, a least-squares solver finds the position that minimizes the residual error across all bearings.</p>
+<div class="math-display">$$\text{internal 2nd harmonic [dBc]} = -(\text{SHI} - \text{mixer level})$$</div>
 
-<p><strong>Mobile DF trucks.</strong> A radio direction-finding truck is a vehicle equipped with an IsoLOG 3D DF antenna and a SPECTRAN V6 PLUS, plus a GPS receiver and a network link. As the truck drives around, it produces a sequence of timestamped bearings from different positions. These bearings combine to triangulate a stationary emitter, or to track a moving emitter. This is the classic counter-spectrum-pirate workflow.</p>
+<p>where mixer level is the power actually reaching the first mixer: input power minus input attenuation. Work an example with numbers published for entry-class bench analyzers: an SHI of +45 dBm at a mixer level of &minus;20 dBm gives an internal second harmonic of &minus;(45 &minus; (&minus;20)) = &minus;65 dBc. Published figures for portable analyzers in this class run from &minus;50 to &minus;80 dBc depending on band. The consequence is blunt. On an analyzer generating &minus;65 dBc internally, a device harmonic specified at &minus;70 dBc is unmeasurable at that mixer level; the analyzer's own distortion floor sits above the thing you are trying to see.</p>
 
-<p><strong>GPS position solving for the emitter.</strong> When the IsoLOG 3D DF measures a bearing to an emitter, and the truck's GPS knows where the truck is, the system can solve for the emitter's GPS coordinates directly. Output is decimal degrees latitude/longitude/altitude, plotted on any map system. RTSA Suite PRO supports this end-to-end.</p>
+<h3>The 10 dB Sanity Check</h3>
 
-<h2>8.5 Distributed RTSA Sensor Grids</h2>
+<p>There is a beautifully simple test for contamination, and it should be a reflex. Add 10 dB of input attenuation. The analyzer corrects its reference level automatically, so the displayed fundamental does not move. A true device harmonic does not move either; it is just a signal, attenuated and re-corrected like the fundamental. But the analyzer's internal contribution depends on mixer level, which just dropped 10 dB, so the internal second harmonic drops 10 dB relative to the fundamental. If the displayed harmonic falls when you add attenuation, the analyzer was generating part of it. Keep adding attenuation until the reading stops changing. When two consecutive attenuator steps give the same dBc value, you are reading the device.</p>
 
-<p>The natural extension of multi-site DF is a distributed sensor grid. Place SPECTRAN V6 PLUS units at fixed locations throughout an area of interest, network them together, and operate them as one virtual instrument.</p>
+<h3>The Dynamic-Range Tradeoff</h3>
 
-<p><strong>Grid architectures.</strong> Three common topologies: <em>star</em> (many sensors, one central server that aggregates data and computes positions), <em>hierarchical</em> (sensors → regional aggregators → central; scales to thousands of sensors), and <em>peer-to-peer</em> (sensors share data with neighbors and compute positions collaboratively; robust against single-point failures). For most deployments, the star topology is simplest and adequate.</p>
+<p>Attenuation is not free. Every dB of input attenuation raises the displayed noise floor by 1 dB, while lowering the internal second-order distortion, in relative terms, by 1 dB. Distortion falls as the mixer level drops; noise rises. Somewhere between them is an optimum mixer level where internal distortion products equal the noise floor, and that crossing point is the analyzer's maximum distortion measurement range. Run the mixer hotter and distortion limits you; run it colder and noise does. Good harmonic technique is mostly the art of sitting at that optimum, and the 10 dB check is how you confirm you are on the safe side of it.</p>
 
-<p><strong>Time synchronization.</strong> For TDOA-based geolocation across a grid, the sensors need clock sync to nanoseconds. GPS-disciplined oscillators (GPSDO) give roughly 10 to 30 nanoseconds of synchronization, which translates to 3 to 10 meters of position accuracy. Higher-precision deployments use Precision Time Protocol (PTP) over Ethernet for picosecond-class sync.</p>
+<p>One more trap deserves a sentence: overload you cannot see. The mixer responds to the total power at its port, including signals far outside the displayed span. A strong out-of-span carrier, an FM broadcast tower next to your test bench, or the device's own fundamental while you zoom in on the harmonic can push the mixer into distortion while the screen looks innocent. When a harmonic measurement misbehaves, check the total input power, not just the tones you happen to be displaying.</p>
 
-<p><strong>Coverage planning.</strong> Sensor placement determines what the grid can see. Sensors on tall structures see further (line-of-sight propagation). Sensors should be placed in geometric variety so that any position in the coverage area has good cross-bearing geometry. Sensitive bands (drone control, jammer frequencies) should have sensor density high enough that no spot in the coverage area is more than a few kilometers from the nearest sensor.</p>
+<p>Two hardware assists are worth knowing. A high-pass filter between the device and the analyzer, cutting off above $f_0$ but below $2f_0$, strips the strong fundamental before it reaches the mixer, so the mixer never sees enough power to distort. Preselected analyzers build a tunable version of this into the front end, and high-end lab instruments offer dedicated filter options for exactly this measurement. Either way the principle is identical: the best way to keep the mixer honest is to never show it the fundamental at full strength.</p>
 
-<p><strong>Use cases.</strong> Distributed grids appear at airports, prisons, military installations, large industrial campuses, broadcasting protection zones, and major urban centers. The cost scales with sensor count, so grid size is set by the value of the protected area, not by technology limits.</p>
+<p>All of these instrument contributions, self-distortion, noise floor, attenuator accuracy, and reference-level correction, belong in the measurement's uncertainty budget. Chapter 12 builds that budget formally; this section is the reason distortion terms appear in it.</p>
 
-<h2>8.6 Integration Patterns</h2>
+<h2>8.5 The Tracking Generator: Adding Stimulus</h2>
 
-<p>How does an IsoLOG 3D DF and SPECTRAN V6 PLUS deployment fit into a larger system? Three integration patterns dominate.</p>
+<p>Everything so far treats the analyzer as a listener. A tracking generator (TG) makes it talk. A TG is a signal source phase-locked to the analyzer's sweep: at every instant it outputs a sine wave at exactly the frequency the analyzer is currently tuned to. Connect the TG output through a device under test and back into the analyzer input, and the trace on screen is the device's magnitude response versus frequency. That is scalar network analysis, and it turns one instrument into a filter tuner, a cable tester, and an amplifier flatness rig.</p>
 
-<p><strong>Ethernet and power.</strong> The simplest. The hardware connects via Ethernet to a switch and to a power source. Software runs on a host computer (Windows, Linux, or macOS, all supported). Configuration is via web interface or RTSA Suite PRO. This is the right choice for fixed installations.</p>
+<p>The classic measurements:</p>
 
-<p><strong>Map overlays.</strong> The bearings and positions need to land on a geographic map. Common formats: <em>KML / KMZ</em> for Google Earth and other GIS tools, <em>GeoJSON</em> for web-based maps (Leaflet, Mapbox, OpenStreetMap), <em>NMEA 0183</em> for legacy navigation systems, <em>MQTT</em> for streaming position updates to dashboards and IoT platforms. RTSA Suite PRO writes all of these.</p>
+<ul>
+  <li><strong>Filter characterization.</strong> Sweep across the passband and stopbands. Read the 3 dB corner frequencies, passband ripple, and stopband rejection directly off the trace.</li>
+  <li><strong>Amplifier gain and flatness.</strong> The trace height above the normalized reference is gain; its variation across the band is flatness.</li>
+  <li><strong>Cable insertion loss.</strong> Loss versus frequency in one sweep, with the characteristic rise that goes roughly as the square root of frequency for skin-effect-dominated cable.</li>
+  <li><strong>Return loss and VSWR.</strong> Add a directional bridge or coupler between the TG and the device, and the reflected power trace gives return loss, convertible to VSWR.</li>
+</ul>
 
-<p><strong>Higher-level integration.</strong> Counter-UAS, EW, and spectrum monitoring systems often consume IsoLOG/SPECTRAN data as one input among many. A complete drone detection system might combine RF DF with optical cameras, radar tracking, acoustic sensors, and a command-and-control GUI. The RTSA Suite PRO data feeds the C2 system over MQTT or REST APIs, and the C2 system fuses inputs to make decisions. This is the modern pattern: best-of-breed sensors at the edge, data fusion at the center, presentation and decision at the top.</p>
+<h3>Normalization</h3>
+
+<p>Raw TG measurements include everything in the path: the TG's own output flatness ripple, the test cables, the adapters. Normalization removes them. Connect the TG directly to the analyzer input through the same cables you will use for the measurement, store that trace as a reference, then have the analyzer subtract it from every subsequent sweep. The stored through-line becomes the 0 dB line. Insert the device, and what you see is the device alone. Normalization is the scalar world's substitute for VNA calibration: it corrects frequency-response error well, but it does not correct mismatch error, a distinction Section 8.6 returns to.</p>
+
+<p>A worked filter flow makes it concrete. Normalize the through path. Insert a bandpass filter. Set the TG output to 0 dBm and pick an RBW that puts the displayed noise floor at, say, &minus;90 dBm; the measurable dynamic range is then about 90 dB, which is what bounds how much stopband rejection you can actually verify. Read the corners, the ripple, and the rejection. For an amplifier, reverse one instinct: pad the TG output down (published TG output ranges run &minus;20 to 0 dBm) so the amplifier stays well out of compression, or the "gain" you measure will be the compressed value, complete with freshly minted harmonics from Section 8.2.</p>
+
+<p>A real-time analyzer adds one twist to this classic workflow. Because the RTSA front end digitizes a wide block at once, a swept TG measurement can run alongside the analyzer's other duties, and the gap-free capture means a drifting or intermittent device shows up as trace instability rather than as a mystery. Tuning a filter against a live, continuously updating trace is also simply pleasant: turn the tuning screw, watch the corner move, no waiting for a slow sweep to catch up.</p>
+
+<p>The manufacturer of the latest generation of compact RTSAs publishes tracking generator options with &minus;20 to 0 dBm output adjustable in 0.25 dB steps, &plusmn;2 dB level accuracy, and 10 Hz frequency resolution, and notes that the TG doubles as an independent CW source when the analyzer is doing something else. Those figures are the vendor's published specifications, not independent measurements, but they are representative of the class.</p>
+
+<h2>8.6 Scalar or Vector: An Honest Comparison</h2>
+
+<p>A tracking generator does not make a spectrum analyzer into a vector network analyzer, and it is worth being precise about the gap.</p>
+
+<table class="bnc">
+<thead>
+<tr><th></th><th>Scalar (analyzer + TG)</th><th>Vector network analyzer</th></tr>
+</thead>
+<tbody>
+<tr><td>Measures</td><td>Magnitude only</td><td>Magnitude and phase</td></tr>
+<tr><td>Group delay</td><td>No</td><td>Yes</td></tr>
+<tr><td>Complex impedance / Smith chart</td><td>No</td><td>Yes</td></tr>
+<tr><td>Error correction</td><td>Normalization (frequency response only)</td><td>Full vector calibration (frequency response, directivity, source match, load match)</td></tr>
+<tr><td>Mismatch ripple</td><td>Remains in the data</td><td>Corrected out</td></tr>
+<tr><td>Typical accuracy</td><td>&plusmn;1 to 2 dB class</td><td>&plusmn;0.1 dB class after calibration</td></tr>
+<tr><td>Setup effort</td><td>Connect and normalize, under a minute</td><td>Calibration kit or ecal, per-setup procedure</td></tr>
+<tr><td>Cost</td><td>Included or a modest option on the analyzer</td><td>A second instrument, often costing more than the analyzer</td></tr>
+</tbody>
+</table>
+
+<p>The honest summary: if the question involves phase, group delay, impedance matching, or fractions of a dB, you need a VNA. If the question is "where are this filter's corners, is this cable within loss spec, is this amplifier's gain flat across the band," scalar analysis answers it faster, cheaper, and with less operator ceremony. Filter production tuning, cable acceptance testing, and pass/fail line checks have run on scalar setups for fifty years for a reason. Choose by the question, not by the prestige of the instrument.</p>
+
+<h2>8.7 How Far Up Do Tracking Generators Go?</h2>
+
+<p>Tracking generators have historically been a low-frequency courtesy feature. The mainstream instruments make the pattern clear:</p>
+
+<table class="bnc">
+<thead>
+<tr><th>Instrument class</th><th>Published TG ceiling</th></tr>
+</thead>
+<tbody>
+<tr><td>Rigol DSA832E-TG</td><td>3.2 GHz</td></tr>
+<tr><td>R&amp;S FPC1500 (integrated TG)</td><td>1 to 3 GHz</td></tr>
+<tr><td>Siglent SSA3000X / X Plus family</td><td>1.5 to 7.5 GHz depending on model</td></tr>
+<tr><td>Keysight N9322C (stimulus/response)</td><td>7 GHz</td></tr>
+<tr><td>Latest-generation compact RTSAs (published options)</td><td>4.5, 6, and 9 GHz</td></tr>
+<tr><td>Keysight FieldFox with tracking options</td><td>26.5 to 54 GHz, in a different price class</td></tr>
+<tr><td>Big-iron lab analyzers (PXA, FSW class)</td><td>Typically none; external generator or VNA instead</td></tr>
+</tbody>
+</table>
+
+<p>Above roughly 10 GHz, tracking capability almost disappears from the market. The FieldFox family is the notable exception, and it lives at a price point closer to a VNA than to a portable spectrum analyzer. Big lab analyzers skip the feature entirely on the theory that anyone who owns one also owns a signal generator or a VNA.</p>
+
+<p>Against that backdrop, one claim deserves mention with its flag attached. The manufacturer behind the newest 40 GHz compact RTSA platforms has stated that a 40 GHz tracking generator option is coming to its newest platform, and describes it as unmatched in the market. As of this writing, that claim does not appear in any published specification (the same manufacturer's published TG options stop at 9 GHz), and it has not been verified on a bench unit. Treat it as a manufacturer's claim, not an established fact. If it holds, it is genuinely unusual: a tracking generator above 10 GHz is rare, and one anywhere near 40 GHz would put scalar filter tuning and gain sweeps across K-band and Ka-band into an instrument class that has never had them. That is the appropriate framing. Not "the only one on the market," a phrase that ages badly, but "unusual enough to verify, and significant if true."</p>
+
+<div class="case">
+<h2>Case: One Instrument, Two Jobs at a Ku-Band Site</h2>
+<p>A field team is commissioning a 12 GHz power amplifier feeding a Ku-band uplink. The compliance file requires the second harmonic at 24 GHz and the third at 36 GHz, both against a &minus;50 dBc limit. Both harmonics land inside a 40 GHz analyzer's range, so the team measures them directly at the PA output through a calibrated coupler: second harmonic &minus;54 dBc, third &minus;61 dBc. Before writing either number down, the engineer runs the Section 8.4 reflex, stepping in 10 dB more input attenuation. Both readings hold within 0.5 dB, so the distortion is the amplifier's, not the analyzer's, and the numbers go in the file.</p>
+<p>Same visit, second job: the 1.2 GHz IF bandpass filter ahead of the upconverter has drifted. The team switches to the tracking generator, normalizes through the test cables, inserts the filter, and retunes it against the live trace until the passband is centered with 0.8 dB of ripple and the corners sit where the link budget expects them. Ten years ago this visit needed a microwave spectrum analyzer and a separate network analysis setup. Here it needed one box and a directional coupler.</p>
+</div>
 
 <div class="summary">
 <h3>Chapter Summary</h3>
 <ul>
-  <li>Direction finding measures angle of arrival; geolocation determines a 3D position. Each adds a dimension to spectrum data.</li>
-  <li>The four main DF families are amplitude (rotate-and-find-peak), phase interferometry (compare phase across spaced antennas), time-difference-of-arrival (multi-site clock-synchronized), and array AOA (multi-element with beamforming).</li>
-  <li>Aaronia IsoLOG 3D DF uses a 16-sector, 32-antenna sectored array covering 400 MHz to 40 GHz with 8 microsecond per-sector bearing speed and 1 to 3 degree angular accuracy (1 degree paired with SPECTRAN V6 PLUS).</li>
-  <li>3D bearing includes elevation, distinguishing airborne from ground emitters and dramatically improving counter-UAS performance.</li>
-  <li>Cross-bearings from two or more sites triangulate to an emitter position. Mobile DF trucks add bearings from moving positions for tracking pirates and unauthorized transmitters.</li>
-  <li>Distributed RTSA sensor grids extend DF to city-scale deployments with star, hierarchical, or peer-to-peer topologies.</li>
-  <li>Time synchronization for TDOA grids uses GPSDO (tens of nanoseconds) or PTP (picoseconds) depending on accuracy requirements.</li>
-  <li>Integration patterns include Ethernet+power for the hardware, KML/GeoJSON/NMEA/MQTT for data export, and REST/MQTT APIs for higher-level C2 systems.</li>
+  <li>Harmonics come from the higher-order terms of a device's power-series nonlinearity: the squared term generates the second harmonic, the cubed term the third, at exactly $n \cdot f_0$.</li>
+  <li>Second-order products rise 2 dB per dB of fundamental; third-order products rise 3 dB per dB. Extrapolating those slopes defines the intercept points (SHI, TOI) that specify linearity in one number.</li>
+  <li>Harmonics are measured per-harmonic in dBc with marker-delta arithmetic; per-harmonic data diagnoses the mechanism (dominant 2nd versus dominant 3rd) in a way a single THD number cannot.</li>
+  <li>The frequency-range rule: measuring the nth harmonic requires tuning to $n \cdot f_0$, so third-harmonic work on Ku-band devices needs 40 GHz of reach. Range, not technique, is the usual bottleneck.</li>
+  <li>The analyzer's own first mixer generates internal distortion, quantified by SHI: internal second harmonic in dBc equals &minus;(SHI &minus; mixer level). Published entry-class figures put this near &minus;65 dBc at a &minus;20 dBm mixer level.</li>
+  <li>The 10 dB attenuator test separates device distortion from analyzer distortion; the optimum mixer level balances internal distortion against the noise floor.</li>
+  <li>A tracking generator, phase-locked to the sweep, enables scalar network analysis: filter, cable, and amplifier magnitude response after a normalization sweep.</li>
+  <li>Scalar analysis gives magnitude only; VNAs add phase, group delay, impedance, and vector error correction. Most production filter and cable work needs only scalar.</li>
+  <li>Published tracking generators mostly stop between 1.5 and 9 GHz; FieldFox-class instruments extend further at a different price. A manufacturer-claimed 40 GHz TG on the newest compact RTSA platforms remains unverified and is flagged as such.</li>
 </ul>
 </div>
 
 <div class="quiz-cta">
 <div class="quiz-cta-num">End-of-Chapter Quiz</div>
 <h3>Check your understanding</h3>
-<p>The Chapter 8 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<p>The Chapter 8 questions are an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
 <a class="quiz-cta-btn" href="quiz-chapter-08.html">Take the interactive quiz &rarr;</a>
 </div>
 <div class="next">
 <h3>What's Next</h3>
-<p>Chapter 9 covers calibration, accuracy, and measurement uncertainty. Amplitude and frequency accuracy, reference oscillators, phase noise, dynamic range (SFDR, IIP3, noise floor), measurement uncertainty budgets, and SPECTRAN V6 PLUS calibration workflows. By the end of Chapter 9, you'll be able to defend any RTSA measurement with a quantitative uncertainty number, which is what serious metrology actually requires.</p>
+<p>Chapter 9 leaves the vendor's software entirely and opens the instrument to the open-source SDR ecosystem: SDR++ as a universal receiver front end, GNU Radio flowgraphs for custom signal processing, SoapySDR as the hardware abstraction layer, and what a programmable RTSA looks like when the analysis chain is yours to build. If you have ever wanted to write your own demodulator and point it at 100 MHz of live spectrum, that chapter is for you.</p>
 </div>
 
 
 <footer class="bnc-footer">
   <nav class="bnc-nav">
-    <a class="prev" href="chapter-07.html">&larr; Ch 7. Pulse, Radar, and EW</a>
+    <a class="prev" href="chapter-07.html">&larr; Ch 7. Phase Noise Measurements</a>
     <a class="mid"  href="index.html">Contents</a>
-    <a class="next" href="chapter-09.html">Ch 9. Calibration and Accuracy &rarr;</a>
+    <a class="next" href="chapter-09.html">Ch 9. The Open SDR Ecosystem &rarr;</a>
   </nav>
   <div class="bnc-meta">
     <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>
