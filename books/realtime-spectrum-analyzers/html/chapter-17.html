@@ -72,8 +72,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p>Each lab takes 30 to 90 minutes. None require expensive consumables. Some require nothing more than a Wi-Fi router you already own.</p>
 
 <figure>
-  <object type="image/svg+xml" data="../figures/fig-14-01-lab-bench-setup.svg" style="width:100%;">Figure 14-1</object>
-  <figcaption>Figure 14-1. The standard lab bench setup. Solid lines show baseline equipment used in all ten labs (antenna, SPECTRAN V6 PLUS, host computer running RTSA Suite PRO, test signal source). Dashed lines show optional additions for advanced labs: external storage for Lab 9, IsoLOG 3D DF for Lab 8, and a second SPECTRAN for Lab 10.</figcaption>
+  <object type="image/svg+xml" data="../figures/fig-14-01-lab-bench-setup.svg" style="width:100%;">Figure 17-1</object>
+  <figcaption>Figure 17-1. The standard lab bench setup. Solid lines show baseline equipment used in all thirteen labs (antenna, SPECTRAN V6 PLUS, host computer running RTSA Suite PRO, test signal source). Dashed lines show optional additions for advanced labs: external storage for Lab 9, IsoLOG 3D DF for Lab 8, and a second SPECTRAN for Lab 10.</figcaption>
 </figure>
 
 <div class="lab">
@@ -336,18 +336,93 @@ plt.show()</code></pre>
 </ul>
 </div>
 
+<div class="lab">
+<h2>Lab 11: Phase Noise of a Bench Synthesizer</h2>
+<div class="meta"><strong>Objective:</strong> produce a full L(f) plot and a spot-noise table, then check it against a manual estimate. <strong>Equipment:</strong> baseline plus a bench signal generator (Chapter 7 is the companion reading).</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Let both instruments warm up for 30 minutes. Oscillators drift while they stabilize, and close-in phase noise measurements notice.</li>
+<li>Connect the generator to the analyzer input through a 10 dB pad. Set the generator to 1 GHz at 0 dBm.</li>
+<li>Open the analyzer's phase noise measurement mode. Let it find the carrier, and set the offset range to 100 Hz through 1 MHz.</li>
+<li>Enable averaging and let the trace settle. Read the spot-noise table at 1 kHz, 10 kHz, 100 kHz, and 1 MHz offsets.</li>
+<li>Check your margin: compare each spot value against the analyzer's specified measurement floor. Flag any offset where the margin is under 10 dB (Chapter 7 explains why those readings are suspect).</li>
+<li>Now switch to standard spectrum mode. Tune 10 kHz off the carrier, use a marker delta from the carrier peak, and normalize by hand: subtract 10 log10 of the noise bandwidth of your RBW filter. Compare with the mode's 10 kHz spot value.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>The dedicated mode and your manual estimate should agree within a few dB at 10 kHz offset. The manual method reads high (worse) wherever detector corrections matter or the analyzer floor is close, which is exactly why the automated mode exists.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>Which offsets were floor-limited, and how could you tell?</li>
+<li>What changed when you doubled the averaging count, and what did it cost in measurement time?</li>
+<li>If the generator had strong AM noise, which method would it bias, and in which direction?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 12: Harmonics, Measured Honestly</h2>
+<div class="meta"><strong>Objective:</strong> separate the DUT's harmonics from the ones the analyzer makes. <strong>Equipment:</strong> baseline plus a signal generator (Chapter 8 is the companion reading).</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Set the generator to 2.4 GHz at 0 dBm and connect it to the analyzer input. Its second and third harmonics sit at 4.8 GHz and 7.2 GHz.</li>
+<li>Measure the fundamental with a peak marker, then marker-delta to the second harmonic. Record the level in dBc. Repeat for the third harmonic.</li>
+<li>Note the input attenuation the analyzer chose, and compute the mixer level: input power minus attenuation.</li>
+<li>Add 10 dB of input attenuation. The fundamental reading should hold still. Watch the second harmonic: if it drops, part of what you measured was generated inside the analyzer.</li>
+<li>Keep adding attenuation until the harmonic reading stops changing. That stable value is the DUT's real harmonic level.</li>
+<li>Record the mixer level at which the reading stabilized, and compare your observations with the second harmonic intercept math in Chapter 8.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>At high mixer levels the displayed second harmonic is a mix of DUT and analyzer distortion and moves when attenuation changes. Once the mixer level is low enough, the reading stabilizes at the generator's true harmonic performance, typically tens of dB below the carrier.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>Why does the displayed fundamental stay constant when you add input attenuation?</li>
+<li>Where is the optimum mixer level for this measurement, and what did the noise floor do as you attenuated?</li>
+<li>At what fundamental frequency would this lab stop being possible on your analyzer, and what frequency range would you need to finish it?</li>
+</ul>
+</div>
+
+<div class="lab">
+<h2>Lab 13: The Analyzer as an SDR++ Source and GNU Radio Front End</h2>
+<div class="meta"><strong>Objective:</strong> stream calibrated I/Q into open-source SDR software and build a first flowgraph. <strong>Equipment:</strong> baseline plus a host computer (Linux recommended) with SDR++ installed; optional GNU Radio 3.9 or later (Chapter 9 is the companion reading).</div>
+
+<h3>Procedure</h3>
+<ol>
+<li>Install the analyzer's streaming driver and its calibration files on the host, following the vendor's instructions (the SoapySDR route works with stock SoapySDR-enabled builds).</li>
+<li>Open SDR++ and select the analyzer as the source. Confirm it enumerates by serial number.</li>
+<li>Tune to a local FM broadcast station near 98 MHz. Set the reference level so any IF overflow warning clears, then bring it down until the signal has healthy headroom.</li>
+<li>Select WFM demodulation and listen. Note that the displayed levels are calibrated dBm, not the relative units a TV dongle gives you.</li>
+<li>Use the recorder module to capture one minute of baseband I/Q around the station.</li>
+<li>Optional, in GNU Radio Companion: place the instrument's IQ source block, a low-pass filter, a WBFM receive block, a resampler, and an audio sink. Wire them, set sample rates consistently, and run the flowgraph. You have built a working FM receiver from blocks.</li>
+</ol>
+
+<h3>Expected Result</h3>
+<p>Clean broadcast audio in SDR++, a recorded I/Q file you can replay or process in Python, and, if you took the GNU Radio path, the same station playing through a flowgraph you assembled yourself.</p>
+
+<h3>Discussion</h3>
+<ul>
+<li>What did the overflow indicator teach you about instrument-style gain versus an SDR gain slider?</li>
+<li>How large was one minute of recorded I/Q, and what does that imply for wideband captures?</li>
+<li>Everything in this lab happened below 108 MHz. What signals become reachable when the same workflow tunes to 10, 20, or 40 GHz?</li>
+</ul>
+</div>
+
 <h2>Going Further</h2>
 
-<p>Beyond these ten labs, the SPECTRAN V6 PLUS and RTSA Suite PRO support hundreds of additional measurement scenarios. Suggested next-steps:</p>
+<p>Beyond these thirteen labs, the SPECTRAN V6 PLUS and RTSA Suite PRO support hundreds of additional measurement scenarios. Suggested next-steps:</p>
 
 <ul>
-<li><strong>Lab 11:</strong> Modulation classification on an unknown signal</li>
-<li><strong>Lab 12:</strong> 5G NR EVM measurement using the standards-aware preset</li>
-<li><strong>Lab 13:</strong> BLE advertising packet decoding with offline Python</li>
-<li><strong>Lab 14:</strong> TDOA geolocation across three sensor sites</li>
-<li><strong>Lab 15:</strong> Phase noise measurement with cross-correlation</li>
-<li><strong>Lab 16:</strong> Compliance test of a known device against FCC Part 15 limits</li>
-<li><strong>Lab 17:</strong> AI-assisted classification of captured I/Q signatures</li>
+<li><strong>Lab 14:</strong> Modulation classification on an unknown signal</li>
+<li><strong>Lab 15:</strong> 5G NR EVM measurement using the standards-aware preset</li>
+<li><strong>Lab 16:</strong> BLE advertising packet decoding with offline Python</li>
+<li><strong>Lab 17:</strong> TDOA geolocation across three sensor sites</li>
+<li><strong>Lab 18:</strong> Phase noise measurement with cross-correlation</li>
+<li><strong>Lab 19:</strong> Compliance test of a known device against FCC Part 15 limits</li>
+<li><strong>Lab 20:</strong> AI-assisted classification of captured I/Q signatures</li>
 </ul>
 
 <p>Each builds on the foundation of these ten. With the same hardware and software, the only limit is the time you spend exploring.</p>
