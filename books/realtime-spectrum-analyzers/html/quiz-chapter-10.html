@@ -18,7 +18,7 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chapter 10 Quiz - RTSA Form Factors, Packaging, and Environmental Engineering</title>
+<title>Chapter 10 Quiz - Pulse, Radar, and Electronic Warfare Measurements</title>
 <link rel="stylesheet" href="light-touch.css"/>
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
@@ -43,114 +43,114 @@ window.QUIZ_DATA = {
   title: "Chapter 10 Quiz",
   questions: [
     {
-      q: "Which RTSA form factor offers the highest capability per dollar at the high end?",
+      q: "The product of pulse width and the first-null bandwidth of a sinc-shaped pulse spectrum is approximately:",
       options: [
-        "Portable",
-        "OEM embedded",
-        "Benchtop laboratory",
-        "USB compact"
+        "0",
+        "1",
+        "infinity",
+        "depends on PRF only"
+      ],
+      answer: 1,
+      explain: "For a rectangular pulse, pulse width times first-null bandwidth is about 1, the classic time-bandwidth relationship."
+    },
+    {
+      q: "Pulse repetition interval (PRI) is:",
+      options: [
+        "The duration of one pulse",
+        "The time between consecutive pulse starts",
+        "The pulse rise time",
+        "The carrier frequency divided by 1000"
+      ],
+      answer: 1,
+      explain: "PRI is the time from the start of one pulse to the start of the next."
+    },
+    {
+      q: "A PDW typically contains all the following except:",
+      options: [
+        "Time of arrival",
+        "Pulse width",
+        "Center frequency",
+        "The transmitter's serial number"
+      ],
+      answer: 3,
+      explain: "A pulse descriptor word records measured parameters like time of arrival, width, and frequency, not an emitter serial number."
+    },
+    {
+      q: "Deinterleaving is the process of:",
+      options: [
+        "Increasing the sample rate",
+        "Sorting interleaved PDWs back into per-emitter streams",
+        "Removing window function effects",
+        "Splitting I and Q channels"
+      ],
+      answer: 1,
+      explain: "Deinterleaving sorts a mixed stream of pulse descriptor words back into separate per-emitter sequences."
+    },
+    {
+      q: "Linear frequency modulation (LFM) on a waterfall display appears as:",
+      options: [
+        "A horizontal line",
+        "A vertical line",
+        "A diagonal stripe whose slope encodes the chirp rate",
+        "A circle"
       ],
       answer: 2,
-      explain: "Benchtop laboratory instruments deliver the most capability per dollar at the high end."
+      explain: "An LFM chirp sweeps frequency with time, drawing a diagonal stripe whose slope is the chirp rate."
     },
     {
-      q: "Rack-mount RTSAs typically:",
+      q: "A barrage jammer is best described as:",
       options: [
-        "Have built-in displays",
-        "Lack built-in displays and are managed remotely over Ethernet",
-        "Are battery-powered",
-        "Are designed for outdoor deployment"
+        "A narrowband tone at a fixed frequency",
+        "A wide-bandwidth noise transmission covering the victim band",
+        "A repeated radar pulse",
+        "A frequency-hopping signal"
       ],
       answer: 1,
-      explain: "Rack-mount units usually omit a local display and are operated remotely over Ethernet."
+      explain: "A barrage jammer floods a wide band with noise to cover the entire victim spectrum."
     },
     {
-      q: "OEM embedded RTSAs primarily serve:",
+      q: "DRFM jammers are difficult to characterize because:",
       options: [
-        "Laboratory researchers",
-        "System integrators building larger products with RTSA capability inside",
-        "Hobbyists",
-        "Educational institutions"
+        "They are too quiet to detect",
+        "They retransmit modified copies of the victim's own signal, looking like real returns",
+        "They use only narrow bandwidth",
+        "They emit only briefly"
       ],
       answer: 1,
-      explain: "OEM embedded modules are aimed at integrators who build RTSA capability into larger systems."
+      explain: "Digital RF memory jammers capture and replay the victim's own waveform with tweaks, so they masquerade as genuine returns."
     },
     {
-      q: "The MIL-STD-810 specification covers:",
+      q: "A 10 nanosecond probability of intercept is essential for:",
       options: [
-        "Cybersecurity",
-        "Environmental conditions (vibration, temperature, shock, etc.)",
-        "EMI / EMC",
-        "Software quality"
-      ],
-      answer: 1,
-      explain: "MIL-STD-810 defines environmental tests such as vibration, temperature, and shock."
-    },
-    {
-      q: "The SPECTRAN V6 ECO 100XA-6 has a real-time bandwidth of:",
-      options: [
-        "44 MHz",
-        "80 MHz",
-        "245 MHz",
-        "490 MHz"
+        "Capturing high-PRF radar pulses and short EW transients",
+        "Wi-Fi modulation analysis",
+        "Cellular signal monitoring",
+        "Audio-band measurements"
       ],
       answer: 0,
-      explain: "The ECO 100XA-6 provides 44 MHz of real-time bandwidth."
+      explain: "A 10 nanosecond probability of intercept is needed to reliably catch high-PRF radar pulses and brief EW transients."
     },
     {
-      q: "Which SPECTRAN V6 PLUS model includes an integrated vector signal generator and 80 MHz RTBW?",
+      q: "The IsoLOG 3D DF antenna covers a frequency range of:",
       options: [
-        "ECO 100XA-6",
-        "PLUS 250XA-6",
-        "PLUS 500XA-6",
-        "PLUS 2000XA-6"
-      ],
-      answer: 2,
-      explain: "The PLUS 500XA-6 includes an integrated vector signal generator with 80 MHz of real-time bandwidth."
-    },
-    {
-      q: "The flagship PLUS 2000XA-6's maximum optional RTBW is:",
-      options: [
-        "80 MHz",
-        "245 MHz",
-        "490 MHz",
-        "1 GHz"
-      ],
-      answer: 2,
-      explain: "With the full upgrade the flagship PLUS 2000XA-6 reaches 490 MHz of real-time bandwidth."
-    },
-    {
-      q: "RTSA Suite PRO supports custom processing blocks written in:",
-      options: [
-        "Python and C++",
-        "JavaScript only",
-        "Assembly only",
-        "None; it is a closed system"
-      ],
-      answer: 0,
-      explain: "Custom processing blocks can be written in Python and C++."
-    },
-    {
-      q: "SigMF (Signal Metadata Format) enables:",
-      options: [
-        "Compressed I/Q storage",
-        "Interoperable I/Q files with documented metadata across tools",
-        "Encrypted measurement results",
-        "Faster ADC sampling"
+        "100 MHz to 1 GHz",
+        "400 MHz to 40 GHz",
+        "1 GHz to 6 GHz",
+        "Audio band only"
       ],
       answer: 1,
-      explain: "SigMF documents I/Q metadata in a common form so files move cleanly between tools."
+      explain: "The IsoLOG 3D DF antenna covers roughly 400 MHz to 40 GHz."
     },
     {
-      q: "The recommended growth pattern for SPECTRAN V6 PLUS deployments is to:",
+      q: "Counter-UAS systems using SPECTRAN V6 PLUS and IsoLOG 3D DF detect drones primarily through:",
       options: [
-        "Start with the most capable unit and scale down",
-        "Buy one of every model",
-        "Start with the model matching current needs and add capability over time",
-        "Always cascade four units initially"
+        "Visual recognition",
+        "Acoustic signatures",
+        "RF emissions on control and video downlink bands plus 3D direction finding",
+        "Magnetic field sensors"
       ],
       answer: 2,
-      explain: "The recommended path is to buy the model that fits current needs and license or cascade more capability as requirements grow."
+      explain: "They locate drones by detecting RF on the control and video downlink bands and direction-finding in 3D."
     }
   ]
 };

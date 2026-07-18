@@ -18,11 +18,11 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chapter 8 Quiz - Direction Finding, Geolocation, and Distributed Sensing</title>
+<title>Chapter 8 Quiz - Harmonics, Tracking Generators, and Scalar Network Measurements</title>
 <link rel="stylesheet" href="light-touch.css"/>
+<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
-<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -43,114 +43,114 @@ window.QUIZ_DATA = {
   title: "Chapter 8 Quiz",
   questions: [
     {
-      q: "Which DF method uses phase differences across spaced antennas?",
+      q: "When the fundamental driving a nonlinear device rises by 1 dB, the second harmonic rises by:",
       options: [
-        "Amplitude DF",
-        "Phase interferometry",
-        "TDOA only",
-        "Frequency hopping"
+        "1 dB",
+        "2 dB",
+        "3 dB",
+        "6 dB"
       ],
       answer: 1,
-      explain: "Phase interferometry derives bearing from the phase difference of a wavefront arriving at spaced antennas."
+      explain: "The second harmonic is proportional to the square of the input voltage, so it rises 2 dB for every 1 dB of fundamental increase."
     },
     {
-      q: "The Aaronia IsoLOG 3D DF antenna covers:",
+      q: "A harmonic level expressed in dBc is measured relative to:",
       options: [
-        "100 MHz to 1 GHz",
-        "400 MHz to 40 GHz",
-        "1 GHz to 6 GHz",
-        "mmWave only"
-      ],
-      answer: 1,
-      explain: "The IsoLOG 3D DF antenna covers roughly 400 MHz to 40 GHz."
-    },
-    {
-      q: "The flagship IsoLOG 3D DF has how many sectors and antennas?",
-      options: [
-        "8 sectors, 16 antennas",
-        "12 sectors, 24 antennas",
-        "16 sectors, 32 antennas",
-        "24 sectors, 48 antennas"
+        "The analyzer's noise floor",
+        "1 milliwatt",
+        "The fundamental (carrier) power",
+        "The analyzer's reference level"
       ],
       answer: 2,
-      explain: "The flagship configuration uses 16 sectors with 32 antennas."
+      explain: "dBc means decibels relative to the carrier: harmonic power in dBm minus fundamental power in dBm."
     },
     {
-      q: "The angular accuracy of the IsoLOG 3D DF when paired with SPECTRAN V6 PLUS is approximately:",
+      q: "To measure the third harmonic of a 13.5 GHz Ku-band transmitter, the analyzer must tune to:",
       options: [
-        "10 degrees",
-        "5 degrees",
-        "1 degree",
-        "0.01 degree"
+        "27 GHz",
+        "40.5 GHz",
+        "13.5 GHz",
+        "30 GHz"
+      ],
+      answer: 1,
+      explain: "The nth harmonic sits at n times the fundamental, so the third harmonic of 13.5 GHz is at 40.5 GHz."
+    },
+    {
+      q: "An analyzer with a second harmonic intercept (SHI) of +45 dBm running at a mixer level of -20 dBm generates an internal second harmonic of:",
+      options: [
+        "-25 dBc",
+        "-45 dBc",
+        "-65 dBc",
+        "-90 dBc"
       ],
       answer: 2,
-      explain: "Paired with the SPECTRAN V6 PLUS, angular accuracy is on the order of 1 degree."
+      explain: "Internal second harmonic in dBc is -(SHI - mixer level) = -(45 - (-20)) = -65 dBc."
     },
     {
-      q: "Why does 3D direction finding (with elevation) improve counter-UAS performance?",
+      q: "You add 10 dB of input attenuation and the displayed harmonic level drops. This means:",
       options: [
-        "Drones produce different colors on the waterfall.",
-        "Elevation distinguishes airborne emitters from ground RF noise.",
-        "Elevation lowers the noise figure.",
-        "It does not."
+        "The device's harmonic is confirmed as real",
+        "The analyzer was generating part of the displayed harmonic",
+        "The resolution bandwidth is set too wide",
+        "The fundamental has gone into compression"
       ],
       answer: 1,
-      explain: "Adding elevation lets the system separate airborne drone emissions from clutter at ground level."
+      explain: "A true device harmonic is re-corrected along with the fundamental and does not move; a reading that drops with added attenuation was partly the analyzer's own distortion."
     },
     {
-      q: "Two-site cross-bearing geometry is most accurate when:",
+      q: "The optimum mixer level for a distortion measurement is the point where:",
       options: [
-        "The two sites are very close together.",
-        "The two sites are spaced at roughly the range to the target, with bearings near 90 degrees.",
-        "The bearing angles are nearly parallel.",
-        "The target is very far away."
-      ],
-      answer: 1,
-      explain: "Cross-bearing is sharpest when the baseline matches the target range and the bearings cross near a right angle."
-    },
-    {
-      q: "TDOA geolocation requires synchronized clocks. GPS-disciplined oscillators provide approximately:",
-      options: [
-        "1 millisecond",
-        "1 microsecond",
-        "10 to 30 nanoseconds",
-        "1 femtosecond"
-      ],
-      answer: 2,
-      explain: "GPS-disciplined oscillators hold timing to roughly 10 to 30 nanoseconds, tight enough for TDOA."
-    },
-    {
-      q: "A typical RTSA Suite PRO map overlay format for Google Earth integration is:",
-      options: [
-        "CSV",
-        "KML / KMZ",
-        "SQL",
-        "PDF"
-      ],
-      answer: 1,
-      explain: "KML and KMZ are the standard overlay formats for Google Earth integration."
-    },
-    {
-      q: "The integration interface for an IsoLOG 3D DF antenna is:",
-      options: [
-        "Ethernet plus power only",
-        "USB and HDMI",
-        "Coaxial cable to each sector individually",
-        "Wireless link to a base station"
+        "Internal distortion products equal the displayed noise floor",
+        "The mixer receives its maximum rated power",
+        "The reference level equals the fundamental power",
+        "The input attenuation is zero"
       ],
       answer: 0,
-      explain: "The antenna integrates over Ethernet plus power, simplifying field deployment."
+      explain: "Lowering mixer level reduces distortion but raises the noise floor, so the widest distortion measurement range sits where the two are equal."
     },
     {
-      q: "The mobile DF truck workflow is classically used for:",
+      q: "A tracking generator is best described as:",
       options: [
-        "Building Wi-Fi networks",
-        "Tracking pirate radio stations and unauthorized transmitters",
-        "Repairing cellular towers",
-        "Programming radios"
+        "A free-running signal source set to a fixed frequency",
+        "A signal source phase-locked to the analyzer sweep, always outputting the frequency the analyzer is tuned to",
+        "A calibrated broadband noise source",
+        "A pulse generator triggered by the analyzer's display update"
       ],
       answer: 1,
-      explain: "The mobile direction-finding truck is the classic tool for hunting pirate stations and unauthorized transmitters."
+      explain: "A tracking generator tracks the analyzer's sweep, outputting a sine at exactly the analyzer's tuned frequency at every instant."
+    },
+    {
+      q: "Normalization in a tracking generator measurement:",
+      options: [
+        "Applies full vector error correction including mismatch",
+        "Stores a through-connection trace as a reference and subtracts it to remove cable loss and TG flatness ripple",
+        "Increases the measurement's dynamic range beyond the noise floor",
+        "Calibrates the analyzer's frequency axis against an atomic standard"
+      ],
+      answer: 1,
+      explain: "Normalization stores the through path as the 0 dB reference and subtracts it, removing frequency-response error but not mismatch error."
+    },
+    {
+      q: "Which measurement is beyond a scalar analyzer-plus-TG setup and requires a vector network analyzer?",
+      options: [
+        "Cable insertion loss versus frequency",
+        "Filter stopband rejection",
+        "Group delay through a filter",
+        "Amplifier gain flatness"
+      ],
+      answer: 2,
+      explain: "Group delay is derived from phase versus frequency, and a scalar setup measures magnitude only."
+    },
+    {
+      q: "Measuring each harmonic individually in dBc is more diagnostic than a single THD number because:",
+      options: [
+        "It is faster to compute",
+        "The dominant harmonic identifies the mechanism: strong 2nd suggests asymmetry or bias error, strong 3rd suggests symmetric compression",
+        "THD can only be measured with a vector network analyzer",
+        "THD is defined only for audio frequencies"
+      ],
+      answer: 1,
+      explain: "Two devices with the same THD can fail differently; which harmonic dominates points to the underlying nonlinearity."
     }
   ]
 };

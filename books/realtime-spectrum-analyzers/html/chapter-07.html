@@ -18,10 +18,11 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 7 - Pulse, Radar, and Electronic Warfare Measurements</title>
+<title>Chapter 7 - Phase Noise Measurements with a Real-Time Spectrum Analyzer</title>
 <script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <link rel="stylesheet" href="light-touch.css">
+<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 <style>
   /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
   .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
@@ -62,7 +63,6 @@
   <script defer src="book-enhance.js"></script>
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
-<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -71,154 +71,190 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="chapter-number">Chapter 7</div>
-<h1>Pulse, Radar, and Electronic Warfare Measurements</h1>
+<h1>Phase Noise Measurements with a Real-Time Spectrum Analyzer</h1>
 
-<blockquote>Communications signals want to be understood. Radar and EW signals want to hide. The instrument that finds them is the one that justifies its existence in nanoseconds.</blockquote>
+<blockquote>An oscillator's frequency tells you where the carrier sits. Its phase noise tells you whether anything you build on top of it will work.</blockquote>
 
-<h2>7.1 Pulse Fundamentals</h2>
+<h2>7.1 The Specification Hiding Under the Carrier</h2>
 
-<p>A pulse is a transmission whose amplitude rises from zero, holds, and falls back to zero. Five parameters describe it: <strong>pulse width (PW)</strong> is the duration the pulse is on; <strong>rise time and fall time</strong> are the leading and trailing edge transitions; <strong>pulse repetition frequency (PRF)</strong> is how many pulses per second; <strong>pulse repetition interval (PRI)</strong> is the inverse of PRF; <strong>duty cycle</strong> is the fraction of time the transmitter is on.</p>
+<p>Walk through any RF system and count the oscillators. The synthesizer in the transmitter. The local oscillator in the receiver. The sampling clock feeding the ADC. The reference OCXO disciplining all of them. Every one of those sources is specified first by its frequency, and frequency is the least interesting thing about it. A carrier that is 2 Hz off is a calibration problem. A carrier that wanders in phase, randomly, thousands of times per second, is a system problem, and it shows up everywhere except the oscillator datasheet's headline.</p>
 
-<p>For an air traffic control radar, typical numbers are: pulse width 1 microsecond, PRF 1 kHz, duty cycle 0.1 percent. For a high-PRF military radar, pulse width might be 100 nanoseconds, PRF 100 kHz, duty cycle 1 percent. For a marine navigation radar, pulse width can stretch to 1 millisecond at very low PRF.</p>
+<p>Phase noise is the hidden specification because its damage appears in someone else's measurement. The radar engineer sees clutter smearing across Doppler bins. The comms engineer sees constellation points blurring into arcs. The data-converter designer sees SNR falling off a cliff at high input frequencies. None of them see "phase noise" on the failing screen. They see their own metric failing, trace it backward through the signal chain, and find an oscillator at the end of the trail.</p>
 
-<p>Each pulse in spectrum is a sinc-shaped envelope around the carrier. The first nulls of the sinc are at $f \pm 1/\text{PW}$ from the carrier. A 1 microsecond pulse has nulls at +/- 1 MHz. A 100 nanosecond pulse has nulls at +/- 10 MHz. A 1 nanosecond pulse has nulls at +/- 1 GHz. The pulse width and the spectrum width are tied together by Fourier mathematics: short in time means wide in frequency.</p>
+<p>Chapter 6 already met this phenomenon without naming it in full. In the EVM diagnostic table, one signature stood out: constellation clusters smeared along an arc, each point spreading tangentially at constant radius. That arc is phase noise made visible. The received symbol has the right amplitude but an uncertain angle, because the local oscillator that downconverted it was not at a fixed phase when the symbol arrived. Every fraction of a degree of integrated phase error in the LO becomes a fraction of a degree of rotation scatter in the constellation, and for dense QAM there are not many fractions of a degree to give. When Chapter 6's EVM measurements degrade with an arc signature, this chapter is the reason.</p>
 
-<p>This is why high-PRF, narrow-pulse radars demand wide RTBW. To capture a 100 nanosecond pulse without spectral truncation, you need at least 20 MHz of RTBW. To capture and analyze the leading edge of a 10 nanosecond pulse, you need at least 200 MHz.</p>
+<p>This chapter covers what phase noise is, how a spectrum analyzer measures it, where that measurement breaks down, what a dedicated phase noise mode in a modern real-time spectrum analyzer adds, and how to convert the result into the jitter and integrated-phase numbers that system budgets actually use.</p>
 
-<div class="sidebar-deeper">
-<h3>Going Deeper: Pulse Compression</h3>
-<p>Modern radars rarely transmit simple square pulses. Instead they transmit long, frequency-modulated chirps and apply matched filtering on receive to compress them in time. A 100 microsecond chirp with 100 MHz of frequency sweep, after pulse compression, has the resolution of a 10 nanosecond pulse but the energy of a 100 microsecond pulse. This is how radars achieve both long range and fine resolution simultaneously. RTSAs that capture chirps unmodified can reproduce the matched filter offline, recovering the same compressed pulse the radar's own receiver sees.</p>
+<h2>7.2 What Phase Noise Is</h2>
+
+<p>An ideal oscillator produces a pure sinusoid:</p>
+
+<div class="math-display">$$v(t) = A \sin(2\pi f_0 t)$$</div>
+
+<p>In the frequency domain this is a delta function: all the power at exactly $f_0$, nothing anywhere else. A real oscillator produces something slightly different:</p>
+
+<div class="math-display">$$v(t) = A\,[1 + \alpha(t)]\,\sin(2\pi f_0 t + \varphi(t))$$</div>
+
+<p>where $\alpha(t)$ is a small random amplitude fluctuation and $\varphi(t)$ is a small random phase fluctuation. The phase term dominates in most well-designed sources, and it does something distinctive to the spectrum. Instead of a delta function, the carrier grows a pair of sloping noise sidebands, a pedestal of power that falls away on either side of the peak. Engineers call it the skirt, and the name is accurate: the closer to the carrier you look, the higher the noise.</p>
+
+<p>The standard measure is single-sideband phase noise, written $\mathcal{L}(f)$ and pronounced "script-L of f." It is defined as the ratio of noise power in a 1 Hz bandwidth, at an offset frequency $f$ from the carrier, to the total carrier power. The unit is dBc/Hz: decibels relative to the carrier, per hertz of bandwidth. Under the IEEE 1139 definition, $\mathcal{L}(f) = S_\varphi(f)/2$, half the spectral density of the phase fluctuations. A phase noise number means nothing without two qualifiers, the offset and the carrier: "&minus;125 dBc/Hz at 10 kHz offset from a 1 GHz carrier" is a complete statement. "&minus;125 dBc/Hz" alone is not.</p>
+
+<p>Plot $\mathcal{L}(f)$ against log offset and a well-behaved oscillator draws a piecewise-straight curve whose slopes are diagnostic. The Leeson model maps each slope region to a physical noise mechanism:</p>
+
+<table class="bnc">
+<thead>
+<tr><th>Slope</th><th>Region</th><th>Mechanism</th></tr>
+</thead>
+<tbody>
+<tr><td>&minus;40 dB/decade</td><td>$1/f^4$</td><td>Random-walk FM (environment, vibration)</td></tr>
+<tr><td>&minus;30 dB/decade</td><td>$1/f^3$</td><td>Flicker FM (resonator flicker)</td></tr>
+<tr><td>&minus;20 dB/decade</td><td>$1/f^2$</td><td>White FM (thermal noise inside the loop)</td></tr>
+<tr><td>&minus;10 dB/decade</td><td>$1/f$</td><td>Flicker phase (active devices, buffers)</td></tr>
+<tr><td>0 dB/decade</td><td>$f^0$</td><td>White phase noise floor</td></tr>
+</tbody>
+</table>
+
+<p>Reading the slopes tells you where to spend effort. A source that is fine at 100 kHz but poor at 100 Hz has a resonator or environmental problem. A source with an elevated flat floor has a buffer or output-stage problem. The curve is not just a grade, it is a diagnosis.</p>
+
+<p>One more relationship matters before we measure anything: frequency multiplication. Multiply a carrier by $N$ and its phase excursions multiply by $N$ too, which raises the phase noise by $20\log_{10} N$. A 10 MHz OCXO multiplied up to 1 GHz ($N = 100$) carries every point of its phase noise curve 40 dB higher. This is why a superb crystal at 10 MHz becomes merely a good source at 1 GHz, and why microwave synthesizers fight for every decibel at the reference.</p>
+
+<h2>7.3 The Direct-Spectrum Method</h2>
+
+<p>The oldest way to measure phase noise is also the most intuitive: point a spectrum analyzer at the carrier and measure the skirt directly. Put a marker on the carrier peak, put a second marker on the sideband at the offset of interest, and take the difference. Two corrections turn that raw difference into $\mathcal{L}(f)$.</p>
+
+<p>First, bandwidth normalization. The analyzer measured the sideband in its resolution bandwidth, not in 1 Hz. Noise power scales with bandwidth, so refer the reading to 1 Hz by subtracting $10\log_{10}(\mathrm{RBW}/1\,\mathrm{Hz})$. A reading taken in a 1 kHz RBW gets 30 dB subtracted. Strictly, the correction uses the filter's noise-equivalent bandwidth (ENBW), which for a typical Gaussian RBW filter is a few percent wider than the nominal 3 dB bandwidth, worth about 0.3 dB.</p>
+
+<p>Second, detector statistics. A classic analyzer that averages the logarithm of the envelope (log-average with a sample detector) under-reads Gaussian noise by about 2.5 dB, a bias that generations of engineers added back by hand. An RMS detector measures noise power correctly and needs no such correction. Modern instruments apply the whole correction set in firmware, but you should know it exists, because it explains why two analyzers in different detector modes can disagree by a couple of decibels on the same source.</p>
+
+<p>Putting it together:</p>
+
+<div class="math-display">$$\mathcal{L}(f) \approx P_{\mathrm{SSB}}(f) - P_c - 10\log_{10}\!\left(\frac{\mathrm{ENBW}}{1\,\mathrm{Hz}}\right) + C_{\mathrm{det}}$$</div>
+
+<p>where $P_{\mathrm{SSB}}(f)$ is the sideband power in the measurement bandwidth at offset $f$, $P_c$ is the carrier power, and $C_{\mathrm{det}}$ collects the detector and averaging corrections.</p>
+
+<p>The method has real limitations, and honesty about them is the point of the next section. Four stand out. The analyzer's own local oscillator has phase noise, and the instrument cannot measure a source quieter than itself. The direct method measures total sideband noise, so AM noise from the source adds to the phase noise and inflates the reading. Dynamic range is brutal: the analyzer must digest a full-power carrier while resolving noise 100 dB or more below it, at an offset that may be only kilohertz away. And close-in offsets demand narrow RBWs, which mean long sweep times and place hard demands on the stability of both oscillators for the duration of the sweep.</p>
+
+<h2>7.4 The Analyzer's Own Oscillator Sets the Floor</h2>
+
+<p>Every downconversion in the analyzer's front end stamps the LO's phase noise onto the signal passing through it. Measure a device through that front end and you measure the sum of two noise processes: the device's and the instrument's. Powers add, so the displayed sideband is</p>
+
+<div class="math-display">$$\mathcal{L}_{\mathrm{meas}} = 10\log_{10}\!\left(10^{\mathcal{L}_{\mathrm{DUT}}/10} + 10^{\mathcal{L}_{\mathrm{inst}}/10}\right)$$</div>
+
+<p>Work the numbers and a simple rule falls out. If the device under test is 10 dB noisier than the analyzer's floor, the floor adds 0.4 dB of error, negligible for most purposes. At 6 dB of margin the error is 1 dB. At 3 dB of margin it is 1.8 dB. And when the device equals the floor, the display reads 3 dB high: you are measuring the instrument as much as the device. Hence the working rule: trust a direct phase noise measurement when the analyzer's specified floor is at least 10 dB below what you are reading, question it below 6 dB of margin, and discard it near zero.</p>
+
+<p>The uncomfortable corollary is that a spectrum analyzer can never confirm a source better than its own LO. It can only report "at least this good." For years this restricted serious oscillator work to dedicated phase noise test sets, because general-purpose analyzers, and especially compact ones, carried synthesizers optimized for tuning speed rather than spectral purity. That gap has narrowed. Published figures for current compact real-time analyzers put standard-mode phase noise around &minus;100 to &minus;110 dBc/Hz at 10 kHz offset from a 1 GHz carrier, respectable territory that covers a large share of everyday sources. But "respectable" is not "quiet," and the next section is about how the same hardware buys another 15 dB.</p>
+
+<h2>7.5 What a Dedicated Phase Noise Mode Adds</h2>
+
+<p>The latest generation of real-time spectrum analyzers ships a dedicated phase noise measurement mode in the instrument software, alongside the familiar sweep, real-time, and IQ modes, and in recent releases at no additional license cost. It is worth being precise about what such a mode actually does, because the improvement is not cosmetic.</p>
+
+<p>First, automation. A phase noise plot spans decades of offset, and each decade wants its own settings: RBW near one percent of the offset, appropriate averaging, appropriate dwell. Doing this by hand means a dozen sweeps and a spreadsheet. The mode walks the offset range decade by decade, picks per-decade RBW and averaging, stitches the segments into a single log-offset curve, and applies the ENBW and detector corrections from Section 7.3 automatically. Spot-noise readouts at standard offsets (1 kHz, 10 kHz, 100 kHz, 1 MHz) come out as a table rather than a marker exercise.</p>
+
+<p>Second, cleanup. Discrete spurs (power-line harmonics, switching-supply products, reference spurs) ride on top of the noise curve and would corrupt any integrated result. A phase noise mode can identify and exclude them from the noise trace while still listing them, and trace smoothing tames the residual variance of a noise estimate without biasing it.</p>
+
+<p>Third, and most interesting, the receiver itself is reconfigured. In normal spectrum mode the front end is set up for general survey work: wide tuning, fast synthesizer settling, automatic gain ranging. Locked onto a single known carrier, none of that agility is needed, so the mode can trade it away: slower, quieter synthesizer settings, a signal path chosen for spectral purity, narrowband processing centered on the carrier. Same hardware, different priorities. The gain is not subtle. For one current-generation compact RTSA family, the manufacturer specifies about &minus;110 dBc/Hz at 10 kHz offset from a 1 GHz carrier in standard spectrum mode, improving to &minus;125 dBc/Hz (typical) at the same offset in the dedicated phase noise mode: a 15 dB drop in the measurement floor from software reconfiguration alone. The previous generation's mode reached about &minus;115 dBc/Hz on the same test, so the mode floor itself has improved roughly 10 dB generation over generation. Published distributor figures for the same family quote the mode's sensitivity at a 1 GHz carrier as approximately &minus;94 dBc/Hz at 100 Hz, &minus;117 at 1 kHz, &minus;125 at 10 kHz, &minus;129 at 100 kHz, and &minus;139 dBc/Hz at 1 MHz, over a supported offset range of 100 Hz to 1 MHz, with the figures relaxing by roughly 10 to 15 dB as carrier frequency rises toward 9 GHz. Treat all of these as typical, published numbers rather than guarantees, and check the current datasheet before hanging a pass/fail limit on any of them.</p>
+
+<p>Recall the 10 dB margin rule and the practical meaning is immediate: a floor of &minus;125 dBc/Hz at 10 kHz lets you measure sources up to about &minus;115 dBc/Hz with negligible error, which covers most multiplied-crystal, PLL, and DDS sources an engineer meets outside a metrology lab. The architecture behind the numbers, in the platforms that publish it, pairs direct sampling at low frequencies with a two-stage superheterodyne above, which is part of why the same box can be both a fast survey instrument and a credible phase noise receiver.</p>
+
+<div class="callout"><h4>In Practice: Phase Noise on the BNC ICX Family</h4><p>Compact USB-format RTSAs such as the BNC ICX family, which reaches 40 GHz with 100 MHz of gap-free analysis bandwidth, include an Auto Phase Noise mode among the standard software operating modes, with no separate license required. The workflow is the one this chapter describes: connect the source, let the mode find the carrier (or enter it, for a drifting source), and read the decade-swept curve with spot-noise values at standard offsets. The published mode-floor figures quoted above are typical values at a 1 GHz carrier; verify the datasheet figures at your carrier frequency and offsets before using the instrument to sign off a specification.</p></div>
+
+<h2>7.6 From Phase Noise to Jitter</h2>
+
+<p>System designers rarely want the whole curve. Clock trees, serializers, and ADC datasheets speak in RMS jitter: the time-domain equivalent of integrated phase noise. The conversion is a three-step integral.</p>
+
+<p>First, integrate the single-sideband curve over the offset band of interest, converting from dB back to linear ratio:</p>
+
+<div class="math-display">$$A = \int_{f_1}^{f_2} 10^{\mathcal{L}(f)/10}\, df$$</div>
+
+<p>$A$ has units of rad&sup2;, and it accounts for one sideband. Second, convert to RMS phase, doubling to count both sidebands:</p>
+
+<div class="math-display">$$\varphi_{\mathrm{RMS}} = \sqrt{2A}\ \ \mathrm{rad}$$</div>
+
+<p>Third, convert phase to time by dividing by the angular carrier frequency:</p>
+
+<div class="math-display">$$t_{\mathrm{jitter(RMS)}} = \frac{\sqrt{2A}}{2\pi f_0}$$</div>
+
+<p>The integration limits matter as much as the curve. The telecom and data-converter convention is 12 kHz to 20 MHz, chosen so that slow wander (which downstream PLLs track out) is excluded and only the band that actually corrupts a receiver or a sampler is counted. Quote jitter without its integration band and you have quoted nothing.</p>
+
+<p>A worked example makes the machinery concrete. Take a 1 GHz source whose phase noise is roughly flat at &minus;120 dBc/Hz across the whole 12 kHz to 20 MHz band (a crude but useful approximation for a multiplied source with a wide flat floor). Then:</p>
+
+<div class="math-display">$$A = 10^{-12} \times (20{,}000{,}000 - 12{,}000) \approx 2.0 \times 10^{-5}\ \mathrm{rad}^2$$</div>
+
+<div class="math-display">$$\varphi_{\mathrm{RMS}} = \sqrt{2 \times 2.0 \times 10^{-5}} = 6.3\ \mathrm{mrad} = 0.36^{\circ}$$</div>
+
+<div class="math-display">$$t_{\mathrm{jitter}} = \frac{6.3 \times 10^{-3}}{2\pi \times 10^9} \approx 1.0\ \mathrm{ps\ RMS}$$</div>
+
+<p>So a flat &minus;120 dBc/Hz floor on a 1 GHz carrier is, to a good approximation, a 1 ps RMS clock over the standard band. That is a useful anchor to memorize, and it scales simply: 10 dB less phase noise cuts jitter by a factor of $\sqrt{10} \approx 3.2$, and doubling the carrier frequency with the same $\mathcal{L}(f)$ halves the jitter, because the same phase error is a smaller fraction of a shorter period. A dedicated phase noise mode typically performs this integration on the measured curve directly, with spurs excluded or included at the operator's choice, which is exactly what a clock-tree engineer wants from the readout.</p>
+
+<h2>7.7 Four Places Phase Noise Decides the Outcome</h2>
+
+<p><strong>Radar.</strong> A Doppler radar separates moving targets from stationary clutter by frequency shift, and the shifts are small: a walking person at X-band is a few hundred hertz. The clutter return can be 60 to 80 dB stronger than the target return. Now put phase noise on the radar's LO. The clutter, which should occupy a single Doppler bin, smears across neighboring bins with a skirt shaped exactly like the oscillator's $\mathcal{L}(f)$, and a target whose return sits below that smeared skirt is gone. Subclutter visibility is set directly by the phase noise of the transmit and receive chain at offsets equal to the Doppler frequencies of interest, which is why radar synthesizer specifications obsess over the 100 Hz to 100 kHz decades. Chapter 10 returns to this in the Doppler context, alongside the pulse measurements that accompany it.</p>
+
+<p><strong>Digital communications.</strong> Section 7.1 traced the arc-smeared constellation back to LO phase noise. The budget arithmetic is unforgiving: integrated phase error contributes directly to EVM, and a 256-QAM link budgets on the order of one degree RMS of total phase error across the whole chain, transmitter and receiver combined. Wi-Fi 7 at 4096-QAM and 5G NR at millimeter-wave frequencies budget less. Our worked example's 0.36&deg; of integrated phase error would consume a third of such a budget from one oscillator alone. This is why dense-QAM radios live and die by their synthesizers, and why an EVM regression that survives a swap of every amplifier in the chain usually ends at the reference oscillator.</p>
+
+<p><strong>ADC and DAC clocking.</strong> A sampling clock with jitter $t_j$ samples a fast-moving input at slightly wrong instants, and the voltage error grows with input slew rate. The resulting SNR ceiling is</p>
+
+<div class="math-display">$$\mathrm{SNR}_{\mathrm{jitter}} = -20\log_{10}\!\left(2\pi f_{\mathrm{in}}\, t_{j}\right)$$</div>
+
+<p>independent of the converter's resolution. Our 1 ps clock sampling a 100 MHz input caps SNR at 64 dB, about 10.3 effective bits, no matter how many bits the converter claims. At 1 GHz input the same clock caps SNR at 44 dB. This is why direct-RF sampling architectures specify clocks in the 50 to 100 fs class, and why the clock is often the most expensive component on a converter board.</p>
+
+<p><strong>Production test.</strong> Oscillator, PLL, and synthesizer manufacturing needs a phase noise check on every unit or every lot, at a handful of spot offsets, with a pass/fail limit. A dedicated phase noise test set does this with margin to spare and a price to match, and for high-volume, high-performance parts it is the right tool. For a production line testing sources in the &minus;100 to &minus;115 dBc/Hz class, a compact RTSA with a phase noise mode does the same spot-offset check in seconds, on hardware that also handles the spurious search, harmonic check, and power measurement stations. One box, four test steps.</p>
+
+<h2>7.8 Cross-Correlation Analyzers, and Honest Positioning</h2>
+
+<p>The best phase noise instruments in the world do not use the direct-spectrum method at all. Dedicated phase noise analyzers use a phase-detector architecture: mix the device under test against a clean reference in quadrature, so the carrier cancels and the output is the phase fluctuation itself, amplified and digitized at baseband. Then they go one step further and run two complete, independent reference-and-detector chains in parallel, cross-correlating the two outputs. The device's phase noise is common to both chains and survives the correlation. Each chain's own noise is independent and averages away at $5\log_{10} N$ for $N$ correlation averages: 10 dB of floor improvement for every factor of 100 in averaging time. With patience, cross-correlation instruments reach floors in the &minus;180 dBc/Hz class and measure devices quieter than either of their own references.</p>
+
+<p>An RTSA phase noise mode is not that, and it is worth being plain about the boundary. There is one receiver chain, so the instrument's floor is a hard limit, not an averaging-time limit. If the work is metrology-grade oscillator development, ultra-low-noise OCXO production, or any measurement chasing numbers below roughly &minus;130 dBc/Hz at 10 kHz on a 1 GHz carrier, a cross-correlation analyzer is the correct instrument and nothing in this chapter substitutes for it.</p>
+
+<p>The honest counterpoint is how much of the field's daily work falls short of that threshold. Multiplied references, PLL synthesizers, DDS outputs, radar exciters under repair, receiver LOs under integration, clock distribution amplifiers, production-line spot checks: the sources in most of those jobs sit between &minus;80 and &minus;115 dBc/Hz at the offsets that matter, comfortably above a &minus;125 dBc/Hz mode floor with the 10 dB margin rule intact. For that band of work, the phase noise mode turns a measurement that used to require a second instrument, or a spreadsheet full of marker readings and hand corrections, into a stored setup. The right mental model is coverage, not competition: the RTSA mode owns the broad middle of the phase noise range, and the cross-correlation box owns the quiet end.</p>
+
+<div class="case">
+<h2>7.9 Worked Example: A 1 GHz OCXO-Based Source on the Bench</h2>
+
+<h3>The setup</h3>
+
+<p>The device is a 1 GHz reference source built as a 10 MHz OCXO followed by a &times;100 multiplier chain, output +10 dBm. Before connecting anything, form an expectation: the OCXO's crystal is specified near &minus;150 dBc/Hz at 10 kHz offset, and multiplication by 100 adds $20\log_{10}(100) = 40$ dB, so the 1 GHz output should sit near &minus;110 dBc/Hz at 10 kHz if the multiplier chain is transparent. An expectation formed before the measurement is the cheapest error detector there is.</p>
+
+<p>Connect through 10 dB of external attenuation to keep the front end in its linear range, select the phase noise mode, and let it acquire the carrier. Set the offset span to the supported 100 Hz to 1 MHz range and start the decade sweep.</p>
+
+<h3>Reading the curve</h3>
+
+<p>The mode returns a spot-noise table: &minus;85 dBc/Hz at 100 Hz, &minus;105 at 1 kHz, &minus;110 at 10 kHz, &minus;120 at 100 kHz, &minus;132 dBc/Hz at 1 MHz. Three checks before believing it.</p>
+
+<p><strong>Margin check.</strong> Against the instrument's published typical mode floor at a 1 GHz carrier (&minus;94, &minus;117, &minus;125, &minus;129, &minus;139 dBc/Hz at the same offsets), the margins are 9, 12, 15, 9, and 7 dB. The 10 kHz and 1 kHz points are solid. The 100 Hz, 100 kHz, and 1 MHz points carry 0.5 to 0.8 dB of instrument contribution, worth noting in the log, not worth a different instrument.</p>
+
+<p><strong>Slope check.</strong> From 100 Hz to 10 kHz the curve falls roughly 25 dB over two decades, between the &minus;10 dB/decade flicker-phase and &minus;20 dB/decade white-FM slopes, plausible for a multiplied crystal. No unexplained plateaus, no bumps that would indicate a multiplier stage oscillating or a loop bandwidth misplaced.</p>
+
+<p><strong>Spur check.</strong> The spur list shows a pair at 120 Hz and 240 Hz offsets, 20 dB above the noise trace: power-supply ripple through the multiplier, excluded from the noise curve but flagged for the power-integrity follow-up.</p>
+
+<h3>The verdict</h3>
+
+<p>The 10 kHz spot matches the &minus;110 dBc/Hz expectation within a decibel, so the multiplier chain is behaving. Integrating the curve from 12 kHz to 1 MHz (the mode's upper limit here, noted as a deviation from the full 20 MHz convention) reports 0.29&deg; RMS integrated phase error and 0.8 ps RMS jitter. The source passes, the supply ripple gets a ticket, and the whole session, expectation to verdict, took under ten minutes.</p>
 </div>
-
-<h2>7.2 Pulse Descriptor Words and Deinterleaving</h2>
-
-<p>A pulse descriptor word (PDW) is a fixed-format record that captures everything an analyst needs to know about a single pulse. A typical PDW contains time of arrival (TOA, often to nanosecond resolution), pulse width, peak amplitude, center frequency at the pulse start, modulation type if known, and optional angle of arrival, polarization, and intra-pulse modulation parameters.</p>
-
-<p>For each pulse the RTSA detects, it emits a PDW. A typical EW receiver sees thousands to millions of PDWs per second from a dense electromagnetic environment.</p>
-
-<h3>Deinterleaving</h3>
-
-<p>In a real environment, multiple emitters share the spectrum. The PDW stream is interleaved: pulse from emitter A, pulse from emitter B, pulse from A, pulse from C, pulse from B, and so on. Deinterleaving is the process of sorting PDWs back into per-emitter streams.</p>
-
-<p>Classical deinterleaving uses time-of-arrival differences. If emitter A has PRI 1 millisecond and emitter B has PRI 1.7 milliseconds, the two streams have characteristic differential time signatures that an algorithm can separate. Modern systems combine TOA with frequency, amplitude, and angle of arrival for robust separation even in dense environments.</p>
-
-<p>Once deinterleaved, each emitter's PDW stream becomes a fingerprint. PRI, PW, and frequency-agility patterns characterize the radar type. A library of known radars matches incoming fingerprints to identifications.</p>
-
-<div class="callout warning">
-<h3>Aaronia in Practice: PDW Extraction</h3>
-<p>RTSA Suite PRO includes a PDW extraction block that consumes the wideband I/Q stream and emits a PDW table in real time. Each row contains TOA, PW, frequency, amplitude, and modulation indicator. The block is configurable for sensitivity and pulse model. Output streams to disk in CSV or to downstream blocks for deinterleaving and classification.</p>
-<p>For long-term EW collection, RTSA Suite PRO can record both the PDW stream and the underlying I/Q. The PDW is searchable in seconds; the I/Q is available for any pulse the analyst wants to examine in detail. This dual recording is the modern standard in tactical EW systems.</p>
-</div>
-
-<h2>7.3 Chirp and Frequency-Agile Radars</h2>
-
-<p>Modern radars do not stand still in frequency. They chirp, hop, and stagger to evade detection and resist jamming.</p>
-
-<p><strong>Linear frequency modulation (LFM)</strong> is the most common chirp. Frequency rises linearly across the pulse:</p>
-
-<div class="math-display">$$f(t) = f_0 + \frac{B}{T} \cdot t, \quad 0 \leq t \leq T$$</div>
-
-<p>where $B$ is the chirp bandwidth and $T$ is the pulse duration. On a waterfall display, an LFM pulse appears as a diagonal stripe whose slope encodes the chirp rate. LFM enables pulse compression: the radar's receiver applies a matched filter that compresses the long, low-power pulse into a short, high-amplitude peak with the same energy. Range resolution becomes $c / (2B)$. A 100 MHz chirp gives 1.5 meters of range resolution.</p>
-
-<p><strong>Nonlinear frequency modulation (NLFM)</strong> shapes the frequency curve to reduce sidelobes after compression. NLFM is harder to characterize on a waterfall because the diagonal becomes a curve. RTSAs with persistence displays expose the curvature.</p>
-
-<p><strong>Frequency hopping</strong> jumps to a new frequency for each pulse, drawn from a pseudorandom sequence. Hopping is anti-jam: a jammer that spot-jams one frequency misses every other pulse. RTSAs see hopping as a sequence of pulses scattered across the band.</p>
-
-<p><strong>Pulse stagger</strong> varies the PRI from pulse to pulse, deliberately, to confuse range-ambiguity exploitation by countermeasures.</p>
-
-<figure>
-  <object type="image/svg+xml" data="../figures/fig-07-01-radar-ew-waterfall.svg" style="width:100%;">Figure 7-1</object>
-  <figcaption>Figure 7-1. A wideband waterfall capture from a SPECTRAN V6 PLUS shows multiple radar and EW signatures simultaneously. CW carriers are vertical stripes. LFM chirps are diagonals. FHSS hoppers scatter across the band. Spot jammers are tall narrow stripes. Barrage jammers fill wide regions with elevated noise. High-PRF radars produce dense vertical pulse trains.</figcaption>
-</figure>
-
-<h2>7.4 Jammer Characterization</h2>
-
-<p>A jammer is a transmitter designed to disrupt a victim receiver's ability to extract information. There are four main families.</p>
-
-<p><strong>Barrage jamming</strong> is a wide-bandwidth noise transmission that covers the victim band entirely. Easy to identify: very high noise floor across the band of interest. Defeats unsophisticated receivers but inefficient because the jammer's power is spread thin.</p>
-
-<p><strong>Spot jamming</strong> is a narrowband jammer focused on a single victim frequency. Efficient (concentrates power) but vulnerable to frequency hopping by the victim. RTSAs identify spot jamming as a tall, narrow tone in a band that should be quiet.</p>
-
-<p><strong>Swept jamming</strong> is a narrowband signal swept across the victim band. Compromise between barrage and spot. On a waterfall, swept jammers paint diagonal lines whose slope encodes the sweep rate.</p>
-
-<p><strong>DRFM jamming (digital radio frequency memory)</strong> is the sophisticated end. The DRFM receiver captures incoming victim signals, modifies them in real time, and retransmits them as deceptive signals. Against a radar, DRFM creates phantom targets that look real to the radar's processor.</p>
-
-<p>DRFM is the hardest to characterize because its signal is, by design, indistinguishable from a real return at first glance. RTSAs catch DRFM by comparing transmitted radar pulses against received returns (the DRFM has a characteristic processing latency that real targets do not), spectral analysis of the DRFM's local memory artifacts, and tracking phantom targets across multiple beam positions to confirm they are not physical objects. This is bleeding-edge work, and RTSAs with high POI and long streaming capture are essential to the analysis.</p>
-
-<h2>7.5 POI and Nanosecond-Scale Capture</h2>
-
-<p>Why does an RTSA need a 10 nanosecond probability of intercept? Because that is the timescale of modern threats.</p>
-
-<p>A high-PRF radar might emit 100 nanosecond pulses at 100 kHz PRF. Each pulse is observable for only a tenth of a millionth of a second. A POI worse than the pulse width misses the pulse entirely. A POI of 10 nanoseconds catches even the leading edge of every pulse.</p>
-
-<p>Counter-UAS work is similar. A drone uplink burst on a 2.4 GHz spread-spectrum link might be 30 microseconds long, but the burst's leading edge contains the synchronization preamble that identifies the protocol. Capturing only the body of the burst loses the protocol fingerprint. Catching the leading edge requires fast POI.</p>
-
-<p>EW range testing puts even tighter constraints. A jammer-versus-victim simulation might involve overlapping pulses from multiple emitters, each microseconds long, separated by nanoseconds. POI worse than the inter-pulse gap merges adjacent pulses into a single corrupted PDW.</p>
-
-<p>Aaronia's published 10 nanosecond POI in RTSA Suite PRO is achieved through hardware peak detection in the SPECTRAN V6 PLUS front end, complemented by deep parallel FFT processing. The hardware catches transient energy between FFT windows; the FFT confirms identity and parameters. Combined, the system catches every pulse longer than 10 nanoseconds with high confidence.</p>
-
-<p>This is the chapter that justifies the 10 ns POI specification in earlier chapters. Without it, modern radar and EW work is statistical at best, blind at worst. With it, the analyst has the same situational awareness that the radar designer had when they built the system.</p>
-
-<h2>7.6 Counter-UAS and Drone RF Signatures</h2>
-
-<p>Drones are the fastest-growing surveillance and threat category in 2026. Every police department, airport security team, prison administration, and military installation needs the ability to detect and locate unauthorized drones in real time.</p>
-
-<h3>What Drones Look Like in RF</h3>
-
-<p>Most consumer and prosumer drones use one or more of these protocols: <strong>2.4 GHz ISM</strong> for control link (proprietary FHSS in DJI's Lightbridge, OcuSync, OcuSync 2.0/3.0; Wi-Fi-based control in cheaper drones), <strong>5.8 GHz ISM</strong> for video downlink (FHSS or wideband digital video), <strong>915 MHz / 868 MHz</strong> for some long-range telemetry (LoRa-like CSS modulation), <strong>GPS L1/L2</strong> for position (received only), and <strong>Cellular LTE/5G</strong> for command-and-control over carrier networks (in some industrial drones).</p>
-
-<p>Each protocol has a characteristic spectral signature. DJI OcuSync 3 hops across 30 MHz of 2.4 GHz with 10 ms hop dwells. WiFi-based hobby drones produce continuous Wi-Fi-style OFDMA. LoRa drones produce diagonal chirps in the waterfall.</p>
-
-<h3>Detection Workflow</h3>
-
-<p>A counter-UAS system using RTSAs and IsoLOG 3D DF antennas typically continuously monitors 2.4 GHz, 5.8 GHz, and 915 MHz ISM bands using one or more SPECTRAN V6 PLUS units, triggers on energy in suspicious patterns (hopping in 2.4 GHz, FHSS in 5.8 GHz, chirp signatures in 915 MHz), classifies the captured signal against a library of known drone protocols, locates the drone using IsoLOG 3D DF bearings (with elevation distinguishing legitimate radio activity from airborne emitters), tracks the drone over time building a 3D path with timestamps, and alerts operators or, in higher-tier systems, triggers a kinetic or RF countermeasure.</p>
-
-<div class="callout warning">
-<h3>Aaronia in Practice: Drone Detection Systems</h3>
-<p>Aaronia ships drone detection systems built around SPECTRAN V6 PLUS analyzers and IsoLOG 3D DF antennas. The systems are deployed at airports, prisons, and high-value installations worldwide. A typical setup uses one or two IsoLOG 3D DF arrays for omnidirectional coverage, multiple SPECTRAN units for parallel band monitoring, and RTSA Suite PRO for classification and tracking.</p>
-<p>The IsoLOG 3D DF antenna's 400 MHz to 40 GHz frequency range covers every drone control and downlink band in production. Its 8 microsecond per-sector tracking means a hopping drone is followed across hops without losing the track. Its 1 to 3 degree angular accuracy localizes the drone to a few meters at typical engagement ranges.</p>
-<p>This is the chapter where the IsoLOG 3D DF and SPECTRAN V6 PLUS pairing earns its keep. Static spectrum monitoring is solved. The hard problem is dynamic, agile, hostile spectrum, and that is what this product family targets.</p>
-</div>
-
-<h2>7.7 IsoLOG 3D DF + SPECTRAN for EW</h2>
-
-<p>The complete EW deployment pulls together every concept in this chapter.</p>
-
-<p>A SPECTRAN V6 PLUS 2000XA-6 with 490 MHz of RTBW captures the wideband electromagnetic environment continuously. Hardware peak detection ensures 10 ns POI. RTSA Suite PRO runs PDW extraction and classification in real time, producing a stream of timestamped, parameterized pulses.</p>
-
-<p>An IsoLOG 3D DF 80-8 antenna covers 680 MHz to 8 GHz with 16 sectors and 32 antennas. Its array geometry produces 1 to 3 degree bearing on every detected pulse, with elevation distinguishing airborne from ground emitters. Sector-to-sector switching at 8 microseconds means even rapidly hopping emitters track without loss.</p>
-
-<p>Combining the two: every pulse the system detects gets a PDW with bearing and elevation. The result is a 3D map of the electromagnetic battlefield, updated continuously, with the resolution to distinguish individual emitters even when they overlap in time and frequency.</p>
-
-<p>This data feeds higher-level EW workflows: emitter classification (matching PDW patterns to known radar types), threat prioritization (which emitters represent the highest risk to friendly platforms), countermeasure selection (which jamming or maneuver tactic best defeats each threat), and intelligence collection (logging what was emitted, by whom, and when).</p>
-
-<p>For a research scientist, the same hardware supports radar-design verification, EW vulnerability testing, and protocol reverse-engineering. The data formats are open (SigMF for I/Q, CSV for PDWs, KML for tracks), so downstream tools can consume the output without proprietary lock-in.</p>
-
-<p>The pricing tier is appropriate. A full deployment runs into the hundreds of thousands of dollars. The threat it addresses runs into the millions of dollars per incident, or worse. For airports, prisons, or critical infrastructure, the math works.</p>
 
 <div class="summary">
 <h3>Chapter Summary</h3>
 <ul>
-  <li>A pulse is described by width, rise/fall time, PRF, PRI, and duty cycle. The pulse-spectrum relationship dictates that short pulses occupy wide bandwidth.</li>
-  <li>Pulse descriptor words capture pulse parameters in a fixed format. Deinterleaving sorts mixed PDW streams back into per-emitter sequences.</li>
-  <li>Modern radars use chirps (LFM, NLFM), frequency hopping, and pulse stagger to evade jammers and improve range resolution. RTSAs with sufficient RTBW and POI capture all of these.</li>
-  <li>Jammer families include barrage, spot, sweep, and DRFM. DRFM jammers are the hardest to characterize and require careful analysis of timing and replay artifacts.</li>
-  <li>POI of 10 nanoseconds (Aaronia RTSA Suite PRO specification) is the threshold for capturing high-PRF radar pulses, EW transient bursts, and drone synchronization preambles.</li>
-  <li>Counter-UAS work uses RTSAs and IsoLOG 3D DF antennas to detect, classify, locate, and track drones across multiple control and video downlink bands.</li>
-  <li>The combination of SPECTRAN V6 PLUS and IsoLOG 3D DF produces a 3D electromagnetic battlefield map with bearing, elevation, frequency, time, and modulation type for every detected emitter.</li>
-  <li>Open data formats (SigMF, CSV PDWs, KML) enable downstream analysis without proprietary lock-in.</li>
+  <li>Phase noise is random phase fluctuation that smears an oscillator's spectral line into sloped sidebands (the skirt), quantified as SSB phase noise $\mathcal{L}(f)$ in dBc/Hz at a stated offset from a stated carrier.</li>
+  <li>The Leeson slope regions (&minus;40, &minus;30, &minus;20, &minus;10, 0 dB/decade) map to physical noise mechanisms, making the shape of the curve a diagnosis, not just a grade.</li>
+  <li>The direct-spectrum method reads carrier-to-sideband ratio, normalizes RBW to 1 Hz via noise-equivalent bandwidth, and corrects detector statistics (about 2.5 dB for log-averaged sample detection).</li>
+  <li>The analyzer's own LO sets the measurement floor: 10 dB of margin means 0.4 dB of error, equal levels mean a 3 dB over-read, and no analyzer can confirm a source quieter than itself.</li>
+  <li>Dedicated phase noise modes automate decade sweeps, apply corrections, exclude spurs, and reconfigure the receiver for spectral purity; published figures for a current compact RTSA family improve from about &minus;110 to &minus;125 dBc/Hz (typical) at 10 kHz offset on a 1 GHz carrier, with no extra license.</li>
+  <li>RMS jitter is the band-limited integral of $\mathcal{L}(f)$: a flat &minus;120 dBc/Hz floor on a 1 GHz carrier over 12 kHz to 20 MHz is about 1 ps RMS.</li>
+  <li>Phase noise sets radar subclutter visibility, dense-QAM EVM budgets, and ADC SNR through $\mathrm{SNR} = -20\log_{10}(2\pi f_{\mathrm{in}} t_j)$.</li>
+  <li>Cross-correlation analyzers average their own noise down at $5\log_{10} N$ and reach the &minus;180 dBc/Hz class; an RTSA phase noise mode covers the &minus;80 to &minus;115 dBc/Hz working range where most bench and production sources live.</li>
 </ul>
 </div>
 
 <div class="quiz-cta">
 <div class="quiz-cta-num">End-of-Chapter Quiz</div>
 <h3>Check your understanding</h3>
-<p>The Chapter 7 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<p>The Chapter 7 questions are an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
 <a class="quiz-cta-btn" href="quiz-chapter-07.html">Take the interactive quiz &rarr;</a>
 </div>
 <div class="next">
 <h3>What's Next</h3>
-<p>Chapter 8 unpacks direction finding, geolocation, and distributed sensing in detail. The math of bearing estimation, IsoLOG 3D DF array architecture (16 sectors, 32 antennas, sub-microsecond bearing), real-time 3D bearing with elevation, cross-bearings from mobile trucks, distributed RTSA sensor grids, and integration patterns. By the end of Chapter 8, you'll know exactly how an RTSA-plus-DF-array converts RF emissions into geographic positions.</p>
+<p>Chapter 8 stays on the bench and turns the analyzer from a listener into an interrogator. Harmonic and spurious measurements, what a tracking generator is and how it turns a spectrum analyzer into a scalar network analyzer, filter and amplifier frequency-response sweeps, return-loss measurements with a bridge, and the normalization step that makes all of it accurate. By the end of Chapter 8, you'll know how one compact instrument covers the stimulus-response measurements that used to need a rack.</p>
 </div>
 
 
@@ -226,7 +262,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <nav class="bnc-nav">
     <a class="prev" href="chapter-06.html">&larr; Ch 6. Modulation Analysis</a>
     <a class="mid"  href="index.html">Contents</a>
-    <a class="next" href="chapter-08.html">Ch 8. Direction Finding &rarr;</a>
+    <a class="next" href="chapter-08.html">Ch 8. Harmonics and Tracking Generators &rarr;</a>
   </nav>
   <div class="bnc-meta">
     <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>

@@ -18,10 +18,11 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 9 - Calibration, Accuracy, and Measurement Uncertainty</title>
+<title>Chapter 9 - The Open SDR Ecosystem: SDR++, GNU Radio, and the Programmable RTSA</title>
 <script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$']] } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <link rel="stylesheet" href="light-touch.css">
+<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 <style>
   /* RTSA book-specific blocks, mapped to the BNC light-touch palette */
   .chapter-number{font-family:Helvetica,Arial,sans-serif;color:var(--bnc-warm-amber);
@@ -62,7 +63,6 @@
   <script defer src="book-enhance.js"></script>
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
-<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -71,148 +71,171 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <div class="chapter-number">Chapter 9</div>
-<h1>Calibration, Accuracy, and Measurement Uncertainty</h1>
+<h1>The Open SDR Ecosystem: SDR++, GNU Radio, and the Programmable RTSA</h1>
 
-<blockquote>An RF measurement without an uncertainty is an opinion. An opinion with two decimal places is no better than an opinion with one. The number that matters is how much you can defend.</blockquote>
+<blockquote>The most expensive part of a radio used to be the hardware. Now it is the software you are not allowed to change.</blockquote>
 
-<h2>9.1 Amplitude Accuracy: Absolute and Relative</h2>
-
-<p>When an RTSA reports a signal at -47.3 dBm, what does that number actually mean?</p>
-
-<p><strong>Absolute amplitude accuracy</strong> is how close that -47.3 dBm reading is to the true power at the antenna connector, measured against a calibrated reference. Typical RTSAs achieve absolute accuracy of plus or minus 1 to 2 dB across their full frequency range, narrower (plus or minus 0.5 dB) within a defined "calibrated range" near room temperature.</p>
-
-<p><strong>Relative amplitude accuracy</strong> is how close the difference between two readings is to the true difference. If you measure two tones and report a 6.0 dB difference, the relative accuracy says how close that 6.0 dB matches reality. Relative accuracy is often much better than absolute, often plus or minus 0.1 to 0.3 dB, because most amplitude errors are common to both readings and cancel.</p>
-
-<p>Knowing which kind of accuracy applies to your measurement matters. Compliance work demands absolute accuracy because the regulator cares about absolute emission levels. Comparative work only needs relative accuracy.</p>
-
-<h3>Sources of Amplitude Error</h3>
-
-<p>Half a dozen contributors stack up to produce the published accuracy spec: reference power source uncertainty (calibrator tolerance, 0.1 to 0.5 dB), frequency response variation (gain through the analyzer's RF chain varies with frequency), temperature drift (front-end components shift gain as they warm or cool), attenuator step accuracy (when AGC switches in or out attenuators), detector linearity (FFT magnitude detection chain), and window function correction (ENBW and equivalent power normalization).</p>
-
-<p>A practical SPECTRAN V6 PLUS deployment combines factory calibration with optional field calibration against a user-supplied reference. The factory calibration covers the full frequency range; the field calibration tightens accuracy at a specific frequency or temperature to within 0.1 dB.</p>
-
-<h2>9.2 Frequency Accuracy and Reference Oscillators</h2>
-
-<p>When the RTSA tunes to 3.5000 GHz, how close is the actual measured center to that number?</p>
-
-<p>Frequency accuracy is set almost entirely by the reference oscillator. A free-running crystal oscillator drifts on the order of 10 to 100 parts per million (ppm) over temperature and time. At 3.5 GHz, 10 ppm is 35 kHz of error. A temperature-compensated crystal (TCXO) tightens this to 1 to 5 ppm. An oven-controlled crystal (OCXO) reaches 0.01 to 0.1 ppm, well under 1 kHz at 3.5 GHz.</p>
-
-<p>For demanding work, an external 10 MHz reference is locked to the analyzer. A rubidium standard gives 0.001 ppm (a few hertz at 3.5 GHz). A GPS-disciplined oscillator (GPSDO) gives similar accuracy, with the long-term stability of GPS satellites.</p>
-
-<div class="callout warning">
-<h3>Aaronia in Practice: External Reference Input</h3>
-<p>The SPECTRAN V6 PLUS accepts a 10 MHz external reference input, so users requiring high-precision frequency measurements can connect a rubidium standard or GPSDO. With a GPSDO locked, frequency accuracy improves from the internal TCXO's few ppm to fractional ppb (parts per billion). The same 10 MHz reference output can be daisy-chained to other equipment in the test bench, ensuring everything sees the same time base. For lab calibration, the reference oscillator is the foundation. Every other measurement traces back to it.</p>
+<div class="summary">
+<h3>What This Chapter Covers</h3>
+<ul>
+  <li>Why the wall between laboratory instruments and open-source SDR software just fell, and what an open IQ-streaming API changes.</li>
+  <li>SDR++ as the standard open receiver front end: architecture, multi-VFO operation, the scanner and recorder, and the latest-generation RTSA as a native source.</li>
+  <li>GNU Radio as the open DSP workbench: flowgraphs, GRC, out-of-tree modules, and drop-in reuse of decoders like gr-adsb and gr-ieee802-11.</li>
+  <li>The strategic shift from measurement appliance to development platform, and a practical four-step on-ramp you can run this week.</li>
+</ul>
 </div>
 
-<h2>9.3 Phase Noise and Its Consequences</h2>
+<h2>9.1 Two Worlds, One Waterfall</h2>
 
-<p>A real oscillator does not produce a single perfect tone. Its output spectrum has a Gaussian-shaped phase noise skirt around the nominal frequency. The skirt level is published as dBc/Hz at specific offset frequencies from the carrier. Why does phase noise matter? Three concrete consequences.</p>
+<p>For twenty years, radio work split into two cultures that barely spoke.</p>
 
-<p><strong>Reciprocal mixing.</strong> Phase noise on the analyzer's local oscillator mixes with strong signals in the band, producing artifacts that look like real signals. A strong tone with the LO's phase noise smeared 100 Hz away appears as a smeared, lower-amplitude version of itself near the original. This limits the dynamic range for finding weak signals close to strong ones.</p>
+<p>On one side stood the laboratory instrument: calibrated, traceable, superb dynamic range, frequency coverage into the tens of gigahertz, and a price tag with five or six digits. Its software was closed. You measured what the vendor's GUI let you measure, exported what the vendor's file menu let you export, and if you wanted the instrument to do something new, you filed a feature request and waited.</p>
 
-<p><strong>EVM degradation.</strong> In modulation analysis (Chapter 6), LO phase noise rotates the constellation by a small random amount per symbol. The constellation clusters smear in arcs around the origin, and EVM degrades. For 5G NR 256-QAM at 28 GHz, the LO phase noise budget is around -110 dBc/Hz at 1 MHz offset.</p>
+<p>On the other side stood the hobby software-defined radio. An RTL-SDR dongle costs about 30 dollars, tunes from roughly 24 MHz to 1.7 GHz, digitizes 8 bits at a couple of megasamples per second, and has no amplitude calibration worth the name. But its software is a different universe: open source, endlessly hackable, and improved weekly by thousands of contributors. Want a new demodulator? Someone already wrote it. Want to decode aircraft transponders, weather satellites, digital voice, smart meters? There is a free tool for each, and you can read every line of its source.</p>
 
-<p><strong>Spectrum analyzer dynamic range.</strong> Trying to measure a weak signal 100 kHz away from a strong carrier? The carrier's phase noise spreads to the weak signal's frequency. The weak signal's apparent amplitude is lower-bounded by the carrier's phase noise level at that offset. Cleaner LO equals better dynamic range close to carriers.</p>
+<p>Each culture envied the other. The instrument engineer wanted the open tooling. The SDR hacker wanted the front end: real sensitivity, real calibration, real frequency reach. For two decades the wall between them held, because instruments kept their digitized signal locked inside proprietary software.</p>
 
-<div class="sidebar-deeper">
-<h3>Going Deeper: Phase Noise Budgets</h3>
-<p>For a 5G NR 256-QAM measurement at 28 GHz mmWave, the LO phase noise budget is partitioned as: integrated phase noise contributing 1 percent to EVM, thermal noise contributing 1 percent, residual hardware impairments contributing 1 percent. The total EVM target is the root-sum-square of all three, around 1.7 percent or -35 dB. Each subsystem must hit its budget independently for the system to meet spec. RTSA Suite PRO breaks out per-subsystem contributions during EVM measurements, so the analyst sees which budget is being violated when EVM drifts.</p>
-</div>
+<p>That wall just fell. The latest generation of compact USB-format real-time spectrum analyzers exports its calibrated I/Q stream through an open, documented API. Thin adapter layers, written mostly by the open-source community itself, now make the instrument appear to SDR++ and GNU Radio as just another radio. The result is a strange and useful hybrid: hobby-world software with laboratory-grade eyes. This chapter is a field guide to that hybrid, because knowing the open SDR ecosystem is now part of knowing your spectrum analyzer.</p>
 
-<h2>9.4 Dynamic Range: SFDR, IIP3, and Noise Floor</h2>
+<h2>9.2 What a Software-Defined Radio Really Is</h2>
 
-<p>Dynamic range is the difference between the strongest and weakest signals that an analyzer can simultaneously distinguish. It has three sub-specifications.</p>
+<p>Strip away the folklore and an SDR is one idea: capture the signal as I/Q samples as early as possible, then do everything else in software.</p>
 
-<p><strong>Noise floor.</strong> The bottom of dynamic range. Below this, signals are buried in thermal and quantization noise.</p>
+<p>Chapter 4 built the foundation. A real RF signal can be written as a carrier modulated by two slowly varying baseband components, in phase and quadrature:</p>
 
-<div class="math-display">$$N_{\text{floor}} = -174 + 10 \log_{10}(\text{RBW}) + \text{NF}_{\text{system}}\,\text{dBm}$$</div>
+<div class="math-display">$$x(t) = I(t)\cos(2\pi f_c t) - Q(t)\sin(2\pi f_c t)$$</div>
 
-<p>For a 1 dB system NF and 100 kHz RBW, the noise floor is about -123 dBm. Drop the RBW to 1 kHz and the noise floor drops to -143 dBm. Long FFTs (small RBW) give better sensitivity, at the cost of slower measurements.</p>
+<p>The pair $I(t)$ and $Q(t)$, packaged as the complex baseband signal $s(t) = I(t) + jQ(t)$, preserves everything about the signal within the capture bandwidth: amplitude, phase, frequency, modulation. Whoever holds the I/Q stream holds the signal.</p>
 
-<p><strong>Spurious-free dynamic range (SFDR).</strong> The difference between the strongest signal and the strongest spur generated by the analyzer itself. Premium RTSAs achieve 80 to 100 dB SFDR. SFDR is what matters when you have one strong signal and you are looking for weak signals nearby.</p>
+<p>Complex sampling also explains the bandwidth arithmetic that recurs through this chapter. A real-valued digitizer needs a sample rate of at least twice its bandwidth. A complex I/Q stream needs only a sample rate equal to its bandwidth, because each complex sample carries two numbers. Stream 100 MS/s of complex samples and you are carrying a 100 MHz slice of spectrum, gap-free. That equivalence, sample rate equals span, is the exchange rate between the instrument world's "real-time bandwidth" and the SDR world's "sample rate." They are the same quantity wearing different badges.</p>
 
-<p><strong>Third-order intercept point (IIP3).</strong> A measure of resistance to intermodulation distortion when two strong signals are present. IIP3 is the (extrapolated) input power at which third-order intermod products would equal the input signals in amplitude:</p>
+<p>A traditional receiver commits to one use of that information in hardware. An FM radio demodulates FM and nothing else. An SDR refuses to commit. The hardware's only job is to translate a slice of spectrum to baseband and digitize it faithfully. What the radio <em>is</em> (FM receiver, radar detector, Wi-Fi sniffer, spectrum monitor) is decided afterward, in code, and can be changed in seconds.</p>
 
-<div class="math-display">$$P_{\text{IM3}} = 3 \cdot P_{\text{input}} - 2 \cdot P_{\text{IIP3}}$$</div>
+<p>Look back at the signal chain from Chapter 3 and you will notice something. A modern RTSA is already built exactly like this: a superheterodyne front end, a digitized IF, an FPGA doing digital downconversion, and a continuous stream of I/Q samples feeding the FFT engine. The instrument has always been a software-defined radio internally. The only question was whether you, the owner, were allowed to touch the stream. With an open IQ-streaming API, the answer becomes yes: the same calibrated samples that feed the instrument's own real-time display can feed any software you choose.</p>
 
-<p>A typical RTSA front end has IIP3 of +10 to +20 dBm. A 6 dB increase in input causes an 18 dB increase in IM3 products, halving the dynamic range.</p>
+<p>That single decision, publishing the API instead of hiding it, is what connects a measurement instrument to the entire ecosystem described in the rest of this chapter.</p>
 
-<figure>
-  <object type="image/svg+xml" data="../figures/fig-09-01-dynamic-range.svg" style="width:100%;">Figure 9-1</object>
-  <figcaption>Figure 9-1. Dynamic range is bounded by three independent floors: thermal noise (set by NF and RBW), spurious-free dynamic range (analyzer-generated artifacts), and IIP3-driven intermod (a function of input drive). The effective measurement window is whichever is highest at any moment.</figcaption>
-</figure>
+<h2>9.3 SDR++: The Open Front Door</h2>
 
-<h2>9.5 Measurement Uncertainty Budgets</h2>
+<p>SDR++ is the de facto standard open-source receiver front end. Written by Alexandre Rouma and licensed GPL-3.0, it runs on Windows, Linux, macOS, BSD, and Android, and it gives you the classic SDR experience: a live spectrum with a waterfall below it, click anywhere to tune, pick a demodulator, listen.</p>
 
-<p>Every RF measurement has a number, an uncertainty, and a confidence interval. A measurement of "-47.3 dBm" means nothing without "+/-0.5 dB at 95 percent confidence."</p>
+<p>Its architecture is worth understanding because it explains why new hardware appears in it so quickly. SDR++ is modular, and the modules fall into four roles:</p>
 
-<p>For an absolute power measurement on a SPECTRAN V6 PLUS at 3 GHz:</p>
+<ul>
+  <li><strong>Sources</strong> produce I/Q samples: RTL-SDR, Airspy, HackRF, PlutoSDR, SDRplay, USRP, LimeSDR, BladeRF, plus file playback and network streams.</li>
+  <li><strong>DSP</strong> sits in the middle: SIMD-accelerated filtering, tuning, and demodulation, with multiple simultaneous VFOs so you can watch one signal while listening to another.</li>
+  <li><strong>Decoders</strong> turn demodulated signals into something meaningful: analog audio modes, a weather-satellite demodulator, digital voice.</li>
+  <li><strong>Sinks</strong> deliver the results: audio out, network streams, and a recorder that captures both audio and raw baseband I/Q.</li>
+</ul>
 
-<table>
-<thead><tr><th>Source</th><th>Value</th><th>Distribution</th><th>Standard uncertainty</th></tr></thead>
+<p>Around this core sit the working tools: a frequency manager for bookmarking known signals, a scanner that sweeps a list of channels and stops on activity, a scheduler, rig control, and an I/Q exporter for feeding external decoders. Supporting a new radio means writing one new source module. Nothing else changes.</p>
+
+<p>That is exactly what happened with the current generation of RTSAs. A native source module for this instrument class is now listed in the SDR++ mainline source table, marked Beta; it is not included in the prebuilt release binaries, so today you compile it from source with a build option enabled. The more broadly compatible route is a SoapySDR driver (both a manufacturer-published version and an independent community version exist), which presents the analyzer to any SoapySDR-aware application: SDR++, GQRX, CubicSDR, GNU Radio, even the <code>rtl_433</code> utility that decodes wireless sensors. The driver finds attached instruments automatically by serial number and streams complex samples in 8-, 16-, or 32-bit integer formats, with 16-bit recommended at moderate rates and an automatic fallback to 8-bit above roughly 60 MS/s to keep the USB link ahead of the data.</p>
+
+<p>What does the pairing feel like in practice? Like SDR++ with the ceiling removed. An RTL-SDR runs out of spectrum at 1.7 GHz and a HackRF at 6 GHz; the analyzer's tuning bar runs from 9 kHz to 40 GHz, which puts 5G FR2, radar bands, satellite links, and drone control channels inside click-to-tune reach. And the waterfall's amplitude axis means something. Hobby SDR displays are relative: the numbers shift with gain settings and are calibrated to nothing. The instrument's display is absolute, in dBm, backed by factory calibration, with published figures for this instrument class putting displayed average noise level near &minus;160 dBm/Hz.</p>
+
+<p>The comparison is worth laying out plainly, because the three tiers of hardware serve three different jobs and the software running on top of all of them is the same.</p>
+
+<table class="bnc">
+<thead>
+<tr><th></th><th>RTL-SDR dongle</th><th>HackRF-class SDR</th><th>Latest-generation USB RTSA</th></tr>
+</thead>
 <tbody>
-<tr><td>Reference calibrator</td><td>±0.2 dB</td><td>Normal (k=2)</td><td>0.10 dB</td></tr>
-<tr><td>Frequency response</td><td>±0.5 dB</td><td>Rectangular</td><td>0.29 dB</td></tr>
-<tr><td>Temperature drift</td><td>±0.3 dB</td><td>Rectangular</td><td>0.17 dB</td></tr>
-<tr><td>Cable / connector</td><td>±0.1 dB</td><td>Rectangular</td><td>0.06 dB</td></tr>
-<tr><td>Window correction</td><td>±0.05 dB</td><td>Rectangular</td><td>0.03 dB</td></tr>
+<tr><td>Frequency coverage</td><td>~24 MHz to 1.7 GHz</td><td>~1 MHz to 6 GHz</td><td>9 kHz to 40 GHz</td></tr>
+<tr><td>Instantaneous bandwidth</td><td>~2.4 MHz</td><td>up to 20 MHz</td><td>100 MHz gap-free</td></tr>
+<tr><td>Sample resolution</td><td>8-bit</td><td>8-bit</td><td>up to 32-bit stream formats</td></tr>
+<tr><td>Amplitude axis</td><td>relative, uncalibrated</td><td>relative, uncalibrated</td><td>absolute dBm, factory calibrated</td></tr>
+<tr><td>Gain control</td><td>raw gain slider</td><td>raw gain stages</td><td>reference level, preamp, IF AGC</td></tr>
+<tr><td>Best role</td><td>learning, casual monitoring</td><td>experimentation, transmit projects</td><td>measurement, monitoring, evidence</td></tr>
 </tbody>
 </table>
 
-<p>Combined standard uncertainty (sum in quadrature):</p>
+<p>None of these rows makes the cheaper hardware pointless. The dongle remains the best 30 dollars an RF student can spend, and this book assumes some readers found spectrum analysis through one. The point of the table is different: the skills are portable straight up the column, and the top row of capability now speaks the same open protocols as the bottom.</p>
 
-<div class="math-display">$$u_c = \sqrt{0.10^2 + 0.29^2 + 0.17^2 + 0.06^2 + 0.03^2} = 0.36\,\text{dB}$$</div>
+<p>The gain model is the tell that you are driving an instrument rather than a dongle, and it makes a good teaching point. There is no bare "gain" slider. Instead you set a <strong>reference level</strong> (from &minus;100 dBm up to +7 dBm), switch a preamp in or out, and optionally enable IF AGC, exactly as you would on the instrument's front panel. Overdrive the front end and the driver does not silently clip: it raises an IF overflow error and expects you to increase the reference level. Every spectrum analyzer user learns headroom management eventually. Here the API enforces it, which is the fastest way to learn it.</p>
 
-<p>Expanded uncertainty (k=2, 95 percent confidence):</p>
+<p>Three uses stand out. First, wide-area signal hunting: the scanner and frequency manager, working over five decades of spectrum that consumer SDR hardware cannot reach. Second, interference identification by ear: clicking on an unknown carrier and hearing rotor hum, CW idents, or FM chatter often identifies a source faster than staring at its spectral shape. Third, evidence capture: the baseband recorder writes calibrated I/Q to disk, so the file you archive supports real amplitude claims later. And there is a quieter fourth: education. A student can run the identical free software at home on a 30-dollar dongle and in the lab on a 40 GHz analyzer. The skills transfer completely.</p>
 
-<div class="math-display">$$U = 2 \cdot u_c = 0.72\,\text{dB}$$</div>
+<div class="callout">
+<h4>ICX in Practice</h4>
+<p>Compact RTSAs such as the BNC ICX family reach 40 GHz with 100 MHz of gap-free real-time bandwidth and stream calibrated I/Q through an open API. In the lab, that means the same unit serves double duty: a standalone real-time analyzer in its native software, and a full-band calibrated source for SDR++ or GNU Radio when the work turns experimental. Validate the specific streaming path (native module versus SoapySDR) on your own host before committing a workflow to it; the native SDR++ module is still listed as Beta.</p>
+</div>
 
-<p>So the measurement is reported as -47.3 dBm +/- 0.72 dB at 95 percent confidence. This is the level of rigor that compliance bodies, defense laboratories, and serious R&D groups demand.</p>
+<h2>9.4 GNU Radio: The Open Workbench</h2>
 
-<h2>9.6 Calibration Workflows with SPECTRAN V6 PLUS</h2>
+<p>If SDR++ is a receiver, GNU Radio is a machine shop. It is a free, open-source development toolkit that provides signal processing blocks for building software radios, and it is the closest thing the field has to a lingua franca. Universities teach with it, defense labs prototype with it, government agencies monitor with it, and hobbyists do everything imaginable with it. It has its own annual conference, GRCon, and a bench depth of contributed code that no proprietary tool matches.</p>
 
-<p>A SPECTRAN V6 PLUS arrives from the factory with a multipoint calibration covering the full frequency range and supported reference standards. Periodic recalibration (annually for general work, more often for compliance use) maintains accuracy.</p>
+<p>The organizing idea is the <strong>flowgraph</strong>: a directed graph of processing blocks. Sources produce samples, sinks consume them, and everything in between transforms them: filters, resamplers, demodulators, synchronizers, decoders, math. You describe the radio's logic; the GNU Radio runtime schedules the blocks and moves buffers between them. You think in DSP. The framework thinks about threads and drivers.</p>
 
-<p><strong>Self-calibration.</strong> The analyzer can run self-tests on power-up: internal noise diodes verify the noise floor, internal frequency references verify the LO chain, and digital correction tables remap any drift.</p>
+<p>The separation matters more than it first appears. In a hand-rolled DSP program, the signal processing is tangled with buffer management, device I/O, and threading, and every change risks all three. In a flowgraph, each block does one job over a stream of samples and declares nothing about where those samples came from. That is why a demodulator written in 2015 against a dongle works in 2026 against a 40 GHz analyzer: the contract between blocks is just samples. It is also why flowgraphs make honest lab notebooks. A colleague who receives your <code>.grc</code> file receives your entire receiver, parameters included, and can rerun it against a recorded I/Q file to reproduce your result sample for sample.</p>
 
-<p><strong>User calibration.</strong> The user can connect a known reference signal and tune the analyzer's correction tables for their specific use case. RTSA Suite PRO supports this through a guided calibration wizard.</p>
+<p><strong>GNU Radio Companion (GRC)</strong> is the visual editor. Drag blocks onto a canvas, wire them together, set parameters, press run, and GRC generates and executes a Python program. Performance-critical blocks are implemented in C++ with SIMD acceleration through the VOLK library, so the drag-and-drop surface does not cost you throughput. When the built-in palette is not enough, <strong>out-of-tree (OOT) modules</strong> extend it: independently distributed packages of custom blocks, in Python or C++, with a YAML descriptor that makes each block appear in GRC like a native one. The <code>gr_modtool</code> utility scaffolds a new module in minutes. Most of the interesting radio work of the past decade ships as OOT modules: <code>gr-adsb</code> for aircraft transponder decoding, <code>gr-dab</code> for digital audio broadcast, <code>gr-ieee802-11</code> for Wi-Fi frame decoding, and hundreds more.</p>
 
-<p><strong>Factory recalibration.</strong> For traceable accuracy, periodic factory recalibration through Aaronia or an authorized lab provides full multipoint calibration with certificate. The certificate documents the accuracy at every calibrated point and references the calibration standards used (often NIST-traceable in the US, PTB-traceable in Germany).</p>
+<p>One user community deserves a special mention: satellite ground stations. GNU Radio implements CCSDS and custom modems for smallsat missions; AWS Ground Station and Azure Orbital both support GNU Radio-based modems in their cloud ground segments; and SatNOGS, the volunteer network of hundreds of ground stations tracking satellites worldwide, is built on it. When a flowgraph is the modem, changing the mission waveform is an edit, not a hardware respin.</p>
 
-<div class="callout warning">
-<h3>Aaronia in Practice: Built-in Calibration Tools</h3>
-<p>RTSA Suite PRO ships with image rejection calibration, frequency response calibration, and amplitude calibration wizards. The tools accept user-supplied references and apply corrections that persist across measurement sessions. For users who need traceable accuracy, the wizards produce calibration reports that document the procedure and the resulting uncertainties. Factory calibration sets the baseline, user calibration tightens the spec for specific deployments, and software automates both processes so engineers can focus on the measurement, not the metrology.</p>
+<p>The RTSA enters this world through the same open API, on two paths. The manufacturer publishes an OOT module (GPL-3.0) whose "IQ Source" block loads directly in GRC and streams real-time I/Q from the instrument without any driver code on your part; per its documentation it requires GNU Radio 3.9 or later on 64-bit Linux over USB 3.0, is tested on Ubuntu 22.04 and later, and installs per-device calibration files system-wide. Example flowgraphs ship with it, including a working FM demodulator. The second path is the SoapySDR driver from the previous section, reached through GNU Radio's <code>gr-soapy</code> blocks, which also covers hosts where the native module is not an option. Be honest with yourself about platform: this is a Linux-first, build-from-source corner of the ecosystem. If your lab lives entirely in Windows, plan on a Linux box or verify the Soapy path on your host before promising anyone a demo.</p>
+
+<p>What you get for the trouble is the whole workbench with a calibrated 40 GHz-class front end bolted to it. The manufacturer's published demonstrations show the expected instrumentation views (spectrum, spectrogram, time domain, constellation), analog AM/FM demodulation, QPSK and 16-QAM digital demodulation, and, more tellingly, unmodified compatibility with <code>gr-adsb</code>, <code>gr-dab</code>, and <code>gr-ieee802-11</code>. That last item is the point. Those decoders were written for hobby SDRs. Swap the source block and they run from instrument-grade I/Q instead: better sensitivity, absolute amplitude, and frequency reach the original authors never had. The ecosystem's decade of contributed decoders becomes your instrument's application library, at zero additional cost.</p>
+
+<h2>9.5 The Instrument Becomes a Platform</h2>
+
+<p>Step back from the mechanics and a strategic picture emerges.</p>
+
+<p>A closed spectrum analyzer is a measurement appliance. It does what its firmware does, superbly, and nothing else. An analyzer with an open IQ-streaming API is a different kind of object: a development platform with a calibrated front end. The distinction shows up the first time a project needs something no vendor GUI ships, which in RF work is roughly always.</p>
+
+<p>Consider the team that needs continuous spectrum monitoring at a test range or a satellite ground station. The established route is a general-purpose SDR platform plus weeks of engineering: integrating drivers, building the DSP, characterizing the front end, and hand-calibrating amplitude against a signal generator, all before the first useful measurement. General-purpose SDR platforms are a large, mature market, and for transmit-capable research (MIMO experiments, waveform generation, full transceivers) they remain the right tool; a receive-only analyzer does not replace them and should not pretend to. But when the job is monitoring, measuring, and decoding, an RTSA that streams calibrated, gap-free I/Q into the same GNU Radio flowgraphs collapses those weeks into an afternoon. The calibration came from the factory. The integration is a source block.</p>
+
+<p>There is also a quieter effect on who finds the instrument in the first place. SDR++ and GNU Radio are free, which means they are where the next generation of RF engineers actually lives: the student decoding satellites in a dorm room, the researcher prototyping a receiver for a conference paper, the ham experimenting on weekends. When laboratory instruments appear as first-class citizens inside those tools, the path from a 30-dollar dongle to a calibrated 40 GHz analyzer becomes continuous rather than a leap between worlds. No one has to abandon their tooling, their scripts, or their hard-won habits at the lab door.</p>
+
+<p>The same openness compounds over time. Because the interface is a documented API rather than a GUI, the instrument scripts cleanly into automation, regression tests, and long-running unattended capture. And because the ecosystem side of the interface (SoapySDR, GRC, the OOT conventions) is community-standard, skills learned on a 30-dollar dongle apply directly to the 40 GHz instrument, and vice versa. Chapter 11 pushes this one step further: once each analyzer is a programmable node with a streaming API, networks of them become distributed sensing systems, with time-aligned capture across a city or a test range.</p>
+
+<h2>9.6 What to Try First</h2>
+
+<p>The open SDR world rewards doing over reading. Here is a four-step on-ramp, ordered so each step builds on the last.</p>
+
+<p><strong>1. Listen to FM broadcast.</strong> Connect the analyzer, start SDR++ (via the SoapySDR driver, or the native source module if you have built it), tune to the FM band near 100 MHz, click a strong station, select WFM. You will have audio in under a minute. The exercise sounds trivial; its purpose is to verify the entire streaming path (driver, USB throughput, gain model) on a signal you cannot mistake. Set the reference level around &minus;20 dBm for a strong local station and watch how the IF overflow warning behaves as you lower it.</p>
+
+<p><strong>2. Decode ADS-B.</strong> Tune to 1090 MHz, where every commercial aircraft broadcasts identity, position, and altitude in short pulsed bursts. Feed the stream to an ADS-B decoder (the <code>gr-adsb</code> flowgraph is the instructive route). Within minutes you are plotting live aircraft from raw RF you captured yourself. This step proves burst signals and digital decoding through the same path.</p>
+
+<p><strong>3. Record wideband I/Q.</strong> Use the baseband recorder to capture the full instantaneous bandwidth around a band of interest. Do the arithmetic first: 100 MS/s of complex 16-bit samples is 100 &times; 10<sup>6</sup> &times; 4 bytes, or 400 MB/s, roughly 24 GB per minute. Recording budgets, not tuner range, are usually the binding constraint in wideband work, and it is better to learn that on a scratch disk than during a field capture.</p>
+
+<p><strong>4. Build your own flowgraph.</strong> Open GRC, drop in the instrument's IQ source block, and rebuild the shipped FM example from scratch: low-pass filter, quadrature demodulator, resampler, audio sink. Then change it. Add a squelch. Log signal power to a file. Swap the demodulator for a QPSK chain. The moment you modify a working flowgraph and hear the result, the instrument has stopped being an appliance.</p>
+
+<div class="case">
+<h2>Case: A Calibrated Ground Station</h2>
+<p>A university smallsat team operates a UHF/S-band ground station and contributes passes to a volunteer satellite network. Their receive chain was a hobby-class SDR: fine for FM telemetry beacons, marginal for the S-band downlink, and useless for answering the question their link-budget spreadsheet kept asking, namely what the received power actually was in dBm.</p>
+<p>They replaced the dongle with a compact 40 GHz-class RTSA streaming through its SoapySDR driver into their existing GNU Radio flowgraphs. The modem blocks did not change. What changed was everything around them. Received signal power became an absolute number they could compare against the link budget pass after pass, turning antenna-pointing errors and feedline degradation into visible, trendable data. The instrument's front end pulled the S-band downlink out of noise that had swallowed it before. And between passes, the same unit ran as a real-time spectrum analyzer, characterizing a local interferer at 2.401 GHz that had been corrupting every tenth frame. One instrument, two jobs, zero custom driver code. The team's write-up estimated the switchover took one afternoon, most of it spent copying calibration files and re-pointing the source block.</p>
 </div>
 
 <div class="summary">
 <h3>Chapter Summary</h3>
 <ul>
-  <li>Amplitude accuracy comes in two flavors. Absolute (the reading versus true power) is typically plus or minus 1 to 2 dB. Relative (differences between readings) is typically plus or minus 0.1 to 0.3 dB.</li>
-  <li>Frequency accuracy depends on the reference oscillator. Internal TCXO gives a few ppm; an external GPSDO or rubidium gives fractional ppb.</li>
-  <li>Phase noise causes reciprocal mixing, EVM degradation, and limits dynamic range close to strong carriers.</li>
-  <li>Dynamic range has three components: noise floor (NF and RBW), SFDR (analyzer-generated spurs), and IIP3 (intermod from external strong signals).</li>
-  <li>An uncertainty budget enumerates error sources, assigns standard uncertainties, sums in quadrature, and reports an expanded uncertainty at a stated confidence level.</li>
-  <li>Aaronia SPECTRAN V6 PLUS supports factory calibration plus user calibration via RTSA Suite PRO wizards, with optional external 10 MHz reference for ultra-high-accuracy frequency work.</li>
+  <li>An SDR captures I/Q early and defines the radio in software. A modern RTSA is internally an SDR already; an open IQ-streaming API makes that architecture available to the user, connecting the instrument to the open-source ecosystem.</li>
+  <li>SDR++ is the standard open receiver front end: modular sources, SIMD DSP, multi-VFO, decoders, sinks, scanner, and recorder. Current RTSAs appear as a native source module (Beta, built from source) and, more portably, through a SoapySDR driver usable by SDR++, GQRX, GNU Radio, and rtl_433.</li>
+  <li>Against hobby SDR hardware, the instrument brings 9 kHz to 40 GHz reach, calibrated absolute amplitude in dBm, and an instrument-style gain model (reference level, preamp, IF overflow) that enforces headroom discipline.</li>
+  <li>GNU Radio is the open DSP workbench: flowgraphs of blocks, GRC generating Python, C++/VOLK performance, and OOT modules extending the palette. The manufacturer's IQ source block (Linux-first, GNU Radio 3.9+) and the Soapy path give the whole ecosystem, including gr-adsb, gr-dab, and gr-ieee802-11, a calibrated front end.</li>
+  <li>Open APIs convert a measurement appliance into a development platform. For monitoring and decoding work, calibrated gap-free streaming replaces weeks of integration on general-purpose SDR platforms; for transmit-capable research, those platforms remain the right tool.</li>
+  <li>Start with FM audio, then ADS-B, then a wideband I/Q recording (budget 400 MB/s at 100 MS/s CS16), then your own flowgraph. Chapter 11 extends the programmable-node idea into distributed sensing networks.</li>
 </ul>
 </div>
 
 <div class="quiz-cta">
 <div class="quiz-cta-num">End-of-Chapter Quiz</div>
 <h3>Check your understanding</h3>
-<p>The Chapter 9 questions are now an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
+<p>The Chapter 9 questions are an interactive quiz. Pick an answer for each, get instant scoring, and see why each answer is right. Your progress is saved on this device.</p>
 <a class="quiz-cta-btn" href="quiz-chapter-09.html">Take the interactive quiz &rarr;</a>
 </div>
 <div class="next">
 <h3>What's Next</h3>
-<p>Chapter 10 covers RTSA form factors, packaging, and environmental engineering. Benchtop, rack-mount, OEM-embedded, portable, and ruggedized RTSAs each fit different deployment patterns. We close with a snapshot of the SPECTRAN V6 PLUS family at a glance: ECO 100XA, PLUS 250XA, PLUS 500XA, and PLUS 2000XA, with their target applications and pricing tiers.</p>
+<p>Chapter 10 turns to the signals that do not want to be found: pulse, radar, and electronic warfare measurements. Pulse fundamentals and the time-bandwidth relationship, pulse descriptor words and deinterleaving, chirps and frequency-agile radars, jammer families from barrage to DRFM, and why nanosecond-scale probability of intercept is the specification that separates seeing a modern radar from missing it entirely.</p>
 </div>
 
 
 <footer class="bnc-footer">
   <nav class="bnc-nav">
-    <a class="prev" href="chapter-08.html">&larr; Ch 8. Direction Finding</a>
+    <a class="prev" href="chapter-08.html">&larr; Ch 8. Harmonics and Tracking Generators</a>
     <a class="mid"  href="index.html">Contents</a>
-    <a class="next" href="chapter-10.html">Ch 10. RTSA Form Factors &rarr;</a>
+    <a class="next" href="chapter-10.html">Ch 10. Pulse, Radar, and EW Measurements &rarr;</a>
   </nav>
   <div class="bnc-meta">
     <a class="chat" href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a1.5 1.5 0 0 0-1.5 1.5v9A1.5 1.5 0 0 0 4 16h3v3.4L11 16h9a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 20 4z"/></svg>BNC application engineer chat</a>

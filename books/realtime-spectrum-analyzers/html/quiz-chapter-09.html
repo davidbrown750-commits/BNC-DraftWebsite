@@ -18,11 +18,11 @@
 
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Chapter 9 Quiz - Calibration, Accuracy, and Measurement Uncertainty</title>
+<title>Chapter 9 Quiz - The Open SDR Ecosystem</title>
 <link rel="stylesheet" href="light-touch.css"/>
+<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
   <script defer src="book-search-data.js"></script>
   <script defer src="book-search.js"></script>
-<link rel="stylesheet" href="../../../_shared/bnc-emerald.css">
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -43,114 +43,114 @@ window.QUIZ_DATA = {
   title: "Chapter 9 Quiz",
   questions: [
     {
-      q: "Absolute amplitude accuracy on a typical RTSA across full frequency range is approximately:",
+      q: "In a software-defined radio, the hardware's essential job is to:",
       options: [
-        "plus or minus 0.01 dB",
-        "plus or minus 0.5 to 2 dB",
-        "plus or minus 10 dB",
-        "None at all"
+        "Demodulate FM broadcasts",
+        "Translate a slice of spectrum to baseband and digitize it faithfully as I/Q samples",
+        "Decode protocol frames into bits",
+        "Draw the waterfall display"
       ],
       answer: 1,
-      explain: "Across the full frequency range, typical absolute amplitude accuracy is about plus or minus 0.5 to 2 dB."
+      explain: "In an SDR the hardware only captures and digitizes I/Q; everything the radio does with those samples is defined in software."
     },
     {
-      q: "An external 10 MHz reference input on a SPECTRAN V6 PLUS allows users to:",
+      q: "SDR++'s modular architecture separates its plugins into which four roles?",
       options: [
-        "Increase RTBW",
-        "Lock to a rubidium or GPSDO for high-precision frequency measurements",
-        "Change ADC sample rate",
-        "Bypass the FFT engine"
-      ],
-      answer: 1,
-      explain: "The 10 MHz reference input lets you lock to a rubidium standard or GPSDO for precise frequency measurements."
-    },
-    {
-      q: "Phase noise, expressed in dBc/Hz at an offset, describes:",
-      options: [
-        "Total carrier power",
-        "The noise spectral density relative to the carrier at that offset",
-        "The trigger latency",
-        "The display refresh rate"
-      ],
-      answer: 1,
-      explain: "Phase noise in dBc/Hz is the noise power density relative to the carrier at a given offset from it."
-    },
-    {
-      q: "Reciprocal mixing causes:",
-      options: [
-        "ADC clipping",
-        "Strong signals to smear via LO phase noise, limiting dynamic range close to carriers",
-        "The waterfall to scroll faster",
-        "Data corruption on disk"
-      ],
-      answer: 1,
-      explain: "Reciprocal mixing convolves LO phase noise onto strong signals, raising the noise skirt and limiting close-in dynamic range."
-    },
-    {
-      q: "The noise floor of an RTSA is determined by:",
-      options: [
-        "The display brightness",
-        "The system noise figure and the resolution bandwidth",
-        "The cable length",
-        "The window function only"
-      ],
-      answer: 1,
-      explain: "The displayed noise floor is set by the system noise figure together with the resolution bandwidth."
-    },
-    {
-      q: "SFDR is:",
-      options: [
-        "The maximum sample rate",
-        "The difference between the strongest signal and the strongest analyzer-generated spur",
-        "The signal-to-noise ratio",
-        "The carrier-to-interferer ratio"
-      ],
-      answer: 1,
-      explain: "Spurious-free dynamic range is the gap between the strongest signal and the largest spur the analyzer itself generates."
-    },
-    {
-      q: "IIP3 measures:",
-      options: [
-        "The maximum input before signal compression",
-        "The (extrapolated) input power where third-order intermod products equal the input signals",
-        "The noise figure",
-        "The phase noise floor"
-      ],
-      answer: 1,
-      explain: "The third-order input intercept point is the extrapolated input level where third-order products would equal the desired tones."
-    },
-    {
-      q: "A measurement uncertainty budget combines individual error contributions by:",
-      options: [
-        "Adding them linearly",
-        "Multiplying them",
-        "Summing in quadrature, then applying a coverage factor",
-        "Taking the maximum value"
+        "Filters, mixers, amplifiers, antennas",
+        "Inputs, outputs, buffers, threads",
+        "Sources, DSP, decoders, sinks",
+        "Drivers, kernels, shaders, codecs"
       ],
       answer: 2,
-      explain: "Independent contributions are summed in quadrature, then scaled by a coverage factor for the desired confidence."
+      explain: "SDR++ organizes its modules as sources that produce I/Q, DSP in the middle, decoders that extract meaning, and sinks that deliver results."
     },
     {
-      q: "The expanded uncertainty for 95 percent confidence is approximately:",
+      q: "Compared with an RTL-SDR waterfall, the amplitude axis of an RTSA's display is:",
       options: [
-        "The standard uncertainty divided by 2",
-        "The standard uncertainty multiplied by 2 (k=2)",
-        "The standard uncertainty multiplied by 10",
-        "The standard uncertainty itself"
+        "Absolute, in dBm, backed by factory calibration",
+        "Relative, shifting with gain settings",
+        "Identical in every respect",
+        "Only meaningful below 1.7 GHz"
       ],
-      answer: 1,
-      explain: "A coverage factor of k equals 2 gives roughly 95 percent confidence, so expanded uncertainty is about twice the standard uncertainty."
+      answer: 0,
+      explain: "Hobby SDR displays are relative and uncalibrated, while the instrument reports absolute power in dBm from factory calibration."
     },
     {
-      q: "RTSA Suite PRO's user calibration wizards support all the following except:",
+      q: "When the calibrated front end is overdriven during streaming, the instrument's driver responds by:",
       options: [
-        "Image rejection calibration",
-        "Frequency response calibration",
-        "Amplitude calibration",
-        "Mechanical alignment of antenna arrays"
+        "Silently clipping the samples",
+        "Muting the audio output",
+        "Automatically halving the sample rate",
+        "Raising an IF overflow error and expecting you to increase the reference level"
       ],
       answer: 3,
-      explain: "The calibration wizards cover image rejection, frequency response, and amplitude, but not mechanical alignment of antenna arrays."
+      explain: "Instead of clipping silently, the driver flags an IF overflow error, enforcing the same headroom discipline as the instrument's front panel."
+    },
+    {
+      q: "An RTL-SDR dongle's tuning range tops out near:",
+      options: [
+        "6 GHz",
+        "1.7 GHz",
+        "40 GHz",
+        "100 MHz"
+      ],
+      answer: 1,
+      explain: "An RTL-SDR tunes from roughly 24 MHz to about 1.7 GHz, far below the 40 GHz reach of a modern USB RTSA."
+    },
+    {
+      q: "A GNU Radio flowgraph is best described as:",
+      options: [
+        "A directed graph of processing blocks in which sources produce samples and sinks consume them",
+        "A schematic of the analog RF front end",
+        "A frequency allocation plan",
+        "A table of calibration coefficients"
+      ],
+      answer: 0,
+      explain: "A flowgraph is a directed graph of blocks; the runtime schedules them and moves sample buffers between them."
+    },
+    {
+      q: "An out-of-tree (OOT) module in GNU Radio is:",
+      options: [
+        "A block that executes on the instrument's FPGA",
+        "A deprecated block scheduled for removal",
+        "An independently distributed package of custom blocks that appears in GRC through a YAML descriptor",
+        "A plugin that only runs on Windows"
+      ],
+      answer: 2,
+      explain: "OOT modules are custom block packages maintained outside the main tree, with YAML descriptors that expose them in GNU Radio Companion."
+    },
+    {
+      q: "SoapySDR's role in the open SDR ecosystem is to:",
+      options: [
+        "Demodulate single-sideband audio",
+        "Provide a vendor-neutral abstraction layer so any SoapySDR-aware application can use a supported device",
+        "Replace GNU Radio's scheduler",
+        "Compress recorded I/Q files"
+      ],
+      answer: 1,
+      explain: "SoapySDR is an abstraction layer: one driver exposes a device to SDR++, GQRX, CubicSDR, GNU Radio, rtl_433, and other Soapy-aware software."
+    },
+    {
+      q: "Recording 100 MS/s of complex 16-bit I/Q samples requires sustained disk throughput of about:",
+      options: [
+        "4 MB/s",
+        "40 MB/s",
+        "100 MB/s",
+        "400 MB/s"
+      ],
+      answer: 3,
+      explain: "Each complex 16-bit sample is 4 bytes, so 100 MS/s times 4 bytes is 400 MB/s, roughly 24 GB per minute."
+    },
+    {
+      q: "The significance of decoders like gr-adsb running unmodified from the instrument's IQ source block is that:",
+      options: [
+        "The ecosystem's existing decoders become the instrument's application library without any code changes",
+        "They run faster on 8-bit samples",
+        "They prove the decoders only work on hobby hardware",
+        "It demonstrates the instrument can transmit"
+      ],
+      answer: 0,
+      explain: "Because blocks only exchange samples, swapping in the calibrated source lets a decade of contributed decoders run from instrument-grade I/Q unchanged."
     }
   ]
 };
