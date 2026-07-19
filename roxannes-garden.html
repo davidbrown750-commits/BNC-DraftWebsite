@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Roxanne's Garden</title>
+<style>
+:root{
+  --sky-top:#aee3ff;--sky-bot:#eaf7e6;--grass:#7fbf6a;--grass-dark:#63a852;
+  --soil:#7a5230;--soil-dark:#5e3d21;--ink:#2c3a2e;--card:#ffffffd9;
+  --accent:#3c7d3f;--fence:#e9e2d2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:Georgia,'Times New Roman',serif;color:var(--ink);
+  background:linear-gradient(var(--sky-top),var(--sky-bot) 62%,var(--grass) 62%,var(--grass-dark));
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+}
+header{padding:18px 20px 6px;text-align:center;position:relative;z-index:5}
+header h1{font-size:clamp(24px,4vw,38px);letter-spacing:.5px}
+header p{font-style:italic;opacity:.8;margin-top:4px;font-size:15px}
+.backlink{position:absolute;left:16px;top:16px;font-size:13px;color:var(--ink);opacity:.65;text-decoration:none;font-family:Arial,sans-serif}
+.backlink:hover{opacity:1;text-decoration:underline}
+
+/* ---------- scene ---------- */
+#scene{position:relative;flex:1;min-height:540px;overflow:hidden}
+.sun{position:absolute;top:26px;right:7%;width:74px;height:74px;border-radius:50%;
+  background:radial-gradient(#fff7c4,#ffd94d 65%,#ffc93d);box-shadow:0 0 60px 18px #ffe98a88}
+.cloud{position:absolute;background:#fff;border-radius:40px;opacity:.9;height:26px}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud::before{width:34px;height:34px;top:-16px;left:14px}
+.cloud::after{width:24px;height:24px;top:-10px;right:16px}
+.c1{width:110px;top:60px;left:-130px;animation:drift 65s linear infinite}
+.c2{width:80px;top:120px;left:-100px;animation:drift 90s linear 20s infinite}
+@keyframes drift{to{transform:translateX(130vw)}}
+
+.hills{position:absolute;left:0;right:0;top:calc(62% - 90px);height:100px;pointer-events:none}
+.hill{position:absolute;bottom:0;border-radius:50% 50% 0 0;background:#9ccf82}
+.h1{width:70%;height:90px;left:-10%}
+.h2{width:60%;height:70px;right:-8%;background:#8ec577}
+
+.fence{position:absolute;left:0;right:0;top:calc(62% - 34px);height:44px;display:flex;gap:14px;
+  padding:0 6px;pointer-events:none}
+.picket{flex:1;background:var(--fence);border-radius:3px 3px 0 0;min-width:10px;max-width:22px;
+  clip-path:polygon(50% 0,100% 14%,100% 100%,0 100%,0 14%);box-shadow:inset -2px 0 0 #d4cab4}
+.rail{position:absolute;left:0;right:0;height:7px;background:var(--fence);box-shadow:inset 0 -2px 0 #d4cab4}
+.rail.r1{top:10px}.rail.r2{top:26px}
+
+/* deer path band */
+#deer{position:absolute;top:calc(62% + 6px);left:0;font-size:52px;line-height:1;z-index:4;
+  will-change:transform;pointer-events:none;filter:drop-shadow(0 6px 4px #0002)}
+#deer .body{display:inline-block;animation:bob 0.55s ease-in-out infinite alternate}
+#deer.flip .body{transform:scaleX(-1)}
+#deer.idle .body{animation:none}
+#fawn{position:absolute;top:calc(62% + 22px);left:0;font-size:32px;line-height:1;z-index:4;
+  pointer-events:none;filter:drop-shadow(0 4px 3px #0002);display:none}
+#fawn .body{display:inline-block;animation:bob .5s ease-in-out infinite alternate}
+#fawn.flip .body{transform:scaleX(-1)}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+#deer.flip .body{animation-name:bobflip}
+@keyframes bobflip{from{transform:scaleX(-1) translateY(0)}to{transform:scaleX(-1) translateY(-4px)}}
+
+.bubble{position:absolute;background:#fff;border-radius:12px;padding:4px 10px;font-size:13px;
+  font-family:Arial,sans-serif;box-shadow:0 2px 8px #0002;z-index:6;white-space:nowrap;
+  animation:bubblein 1.8s ease forwards;pointer-events:none}
+.bubble::after{content:"";position:absolute;bottom:-6px;left:16px;border:6px solid transparent;border-top-color:#fff;border-bottom:0}
+@keyframes bubblein{0%{opacity:0;transform:translateY(6px)}12%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+
+/* ---------- droppings ---------- */
+.dropping{position:absolute;z-index:3;width:34px;height:26px;border:0;background:none;cursor:pointer;
+  padding:0;animation:plop .4s cubic-bezier(.2,1.6,.5,1)}
+.dropping svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px #0003)}
+.dropping:hover svg,.dropping:focus-visible svg{transform:scale(1.18)}
+.dropping.fly{transition:transform .6s cubic-bezier(.4,0,.8,1),opacity .6s;pointer-events:none}
+@keyframes plop{from{transform:scale(.2) translateY(-14px)}to{transform:scale(1)}}
+
+/* ---------- garden beds ---------- */
+#beds{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:3;
+  display:grid;grid-template-columns:repeat(6,minmax(86px,120px));gap:14px;padding:0 12px;
+  width:min(96vw,860px)}
+.bed{position:relative;border:0;cursor:pointer;background:linear-gradient(var(--soil),var(--soil-dark));
+  border-radius:10px;height:84px;box-shadow:0 6px 0 #4a3019,inset 0 3px 6px #0003;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;
+  transition:transform .15s}
+.bed:hover{transform:translateY(-2px)}
+.bed .plant{font-size:34px;line-height:1;position:relative;top:-16px;transition:font-size .3s;
+  filter:drop-shadow(0 3px 3px #0003)}
+.bed .tag{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:10.5px;
+  font-family:Arial,sans-serif;color:#f3e4cf;opacity:.85;letter-spacing:.4px}
+.bed.grow .plant{animation:sprout .6s cubic-bezier(.2,1.5,.5,1)}
+@keyframes sprout{0%{transform:scale(.3) translateY(8px)}100%{transform:scale(1)}}
+.bed.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.sparkle{position:absolute;font-size:20px;pointer-events:none;animation:spark 1s ease forwards;z-index:5}
+@keyframes spark{0%{opacity:0;transform:translateY(4px) scale(.5)}25%{opacity:1}100%{opacity:0;transform:translateY(-26px) scale(1.2)}}
+
+/* ---------- HUD ---------- */
+#hud{position:absolute;top:12px;right:12px;z-index:7;background:var(--card);backdrop-filter:blur(4px);
+  border-radius:14px;padding:12px 16px;box-shadow:0 4px 18px #0002;font-family:Arial,sans-serif;
+  font-size:14px;width:min(272px,80vw)}
+#hud h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:8px;font-family:Arial,sans-serif}
+#hud .row{display:flex;justify-content:space-between;align-items:center;margin:5px 0}
+#hud .dots{display:inline-flex;gap:4px;margin-left:8px}
+#hud .dot{width:11px;height:11px;border-radius:50%;background:#d8d2c2;border:1px solid #b9b09a}
+#hud .dot.full{background:#7a5230;border-color:#5e3d21}
+#soilCount{font-weight:bold}
+#hint{margin-top:9px;padding-top:8px;border-top:1px solid #0001;font-size:12.5px;color:#4c5b4e;line-height:1.45}
+#resetBtn{margin-top:9px;width:100%;border:1px solid #b9c7ba;background:#f2f6f0;border-radius:8px;
+  padding:4px;font-size:11.5px;cursor:pointer;color:#586b5a;font-family:Arial,sans-serif}
+#resetBtn:hover{background:#e6efe4}
+
+#bin{position:absolute;right:22px;bottom:118px;z-index:4;font-size:46px;line-height:1;
+  filter:drop-shadow(0 5px 4px #0003);transition:transform .2s}
+#bin.bounce{animation:binb .45s}
+@keyframes binb{35%{transform:scale(1.25) rotate(-6deg)}70%{transform:scale(.95)}}
+#bin .lbl{display:block;text-align:center;font-size:10.5px;font-family:Arial,sans-serif;
+  background:var(--card);border-radius:8px;padding:2px 6px;margin-top:3px;box-shadow:0 2px 6px #0002}
+
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);z-index:9;
+  background:#2c3a2ee6;color:#fff;font-family:Arial,sans-serif;font-size:14.5px;padding:10px 20px;
+  border-radius:24px;transition:transform .35s cubic-bezier(.2,1.4,.5,1);pointer-events:none;max-width:92vw;text-align:center}
+#toast.show{transform:translateX(-50%)}
+
+#banner{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:8;pointer-events:none}
+#banner .card{background:var(--card);backdrop-filter:blur(5px);border-radius:20px;padding:26px 38px;
+  text-align:center;box-shadow:0 10px 40px #0003;animation:bannerin .8s cubic-bezier(.2,1.4,.5,1)}
+#banner h2{font-size:clamp(22px,3.5vw,32px);color:var(--accent)}
+#banner p{margin-top:6px;font-style:italic}
+@keyframes bannerin{from{opacity:0;transform:scale(.7)}}
+.butterfly{position:absolute;font-size:26px;z-index:6;pointer-events:none;animation:flutter 9s ease-in-out infinite}
+@keyframes flutter{
+  0%{transform:translate(0,0) rotate(-8deg)}25%{transform:translate(60px,-46px) rotate(10deg)}
+  50%{transform:translate(-30px,-80px) rotate(-10deg)}75%{transform:translate(-70px,-30px) rotate(8deg)}
+  100%{transform:translate(0,0) rotate(-8deg)}}
+
+footer{position:relative;z-index:5;text-align:center;font-size:12.5px;font-family:Arial,sans-serif;
+  color:#3d4c3f;opacity:.75;padding:8px 14px 12px;font-style:italic}
+
+@media (max-width:720px){
+  #beds{grid-template-columns:repeat(3,1fr);width:94vw;bottom:12px}
+  #bin{bottom:210px;right:12px;font-size:38px}
+  #hud{min-width:180px;font-size:13px;padding:10px 12px}
+  #deer{font-size:42px}
+  #scene{min-height:600px}
+}
+@media (prefers-reduced-motion:reduce){
+  .c1,.c2,#deer .body,#fawn .body,.butterfly{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="backlink" href="management.html">&larr; back to the office</a>
+  <h1>&#127793; Roxanne&rsquo;s Garden</h1>
+  <p>The local deer keep leaving little&hellip; contributions. Waste not, want not.</p>
+</header>
+
+<div id="scene" aria-label="Roxanne's garden">
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="hills"><div class="hill h1"></div><div class="hill h2"></div></div>
+
+  <div class="fence" aria-hidden="true">
+    <div class="rail r1"></div><div class="rail r2"></div>
+  </div>
+
+  <div id="deer" aria-hidden="true"><span class="body">&#129420;</span></div>
+  <div id="fawn" aria-hidden="true"><span class="body">&#129420;</span></div>
+
+  <div id="bin" title="Compost bin">&#129530;<span class="lbl">compost</span></div>
+
+  <div id="hud">
+    <h2>Garden Ledger</h2>
+    <div class="row"><span>Droppings harvested</span><span id="harvestCount">0</span></div>
+    <div class="row"><span>Compost brewing</span>
+      <span class="dots" id="compostDots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+    </div>
+    <div class="row"><span>Rich soil ready</span><span id="soilCount">0 &#129699;</span></div>
+    <div id="hint">Tap the deer droppings to compost them. Every 3 make a scoop of rich soil &mdash; tap a bed to spread it and watch the garden grow.</div>
+    <button id="resetBtn" type="button">start the season over</button>
+  </div>
+
+  <div id="beds"></div>
+
+  <div id="banner"><div class="card">
+    <h2>&#127804; Roxanne&rsquo;s garden is thriving! &#127804;</h2>
+    <p>All thanks to the deer&rsquo;s&hellip; generosity. And your shoveling.</p>
+  </div></div>
+</div>
+
+<div id="toast" role="status"></div>
+
+<footer>For Roxanne &mdash; fertilized by the deer of Marin County, harvested by you. &#129420;</footer>
+
+<script>
+(function(){
+  "use strict";
+  var SAVE_KEY="roxannes-garden-v1";
+  var CROPS=[
+    {name:"tomatoes", emoji:"🍅"},
+    {name:"sunflowers",emoji:"🌻"},
+    {name:"carrots",  emoji:"🥕"},
+    {name:"strawberries",emoji:"🍓"},
+    {name:"pumpkins", emoji:"🎃"},
+    {name:"tulips",   emoji:"🌷"}
+  ];
+  var STAGE_EMOJI=["", "🌱", "🌿", ""]; // stage 3 uses crop emoji
+  var MAX_FIELD_DROPPINGS=6;
+
+  var state={harvested:0,compost:0,soil:0,stages:[0,0,0,0,0,0],won:false};
+  try{
+    var raw=localStorage.getItem(SAVE_KEY);
+    if(raw){var s=JSON.parse(raw);
+      if(s&&Array.isArray(s.stages)&&s.stages.length===6){state=s;}
+    }
+  }catch(e){}
+
+  function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));}catch(e){}}
+
+  var scene=document.getElementById("scene"),
+      deer=document.getElementById("deer"),
+      fawn=document.getElementById("fawn"),
+      bin=document.getElementById("bin"),
+      bedsWrap=document.getElementById("beds"),
+      toastEl=document.getElementById("toast"),
+      banner=document.getElementById("banner");
+
+  /* ---------- HUD ---------- */
+  function renderHud(){
+    document.getElementById("harvestCount").textContent=state.harvested;
+    document.getElementById("soilCount").innerHTML=state.soil+" 🪣";
+    var dots=document.getElementById("compostDots").children;
+    for(var i=0;i<3;i++) dots[i].className="dot"+(i<state.compost?" full":"");
+  }
+
+  var toastTimer=null;
+  function toast(msg){
+    toastEl.textContent=msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){toastEl.classList.remove("show");},2600);
+  }
+
+  /* ---------- beds ---------- */
+  function bedLabel(i){
+    var st=state.stages[i], crop=CROPS[i];
+    if(st===0) return "bare soil · "+crop.name;
+    if(st===3) return crop.name+"!";
+    return crop.name+" · stage "+st;
+  }
+  function renderBed(i){
+    var b=bedsWrap.children[i], st=state.stages[i];
+    var plant=b.querySelector(".plant");
+    plant.textContent=st===0?"":(st===3?CROPS[i].emoji:STAGE_EMOJI[st]);
+    plant.style.fontSize=st===3?"40px":(st===2?"34px":"28px");
+    plant.style.top=st===3?"-22px":"-16px";
+    b.querySelector(".tag").textContent=bedLabel(i);
+    b.setAttribute("aria-label","Garden bed: "+bedLabel(i)+(st<3?". Tap to spread soil.":""));
+  }
+  function sparkleAt(el,emoji){
+    var r=el.getBoundingClientRect(),sr=scene.getBoundingClientRect();
+    for(var k=0;k<3;k++){
+      var s=document.createElement("span");
+      s.className="sparkle";s.textContent=emoji||"✨";
+      s.style.left=(r.left-sr.left+10+Math.random()*(r.width-30))+"px";
+      s.style.top=(r.top-sr.top+Math.random()*18)+"px";
+      s.style.animationDelay=(k*0.12)+"s";
+      scene.appendChild(s);
+      setTimeout(function(n){return function(){n.remove();};}(s),1400);
+    }
+  }
+  function onBedClick(i){
+    var b=bedsWrap.children[i];
+    if(state.stages[i]>=3){toast(CROPS[i].name.charAt(0).toUpperCase()+CROPS[i].name.slice(1)+" are already thriving 🎉");return;}
+    if(state.soil<1){
+      b.classList.add("shake");setTimeout(function(){b.classList.remove("shake");},400);
+      toast("No rich soil yet — harvest more droppings! (3 droppings = 1 scoop)");
+      return;
+    }
+    state.soil--;state.stages[i]++;save();
+    renderHud();renderBed(i);
+    b.classList.remove("grow");void b.offsetWidth;b.classList.add("grow");
+    sparkleAt(b,state.stages[i]===3?"🎉":"✨");
+    toast(state.stages[i]===3?"The "+CROPS[i].name+" came in beautifully!":"Rich soil spread — something's sprouting…");
+    checkWin();
+  }
+  for(var i=0;i<6;i++){
+    var b=document.createElement("button");
+    b.type="button";b.className="bed";
+    b.innerHTML='<span class="plant"></span><span class="tag"></span>';
+    b.addEventListener("click",function(idx){return function(){onBedClick(idx);};}(i));
+    bedsWrap.appendChild(b);
+    renderBed(i);
+  }
+
+  /* ---------- droppings ---------- */
+  var DROP_SVG='<svg viewBox="0 0 34 26" xmlns="http://www.w3.org/2000/svg">'+
+    '<ellipse cx="10" cy="19" rx="6" ry="4.5" fill="#5a3d24"/>'+
+    '<ellipse cx="21" cy="21" rx="5.5" ry="4" fill="#6b4a2b"/>'+
+    '<ellipse cx="16" cy="13" rx="5" ry="4" fill="#4e3520"/>'+
+    '<ellipse cx="26" cy="15" rx="4" ry="3.2" fill="#5a3d24"/>'+
+    '<ellipse cx="8" cy="12" rx="3.5" ry="3" fill="#6b4a2b"/></svg>';
+  function fieldDroppings(){return scene.querySelectorAll(".dropping:not(.fly)").length;}
+
+  function spawnDropping(xPct,yPx){
+    var d=document.createElement("button");
+    d.type="button";d.className="dropping";
+    d.setAttribute("aria-label","Deer droppings — tap to harvest for compost");
+    d.innerHTML=DROP_SVG;
+    d.style.left="calc("+xPct+"% + 8px)";
+    d.style.top=yPx+"px";
+    d.addEventListener("click",function(){harvest(d);},{once:true});
+    scene.appendChild(d);
+  }
+  function harvest(d){
+    var dr=d.getBoundingClientRect(),br=bin.getBoundingClientRect();
+    d.classList.add("fly");
+    d.style.transform="translate("+(br.left-dr.left+br.width/4)+"px,"+(br.top-dr.top)+"px) scale(.3)";
+    d.style.opacity="0";
+    setTimeout(function(){d.remove();},650);
+    state.harvested++;state.compost++;
+    if(state.compost>=3){
+      state.compost=0;state.soil++;
+      bin.classList.remove("bounce");void bin.offsetWidth;bin.classList.add("bounce");
+      toast("+1 scoop of rich soil! 🪣 Tap a garden bed to spread it.");
+    }
+    save();renderHud();
+  }
+
+  /* ---------- deer ---------- */
+  var deerBusy=false;
+  function speech(text,xPct){
+    var b=document.createElement("div");
+    b.className="bubble";b.textContent=text;
+    b.style.left="calc("+xPct+"% + 6px)";
+    b.style.top="calc(62% - 34px)";
+    scene.appendChild(b);
+    setTimeout(function(){b.remove();},1900);
+  }
+  function moveDeer(el,fromPct,toPct,ms,done){
+    el.style.transition="none";
+    el.style.transform="translateX("+fromPct+"vw)";
+    el.classList.toggle("flip",toPct<fromPct);
+    void el.offsetWidth;
+    el.style.transition="transform "+ms+"ms linear";
+    el.style.transform="translateX("+toPct+"vw)";
+    if(done) setTimeout(done,ms);
+  }
+  function deerVisit(){
+    if(deerBusy) return;
+    deerBusy=true;
+    var fromLeft=Math.random()<0.5;
+    var start=fromLeft?-12:108;
+    var stop=18+Math.random()*60;           // vw where it pauses
+    var end=fromLeft?112:-14;
+    var walkMs=Math.abs(stop-start)*90;      // speed ~90ms per vw
+    deer.classList.remove("idle");
+    var withFawn=state.won;
+    if(withFawn){fawn.style.display="block";}
+    moveDeer(deer,start,stop,walkMs,function(){
+      deer.classList.add("idle");
+      var willPoop=fieldDroppings()<MAX_FIELD_DROPPINGS;
+      setTimeout(function(){
+        if(willPoop){
+          var sceneH=scene.getBoundingClientRect().height;
+          var y=sceneH*0.62+40+Math.random()*30;
+          spawnDropping(stop,y);
+          speech("plop.",stop);
+        } else {
+          speech(state.won?"lovely garden.":"just visiting.",stop);
+        }
+        setTimeout(function(){
+          deer.classList.remove("idle");
+          var walkOut=Math.abs(end-stop)*90;
+          moveDeer(deer,stop,end,walkOut,function(){
+            deerBusy=false;
+            fawn.style.display="none";
+            scheduleDeer();
+          });
+          if(withFawn) moveDeer(fawn,stop+(fromLeft?-8:8),end,walkOut);
+        },1100);
+      },900);
+    });
+    if(withFawn) moveDeer(fawn,start+(fromLeft?-8:8),stop+(fromLeft?-8:8),walkMs);
+  }
+  var deerTimer=null;
+  function scheduleDeer(delay){
+    clearTimeout(deerTimer);
+    deerTimer=setTimeout(deerVisit,delay!=null?delay:(9000+Math.random()*13000));
+  }
+
+  /* ---------- win ---------- */
+  var butterflies=[];
+  function checkWin(){
+    if(state.won) return;
+    if(state.stages.every(function(s){return s===3;})){
+      state.won=true;save();
+      banner.style.display="flex";
+      setTimeout(function(){banner.style.display="none";},6000);
+      for(var k=0;k<3;k++){
+        var bf=document.createElement("span");
+        bf.className="butterfly";bf.textContent="🦋";
+        bf.style.left=(15+k*30)+"%";
+        bf.style.top=(30+k*8)+"%";
+        bf.style.animationDelay=(k*1.3)+"s";
+        scene.appendChild(bf);butterflies.push(bf);
+      }
+      toast("The deer approves. She'll bring the fawn next time. 🦌");
+    }
+  }
+  function restoreWinDecor(){
+    if(!state.won) return;
+    for(var k=0;k<3;k++){
+      var bf=document.createElement("span");
+      bf.className="butterfly";bf.textContent="🦋";
+      bf.style.left=(15+k*30)+"%";bf.style.top=(30+k*8)+"%";
+      bf.style.animationDelay=(k*1.3)+"s";
+      scene.appendChild(bf);butterflies.push(bf);
+    }
+  }
+
+  /* ---------- reset ---------- */
+  document.getElementById("resetBtn").addEventListener("click",function(){
+    if(!confirm("Start the season over? The garden goes back to bare soil.")) return;
+    state={harvested:0,compost:0,soil:0,stages:[0,0,0,0,0,0],won:false};
+    save();renderHud();
+    for(var i=0;i<6;i++) renderBed(i);
+    butterflies.forEach(function(b){b.remove();});butterflies=[];
+    scene.querySelectorAll(".dropping").forEach(function(d){d.remove();});
+    toast("A fresh season begins. The deer will be along shortly…");
+    scheduleDeer(2500);
+  });
+
+  /* ---------- boot ---------- */
+  var fence=document.querySelector(".fence");
+  for(var k=0;k<44;k++){var p=document.createElement("div");p.className="picket";fence.appendChild(p);}
+  renderHud();
+  restoreWinDecor();
+  deer.style.transform="translateX(-12vw)";
+  scheduleDeer(2200);           // first visit comes quickly
+})();
+</script>
+</body>
+</html>
