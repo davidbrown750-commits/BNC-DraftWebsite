@@ -160,11 +160,16 @@
   var API = "/api/visitors";
   var TKEY = "bnc_ve_token";
   // token sources, in order: URL hash (#t=…, used by the Employee Portal iframe),
-  // ?token= query, then a previously-entered password in sessionStorage.
+  // ?token= query, then a token remembered from a previous visit (localStorage,
+  // so a signed brief link or the password only has to work once per browser;
+  // sessionStorage kept as a fallback for tabs opened before this change).
   var hashTok = (location.hash.match(/[#&]t=([^&]+)/) || [])[1];
   var qTok = new URLSearchParams(location.search).get("token");
   var embed = new URLSearchParams(location.search).get("embed") === "1";
-  var token = (hashTok && decodeURIComponent(hashTok)) || qTok || sessionStorage.getItem(TKEY) || "";
+  function remember(t){ try{ localStorage.setItem(TKEY,t); }catch(e){} try{ sessionStorage.setItem(TKEY,t); }catch(e){} }
+  function forget(){ try{ localStorage.removeItem(TKEY); }catch(e){} try{ sessionStorage.removeItem(TKEY); }catch(e){} }
+  function recall(){ try{ return localStorage.getItem(TKEY) || sessionStorage.getItem(TKEY) || ""; }catch(e){ return ""; } }
+  var token = (hashTok && decodeURIComponent(hashTok)) || qTok || recall();
   if (embed) document.documentElement.classList.add("embed");
 
   function fmtDur(s){
@@ -299,10 +304,10 @@
         (idOnly? "&identified=1":"") +
         (hideInternal? "&hideInternal=1":"");
       fetch(url).then(function(res){
-        if(res.status===401){ showGate("That password was not accepted."); throw new Error("auth"); }
+        if(res.status===401){ forget(); showGate("That password was not accepted."); throw new Error("auth"); }
         if(!res.ok) throw new Error("http "+res.status);
         return res.json();
-      }).then(function(d){ render(d); renderDaily(d && d.daily_run); }).catch(function(e){
+      }).then(function(d){ if(!embed && token) remember(token); render(d); renderDaily(d && d.daily_run); }).catch(function(e){
         if(e.message!=="auth")
           document.getElementById("stat").textContent = "Could not load data ("+e.message+").";
       });
@@ -321,7 +326,7 @@
   }
   function hideGate(){ document.getElementById("gate").style.display="none"; }
   function tryToken(t){
-    token = t; sessionStorage.setItem(TKEY,t); hideGate(); load();
+    token = t; remember(t); hideGate(); load();
   }
   document.getElementById("enter").addEventListener("click", function(){
     var t = document.getElementById("pw").value.trim();
