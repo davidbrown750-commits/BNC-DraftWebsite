@@ -209,6 +209,23 @@ th .modelthumb{filter:none;}
   html{overflow-x:clip;}
 }
 </style>
+<style id="tvp-style">
+.toc-videos,.toc-press{margin-top:16px;background:#f3faf5;border:1px solid #cbe3d2;border-radius:6px;padding:12px 13px 11px;}
+.toc-press{margin-top:12px;}
+.toc-videos h4,.toc-press h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:#0d6b3a;margin:0 0 7px;}
+.toc-videos a.tv-link,.toc-press a.tp-link{display:flex;align-items:flex-start;gap:7px;color:#25323b;padding:4px 0;line-height:1.35;font-size:.82rem;text-decoration:none;}
+.toc-videos a.tv-link svg,.toc-press a.tp-link svg{flex:0 0 12px;width:12px;height:12px;fill:#12854a;margin-top:2px;}
+.toc-videos a.tv-link:hover,.toc-press a.tp-link:hover{color:#0d6b3a;}
+.toc-videos a.tv-more,.toc-press a.tp-more{display:block;margin-top:7px;font-size:.78rem;font-weight:700;color:#0d6b3a;text-decoration:none;}
+.toc-videos a.tv-more:hover,.toc-press a.tp-more:hover{text-decoration:underline;}
+.yt-lightbox{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;background:rgba(8,16,30,.82);padding:4vh 4vw;}
+.yt-lightbox.open{display:flex;}
+.yt-shell{position:relative;width:min(920px,100%);}
+.yt-shell .yt-close{position:absolute;top:-38px;right:0;background:none;border:none;color:#c4d6ee;font:700 15px/1 Arial,sans-serif;letter-spacing:.05em;cursor:pointer;padding:8px;}
+.yt-shell .yt-close:hover{color:#fff;}
+.yt-shell .yt-box{position:relative;padding-top:56.25%;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 24px 70px -20px rgba(0,0,0,.8);}
+.yt-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+</style>
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -262,7 +279,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#applications">5. Applications</a>
     <a href="#configurations">6. Available Configurations</a>
     <a href="#cta">7. Request a Quote</a>
-  </aside>
+  <!--tvp-boxes-->
+  <div class="toc-videos">
+    <h4>ScintIQ Videos</h4>
+    <a href="https://www.youtube.com/watch?v=Ral9nwtO6ng" class="tv-link" data-yt="Ral9nwtO6ng"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 2.2v9.6L11.6 7z"/></svg>Compact multi-channel RF generator webinar</a>
+    <a class="tv-more" href="https://www.youtube.com/@BerkeleyNucleonicsMedia" target="_blank" rel="noopener">More on YouTube &rarr;</a>
+  </div>
+  <div class="toc-press">
+    <h4>ScintIQ Blog/Press</h4>
+    <a href="https://www.berkeleynucleonics.com/october-24-2023-scintillation-detectors-attenuation-length-optical-emission/" class="tp-link" target="_blank" rel="noopener"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1h5.4L11 3.6V13H3zM8 2.2v1.9h1.9z"/></svg>Attenuation length of optical emission</a>
+    <a href="https://www.berkeleynucleonics.com/may-30-2024-why-afterglow-important-scintillation/" class="tp-link" target="_blank" rel="noopener"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1h5.4L11 3.6V13H3zM8 2.2v1.9h1.9z"/></svg>Why is afterglow important in scintillation?</a>
+    <a href="article-scint-choosing-a-scintillator.html" class="tp-link" target="_blank" rel="noopener"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1h5.4L11 3.6V13H3zM8 2.2v1.9h1.9z"/></svg>How to choose a scintillator</a>
+    <a class="tp-more" href="press-room.html" target="_blank" rel="noopener">More historical notes &rarr;</a>
+  </div>
+  <!--/tvp-boxes-->
+</aside>
 
   <!-- CONTENT -->
   <div class="content">
@@ -575,5 +606,28 @@ window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function 
 <script src="../_shared/pdf-configurator.js" data-doc="BaF2 Barium Fluoride Scintillation Detectors"></script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
 <script src="../_shared/scintiq-config-cta.js"></script>
+<!--tvp-lb--><div class="yt-lightbox" id="ytLightbox" role="dialog" aria-modal="true" aria-label="Video player">
+  <div class="yt-shell">
+    <button class="yt-close" type="button" aria-label="Close video">CLOSE &#10005;</button>
+    <div class="yt-box"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('ytLightbox');if(!lb)return;
+  var box=lb.querySelector('.yt-box');
+  function close(){lb.classList.remove('open');box.innerHTML='';document.body.style.overflow='';}
+  function open(id,start){
+    box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0'+(start?'&start='+start:'')+'" title="BNC video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    lb.classList.add('open');document.body.style.overflow='hidden';
+  }
+  document.querySelectorAll('.toc-videos a[data-yt]').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();open(a.getAttribute('data-yt'),a.getAttribute('data-start'));});
+  });
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  lb.querySelector('.yt-close').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('open'))close();});
+})();
+</script><!--/tvp-lb-->
 </body>
 </html>
