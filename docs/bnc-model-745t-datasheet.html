@@ -208,6 +208,24 @@ th .modelthumb{filter:none;}
 .hero-cfg-btn{margin-top:12px;background:#0655a3;color:#fff;border:none;border-radius:4px;padding:11px 18px;font:700 13.5px Arial,Helvetica,sans-serif;cursor:pointer;}
 .hero-cfg-btn:hover{background:#113163;}
 </style>
+<style id="tvp-style">
+.toc-videos,.toc-press{margin-top:16px;background:#f3faf5;border:1px solid #cbe3d2;border-radius:6px;padding:12px 13px 11px;}
+.toc-press{margin-top:12px;}
+.toc-videos h4,.toc-press h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:#0d6b3a;margin:0 0 7px;}
+.toc-videos a.tv-link,.toc-press a.tp-link{display:flex;align-items:flex-start;gap:7px;color:#25323b;margin-left:0;border-left:0;padding:4px 0;line-height:1.35;font-size:.82rem;text-decoration:none;}
+.toc-videos a.tv-link svg,.toc-press a.tp-link svg{flex:0 0 12px;width:12px;height:12px;fill:#12854a;margin-top:2px;}
+.toc-videos a.tv-link:hover,.toc-press a.tp-link:hover{color:#0d6b3a;border-left:0;}
+.toc-videos a.tv-more,.toc-press a.tp-more{display:block;margin-left:0;border-left:0;margin-top:7px;padding:0;font-size:.78rem;font-weight:700;color:#0d6b3a;text-decoration:none;}
+.toc-videos a.tv-more:hover,.toc-press a.tp-more:hover{border-left:0;}
+.toc-videos a.tv-more:hover,.toc-press a.tp-more:hover{text-decoration:underline;}
+.yt-lightbox{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;background:rgba(8,16,30,.82);padding:4vh 4vw;}
+.yt-lightbox.open{display:flex;}
+.yt-shell{position:relative;width:min(920px,100%);}
+.yt-shell .yt-close{position:absolute;top:-38px;right:0;background:none;border:none;color:#c4d6ee;font:700 15px/1 Arial,sans-serif;letter-spacing:.05em;cursor:pointer;padding:8px;}
+.yt-shell .yt-close:hover{color:#fff;}
+.yt-shell .yt-box{position:relative;padding-top:56.25%;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 24px 70px -20px rgba(0,0,0,.8);}
+.yt-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+</style>
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -251,6 +269,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a href="#control">7. Control &amp; Software Tools</a>
   <a href="#io">8. Input / Output Interface</a>
   <a href="#ordering">9. Ordering &amp; Accessories</a>
+<!--tvp-boxes-->
+  <div class="toc-videos">
+    <h4>Model 745T Videos</h4>
+    <a href="https://www.youtube.com/watch?v=t4RSuL_SMY4" class="tv-link" data-yt="t4RSuL_SMY4"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 2.2v9.6L11.6 7z"/></svg>Femtosecond delays with 5 ps jitter</a>
+    <a href="https://www.youtube.com/watch?v=xe4mBask7eI" class="tv-link" data-yt="xe4mBask7eI"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 2.2v9.6L11.6 7z"/></svg>Model 745 OEM femtosecond delay</a>
+    <a class="tv-more" href="https://www.youtube.com/@BerkeleyNucleonicsMedia" target="_blank" rel="noopener">More on YouTube &rarr;</a>
+  </div>
+  <div class="toc-press">
+    <h4>Model 745T Blog/Press</h4>
+    <a href="article-pdg-jitter-timing-accuracy.html" class="tp-link" target="_blank" rel="noopener"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1h5.4L11 3.6V13H3zM8 2.2v1.9h1.9z"/></svg>Jitter, resolution &amp; timing accuracy</a>
+    <a href="brief-pdg-physics-timing.html" class="tp-link" target="_blank" rel="noopener"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1h5.4L11 3.6V13H3zM8 2.2v1.9h1.9z"/></svg>Physics &amp; accelerator timing</a>
+    <a href="brief-pdg-lidar-ranging.html" class="tp-link" target="_blank" rel="noopener"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1h5.4L11 3.6V13H3zM8 2.2v1.9h1.9z"/></svg>LiDAR &amp; time-of-flight ranging</a>
+    <a class="tp-more" href="press-room.html" target="_blank" rel="noopener">More historical notes &rarr;</a>
+  </div>
+  <!--/tvp-boxes-->
 <!--cfgb-card-->
   <div class="toc-quote">
     <h4>QuickQuote</h4>
@@ -619,5 +652,28 @@ window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function 
 <script>window.BNC_CFG_FIG_PATH="../_shared/bnc-cfg-figures/";</script>
 <script src="../_shared/bnc-configurator-data.js"></script>
 <script src="../_shared/bnc-configurator.js"></script><!--/cfgb-assets-->
+<!--tvp-lb--><div class="yt-lightbox" id="ytLightbox" role="dialog" aria-modal="true" aria-label="Video player">
+  <div class="yt-shell">
+    <button class="yt-close" type="button" aria-label="Close video">CLOSE &#10005;</button>
+    <div class="yt-box"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('ytLightbox');if(!lb)return;
+  var box=lb.querySelector('.yt-box'),last=null;
+  function close(){lb.classList.remove('open');box.innerHTML='';document.body.style.overflow='';if(last){last.focus();last=null;}}
+  function open(id,start){
+    box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0'+(start?'&start='+start:'')+'" title="BNC video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    lb.classList.add('open');document.body.style.overflow='hidden';lb.querySelector('.yt-close').focus();
+  }
+  document.querySelectorAll('.toc-videos a[data-yt]').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();last=a;open(a.getAttribute('data-yt'),a.getAttribute('data-start'));});
+  });
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  lb.querySelector('.yt-close').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('open'))close();});
+})();
+</script><!--/tvp-lb-->
 </body>
 </html>
