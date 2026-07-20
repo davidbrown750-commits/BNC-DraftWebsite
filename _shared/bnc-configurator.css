@@ -1,0 +1,721 @@
+/* ============================================================
+   BNC Product Configurator - shared widget styles
+   Brand: BNC Blue #0655a3, Blue Dark #113163, Accent Purple #6b21a8
+   Headers: Myriad Pro with Arial fallback. 8px grid, 4px radius.
+   ============================================================ */
+
+:root {
+  --bnc-blue: #0655a3;
+  --bnc-blue-dark: #113163;
+  --bnc-blue-tint: #eaf2fa;
+  --bnc-blue-tint2: #f5f9fd;
+  --bnc-line: #d4dde8;
+  --bnc-text: #1a2330;
+  --bnc-muted: #5b6a7d;
+  --bnc-purple: #6b21a8;
+  --bnc-green: #1a7f37;
+  --bnc-font-head: "Myriad Pro", "Segoe UI", Arial, sans-serif;
+  --bnc-font-body: Arial, "Helvetica Neue", sans-serif;
+}
+
+/* ---------- Launch button (box button, like the Print PDF box) ---------- */
+.bnc-config-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: #ffffff;
+  border: 2px solid var(--bnc-blue);
+  border-radius: 4px;
+  color: var(--bnc-blue);
+  font-family: var(--bnc-font-head);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.bnc-config-launch svg { width: 20px; height: 20px; flex: 0 0 auto; }
+.bnc-config-launch:hover {
+  background: var(--bnc-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(6, 85, 163, 0.25);
+  transform: translateY(-1px);
+}
+.bnc-config-launch:active { transform: translateY(0); }
+.bnc-config-launch .bnc-config-launch-sub {
+  display: block;
+  font-family: var(--bnc-font-body);
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+/* ---------- Overlay + window ---------- */
+.bnc-cfg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  background: rgba(17, 49, 99, 0.55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+.bnc-cfg-overlay.bnc-open { opacity: 1; }
+
+.bnc-cfg-window {
+  position: relative;
+  width: min(1320px, 100%);
+  max-height: min(96vh, 1040px);
+  height: min(96vh, 1040px);
+  background: #ffffff;
+  border-radius: 4px;
+  border-top: 5px solid var(--bnc-blue);
+  box-shadow: 0 18px 60px rgba(17, 49, 99, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--bnc-font-body);
+  color: var(--bnc-text);
+  transform: translateY(14px) scale(0.985);
+  opacity: 0;
+  transition: transform 0.26s cubic-bezier(0.22, 0.9, 0.3, 1), opacity 0.26s ease;
+}
+.bnc-cfg-overlay.bnc-open .bnc-cfg-window { transform: translateY(0) scale(1); opacity: 1; }
+
+/* ---------- Header ---------- */
+.bnc-cfg-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 56px 16px 24px;
+  background: linear-gradient(90deg, var(--bnc-blue-dark), var(--bnc-blue));
+  color: #ffffff;
+  flex: 0 0 auto;
+}
+.bnc-cfg-head .bnc-cfg-logo { height: 30px; width: auto; flex: 0 0 auto; }
+.bnc-cfg-logochip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 5px 10px;
+}
+.bnc-cfg-logochip img { height: 30px; width: auto; display: block; }
+.bnc-cfg-head h2 {
+  margin: 0;
+  font-family: var(--bnc-font-head);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+.bnc-cfg-head .bnc-cfg-head-sub {
+  margin: 2px 0 0;
+  font-size: 12px;
+  opacity: 0.85;
+  font-weight: 400;
+}
+.bnc-cfg-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.bnc-cfg-close:hover { background: rgba(255, 255, 255, 0.28); transform: rotate(90deg); }
+
+/* ---------- Body: two columns ---------- */
+.bnc-cfg-body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.bnc-cfg-left {
+  flex: 1 1 58%;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 20px 24px 24px;
+  scroll-behavior: smooth;
+}
+.bnc-cfg-right {
+  flex: 1 1 42%;
+  max-width: 440px;
+  border-left: 1px solid var(--bnc-line);
+  background: #ffffff;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+/* Never let flex compress a panel below its content - text was bleeding
+   from the info box into the "Other similar models" box. */
+.bnc-cfg-right > * { flex-shrink: 0; }
+
+/* ---------- Option groups ---------- */
+.bnc-cfg-group { margin: 0 0 22px; }
+.bnc-cfg-group-label {
+  font-family: var(--bnc-font-head);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--bnc-blue-dark);
+  margin: 0 0 4px;
+}
+.bnc-cfg-group-hint { font-size: 12px; color: var(--bnc-muted); margin: 0 0 10px; }
+.bnc-cfg-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Pill buttons (single-select) */
+.bnc-cfg-pill {
+  border: 1.5px solid var(--bnc-line);
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 9px 14px;
+  font-family: var(--bnc-font-body);
+  font-size: 13.5px;
+  color: var(--bnc-text);
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease,
+              box-shadow 0.16s ease, opacity 0.16s ease, transform 0.16s ease;
+  text-align: left;
+  line-height: 1.3;
+}
+.bnc-cfg-pill .bnc-pill-code { font-weight: 700; }
+.bnc-cfg-pill .bnc-pill-note { display: block; font-size: 11px; color: var(--bnc-muted); margin-top: 1px; }
+.bnc-cfg-pill:hover:not(.bnc-disabled):not(.bnc-selected) {
+  border-color: var(--bnc-blue);
+  box-shadow: 0 2px 8px rgba(6, 85, 163, 0.14);
+  transform: translateY(-1px);
+}
+.bnc-cfg-pill.bnc-selected {
+  background: var(--bnc-blue);
+  border-color: var(--bnc-blue);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(6, 85, 163, 0.3);
+}
+.bnc-cfg-pill.bnc-selected .bnc-pill-note { color: rgba(255, 255, 255, 0.82); }
+
+/* Checkbox rows (multi-select options) */
+.bnc-cfg-checkrow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  border: 1.5px solid var(--bnc-line);
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
+  font-size: 13.5px;
+  line-height: 1.35;
+  text-align: left;
+}
+.bnc-cfg-checkrow:hover:not(.bnc-disabled) { border-color: var(--bnc-blue); box-shadow: 0 2px 8px rgba(6, 85, 163, 0.12); }
+.bnc-cfg-checkrow.bnc-selected { border-color: var(--bnc-blue); background: var(--bnc-blue-tint); }
+.bnc-cfg-checkbox {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border: 2px solid var(--bnc-line);
+  border-radius: 3px;
+  background: #ffffff;
+  position: relative;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.bnc-cfg-checkrow.bnc-selected .bnc-cfg-checkbox { background: var(--bnc-blue); border-color: var(--bnc-blue); }
+.bnc-cfg-checkbox::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.5px;
+  width: 5px;
+  height: 9px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.16s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.bnc-cfg-checkrow.bnc-selected .bnc-cfg-checkbox::after { transform: rotate(45deg) scale(1); }
+.bnc-cfg-checkrow .bnc-check-code { font-weight: 700; color: var(--bnc-blue-dark); }
+.bnc-cfg-checkrow.bnc-selected .bnc-check-code { color: var(--bnc-blue); }
+.bnc-cfg-checkrow .bnc-check-desc { color: var(--bnc-text); }
+.bnc-cfg-checkrow .bnc-check-note { display: block; font-size: 11.5px; color: var(--bnc-muted); margin-top: 1px; }
+
+/* Disabled (incompatible) state - dimmed but readable */
+.bnc-disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  background: #f3f5f8;
+}
+.bnc-disabled:hover { transform: none; box-shadow: none; }
+
+/* Reason tag shown on a dimmed option */
+.bnc-cfg-why {
+  display: block;
+  font-size: 11px;
+  color: #a33a06;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* Shake feedback when clicking a dimmed option */
+@keyframes bncShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+.bnc-shake { animation: bncShake 0.22s ease 2; }
+
+/* ---------- Right column: image, info, part number ---------- */
+.bnc-cfg-imgbox {
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  padding: 12px;
+  text-align: center;
+  position: relative;
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+}
+.bnc-cfg-imgbox img {
+  max-width: 100%;
+  max-height: 190px;
+  object-fit: contain;
+  transition: opacity 0.28s ease;
+}
+.bnc-cfg-imgbox img.bnc-swap { opacity: 0; }
+.bnc-cfg-imgcaption { font-size: 12px; font-weight: 700; color: var(--bnc-blue-dark); }
+.bnc-cfg-imgbadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+.bnc-cfg-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bnc-blue-dark);
+  background: var(--bnc-blue-tint);
+  border: 1px solid #c4d7ea;
+  border-radius: 3px;
+  padding: 2px 8px;
+  animation: bncBadgeIn 0.24s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+@keyframes bncBadgeIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Base model card (display only, not a picker) */
+.bnc-cfg-modelcard.bnc-basecard { cursor: default; flex: 1 1 auto; }
+
+/* Other similar models (side panel) */
+.bnc-cfg-others {
+  background: #ffffff;
+  border: 1px solid var(--bnc-line);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+.bnc-cfg-others h4 {
+  margin: 0 0 8px;
+  font-family: var(--bnc-font-head);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bnc-blue-dark);
+}
+.bnc-cfg-othercard {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1.5px solid var(--bnc-line);
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 0 0 6px;
+  cursor: pointer;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+.bnc-cfg-othercard:last-child { margin-bottom: 0; }
+.bnc-cfg-othercard:hover {
+  border-color: var(--bnc-blue);
+  box-shadow: 0 2px 8px rgba(6, 85, 163, 0.15);
+  transform: translateY(-1px);
+}
+.bnc-cfg-othercard .bnc-mc-name {
+  display: block;
+  font-family: var(--bnc-font-head);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--bnc-blue-dark);
+}
+.bnc-cfg-othercard .bnc-mc-blurb {
+  display: block;
+  font-size: 11px;
+  color: var(--bnc-muted);
+  line-height: 1.3;
+}
+
+/* Estimated delivery note in the quote list */
+.bnc-cfg-stack-pn small.bnc-delivery {
+  color: var(--bnc-blue);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Info panel */
+.bnc-cfg-info {
+  background: #ffffff;
+  border: 1px solid var(--bnc-line);
+  border-left: 4px solid var(--bnc-blue);
+  border-radius: 4px;
+  padding: 14px 16px;
+  /* Fixed height sized for the longest description so the panels below
+     never move as the text changes; scrolls in the rare overflow case. */
+  height: 168px;
+  overflow-y: auto;
+}
+.bnc-cfg-info h4 {
+  margin: 0 0 6px;
+  font-family: var(--bnc-font-head);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--bnc-blue-dark);
+}
+.bnc-cfg-info p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--bnc-text); }
+.bnc-cfg-info .bnc-info-fade { animation: bncInfoIn 0.22s ease; }
+@keyframes bncInfoIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Quote stack */
+.bnc-cfg-stack {
+  background: var(--bnc-blue-tint2);
+  border: 1px solid var(--bnc-line);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+.bnc-cfg-stack h4 {
+  margin: 0 0 8px;
+  font-family: var(--bnc-font-head);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bnc-blue-dark);
+}
+.bnc-cfg-stack-empty { font-size: 12px; color: var(--bnc-muted); font-style: italic; }
+.bnc-cfg-stack-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--bnc-line);
+  animation: bncInfoIn 0.24s ease;
+}
+.bnc-cfg-stack-item:last-child { border-bottom: 0; }
+.bnc-cfg-stack-pn {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bnc-blue-dark);
+  word-break: break-all;
+  line-height: 1.3;
+}
+.bnc-cfg-stack-pn small { display: block; font-weight: 400; color: var(--bnc-muted); font-size: 11px; }
+.bnc-cfg-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--bnc-line);
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.bnc-cfg-qty button {
+  width: 24px;
+  height: 26px;
+  border: 0;
+  background: var(--bnc-blue-tint2);
+  color: var(--bnc-blue-dark);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.14s ease;
+}
+.bnc-cfg-qty button:hover { background: var(--bnc-blue-tint); }
+.bnc-cfg-qty span {
+  min-width: 26px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bnc-text);
+}
+.bnc-cfg-stack-remove {
+  border: 0;
+  background: none;
+  color: #a33a06;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 2px 4px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  transition: background 0.14s ease;
+}
+.bnc-cfg-stack-remove:hover { background: #fbeae2; }
+
+/* ---------- Footer: part number bar + actions ---------- */
+.bnc-cfg-foot {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--bnc-line);
+  background: #ffffff;
+  padding: 12px 24px 14px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.bnc-cfg-pnwrap { flex: 1 1 340px; min-width: 0; }
+.bnc-cfg-pnlabel {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--bnc-muted);
+  margin: 0 0 2px;
+}
+.bnc-cfg-pn {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--bnc-blue-dark);
+  word-break: break-all;
+  line-height: 1.25;
+}
+.bnc-cfg-pn .bnc-pn-seg { display: inline-block; white-space: pre; }
+.bnc-cfg-pn .bnc-pn-new { animation: bncSegIn 0.3s cubic-bezier(0.3, 1.4, 0.5, 1); color: var(--bnc-blue); }
+@keyframes bncSegIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.bnc-cfg-pndesc { font-size: 11.5px; color: var(--bnc-muted); margin-top: 2px; line-height: 1.35; }
+.bnc-cfg-pn .bnc-pn-acc {
+  display: inline-block;
+  font-family: var(--bnc-font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--bnc-blue);
+  margin-left: 6px;
+}
+.bnc-line-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  background: var(--bnc-blue);
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+.bnc-cfg-reset {
+  border: 0;
+  background: none;
+  color: var(--bnc-muted);
+  font-family: var(--bnc-font-body);
+  font-size: 12.5px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.bnc-cfg-reset:hover { color: #a33a06; background: #fbeae2; text-decoration: none; }
+
+.bnc-cfg-foot-actions { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; flex-wrap: wrap; }
+.bnc-cfg-btn {
+  border-radius: 4px;
+  padding: 11px 18px;
+  font-family: var(--bnc-font-head);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  line-height: 1.2;
+}
+.bnc-cfg-btn-secondary {
+  background: #ffffff;
+  border: 2px solid var(--bnc-blue);
+  color: var(--bnc-blue);
+}
+.bnc-cfg-btn-secondary:hover { background: var(--bnc-blue-tint); transform: translateY(-1px); }
+.bnc-cfg-btn-primary {
+  background: var(--bnc-blue);
+  border: 2px solid var(--bnc-blue);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(6, 85, 163, 0.3);
+}
+.bnc-cfg-btn-primary:hover { background: var(--bnc-blue-dark); border-color: var(--bnc-blue-dark); transform: translateY(-1px); }
+.bnc-cfg-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Added-to-quote confirmation flash */
+@keyframes bncFlashGreen {
+  0% { box-shadow: 0 0 0 0 rgba(26, 127, 55, 0.45); }
+  100% { box-shadow: 0 0 0 14px rgba(26, 127, 55, 0); }
+}
+.bnc-flash-added { animation: bncFlashGreen 0.55s ease; }
+
+/* ---------- Quote form panel (slides over right column) ---------- */
+.bnc-cfg-quoteform { display: none; flex-direction: column; gap: 10px; }
+.bnc-cfg-quoteform.bnc-active { display: flex; animation: bncInfoIn 0.24s ease; }
+.bnc-cfg-quoteform label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--bnc-blue-dark);
+  display: block;
+  margin: 0 0 3px;
+}
+.bnc-cfg-quoteform input,
+.bnc-cfg-quoteform textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1.5px solid var(--bnc-line);
+  border-radius: 4px;
+  padding: 9px 10px;
+  font-family: var(--bnc-font-body);
+  font-size: 13px;
+  color: var(--bnc-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.bnc-cfg-quoteform input:focus,
+.bnc-cfg-quoteform textarea:focus {
+  outline: none;
+  border-color: var(--bnc-blue);
+  box-shadow: 0 0 0 3px rgba(6, 85, 163, 0.12);
+}
+.bnc-cfg-quoteform textarea { min-height: 64px; resize: vertical; }
+.bnc-cfg-form-msg { font-size: 12.5px; line-height: 1.45; }
+.bnc-cfg-form-msg.bnc-ok { color: var(--bnc-green); font-weight: 700; }
+.bnc-cfg-form-msg.bnc-err { color: #a33a06; }
+
+/* Success state */
+.bnc-cfg-success {
+  text-align: center;
+  padding: 28px 16px;
+}
+.bnc-cfg-success .bnc-success-mark {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--bnc-green);
+  position: relative;
+  animation: bncBadgeIn 0.35s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.bnc-cfg-success .bnc-success-mark::after {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 12px;
+  width: 12px;
+  height: 22px;
+  border: solid #ffffff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+.bnc-cfg-success h3 {
+  font-family: var(--bnc-font-head);
+  color: var(--bnc-blue-dark);
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+.bnc-cfg-success p { font-size: 13px; color: var(--bnc-muted); margin: 0; line-height: 1.5; }
+
+/* ---------- Base model selector strip (family mode) ---------- */
+.bnc-cfg-models {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 0 0 16px;
+  border-bottom: 2px solid var(--bnc-blue-tint);
+}
+.bnc-cfg-modelcard {
+  flex: 1 1 150px;
+  min-width: 140px;
+  border: 1.5px solid var(--bnc-line);
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.16s ease, background 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+.bnc-cfg-modelcard:hover:not(.bnc-selected) {
+  border-color: var(--bnc-blue);
+  box-shadow: 0 2px 10px rgba(6, 85, 163, 0.15);
+  transform: translateY(-1px);
+}
+.bnc-cfg-modelcard.bnc-selected {
+  border-color: var(--bnc-blue);
+  background: var(--bnc-blue-tint);
+  box-shadow: inset 0 0 0 1px var(--bnc-blue);
+}
+.bnc-cfg-modelcard .bnc-mc-name {
+  display: block;
+  font-family: var(--bnc-font-head);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--bnc-blue-dark);
+}
+.bnc-cfg-modelcard .bnc-mc-blurb {
+  display: block;
+  font-size: 11.5px;
+  color: var(--bnc-muted);
+  margin-top: 2px;
+  line-height: 1.35;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .bnc-cfg-overlay { padding: 0; }
+  .bnc-cfg-window { max-height: 100vh; height: 100%; width: 100%; border-radius: 0; }
+  .bnc-cfg-body { flex-direction: column; overflow-y: auto; }
+  .bnc-cfg-left { overflow: visible; flex: 0 0 auto; }
+  .bnc-cfg-right { max-width: none; border-left: 0; border-top: 1px solid var(--bnc-line); overflow: visible; flex: 0 0 auto; }
+  .bnc-cfg-imgbox img { max-height: 140px; }
+  .bnc-cfg-foot { position: sticky; bottom: 0; box-shadow: 0 -4px 14px rgba(17, 49, 99, 0.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bnc-cfg-overlay, .bnc-cfg-window, .bnc-cfg-pill, .bnc-cfg-checkrow,
+  .bnc-cfg-imgbox img, .bnc-cfg-badge, .bnc-pn-new { transition: none; animation: none; }
+}
