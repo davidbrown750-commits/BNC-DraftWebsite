@@ -20,11 +20,30 @@
   }
   function userId() { try { return (window.Clerk && window.Clerk.user && window.Clerk.user.id) || ""; } catch (e) { return ""; } }
 
-  var VID = vid(), active = 0, lastResume = Date.now(), sent = false;
-  // tab-aware dwell: only count time the tab is actually visible
+  var VID = vid(), active = 0, lastTick = Date.now(), sent = false;
+  // Idle-aware dwell: the clock only advances between interactions (mouse, keys,
+  // scroll, touch), and any single quiet stretch counts for at most IDLE_MS —
+  // so a tab left open on screen stops accruing "engaged" time once the visitor
+  // walks away. Hidden tabs never accrue.
+  var IDLE_MS = 60000;
+  function tick() {
+    var now = Date.now();
+    if (document.visibilityState !== "hidden") active += Math.min(now - lastTick, IDLE_MS);
+    lastTick = now;
+  }
   document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "hidden") { active += Date.now() - lastResume; }
-    else { lastResume = Date.now(); }
+    if (document.visibilityState === "hidden") { tick(); }
+    else { lastTick = Date.now(); }
+  });
+  var lastBump = 0;
+  function onActivity() {
+    var now = Date.now();
+    if (now - lastBump < 1000) return; // throttle: mousemove fires constantly
+    lastBump = now;
+    tick();
+  }
+  ["mousemove", "mousedown", "keydown", "scroll", "touchstart", "click"].forEach(function (ev) {
+    addEventListener(ev, onActivity, { passive: true, capture: true });
   });
 
   function canonicalTitle() {
@@ -38,7 +57,7 @@
     return document.title;
   }
   function payload() {
-    if (document.visibilityState !== "hidden") { active += Date.now() - lastResume; lastResume = Date.now(); }
+    tick();
     return JSON.stringify({
       visitor_id: VID, user_id: userId(), email: email(),
       path: location.pathname, page_title: canonicalTitle(),

@@ -6,6 +6,11 @@
 // The page sends ?token=<password>; we compare it server-side to VISITOR_EXPLORER_TOKEN.
 // Fail-closed: if VISITOR_EXPLORER_TOKEN is not set, every request is denied.
 
+// Longest stretch of a single pageview that still counts as engagement. Rows
+// written before the tracker went idle-aware can carry hours of walked-away
+// time; anything past this is reported as idle, not engagement.
+const IDLE_CAP_S = 600;
+
 // Path -> product line. A path can match more than one line.
 const PRODUCT_RULES = [
   ["Pulse & Delay Generators", /(pdg|delay-gen|model-5(2|7|8)|\b5(2[05]|7[57]|8[589])\b|745)/],
@@ -173,16 +178,23 @@ module.exports = async function handler(req, res) {
       if (v.visited_at > g.last) g.last = v.visited_at;
       g.hits++;
       g.days.add((v.visited_at || "").slice(0, 10));
-      // cap a single pageview's dwell at 30 min so one left-open tab can't skew the total
-      g.dwell += Math.min(Math.max(v.dwell_seconds || 0, 0), 1800);
+      // Cap a single pageview's dwell at 10 min: a left-open tab used to run the
+      // clock until the browser closed (rows recorded before the tracker went
+      // idle-aware), which badly inflated "engaged time". Nobody reads one page
+      // for longer than this; the excess is idle, not engagement.
+      g.dwell += Math.min(Math.max(v.dwell_seconds || 0, 0), IDLE_CAP_S);
       const pg = g.pages.get(v.path) || { count: 0, last: v.visited_at, title: v.page_title };
       pg.count++;
       if (v.visited_at > pg.last) pg.last = v.visited_at;
       if (v.page_title && !pg.title) pg.title = v.page_title;
       g.pages.set(v.path, pg);
       for (const ln of linesFor(v.path)) g.lines.add(ln);
-      if (g.timeline.length < 50)
-        g.timeline.push({ path: v.path, title: v.page_title, at: v.visited_at, dwell: v.dwell_seconds || 0 });
+      if (g.timeline.length < 50) {
+        const rawDwell = Math.max(v.dwell_seconds || 0, 0);
+        g.timeline.push({ path: v.path, title: v.page_title, at: v.visited_at,
+                          dwell: Math.min(rawDwell, IDLE_CAP_S),
+                          idle_trimmed: rawDwell > IDLE_CAP_S });
+      }
     }
 
     let visitors = [...map.values()].map((g) => ({
