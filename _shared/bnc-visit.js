@@ -275,3 +275,26 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fill);
   setTimeout(fill,1500);
 })();
+
+
+/* Add RFS-4220 to the RF Signal Generators nav submenu, last item. */
+(function(){
+  if(window.__rfs4220NavDone) return; window.__rfs4220NavDone=true;
+  function wire(){
+    try{
+      var links=document.querySelectorAll('.sitenav-menu a, nav a');
+      var anchor=null;
+      links.forEach(function(a){ if(/bnc-rfs-1000-datasheet/.test(a.getAttribute('href')||'')) anchor=a; });
+      if(!anchor) return;
+      if(anchor.parentNode.querySelector('a[data-rfs4220]')) return;
+      var na=anchor.cloneNode(true);
+      na.setAttribute('data-rfs4220','1');
+      na.textContent='RFS-4220';
+      na.setAttribute('href', anchor.getAttribute('href').replace('bnc-rfs-1000-datasheet','bnc-rfs-4220-datasheet'));
+      anchor.parentNode.insertBefore(na, anchor.nextSibling);
+    }catch(_){}
+  }
+  wire();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',wire);
+  setTimeout(wire,1200);
+})();
