@@ -298,3 +298,22 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',wire);
   setTimeout(wire,1200);
 })();
+
+
+/* Add RFS-4220 to on-site search: index entry, tile image, description. */
+(function(){
+  if(window.__rfs4220SearchDone) return; window.__rfs4220SearchDone=true;
+  function wire(){
+    try{
+      var u='docs/bnc-rfs-4220-datasheet.html';
+      if(window.SITE_INDEX && !window.SITE_INDEX.some(function(e){return e&&e.u===u;})){
+        window.SITE_INDEX.push({t:'RFS-4220 RF Signal Generator 22 GHz - Coming Soon - Berkeley Nucleonics', u:u, c:'Berkeley Nucleonics \u00b7 Data Sheet', k:'rfs-4220 rfs 4220 rf signal generator 22 ghz coming soon microwave berkeley nucleonics'});
+      }
+      if(window.SSIMG && !window.SSIMG[u]) window.SSIMG[u]='/docs/figures/rfs-4220-og.png';
+      if(window.SSDESC && !window.SSDESC[u]) window.SSDESC[u]='The RFS-4220 RF signal generator reaches 22 GHz. Coming soon from Berkeley Nucleonics. Join the launch list to get the datasheet first.';
+    }catch(_){}
+  }
+  wire();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',wire);
+  setTimeout(wire,1000);
+})();
