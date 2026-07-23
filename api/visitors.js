@@ -117,7 +117,7 @@ async function isAuthorized(token, sharedToken) {
   if (linkKey && parts.length === 2) {
     try {
       const email = Buffer.from(parts[0], "base64url").toString("utf8").toLowerCase().trim();
-      const allow = (process.env.VISITOR_ALLOW || "david.brown@berkeleynucleonics.com,meraly.rodas@berkeleynucleonics.com")
+      const allow = (process.env.VISITOR_ALLOW || "david.brown@berkeleynucleonics.com,meraly.rodas@berkeleynucleonics.com,john.reynolds@berkeleynucleonics.com")
         .split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
       if (!allow.includes(email)) return false;
       const want = crypto.createHmac("sha256", linkKey).update(email).digest("hex");
