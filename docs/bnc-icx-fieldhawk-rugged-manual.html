@@ -273,8 +273,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a class="reqpdf" href="../contact.html" target="_blank" rel="noopener" onclick="window.open('../contact.html?notes='+encodeURIComponent('Please send a PDF or print copy of: '+location.href),'_blank');return false;">Request PDF / Print Copy</a><div class="ht">
     <div class="kicker">Product Manual</div>
     <h1>ICX-FieldHawk-R Real-Time Spectrum Analyzer</h1>
-    <p>A field-deployed real-time spectrum analyzer covering 9 kHz to 9.5, 20, or 40 GHz with a 100 MHz analysis bandwidth, an FPGA real-time FFT engine, and a unified cross-platform API. The ICX-FieldHawk-R brings strong RF performance to space- and cost-constrained measurement systems, indoors or out.</p>
-    <div class="ver">ICX-FieldHawk-R Series &middot; ICX-090R / ICX-200R / ICX-400R</div>
+    <p>A field-deployed real-time spectrum analyzer covering 9 kHz to <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): 9.5, 20, or 40 GHz -->9.5 or 40 GHz with a 100 MHz analysis bandwidth, an FPGA real-time FFT engine, and a unified cross-platform API. The ICX-FieldHawk-R brings strong RF performance to space- and cost-constrained measurement systems, indoors or out.</p>
+    <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <div class="ver">ICX-FieldHawk-R Series &middot; ICX-090R / ICX-200R / ICX-400R</div> -->
+    <div class="ver">ICX-FieldHawk-R Series &middot; ICX-090R / ICX-400R</div>
   </div>
   <div class="hero-img"><img src="../figures/icx-fieldhawk-rugged-man/sae-nxe-units-cover.png" alt="ICX-FieldHawk-R real-time spectrum analyzer modules"></div>
 </div></section>
@@ -306,7 +307,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section id="notes-block" data-webmaster>
     <div class="note warn"><b>Branding &amp; verification notes.</b> This manual is reconciled from the source SAE/NXE series real-time spectrum analyzer documentation. The source documents two frequency variants over USB and networked interfaces. The assumptions below were applied; confirm each before publication.
       <ul class="man-list">
-        <li><strong>Model mapping.</strong> The numeric part is the maximum frequency in GHz times 10 and is preserved exactly. The line covers three bands: 9.5 GHz, 20 GHz, and 40 GHz. These map to <b>ICX-090R</b> (9 kHz to 9.5 GHz), <b>ICX-200R</b> (9 kHz to 20 GHz), and <b>ICX-400R</b> (9 kHz to 40 GHz). The <code>R</code> suffix marks the FieldHawk-R rugged line. The 40 GHz ICX-400R RF specifications, including its 2.4 mm (M) RF input, are drawn from the 40 GHz product documentation; rugged-enclosure attributes remain to be confirmed. <b>verify.</b></li>
+        <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <li><strong>Model mapping.</strong> The numeric part is the maximum frequency in GHz times 10 and is preserved exactly. The line covers three bands: 9.5 GHz, 20 GHz, and 40 GHz. These map to <b>ICX-090R</b> (9 kHz to 9.5 GHz), <b>ICX-200R</b> (9 kHz to 20 GHz), and <b>ICX-400R</b> (9 kHz to 40 GHz). The <code>R</code> suffix marks the FieldHawk-R rugged line. The 40 GHz ICX-400R RF specifications, including its 2.4 mm (M) RF input, are drawn from the 40 GHz product documentation; rugged-enclosure attributes remain to be confirmed. <b>verify.</b></li> -->
+        <li><strong>Model mapping.</strong> The numeric part is the maximum frequency in GHz times 10 and is preserved exactly. The line covers two bands: 9.5 GHz and 40 GHz. These map to <b>ICX-090R</b> (9 kHz to 9.5 GHz) and <b>ICX-400R</b> (9 kHz to 40 GHz). The <code>R</code> suffix marks the FieldHawk-R rugged line. The 40 GHz ICX-400R RF specifications, including its 2.4 mm (M) RF input, are drawn from the 40 GHz product documentation; rugged-enclosure attributes remain to be confirmed. <b>verify.</b></li>
         <li><strong>Rugged-specific claims not in the source.</strong> The source SAE/NXE documentation describes compact USB and networked modules. It does <b>not</b> state an IP68 rating, MIL-STD-810H qualification, a built-in display or touch screen, an internal battery, or an on-board AI compute platform. The 40 GHz ICX-400R and its 2.4 mm (M) RF input are taken from the 40 GHz product documentation. Any rugged-enclosure, connector, display, battery, or AI-platform specification for the FieldHawk-R must come from the FieldHawk-R hardware datasheet, not this source. <b>verify.</b></li>
         <li><strong>Software rename.</strong> The source control software is renamed throughout to <b>SpectraCore</b>, Berkeley Nucleonics' spectrum analysis firmware. Described functionality is unchanged.</li>
         <li><strong>Specifications.</strong> All spec values are reproduced identically from the source for the same RF hardware. Tables were lightly regrouped for readability. Values remain preliminary pending verification against the published BNC datasheet. <b>verify.</b></li>
@@ -319,11 +321,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2><span class="num">1</span>Overview</h2>
     <figure class="fig figctr"><img src="../figures/icx-fieldhawk-rugged-man/sae-nxe-units-cover.png" alt="ICX-FieldHawk-R real-time spectrum analyzer modules from the source product documentation"><figcaption>Figure 1-1. The ICX-FieldHawk-R real-time spectrum analyzer, shown as the source SAE (USB) and NXE (networked) modules. Source product photo; the housings carry the original vendor wordmark and series labels, to be relabeled to the BNC / ICX-FieldHawk mark when recaptured. <b>verify.</b></figcaption></figure>
     <p>The ICX-FieldHawk-R is a high-performance real-time spectrum analyzer that delivers strong RF performance in a field-deployed package. It integrates cleanly into automated test systems, holds spectral purity under demanding conditions, and cuts both deployment and operating cost. That combination makes it well suited to space- and cost-constrained measurement where a full benchtop instrument would be impractical.</p>
-    <p>RF coverage spans 9 kHz to 9.5, 20, or 40 GHz depending on model, with a standard 100 MHz analysis bandwidth. A high-speed FPGA FFT engine delivers gapless real-time monitoring and sweep speeds beyond 1 THz/s. The SpectraCore API supports C/C++, C#, Python, MATLAB, Qt, and LabVIEW on Windows and Linux for secondary development and integration, and the instrument speaks the standard SCPI protocol.</p>
+    <p>RF coverage spans 9 kHz to <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): 9.5, 20, or 40 GHz -->9.5 or 40 GHz depending on model, with a standard 100 MHz analysis bandwidth. A high-speed FPGA FFT engine delivers gapless real-time monitoring and sweep speeds beyond 1 THz/s. The SpectraCore API supports C/C++, C#, Python, MATLAB, Qt, and LabVIEW on Windows and Linux for secondary development and integration, and the instrument speaks the standard SCPI protocol.</p>
 
     <h3>Key features</h3>
     <ul class="man-list">
-      <li><strong>Frequency range:</strong> 9 kHz to 9.5 GHz (ICX-090R), 9 kHz to 20 GHz (ICX-200R), or 9 kHz to 40 GHz (ICX-400R).</li>
+      <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <li><strong>Frequency range:</strong> 9 kHz to 9.5 GHz (ICX-090R), 9 kHz to 20 GHz (ICX-200R), or 9 kHz to 40 GHz (ICX-400R).</li> -->
+      <li><strong>Frequency range:</strong> 9 kHz to 9.5 GHz (ICX-090R) or 9 kHz to 40 GHz (ICX-400R).</li>
       <li><strong>Analysis bandwidth:</strong> 100 MHz.</li>
       <li><strong>1 GHz DANL:</strong> down to -167.5 dBm/Hz (R.L. -50 dBm, 90 MHz to 3 GHz band).</li>
       <li><strong>1 GHz phase noise:</strong> better than -100 dBc/Hz at 10 kHz offset.</li>
@@ -341,7 +344,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <table class="spec">
       <tr><th>Model</th><th>Frequency range</th><th>Analysis bandwidth</th></tr>
       <tr><td>ICX-090R</td><td class="nw">9 kHz to 9.5 GHz</td><td class="nw">100 MHz</td></tr>
-      <tr><td>ICX-200R</td><td class="nw">9 kHz to 20 GHz</td><td class="nw">100 MHz</td></tr>
+      <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <tr><td>ICX-200R</td><td class="nw">9 kHz to 20 GHz</td><td class="nw">100 MHz</td></tr> -->
       <tr><td>ICX-400R</td><td class="nw">9 kHz to 40 GHz</td><td class="nw">100 MHz</td></tr>
     </table>
     <div class="note"><b>RF connector.</b> The source documents SMA (F) on the 9.5 GHz hardware and 2.92 mm (F) on the 20 GHz hardware (see General &amp; Physical). The 40 GHz ICX-400R uses a 2.4 mm (M) RF input per the 40 GHz product documentation. Each rugged FieldHawk-R connector should be confirmed against the FieldHawk-R datasheet. <b>verify.</b></div>
@@ -422,15 +425,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section id="frequency">
     <h2><span class="num">5</span>Frequency</h2>
     <table class="spec">
-      <tr><th>Parameter</th><th>ICX-090R</th><th>ICX-200R</th><th>ICX-400R</th></tr>
-      <tr><td>Frequency range</td><td class="nw">9 kHz to 9.5 GHz</td><td class="nw">9 kHz to 20 GHz</td><td class="nw">9 kHz to 40 GHz</td></tr>
-      <tr><td>Reference clock</td><td colspan="3">Internal or external</td></tr>
-      <tr><td>Frequency accuracy, TCXO (std.)</td><td colspan="3">&lt;1 ppm, manual correction available</td></tr>
-      <tr><td>Frequency accuracy, OCXO (opt 01)</td><td colspan="3">&lt;1 ppm, manual correction available</td></tr>
-      <tr><td>Frequency accuracy, GNSS-disciplined OCXO (opt 23/06)</td><td colspan="3">&lt;0.05 ppm when locked to GNSS</td></tr>
-      <tr><td>Aging &amp; temp. stability, TCXO (std.)</td><td colspan="3">&lt;1 ppm/year, &lt;1 ppm</td></tr>
-      <tr><td>Aging &amp; temp. stability, OCXO (opt 01)</td><td colspan="3">&lt;1 ppm/year, &lt;0.15 ppm</td></tr>
-      <tr><td>Aging &amp; temp. stability, GNSS-disciplined OCXO (opt 23/06)</td><td colspan="3">&lt;1 ppm/year, &lt;0.05 ppm</td></tr>
+      <tr><th>Parameter</th><th>ICX-090R</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-200R</th> --><th>ICX-400R</th></tr>
+      <tr><td>Frequency range</td><td class="nw">9 kHz to 9.5 GHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">9 kHz to 20 GHz</td> --><td class="nw">9 kHz to 40 GHz</td></tr>
+      <tr><td>Reference clock</td><td colspan="2">Internal or external</td></tr>
+      <tr><td>Frequency accuracy, TCXO (std.)</td><td colspan="2">&lt;1 ppm, manual correction available</td></tr>
+      <tr><td>Frequency accuracy, OCXO (opt 01)</td><td colspan="2">&lt;1 ppm, manual correction available</td></tr>
+      <tr><td>Frequency accuracy, GNSS-disciplined OCXO (opt 23/06)</td><td colspan="2">&lt;0.05 ppm when locked to GNSS</td></tr>
+      <tr><td>Aging &amp; temp. stability, TCXO (std.)</td><td colspan="2">&lt;1 ppm/year, &lt;1 ppm</td></tr>
+      <tr><td>Aging &amp; temp. stability, OCXO (opt 01)</td><td colspan="2">&lt;1 ppm/year, &lt;0.15 ppm</td></tr>
+      <tr><td>Aging &amp; temp. stability, GNSS-disciplined OCXO (opt 23/06)</td><td colspan="2">&lt;1 ppm/year, &lt;0.05 ppm</td></tr>
     </table>
   </section>
 
@@ -438,32 +441,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2><span class="num">6</span>Spectrum Purity</h2>
     <h3>SSB phase noise (dBc/Hz)</h3>
     <table class="spec">
-      <tr><th>Offset</th><th>ICX-090R &middot; 1 GHz</th><th>ICX-090R &middot; 9.5 GHz</th><th>ICX-200R &middot; 1 GHz</th><th>ICX-200R &middot; 20 GHz</th><th>ICX-400R &middot; 1 GHz</th><th>ICX-400R &middot; 40 GHz</th></tr>
-      <tr><td>1 kHz</td><td>-95.2</td><td>-91.5</td><td>-91.2</td><td>-80.6</td><td>-99.0</td><td>-78.4</td></tr>
-      <tr><td>10 kHz</td><td>-101.6</td><td>-98.5</td><td>-99.7</td><td>-90.6</td><td>-107.5</td><td>-85.7</td></tr>
-      <tr><td>100 kHz</td><td>-100.6</td><td>-99.7</td><td>-101.1</td><td>-96.2</td><td>-107.7</td><td>-85.1</td></tr>
-      <tr><td>1 MHz</td><td>-120.9</td><td>-116.2</td><td>-121.6</td><td>-111.5</td><td>-122.7</td><td>-100.8</td></tr>
+      <tr><th>Offset</th><th>ICX-090R &middot; 1 GHz</th><th>ICX-090R &middot; 9.5 GHz</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-200R &middot; 1 GHz</th><th>ICX-200R &middot; 20 GHz</th> --><th>ICX-400R &middot; 1 GHz</th><th>ICX-400R &middot; 40 GHz</th></tr>
+      <tr><td>1 kHz</td><td>-95.2</td><td>-91.5</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-91.2</td><td>-80.6</td> --><td>-99.0</td><td>-78.4</td></tr>
+      <tr><td>10 kHz</td><td>-101.6</td><td>-98.5</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-99.7</td><td>-90.6</td> --><td>-107.5</td><td>-85.7</td></tr>
+      <tr><td>100 kHz</td><td>-100.6</td><td>-99.7</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-101.1</td><td>-96.2</td> --><td>-107.7</td><td>-85.1</td></tr>
+      <tr><td>1 MHz</td><td>-120.9</td><td>-116.2</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-121.6</td><td>-111.5</td> --><td>-122.7</td><td>-100.8</td></tr>
     </table>
 
     <h3>Residual response (dBm)</h3>
     <p>Conditions: spur reject = bypass, RBW = 1 kHz, PosPeak detector.</p>
     <table class="spec">
-      <tr><th>Frequency band</th><th>090R &middot; R.L. 0 dBm</th><th>090R &middot; R.L. -50 dBm</th><th>200R &middot; R.L. 0 dBm</th><th>200R &middot; R.L. -50 dBm</th><th>400R &middot; R.L. 0 dBm</th><th>400R &middot; R.L. -50 dBm</th></tr>
-      <tr><td>9 kHz to 1 GHz</td><td>-83</td><td>-120</td><td>-90</td><td>-120</td><td>-72</td><td>-103</td></tr>
-      <tr><td>1 GHz to 3 GHz</td><td>-83</td><td>-120</td><td>-80</td><td>-120</td><td>-72</td><td>-103</td></tr>
-      <tr><td>3 GHz to 9.5 GHz</td><td>-90</td><td>-130</td><td>-90</td><td>-120</td><td>-72</td><td>-103</td></tr>
-      <tr><td>9.5 GHz to 20 GHz</td><td>&mdash;</td><td>&mdash;</td><td>-90</td><td>-120</td><td>-91</td><td>-115</td></tr>
-      <tr><td>20 GHz to 40 GHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>-85</td><td>-103</td></tr>
+      <tr><th>Frequency band</th><th>090R &middot; R.L. 0 dBm</th><th>090R &middot; R.L. -50 dBm</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>200R &middot; R.L. 0 dBm</th><th>200R &middot; R.L. -50 dBm</th> --><th>400R &middot; R.L. 0 dBm</th><th>400R &middot; R.L. -50 dBm</th></tr>
+      <tr><td>9 kHz to 1 GHz</td><td>-83</td><td>-120</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-90</td><td>-120</td> --><td>-72</td><td>-103</td></tr>
+      <tr><td>1 GHz to 3 GHz</td><td>-83</td><td>-120</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-80</td><td>-120</td> --><td>-72</td><td>-103</td></tr>
+      <tr><td>3 GHz to 9.5 GHz</td><td>-90</td><td>-130</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-90</td><td>-120</td> --><td>-72</td><td>-103</td></tr>
+      <tr><td>9.5 GHz to 20 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-90</td><td>-120</td> --><td>-91</td><td>-115</td></tr>
+      <tr><td>20 GHz to 40 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&mdash;</td><td>&mdash;</td> --><td>-85</td><td>-103</td></tr>
     </table>
 
     <h3>Image rejection (dBc), typical</h3>
     <table class="spec">
-      <tr><th>Frequency band</th><th>090R &middot; standard</th><th>090R &middot; bypass</th><th>200R &middot; standard</th><th>200R &middot; bypass</th><th>400R &middot; standard</th><th>400R &middot; bypass</th></tr>
-      <tr><td>90 MHz to 3 GHz</td><td>&gt;90</td><td>&gt;76</td><td>&gt;90</td><td>&gt;79</td><td>&gt;90</td><td>&mdash;</td></tr>
-      <tr><td>3 GHz to 9.5 GHz</td><td>&gt;90</td><td>&gt;60</td><td>&gt;90</td><td>&gt;68</td><td>&gt;90</td><td>&mdash;</td></tr>
-      <tr><td>9.5 GHz to 20 GHz</td><td>&mdash;</td><td>&mdash;</td><td>&gt;90</td><td>&gt;60</td><td>&gt;90</td><td>&mdash;</td></tr>
-      <tr><td>20 GHz to 33 GHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&gt;90</td><td>&mdash;</td></tr>
-      <tr><td>33 GHz to 40 GHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&gt;58</td><td>&mdash;</td></tr>
+      <tr><th>Frequency band</th><th>090R &middot; standard</th><th>090R &middot; bypass</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>200R &middot; standard</th><th>200R &middot; bypass</th> --><th>400R &middot; standard</th><th>400R &middot; bypass</th></tr>
+      <tr><td>90 MHz to 3 GHz</td><td>&gt;90</td><td>&gt;76</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&gt;90</td><td>&gt;79</td> --><td>&gt;90</td><td>&mdash;</td></tr>
+      <tr><td>3 GHz to 9.5 GHz</td><td>&gt;90</td><td>&gt;60</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&gt;90</td><td>&gt;68</td> --><td>&gt;90</td><td>&mdash;</td></tr>
+      <tr><td>9.5 GHz to 20 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&gt;90</td><td>&gt;60</td> --><td>&gt;90</td><td>&mdash;</td></tr>
+      <tr><td>20 GHz to 33 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&mdash;</td><td>&mdash;</td> --><td>&gt;90</td><td>&mdash;</td></tr>
+      <tr><td>33 GHz to 40 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&mdash;</td><td>&mdash;</td> --><td>&gt;58</td><td>&mdash;</td></tr>
     </table>
 
     <h3>IF rejection and spurious (dBc), typical</h3>
@@ -476,10 +479,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <h3>IIP3 / IIP2 (dBm)</h3>
     <table class="spec">
-      <tr><th>Reference level</th><th>090R &middot; 1 GHz</th><th>090R &middot; 9.5 GHz</th><th>200R &middot; 1 GHz</th><th>200R &middot; 20 GHz</th><th>400R &middot; 1 GHz</th><th>400R &middot; 40 GHz</th></tr>
-      <tr><td>R.L. = 20 dBm</td><td>46.1 / 83.2</td><td>40.5 / 92.8</td><td>45.5 / 82.6</td><td>35.3 / 93.6</td><td>40.3 / 75.5</td><td>31.7 / 88.6</td></tr>
-      <tr><td>R.L. = 0 dBm</td><td>26.7 / 85.0</td><td>19.2 / 90.3</td><td>25.5 / 81.1</td><td>21.0 / 89.0</td><td>27.4 / 45.3</td><td>10.3 / 86.1</td></tr>
-      <tr><td>R.L. = -20 dBm</td><td>10.5 / 82.2</td><td>2.0 / 49.3</td><td>7.9 / 81.5</td><td>-4.5 / 55.3</td><td>8.7 / 25.2</td><td>4.8 / 66.6</td></tr>
+      <tr><th>Reference level</th><th>090R &middot; 1 GHz</th><th>090R &middot; 9.5 GHz</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>200R &middot; 1 GHz</th><th>200R &middot; 20 GHz</th> --><th>400R &middot; 1 GHz</th><th>400R &middot; 40 GHz</th></tr>
+      <tr><td>R.L. = 20 dBm</td><td>46.1 / 83.2</td><td>40.5 / 92.8</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>45.5 / 82.6</td><td>35.3 / 93.6</td> --><td>40.3 / 75.5</td><td>31.7 / 88.6</td></tr>
+      <tr><td>R.L. = 0 dBm</td><td>26.7 / 85.0</td><td>19.2 / 90.3</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>25.5 / 81.1</td><td>21.0 / 89.0</td> --><td>27.4 / 45.3</td><td>10.3 / 86.1</td></tr>
+      <tr><td>R.L. = -20 dBm</td><td>10.5 / 82.2</td><td>2.0 / 49.3</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>7.9 / 81.5</td><td>-4.5 / 55.3</td> --><td>8.7 / 25.2</td><td>4.8 / 66.6</td></tr>
     </table>
   </section>
 
@@ -487,18 +490,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2><span class="num">7</span>Amplitude</h2>
     <table class="spec">
       <tr><th>Parameter</th><th>Value</th><th>Condition</th></tr>
-      <tr><td>Max. input power (CW)</td><td class="nw">23 dBm</td><td>50 MHz to 9.5 / 20 / 40 GHz, preamplifier off</td></tr>
+      <tr><td>Max. input power (CW)</td><td class="nw">23 dBm</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>50 MHz to 9.5 / 20 / 40 GHz, preamplifier off</td> --><td>50 MHz to 9.5 / 40 GHz, preamplifier off</td></tr>
       <tr><td>Max. input power (CW)</td><td class="nw">10 dBm</td><td>9 kHz to 50 MHz, or preamplifier on</td></tr>
       <tr><td>Max. DC voltage</td><td class="nw">&plusmn;10 VDC</td><td></td></tr>
-      <tr><td>Display range</td><td class="nw">DANL to 23 dBm</td><td>ICX-090R / ICX-200R</td></tr>
+      <tr><td>Display range</td><td class="nw">DANL to 23 dBm</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>ICX-090R / ICX-200R</td> --><td>ICX-090R</td></tr>
       <tr><td>Display range</td><td class="nw">DANL to 20 dBm</td><td>ICX-400R</td></tr>
       <tr><td>Amplitude accuracy</td><td class="nw">&plusmn;2.0 dB</td><td>9 kHz to 9.5 GHz</td></tr>
-      <tr><td>Amplitude accuracy</td><td class="nw">&plusmn;3.0 dB</td><td>9.5 GHz to 20 / 40 GHz</td></tr>
+      <tr><td>Amplitude accuracy</td><td class="nw">&plusmn;3.0 dB</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>9.5 GHz to 20 / 40 GHz</td> --><td>9.5 GHz to 40 GHz</td></tr>
       <tr><td>IF in-band flatness</td><td class="nw">&plusmn;2.0 dB</td><td></td></tr>
-      <tr><td>Reference level (R.L.)</td><td class="nw">-50 dBm to +23 dBm</td><td>ICX-090R / ICX-200R</td></tr>
+      <tr><td>Reference level (R.L.)</td><td class="nw">-50 dBm to +23 dBm</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>ICX-090R / ICX-200R</td> --><td>ICX-090R</td></tr>
       <tr><td>Reference level (R.L.)</td><td class="nw">-50 dBm to +20 dBm</td><td>ICX-400R</td></tr>
       <tr><td>RF preamplifiers</td><td colspan="2">Automatic on, or forced off</td></tr>
-      <tr><td>VSWR</td><td class="nw">&lt;2.0:1</td><td>90 MHz to max. frequency (ICX-090R / ICX-200R)</td></tr>
+      <tr><td>VSWR</td><td class="nw">&lt;2.0:1</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>90 MHz to max. frequency (ICX-090R / ICX-200R)</td> --><td>90 MHz to max. frequency (ICX-090R)</td></tr>
       <tr><td>VSWR</td><td class="nw">&lt;2.0:1 / &lt;3.0:1</td><td>ICX-400R: 90 MHz to 16 GHz / 16 GHz to 40 GHz</td></tr>
     </table>
   </section>
@@ -507,14 +510,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h2><span class="num">8</span>Display Average Noise Level (DANL)</h2>
     <p>Units: dBm/Hz. Condition: RBW = 1 kHz.</p>
     <table class="spec">
-      <tr><th>Frequency band</th><th>090R &middot; R.L. -20 dBm</th><th>090R &middot; R.L. -50 dBm</th><th>200R &middot; R.L. -20 dBm</th><th>200R &middot; R.L. -50 dBm</th><th>400R &middot; R.L. -20 dBm</th><th>400R &middot; R.L. -50 dBm</th></tr>
-      <tr><td>9 kHz to 1 MHz</td><td>-143.0</td><td>-152.4</td><td>-143.6</td><td>-152.6</td><td>-136.0</td><td>-145.8</td></tr>
-      <tr><td>1 MHz to 90 MHz</td><td>-152.0</td><td>-159.2</td><td>-151.8</td><td>-160.0</td><td>-153.7</td><td>-158.0</td></tr>
-      <tr><td>90 MHz to 3.0 GHz</td><td>-146.0</td><td>-167.5</td><td>-149.7</td><td>-166.3</td><td>-154.1</td><td>-159.9</td></tr>
-      <tr><td>3.0 GHz to 9.5 GHz</td><td>-153.6</td><td>-167.0</td><td>-151.4</td><td>-157.5</td><td>-154.1</td><td>-159.9</td></tr>
-      <tr><td>9.5 GHz to 19 GHz</td><td>&mdash;</td><td>&mdash;</td><td>-156.1</td><td>-160.6</td><td>-156.8</td><td>-161.5</td></tr>
-      <tr><td>19 GHz to 20 GHz</td><td>&mdash;</td><td>&mdash;</td><td>-156.1</td><td>-160.6</td><td>-145.2</td><td>-149.3</td></tr>
-      <tr><td>20 GHz to 40 GHz</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>-145.2</td><td>-149.3</td></tr>
+      <tr><th>Frequency band</th><th>090R &middot; R.L. -20 dBm</th><th>090R &middot; R.L. -50 dBm</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>200R &middot; R.L. -20 dBm</th><th>200R &middot; R.L. -50 dBm</th> --><th>400R &middot; R.L. -20 dBm</th><th>400R &middot; R.L. -50 dBm</th></tr>
+      <tr><td>9 kHz to 1 MHz</td><td>-143.0</td><td>-152.4</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-143.6</td><td>-152.6</td> --><td>-136.0</td><td>-145.8</td></tr>
+      <tr><td>1 MHz to 90 MHz</td><td>-152.0</td><td>-159.2</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-151.8</td><td>-160.0</td> --><td>-153.7</td><td>-158.0</td></tr>
+      <tr><td>90 MHz to 3.0 GHz</td><td>-146.0</td><td>-167.5</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-149.7</td><td>-166.3</td> --><td>-154.1</td><td>-159.9</td></tr>
+      <tr><td>3.0 GHz to 9.5 GHz</td><td>-153.6</td><td>-167.0</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-151.4</td><td>-157.5</td> --><td>-154.1</td><td>-159.9</td></tr>
+      <tr><td>9.5 GHz to 19 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-156.1</td><td>-160.6</td> --><td>-156.8</td><td>-161.5</td></tr>
+      <tr><td>19 GHz to 20 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-156.1</td><td>-160.6</td> --><td>-145.2</td><td>-149.3</td></tr>
+      <tr><td>20 GHz to 40 GHz</td><td>&mdash;</td><td>&mdash;</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>&mdash;</td><td>&mdash;</td> --><td>-145.2</td><td>-149.3</td></tr>
     </table>
   </section>
 
@@ -530,11 +533,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </table>
     <h3>Sweep speed</h3>
     <table class="spec">
-      <tr><th>Condition</th><th>ICX-090R</th><th>ICX-200R</th><th>ICX-400R</th></tr>
-      <tr><td>RBW = 250 kHz, FPGA, spur reject = bypass</td><td class="nw">1.1 THz/s</td><td class="nw">665.6 GHz/s</td><td class="nw">(verify)</td></tr>
-      <tr><td>RBW = 250 kHz, FPGA, spur reject = standard</td><td class="nw">561.7 GHz/s</td><td class="nw">324.6 GHz/s</td><td class="nw">(verify)</td></tr>
-      <tr><td>RBW = 50 kHz, FPGA, spur reject = bypass</td><td class="nw">209.8 GHz/s</td><td class="nw">161.6 GHz/s</td><td class="nw">(verify)</td></tr>
-      <tr><td>RBW = 1 kHz, CPU, spur reject = bypass</td><td class="nw">4.0 GHz/s</td><td class="nw">3.3 GHz/s</td><td class="nw">(verify)</td></tr>
+      <tr><th>Condition</th><th>ICX-090R</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-200R</th> --><th>ICX-400R</th></tr>
+      <tr><td>RBW = 250 kHz, FPGA, spur reject = bypass</td><td class="nw">1.1 THz/s</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">665.6 GHz/s</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>RBW = 250 kHz, FPGA, spur reject = standard</td><td class="nw">561.7 GHz/s</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">324.6 GHz/s</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>RBW = 50 kHz, FPGA, spur reject = bypass</td><td class="nw">209.8 GHz/s</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">161.6 GHz/s</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>RBW = 1 kHz, CPU, spur reject = bypass</td><td class="nw">4.0 GHz/s</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">3.3 GHz/s</td> --><td class="nw">(verify)</td></tr>
     </table>
     <div class="note"><b>ICX-400R sweep speed.</b> Per-model sweep-rate figures for the 40 GHz ICX-400R are not in the source documentation. They are marked (verify) pending the published BNC datasheet.</div>
   </section>
@@ -552,11 +555,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section id="iq">
     <h2><span class="num">11</span>IQ Recording</h2>
     <table class="spec">
-      <tr><th>Parameter</th><th>ICX-090R</th><th>ICX-200R</th><th>ICX-400R</th></tr>
-      <tr><td>Continuous recording bandwidth</td><td class="nw">Maximum 50 MHz</td><td class="nw">Maximum 6.25 MHz</td><td class="nw">(verify)</td></tr>
-      <tr><td>Burst recording bandwidth</td><td colspan="3">Maximum 100 MHz. Built-in memory depth is 128 Mbytes.</td></tr>
-      <tr><td>IQ sample rate</td><td colspan="3">Maximum 125 MSPS. Decimate factor: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096.</td></tr>
-      <tr><td>External trigger response</td><td colspan="3">Maximum frequency response: 500 times/s</td></tr>
+      <tr><th>Parameter</th><th>ICX-090R</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-200R</th> --><th>ICX-400R</th></tr>
+      <tr><td>Continuous recording bandwidth</td><td class="nw">Maximum 50 MHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">Maximum 6.25 MHz</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>Burst recording bandwidth</td><td colspan="2">Maximum 100 MHz. Built-in memory depth is 128 Mbytes.</td></tr>
+      <tr><td>IQ sample rate</td><td colspan="2">Maximum 125 MSPS. Decimate factor: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096.</td></tr>
+      <tr><td>External trigger response</td><td colspan="2">Maximum frequency response: 500 times/s</td></tr>
     </table>
   </section>
 
@@ -584,7 +587,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="note warn"><b>Interface and form-factor note.</b> The source documents these general specifications across four hardware variants: a USB form (SMA / 2.92 mm, Type-C powered) and a networked form (RJ45, 12 V), each at 9.5 GHz and 20 GHz. The values below are reproduced verbatim from the source by frequency band, with the USB and networked variants shown side by side. Connector, power, enclosure, display, and battery details for the FieldHawk-R rugged form factor must be confirmed against the FieldHawk-R hardware datasheet rather than this source. <b>verify.</b></div>
     <h3>Input and output</h3>
     <table class="spec">
-      <tr><th>Parameter</th><th>ICX-090R / 200R (USB form)</th><th>ICX-090R / 200R (networked form)</th></tr>
+      <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <tr><th>Parameter</th><th>ICX-090R / 200R (USB form)</th><th>ICX-090R / 200R (networked form)</th></tr> -->
+      <tr><th>Parameter</th><th>ICX-090R (USB form)</th><th>ICX-090R (networked form)</th></tr>
       <tr><td>RF input</td><td>SMA (F) at 9.5 GHz; 2.92 mm (F) at 20 GHz; 2.4 mm (M) at 40 GHz (verify)</td><td>SMA (F) at 9.5 GHz; 2.92 mm (F) at 20 GHz; 2.4 mm (M) at 40 GHz (verify)</td></tr>
       <tr><td>Impedance</td><td colspan="2">50 &Omega;</td></tr>
       <tr><td>Power</td><td>Type-C, 5V 2A supply capacity. Voltage range 4.75 to 5.25 V, ripple &lt;200 mVpp.</td><td>Type-C, 12V 2A supply capacity. Voltage range 9 to 12 V, ripple &lt;200 mVpp.</td></tr>
@@ -598,18 +602,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <h3>Physical and environmental</h3>
     <table class="spec">
-      <tr><th>Parameter</th><th>9.5 GHz (USB / networked)</th><th>20 GHz (USB / networked)</th><th>40 GHz (USB / networked)</th></tr>
-      <tr><td>Weight</td><td class="nw">383 g (USB) / 680 g (networked)</td><td class="nw">408 g (USB) / 658 g (networked)</td><td class="nw">(verify)</td></tr>
-      <tr><td>Size (D &times; W &times; H)</td><td class="nw">131 &times; 70 &times; 30 mm (USB); 167 &times; 117 &times; 30 mm (networked)</td><td class="nw">139 &times; 68 &times; 31 mm (USB); 167 &times; 117 &times; 30 mm (networked)</td><td class="nw">(verify)</td></tr>
-      <tr><td>Power consumption</td><td colspan="3">10 to 14 W (USB form); 13 to 16 W (networked form)</td></tr>
-      <tr><td>GNSS type</td><td colspan="3">External (USB form); Internal (networked form)</td></tr>
-      <tr><td>GNSS 1PPS sync accuracy</td><td colspan="3">USB form: Opt21 &plusmn;100 ns, Opt22 &plusmn;75 ns, opt23 &plusmn;50 ns. Networked form: Std &plusmn;100 ns, Opt05 &plusmn;75 ns, Opt06 &plusmn;50 ns.</td></tr>
-      <tr><td>Packaging and accessories</td><td>Flash disk &times; 1, USB 3.0 cable &times; 2, power adapter &times; 1</td><td>Flash disk &times; 1, USB 2.0 cable &times; 1, power adapter &times; 1</td><td class="nw">(verify)</td></tr>
-      <tr><td>System requirements</td><td colspan="3">Windows 11/10/8/7 (x86, x64, AArch64; AArch64 on the networked line only). Debian 12/11/10 (x64, AArch64). Ubuntu 24.04/22.04/20.04/18.04 (x64, AArch64).</td></tr>
-      <tr><td>Operating / storage temperature (ambient), T0 class (std.)</td><td colspan="3">0 to 50 &deg;C / -20 to +70 &deg;C</td></tr>
-      <tr><td>Operating / storage temperature, T1 class (opt40)</td><td colspan="3">-20 to +65 &deg;C / -40 to +85 &deg;C</td></tr>
-      <tr><td>Operating / storage temperature, T2 class (opt41)</td><td colspan="3">-40 to +65 &deg;C / -40 to +85 &deg;C</td></tr>
-      <tr><td>Operating relative humidity</td><td colspan="3">5 to 75% at ambient 0 to 40 &deg;C; 5 to 45% at ambient above 40 &deg;C</td></tr>
+      <tr><th>Parameter</th><th>9.5 GHz (USB / networked)</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>20 GHz (USB / networked)</th> --><th>40 GHz (USB / networked)</th></tr>
+      <tr><td>Weight</td><td class="nw">383 g (USB) / 680 g (networked)</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">408 g (USB) / 658 g (networked)</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>Size (D &times; W &times; H)</td><td class="nw">131 &times; 70 &times; 30 mm (USB); 167 &times; 117 &times; 30 mm (networked)</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td class="nw">139 &times; 68 &times; 31 mm (USB); 167 &times; 117 &times; 30 mm (networked)</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>Power consumption</td><td colspan="2">10 to 14 W (USB form); 13 to 16 W (networked form)</td></tr>
+      <tr><td>GNSS type</td><td colspan="2">External (USB form); Internal (networked form)</td></tr>
+      <tr><td>GNSS 1PPS sync accuracy</td><td colspan="2">USB form: Opt21 &plusmn;100 ns, Opt22 &plusmn;75 ns, opt23 &plusmn;50 ns. Networked form: Std &plusmn;100 ns, Opt05 &plusmn;75 ns, Opt06 &plusmn;50 ns.</td></tr>
+      <tr><td>Packaging and accessories</td><td>Flash disk &times; 1, USB 3.0 cable &times; 2, power adapter &times; 1</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>Flash disk &times; 1, USB 2.0 cable &times; 1, power adapter &times; 1</td> --><td class="nw">(verify)</td></tr>
+      <tr><td>System requirements</td><td colspan="2">Windows 11/10/8/7 (x86, x64, AArch64; AArch64 on the networked line only). Debian 12/11/10 (x64, AArch64). Ubuntu 24.04/22.04/20.04/18.04 (x64, AArch64).</td></tr>
+      <tr><td>Operating / storage temperature (ambient), T0 class (std.)</td><td colspan="2">0 to 50 &deg;C / -20 to +70 &deg;C</td></tr>
+      <tr><td>Operating / storage temperature, T1 class (opt40)</td><td colspan="2">-20 to +65 &deg;C / -40 to +85 &deg;C</td></tr>
+      <tr><td>Operating / storage temperature, T2 class (opt41)</td><td colspan="2">-40 to +65 &deg;C / -40 to +85 &deg;C</td></tr>
+      <tr><td>Operating relative humidity</td><td colspan="2">5 to 75% at ambient 0 to 40 &deg;C; 5 to 45% at ambient above 40 &deg;C</td></tr>
     </table>
   </section>
 
@@ -656,10 +660,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <table class="spec">
       <tr><th>BNC ICX model</th><th>Product line</th><th>Frequency range</th></tr>
       <tr><td>ICX-090R</td><td>ICX-FieldHawk-R (rugged)</td><td class="nw">9 kHz to 9.5 GHz</td></tr>
-      <tr><td>ICX-200R</td><td>ICX-FieldHawk-R (rugged)</td><td class="nw">9 kHz to 20 GHz</td></tr>
+      <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <tr><td>ICX-200R</td><td>ICX-FieldHawk-R (rugged)</td><td class="nw">9 kHz to 20 GHz</td></tr> -->
       <tr><td>ICX-400R</td><td>ICX-FieldHawk-R (rugged)</td><td class="nw">9 kHz to 40 GHz</td></tr>
     </table>
-    <p>The numeric part of each model number is the maximum frequency in GHz multiplied by 10. The <b>R</b> suffix denotes the FieldHawk-R rugged line. The line covers three frequency variants (9.5, 20, and 40 GHz). The 40 GHz ICX-400R, including its 2.4 mm (M) RF input, is specified from the 40 GHz product documentation; rugged-enclosure attributes remain to be confirmed. <b>verify.</b></p>
+    <p>The numeric part of each model number is the maximum frequency in GHz multiplied by 10. The <b>R</b> suffix denotes the FieldHawk-R rugged line. The line covers <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): three frequency variants (9.5, 20, and 40 GHz). -->two frequency variants (9.5 and 40 GHz). The 40 GHz ICX-400R, including its 2.4 mm (M) RF input, is specified from the 40 GHz product documentation; rugged-enclosure attributes remain to be confirmed. <b>verify.</b></p>
 
     <h3>Software</h3>
     <p>All measurement modes and functions described in this manual run in <b>SpectraCore</b>, Berkeley Nucleonics' spectrum analysis firmware. SpectraCore runs on Windows and Linux and pairs with the unified API for automated control. The figures in sections 3 and 4 are SpectraCore screenshots.</p>
