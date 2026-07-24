@@ -1526,20 +1526,22 @@
       {
         id: "icx-u",
         name: "ICX USB series",
-        blurb: "USB receivers, 6.3 to 40 GHz, PC-driven real-time analysis",
-        info: "Compact USB spectrum analyzers driven from a PC running ICX Studio, covering 9 kHz up to 6.3, 9.5 or 40 GHz.",
+        blurb: "USB receivers, 9.5 to 40 GHz, PC-driven real-time analysis",
+        info: "Compact USB spectrum analyzers driven from a PC running ICX Studio, covering 9 kHz up to 9.5 or 40 GHz.",
         image: FIG + "icx-usb.png",
         pnBase: "ICX",
         groups: [
           {
             id: "freq", label: "Model / frequency range", type: "radio",
             options: [
+              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
               { code: "060U", label: "ICX-060U", note: "9 kHz to 6.3 GHz", pn: "-060U",
                 desc: "USB spectrum analyzer, 9 kHz to 6.3 GHz",
                 info: "USB spectrum analyzer covering 9 kHz to 6.3 GHz for RF development, troubleshooting and monitoring.", default: true },
+              */
               { code: "090U", label: "ICX-090U", note: "9 kHz to 9.5 GHz", pn: "-090U",
                 desc: "wideband USB spectrum analyzer, 9 kHz to 9.5 GHz",
-                info: "Wideband USB spectrum analyzer covering 9 kHz to 9.5 GHz for advanced RF, microwave and wireless analysis." },
+                info: "Wideband USB spectrum analyzer covering 9 kHz to 9.5 GHz for advanced RF, microwave and wireless analysis.", default: true },
               { code: "400U", label: "ICX-400U", note: "9 kHz to 40 GHz, OCXO included", pn: "-400U",
                 desc: "professional USB spectrum analyzer, 9 kHz to 40 GHz (OCXO included)",
                 info: "Professional USB spectrum analyzer covering 9 kHz to 40 GHz. The OCXO reference is included as standard." }
@@ -1548,19 +1550,19 @@
           {
             id: "options", label: "Options", hint: "BNC option part numbers carry a B suffix.", type: "check",
             options: [
-              icxOCXO(["060U", "090U"], "Included as standard on the ICX-400U"),
+              icxOCXO(["090U"], "Included as standard on the ICX-400U"),
               icxOpt({ code: "O05", codeLabel: "opt 05B", label: "Internal high-precision GNSS",
                 acc: "opt 05B", desc: "internal high-precision GNSS",
-                onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
-                onlyForReason: "Offered on the ICX-060U and 090U",
+                onlyFor: { group: { id: "freq", in: ["090U"] } },
+                onlyForReason: "Offered on the ICX-090U",
                 info: "Internal high-precision GNSS receiver for location-stamped measurements and timing." }),
               icxOpt({ code: "O20", codeLabel: "opt 20B", label: "IO extension board",
                 acc: "opt 20B", desc: "IO extension board",
                 info: "IO extension board adding trigger and reference connectivity." }),
               icxOpt({ code: "O401", codeLabel: "opt 40-1B", label: "T1 extended temperature, -20 C to +65 C",
                 acc: "opt 40-1B", desc: "T1 extended temperature class (-20 C to +65 C)",
-                onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
-                onlyForReason: "T1 class for the ICX-060U/090U; the 400U uses opt 40-3B",
+                onlyFor: { group: { id: "freq", in: ["090U"] } },
+                onlyForReason: "T1 class for the ICX-090U; the 400U uses opt 40-3B",
                 excludes: ["O403"],
                 info: "Extends the operating temperature range to -20 C through +65 C." }),
               icxOpt({ code: "O403", codeLabel: "opt 40-3B", label: "T1 extended temperature, -20 C to +65 C",
@@ -1571,8 +1573,8 @@
                 info: "Extends the operating temperature range to -20 C through +65 C." }),
               icxOpt({ code: "O50", codeLabel: "opt 50B", label: "100 MHz analysis bandwidth",
                 acc: "opt 50B", desc: "100 MHz real-time analysis bandwidth", badge: "100 MHz BW",
-                onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
-                onlyForReason: "Offered on the ICX-060U and 090U",
+                onlyFor: { group: { id: "freq", in: ["090U"] } },
+                onlyForReason: "Offered on the ICX-090U",
                 info: "Widens the real-time analysis bandwidth to 100 MHz." }),
               ICX_OPT_71, ICX_OPT_72
             ]
@@ -1606,29 +1608,35 @@
       {
         id: "icx-h",
         name: "ICX handheld",
-        blurb: "Handheld real-time analyzers, 9.5 to 40 GHz, field-ready",
-        info: "Handheld ICX FieldHawk spectrum analyzers covering 9 kHz up to 9.5, 20 or 40 GHz, with real-time high-speed signal capture.",
+        blurb: "Handheld real-time analyzer, up to 40 GHz, field-ready",
+        info: "Handheld ICX FieldHawk spectrum analyzer covering 9 kHz up to 40 GHz, with real-time high-speed signal capture.",
         image: FIG + "icx-handheld.png",
         pnBase: "ICX",
         groups: [
           {
             id: "freq", label: "Model / frequency range", type: "radio",
             options: [
+              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
               { code: "095", label: "ICX-095", note: "9 kHz to 9.5 GHz, real-time", pn: "-095",
                 desc: "advanced handheld real-time spectrum analyzer, 9 kHz to 9.5 GHz",
                 info: "Advanced real-time handheld analyzer covering 9 kHz to 9.5 GHz with high-speed signal capture.", default: true },
+              */
+              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
               { code: "200", label: "ICX-200", note: "9 kHz to 20 GHz, real-time", pn: "-200",
                 desc: "high-performance handheld spectrum analyzer, 9 kHz to 20 GHz",
                 info: "High-performance handheld analyzer covering 9 kHz to 20 GHz." },
+              */
               { code: "400", label: "ICX-400", note: "9 kHz to 40 GHz, OCXO included", pn: "-400",
                 desc: "flagship handheld spectrum analyzer, 9 kHz to 40 GHz (OCXO included)",
-                info: "Flagship handheld analyzer covering 9 kHz to 40 GHz. The OCXO reference is included as standard." }
+                info: "Flagship handheld analyzer covering 9 kHz to 40 GHz. The OCXO reference is included as standard.", default: true }
             ]
           },
           {
             id: "options", label: "Options", hint: "BNC option part numbers carry a B suffix.", type: "check",
             options: [
+              /* RAMMED-OUT 2026-07-23 (only ICX-400 live; OCXO is standard on it, so no optional-OCXO handheld model remains):
               icxOCXO(["095", "200"], "Included as standard on the ICX-400"),
+              */
               ICX_OPT_71, ICX_OPT_72
             ]
           },
@@ -1657,12 +1665,14 @@
           {
             id: "freq", label: "Model / frequency range", type: "radio",
             options: [
-              { code: "095R", label: "ICX-095R", note: "9 kHz to 9.5 GHz, IP68", pn: "-095R",
+              { code: "090R", label: "ICX-090R", note: "9 kHz to 9.5 GHz, IP68", pn: "-090R",
                 desc: "rugged IP68 spectrum analyzer, 9 kHz to 9.5 GHz",
                 info: "Rugged IP68-rated analyzer covering 9 kHz to 9.5 GHz for harsh environments.", default: true },
+              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
               { code: "200R", label: "ICX-200R", note: "9 kHz to 20 GHz, IP68", pn: "-200R",
                 desc: "rugged IP68 spectrum analyzer, 9 kHz to 20 GHz",
                 info: "Ruggedized handheld analyzer covering 9 kHz to 20 GHz for demanding industrial and military use." },
+              */
               { code: "400R", label: "ICX-400R", note: "9 kHz to 40 GHz, IP68, OCXO included", pn: "-400R",
                 desc: "rugged IP68 spectrum analyzer, 9 kHz to 40 GHz (OCXO included)",
                 info: "IP68-rated analyzer covering 9 kHz to 40 GHz for mission-critical monitoring. The OCXO reference is included as standard." }
@@ -1671,7 +1681,7 @@
           {
             id: "options", label: "Options", hint: "BNC option part numbers carry a B suffix.", type: "check",
             options: [
-              icxOCXO(["095R", "200R"], "Included as standard on the ICX-400R"),
+              icxOCXO(["090R"], "Included as standard on the ICX-400R"),
               icxOpt({ code: "O08", codeLabel: "opt 08B", label: "Onboard Nvidia Jetson Orin NX AI accelerator, 117 TOPS",
                 acc: "opt 08B", desc: "onboard Nvidia Jetson Orin NX 8G AI accelerator (117 TOPS)", badge: "AI onboard",
                 info: "Adds an onboard Nvidia Jetson Orin NX 8G module (117 TOPS) for edge AI signal processing." }),
