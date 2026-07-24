@@ -317,3 +317,22 @@
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',wire);
   setTimeout(wire,1000);
 })();
+
+;(function(){
+  function evoAlias(){
+    try{
+      var SI=window.SITE_INDEX; if(!SI||!SI.length) return;
+      for(var i=0;i<SI.length;i++){
+        var e=SI[i]; if(!e) continue;
+        var hay=((e.t||'')+' '+(e.u||'')+' '+(e.k||'')).toLowerCase();
+        if(hay.indexOf('pvp')>-1 && hay.indexOf('evo')<0){
+          e.k=((e.k||'')+' evo evo-series evo series evo1500 evo1400 heinzinger evo').replace(/\s+/g,' ').trim();
+        }
+      }
+    }catch(err){}
+  }
+  window.__evoPvpAliasDone=true;
+  evoAlias();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', evoAlias);
+  setTimeout(evoAlias, 800);
+})();
