@@ -109,6 +109,14 @@ const TYPE_NOTIFY = {
 };
 const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1, form: 1, token: 1, "cf-turnstile-response": 1, "g-recaptcha-response": 1 };
 
+// Customer auto-acknowledgement ("we have your request"). Only for service forms, and sent
+// FROM the service mailbox rather than the web-regs relay identity, so a reply lands with the
+// people who will act on it. Set FORM_ACK_OFF=1 in Vercel to stop these without a deploy.
+const ACK_TYPES = { rma: 1 };  // add "rma-status": 1 here to acknowledge status checks too
+const ACK_FROM = process.env.FORM_ACK_FROM || "BNC Service Department <service@berkeleynucleonics.com>";
+const ACK_REPLY_TO = process.env.FORM_ACK_REPLY_TO || "service@berkeleynucleonics.com";
+const ACK_SMS = "415-336-6074";  // after-hours / weekend emergency text line
+
 function parseMultipart(buf, ct) {
   const m = ct.match(/boundary=(?:"([^"]+)"|([^;]+))/);
   if (!m) return {};
@@ -320,6 +328,85 @@ function guessModel(fromField, pageUrl) {
   if (fromField) return String(fromField).trim().slice(0, 40);
   const m = String(pageUrl || "").match(/bnc-([a-z]?\d{3,4}[a-z0-9-]*)-|\/(\d{3,4})-series/i);
   return m ? (m[1] || m[2]).toUpperCase() : "";
+}
+
+// Serial numbers to echo back in the acknowledgement. Customers routinely put "See Description"
+// in the serial field and list the real ones in the problem text ("SN: 141741"), so scan both
+// and prefer whatever is most specific. Capped so a pasted service history can't flood the email.
+function ackSerials(serialField, description) {
+  const placeholder = /^(see|n\/?a|none|tbd|unknown|various|multiple|below|attached)\b/i;
+  const given = String(serialField || "").trim().slice(0, 200);
+  if (given && !placeholder.test(given)) return [given];
+  const found = [];
+  // The lookahead demands a digit in the token, so "SN are below" doesn't turn "are" into a serial.
+  const re = /\b(?:S\/?N|serials?(?:\s*(?:numbers?|nos?\.?|#))?)\s*[:#]?\s*(?=[A-Za-z0-9-]*\d)([A-Za-z0-9][A-Za-z0-9-]{2,19})/gi;
+  let m;
+  while ((m = re.exec(String(description || ""))) !== null && found.length < 12) {
+    if (!found.some((v) => v.toLowerCase() === m[1].toLowerCase())) found.push(m[1]);
+  }
+  // Nothing real to echo beats echoing "See Description" back at the customer.
+  return found.length ? found : (given && !placeholder.test(given) ? [given] : []);
+}
+
+// The acknowledgement itself. Brand shell (BNC blue, Myriad Pro headings with an Arial
+// fallback), table layout so Outlook renders it, and their own model + serials repeated back
+// so they can see we captured the right instruments. Returns { subject, html, text }.
+function ackEmail({ firstName, model, serials, reason, company }) {
+  const rows = [
+    ["Model", model],
+    [serials.length > 1 ? "Serial numbers" : "Serial number", serials.join(", ")],
+    ["Return reason", reason],
+    ["Company", company],
+  ].filter((r) => r[1]);
+  const hello = firstName ? "Hello " + firstName + "," : "Hello,";
+  const line1 = "Thank you for your RMA request. We have your information, and a member of the BNC Service Department will respond as quickly as possible, usually within two hours, Monday through Friday, 6am to 6pm Pacific.";
+  const line2 = "If you have an emergency after hours or on the weekend, particularly with one of our nuclear detection instruments, please also send a text to " + ACK_SMS + " and we will try to have a spectroscopist follow up right away.";
+  const sig = "Berkeley Nucleonics Corporation" + "\nTest, Measurement and Nuclear Instrumentation since 1963" + "\n2955 Kerner Blvd, San Rafael, CA 94901  ·  +1 (800) 234-7858";
+
+  const rowsHtml = rows.map((r) =>
+    '<tr><td style="padding:7px 14px 7px 0;font-size:13px;color:#6b7a90;vertical-align:top;white-space:nowrap">' + esc(r[0]) +
+    '</td><td style="padding:7px 0;font-size:14px;color:#113163;font-weight:bold">' + esc(r[1]).replace(/\n/g, "<br>") + "</td></tr>").join("");
+
+  const html =
+    '<div style="margin:0;padding:24px 12px;background:#eef3f9;font-family:Arial,Helvetica,sans-serif">' +
+    '<span style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;max-height:0;max-width:0;overflow:hidden;mso-hide:all">' +
+      esc("We have your RMA request. A service specialist replies within about two hours, 6am to 6pm Pacific, Monday through Friday.") + "</span>" +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">' +
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e1e8f2;border-radius:4px">' +
+      '<tr><td style="height:6px;line-height:6px;font-size:0;background:#0655a3">&nbsp;</td></tr>' +
+      '<tr><td style="padding:24px 32px 8px">' +
+        '<p style="margin:0;font-size:11px;font-weight:bold;letter-spacing:.16em;text-transform:uppercase;color:#0655a3">Berkeley Nucleonics</p>' +
+        '<h1 style="margin:8px 0 16px;font-family:\'Myriad Pro\',Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#113163">We have your RMA request</h1>' +
+        '<p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#37475f">' + esc(hello) + "</p>" +
+        '<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#37475f">' + esc(line1) + "</p>" +
+      "</td></tr>" +
+      (rowsHtml ? '<tr><td style="padding:0 32px"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-top:1px solid #e1e8f2;border-bottom:1px solid #e1e8f2;padding:4px 0">' + rowsHtml + "</table></td></tr>" : "") +
+      '<tr><td style="padding:20px 32px 0">' +
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f6f8fb;border-left:4px solid #0655a3;border-radius:0 4px 4px 0">' +
+          '<tr><td style="padding:14px 16px;font-size:14px;line-height:1.6;color:#37475f">' + esc(line2) + "</td></tr>" +
+        "</table>" +
+      "</td></tr>" +
+      '<tr><td style="padding:22px 32px 26px">' +
+        '<p style="margin:0;font-size:15px;line-height:1.6;color:#37475f">Thank you,<br>' +
+        '<span style="font-weight:bold;color:#113163">BNC Service Department</span><br>' +
+        '<a href="mailto:' + ACK_REPLY_TO + '" style="color:#0655a3;text-decoration:none">' + ACK_REPLY_TO + "</a></p>" +
+      "</td></tr>" +
+      '<tr><td style="padding:16px 32px;background:#113163;border-radius:0 0 4px 4px;font-size:11.5px;line-height:1.7;color:#c7d5ea">' +
+        "Berkeley Nucleonics Corporation<br>Test, Measurement and Nuclear Instrumentation since 1963<br>" +
+        "2955 Kerner Blvd, San Rafael, CA 94901 &middot; +1 (800) 234-7858" +
+      "</td></tr>" +
+    "</table></td></tr></table></div>";
+
+  const text = [hello, "", line1, ""]
+    .concat(rows.map((r) => r[0] + ": " + r[1]))
+    .concat(["", line2, "", "Thank you,", "BNC Service Department", ACK_REPLY_TO, "", sig])
+    .join("\n");
+
+  return {
+    subject: "We have your RMA request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics Service",
+    html,
+    text,
+  };
 }
 
 module.exports = async function handler(req, res) {
@@ -580,6 +667,30 @@ module.exports = async function handler(req, res) {
         subject: "[BNC Site] " + label + (nm || email ? " — " + (nm || email) : "") + (model ? " · Model " + model : "") + (newRepeat ? " · " + newRepeat : "") + routeTag,
         html, text: preview,
         replyTo: email || undefined,
+      });
+    } catch (_) {}
+  }
+
+  // 6. Customer acknowledgement (RMA only). Separate try/catch from the internal notify so a
+  // failure on either side never costs us the other, and never blocks the visitor. Skipped for
+  // our own domain so a staff test or an internal forward can't start a mail loop.
+  if (smtpConfigured() && ACK_TYPES[type] && !process.env.FORM_ACK_OFF &&
+      email && email.indexOf("@") > 0 && !/@berkeleynucleonics\.com$/i.test(email)) {
+    try {
+      const ack = ackEmail({
+        firstName: displayName(name).split(/\s+/)[0] || "",
+        model: modelField || guessModel(modelField, req.headers.referer),
+        serials: ackSerials(lc["serial_number"], lc["problem_description"] || body.message),
+        reason: lc["return_reason"] || "",
+        company,
+      });
+      await sendMail({
+        to: email,
+        from: ACK_FROM,
+        replyTo: ACK_REPLY_TO,
+        subject: ack.subject,
+        html: ack.html,
+        text: ack.text,
       });
     } catch (_) {}
   }
