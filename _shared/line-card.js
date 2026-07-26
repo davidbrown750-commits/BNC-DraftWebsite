@@ -55,6 +55,11 @@
    + ".bnc-lc-root .fld{margin:0 0 12px}.bnc-lc-root .fld label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:0 0 4px}"
    + ".bnc-lc-root .fld input,.bnc-lc-root .fld textarea{width:100%;border:1px solid #cdd3dc;border-radius:6px;padding:9px 11px;font-family:inherit;font-size:14px;color:var(--ink)}.bnc-lc-root .fld textarea{min-height:70px;resize:vertical}"
    + ".bnc-lc-root .qok{color:var(--green);font-weight:600;font-size:14px}"
+   // --- category color chips (Type column): Signal Generator / Frequency Synthesizer / Vector Signal Generator ---
+   + ".bnc-lc-root .lc-type{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;line-height:1.5;white-space:nowrap;border:1px solid transparent}"
+   + ".bnc-lc-root .lc-type-sg{background:#e7eefb;color:#0655a3;border-color:#cddffb}"
+   + ".bnc-lc-root .lc-type-fs{background:var(--purple-soft);color:var(--purple);border-color:#ddd0f5}"
+   + ".bnc-lc-root .lc-type-vsg{background:var(--green-soft);color:var(--green);border-color:#cfe7da}"
    // --- dark-page theme: collapsed banner blends into a dark hero; expands to the white card ---
    + ".bnc-lc-root.lc-dark .lc{background:transparent;border-color:rgba(150,195,235,.22)}"
    + ".bnc-lc-root.lc-dark .lc-head{background:transparent}"
@@ -150,6 +155,12 @@
    {num:1420, model:"RFS-1420", sum:"42 GHz CW and sweep", ds:"bnc-rfs-1000-datasheet.html",
     vals:{type:"Signal Generator",freq:"100 MHz to 42 GHz",channels:"1",switch:"252 ms",power:"Up to +15 dBm"},
     sort:{type:1,freq:8,channels:1,switch:9,power:8}},
+   {num:1220, model:"RFS-1220", sum:"21.5 GHz signal generator platform", ds:"bnc-rfs-1000-datasheet.html",
+    vals:{type:"Signal Generator",freq:"0.1 to 21.5 GHz",channels:"1",switch:"—",power:"—"},
+    sort:{type:1,freq:7,channels:1,power:6}},
+   {num:4220, model:"RFS-4220", sum:"21.5 GHz benchtop, touchscreen + LAN", ds:"bnc-rfs-4220-datasheet.html",
+    vals:{type:"Signal Generator",freq:"0.1 to 21.5 GHz",channels:"1",switch:"—",power:"-40 to +15 dBm"},
+    sort:{type:1,freq:7,channels:1,power:5}},
    {num:866, model:"Model 866-M", sum:"Compact 40 GHz frequency synthesizer", ds:"bnc-model-866m-datasheet.html",
     vals:{type:"Frequency Synthesizer",freq:"1 MHz to 40 GHz",channels:"1",switch:"500 µs (85 µs opt. FS)",power:"-10 to +25 dBm"},
     sort:{type:2,freq:4,channels:1,switch:5,power:2}},
@@ -464,6 +475,9 @@
 };
 
   function esc(s){ return String(s==null?"":s); }
+  // Color-code the three signal-generator categories in the Type column.
+  var LC_TYPE_CLASS={"Signal Generator":"sg","Frequency Synthesizer":"fs","Vector Signal Generator":"vsg"};
+  function typeChip(v){ var c=LC_TYPE_CLASS[v]; return c?'<span class="lc-type lc-type-'+c+'">'+esc(v)+'</span>':esc(v); }
   function injectCSS(){ if(document.getElementById('bnc-lc-style')) return;
     var st=document.createElement('style'); st.id='bnc-lc-style'; st.textContent=CSS;
     (document.head||document.documentElement).appendChild(st); }
@@ -507,7 +521,7 @@
       tb.innerHTML=list.map(function(m){var id=m.model;
         return '<tr data-id="'+esc(id)+'"'+(sel[id]?' class="sel"':'')+'><td class="cc"><input type="checkbox" '+(sel[id]?'checked':'')+' data-id="'+esc(id)+'"></td>'+
           '<td class="model"><a href="'+dsHref(m)+'"'+dsTgt(m)+'>'+esc(m.model)+'</a><span class="sum">'+esc(m.sum)+'</span></td>'+
-          COLS.map(function(c){return '<td class="spec">'+esc(val(m,c.key))+'</td>';}).join('')+'</tr>';
+          COLS.map(function(c){var rv=val(m,c.key);return '<td class="spec">'+(c.key==="type"?typeChip(rv):esc(rv))+'</td>';}).join('')+'</tr>';
       }).join('');
     }
     function setSort(k){ if(sortK===k) sortDir*=-1; else {sortK=k;sortDir=1;}
