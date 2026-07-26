@@ -221,7 +221,7 @@
 "rtsa": {
   title: "ICX-FieldHawk Real-Time Spectrum Analyzers",
   productLine: "ICX-FieldHawk RTSA",
-  lede: "Every ICX-FieldHawk is a gap-free real-time spectrum analyzer with 100 MHz real-time bandwidth. The line is broken out by frequency coverage and form factor — USB, handheld, and rugged. Click a heading to sort, select models to compare, or request a quote.",
+  lede: "Every ICX-FieldHawk is a gap-free real-time spectrum analyzer with 100 MHz real-time bandwidth. The line is broken out by frequency coverage and form factor — USB, handheld, and IP68. Click a heading to sort, select models to compare, or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
   columns: [
     {key:"freq", label:"Frequency Range"},
@@ -264,14 +264,14 @@
    */
    {num:40, model:"ICX-400", sum:"40 GHz handheld flagship", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 40 GHz", form:"Handheld (touchscreen)"}, sort:{freq:40, form:2}},
-   {num:9.5, model:"ICX-090R", sum:"Rugged IP68 field unit", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
-    vals:{freq:"9 kHz to 9.5 GHz", form:"Rugged IP68"}, sort:{freq:9.5, form:3}}, // CORRECTED 2026-07-20: was ICX-095R, aligned to ICX-090R per rugged datasheet/manual — VERIFY with BNC.
+   {num:9.5, model:"ICX-090R", sum:"IP68 field unit", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
+    vals:{freq:"9 kHz to 9.5 GHz", form:"IP68"}, sort:{freq:9.5, form:3}}, // CORRECTED 2026-07-20: was ICX-095R, aligned to ICX-090R per rugged datasheet/manual — VERIFY with BNC.
    /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
-   {num:20, model:"ICX-200R", sum:"Rugged, microwave", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
-    vals:{freq:"9 kHz to 20 GHz", form:"Rugged IP68"}, sort:{freq:20, form:3}},
+   {num:20, model:"ICX-200R", sum:"Field-Ready, microwave", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
+    vals:{freq:"9 kHz to 20 GHz", form:"IP68"}, sort:{freq:20, form:3}},
    */
-   {num:40, model:"ICX-400R", sum:"Rugged 40 GHz, mission-critical", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
-    vals:{freq:"9 kHz to 40 GHz", form:"Rugged IP68"}, sort:{freq:40, form:3}}
+   {num:40, model:"ICX-400R", sum:"Field-Ready 40 GHz, mission-critical", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
+    vals:{freq:"9 kHz to 40 GHz", form:"IP68"}, sort:{freq:40, form:3}}
   ]
 },
 "dei": {
