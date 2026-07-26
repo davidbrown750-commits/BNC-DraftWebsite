@@ -581,10 +581,25 @@
     for(var k=0;k<ovs.length;k++){ (function(o){ o.addEventListener('click',function(e){ if(e.target===o) o.classList.remove('on'); }); })(ovs[k]); }
 
     var head=q('.lc-head'), bodyEl=q('.lc-body');
-    head.addEventListener('click',function(){ var willOpen=bodyEl.hasAttribute('hidden');
-      if(willOpen) bodyEl.removeAttribute('hidden'); else bodyEl.setAttribute('hidden','');
-      head.setAttribute('aria-expanded',willOpen?'true':'false'); head.classList.toggle('open',willOpen);
-      q('.lc-word').textContent= willOpen?'click to collapse':'click to expand'; });
+    function setOpen(open){
+      if(open) bodyEl.removeAttribute('hidden'); else bodyEl.setAttribute('hidden','');
+      head.setAttribute('aria-expanded',open?'true':'false'); head.classList.toggle('open',open);
+      q('.lc-word').textContent= open?'click to collapse':'click to expand';
+    }
+    head.addEventListener('click',function(){ setOpen(bodyEl.hasAttribute('hidden')); });
+
+    // Deep-link: open + scroll to this line card when the page is reached via a
+    // #line-card hash (search results link here so the panel opens, not collapses).
+    // Give the mount an id so the hash anchors it, and accept a per-line variant.
+    if(!mount.id) mount.id = 'line-card';
+    function hashWantsOpen(){
+      var h=(location.hash||'').toLowerCase().replace('#','');
+      return h==='line-card' || h==='linecard' || h==='lc' || h===('line-card-'+(mount.getAttribute('data-line')||''));
+    }
+    function autoOpen(){ if(hashWantsOpen()){ setOpen(true);
+      setTimeout(function(){ try{ root.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ root.scrollIntoView(); } }, 90); } }
+    window.addEventListener('hashchange', autoOpen);
+    autoOpen();
 
     rows(); refreshBar();
   }
