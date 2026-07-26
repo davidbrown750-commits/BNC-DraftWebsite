@@ -19,75 +19,6 @@ const N = require("../lib/nutshell");
 const { verifyClerkToken } = require("../lib/clerk");
 const { smtpConfigured, sendMail } = require("../lib/smtp");
 
-// Branded "Thank you" page shown after a non-JSON form submit. Back and the 10s
-// idle timer both go history.go(-2): the submit is one history entry and the form
-// page another, so -2 lands the visitor back on the product page they came from.
-const THANK_YOU_HTML = `<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Thank you &mdash; Berkeley Nucleonics</title>
-<style>
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;font-family:'Myriad Pro',Arial,Helvetica,sans-serif;color:#113163;
-    background:#eef3f9;background-image:radial-gradient(1100px 520px at 50% -8%,#ffffff 0%,#e7eef8 70%);
-    display:flex;flex-direction:column;min-height:100%}
-  .wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px}
-  .card{background:#fff;max-width:620px;width:100%;border-radius:4px;overflow:hidden;text-align:center;
-    box-shadow:0 12px 44px rgba(17,49,99,.13);border:1px solid #e1e8f2}
-  .bar{height:6px;background:linear-gradient(90deg,#113163 0%,#0655a3 55%,#2a9fd6 100%)}
-  .brand{margin:22px 0 0;font-size:12px;font-weight:bold;letter-spacing:.16em;text-transform:uppercase;color:#0655a3}
-  .brand span{display:block;margin-top:4px;font-size:10px;font-weight:normal;letter-spacing:.06em;color:#8091a8}
-  .figs{display:flex;justify-content:center;align-items:flex-end;gap:6px;margin:16px 0 2px}
-  .figs img{height:148px;width:auto;display:block}
-  h1{color:#0655a3;font-size:29px;margin:8px 0 10px}
-  .msg{font-size:16px;line-height:1.62;color:#37475f;margin:0 auto;max-width:460px;padding:0 8px}
-  .actions{margin:24px 0 8px}
-  .btn{display:inline-block;background:#0655a3;color:#fff;text-decoration:none;font-weight:bold;font-size:15px;
-    padding:12px 28px;border-radius:4px;box-shadow:0 3px 10px rgba(6,85,163,.22);transition:background .15s}
-  .btn:hover{background:#113163}
-  .hint{font-size:12.5px;color:#8091a8;margin:14px 0 28px}
-  .hint b{color:#0655a3}
-  footer{background:#113163;color:#c7d5ea;font-size:12px;line-height:1.7;text-align:center;padding:18px 16px}
-  footer a{color:#fff;text-decoration:none;font-weight:bold}
-  footer a:hover{text-decoration:underline}
-  footer .sep{color:#4a5f85;margin:0 8px}
-  footer .fine{display:block;margin-top:6px;color:#8ea4c6}
-</style>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <div class="bar"></div>
-      <p class="brand">Berkeley Nucleonics<span>Precision Instrumentation &middot; Since 1969</span></p>
-      <div class="figs">
-        <img src="/figures/wp/thankyou-eng-wave.png" alt="">
-        <img src="/figures/wp/thankyou-eng-thanks.png" alt="">
-      </div>
-      <h1>Thank you</h1>
-      <p class="msg">Your request is in. A Berkeley Nucleonics specialist will review it and follow up shortly. We will take you right back to the page you were viewing.</p>
-      <div class="actions">
-        <a class="btn" href="#" onclick="goBack();return false;">&larr; Back to what you were viewing</a>
-        <p class="hint">Returning automatically in <b id="cd">10</b> seconds&hellip;</p>
-      </div>
-    </div>
-  </div>
-  <footer>
-    <a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener">Home</a><span class="sep">|</span>
-    <a href="https://www.berkeleynucleonics.com/products" target="_blank" rel="noopener">Products</a><span class="sep">|</span>
-    <a href="https://www.berkeleynucleonics.com/contact" target="_blank" rel="noopener">Contact</a>
-    <span class="fine">&copy; Berkeley Nucleonics Corporation &middot; 2955 Kerner Blvd, San Rafael, CA 94901 &middot; +1 (800) 234-7858</span>
-  </footer>
-  <script>
-    function goBack(){ try{ history.go(-2); }catch(e){ try{ history.back(); }catch(_){} } }
-    var n=10, el=document.getElementById('cd');
-    var iv=setInterval(function(){ n-=1; if(el){ el.textContent=(n>0?n:0); } if(n<=0){ clearInterval(iv); goBack(); } },1000);
-    function reset(){ n=10; if(el){ el.textContent=n; } }
-    ['mousemove','mousedown','keydown','touchstart','scroll','wheel'].forEach(function(ev){
-      window.addEventListener(ev, reset, {passive:true});
-    });
-  </script>
-</body>`;
-
 const TYPES = {
   contact:       "Contact Us Form",
   quote:         "Quote / Demo Request",
@@ -333,11 +264,17 @@ module.exports = async function handler(req, res) {
   const accept = String(req.headers.accept || "");
   const wantsJson = accept.indexOf("application/json") !== -1;
   const next = body._next || body._redirect || "";
+  const type = (body.form || (req.query && req.query.form) || "contact").toString().toLowerCase();
   const respondOk = (extra) => {
     if (wantsJson) { res.status(200).json(Object.assign({ ok: true }, extra || {})); return; }
     if (next) { res.writeHead(303, { Location: next }); res.end(); return; }
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.status(200).end(THANK_YOU_HTML);
+    // Redirect to the real /thank-you.html rather than rendering an inline page. That page
+    // carries the site's tag stack (GTM / Bing UET) and pushes a `form_submission_complete`
+    // dataLayer event, so a submit is measurable. The inline page this replaced had no
+    // analytics on it at all, which silently killed conversion tracking for every form at
+    // the July 2026 cutover off WordPress.
+    res.writeHead(303, { Location: "/thank-you.html?form=" + encodeURIComponent(type) });
+    res.end();
   };
 
   // 1. Honeypot: bots fill _gotcha. Pretend success, drop silently.
@@ -349,7 +286,6 @@ module.exports = async function handler(req, res) {
     res.status(400).json({ ok: false, error: "spam check failed" }); return;
   }
 
-  const type = (body.form || (req.query && req.query.form) || "contact").toString().toLowerCase();
   const label = TYPES[type] || "Website Form";
   // Case-insensitive field pick (forms vary: ScintIQ uses Email/Organization/Mobile phone,
   // quizzes use first_name, etc.). Track consumed keys so they don't repeat in `extra`.
