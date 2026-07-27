@@ -52,8 +52,11 @@ const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1,
 // "scintiq" (detector configurator), and "launch-list" (the RFS-4220 coming-soon signup, which
 // must never promise pricing and lead time on an unreleased product).
 const ACK_TYPES = { rma: 1, quote: 1, contact: 1 };
-const ACK_FROM = process.env.FORM_ACK_FROM || "BNC Service Department <service@berkeleynucleonics.com>";
-const ACK_REPLY_TO = process.env.FORM_ACK_REPLY_TO || "service@berkeleynucleonics.com";
+// operations@ (not service@): service@ was never confirmed as a monitored mailbox, and the
+// support@ mailbox it sat alongside has been archived. RMA notifications already route to
+// operations@ (TYPE_NOTIFY below), so the customer's reply now lands with the same team.
+const ACK_FROM = process.env.FORM_ACK_FROM || "BNC Service Department <operations@berkeleynucleonics.com>";
+const ACK_REPLY_TO = process.env.FORM_ACK_REPLY_TO || "operations@berkeleynucleonics.com";
 const ACK_SMS = "415-336-6074";  // after-hours / weekend emergency text line
 const ACK_PHONE = "+1 (800) 234-7858";
 
