@@ -507,8 +507,17 @@ function contactLeadScore({ email, name, company, phone, message, freeMbox, fore
   let score = 0;
 
   if (email && email.indexOf("@") > 0 && !freeMbox) { score += 2; reasons.push("+2 corporate email"); }
-  if (msg.length >= 80) { score += 2; reasons.push("+2 substantive message"); }
-  else if (msg.length < 25) { score -= 1; reasons.push("-1 message too short"); }
+  // National labs, universities and defense are the core of this customer base. Someone
+  // writing from one of those domains gets the benefit of the doubt even if they submitted
+  // the form without typing a message.
+  if (/\.(gov|mil|edu)$|\.(ac|edu|gov)\.[a-z]{2}$/i.test(String(email || ""))) {
+    score += 1; reasons.push("+1 institutional domain");
+  }
+  // Word count, not character count. "Do you ship to the UK?" is a short but perfectly
+  // real question; "hi" is not. Counting characters treated both the same.
+  const words = msg ? msg.split(/\s+/).filter(Boolean).length : 0;
+  if (words >= 12) { score += 2; reasons.push("+2 substantive message"); }
+  else if (words < 4) { score -= 1; reasons.push("-1 barely any message"); }
   if (String(company || "").trim().length > 1) { score += 1; reasons.push("+1 company given"); }
   if (String(phone || "").trim().length > 5) { score += 1; reasons.push("+1 phone given"); }
   if (TECH_RE.test(msg)) { score += 1; reasons.push("+1 mentions a product or spec"); }
@@ -616,6 +625,18 @@ module.exports = async function handler(req, res) {
   const routeReason = _scr.otherForeign || _nonAscii >= 8 ? "foreign/strange" : (_freeMbox ? "consumer-mailbox" : "");
   const TRIAGE_TO = { "foreign/strange": ["david.brown@berkeleynucleonics.com"], "consumer-mailbox": ["meraly.rodas@berkeleynucleonics.com"] };
 
+  // 2e. Contact is the most spam-prone form on the site, so its customer acknowledgement
+  // is held back unless the submission reads like a real lead. Scored below; the result
+  // is attached to the internal notice and the Supabase row so a held one is visible
+  // rather than silent. RMA and quote are not gated: both require enough specific detail
+  // that junk barely reaches them.
+  const _leadCheck = contactLeadScore({
+    email, name, company, phone,
+    message: body.message || lc["message"] || "",
+    freeMbox: _freeMbox,
+    foreign: _scr.otherForeign || _nonAscii >= 8,
+  });
+
   // 3. Clerk (optional): a verified session lets us trust the identity.
   let verified = false;
   if (body.token) {
@@ -629,6 +650,15 @@ module.exports = async function handler(req, res) {
     if (RESERVED[k] || consumed.has(k.toLowerCase())) continue;
     const v = body[k];
     if (v != null && String(v).trim() !== "") extra[k] = String(v).slice(0, 4000);
+  }
+
+  // Record when a contact acknowledgement was withheld, and why. This rides the normal
+  // extra-fields path, so it shows in the internal notice, the Nutshell note and the
+  // Supabase row. Without it, a held acknowledgement is invisible and looks like a bug.
+  if (type === "contact" && !_leadCheck.ok && !process.env.FORM_ACK_CONTACT_ALL) {
+    extra["Acknowledgement"] = "Held back, did not read as a lead (score " +
+      _leadCheck.score + ": " + (_leadCheck.why || "no signals") + "). " +
+      "The lead is still saved and this notice still went out.";
   }
 
   // 3b. Nutshell find-or-create + note (best-effort; single deduped CRM path).
@@ -812,7 +842,10 @@ module.exports = async function handler(req, res) {
   // notify so a failure on either side never costs us the other, and never blocks the visitor.
   // Skipped for our own domain so a staff test or an internal forward can't start a mail loop.
   // Every acknowledgement is blind-copied to Nutshell so it files onto the contact's timeline.
-  if (smtpConfigured() && has(ACK_TYPES, type) && !process.env.FORM_ACK_OFF &&
+  const ackAllowed = has(ACK_TYPES, type) &&
+    (type !== "contact" || _leadCheck.ok || !!process.env.FORM_ACK_CONTACT_ALL);
+
+  if (smtpConfigured() && ackAllowed && !process.env.FORM_ACK_OFF &&
       email && email.indexOf("@") > 0 && !/@berkeleynucleonics\.com$/i.test(email)) {
     try {
       const id = ackIdentity(type);
