@@ -55,6 +55,11 @@
    + ".bnc-lc-root .fld{margin:0 0 12px}.bnc-lc-root .fld label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:0 0 4px}"
    + ".bnc-lc-root .fld input,.bnc-lc-root .fld textarea{width:100%;border:1px solid #cdd3dc;border-radius:6px;padding:9px 11px;font-family:inherit;font-size:14px;color:var(--ink)}.bnc-lc-root .fld textarea{min-height:70px;resize:vertical}"
    + ".bnc-lc-root .qok{color:var(--green);font-weight:600;font-size:14px}"
+   // --- category color chips (Type column): Signal Generator / Frequency Synthesizer / Vector Signal Generator ---
+   + ".bnc-lc-root .lc-type{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;line-height:1.5;white-space:nowrap;border:1px solid transparent}"
+   + ".bnc-lc-root .lc-type-sg{background:#e7eefb;color:#0655a3;border-color:#cddffb}"
+   + ".bnc-lc-root .lc-type-fs{background:var(--purple-soft);color:var(--purple);border-color:#ddd0f5}"
+   + ".bnc-lc-root .lc-type-vsg{background:var(--green-soft);color:var(--green);border-color:#cfe7da}"
    // --- dark-page theme: collapsed banner blends into a dark hero; expands to the white card ---
    + ".bnc-lc-root.lc-dark .lc{background:transparent;border-color:rgba(150,195,235,.22)}"
    + ".bnc-lc-root.lc-dark .lc-head{background:transparent}"
@@ -150,6 +155,12 @@
    {num:1420, model:"RFS-1420", sum:"42 GHz CW and sweep", ds:"bnc-rfs-1000-datasheet.html",
     vals:{type:"Signal Generator",freq:"100 MHz to 42 GHz",channels:"1",switch:"252 ms",power:"Up to +15 dBm"},
     sort:{type:1,freq:8,channels:1,switch:9,power:8}},
+   {num:1220, model:"RFS-1220", sum:"21.5 GHz signal generator platform", ds:"bnc-rfs-1000-datasheet.html",
+    vals:{type:"Signal Generator",freq:"0.1 to 21.5 GHz",channels:"1",switch:"—",power:"—"},
+    sort:{type:1,freq:7,channels:1,power:6}},
+   {num:4220, model:"RFS-4220", sum:"21.5 GHz benchtop, touchscreen + LAN", ds:"bnc-rfs-4220-datasheet.html",
+    vals:{type:"Signal Generator",freq:"0.1 to 21.5 GHz",channels:"1",switch:"—",power:"-40 to +15 dBm"},
+    sort:{type:1,freq:7,channels:1,power:5}},
    {num:866, model:"Model 866-M", sum:"Compact 40 GHz frequency synthesizer", ds:"bnc-model-866m-datasheet.html",
     vals:{type:"Frequency Synthesizer",freq:"1 MHz to 40 GHz",channels:"1",switch:"500 µs (85 µs opt. FS)",power:"-10 to +25 dBm"},
     sort:{type:2,freq:4,channels:1,switch:5,power:2}},
@@ -210,7 +221,7 @@
 "rtsa": {
   title: "ICX-FieldHawk Real-Time Spectrum Analyzers",
   productLine: "ICX-FieldHawk RTSA",
-  lede: "Every ICX-FieldHawk is a gap-free real-time spectrum analyzer with 100 MHz real-time bandwidth. The line is broken out by frequency coverage and form factor — USB, handheld, and rugged. Click a heading to sort, select models to compare, or request a quote.",
+  lede: "Every ICX-FieldHawk is a gap-free real-time spectrum analyzer with 100 MHz real-time bandwidth. The line is broken out by frequency coverage and form factor — USB, handheld, and IP68. Click a heading to sort, select models to compare, or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
   columns: [
     {key:"freq", label:"Frequency Range"},
@@ -253,14 +264,14 @@
    */
    {num:40, model:"ICX-400", sum:"40 GHz handheld flagship", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 40 GHz", form:"Handheld (touchscreen)"}, sort:{freq:40, form:2}},
-   {num:9.5, model:"ICX-090R", sum:"Rugged IP68 field unit", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
-    vals:{freq:"9 kHz to 9.5 GHz", form:"Rugged IP68"}, sort:{freq:9.5, form:3}}, // CORRECTED 2026-07-20: was ICX-095R, aligned to ICX-090R per rugged datasheet/manual — VERIFY with BNC.
+   {num:9.5, model:"ICX-090R", sum:"IP68 field unit", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
+    vals:{freq:"9 kHz to 9.5 GHz", form:"IP68"}, sort:{freq:9.5, form:3}}, // CORRECTED 2026-07-20: was ICX-095R, aligned to ICX-090R per rugged datasheet/manual — VERIFY with BNC.
    /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
-   {num:20, model:"ICX-200R", sum:"Rugged, microwave", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
-    vals:{freq:"9 kHz to 20 GHz", form:"Rugged IP68"}, sort:{freq:20, form:3}},
+   {num:20, model:"ICX-200R", sum:"Field-Ready, microwave", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
+    vals:{freq:"9 kHz to 20 GHz", form:"IP68"}, sort:{freq:20, form:3}},
    */
-   {num:40, model:"ICX-400R", sum:"Rugged 40 GHz, mission-critical", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
-    vals:{freq:"9 kHz to 40 GHz", form:"Rugged IP68"}, sort:{freq:40, form:3}}
+   {num:40, model:"ICX-400R", sum:"Field-Ready 40 GHz, mission-critical", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
+    vals:{freq:"9 kHz to 40 GHz", form:"IP68"}, sort:{freq:40, form:3}}
   ]
 },
 "dei": {
@@ -464,6 +475,9 @@
 };
 
   function esc(s){ return String(s==null?"":s); }
+  // Color-code the three signal-generator categories in the Type column.
+  var LC_TYPE_CLASS={"Signal Generator":"sg","Frequency Synthesizer":"fs","Vector Signal Generator":"vsg"};
+  function typeChip(v){ var c=LC_TYPE_CLASS[v]; return c?'<span class="lc-type lc-type-'+c+'">'+esc(v)+'</span>':esc(v); }
   function injectCSS(){ if(document.getElementById('bnc-lc-style')) return;
     var st=document.createElement('style'); st.id='bnc-lc-style'; st.textContent=CSS;
     (document.head||document.documentElement).appendChild(st); }
@@ -507,7 +521,7 @@
       tb.innerHTML=list.map(function(m){var id=m.model;
         return '<tr data-id="'+esc(id)+'"'+(sel[id]?' class="sel"':'')+'><td class="cc"><input type="checkbox" '+(sel[id]?'checked':'')+' data-id="'+esc(id)+'"></td>'+
           '<td class="model"><a href="'+dsHref(m)+'"'+dsTgt(m)+'>'+esc(m.model)+'</a><span class="sum">'+esc(m.sum)+'</span></td>'+
-          COLS.map(function(c){return '<td class="spec">'+esc(val(m,c.key))+'</td>';}).join('')+'</tr>';
+          COLS.map(function(c){var rv=val(m,c.key);return '<td class="spec">'+(c.key==="type"?typeChip(rv):esc(rv))+'</td>';}).join('')+'</tr>';
       }).join('');
     }
     function setSort(k){ if(sortK===k) sortDir*=-1; else {sortK=k;sortDir=1;}
@@ -567,10 +581,25 @@
     for(var k=0;k<ovs.length;k++){ (function(o){ o.addEventListener('click',function(e){ if(e.target===o) o.classList.remove('on'); }); })(ovs[k]); }
 
     var head=q('.lc-head'), bodyEl=q('.lc-body');
-    head.addEventListener('click',function(){ var willOpen=bodyEl.hasAttribute('hidden');
-      if(willOpen) bodyEl.removeAttribute('hidden'); else bodyEl.setAttribute('hidden','');
-      head.setAttribute('aria-expanded',willOpen?'true':'false'); head.classList.toggle('open',willOpen);
-      q('.lc-word').textContent= willOpen?'click to collapse':'click to expand'; });
+    function setOpen(open){
+      if(open) bodyEl.removeAttribute('hidden'); else bodyEl.setAttribute('hidden','');
+      head.setAttribute('aria-expanded',open?'true':'false'); head.classList.toggle('open',open);
+      q('.lc-word').textContent= open?'click to collapse':'click to expand';
+    }
+    head.addEventListener('click',function(){ setOpen(bodyEl.hasAttribute('hidden')); });
+
+    // Deep-link: open + scroll to this line card when the page is reached via a
+    // #line-card hash (search results link here so the panel opens, not collapses).
+    // Give the mount an id so the hash anchors it, and accept a per-line variant.
+    if(!mount.id) mount.id = 'line-card';
+    function hashWantsOpen(){
+      var h=(location.hash||'').toLowerCase().replace('#','');
+      return h==='line-card' || h==='linecard' || h==='lc' || h===('line-card-'+(mount.getAttribute('data-line')||''));
+    }
+    function autoOpen(){ if(hashWantsOpen()){ setOpen(true);
+      setTimeout(function(){ try{ root.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){ root.scrollIntoView(); } }, 90); } }
+    window.addEventListener('hashchange', autoOpen);
+    autoOpen();
 
     rows(); refreshBar();
   }
