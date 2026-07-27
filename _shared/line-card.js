@@ -184,6 +184,9 @@
     sort:{type:3,freq:1,channels:1,switch:1,power:1}},
    {num:875.5, model:"VSG-Mini-6", sum:"USB-powered 6 GHz vector source", ds:"bnc-vsg-mini-6-datasheet.html",
     vals:{type:"Vector Signal Generator",freq:"9 kHz to 6 GHz",channels:"1",switch:"≤100 µs",power:"-100 to +14 dBm"},
+    sort:{type:3,freq:2,channels:1,switch:2,power:2}},
+   {num:875.6, model:"VSG-mini-6B", sum:"Handheld 6 GHz vector source, 100 MHz playback", ds:"bnc-vsg-mini-6b-datasheet.html",
+    vals:{type:"Vector Signal Generator",freq:"9 kHz to 6 GHz",channels:"1",switch:"≤100 µs",power:"-100 to +14 dBm (+25 opt.)"},
     sort:{type:3,freq:2,channels:1,switch:2,power:2}}
   ]
 },
