@@ -58,7 +58,7 @@ const THANK_YOU_HTML = `<!doctype html>
   <div class="wrap">
     <div class="card">
       <div class="bar"></div>
-      <p class="brand">Berkeley Nucleonics<span>Precision Instrumentation &middot; Since 1969</span></p>
+      <p class="brand">Berkeley Nucleonics<span>Precision Instrumentation &middot; Since 1963</span></p>
       <div class="figs">
         <img src="/figures/wp/thankyou-eng-wave.png" alt="">
         <img src="/figures/wp/thankyou-eng-thanks.png" alt="">
@@ -88,6 +88,10 @@ const THANK_YOU_HTML = `<!doctype html>
   </script>
 </body>`;
 
+// `type` comes straight off the request, so every lookup keyed by it goes through has():
+// a plain `TYPES[type]` would happily return Object.prototype members for form=constructor.
+function has(obj, key) { return Object.prototype.hasOwnProperty.call(obj, key); }
+
 const TYPES = {
   contact:       "Contact Us Form",
   quote:         "Quote / Demo Request",
@@ -100,6 +104,7 @@ const TYPES = {
   resource:      "Resource Request",
   quiz:          "Book Reader Quiz",
   newsletter:    "Newsletter Signup",
+  "launch-list": "Launch List Signup",
 };
 const DEFAULT_NOTIFY = "website@berkeleynucleonics.com";
 // Per-form-type recipients (override DEFAULT_NOTIFY; a FORM_NOTIFY_<TYPE> env var still wins over this).
@@ -109,13 +114,41 @@ const TYPE_NOTIFY = {
 };
 const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1, form: 1, token: 1, "cf-turnstile-response": 1, "g-recaptcha-response": 1 };
 
-// Customer auto-acknowledgement ("we have your request"). Only for service forms, and sent
-// FROM the service mailbox rather than the web-regs relay identity, so a reply lands with the
-// people who will act on it. Set FORM_ACK_OFF=1 in Vercel to stop these without a deploy.
-const ACK_TYPES = { rma: 1 };  // add "rma-status": 1 here to acknowledge status checks too
+// Customer auto-acknowledgement ("we have your request"). Sent FROM the mailbox that will
+// actually answer rather than the web-regs relay identity, so a reply lands with the people
+// who will act on it. Set FORM_ACK_OFF=1 in Vercel to stop these without a deploy.
+// Deliberately NOT acknowledged: "rma-status", "quote-index" (product index quote buttons),
+// "scintiq" (detector configurator), and "launch-list" (the RFS-4220 coming-soon signup, which
+// must never promise pricing and lead time on an unreleased product).
+const ACK_TYPES = { rma: 1, quote: 1, contact: 1 };
 const ACK_FROM = process.env.FORM_ACK_FROM || "BNC Service Department <service@berkeleynucleonics.com>";
 const ACK_REPLY_TO = process.env.FORM_ACK_REPLY_TO || "service@berkeleynucleonics.com";
 const ACK_SMS = "415-336-6074";  // after-hours / weekend emergency text line
+const ACK_PHONE = "+1 (800) 234-7858";
+
+// Blind copy on every acknowledgement so the outbound email files itself onto the contact's
+// Nutshell timeline (Nutshell's email drop-box address). Comma-separated; set FORM_ACK_BCC=""
+// in Vercel to turn the filing off without a deploy.
+const ACK_BCC = (process.env.FORM_ACK_BCC === undefined ? "bcc@nutshell.com" : process.env.FORM_ACK_BCC)
+  .split(",").map((s) => s.trim()).filter(Boolean);
+
+// Who each acknowledgement comes from. Every one of these is a berkeleynucleonics.com sender,
+// and the domain is already authenticated in SendGrid, so none of them needs new verification.
+// Per-type env overrides (FORM_ACK_FROM_QUOTE / FORM_ACK_REPLY_TO_CONTACT, ...) win over these.
+const ACK_IDENTITY = {
+  rma:     { from: ACK_FROM, replyTo: ACK_REPLY_TO },
+  quote:   { from: "Berkeley Nucleonics Sales <sales@berkeleynucleonics.com>", replyTo: "sales@berkeleynucleonics.com" },
+  contact: { from: "Berkeley Nucleonics <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
+};
+
+function ackIdentity(type) {
+  const k = String(type).toUpperCase().replace(/[^A-Z]+/g, "_");
+  const d = has(ACK_IDENTITY, type) ? ACK_IDENTITY[type] : ACK_IDENTITY.contact;
+  return {
+    from: process.env["FORM_ACK_FROM_" + k] || d.from,
+    replyTo: process.env["FORM_ACK_REPLY_TO_" + k] || d.replyTo,
+  };
+}
 
 function parseMultipart(buf, ct) {
   const m = ct.match(/boundary=(?:"([^"]+)"|([^;]+))/);
@@ -179,9 +212,9 @@ const TYPE_ALWAYS_CC = {
 
 function notifyList(type) {
   const key = "FORM_NOTIFY_" + String(type || "").toUpperCase().replace(/[^A-Z]+/g, "_");
-  const raw = process.env[key] || TYPE_NOTIFY[type] || process.env.FORM_NOTIFY_TO || DEFAULT_NOTIFY;
+  const raw = process.env[key] || (has(TYPE_NOTIFY, type) ? TYPE_NOTIFY[type] : "") || process.env.FORM_NOTIFY_TO || DEFAULT_NOTIFY;
   const list = raw.split(",").map((s) => s.trim()).filter(Boolean);
-  for (const cc of (TYPE_ALWAYS_CC[type] || [])) {
+  for (const cc of (has(TYPE_ALWAYS_CC, type) ? TYPE_ALWAYS_CC[type] : [])) {
     if (!list.some((e) => e.toLowerCase() === cc.toLowerCase())) list.push(cc);
   }
   return list;
@@ -331,7 +364,7 @@ function guessModel(fromField, pageUrl) {
 }
 
 // Serial numbers to echo back in the acknowledgement. Customers routinely put "See Description"
-// in the serial field and list the real ones in the problem text ("SN: 141741"), so scan both
+// in the serial field and list the real ones in the problem text ("SN: 100200"), so scan both
 // and prefer whatever is most specific. Capped so a pasted service history can't flood the email.
 function ackSerials(serialField, description) {
   const placeholder = /^(see|n\/?a|none|tbd|unknown|various|multiple|below|attached)\b/i;
@@ -348,20 +381,14 @@ function ackSerials(serialField, description) {
   return found.length ? found : (given && !placeholder.test(given) ? [given] : []);
 }
 
-// The acknowledgement itself. Brand shell (BNC blue, Myriad Pro headings with an Arial
-// fallback), table layout so Outlook renders it, and their own model + serials repeated back
-// so they can see we captured the right instruments. Returns { subject, html, text }.
-function ackEmail({ firstName, model, serials, reason, company }) {
-  const rows = [
-    ["Model", model],
-    [serials.length > 1 ? "Serial numbers" : "Serial number", serials.join(", ")],
-    ["Return reason", reason],
-    ["Company", company],
-  ].filter((r) => r[1]);
-  const hello = firstName ? "Hello " + firstName + "," : "Hello,";
-  const line1 = "Thank you for your RMA request. We have your information, and a member of the BNC Service Department will respond as quickly as possible, usually within two hours, Monday through Friday, 6am to 6pm Pacific.";
-  const line2 = "If you have an emergency after hours or on the weekend, particularly with one of our nuclear detection instruments, please also send a text to " + ACK_SMS + " and we will try to have a spectroscopist follow up right away.";
-  const sig = "Berkeley Nucleonics Corporation" + "\nTest, Measurement and Nuclear Instrumentation since 1963" + "\n2955 Kerner Blvd, San Rafael, CA 94901  ·  +1 (800) 234-7858";
+// The acknowledgement shell, shared by every form type. Brand shell (BNC blue, Myriad Pro
+// headings with an Arial fallback), table layout so Outlook renders it, and the customer's own
+// details repeated back so they can see we captured the right thing. Returns { html, text }.
+function ackShell({ preheader, heading, hello, intro, rows, callout, signName, replyTo }) {
+  // Trim and cap every echoed value. A whitespace-only field would otherwise render an empty
+  // bolded row, and an oversized one would let a scripted post stuff the email we send out.
+  rows = (rows || []).map((r) => [r[0], String(r[1] == null ? "" : r[1]).trim().slice(0, 300)]).filter((r) => r[1]);
+  const sig = "Berkeley Nucleonics Corporation" + "\nTest, Measurement and Nuclear Instrumentation since 1963" + "\n2955 Kerner Blvd, San Rafael, CA 94901  ·  " + ACK_PHONE;
 
   const rowsHtml = rows.map((r) =>
     '<tr><td style="padding:7px 14px 7px 0;font-size:13px;color:#6b7a90;vertical-align:top;white-space:nowrap">' + esc(r[0]) +
@@ -370,43 +397,153 @@ function ackEmail({ firstName, model, serials, reason, company }) {
   const html =
     '<div style="margin:0;padding:24px 12px;background:#eef3f9;font-family:Arial,Helvetica,sans-serif">' +
     '<span style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;max-height:0;max-width:0;overflow:hidden;mso-hide:all">' +
-      esc("We have your RMA request. A service specialist replies within about two hours, 6am to 6pm Pacific, Monday through Friday.") + "</span>" +
+      esc(preheader) + "</span>" +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center">' +
     '<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e1e8f2;border-radius:4px">' +
       '<tr><td style="height:6px;line-height:6px;font-size:0;background:#0655a3">&nbsp;</td></tr>' +
       '<tr><td style="padding:24px 32px 8px">' +
         '<p style="margin:0;font-size:11px;font-weight:bold;letter-spacing:.16em;text-transform:uppercase;color:#0655a3">Berkeley Nucleonics</p>' +
-        '<h1 style="margin:8px 0 16px;font-family:\'Myriad Pro\',Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#113163">We have your RMA request</h1>' +
+        '<h1 style="margin:8px 0 16px;font-family:\'Myriad Pro\',Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#113163">' + esc(heading) + "</h1>" +
         '<p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#37475f">' + esc(hello) + "</p>" +
-        '<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#37475f">' + esc(line1) + "</p>" +
+        '<p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#37475f">' + esc(intro) + "</p>" +
       "</td></tr>" +
       (rowsHtml ? '<tr><td style="padding:0 32px"><table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-top:1px solid #e1e8f2;border-bottom:1px solid #e1e8f2;padding:4px 0">' + rowsHtml + "</table></td></tr>" : "") +
       '<tr><td style="padding:20px 32px 0">' +
         '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f6f8fb;border-left:4px solid #0655a3;border-radius:0 4px 4px 0">' +
-          '<tr><td style="padding:14px 16px;font-size:14px;line-height:1.6;color:#37475f">' + esc(line2) + "</td></tr>" +
+          '<tr><td style="padding:14px 16px;font-size:14px;line-height:1.6;color:#37475f">' + esc(callout) + "</td></tr>" +
         "</table>" +
       "</td></tr>" +
       '<tr><td style="padding:22px 32px 26px">' +
         '<p style="margin:0;font-size:15px;line-height:1.6;color:#37475f">Thank you,<br>' +
-        '<span style="font-weight:bold;color:#113163">BNC Service Department</span><br>' +
-        '<a href="mailto:' + ACK_REPLY_TO + '" style="color:#0655a3;text-decoration:none">' + ACK_REPLY_TO + "</a></p>" +
+        '<span style="font-weight:bold;color:#113163">' + esc(signName) + "</span><br>" +
+        '<a href="mailto:' + esc(replyTo) + '" style="color:#0655a3;text-decoration:none">' + esc(replyTo) + "</a></p>" +
       "</td></tr>" +
       '<tr><td style="padding:16px 32px;background:#113163;border-radius:0 0 4px 4px;font-size:11.5px;line-height:1.7;color:#c7d5ea">' +
         "Berkeley Nucleonics Corporation<br>Test, Measurement and Nuclear Instrumentation since 1963<br>" +
-        "2955 Kerner Blvd, San Rafael, CA 94901 &middot; +1 (800) 234-7858" +
+        "2955 Kerner Blvd, San Rafael, CA 94901 &middot; " + ACK_PHONE +
       "</td></tr>" +
     "</table></td></tr></table></div>";
 
-  const text = [hello, "", line1, ""]
+  const text = [hello, "", intro, ""]
     .concat(rows.map((r) => r[0] + ": " + r[1]))
-    .concat(["", line2, "", "Thank you,", "BNC Service Department", ACK_REPLY_TO, "", sig])
+    .concat(["", callout, "", "Thank you,", signName, replyTo, "", sig])
     .join("\n");
 
-  return {
-    subject: "We have your RMA request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics Service",
-    html,
-    text,
-  };
+  return { html, text };
+}
+
+// RMA: repeat the model and serials back so the customer can see we captured the right
+// instruments, and give them the after-hours route for a detection emergency.
+function ackRma({ hello, replyTo, model, serials, reason, company }) {
+  model = String(model == null ? "" : model).trim();
+  const shell = ackShell({
+    preheader: "We have your RMA request. A service specialist replies within about two hours, 6am to 6pm Pacific, Monday through Friday.",
+    heading: "We have your RMA request",
+    hello,
+    intro: "Thank you for your RMA request. We have your information, and a member of the BNC Service Department will respond as quickly as possible, usually within two hours, Monday through Friday, 6am to 6pm Pacific.",
+    rows: [
+      ["Model", model],
+      [serials.length > 1 ? "Serial numbers" : "Serial number", serials.join(", ")],
+      ["Return reason", reason],
+      ["Company", company],
+    ],
+    callout: "If you have an emergency after hours or on the weekend, particularly with one of our nuclear detection instruments, please also send a text to " + ACK_SMS + " and we will try to have a spectroscopist follow up right away.",
+    signName: "BNC Service Department",
+    replyTo,
+  });
+  return Object.assign({ subject: "We have your RMA request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics Service" }, shell);
+}
+
+// Quote / demo request: confirm what they asked us to price, and invite the specification,
+// contract vehicle, or delivery date that usually decides how the quote gets written.
+// Only short structured fields are echoed. The free-text application is deliberately left out:
+// this endpoint is unauthenticated, so anything echoed here is text an attacker could have
+// delivered to a third party over a DKIM-signed berkeleynucleonics.com sender.
+function ackQuote({ hello, replyTo, model, quantity, country, company }) {
+  model = String(model == null ? "" : model).trim();
+  const shell = ackShell({
+    preheader: "We have your quote request. An applications engineer follows up with pricing and lead time, usually within two hours.",
+    heading: "We have your quote request",
+    hello,
+    intro: "Thank you for your request. Your details are with our applications engineers, and one of them will send pricing and lead time, usually within two hours, Monday through Friday, 6am to 6pm Pacific. If the configuration needs a closer look, they will come back to you with a question or two first.",
+    rows: [
+      ["Model or product", model],
+      ["Quantity", quantity],
+      ["Country", country],
+      ["Company", company],
+    ],
+    callout: "If this has to meet a specific specification, contract vehicle, or delivery date, reply to this email and we will build that into the quote. We are flexible, and we listen to the application.",
+    signName: "Berkeley Nucleonics Sales",
+    replyTo,
+  });
+  return Object.assign({ subject: "We have your quote request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics" }, shell);
+}
+
+// Does a contact submission look like a real lead, or like the junk that lands on the
+// broadest, least-defended form on the site?
+//
+// This gates the CUSTOMER acknowledgement only. Whatever this returns, the lead is still
+// saved, still logged, and still notifies a human. The worst case here is that a real
+// person does not get an instant auto-reply and hears from a rep instead, which is the
+// safer failure: an acknowledgement is a DKIM-signed berkeleynucleonics.com email sent to
+// an address the sender chose, so answering junk means mailing strangers on their behalf.
+//
+// Scored rather than a hard rule, so a professor writing a genuine question from a gmail
+// address still gets an answer while a templated pitch from a corporate domain does not.
+// Set FORM_ACK_CONTACT_ALL=1 to acknowledge every contact submission again.
+const PITCH_RE = new RegExp([
+  "seo", "backlink", "guest post", "link building", "digital marketing",
+  "web design", "website design", "app development", "mobile app",
+  "lead generation", "increase your (traffic|sales|ranking)", "first page of google",
+  "outsourc", "offshore", "dedicated developer", "crypto", "bitcoin", "forex",
+  "loan offer", "investment opportunity", "b2b (data|list)", "email list",
+].join("|"), "i");
+
+const TECH_RE = /\b(\d{3,4}[a-z]?\b|pulse|delay|generator|signal|rf|microwave|phase noise|detector|scintillat|isotope|riid|spectrum|analyz|pulser|laser|diode|driver|calibrat|jitter|trigger|waveform|awg|neutron|gamma|quote|lead time|datasheet|spec)/i;
+
+function contactLeadScore({ email, name, company, phone, message, freeMbox, foreign }) {
+  const msg = String(message || "").trim();
+  const reasons = [];
+  let score = 0;
+
+  if (email && email.indexOf("@") > 0 && !freeMbox) { score += 2; reasons.push("+2 corporate email"); }
+  if (msg.length >= 80) { score += 2; reasons.push("+2 substantive message"); }
+  else if (msg.length < 25) { score -= 1; reasons.push("-1 message too short"); }
+  if (String(company || "").trim().length > 1) { score += 1; reasons.push("+1 company given"); }
+  if (String(phone || "").trim().length > 5) { score += 1; reasons.push("+1 phone given"); }
+  if (TECH_RE.test(msg)) { score += 1; reasons.push("+1 mentions a product or spec"); }
+  if (PITCH_RE.test(msg)) { score -= 3; reasons.push("-3 reads as an outbound pitch"); }
+  if (foreign) { score -= 2; reasons.push("-2 foreign or strange characters"); }
+  // A message that is mostly links, from someone who would not say who they work for.
+  if (/https?:\/\//i.test(msg) && !String(company || "").trim()) {
+    score -= 2; reasons.push("-2 links but no company");
+  }
+  if (!String(name || "").trim() && !String(company || "").trim()) {
+    score -= 1; reasons.push("-1 no name and no company");
+  }
+
+  return { ok: score >= 3, score, why: reasons.join(", ") };
+}
+
+// Contact form: the broadest inbound, and the default type when none is given, so treat it as
+// the most exposed. Short structured fields only (see the note on ackQuote), then the phone
+// route for anything urgent so nobody waits on email when a bench is down.
+function ackContact({ hello, replyTo, company, phone, source }) {
+  const shell = ackShell({
+    preheader: "We have your message. The right specialist at Berkeley Nucleonics follows up, usually within two hours.",
+    heading: "Thank you for contacting us",
+    hello,
+    intro: "Thank you for reaching out. Your message is with the Berkeley Nucleonics team, and the person best suited to answer it will follow up, usually within two hours, Monday through Friday, 6am to 6pm Pacific.",
+    rows: [
+      ["Company", company],
+      ["Phone", phone],
+      ["How you found us", source],
+    ],
+    callout: "If it is urgent, please call us at " + ACK_PHONE + ", 6am to 6pm Pacific, Monday through Friday. Our engineers are glad to talk an application through on the phone.",
+    signName: "Berkeley Nucleonics",
+    replyTo,
+  });
+  return Object.assign({ subject: "Thank you for contacting Berkeley Nucleonics" }, shell);
 }
 
 module.exports = async function handler(req, res) {
@@ -437,7 +574,7 @@ module.exports = async function handler(req, res) {
   }
 
   const type = (body.form || (req.query && req.query.form) || "contact").toString().toLowerCase();
-  const label = TYPES[type] || "Website Form";
+  const label = has(TYPES, type) ? TYPES[type] : "Website Form";
   // Case-insensitive field pick (forms vary: ScintIQ uses Email/Organization/Mobile phone,
   // quizzes use first_name, etc.). Track consumed keys so they don't repeat in `extra`.
   const lc = {}; for (const k of Object.keys(body)) lc[k.toLowerCase()] = body[k];
@@ -671,23 +808,50 @@ module.exports = async function handler(req, res) {
     } catch (_) {}
   }
 
-  // 6. Customer acknowledgement (RMA only). Separate try/catch from the internal notify so a
-  // failure on either side never costs us the other, and never blocks the visitor. Skipped for
-  // our own domain so a staff test or an internal forward can't start a mail loop.
-  if (smtpConfigured() && ACK_TYPES[type] && !process.env.FORM_ACK_OFF &&
+  // 6. Customer acknowledgement (RMA, quote, contact). Separate try/catch from the internal
+  // notify so a failure on either side never costs us the other, and never blocks the visitor.
+  // Skipped for our own domain so a staff test or an internal forward can't start a mail loop.
+  // Every acknowledgement is blind-copied to Nutshell so it files onto the contact's timeline.
+  if (smtpConfigured() && has(ACK_TYPES, type) && !process.env.FORM_ACK_OFF &&
       email && email.indexOf("@") > 0 && !/@berkeleynucleonics\.com$/i.test(email)) {
     try {
-      const ack = ackEmail({
-        firstName: displayName(name).split(/\s+/)[0] || "",
-        model: modelField || guessModel(modelField, req.headers.referer),
-        serials: ackSerials(lc["serial_number"], lc["problem_description"] || body.message),
-        reason: lc["return_reason"] || "",
-        company,
-      });
+      const id = ackIdentity(type);
+      const hello = (() => {
+        const f = displayName(name).split(/\s+/)[0] || "";
+        return f ? "Hello " + f + "," : "Hello,";
+      })();
+      // Triage submissions (consumer mailbox / foreign script) are deliberately kept out of
+      // Nutshell above until a human says otherwise, so filing their acknowledgement into the
+      // drop box would put them in the CRM through a side door the claim table cannot see.
+      // They still get the acknowledgement, just not the CRM copy. FORM_ACK_BCC_TRIAGE=1 to file
+      // them anyway.
+      const bcc = (routeToTriage && !process.env.FORM_ACK_BCC_TRIAGE) ? [] : ACK_BCC;
+      let ack;
+      if (type === "quote") {
+        ack = ackQuote({
+          hello, replyTo: id.replyTo, company,
+          model: modelField || lc["product_or_model"] || guessModel(modelField, req.headers.referer),
+          quantity: lc["quantity"] || "",
+          country: lc["country"] || "",
+        });
+      } else if (type === "contact") {
+        ack = ackContact({
+          hello, replyTo: id.replyTo, company, phone,
+          source: lc["source"] || "",
+        });
+      } else {
+        ack = ackRma({
+          hello, replyTo: id.replyTo, company,
+          model: modelField || guessModel(modelField, req.headers.referer),
+          serials: ackSerials(lc["serial_number"], lc["problem_description"] || body.message),
+          reason: lc["return_reason"] || "",
+        });
+      }
       await sendMail({
         to: email,
-        from: ACK_FROM,
-        replyTo: ACK_REPLY_TO,
+        bcc,
+        from: id.from,
+        replyTo: id.replyTo,
         subject: ack.subject,
         html: ack.html,
         text: ack.text,
@@ -697,3 +861,11 @@ module.exports = async function handler(req, res) {
 
   respondOk({ nutshell });
 };
+
+// Exported so scripts/ack-preview.js can render the real acknowledgements without sending mail.
+// Vercel only ever calls the default export above.
+module.exports.ackRma = ackRma;
+module.exports.ackQuote = ackQuote;
+module.exports.ackContact = ackContact;
+module.exports.ackIdentity = ackIdentity;
+module.exports.ACK_BCC = ACK_BCC;
