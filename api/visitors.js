@@ -128,12 +128,44 @@ async function isAuthorized(token, sharedToken) {
   return false;
 }
 
-async function fetchRows() {
+// berkeleynucleonics.com and directedenergy.com both write into bnc_visits, and
+// dei-visit.js deliberately shares the bnc_vid key so one person reading both sites
+// stays one visitor. source_site (set server-side from the Host header in track.js, so
+// a client cannot spoof it) is what tells the rows apart.
+const SITE_BNC = "berkeleynucleonics.com";
+const SITE_DEI = "directedenergy.com";
+
+// Crawlers announce themselves in the user agent. This matters more for Directed
+// Energy than it ever did here: that site has only been live since 2026-07-27, so a
+// handful of Facebook and search crawlers is a visible share of its traffic and would
+// make the visitor list look busier than it is. Anonymous rows only ever carry a UA,
+// so this is the one signal available to tell a crawler from a person.
+const BOT_UA = /(bot|crawler|spider|crawling|externalagent|externalhit|slurp|bingpreview|headlesschrome|python-requests|curl\/|wget|axios|node-fetch|okhttp|scrapy|lighthouse|pingdom|uptime|monitoring|semrush|ahrefs|mj12|dotbot|petalbot|yandex|baiduspider|gptbot|claudebot|ccbot|perplexity)/i;
+
+function isBotUA(ua) {
+  return !!ua && BOT_UA.test(ua);
+}
+
+function siteFilter(site) {
+  if (site === SITE_DEI) return "&source_site=eq." + SITE_DEI;
+  // Rows written before the source_site migration have no value. They are all BNC,
+  // since DEI did not exist yet, so treat null as Berkeley Nucleonics.
+  if (site === SITE_BNC)
+    return "&or=(source_site.eq." + SITE_BNC + ",source_site.is.null)";
+  return "";
+}
+
+async function fetchRows(site) {
   // PostgREST caps a single response at ~1000 rows, so page through with Range
   // headers (newest first) up to a sane ceiling.
-  const cols = "user_id,path,visited_at,visitor_id,email,company,page_title,dwell_seconds";
+  //
+  // The site filter is applied in the query rather than after the fetch on purpose.
+  // Berkeley Nucleonics carries far more traffic than Directed Energy, so filtering
+  // afterwards would let BNC rows eat the whole 12,000-row ceiling and leave the DEI
+  // view looking empty for reasons that have nothing to do with DEI.
+  const cols = "user_id,path,visited_at,visitor_id,email,company,page_title,dwell_seconds,source_site,user_agent";
   const base = process.env.SUPABASE_URL +
-    "/rest/v1/bnc_visits?select=" + cols + "&order=visited_at.desc";
+    "/rest/v1/bnc_visits?select=" + cols + siteFilter(site) + "&order=visited_at.desc";
   const PAGE = 1000, MAX = 12000;
   let all = [];
   for (let off = 0; off < MAX; off += PAGE) {
@@ -162,16 +194,25 @@ module.exports = async function handler(req, res) {
   if (!ok) { res.status(401).json({ error: "unauthorized" }); return; }
 
   try {
-    const rows = await fetchRows();
+    // "" = both sites, which is what the dashboard did before DEI existed.
+    const siteParam = ((req.query && req.query.site) || "").trim();
+    const site = (siteParam === SITE_DEI || siteParam === SITE_BNC) ? siteParam : "";
+    const rows = await fetchRows(site);
     const map = new Map();
     for (const v of rows) {
       const key = v.visitor_id || v.user_id || (v.email && v.email.toLowerCase()) || "unknown";
       let g = map.get(key);
       if (!g) {
         g = { key, email: null, company: null, first: v.visited_at, last: v.visited_at,
-              hits: 0, days: new Set(), dwell: 0, pages: new Map(), lines: new Set(), timeline: [] };
+              hits: 0, days: new Set(), dwell: 0, pages: new Map(), lines: new Set(),
+              sites: new Set(), human: false, bot_hits: 0, timeline: [] };
         map.set(key, g);
       }
+      g.sites.add(v.source_site || SITE_BNC);
+      // One human-looking pageview is enough to treat the visitor as a person: a real
+      // browser that later triggers a prefetch should not be discarded as a crawler.
+      if (isBotUA(v.user_agent)) g.bot_hits++;
+      else g.human = true;
       if (v.email && !g.email) g.email = v.email;
       if (v.company && !g.company) g.company = v.company;
       if (v.visited_at < g.first) g.first = v.visited_at;
@@ -208,6 +249,12 @@ module.exports = async function handler(req, res) {
       name: g.email ? titleCase(g.email.split("@")[0]) : null,
       identified: !!g.email,
       internal: isInternal(g.email),
+      // Which sites this person has read. Because the two sites share a visitor id,
+      // someone who reads a DEI pulser page and then a BNC one shows both, which is
+      // exactly the cross-sell signal worth surfacing.
+      sites: [...g.sites].sort(),
+      cross_site: g.sites.size > 1,
+      bot: !g.human && g.bot_hits > 0,
       first_seen: g.first,
       last_seen: g.last,
       hits: g.hits,
@@ -254,9 +301,11 @@ module.exports = async function handler(req, res) {
     const product = ((req.query && req.query.product) || "").trim();
     const idOnly = ((req.query && req.query.identified) || "") === "1";
     const hideInternal = ((req.query && req.query.hideInternal) || "") === "1";
+    const hideBots = ((req.query && req.query.hideBots) || "") === "1";
     if (product) visitors = visitors.filter((v) => v.product_lines.includes(product));
     if (idOnly) visitors = visitors.filter((v) => v.identified);
     if (hideInternal) visitors = visitors.filter((v) => !v.internal);
+    if (hideBots) visitors = visitors.filter((v) => !v.bot);
     if (q) visitors = visitors.filter((v) => {
       const hay = [v.email || "", v.company || "", v.name || "",
         v.product_lines.join(" "),
@@ -267,6 +316,14 @@ module.exports = async function handler(req, res) {
     visitors.sort((a, b) => (a.last_seen < b.last_seen ? 1 : -1));
     const total = visitors.length;
     const internal_count = visitors.filter((v) => v.internal).length;
+    const bot_count = visitors.filter((v) => v.bot).length;
+    // Row counts per site, from the rows actually fetched. With site="" this is the
+    // split across both properties; with a site selected it just confirms the scope.
+    const site_counts = {};
+    for (const v of rows) {
+      const s = v.source_site || SITE_BNC;
+      site_counts[s] = (site_counts[s] || 0) + 1;
+    }
     const limit = Math.min(parseInt((req.query && req.query.limit) || "300", 10) || 300, 500);
     visitors = visitors.slice(0, limit);
 
@@ -275,6 +332,9 @@ module.exports = async function handler(req, res) {
       total_rows: rows.length,
       total_visitors: total,
       internal_count: internal_count,
+      bot_count: bot_count,
+      site: site || "all",
+      site_counts: site_counts,
       returned: visitors.length,
       daily_run,
       visitors,

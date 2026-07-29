@@ -52,6 +52,12 @@
   .badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:#e6f0fb;color:var(--blue)}
   .badge.anon{background:#eef0f3;color:var(--muted)}
   .badge.intern{background:#fdeaea;color:#9a3b2f}
+  /* Directed Energy uses the darker end of the BNC palette so the two properties read
+     as one company with two lines, not two different brands. */
+  .badge.dei{background:#0e2038;color:#7fe6db}
+  .badge.bnc{background:#e6f0fb;color:var(--ink)}
+  .badge.both{background:#efe8ff;color:#5b3da8}
+  .badge.bot{background:#f1f0ee;color:#7a736a}
   .co{font-size:13px;margin-top:2px;color:var(--ink)}
   .co b{color:var(--ink)} .co .src{color:var(--muted);font-weight:400;font-size:11.5px}
   .co .none{color:var(--muted)}
@@ -128,6 +134,7 @@
     </select>
     <label class="chk"><input type="checkbox" id="idOnly"> Identified only</label>
     <label class="chk"><input type="checkbox" id="hideInternal"> Hide BNC</label>
+    <label class="chk"><input type="checkbox" id="hideBots"> Hide crawlers</label>
     <button id="go">Search</button>
     <button id="clear" class="sec">Reset</button>
   </div>
@@ -166,6 +173,10 @@
   var hashTok = (location.hash.match(/[#&]t=([^&]+)/) || [])[1];
   var qTok = new URLSearchParams(location.search).get("token");
   var embed = new URLSearchParams(location.search).get("embed") === "1";
+  // Which property this view is scoped to. Both sites write into one table and share a
+  // visitor id on purpose, so "" (both) is a real, useful view, not just a default.
+  var SITE = new URLSearchParams(location.search).get("site") || "";
+  var SITE_LABEL = { "directedenergy.com": "Directed Energy", "berkeleynucleonics.com": "Berkeley Nucleonics" };
   function remember(t){ try{ localStorage.setItem(TKEY,t); }catch(e){} try{ sessionStorage.setItem(TKEY,t); }catch(e){} }
   function forget(){ try{ localStorage.removeItem(TKEY); }catch(e){} try{ sessionStorage.removeItem(TKEY); }catch(e){} }
   function recall(){ try{ return localStorage.getItem(TKEY) || sessionStorage.getItem(TKEY) || ""; }catch(e){ return ""; } }
@@ -203,6 +214,19 @@
     var badge = v.identified ? '<span class="badge">Identified</span>'
       : '<span class="badge anon">Anonymous</span>';
     if(v.internal) badge += ' <span class="badge intern">BNC</span>';
+    // Site badges. Shown only in the combined view, where "which site" is the thing you
+    // cannot otherwise tell; inside a per-site tab every card would carry the same chip.
+    if(!SITE){
+      (v.sites||[]).forEach(function(s){
+        if(s==="directedenergy.com") badge += ' <span class="badge dei">DEI</span>';
+        else if(s==="berkeleynucleonics.com") badge += ' <span class="badge bnc">BNC site</span>';
+        else badge += ' <span class="badge anon">'+esc(s)+'</span>';
+      });
+    }
+    // A person who read both properties is the cross-sell signal worth calling out,
+    // and it is only visible because the two sites share one visitor id.
+    if(v.cross_site) badge += ' <span class="badge both">Both sites</span>';
+    if(v.bot) badge += ' <span class="badge bot">Crawler</span>';
     var chips = (v.product_lines||[]).map(function(p){return '<span class="chip">'+esc(p)+'</span>';}).join("");
     // Company column: captured company, else corporate email domain, else unknown.
     var companyLine;
@@ -254,8 +278,9 @@
     var hidNote = document.getElementById("hideInternal").checked
       ? ""
       : (data.internal_count ? " · " + data.internal_count + " are BNC" : "");
+    var scope = SITE ? " on " + (SITE_LABEL[SITE] || SITE) : " across both sites";
     document.getElementById("stat").textContent =
-      "Showing " + vs.length + " of " + (data.total_visitors||vs.length) + " visitors" + hidNote + " · " +
+      "Showing " + vs.length + " of " + (data.total_visitors||vs.length) + " visitors" + scope + hidNote + " · " +
       (data.total_rows||0) + " page-events in the database";
     document.getElementById("updated").textContent = "Updated " + when(data.generated_at);
     Array.prototype.forEach.call(r.querySelectorAll(".card"), function(c){
@@ -296,13 +321,16 @@
     var product = document.getElementById("product").value;
     var idOnly = document.getElementById("idOnly").checked ? "1" : "";
     var hideInternal = document.getElementById("hideInternal").checked ? "1" : "";
+    var hideBots = document.getElementById("hideBots").checked ? "1" : "";
     document.getElementById("stat").textContent = "Loading…";
     getFreshToken(function(t){
       var url = API + "?token=" + encodeURIComponent(t) +
         (q? "&q="+encodeURIComponent(q):"") +
         (product? "&product="+encodeURIComponent(product):"") +
         (idOnly? "&identified=1":"") +
-        (hideInternal? "&hideInternal=1":"");
+        (hideInternal? "&hideInternal=1":"") +
+        (hideBots? "&hideBots=1":"") +
+        (SITE? "&site="+encodeURIComponent(SITE):"");
       fetch(url).then(function(res){
         if(res.status===401){ forget(); showGate("That password was not accepted."); throw new Error("auth"); }
         if(!res.ok) throw new Error("http "+res.status);
@@ -340,11 +368,17 @@
   document.getElementById("product").addEventListener("change", load);
   document.getElementById("idOnly").addEventListener("change", load);
   document.getElementById("hideInternal").addEventListener("change", load);
+  document.getElementById("hideBots").addEventListener("change", load);
   document.getElementById("go").addEventListener("click", load);
   document.getElementById("clear").addEventListener("click", function(){
     document.getElementById("q").value=""; document.getElementById("product").value="";
     document.getElementById("idOnly").checked=false;
-    document.getElementById("hideInternal").checked=false; load();
+    document.getElementById("hideInternal").checked=false;
+    // Off by default, deliberately. Crawlers are a small slice (5 of 152 Directed
+    // Energy rows when this was built, and none of them identified), and the standing
+    // rule here is that a view never opens already filtered in a way that hides rows.
+    // The checkbox is for when you want a clean read, not something to assume.
+    document.getElementById("hideBots").checked=false; load();
   });
 
   // boot
