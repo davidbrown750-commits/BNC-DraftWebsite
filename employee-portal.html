@@ -67,11 +67,19 @@
 <div id="portal" class="hide">
   <div class="tabs">
     <button data-tab="visitors" class="active">Website Visitor Review</button>
+    <button data-tab="dei">Directed Energy Visitors</button>
     <button data-tab="pending">Website Pending Actions</button>
   </div>
   <div class="wrap">
     <div class="panel active" id="tab-visitors">
       <iframe id="veframe" title="Web Visitor Review" src="about:blank"></iframe>
+    </div>
+    <!-- Directed Energy is the same company and the same visitor table, so it lives
+         here as another tab rather than a separate dashboard. The first tab still
+         shows both properties together; cards there carry a site badge. This tab is
+         scoped to directedenergy.com for when you want just that pipeline. -->
+    <div class="panel" id="tab-dei">
+      <iframe id="deiframe" title="Directed Energy Visitor Review" src="about:blank"></iframe>
     </div>
     <div class="panel" id="tab-pending">
       <h2>Website Pending Actions</h2>
@@ -112,6 +120,7 @@
     Array.prototype.forEach.call(document.querySelectorAll(".panel"), function(p){
       p.classList.toggle("active", p.id==="tab-"+name); });
     if(name==="pending") loadPending();
+    if(name==="dei") loadDei();
     if(location.hash.slice(1)!==name) history.replaceState(null,"","#"+name);
   }
   Array.prototype.forEach.call(document.querySelectorAll(".tabs button"), function(b){
@@ -122,12 +131,24 @@
   function loadExplorer(){
     document.getElementById("veframe").src = "/web-visitors.html?embed=1";
   }
+  // Loaded on first view of the tab rather than up front, so opening the portal still
+  // costs one explorer fetch instead of two.
+  var deiLoaded=false;
+  function loadDei(){
+    if(deiLoaded) return; deiLoaded=true;
+    document.getElementById("deiframe").src =
+      "/web-visitors.html?embed=1&site=directedenergy.com";
+  }
   // Serve a FRESH Clerk session token to the embedded explorer whenever it asks
   // (Clerk session tokens are short-lived, so we mint one per request).
+  //
+  // Reply to whichever frame asked, via e.source, rather than to a hardcoded one.
+  // With two explorers embedded, replying to a fixed frame would hand the token to
+  // the wrong one and leave the other stuck on its password gate.
   window.addEventListener("message", function(e){
     if(!e.data || e.data.type!=="bnc-need-token") return;
-    var frame = document.getElementById("veframe");
-    function reply(t){ if(frame && frame.contentWindow) frame.contentWindow.postMessage({type:"bnc-token", token:t||""}, "*"); }
+    var src = e.source;
+    function reply(t){ if(src) src.postMessage({type:"bnc-token", token:t||""}, "*"); }
     if(window.Clerk && window.Clerk.session && window.Clerk.session.getToken){
       window.Clerk.session.getToken().then(reply).catch(function(){ reply(""); });
     } else reply("");
