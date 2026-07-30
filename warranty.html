@@ -152,18 +152,18 @@ th .modelthumb{filter:none;}
 @media(max-width:860px){.gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}.gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}.gfoot .gacad{text-align:left;}.gfoot .gsocial{justify-content:center;}.gfoot .gcompany ul{text-align:left;}.gfoot .gbottom{justify-content:center;text-align:center;}.gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}}
 </style>
 <style id="navgrplink">.sitenav .nav-grp-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer;display:contents;}.sitenav .nav-grp-link:hover{color:#5fd0ff;}</style><!--seo-meta-->
-<link rel="canonical" href="https://www.berkeleynucleonics.com/compliance-and-legal-notices.html">
+<link rel="canonical" href="https://www.berkeleynucleonics.com/warranty.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Berkeley Nucleonics">
-<meta property="og:title" content="Compliance &amp; Legal Notices: Terms, EULA, RoHS | BNC">
-<meta property="og:description" content="Berkeley Nucleonics compliance and legal notices in a central index: general terms, software EULA, export and FDA compliance, RoHS, and Prop 65 statements.">
-<meta property="og:url" content="https://www.berkeleynucleonics.com/compliance-and-legal-notices.html">
+<meta property="og:title" content="Warranty: One Year Standard Coverage | BNC">
+<meta property="og:description" content="Berkeley Nucleonics warranty terms: one year standard return-to-manufacturer coverage on all instruments, including high current and high voltage pulsers, and how to request a warranty return.">
+<meta property="og:url" content="https://www.berkeleynucleonics.com/warranty.html">
 <meta property="og:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Compliance &amp; Legal Notices: Terms, EULA, RoHS | BNC">
-<meta name="twitter:description" content="Berkeley Nucleonics compliance and legal notices in a central index: general terms, software EULA, export and FDA compliance, RoHS, and Prop 65 statements.">
+<meta name="twitter:title" content="Warranty: One Year Standard Coverage | BNC">
+<meta name="twitter:description" content="Berkeley Nucleonics warranty terms: one year standard return-to-manufacturer coverage on all instruments, including high current and high voltage pulsers, and how to request a warranty return.">
 <meta name="twitter:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Compliance &amp; Legal Notices", "description": "Berkeley Nucleonics compliance and legal notices: general terms, EULA, export and FDA compliance, RoHS, Prop 65, calibration certificates, privacy, and more.", "url": "https://www.berkeleynucleonics.com/compliance-and-legal-notices.html", "isPartOf": {"@type": "WebSite", "name": "Berkeley Nucleonics", "url": "https://www.berkeleynucleonics.com"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Warranty", "description": "Berkeley Nucleonics warranty: one year standard return-to-manufacturer coverage on all instruments, parts and labor included, and how to request a warranty return.", "url": "https://www.berkeleynucleonics.com/warranty.html", "isPartOf": {"@type": "WebSite", "name": "Berkeley Nucleonics", "url": "https://www.berkeleynucleonics.com"}}</script>
 <!--/seo-meta-->
 <!--bnc-auth-->
 <link rel="stylesheet" href="_shared/bnc-auth.css">
@@ -195,6 +195,47 @@ th .modelthumb{filter:none;}
   html{overflow-x:clip;}
 }
 </style>
+<style id="warranty-accent">
+/* Warranty page accents. Scoped to .warranty-doc so no other .article page is touched.
+   Palette is site-native: brand blue, the emerald already used sitewide by
+   _shared/bnc-emerald.css, and BNC accent purple. Nothing new is invented. */
+.warranty-doc{--wg:#2f9e6b;--wg-dark:#1f7a51;--wp:#6b21a8;--wp-dark:#54187f;}
+
+/* Coverage at a glance. Replaces the old three-column table: same facts, read in a
+   glance instead of parsed, and it does not single out any one component. */
+.warranty-doc .wcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:14px;margin:18px 0 22px;}
+.warranty-doc .wcard{position:relative;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r);padding:18px 18px 16px;overflow:hidden;}
+.warranty-doc .wcard::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;}
+.warranty-doc .wcard:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),#37b6f0);}
+.warranty-doc .wcard:nth-child(2)::before{background:linear-gradient(90deg,var(--wg),#3fd0c4);}
+.warranty-doc .wcard:nth-child(3)::before{background:linear-gradient(90deg,var(--wp),#9d5bd2);}
+.warranty-doc .wcard .n{font-family:var(--font-h);font-size:1.5rem;font-weight:700;
+  line-height:1.15;color:var(--blue-dark);}
+.warranty-doc .wcard:nth-child(2) .n{color:var(--wg-dark);}
+.warranty-doc .wcard:nth-child(3) .n{color:var(--wp-dark);}
+.warranty-doc .wcard .l{margin-top:5px;font-size:.82rem;color:var(--muted);line-height:1.5;}
+
+/* Section headings get a short accent rule, alternating green and purple so the page
+   has rhythm without turning into a colour chart. */
+.warranty-doc section > h2{position:relative;padding-left:13px;}
+.warranty-doc section > h2::before{content:"";position:absolute;left:0;top:.18em;bottom:.18em;
+  width:3px;border-radius:2px;background:var(--wg);}
+.warranty-doc section:nth-of-type(even) > h2::before{background:var(--wp);}
+
+/* One callout, for the single thing that costs a customer money if they miss it. */
+.warranty-doc .wnote{background:#faf6fe;border:1px solid #e7d7f5;border-left:3px solid var(--wp);
+  border-radius:0 var(--r) var(--r) 0;padding:13px 16px;margin:16px 0;font-size:.9rem;}
+.warranty-doc .wnote b{color:var(--wp-dark);}
+
+/* Contact block, closing the page on a green note rather than plain text. */
+.warranty-doc .wcontact{background:var(--bg-2);border:1px solid var(--line);
+  border-top:3px solid var(--wg);border-radius:var(--r);padding:16px 18px;}
+.warranty-doc .wcontact a{color:var(--blue-600);font-weight:bold;}
+
+@media(max-width:640px){.warranty-doc .wcards{grid-template-columns:1fr;}}
+</style>
 </head>
 <body><div class="bnc-emerald-wave" aria-hidden="true"></div>
 <!-- Google Tag Manager (noscript) -->
@@ -209,7 +250,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Legal</div><h1>Warranty</h1><p>One year of return-to-manufacturer coverage on every Berkeley Nucleonics instrument, with no exceptions by product line.</p><div class="ver">Berkeley Nucleonics Corporation</div></div></div></section>
 
-<div class="article">
+<div class="article warranty-doc">
 
 <section>
 <h2>Standard Warranty</h2>
@@ -218,13 +259,11 @@ workmanship for one year from the date of shipment. Coverage is return-to-manufa
 parts and labor. The term is the same across every product line, including high current and high
 voltage pulsers.</p>
 
-<table class="spec">
-<thead><tr><th>Coverage</th><th>Term</th><th>Runs from</th></tr></thead>
-<tbody>
-<tr><td>All Berkeley Nucleonics instruments, including high current and high voltage pulsers</td><td>1 year, return to manufacturer, parts and labor</td><td>Date of shipment</td></tr>
-<tr><td>Internal rechargeable batteries (option B3)</td><td>1 year</td><td>Date of shipment</td></tr>
-</tbody>
-</table>
+<div class="wcards">
+  <div class="wcard"><div class="n">1 year</div><div class="l">Standard term on every instrument we manufacture, with no exceptions by product line.</div></div>
+  <div class="wcard"><div class="n">Parts &amp; labor</div><div class="l">Both included. Repair or replacement is at our option.</div></div>
+  <div class="wcard"><div class="n">From shipment</div><div class="l">Coverage runs from the date the instrument ships.</div></div>
+</div>
 
 <p>At our option we will repair or replace any product that proves defective within the warranty
 period, provided it is returned to us and the preventative maintenance procedures have been followed.</p>
@@ -245,9 +284,9 @@ Nucleonics is not liable for consequential damages.</p>
 
 <section>
 <h2>Warranty Returns</h2>
-<p>Contact us for a Return Material Authorization number before sending anything back. We cannot accept
-responsibility for units that arrive without one. At our discretion we may supply a replacement product
-rather than repair the original.</p>
+<div class="wnote"><b>Get an RMA number before you ship.</b> We cannot accept responsibility for
+units that arrive without one. Contact us first and we will issue it.</div>
+<p>At our discretion we may supply a replacement product rather than repair the original.</p>
 <p>If a unit is found faulty on arrival, meaning within 30 days, we cover shipping both ways. Otherwise
 you cover the cost of shipping to us and we cover the return. Customers outside the United States should
 describe returns for customs purposes as "Customer-Owned Equipment for Repair under Warranty".</p>
@@ -273,8 +312,8 @@ index, and our <a href="privacy.html">Privacy Policy &amp; Website Terms</a> for
 use of this site.</p>
 </section>
 
-<section>
-<h3>Contact</h3>
+<section class="wcontact">
+<h3 style="margin-top:0">Contact</h3>
 <p>For warranty questions, an RMA number, or a copy of our General Terms and Conditions, reach our team
 by phone at <a href="tel:+18002347858">800-234-7858</a> or by email at
 <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a>.</p>
