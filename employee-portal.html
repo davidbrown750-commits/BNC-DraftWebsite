@@ -10,6 +10,7 @@
 <title>Employee Portal — Berkeley Nucleonics</title>
 <!--bnc-auth-->
 <link rel="stylesheet" href="_shared/bnc-auth.css">
+<link rel="stylesheet" href="/_shared/bnc-a11y.css">
 <script src="_shared/bnc-auth-config.js"></script>
 <script defer src="_shared/bnc-auth.js"></script><script defer src="_shared/bnc-visit.js"></script><script defer src="_shared/bnc-chat.js"></script>
 <!--/bnc-auth-->
@@ -46,6 +47,15 @@
   .locked h2{margin:0 0 8px}.locked p{color:var(--muted);font-size:13.5px;margin:0 0 16px}
   .locked button{background:var(--blue);color:#fff;border:0;border-radius:6px;padding:10px 20px;font-weight:700;cursor:pointer}
   .hide{display:none!important}
+
+  .dl-h{font-family:'Myriad Pro',Arial;color:var(--ink);font-size:14.5px;margin:20px 0 6px;border-top:2px solid var(--line);padding-top:12px}
+  table.doclib{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:6px}
+  table.doclib th{text-align:left;font-family:'Myriad Pro',Arial;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--line)}
+  table.doclib td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.doclib tr:hover td{background:#f7fafd}
+  .dl-n{font-weight:700;color:var(--ink)}
+  .dl-t{font-size:10.5px;font-weight:700;border:1px solid var(--blue);color:var(--blue);border-radius:3px;padding:2px 7px;white-space:nowrap}
+  .dl-s{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -69,6 +79,7 @@
     <button data-tab="visitors" class="active">Website Visitor Review</button>
     <button data-tab="dei">Directed Energy Visitors</button>
     <button data-tab="pending">Website Pending Actions</button>
+    <button data-tab="docs">Internal Documentation</button>
   </div>
   <div class="wrap">
     <div class="panel active" id="tab-visitors">
@@ -87,6 +98,15 @@
       <div class="pa-stat" id="paStat">Loading…</div>
       <div id="paList"></div>
     </div>
+    <div class="panel" id="tab-docs">
+      <h2>Internal Documentation</h2>
+      <p class="sub">Controlled quality, export, and compliance documents for Berkeley Nucleonics staff. Website Terms &amp; Conditions and the Privacy Policy are published on the public site.</p>
+      <h3 class="dl-h">Quality System</h3>
+      <table class="doclib"><thead><tr><th>Document</th><th>Type</th><th>Size</th><th>Access</th></tr></thead><tbody><tr><td class="dl-n">Quality Assurance Manual (QAM-001, Rev 2.5)</td><td><span class="dl-t">HTML + DOCX</span></td><td class="dl-s">55 KB</td><td><a href="#" class="gdoc" data-doc="qam-html">Web view</a> &middot; <a href="#" class="gdoc" data-doc="qam-docx" data-download="BNC-QAM-Rev2.5.docx">Word</a></td></tr><tr><td class="dl-n">End Use Statement (EU-100)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">163 KB</td><td><a href="#" class="gdoc" data-doc="eu-100">Open</a></td></tr><tr><td class="dl-n">End Use Statement &ndash; China (EU-100C)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">227 KB</td><td><a href="#" class="gdoc" data-doc="eu-100c">Open</a></td></tr></tbody></table>
+      <h3 class="dl-h">Compliance &amp; Legal Notices</h3>
+      <table class="doclib"><thead><tr><th>Document</th><th>Type</th><th>Size</th><th>Access</th></tr></thead><tbody><tr><td class="dl-n">Export Management Guide (US BIS Compliance)</td><td><span class="dl-t">DOCX</span></td><td class="dl-s">11.2 MB</td><td><a href="/docs/pdfs/bnc-export-management-guide-2023.docx" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">General Terms &amp; Conditions (GTC-100)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">192 KB</td><td><a href="/docs/pdfs/bnc-gtc-100-general-terms-and-conditions.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">Accessibility Compliance</td><td><span class="dl-t">PDF</span></td><td class="dl-s">247 KB</td><td><a href="/docs/pdfs/bnc-accessibility-compliance.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">Software EULA (EULA-100)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">68 KB</td><td><a href="/docs/pdfs/bnc-eula-100-software-license.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">End User &amp; Export Compliance (Form 711)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">95 KB</td><td><a href="/docs/pdfs/bnc-form-711-end-user-export-compliance.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">FDA Compliance</td><td><span class="dl-t">PDF</span></td><td class="dl-s">236 KB</td><td><a href="/docs/pdfs/bnc-fda-compliance.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">Prop 65 Compliance</td><td><span class="dl-t">PDF</span></td><td class="dl-s">260 KB</td><td><a href="/docs/pdfs/bnc-prop-65-compliance.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">Purchasing Dept T&amp;C (P-100)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">159 KB</td><td><a href="/docs/pdfs/bnc-p-100-purchasing-terms.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">RoHS Compliance</td><td><span class="dl-t">PDF</span></td><td class="dl-s">196 KB</td><td><a href="/docs/pdfs/bnc-rohs-compliance.pdf" target="_blank" rel="noopener">Open</a></td></tr><tr><td class="dl-n">Certificate of Calibration (sample)</td><td><span class="dl-t">PDF</span></td><td class="dl-s">169 KB</td><td><a href="/docs/pdfs/bnc-certificate-of-calibration-sample.pdf" target="_blank" rel="noopener">Open</a></td></tr></tbody></table>
+    </div>
+
   </div>
 </div>
 
@@ -217,6 +237,37 @@
     if(window.Clerk && window.Clerk.addListener){
       window.Clerk.addListener(function(){ if(isStaff()) reveal(); });
     }
+  });
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener("click", function(e){
+    var el = e.target.closest ? e.target.closest("a.gdoc") : null;
+    if(!el) return;
+    e.preventDefault();
+    var doc = el.getAttribute("data-doc"), dl = el.getAttribute("data-download");
+    var orig = el.textContent; el.textContent = "\u2026";
+    function done(){ el.textContent = orig; }
+    function fail(m){ done(); alert(m); }
+    function go(token){
+      if(!token){ fail("Please sign in with your @berkeleynucleonics.com account to open this document."); return; }
+      fetch("/api/internal-doc?doc="+encodeURIComponent(doc), {headers:{Authorization:"Bearer "+token}})
+        .then(function(r){ if(!r.ok) throw new Error(r.status); return r.blob(); })
+        .then(function(blob){
+          var url = URL.createObjectURL(blob);
+          if(dl){ var a=document.createElement("a"); a.href=url; a.download=dl; document.body.appendChild(a); a.click(); a.remove(); }
+          else { window.open(url, "_blank", "noopener"); }
+          setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+          done();
+        })
+        .catch(function(err){ fail("Could not open this document (" + err.message + "). Make sure you are signed in with your @berkeleynucleonics.com account."); });
+    }
+    try {
+      if(window.Clerk && window.Clerk.session && window.Clerk.session.getToken){
+        window.Clerk.session.getToken().then(go).catch(function(){ go(""); });
+      } else go("");
+    } catch(_){ go(""); }
   });
 })();
 </script>
