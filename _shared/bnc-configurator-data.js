@@ -1391,16 +1391,16 @@
 
   var FAMILY_EVO = {
     id: "evo",
-    title: "PVP High Voltage DC Power Supply Configurator",
-    subtitle: "PVP series, 1.5 kV to 30 kV. Build your configuration, then request a QuickQuote.",
+    title: "HVX High Voltage DC Power Supply Configurator",
+    subtitle: "HVX series, 1.5 kV to 30 kV. Build your configuration, then request a QuickQuote.",
     models: [
       {
         id: "evo",
-        name: "PVP Series",
+        name: "HVX Series",
         blurb: "Adjustable high voltage DC power supplies, 500 W to 3000 W",
-        info: "The PVP series delivers adjustable high voltage DC from 0 up to 1.5, 5, 10, 20 or 30 kV with matching current ranges, in standard, polarity-reversal and floating-output versions, with optional ramp control and arc detection.",
+        info: "The HVX series delivers adjustable high voltage DC from 0 up to 1.5, 5, 10, 20 or 30 kV with matching current ranges, in standard, polarity-reversal and floating-output versions, with optional ramp control and arc detection.",
         image: FIG + "evo.png",
-        pnBase: "PVP",
+        pnBase: "HVX",
         groups: [
           {
             id: "voltage", label: "Output voltage", type: "radio",
@@ -1474,11 +1474,11 @@
           {
             id: "options", label: "Options", type: "check",
             options: [
-              { code: "RAMP", codeLabel: "PVP Option", label: "Ramp control: adjustable voltage ramp-up and ramp-down",
-                pn: "", acc: "PVP-RAMP-CONTROL", desc: "ramp control option",
+              { code: "RAMP", codeLabel: "HVX Option", label: "Ramp control: adjustable voltage ramp-up and ramp-down",
+                pn: "", acc: "HVX-RAMP-CONTROL", desc: "ramp control option",
                 info: "Enables adjustable voltage ramp-up and ramp-down for controlled output transitions." },
-              { code: "ARC", codeLabel: "PVP Option", label: "Arc detection with rapid shutdown",
-                pn: "", acc: "PVP-ARC-DETECTION", desc: "arc detection option",
+              { code: "ARC", codeLabel: "HVX Option", label: "Arc detection with rapid shutdown",
+                pn: "", acc: "HVX-ARC-DETECTION", desc: "arc detection option",
                 info: "Detects arcs and shuts the output down rapidly to protect the supply and connected equipment." }
             ]
           }

@@ -18,7 +18,7 @@ PRODUCT LINES (8) - each has a home page + docs:
   riid-home.html ..... Isotope ID & Radiation Detection
   dei-home.html ...... High Power / Current Pulsers
   index-bold.html .... ICX-FieldHawk Spectrum Analyzers
-  pvp-home.html ...... PVP High Voltage Power Supplies
+  pvp-home.html ...... HVX High Voltage Power Supplies
 
 SUPPORT / UTILITY PAGES
   faq.html, contact.html, get-quote.html, rma-form.html, obsolete-products.html,
@@ -31,5 +31,5 @@ SUPPORT / UTILITY PAGES
 NOTES
 - Site search (top right of every page) is keyword + concept aware and indexes every page and FAQ.
 - The three forms (Contact, Get a Quote, RMA) post to Formspree (xeewaglw) and email david.brown@berkeleynucleonics.com.
-- ICX-FieldHawk and PVP-Series pages are concept content pending final datasheet verification.
+- ICX-FieldHawk and HVX-Series pages are concept content pending final datasheet verification.
 - (c) 2026 Berkeley Nucleonics Corporation, San Rafael, CA.

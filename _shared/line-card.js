@@ -444,10 +444,10 @@
     vals:{res:"—",density:"2.5 g/cm³",decay:"~60 ns",emission:"395 nm",app:"Thermal neutron detection"}, sort:{res:99,density:2.5,decay:60,emission:395,app:16}}
   ]
 },
-"pvp": {
-  title: "PVP-Series High-Voltage Power Supplies",
-  productLine: "PVP-Series HV Power Supplies",
-  lede: "Compare the PVP-Series high-voltage DC supplies at a glance and open the datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
+"hvx": {
+  title: "HVX-Series High-Voltage Power Supplies",
+  productLine: "HVX-Series HV Power Supplies",
+  lede: "Compare the HVX-Series high-voltage DC supplies at a glance and open the datasheet. Click any column heading to sort. Select models to compare them side by side or request a quote.",
   dsbase: "https://www.berkeleynucleonics.com/docs/",
   quoteEndpoint: "/api/form?form=quote-index",
   columns: [
@@ -457,21 +457,21 @@
     {key:"polarity", label:"Polarity"}
   ],
   models: [
-   {num:1, model:"PVP-1500-2000", sum:"1.5 kV high-current, 2 A", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:1, model:"HVX-1500-2000", sum:"1.5 kV high-current, 2 A", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"1.5 kV",current:"2 A",power:"3 kW",polarity:"Floating or reversible"}, sort:{voltage:1.5,current:2000,power:3000,polarity:1}},
-   {num:2, model:"PVP-1500-1400", sum:"1.5 kV floating high-current", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:2, model:"HVX-1500-1400", sum:"1.5 kV floating high-current", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"1.5 kV",current:"1.4 A",power:"2 kW",polarity:"Floating or reversible"}, sort:{voltage:1.5,current:1400,power:2000,polarity:1}},
-   {num:3, model:"PVP-5000-600", sum:"5 kV mid-voltage workhorse", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:3, model:"HVX-5000-600", sum:"5 kV mid-voltage workhorse", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"5 kV",current:"600 mA",power:"3 kW",polarity:"Pos / neg / reversible"}, sort:{voltage:5,current:600,power:3000,polarity:2}},
-   {num:4, model:"PVP-5000-400", sum:"5 kV reversible HV test", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:4, model:"HVX-5000-400", sum:"5 kV reversible HV test", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"5 kV",current:"400 mA",power:"2 kW",polarity:"Pos / neg / reversible"}, sort:{voltage:5,current:400,power:2000,polarity:2}},
-   {num:5, model:"PVP-10000-300", sum:"10 kV characterization supply", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:5, model:"HVX-10000-300", sum:"10 kV characterization supply", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"10 kV",current:"300 mA",power:"3 kW",polarity:"Pos / neg / reversible"}, sort:{voltage:10,current:300,power:3000,polarity:2}},
-   {num:6, model:"PVP-10000-200", sum:"10 kV reversible bench source", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:6, model:"HVX-10000-200", sum:"10 kV reversible bench source", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"10 kV",current:"200 mA",power:"2 kW",polarity:"Pos / neg / reversible"}, sort:{voltage:10,current:200,power:2000,polarity:2}},
-   {num:7, model:"PVP-20000-25", sum:"20 kV precision HV reference", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:7, model:"HVX-20000-25", sum:"20 kV precision HV reference", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"20 kV",current:"25 mA",power:"500 W",polarity:"Positive or negative"}, sort:{voltage:20,current:25,power:500,polarity:3}},
-   {num:8, model:"PVP-30000-17", sum:"30 kV breakdown and charging", ds:"bnc-pvp-hv-power-supply-manual.html",
+   {num:8, model:"HVX-30000-17", sum:"30 kV breakdown and charging", ds:"bnc-pvp-hv-power-supply-manual.html",
     vals:{voltage:"30 kV",current:"17 mA",power:"500 W",polarity:"Positive or negative"}, sort:{voltage:30,current:17,power:500,polarity:3}}
   ]
 }
