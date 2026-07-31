@@ -14,7 +14,7 @@ const IDLE_CAP_S = 600;
 // Path -> product line. A path can match more than one line.
 const PRODUCT_RULES = [
   ["Pulse & Delay Generators", /(pdg|delay-gen|model-5(2|7|8)|\b5(2[05]|7[57]|8[589])\b|745)/],
-  ["HVX-Series HV Pulse",      /pvp/],
+  ["HVX-Series HV Pulse",      /hvx/],
   ["RF Signal Generators",     /(rfsg|signal-gen|\b8(45|55|65)b?\b)/],
   ["Arbitrary Waveform Gen",   /awg/],
   ["ScintIQ",                  /scintiq/],

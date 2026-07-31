@@ -251,7 +251,7 @@
       ];
       var have={}; for(var i=0;i<window.SITE_INDEX.length;i++){ if(window.SITE_INDEX[i]&&window.SITE_INDEX[i].u) have[window.SITE_INDEX[i].u]=1; }
       for(var j=0;j<add.length;j++){ if(!have[add[j].u]) window.SITE_INDEX.push(add[j]); }
-      for(var m=0;m<window.SITE_INDEX.length;m++){ var e=window.SITE_INDEX[m]; if(e&&e.u&&e.u.indexOf('bnc-pvp-series-user-manual.html')>-1){ e.c='HVX-Series \u00b7 Manual'; } }
+      for(var m=0;m<window.SITE_INDEX.length;m++){ var e=window.SITE_INDEX[m]; if(e&&e.u&&e.u.indexOf('bnc-hvx-series-user-manual.html')>-1){ e.c='HVX-Series \u00b7 Manual'; } }
     }catch(err){}
   }
   run();
@@ -327,7 +327,7 @@
       for(var i=0;i<SI.length;i++){
         var e=SI[i]; if(!e) continue;
         var hay=((e.t||'')+' '+(e.u||'')+' '+(e.k||'')).toLowerCase();
-        if(hay.indexOf('hvx')<0 && hay.indexOf('pvp')<0) continue;
+        if(hay.indexOf('hvx')<0) continue;
         if(hay.indexOf('evo')>-1) continue;
         e.k=((e.k||'')+' evo evo-series evo series evo1500 evo1400 heinzinger evo'
              +' pvp pvp-series pvp series').replace(/\s+/g,' ').trim();
