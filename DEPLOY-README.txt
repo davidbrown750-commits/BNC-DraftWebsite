@@ -18,7 +18,7 @@ PRODUCT LINES (8) - each has a home page + docs:
   riid-home.html ..... Isotope ID & Radiation Detection
   dei-home.html ...... High Power / Current Pulsers
   index-bold.html .... ICX-FieldHawk Spectrum Analyzers
-  pvp-home.html ...... HVX High Voltage Power Supplies
+  hvx-home.html ...... HVX High Voltage Power Supplies
 
 SUPPORT / UTILITY PAGES
   faq.html, contact.html, get-quote.html, rma-form.html, obsolete-products.html,
