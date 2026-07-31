@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BNC Quality Assurance Manual · Rev 2.5</title>
+<style>
+:root{
+ --blue:#0655a3; --navy:#113163; --purple:#6b21a8;
+ --ink:#16202e; --mut:#5a6b7e; --paper:#ffffff; --ground:#eef2f7;
+ --line:#d5dee8; --tint:#f5f8fc; --chip:#e7eef7;
+ --maxw:900px;
+}
+:root[data-theme="dark"], html[data-theme="dark"]{
+ --ink:#dfe8f2; --mut:#93a4b8; --paper:#131c28; --ground:#0d141d;
+ --line:#283646; --tint:#182430; --chip:#1c2b3b; --navy:#0f2748; --blue:#3f8ad6;
+}
+@media (prefers-color-scheme:dark){
+ :root{--ink:#dfe8f2; --mut:#93a4b8; --paper:#131c28; --ground:#0d141d; --line:#283646; --tint:#182430; --chip:#1c2b3b; --navy:#0f2748; --blue:#3f8ad6;}
+ :root[data-theme="light"]{--ink:#16202e;--mut:#5a6b7e;--paper:#fff;--ground:#eef2f7;--line:#d5dee8;--tint:#f5f8fc;--chip:#e7eef7;--navy:#113163;--blue:#0655a3;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+ font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;line-height:1.55;font-size:16px;}
+h1,h2,h3,.eyebrow{font-family:"Myriad Pro","Segoe UI",Arial,sans-serif;}
+.hero{background:linear-gradient(160deg,#0a1c3a,#113163 60%,#0d47a1);color:#fff;padding:34px 24px;}
+.hero-in{max-width:var(--maxw);margin:0 auto;display:flex;gap:22px;align-items:center;flex-wrap:wrap;}
+.hero svg{height:52px;width:auto;flex:0 0 auto}
+.hero svg path,.hero svg polygon{fill:#fff}
+.hero h1{margin:0;font-size:clamp(22px,3.4vw,30px);letter-spacing:.2px;text-wrap:balance}
+.hero .sub{color:#cdd9ea;font-size:13px;margin-top:2px;letter-spacing:.14em;text-transform:uppercase}
+.meta{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:8px;
+ transform:translateY(-14px)}
+.meta .m{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:7px 12px;font-size:12.5px;
+ box-shadow:0 1px 2px rgba(16,32,60,.06)}
+.meta .m b{color:var(--blue);font-family:"Myriad Pro","Segoe UI",Arial;display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+main{max-width:var(--maxw);margin:0 auto 60px;background:var(--paper);border:1px solid var(--line);
+ border-radius:6px;padding:8px clamp(18px,4vw,44px) 40px;box-shadow:0 2px 10px rgba(16,32,60,.05)}
+section{border-top:3px solid var(--navy);padding-top:14px;margin-top:26px;}
+section:first-of-type{border-top:none;margin-top:8px}
+h2{color:var(--navy);font-size:20px;margin:8px 0 8px;text-wrap:balance}
+h3{color:var(--blue);font-size:14.5px;margin:16px 0 4px}
+p{margin:7px 0}
+p.cl{padding-left:14px} p.cl b{color:var(--navy);font-variant-numeric:tabular-nums}
+p.bul{position:relative;padding-left:20px;margin:5px 0}
+p.bul::before{content:"";position:absolute;left:4px;top:9px;width:5px;height:5px;background:var(--blue);border-radius:50%}
+p.mut{color:var(--mut);font-size:13.5px}
+em{color:var(--mut)}
+.tw{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-family:"Myriad Pro","Segoe UI",Arial;font-weight:700;font-size:12px}
+td{border:1px solid var(--line);padding:7px 10px;vertical-align:top}
+td.k{font-weight:700;color:var(--navy);white-space:nowrap}
+tbody tr:nth-child(even){background:var(--tint)}
+.footer{max-width:var(--maxw);margin:0 auto 50px;color:var(--mut);font-size:11.5px;text-align:center;padding:0 24px}
+.review{background:var(--chip);border-left:3px solid var(--purple)}
+a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="hero"><div class="hero-in"><svg viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></svg><div><div class="sub">Quality Assurance Manual</div><h1>Berkeley Nucleonics Corporation</h1></div></div></div>
+<div class="meta">
+ <div class="m"><b>Document</b>QAM-001</div>
+ <div class="m"><b>Revision</b>2.5</div>
+ <div class="m"><b>Revision Date</b>07/30/2026</div>
+ <div class="m"><b>Standard</b>ASME NQA-1</div>
+ <div class="m"><b>Status</b>Controlled — for review</div>
+</div>
+<main>
+<section><h2>Cover &amp; Approval</h2>
+<p><b>Berkeley Nucleonics Corporation — Quality Assurance Manual.</b> Document QAM-001, Revision 2.5, 07/30/2026. Governing standard: ASME NQA-1 (see Appendix E).</p>
+<div class="tw"><table><thead><tr><th>Role</th><th>Name / Function</th><th>Date</th></tr></thead><tbody>
+<tr><td class="k">Prepared by</td><td>Engineering / Quality Control</td><td>12/16/2022</td></tr>
+<tr><td class="k">Reviewed by</td><td>Shipping/Receiving, Test, Engineering Compliance, QC</td><td>12/18/2022</td></tr>
+<tr><td class="k">Approved by</td><td>David Brown, President</td><td>12/18/2022</td></tr>
+</tbody></table></div>
+<p class="mut"><em>Controlled document — the master copy is maintained electronically by the Quality Manager. Printed copies are UNCONTROLLED and for reference only.</em></p>
+</section>
+<section><h2>QAM Amendment Log</h2>
+<div class="tw"><table><thead><tr><th>Amend. No.</th><th>Description &amp; Pages Affected</th><th>Date</th><th>QM Initials</th></tr></thead><tbody><tr><td class="k">Draft</td><td>Developed new manual.</td><td>10/02/2007</td><td></td></tr><tr><td class="k">1</td><td>Miscellaneous edits to draft in accordance with BNC practices.</td><td>10/06/2007</td><td></td></tr><tr><td class="k">2</td><td>Miscellaneous updates to address additional products (X-ray, HPGe).</td><td>04/11/2013</td><td></td></tr><tr><td class="k">3</td><td>Miscellaneous updates to address subcontractor documentation controls.</td><td>08/01/2014</td><td></td></tr><tr><td class="k">4</td><td>CAPA, appointment of QA Manager, documented training procedures, purchase orders to vendors, job descriptions, cover page.</td><td>08/15/2015</td><td></td></tr><tr><td class="k">5</td><td>ITAR and BXA compliance, vendor screening.</td><td>07/25/2017</td><td></td></tr><tr><td class="k">6</td><td>Anti-static environment, customer-held demos, site visits from foreign nationals.</td><td>04/16/2018</td><td></td></tr><tr><td class="k">7</td><td>Counterfeit Parts procedure, PT materials rejection procedure.</td><td>01/29/2019</td><td></td></tr><tr><td class="k">8</td><td>Material handling policy, counterfeit parts policy review, ESD policy.</td><td>03/01/2019</td><td></td></tr><tr><td class="k">9</td><td>Annual audit; assigned Quality Manager; vendor failure-report requirements; vendor audit checklist; added Appendix.</td><td>03/19/2019</td><td></td></tr><tr><td class="k">10</td><td>Annual audit meeting; updated checklist and redefined quality check points.</td><td>05/06/2022</td><td></td></tr><tr><td class="k">11</td><td>Expanded Counterfeit Parts with Form CPP-100; expanded policy; added training.</td><td>12/16/2022</td><td></td></tr><tr><td class="k">12</td><td>Added Element 19.0 / QAP-19 End-of-Life &amp; Obsolescence Control; renumbered back-matter to Appendices A–F; restored Element↔QAP alignment (03 &amp; 09 Reserved); added Table of Contents, Terms &amp; Acronyms, and NQA-1 cross-reference; editorial cleanup; issued Rev 2.5 for the Employee Portal.</td><td>07/30/2026</td><td></td></tr></tbody></table></div>
+</section>
+<section><h2>Table of Contents — Quality System Elements</h2>
+<p class="mut"><em>Each Quality System Element is stated as a Policy and implemented by a numbered Quality Assurance Procedure (QAP); the element number corresponds to its QAP number. Elements marked “Reserved” are retained for alignment with ASME NQA-1 but are not applicable to BNC’s scope of work.</em></p>
+<div class="tw"><table><thead><tr><th>Element</th><th>Title</th><th>Procedure</th></tr></thead><tbody><tr><td class="k">1.0</td><td>Organization</td><td>QAP-01 (+ QAP-01-1 Management Review)</td></tr><tr><td class="k">2.0</td><td>Quality Assurance Program (incl. 2.1 Training)</td><td>QAP-02</td></tr><tr><td class="k">3.0</td><td>Design Control</td><td>Reserved — Not Applicable</td></tr><tr><td class="k">4.0</td><td>Procurement Document Control</td><td>QAP-04</td></tr><tr><td class="k">5.0</td><td>Instructions, Procedures &amp; Drawings</td><td>QAP-05</td></tr><tr><td class="k">6.0</td><td>Document Control</td><td>QAP-06</td></tr><tr><td class="k">7.0</td><td>Control of Purchased Items &amp; Services (incl. Counterfeit Parts)</td><td>QAP-07</td></tr><tr><td class="k">8.0</td><td>Identification &amp; Control of Items</td><td>QAP-08</td></tr><tr><td class="k">9.0</td><td>Control of Special Processes</td><td>Reserved — Not Applicable</td></tr><tr><td class="k">10.0</td><td>Inspection</td><td>QAP-10</td></tr><tr><td class="k">11.0</td><td>Test Control</td><td>QAP-11</td></tr><tr><td class="k">12.0</td><td>Control of Measuring &amp; Test Equipment</td><td>QAP-12</td></tr><tr><td class="k">13.0</td><td>Handling, Storage &amp; Shipping (incl. ESD)</td><td>QAP-13</td></tr><tr><td class="k">14.0</td><td>Inspection, Test &amp; Operating Status</td><td>QAP-14</td></tr><tr><td class="k">15.0</td><td>Control of Nonconforming Items</td><td>QAP-15</td></tr><tr><td class="k">16.0</td><td>Corrective &amp; Preventive Action</td><td>QAP-16</td></tr><tr><td class="k">17.0</td><td>Quality Assurance Records</td><td>QAP-17</td></tr><tr><td class="k">18.0</td><td>Internal Quality Audits</td><td>QAP-18</td></tr><tr><td class="k">19.0</td><td>End-of-Life &amp; Obsolescence Control</td><td>QAP-19  (NEW)</td></tr></tbody></table></div>
+<div class="tw"><table><thead><tr><th>Appendix</th><th>Title</th></tr></thead><tbody><tr><td class="k">A</td><td>Master Documents List</td></tr><tr><td class="k">B</td><td>Audit History</td></tr><tr><td class="k">C</td><td>Vendor Qualification History</td></tr><tr><td class="k">D</td><td>Controlled Forms Register</td></tr><tr><td class="k">E</td><td>ASME NQA-1 Cross-Reference</td></tr><tr><td class="k">F</td><td>Terms &amp; Acronyms</td></tr></tbody></table></div>
+</section>
+<section><h2>BNC Operating Philosophy</h2>
+<p>BNC is committed to a quality management system that makes quality a basic business principle. Our strategy is based on customer satisfaction, achieved by meeting our internal and our customers’ requirements on time.</p>
+<p>Conformance to our customers’ requirements and expectations is the responsibility of every employee at BNC.</p>
+<p>Quality assurance systems, procedures, and practices are developed, reviewed, and changed with the participation of employees in a continuous-improvement effort.</p>
+<p>BNC’s goal is to continue meeting world-class standards for the mutual benefit of our customers and employees.</p>
+</section>
+<section><h2>Management Policy Statement</h2>
+<p>It is the policy of BNC management to fully support and provide the necessary resources for continual implementation of the Quality Assurance System.</p>
+<p>Management at all levels participates in quality assurance activities as incorporated into daily functional requirements.</p>
+<p>No product or service is provided to the customer until its quality and conformance to customer specifications can be assured.</p>
+<p>Management assesses the effectiveness of the quality system on a regular basis and directs internal efforts toward continual improvement.</p>
+<p>BNC management is committed to the Quality Assurance System outlined in this manual and its supporting documents, and ensures this policy is communicated, understood, implemented, and maintained at all levels of the organization.</p>
+</section>
+<section><h2>General</h2>
+<h3>Foreword</h3>
+<p class="bul">BNC is a distributor and manufacturer of radiation detection systems and test-and-measurement products.</p>
+<p class="bul">This Quality Assurance Manual (QAM) describes the Quality System implemented at BNC.</p>
+<p class="bul">The objective of the Quality System is to prevent nonconformances throughout contract performance, provide for the prompt detection of nonconformances, and provide timely and effective corrective action.</p>
+<p class="bul">The Quality System, designed in conjunction with managerial functions, establishes an effective and economical system for assuring quality.</p>
+<p class="bul">It is BNC policy to provide full compliance with the Quality System throughout all phases of contract performance and to ensure that only acceptable products and services are provided to the customer.</p>
+<p class="bul">The system outlined in this manual and its supporting procedures provides compliance with applicable portions of ASME NQA-1 and recognized industry best practices.</p>
+<p><em>Note: These policies are implemented using project-specific plans when specifically identified and stated as part of a contract in non-general terms and related to the products or services on that contract.</em></p>
+<h3>Appointment of the Quality Manager</h3>
+<p class="bul">To ensure implementation and full compliance with the Quality System, BNC has appointed a Quality Manager.</p>
+<p class="bul">The Quality Manager reports to the President and is responsible for the management of the Quality System.</p>
+<p class="bul">BNC has appointed Edgar Guzman as the Quality Manager.  [REVIEW: confirm current appointee.]</p>
+<h3>Amendment Procedure</h3>
+<p class="cl"><b>1.0</b> The QAM is amended to reflect any changes to BNC capability, location, or Quality System.</p>
+<p class="cl"><b>2.0</b> Amendments are controlled in accordance with the BNC-approved procedure and recorded on the QAM Amendment Log.</p>
+</section>
+<section><h2>1.0  Organization</h2>
+<h3>1A  POLICY</h3>
+<p>Management at Berkeley Nucleonics has documented its commitment to quality and to the support of the Quality Assurance System, communicated throughout the organization to all levels of personnel.</p>
+<p>Management has appointed a Quality Assurance Manager who reports directly to the President, maintains the organizational freedom and authority to manage the Quality Assurance System, and reports quality issues directly to the President.</p>
+<p>Management continually reviews in-house verification requirements, ensuring the necessary resources are available, including the training and qualification of personnel assigned to verification activities.</p>
+<h3>1B  PROCEDURE — QAP-01, ORGANIZATION</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To define management responsibility, lines of authority, and general organization.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> All managers.</p>
+<h3>3.0  General</h3>
+<p class="cl"><b>3.1</b> The BNC organization chart provides reporting lines of authority.</p>
+<h3>4.0  Responsibilities</h3>
+<p class="bul">President — ultimately responsible for the complete operation of BNC, including providing policy support and resources; reviews quality-related information; approves improvement programs; verifies resources and trained personnel at least annually; and ensures contract reviews are performed on all non-COTS products.</p>
+<p class="bul">General Manager — responsible to the President; supervises department managers (except Compliance and Export Controls); assures all systems including the Quality System are implemented and effective; reviews quality records; participates in contract review.</p>
+<p class="bul">Quality Manager — responsible to the General Manager with direct access to the President when required; controls, maintains, amends, and distributes the QAM; maintains quality and personnel-qualification records; provides training programs; reviews nonconformances and coordinates disposition and corrective action; provides subcontractor and vendor control; performs internal audits; reports to the President on Quality System effectiveness; and authenticates Certificates of Conformance.</p>
+<p class="bul">Department Managers — responsible for department activities and personnel, communicating quality standards, assuring qualification, and implementing the Quality System where it affects their department.</p>
+<p class="bul">Department Personnel — implement work and inspection instructions and report any nonconformance to their Department Manager and/or Quality Assurance.</p>
+<h3>QAP-01-1  Management Review</h3>
+<p class="cl"><b>1.0</b> Purpose — to establish a system and assign responsibilities for scheduling, conducting, and recording management reviews of the Quality System.</p>
+<p class="cl"><b>2.0</b> Scheduling — the Quality System is reviewed by the President at least once each year, scheduled before the end of December; unscheduled reviews may be called at any time.</p>
+<p class="cl"><b>3.0</b> Attendance — minimum attendance is the President and the Quality Assurance Department; other managers attend as required.</p>
+<h3>Agenda (minimum topics)</h3>
+<p class="bul">Customer complaints</p>
+<p class="bul">Corrective Action Requests (CAR)</p>
+<p class="bul">Vendor Corrective Action Requests (VCAR)</p>
+<p class="bul">Internal audit findings</p>
+<p class="bul">Preventive action</p>
+<p class="bul">Action items and assignment of action plans</p>
+<p class="bul">Status of previously assigned action items</p>
+<p class="bul">Conclusions on the effectiveness and continued suitability of the quality policy</p>
+<p class="cl"><b>5.0</b> Records — minutes are taken by assigned BNC personnel, treated as confidential, and maintained in accordance with QAP-17.</p>
+<p><em>Note: In the absence of the President, the General Manager has full power to act on his/her behalf.</em></p>
+</section>
+<section><h2>2.0  Quality Assurance Program</h2>
+<h3>2A  POLICY</h3>
+<p>BNC has established and documented a Quality Assurance System in compliance with applicable portions of ASME NQA-1, administered through written policy, procedures, and instructions.</p>
+<p>Operational procedures are developed for functional activities that affect product or service quality. Quality records provide objective evidence of compliance and measure the effectiveness of the system.</p>
+<p>A system is established for the training of personnel and the acquisition of skills, and for identifying training needs.</p>
+<h3>2B  PROCEDURE — QAP-02, QUALITY ASSURANCE PROGRAM</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the type and availability of Quality Assurance documentation at BNC.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Documented procedures and instructions developed for controlling and assuring quality.</p>
+<h3>3.0  Quality Assurance Documentation</h3>
+<p class="bul">Quality Assurance Manual (QAM) — controlled document describing the Quality System, management policy, organization and responsibilities, the NQA-1 element descriptions, and the QAPs; controlled by the Quality Manager.</p>
+<p class="bul">Quality Assurance Procedures (QAPs) — controlled documents providing procedures for each applicable NQA-1 element, with references to forms and to other procedures.</p>
+<p class="bul">Inspection &amp; Test Plans — developed when required by contract; prepared by the Quality Manager to incorporate customer requirements, subcontractor controls, hold points, and final acceptance.</p>
+<p class="bul">Operational Procedures &amp; Work Instructions — generated by Department Managers for functional and value-added activities that impact quality.</p>
+<p class="bul">Special Process Procedures — BNC performs no special processes; if required, they are subcontracted to qualified suppliers.</p>
+<p class="bul">Drawings &amp; Specifications — provided by the customer per project and controlled to ensure current revisions are in use.</p>
+<h3>2.1  Training and Indoctrination</h3>
+<p>Department Managers provide position descriptions, personnel/position skill requirements, and department training programs.</p>
+<p class="bul">Position Descriptions — title, description, and skill requirements, kept current.</p>
+<p class="bul">Skills Descriptions — skill title/description, requirements, and certification/recertification requirements.</p>
+<p class="bul">Personnel Files — name, work and training history, current position, and skills acquired.</p>
+<p class="bul">Training — initiated at the department level, conducted continually; new employees are trained to their position including Quality System familiarization; the Quality Manager qualifies employees performing direct inspection. Records are kept in the personnel file.</p>
+</section>
+<section><h2>3.0  Design Control</h2>
+<h3>3A  POLICY</h3>
+<p>This element is not applicable to BNC’s current scope of work and is therefore reserved. Should this situation change, the manual and associated procedures will be amended. QAP-03 is reserved to preserve alignment with ASME NQA-1.</p>
+</section>
+<section><h2>4.0  Procurement Document Control</h2>
+<h3>4A  POLICY</h3>
+<p>Applicable design bases and other requirements necessary to assure adequate quality are included or referenced in documents for the procurement of items and services. To the extent necessary, procurement documents require suppliers to maintain a quality assurance program consistent with ASME NQA-1.</p>
+<p>The purchasing system establishes controls for complete, clear descriptions of the material or services ordered, using a Purchase Order that details the quality and inspection requirements. Customer verification does not relieve BNC of responsibility to provide conforming material, nor preclude subsequent rejection.</p>
+<h3>4B  PROCEDURE — QAP-04, PROCUREMENT DOCUMENT CONTROL</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the procurement documentation methods implemented at BNC.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> The procurement functions related to purchasing documentation.</p>
+<h3>3.0  Procedure</h3>
+<p class="cl"><b>3.1</b> All materials, parts, and services purchased must conform to BNC-specified standards and contractual requirements.</p>
+<p class="cl"><b>3.2</b> Purchasing is initiated by a Requisition stating quantity, specification, and contract/work-order references; Purchasing reviews it and generates a Purchase Order, with one copy forwarded to Receiving Inspection.</p>
+<h3>Procurement documents contain, when required:</h3>
+<p class="bul">Scope of work and customer contract number</p>
+<p class="bul">Description by type, class, or style; drawing and specification numbers and revision levels</p>
+<p class="bul">Quantity; packaging and shipping instructions</p>
+<p class="bul">Requirements for objective evidence (e.g., test reports); request for Government/customer QA at source</p>
+<p class="bul">Certification requirements; returned-goods clause; right of access; nonconformance handling; spare and replacement parts</p>
+<p class="cl"><b>3.3</b> Amendments to Purchase Orders reference the original PO and are processed on a Change Order Form.</p>
+<p class="cl"><b>3.4</b> The Purchasing Manager reviews and signs all Purchase Orders prior to placement.</p>
+<h3>4.0  Purchase Order Distribution</h3>
+<p class="bul">Copy to the supplier (hard copy or electronic)</p>
+<p class="bul">Copy to Receiving for use in Receiving Inspection</p>
+<p class="bul">Copy filed in the Open Purchase Order file at Accounts Payable</p>
+</section>
+<section><h2>5.0  Instructions, Procedures &amp; Drawings</h2>
+<h3>5A  POLICY</h3>
+<p>Activities affecting quality are prescribed by and performed in accordance with documented instructions, procedures, or drawings that include or reference appropriate acceptance criteria.</p>
+<p>Procedures describe activities to a level of detail commensurate with the complexity of the activity and the need to assure consistent, acceptable results.</p>
+<h3>5B  PROCEDURE — QAP-05, INSTRUCTIONS, PROCEDURES &amp; DRAWINGS</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To assure that activities affecting quality are prescribed and performed in accordance with documented instructions, procedures, and/or drawings.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> BNC and all subcontractors, including contracted services organizations.</p>
+<h3>3.0  Procedure</h3>
+<p class="cl"><b>3.1</b> Activities affecting quality are planned, prescribed, authorized, and performed under controlled conditions using documented standards commensurate with design requirements and the complexity and risk of the work.</p>
+</section>
+<section><h2>6.0  Document Control</h2>
+<h3>6A  POLICY</h3>
+<p>Procedures control the issue, distribution, and change of all documentation essential to work — drawings, specifications, plans, instructions, and procedures — including documentation to and from customers and suppliers.</p>
+<p>Complete and current documentation is available at the time and place of processing, inspection, and testing; changes are recorded, processed, and re-issued, and obsolete documentation is removed.</p>
+<h3>6B  PROCEDURE — QAP-06, DOCUMENT CONTROL</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the methods used to control, maintain, and handle documentation covered by the Quality System and supplied by customers.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> All controlled documents, drawings, and specifications received at BNC.</p>
+<h3>3.0  QAM Amendment Procedure</h3>
+<p class="cl"><b>3.1</b> The QAM is amended to reflect changes to BNC capability, location, or Quality System, documented on the QAM Amendment Log.</p>
+<p class="cl"><b>3.2</b> QAM amendments require acknowledgment; the Quality Manager initials the Amendment Log beside each change.</p>
+<p class="cl"><b>3.3</b> The Quality Manager maintains the master copy, incorporates changes during the annual review, and reflects the next revision number and date in the QAM header.</p>
+<h3>4.0  Document Change Control (other documents)</h3>
+<p class="cl"><b>4.1</b> Changes to controlled documents other than the QAM are controlled using a Document Change Request (DCR).</p>
+<p class="cl"><b>4.2</b> The initiator states the items to be changed; the responsible function reviews; upon approval, all managers receive a copy. The DCR details the areas affected and an implementation date.</p>
+<h3>5.0  Document Distribution</h3>
+<p class="cl"><b>5.1</b> A Release &amp; Distribution Form is maintained for all controlled documents. The QAM is controlled electronically; printed copies are uncontrolled (reference only).</p>
+<p class="cl"><b>5.2</b> The responsible function promptly removes and destroys, or marks obsolete, all superseded documentation.</p>
+<h3>Table A — Document Preparation, Review &amp; Approval</h3>
+<div class="tw"><table><thead><tr><th>Document</th><th>Prepared &amp; Revised by</th><th>Reviewed by</th><th>Approved by</th></tr></thead><tbody><tr><td>Quality Assurance Manual</td><td>Quality Manager</td><td>All Managers</td><td>President</td></tr><tr><td>Project Plans</td><td>Project Manager</td><td>All Managers</td><td>President</td></tr><tr><td>Work Instructions</td><td>Department Manager</td><td>Quality Manager</td><td>Department Manager</td></tr><tr><td>Purchase Orders</td><td>Purchasing</td><td>Quality Manager</td><td>Purchasing Manager</td></tr><tr><td>Certificates of Conformance</td><td>Compliance Manager</td><td>All Managers</td><td>President</td></tr></tbody></table></div>
+</section>
+<section><h2>7.0  Control of Purchased Items &amp; Services</h2>
+<h3>7A  POLICY</h3>
+<p>The procurement of items and services is controlled to assure conformance with specified requirements. Suppliers and subcontractors are initially qualified and reviewed thereafter at intervals consistent with the nature of the product and the source’s demonstrated performance.</p>
+<h3>7B  PROCEDURE — QAP-07, CONTROL OF PURCHASED ITEMS &amp; SERVICES</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the procurement methods related to subcontractor and supplier control.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> The procurement functions related to subcontractor/supplier control.</p>
+<h3>3.0  Supplier Evaluation and Selection</h3>
+<p>Prior to award, BNC evaluates the supplier’s capability per the procurement documents. Evaluation is documented and includes one or more of:</p>
+<p class="bul">Initial survey via the Initial Quality Survey Checklist. Any vendor that can supply an item as specified by manufacturer and model number, designated by Engineering, is automatically approved.</p>
+<p class="bul">Direct evaluation of facilities, personnel, and quality program; or a mail-out survey.</p>
+<p class="bul">Satisfactory history of an identical or similar product; customer-directed sources.</p>
+<p class="bul">Third-party registration (e.g., ISO 9000) — placed on the AVL and exempt from annual audits unless QA deems necessary.</p>
+<p class="bul">Certification of conformance; OEM, OEM-approved, or OEM-recommended suppliers; objectively-evaluable quality records.</p>
+<h3>4.0  Bid Evaluation</h3>
+<p class="cl"><b>4.1</b> When bids are solicited, evaluation includes the supplier’s capability to meet technical and quality requirements; unacceptable conditions are resolved before award.</p>
+<h3>5.0  Control of Supplier-Generated Documents</h3>
+<p class="cl"><b>5.1</b> Controls provide for the acquisition, processing, and recorded evaluation of supplier documentation against acceptance criteria.</p>
+<h3>6.0  Acceptance of Item or Service</h3>
+<p class="cl"><b>6.1</b> The supplier verifies compliance before acceptance. Where required by code, regulation, or contract, documentary evidence of conformance is available at the site prior to use. Methods include Certificate of Conformance, source verification, receiving inspection, and post-installation testing.</p>
+<h3>7.0  Approved Vendor List (AVL)</h3>
+<p class="bul">Only approved suppliers are placed on the AVL by QA and Purchasing; QA approves all subcontractors and suppliers.</p>
+<p class="bul">The AVL details supplier name and address, approved commodities/services, and approval date and signatures.</p>
+<p class="bul">Suppliers may be removed for lack of conformance or as a corrective-action decision; Government/customer-approved sources are noted on the AVL.</p>
+<h3>8.0  Subcontractor Control</h3>
+<p class="bul">Subcontractors failing the minimum requirements must upgrade before further procurement; an on-site audit may be required, failing which they are removed from the AVL.</p>
+<p class="bul">Quality audits are recorded; subcontractors may be audited more frequently as a corrective-action decision.</p>
+<p class="bul">Surveillance or source inspection is performed at the subcontractor’s plant as required; test data and calibration records are provided to BNC.</p>
+<h3>9.0  Counterfeit Parts Policy</h3>
+<p class="bul">BNC has implemented a Counterfeit Parts Policy (Form CPP-100), communicated and maintained at all levels.</p>
+<p class="bul">BNC sources components directly from the manufacturer, approved representatives, or authorized distributors, and requires suppliers to maintain a counterfeit-parts policy.</p>
+<p class="bul">For hard-to-find or obsolete components, BNC purchases from the least-risk source and inspects or tests on receipt (see also QAP-19).</p>
+<p class="bul">BNC retains purchase and receiving documentation for OEM traceability. Suspected counterfeit parts are quarantined and reported to the supplier, Quality Manager, and President.</p>
+</section>
+<section><h2>8.0  Identification &amp; Control of Items</h2>
+<h3>8A  POLICY</h3>
+<p>A system provides product identification and control of items throughout processing and delivery. Unique numbering originating from the manufacturer identifies products and provides traceability to raw material/components, date of processing, and inspections/tests performed.</p>
+<h3>8B  PROCEDURE — QAP-08, IDENTIFICATION &amp; CONTROL OF ITEMS</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the methods used to provide identification and control of items.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Product and material identification and control.</p>
+<h3>3.0  Procedure</h3>
+<p class="cl"><b>3.1</b> Material and product control is achieved using identifying markings on individual products.</p>
+<p class="cl"><b>3.2</b> In-process material is assigned to a Sales Order/job number, which becomes the identification number traceable to the materials and product used.</p>
+<p class="cl"><b>3.3</b> All forms and reports generated during processing, inspection, and testing are traceable to the Sales Order number.</p>
+<p class="cl"><b>3.4</b> When codes or specifications require specific identification or traceability (e.g., to material grade; heat, batch, lot, part, or serial number), the project-specific plan includes those requirements.</p>
+<p class="cl"><b>3.5</b> Items with limited calendar or operating life are identified and controlled to preclude use of expired items.</p>
+<p class="cl"><b>3.6</b> Item identification is consistent with the planned duration and conditions of storage, including maintenance of markings and updating of records.</p>
+</section>
+<section><h2>9.0  Control of Special Processes</h2>
+<h3>9A  POLICY</h3>
+<p>This element is not applicable to BNC’s current scope of work and is therefore reserved. BNC performs no special processes; if required, they are subcontracted to qualified suppliers. QAP-09 is reserved to preserve alignment with ASME NQA-1.</p>
+</section>
+<section><h2>10.0  Inspection</h2>
+<h3>10A  POLICY</h3>
+<p>Controls verify material and product upon delivery; the nature and amount of receiving inspection are pre-determined by supplier controls, criticality, and the objective evidence provided with the order. Incoming material is withheld from inventory pending verification.</p>
+<p>In-process inspection follows a documented Inspection Plan; final inspection completes the evidence of conformance. Records are maintained, and hold areas segregate nonconforming material.</p>
+<h3>10B  PROCEDURE — QAP-10, INSPECTION</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the methods used for inspection of purchased product.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Receiving, in-process, and final inspection.</p>
+<h3>3.0  Receiving Inspection</h3>
+<p class="cl"><b>3.1</b> Receivables are placed in a Hold Area and verified visually against the Packing List for quantity, type, and freedom from damage.</p>
+<p class="cl"><b>3.2</b> The receiver compiles the Packing List, Receipt-to-Inventory List, and supplied documents for QA review.</p>
+<p class="cl"><b>3.3</b> Product is inspected per the PO notes or an Inspection Instruction Sheet; acceptable material is marked and moved to inventory; unacceptable material is segregated and handled per QAP-15.</p>
+<h3>4.0  In-Process Inspection</h3>
+<p class="cl"><b>4.1</b> Mandatory hold points are indicated in the appropriate documents; QA and operators inspect per the Inspection Plan or Work Instruction Sheets.</p>
+<p class="cl"><b>4.2</b> QA signs Green Acceptable Tags for accepted material and audits in-process activities; nonconforming product is tagged with a Red Rejection Tag and held for action per QAP-15.</p>
+<h3>5.0  Final Inspection</h3>
+<p class="cl"><b>5.1</b> All finished products are subject to final inspection by QA verification and customer acceptance per the Inspection &amp; Test Plan.</p>
+<p class="cl"><b>5.2</b> Upon acceptance the product is released; items failing final inspection are handled per QAP-15.</p>
+<h3>6.0  Post-Shipment Inspection</h3>
+<p class="cl"><b>6.1</b> Upon a post-shipment finding of concern, BNC provides immediate customer notification and initiates the recall process and product evaluation.</p>
+</section>
+<section><h2>11.0  Test Control</h2>
+<h3>11A  POLICY</h3>
+<p>Tests to collect data, verify conformance of an item or computer program, or demonstrate satisfactory performance are planned and executed. Characteristics and methods are specified in procedures; results are documented and evaluated against acceptance criteria.</p>
+<h3>11B  PROCEDURE — QAP-11, TEST CONTROL</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the methods used for testing of purchased and subcontracted goods.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Receiving, in-process, and final testing.</p>
+<h3>3.0  Receiving Inspection Testing</h3>
+<p class="cl"><b>3.1</b> Receivables are held on delivery; QA tests per the PO notes, Test Plan, or Inspection Instruction Sheet.</p>
+<p class="cl"><b>3.2</b> On completion, QA stamps the packing slip and product; acceptable material moves to the work area, unacceptable material is held per QAP-15.</p>
+<h3>4.0  In-Process Testing</h3>
+<p class="cl"><b>4.1</b> QA and operators perform in-process tests per the Test Plan or Work Instruction Sheets.</p>
+<p class="cl"><b>4.2</b> QA signs Green Acceptable Tags for accepted material, which may then move to the work area or inventory.</p>
+<h3>5.0  Final Testing</h3>
+<p class="cl"><b>5.1</b> All processed products are subject to final testing per the Test Plan; the acceptance test may require customer approval.</p>
+<p class="cl"><b>5.2</b> Upon acceptance the product is released; a Certificate of Compliance signed by QA indicates approval; items failing are handled per QAP-15.</p>
+<h3>6.0  Post-Shipment Inspection</h3>
+<p class="cl"><b>6.1</b> Upon a post-shipment finding of concern, BNC provides immediate customer notification and initiates the recall process.</p>
+</section>
+<section><h2>12.0  Control of Measuring &amp; Test Equipment</h2>
+<h3>12A  POLICY</h3>
+<p>Procedures assure that inspection, measuring, and test equipment (including ancillary software) are controlled and maintained, calibrated to a specified accuracy traceable to NIST. When a device is found out of calibration, the impact on previously-inspected items is evaluated and documented with authorized dispositions.</p>
+<h3>12B  PROCEDURE — QAP-12, CONTROL OF MEASURING &amp; TEST EQUIPMENT</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To detail the requirements for the control of inspection, measuring, and testing equipment.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Control, maintenance, and calibration of all such equipment, including masters.</p>
+<h3>3.0  Measurement System (General)</h3>
+<p class="cl"><b>3.1</b> BNC maintains a measurement and calibration system; employee-owned equipment is subject to the same controls as company-owned equipment.</p>
+<h3>4.0  Adequacy &amp; Environmental Controls</h3>
+<p class="cl"><b>4.1</b> Equipment has the necessary accuracy, stability, and range for its intended use.</p>
+<p class="cl"><b>4.2</b> Equipment is calibrated and used in environments controlled for temperature and humidity; correction factors are applied when required.</p>
+<h3>5.0  Calibration Intervals, Sources &amp; Records</h3>
+<p class="cl"><b>5.1</b> Intervals are established per equipment type and adjusted when results warrant; equipment is recalibrated earlier when damaged or suspect.</p>
+<p class="cl"><b>5.2</b> All equipment is calibrated against a NIST-traceable standard; accuracy is supported by a certificate or data available on request.</p>
+<p class="cl"><b>5.3</b> A calibration-history record is maintained for each item, including identification, last calibration, results, and interval.</p>
+<h3>6.0  Calibration Labeling &amp; Recall</h3>
+<p class="cl"><b>6.1</b> Equipment is labeled with the calibration date and due date; all tools and gauges are permanently serial-numbered as required.</p>
+<p class="cl"><b>6.2</b> A calendar recall system, maintained by QA and the Operations Manager, ensures timely recalibration or removal from use.</p>
+<h3>7.0  Out-of-Calibration</h3>
+<p class="cl"><b>7.1</b> An NCR is raised and QA investigates usage since the last calibration.</p>
+<p class="cl"><b>7.2</b> Product is re-inspected with calibrated equipment; if suspect product may have shipped, customers are notified. Equipment is tagged “out of service” and repaired, recalibrated, or replaced.</p>
+</section>
+<section><h2>13.0  Handling, Storage &amp; Shipping</h2>
+<h3>13A  POLICY</h3>
+<p>A system provides for the identification, handling, storage, and packing of product from receipt to delivery, preventing abuse, damage, and deterioration and maintaining identity and traceability, including during transit.</p>
+<p>Stored product is periodically inspected for condition and shelf-life expiration; packaging maintains identity, traceability, and protection.</p>
+<h3>13B  PROCEDURE — QAP-13, HANDLING, STORAGE &amp; SHIPPING</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the procedure for product handling, storage, and shipping.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> All purchased products.</p>
+<h3>3.0  Purchased Products</h3>
+<p class="cl"><b>3.1</b> Purchased goods are subject to receiving inspection; storage provides a suitable environment, and all items are traceable to their sources/certifications.</p>
+<p class="cl"><b>3.2</b> Only QA-accepted items are placed in storage; all stored items are logged, identified by product code, and protected from damage.</p>
+<h3>4.0  Hold Areas</h3>
+<p class="cl"><b>4.1</b> Hold areas are identified and used for items pending QA inspection or of questionable acceptability; QA approves removal.</p>
+<h3>5.0  ESD Precautions (Electronic Assemblies)</h3>
+<p>BNC follows best practices to prevent electrostatic-discharge (ESD) damage in assembly and testing, including:</p>
+<p class="bul">Handle PCB assemblies only at designated work areas; store unused assemblies and sensitive components in shielded bags or boxes.</p>
+<p class="bul">Wear a grounded wrist strap; handle PCBs by the edges; avoid touching components, leads, solder joints, pins, and exposed circuitry.</p>
+<p class="bul">Avoid stacking PCB assemblies and limit movement to reduce static build-up.</p>
+<p class="bul">Before installing a device, touch it (in its antistatic bag) to unpainted system metal for at least two seconds, then install directly.</p>
+<p class="bul">Take additional care in cold weather, when lower humidity increases static electricity.</p>
+</section>
+<section><h2>14.0  Inspection, Test &amp; Operating Status</h2>
+<h3>14A  POLICY</h3>
+<p>Procedures indicate the inspection status of products. Status-control media such as forms, tags, and stamps distinguish inspected from uninspected material and are traceable to the individuals responsible for their use.</p>
+<h3>14B  PROCEDURE — QAP-14, INSPECTION, TEST &amp; OPERATING STATUS</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the procedure for indicating the inspection status of items.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> All inspection-status indicators distinguishing inspected/uninspected and acceptable/unacceptable items.</p>
+<h3>3.0  Procedure</h3>
+<p class="cl"><b>3.1</b> QA and operators indicate inspection status using labeling, segregation, and/or tagging.</p>
+<p class="cl"><b>3.2</b> Authority for application and removal of tags, markings, labels, and stamps rests with the Quality Manager.</p>
+</section>
+<section><h2>15.0  Control of Nonconforming Items</h2>
+<h3>15A  POLICY</h3>
+<p>Procedures control nonconforming items to prevent shipment to customers. Nonconformances are dispositioned as: reject for replacement (return to supplier), accept (approved deviation), rework, or scrap. Designated hold areas, controlled by QA, are used for nonconforming items, and records are maintained.</p>
+<h3>15B  PROCEDURE — QAP-15, CONTROL OF NONCONFORMING ITEMS</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the methods of controlling nonconforming items.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Nonconforming materials and items.</p>
+<h3>3.0  General</h3>
+<p class="cl"><b>3.1</b> QA controls nonconforming items and records these activities; all personnel notify QA of nonconforming items.</p>
+<p class="cl"><b>3.2</b> Nonconforming items that deviate from PO requirements are rejected and recorded on the Nonconformance Report (NCR).</p>
+<h3>4.0  Receiving Nonconformances</h3>
+<p class="cl"><b>4.1</b> Items found discrepant during receiving are documented on a CAR, segregated, and returned to the supplier, who must provide corrective-action information per QAP-16.</p>
+<h3>5.0  Nonconformance Disposition</h3>
+<p class="cl"><b>5.1</b> Nonconformances are dispositioned by Area Managers with joint approval by the Quality Manager; unresolved cases are decided by the President.</p>
+</section>
+<section><h2>16.0  Corrective &amp; Preventive Action</h2>
+<h3>16A  POLICY</h3>
+<p>Procedures assure that conditions adverse to quality are promptly detected, identified, and corrected, and that action precludes recurrence. Customer-presented deficiencies receive timely corrective action; actions are reviewed and monitored for effectiveness internally and at supplier locations, and records are maintained.</p>
+<h3>16B  PROCEDURE — QAP-16, CORRECTIVE &amp; PREVENTIVE ACTION</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the system for providing corrective and preventive action.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Corrective action required to correct conditions adverse to quality.</p>
+<h3>3.0  General</h3>
+<p>Corrective actions are initiated from customer requests, NCRs, internal corrective-action requests, and internal audit observations, using a three-step process:</p>
+<p class="bul">Short-term corrective action</p>
+<p class="bul">Long-term corrective action (where applicable)</p>
+<p class="bul">Corrective-action review</p>
+<h3>4.0  In-House Product Nonconformances</h3>
+<p class="cl"><b>4.1</b> Root causes are recorded on the NCR; the responsible Department Manager details the corrective action and implementation date and returns the NCR to the Quality Manager, who accepts and monitors effectiveness.</p>
+<h3>5.0  Audit Nonconformances</h3>
+<p class="cl"><b>5.1</b> Recorded on the NCR; Department Managers provide corrective action, and the auditor or QA re-audits after action is taken.</p>
+<h3>6.0  Customer Complaints</h3>
+<p class="cl"><b>6.1</b> Handled as internal nonconformances; the customer receives a copy of the completed NCR on request. When nonconforming items may have shipped, the Quality Manager notifies the customer and re-inspects affected inventory.</p>
+<h3>7.0  Supplier Corrective Action</h3>
+<p class="cl"><b>7.1</b> Suppliers are controlled per QAP-07 and must provide corrective action for nonconforming material or audit observations.</p>
+<h3>8.0  Corrective Action Sign-Off</h3>
+<p class="cl"><b>8.1</b> QA expedites corrective action and reviews completed actions for completeness and effectiveness.</p>
+</section>
+<section><h2>17.0  Quality Assurance Records</h2>
+<h3>17A  POLICY</h3>
+<p>Records demonstrate compliance and effective operation of the Quality System, including identification of material, observations, deficiencies, and quantities approved/rejected with corrective action. Records are available for customer review and retained for a minimum of seven (7) years unless a longer period is specified by contract.</p>
+<h3>17B  PROCEDURE — QAP-17, QUALITY ASSURANCE RECORDS</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To describe the responsibilities and requirements for records that furnish documentary evidence of quality.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> All records generated in compliance with contractual requirements and from the Quality System.</p>
+<h3>3.0  General</h3>
+<p class="cl"><b>3.1</b> Records are legible, identifiable, retrievable, and protected against damage, deterioration, or loss.</p>
+<h3>4.0  Procedure</h3>
+<p class="cl"><b>4.1</b> Records provide objective evidence of compliance and are reviewed by QA; documents are Quality Assurance Records only if stamped, initialed or signed, and dated by authorized personnel.</p>
+<p class="cl"><b>4.2</b> Records are classified Lifetime or Nonpermanent. Lifetime records are of significant value in demonstrating safe operation; maintaining or modifying an item; determining the cause of a malfunction; or providing baseline data for in-service inspection.</p>
+<h3>5.0  Identification &amp; Storage</h3>
+<p class="cl"><b>5.1</b> All forms maintain individual numbering; records are stored to preclude deterioration; computer records require a backup; quality records are kept a minimum of seven (7) years.</p>
+</section>
+<section><h2>18.0  Internal Quality Audits</h2>
+<h3>18A  POLICY</h3>
+<p>An internal auditing system verifies the effectiveness and compliance of each Quality System element. Audits are performed to checklists by qualified, independent personnel, with additional audits when there is a significant change, adverse trends, a need to verify corrective action, or as required by the customer or management.</p>
+<h3>18B  PROCEDURE — QAP-18, INTERNAL QUALITY AUDITS</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To verify the effective implementation, adequacy, and effectiveness of the Quality Assurance System.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> Examination and evaluation of all system elements, including quality records.</p>
+<h3>3.0  Responsibilities</h3>
+<p class="cl"><b>3.1</b> The Quality Manager is responsible for audit scheduling, planning, auditor training, corrective-action follow-up, and accepting the completed audit by signing the Final Audit Report.</p>
+<h3>4.0  General</h3>
+<p class="cl"><b>4.1</b> The internal audit provides a comprehensive review of the Quality Assurance System and supports continual improvement.</p>
+<h3>5.0  Procedure</h3>
+<p class="cl"><b>5.1</b> The Quality System audit is conducted typically during December; each element is audited at least once per year.</p>
+<p class="cl"><b>5.2</b> A separate annual ESD audit of the facility is conducted, with findings reported to the President.</p>
+<p class="cl"><b>5.3</b> Auditors do not audit areas for which they have direct responsibility when feasible; the Quality Manager assures auditor qualification.</p>
+<p class="cl"><b>5.4</b> Each audit follows an Audit Plan and Checklist, using NCRs to record deficiencies; a Team Leader is designated when multiple auditors participate.</p>
+<p class="cl"><b>5.5</b> At conclusion, an Audit Report and data are submitted to the Quality Manager, who determines and requests corrective action with a defined response time.</p>
+<p class="cl"><b>5.6</b> The Quality Manager verifies (re-audits) and signs off corrective actions and forwards audit data to the President for the annual Management Review.</p>
+</section>
+<section><h2>19.0  End-of-Life &amp; Obsolescence Control</h2>
+<h3>19A  POLICY</h3>
+<p>BNC controls the identification, phase-out, and communication of End-of-Life (EOL) and obsolete products, components, and materials throughout their lifecycle, ensuring continued traceability, timely customer notification, Last-Time-Buy (LTB) management, and controlled disposition in accordance with the Quality System. EOL status may be triggered by supplier or manufacturer discontinuation, component obsolescence, regulatory or compliance changes, engineering redesign, reliability or safety considerations, or internal determination by BNC management. All EOL actions are documented and retained as Quality Assurance Records per QAP-17.</p>
+<h3>19B  PROCEDURE — QAP-19, END-OF-LIFE &amp; OBSOLESCENCE CONTROL</h3>
+<h3>1.0  Purpose</h3>
+<p class="cl"><b>1.1</b> To define the process for identifying, managing, documenting, and communicating End-of-Life (EOL) status for BNC products, components, and materials, ensuring continued traceability, customer notification, and controlled phase-out.</p>
+<h3>2.0  Scope</h3>
+<p class="cl"><b>2.1</b> All BNC-manufactured products, distributed products, assemblies, subassemblies, and purchased components that reach end-of-life or become obsolete. Applies to Operations, Engineering, Purchasing, Quality Assurance, and Customer Support.</p>
+<h3>3.0  General</h3>
+<p>BNC controls identification and traceability of items throughout their lifecycle (see QAP-08). The EOL process expands these controls to include formal phase-out, customer communication, and documentation. EOL status may be triggered by:</p>
+<p class="bul">Supplier or manufacturer discontinuation</p>
+<p class="bul">Component obsolescence</p>
+<p class="bul">Regulatory or compliance changes</p>
+<p class="bul">Engineering redesign</p>
+<p class="bul">Reliability or safety considerations</p>
+<p class="bul">Internal determination by BNC management</p>
+<h3>4.0  Procedure</h3>
+<h3>4.1  Identification of EOL Items</h3>
+<p class="cl"><b>4.1.1</b> Purchasing, Engineering, or Operations notifies Quality Assurance when an item is identified as obsolete or discontinued.</p>
+<p class="cl"><b>4.1.2</b> Quality Assurance verifies traceability to affected Sales Orders, inventory, and assemblies using existing identification controls (QAP-08).</p>
+<h3>4.2  EOL Review and Approval</h3>
+<p class="cl"><b>4.2.1</b> Quality Assurance initiates an EOL Review to determine impact on active contracts, inventory, and customer commitments.</p>
+<p class="cl"><b>4.2.2</b> The Quality Manager approves the EOL classification and required actions, including replacement-part qualification or redesign.</p>
+<h3>4.3  Customer Notification</h3>
+<p class="cl"><b>4.3.1</b> Customer Support issues formal EOL notifications when required by contract or when customer systems may be affected.</p>
+<p>Notifications include the EOL effective date, Last-Time-Buy (LTB) availability, recommended replacement items, and support/service timelines.</p>
+<h3>4.4  Inventory and Material Disposition</h3>
+<p class="cl"><b>4.4.1</b> Remaining inventory is allocated to existing Sales Orders, reserved for service/support, or scrapped if no longer usable.</p>
+<p class="cl"><b>4.4.2</b> Disposition is recorded using nonconformance or material-control documentation as applicable (QAP-15).</p>
+<h3>4.5  Documentation Requirements</h3>
+<p>EOL actions generate Quality Assurance Records, including the EOL Review Form, supplier discontinuation notices, customer notifications, replacement-part qualification, and inventory-disposition records, retained a minimum of seven (7) years per QAP-17.</p>
+<h3>4.6  Post-EOL Support</h3>
+<p class="cl"><b>4.6.1</b> BNC continues to support EOL products for the duration specified by contract or internal policy.</p>
+<p class="cl"><b>4.6.2</b> Service parts are tracked using the same identification and traceability controls defined in QAP-08.</p>
+<h3>5.0  Responsibilities</h3>
+<p class="bul">Quality Manager — approves EOL classification; ensures documentation and record retention; coordinates cross-department actions.</p>
+<p class="bul">Purchasing — obtains supplier discontinuation notices; identifies replacement components; updates the AVL if supplier changes are required.</p>
+<p class="bul">Engineering — evaluates technical impact; approves replacement parts or redesigns.</p>
+<p class="bul">Operations — manages inventory disposition; ensures segregation of obsolete items.</p>
+<p class="bul">Customer Support — issues customer notifications; coordinates Last-Time-Buy communication.</p>
+<h3>6.0  Records</h3>
+<p class="cl"><b>6.1</b> All EOL records are maintained as Quality Assurance Records per QAP-17, including EOL Review Forms, supplier notices, customer notifications, and disposition logs.</p>
+</section>
+<section><h2>Appendix A — Master Documents List</h2>
+<div class="tw"><table><thead><tr><th>Doc No.</th><th>Title</th><th>Rev</th></tr></thead><tbody><tr><td class="k">QAM-001</td><td>Quality Assurance Manual</td><td>2.5</td></tr><tr><td class="k">CPP-100</td><td>Counterfeit Parts Policy</td><td>1.0</td></tr><tr><td class="k">CM-100</td><td>Configuration Management</td><td>1.2</td></tr><tr><td class="k">EU-100</td><td>End Use Statement</td><td>1.0</td></tr><tr><td class="k">EU-100C</td><td>End Use Statement (China)</td><td>1.0</td></tr><tr><td class="k">VT&amp;C</td><td>Vendor Terms and Conditions</td><td>1.0</td></tr><tr><td class="k">CT&amp;C</td><td>Customer Terms and Conditions</td><td>1.0</td></tr><tr><td class="k">P-100</td><td>Purchase Order Terms &amp; Conditions</td><td>1.0</td></tr><tr><td class="k">DA-100</td><td>Disciplinary Notice</td><td>1.0</td></tr><tr><td class="k">EOL-100</td><td>EOL Review Form (new — see QAP-19)</td><td>1.0</td></tr></tbody></table></div>
+<p class="mut"><em>[REVIEW: confirm current revision levels.]</em></p>
+</section>
+<section><h2>Appendix B — Audit History</h2>
+<p>Maintained by the Quality Manager and backed up by company IT management (records retained per QAP-17).</p>
+</section>
+<section><h2>Appendix C — Vendor Qualification History</h2>
+<p>Approved Vendor List (AVL) and vendor qualification records maintained by Quality Assurance and Purchasing per QAP-07.</p>
+</section>
+<section><h2>Appendix D — Controlled Forms Register</h2>
+<div class="tw"><table><thead><tr><th>Form</th><th>Title</th><th>Referenced in</th></tr></thead><tbody><tr><td class="k">NCR</td><td>Nonconformance Report</td><td>QAP-10/11/12/15/16</td></tr><tr><td class="k">CAR</td><td>Corrective Action Request</td><td>QAP-15/16</td></tr><tr><td class="k">VCAR</td><td>Vendor Corrective Action Request</td><td>QAP-16</td></tr><tr><td class="k">CPP-100</td><td>Counterfeit Parts Policy Form</td><td>QAP-07</td></tr><tr><td class="k">EOL-100</td><td>EOL Review Form</td><td>QAP-19</td></tr><tr><td class="k">DCR</td><td>Document Change Request</td><td>QAP-06</td></tr><tr><td class="k">AVL</td><td>Approved Vendor List</td><td>QAP-07</td></tr></tbody></table></div>
+</section>
+<section><h2>Appendix E — ASME NQA-1 Cross-Reference</h2>
+<div class="tw"><table><thead><tr><th>NQA-1 Requirement</th><th>QAM Element</th><th>Procedure</th></tr></thead><tbody><tr><td class="k">1 — Organization</td><td>1.0</td><td>QAP-01</td></tr><tr><td class="k">2 — Quality Assurance Program</td><td>2.0</td><td>QAP-02</td></tr><tr><td class="k">3 — Design Control</td><td>3.0</td><td>Reserved (N/A)</td></tr><tr><td class="k">4 — Procurement Document Control</td><td>4.0</td><td>QAP-04</td></tr><tr><td class="k">5 — Instructions, Procedures &amp; Drawings</td><td>5.0</td><td>QAP-05</td></tr><tr><td class="k">6 — Document Control</td><td>6.0</td><td>QAP-06</td></tr><tr><td class="k">7 — Control of Purchased Items &amp; Services</td><td>7.0</td><td>QAP-07</td></tr><tr><td class="k">8 — Identification &amp; Control of Items</td><td>8.0</td><td>QAP-08</td></tr><tr><td class="k">9 — Control of Special Processes</td><td>9.0</td><td>Reserved (N/A)</td></tr><tr><td class="k">10 — Inspection</td><td>10.0</td><td>QAP-10</td></tr><tr><td class="k">11 — Test Control</td><td>11.0</td><td>QAP-11</td></tr><tr><td class="k">12 — Control of M&amp;TE</td><td>12.0</td><td>QAP-12</td></tr><tr><td class="k">13 — Handling, Storage &amp; Shipping</td><td>13.0</td><td>QAP-13</td></tr><tr><td class="k">14 — Inspection, Test &amp; Operating Status</td><td>14.0</td><td>QAP-14</td></tr><tr><td class="k">15 — Control of Nonconforming Items</td><td>15.0</td><td>QAP-15</td></tr><tr><td class="k">16 — Corrective Action</td><td>16.0</td><td>QAP-16</td></tr><tr><td class="k">17 — Quality Assurance Records</td><td>17.0</td><td>QAP-17</td></tr><tr><td class="k">18 — Audits</td><td>18.0</td><td>QAP-18</td></tr><tr><td class="k">Supplemental — Obsolescence / End-of-Life</td><td>19.0</td><td>QAP-19</td></tr></tbody></table></div>
+<p class="mut"><em>[REVIEW: manual cites ASME NQA-1 “2000” — confirm whether to adopt a current edition.]</em></p>
+</section>
+<section><h2>Appendix F — Terms &amp; Acronyms</h2>
+<div class="tw"><table><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td class="k">AVL</td><td>Approved Vendor List</td></tr><tr><td class="k">CAR</td><td>Corrective Action Request</td></tr><tr><td class="k">COTS</td><td>Commercial Off-the-Shelf</td></tr><tr><td class="k">CPP</td><td>Counterfeit Parts Policy</td></tr><tr><td class="k">DCR</td><td>Document Change Request</td></tr><tr><td class="k">EOL</td><td>End-of-Life</td></tr><tr><td class="k">ESD</td><td>Electrostatic Discharge</td></tr><tr><td class="k">ITAR</td><td>International Traffic in Arms Regulations</td></tr><tr><td class="k">LTB</td><td>Last-Time-Buy</td></tr><tr><td class="k">M&amp;TE</td><td>Measuring &amp; Test Equipment</td></tr><tr><td class="k">NCR</td><td>Nonconformance Report</td></tr><tr><td class="k">NIST</td><td>National Institute of Standards and Technology</td></tr><tr><td class="k">NQA-1</td><td>ASME Nuclear Quality Assurance Standard NQA-1</td></tr><tr><td class="k">OEM</td><td>Original Equipment Manufacturer</td></tr><tr><td class="k">PO</td><td>Purchase Order</td></tr><tr><td class="k">QA</td><td>Quality Assurance</td></tr><tr><td class="k">QAM</td><td>Quality Assurance Manual</td></tr><tr><td class="k">QAP</td><td>Quality Assurance Procedure</td></tr><tr><td class="k">VCAR</td><td>Vendor Corrective Action Request</td></tr></tbody></table></div>
+</section>
+</main>
+<div class="footer">Berkeley Nucleonics Corporation · Quality Assurance Manual QAM-001 · Rev 2.5 · 07/30/2026 · Confidential — internal use</div>
+
+</body>
+</html>
