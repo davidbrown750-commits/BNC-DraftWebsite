@@ -233,7 +233,7 @@
 })();
 
 
-/* Add existing DEI user manuals to site search + fix the PVP series user-manual category. */
+/* Add existing DEI user manuals to site search + fix the HVX series user-manual category. */
 (function(){
   var tries=0;
   function run(){
@@ -251,7 +251,7 @@
       ];
       var have={}; for(var i=0;i<window.SITE_INDEX.length;i++){ if(window.SITE_INDEX[i]&&window.SITE_INDEX[i].u) have[window.SITE_INDEX[i].u]=1; }
       for(var j=0;j<add.length;j++){ if(!have[add[j].u]) window.SITE_INDEX.push(add[j]); }
-      for(var m=0;m<window.SITE_INDEX.length;m++){ var e=window.SITE_INDEX[m]; if(e&&e.u&&e.u.indexOf('bnc-pvp-series-user-manual.html')>-1){ e.c='PVP-Series \u00b7 Manual'; } }
+      for(var m=0;m<window.SITE_INDEX.length;m++){ var e=window.SITE_INDEX[m]; if(e&&e.u&&e.u.indexOf('bnc-pvp-series-user-manual.html')>-1){ e.c='HVX-Series \u00b7 Manual'; } }
     }catch(err){}
   }
   run();
@@ -319,15 +319,18 @@
 })();
 
 ;(function(){
+  /* The line shipped as the Heinzinger EVO, then as PVP-Series, and is now HVX-Series.
+     A search for any of the three names has to land on the same pages. */
   function evoAlias(){
     try{
       var SI=window.SITE_INDEX; if(!SI||!SI.length) return;
       for(var i=0;i<SI.length;i++){
         var e=SI[i]; if(!e) continue;
         var hay=((e.t||'')+' '+(e.u||'')+' '+(e.k||'')).toLowerCase();
-        if(hay.indexOf('pvp')>-1 && hay.indexOf('evo')<0){
-          e.k=((e.k||'')+' evo evo-series evo series evo1500 evo1400 heinzinger evo').replace(/\s+/g,' ').trim();
-        }
+        if(hay.indexOf('hvx')<0 && hay.indexOf('pvp')<0) continue;
+        if(hay.indexOf('evo')>-1) continue;
+        e.k=((e.k||'')+' evo evo-series evo series evo1500 evo1400 heinzinger evo'
+             +' pvp pvp-series pvp series').replace(/\s+/g,' ').trim();
       }
     }catch(err){}
   }
