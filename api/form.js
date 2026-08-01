@@ -289,6 +289,69 @@ function scriptFlags(text) {
   return { cyrillic, ruLink, otherForeign };
 }
 
+// Automated vulnerability scanners (sqlmap and friends) walk every form on the site and
+// post injection payloads into whatever fields they find. On 2026-08-01 one of them put
+// 257 rows into bnc_form_submissions and 257 notification emails into staff inboxes in
+// about two minutes, through the identical handler on the Directed Energy deployment.
+// Nothing was ever at risk — this handler talks to Supabase through PostgREST with
+// JSON-encoded values, so the payloads were stored as inert text and never reached a SQL
+// parser — but the alert storm is real and worth dropping at the door.
+//
+// These patterns do not occur in legitimate enquiries about pulse or signal generators.
+// Kept narrow on purpose: a customer writing "order by 10" in prose will not match,
+// because the SQL forms here all require the comment terminator, a function call, or a
+// quote/paren prefix.
+const PROBE_RE = [
+  /\bextractvalue\s*\(/i,
+  /\bupdatexml\s*\(/i,
+  /\bunion\s+(all\s+)?select\b/i,
+  /\bselect\b[\s\S]{0,40}\bfrom\b[\s\S]{0,40}\binformation_schema\b/i,
+  /\b(sleep|benchmark|pg_sleep|waitfor\s+delay)\s*\(/i,
+  /\border\s+by\s+\d+\s*--/i,
+  /['")\]]\s*(and|or)\s+\d+\s*=\s*\d+/i,
+  /\bELT\s*\(\s*\d+\s*=\s*\d+/i,
+  /0x7e[0-9a-f]*/i,
+  /\/\*![0-9]{0,5}/,          // MySQL versioned-comment evasion
+  /<script\b|\bonerror\s*=|javascript:/i, // cheap XSS probes ride along in the same scans
+];
+// Applied ONLY to short structured fields (name, email, company, phone, model), never to
+// free prose. A SQL comment terminator or a stray quote-paren is never legitimate in a
+// person's name, but "-- John" is an ordinary email sign-off and "order by 10" is a
+// sentence a customer might genuinely write, so neither may gate the message body.
+const PROBE_RE_FIELD = [
+  /--\s*[-\w]*\s*$/,          // trailing SQL comment terminator, e.g. "-- -" / "-- w7srrm"
+  /^[^\w]*['"`)\]]+\s*(and|or|union|select)\b/i,
+  /\border\s+by\s+\d+\b/i,
+];
+function looksLikeProbe(text, strict) {
+  const s = String(text || "");
+  if (!s) return "";
+  for (const re of PROBE_RE) if (re.test(s)) return re.source.slice(0, 40);
+  if (strict) for (const re of PROBE_RE_FIELD) if (re.test(s)) return re.source.slice(0, 40);
+  return "";
+}
+
+// Per-IP burst brake. A Vercel function instance is reused between invocations, so this
+// catches a scanner that keeps hitting the same warm instance, which is exactly what a
+// 2-per-second run does. It is deliberately NOT the primary defence: instances are not
+// shared, so a distributed or cold-start-heavy flood slips past it. The real ceiling is
+// the Vercel Firewall rate-limit rule on POST /api/form. This is cheap insurance that
+// costs no infrastructure and needs no new table.
+const BURST = new Map();
+const BURST_MAX = Number(process.env.FORM_BURST_MAX || 8);   // submissions...
+const BURST_WINDOW_MS = Number(process.env.FORM_BURST_WINDOW_MS || 60000); // ...per minute, per IP
+function burstExceeded(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  const hits = (BURST.get(ip) || []).filter((t) => now - t < BURST_WINDOW_MS);
+  hits.push(now);
+  BURST.set(ip, hits);
+  if (BURST.size > 500) { // keep the map from growing without bound on a long-lived instance
+    for (const [k, v] of BURST) if (!v.length || now - v[v.length - 1] > BURST_WINDOW_MS) BURST.delete(k);
+  }
+  return hits.length > BURST_MAX;
+}
+
 // Best-effort model number for the preview: a product/model field, else a token
 // parsed from the page URL (e.g. bnc-845-datasheet.html -> 845, 7000-series -> 7000).
 function guessModel(fromField, pageUrl) {
@@ -489,8 +552,24 @@ function ackContact({ hello, replyTo, company, phone, source }) {
   return Object.assign({ subject: "Thank you for contacting Berkeley Nucleonics" }, shell);
 }
 
+// Origins allowed to POST here. This used to answer "*", which let anything on the
+// internet submit the form headlessly without ever loading a page — which is how the
+// _gotcha honeypot got bypassed wholesale: a bot that never renders the form never sees
+// the hidden field to fall for it. Our own properties plus Vercel previews only.
+//
+// The subdomain wildcard on berkeleynucleonics.com is load-bearing, not decoration. The
+// QuickQuote configurator (_shared/bnc-configurator.js, embedded on 24 doc pages) posts to
+// a HARDCODED absolute "https://www.berkeleynucleonics.com/api/form?form=configurator"
+// with no override wired up anywhere. That is same-origin on production www, but a genuine
+// cross-origin POST from draft.berkeleynucleonics.com and from every Vercel preview host.
+// Drop those from the allowlist and the configurator fails CORS and silently degrades to a
+// mailto: draft, on every non-www host, with no error a visitor would report.
+const ORIGIN_OK = /^https:\/\/([a-z0-9-]+\.)*(berkeleynucleonics\.com|directedenergy\.com)$|^https:\/\/bnc-draft-website[a-z0-9-]*\.vercel\.app$/i;
+
 module.exports = async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const origin = String(req.headers.origin || "");
+  if (origin && ORIGIN_OK.test(origin)) res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   if (req.method === "OPTIONS") { res.status(204).end(); return; }
@@ -516,8 +595,24 @@ module.exports = async function handler(req, res) {
   // 1. Honeypot: bots fill _gotcha. Pretend success, drop silently.
   if (body._gotcha) { respondOk({ dropped: "honeypot" }); return; }
 
+  const ip = (req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || "").split(",")[0].trim();
+
+  // 1a. No Origin AND no Referer => nothing that rendered our form. Every browser sends
+  // Origin on a cross-origin POST and Referer on a same-origin form submit, so a real
+  // visitor always carries at least one. All 257 requests in the 2026-08-01 scanner run
+  // had both blank. Drop silently — the bot sees the normal thank-you and learns nothing.
+  // Set FORM_REQUIRE_ORIGIN=0 in Vercel to disable without a deploy if this ever misfires.
+  const referer = String(req.headers.referer || "");
+  if (process.env.FORM_REQUIRE_ORIGIN !== "0" && !origin && !referer) {
+    respondOk({ dropped: "no-origin" }); return;
+  }
+  // 1b. Origin present but not ours: someone else's page is posting at our endpoint.
+  if (origin && !ORIGIN_OK.test(origin)) { respondOk({ dropped: "bad-origin" }); return; }
+
+  // 1c. Burst brake (see burstExceeded). Silent, so a scanner gets no signal to back off.
+  if (burstExceeded(ip)) { respondOk({ dropped: "rate" }); return; }
+
   // 2. Spam: Turnstile (only enforced once TURNSTILE_SECRET is set)
-  const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim();
   if (!(await turnstileOk(body["cf-turnstile-response"], ip))) {
     res.status(400).json({ ok: false, error: "spam check failed" }); return;
   }
@@ -553,6 +648,16 @@ module.exports = async function handler(req, res) {
   const _blob = (name || "") + " \n " + _vals;
   const _scr = scriptFlags(_blob);
   if (_scr.cyrillic || _scr.ruLink) { respondOk({ dropped: "ru-content" }); return; }
+
+  // 2c-bis. Automated vulnerability scan (SQL injection / XSS payloads). The whole
+  // submission is checked against the broad patterns; the short structured fields
+  // additionally get the strict ones, which would be unsafe against free prose. Dropped
+  // before Nutshell, Supabase and the notification, so a scanner run costs one silent 303
+  // instead of an inbox full of alerts and a CRM full of junk contacts.
+  const _probe = looksLikeProbe(_blob) ||
+    looksLikeProbe(name, true) || looksLikeProbe(email, true) ||
+    looksLikeProbe(company, true) || looksLikeProbe(phone, true) || looksLikeProbe(modelField, true);
+  if (_probe) { respondOk({ dropped: "probe" }); return; }
 
   // 2d. Triage-routing signals (keep the lead, just send the notice to a triager, not a rep):
   //   - foreign-language / strange-character body (non-Latin script or many non-ASCII chars) -> David
@@ -659,7 +764,11 @@ module.exports = async function handler(req, res) {
         body: JSON.stringify({
           form_type: type, email: email || null, name: name || null, company: company || null,
           phone: phone || null, message: body.message ? String(body.message).slice(0, 8000) : null,
-          fields: extra, page: (req.headers.referer || "").slice(0, 500),
+          // The client IP rides inside the existing `fields` jsonb as _ip rather than a new
+          // column, so this needs no migration. It is what turns "257 junk rows" into "257
+          // junk rows from one address" when the next scan comes through.
+          fields: Object.assign({}, extra, ip ? { _ip: ip } : {}),
+          page: (req.headers.referer || "").slice(0, 500),
           verified, user_agent: String(req.headers["user-agent"] || "").slice(0, 300),
         }),
       });
@@ -672,7 +781,9 @@ module.exports = async function handler(req, res) {
   // guaranteed to reach the daily Web Visitor Battle Card via bnc_form_submissions
   // (quiz cards go to Meraly), so the real-time email is redundant.
   // (They are still logged to Supabase + noted in Nutshell above.)
-  if (smtpConfigured() && type !== "pdf-config" && type !== "quiz") {
+  // FORM_NOTIFY_OFF=1 stops the internal alert storm during an attack without a deploy.
+  // (FORM_ACK_OFF only silences the CUSTOMER acknowledgement, which is the other half.)
+  if (smtpConfigured() && process.env.FORM_NOTIFY_OFF !== "1" && type !== "pdf-config" && type !== "quiz") {
     try {
       // Preview-friendly fields: spaced name, best-effort model, and New vs Repeat
       // (from whether Nutshell just created the contact). These lead the email so the
@@ -706,6 +817,7 @@ module.exports = async function handler(req, res) {
       // Table leads with Name/Email; "Type" is dropped (the heading already says it).
       const rows = [["Name", nm || name], ["Email", email], ["Company", company], ["Phone", phone], ["Model", model], ["Status", statusCell]]
         .concat(body.message ? [["Message", body.message]] : [])
+        .concat(ip ? [["IP", ip]] : [])
         .concat(Object.keys(extra).map((k) => [k, extra[k]]))
         .filter((r) => r[1])
         .map((r) => '<tr><td style="padding:4px 10px;border:1px solid #dde;background:#f6f8fb;font-weight:bold">' + esc(r[0]) + '</td><td style="padding:4px 10px;border:1px solid #dde">' + esc(r[1]).replace(/\n/g, "<br>") + "</td></tr>").join("");
