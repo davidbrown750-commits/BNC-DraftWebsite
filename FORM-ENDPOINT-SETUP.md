@@ -48,7 +48,12 @@ Nutshell + a durable Supabase log + a SendGrid notification. Formspree-compatibl
    point at a missing endpoint).
 
 ## Verify after deploy
-- `curl -sX POST 'https://draft.berkeleynucleonics.com/api/form?form=contact' -H 'Content-Type: application/json' -d '{"email":"you@x.com","name":"Test","message":"hello"}'` → `{"ok":true,...}`
+- `curl -sX POST 'https://draft.berkeleynucleonics.com/api/form?form=contact' -H 'Content-Type: application/json' -H 'Origin: https://draft.berkeleynucleonics.com' -d '{"email":"you@x.com","name":"Test","message":"hello"}'` → `{"ok":true,...}`
+- **The `Origin` header is required.** Without an `Origin` or a `Referer` (or an
+  `X-Requested-With: XMLHttpRequest`), the endpoint silently drops the request and answers
+  `{"ok":true,"dropped":"no-origin"}` — which READS LIKE A PASS. Always check the response for a
+  `dropped` key, not just `ok`. The full drop reasons are `honeypot`, `no-origin`, `bad-origin`,
+  `rate`, `ru`, `ru-content`, `blocked` and `probe`.
 - Check: a Nutshell contact (deduped), a `bnc_form_submissions` row, and a SendGrid email to `FORM_NOTIFY_TO`.
 - Submit each form type once from the site and confirm the thank-you + the three effects.
 
