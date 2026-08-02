@@ -602,8 +602,26 @@ module.exports = async function handler(req, res) {
   // visitor always carries at least one. All 257 requests in the 2026-08-01 scanner run
   // had both blank. Drop silently — the bot sees the normal thank-you and learns nothing.
   // Set FORM_REQUIRE_ORIGIN=0 in Vercel to disable without a deploy if this ever misfires.
+  //
+  // SERVER-TO-SERVER EXEMPTION, and it is load-bearing. Origin and Referer are set by
+  // browsers; a server calling us has neither. Two LIVE lead paths forward quotes to this
+  // endpoint over PHP curl from briefs.berkeleynucleonics.com:
+  //   active-projects/Used Equipment Marketplace/deploy/quote.php
+  //   active-projects/Rolling End-of-Year Campaigns/landing-pages/deploy/quote.php
+  // Both send `X-Requested-With: XMLHttpRequest` and neither of the browser headers, so a
+  // bare Origin/Referer check would silently bin real buyer enquiries. Worse, both treat
+  // any 2xx/3xx as success, so our silent drop would ALSO suppress their direct-SendGrid
+  // fallback — the safety net that exists so a lead is never lost — and the buyer would
+  // still see a success screen. Hence: accept X-Requested-With as the third valid signal.
+  //
+  // It is a weak signal on its own (any client can send it) and it is not doing the heavy
+  // lifting. The scanner sent no such header, and the honeypot, probe filter, burst brake
+  // and the Vercel Firewall rate-limit rule all still apply underneath it. If those PHP
+  // bridges are ever redeployed with an explicit `Origin: https://briefs.berkeleynucleonics.com`
+  // header, this exemption can be dropped.
   const referer = String(req.headers.referer || "");
-  if (process.env.FORM_REQUIRE_ORIGIN !== "0" && !origin && !referer) {
+  const xhr = /XMLHttpRequest/i.test(String(req.headers["x-requested-with"] || ""));
+  if (process.env.FORM_REQUIRE_ORIGIN !== "0" && !origin && !referer && !xhr) {
     respondOk({ dropped: "no-origin" }); return;
   }
   // 1b. Origin present but not ours: someone else's page is posting at our endpoint.
