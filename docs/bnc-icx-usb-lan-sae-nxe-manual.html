@@ -112,6 +112,23 @@
       w.dataLayer.push(ev);
     } catch (e) {}
   };
+
+  /* A form carrying `_next` sends the visitor back where they came from instead of to
+     thank-you.html — the ScintIQ configurator does this — so the conversion has to travel
+     with them. /api/form appends `bnc_fs=<form type>` to that redirect and this fires it on
+     arrival. The param is then stripped from the address bar so a refresh or a shared link
+     cannot count a second time. */
+  if (q) {
+    var fs = q.get('bnc_fs');
+    if (fs) {
+      w.bncTrackFormSubmit(String(fs).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 32));
+      try {
+        q.delete('bnc_fs');
+        var rest = q.toString();
+        history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+      } catch (e) {}
+    }
+  }
 })(window, document);
 </script>
 <!-- END BNC attribution -->

@@ -582,8 +582,28 @@ module.exports = async function handler(req, res) {
   const next = body._next || body._redirect || "";
   const type = (body.form || (req.query && req.query.form) || "contact").toString().toLowerCase();
   const respondOk = (extra) => {
+    // Set on every silent-drop path (honeypot, bad origin, rate brake, blocklist, probe).
+    // The caller still gets a normal-looking success; it just must not count as a conversion.
+    const dropped = !!(extra && extra.dropped);
     if (wantsJson) { res.status(200).json(Object.assign({ ok: true }, extra || {})); return; }
-    if (next) { res.writeHead(303, { Location: next }); res.end(); return; }
+    if (next) {
+      // A form with _next returns the visitor to the page they came from rather than to
+      // thank-you.html, so the conversion never fires there. The ScintIQ configurator does
+      // exactly this whenever it is reached with a ?from= param. Carry the signal across:
+      // the head block on every page fires `form_submission_complete` when it sees bnc_fs,
+      // then strips it from the URL so a refresh cannot double-count. Dropped spam gets the
+      // bare redirect, same as it gets thank-you.html without the event.
+      const sep = next.indexOf("?") === -1 ? "?" : "&";
+      const hash = next.indexOf("#");
+      const target = dropped
+        ? next
+        : hash === -1
+          ? next + sep + "bnc_fs=" + encodeURIComponent(type)
+          : next.slice(0, hash) + sep + "bnc_fs=" + encodeURIComponent(type) + next.slice(hash);
+      res.writeHead(303, { Location: target });
+      res.end();
+      return;
+    }
     // Redirect to the real /thank-you.html rather than rendering an inline page. That page
     // carries the site's tag stack (GTM / Bing UET) and pushes a `form_submission_complete`
     // dataLayer event, so a submit is measurable. The inline page this replaced had no
@@ -596,7 +616,6 @@ module.exports = async function handler(req, res) {
     // blocked sender and vulnerability scan posts a fake lead into GA4 and, once the
     // thank-you conversion is imported, straight into Google Ads Smart Bidding. The
     // 2026-08-01 scanner run alone was 257 requests.
-    const dropped = extra && extra.dropped;
     res.writeHead(303, {
       Location: "/thank-you.html?form=" + encodeURIComponent(type) + (dropped ? "&nc=1" : ""),
     });
