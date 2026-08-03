@@ -216,6 +216,14 @@
   .pa{background:#fff;border:1px solid var(--line);border-radius:8px;padding:13px 16px;margin:0 0 11px;display:flex;gap:12px;align-items:flex-start}
   .pa.done{opacity:.55}
   .pa input[type=checkbox]{margin-top:3px;width:17px;height:17px;flex:0 0 auto}
+  .pa-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+  .pa-bar .pa-stat{margin:0}
+  .pa-actions{display:flex;gap:8px;margin-left:auto}
+  .pa-btn{font:inherit;font-size:.9rem;padding:6px 14px;border-radius:6px;border:1px solid #0655a3;
+    background:#0655a3;color:#fff;cursor:pointer}
+  .pa-btn:hover{filter:brightness(1.08)}
+  .pa-btn:disabled{opacity:.45;cursor:default;filter:none}
+  .pa-btn.ghost{background:#fff;color:#0655a3}
   .pa .body{flex:1}
   .pa .h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
   .pa .ttl{font-family:'Myriad Pro',Arial;font-weight:700;color:var(--ink);font-size:14.5px}
@@ -275,7 +283,13 @@
     <div class="panel" id="tab-pending">
       <h2>Website Pending Actions</h2>
       <p class="sub">Every engineering verification and webmaster note across the site, in one place. Open a page to review the note in context, then approve or supply the missing spec. Check it off here when it's handled (saved in your browser).</p>
-      <div class="pa-stat" id="paStat">Loading…</div>
+      <div class="pa-bar">
+        <div class="pa-stat" id="paStat">Loading…</div>
+        <div class="pa-actions">
+          <button type="button" id="paClear" class="pa-btn">Clear Checked</button>
+          <button type="button" id="paShow" class="pa-btn ghost" hidden>Show cleared</button>
+        </div>
+      </div>
       <div id="paList"></div>
     </div>
     <div class="panel" id="tab-docs">
@@ -357,6 +371,7 @@
   // ---- pending actions ----
   var paLoaded=false;
   function paKey(file){ return "bnc_pa_done:"+file; }
+  function paHid(file){ return "bnc_pa_hidden:"+file; }
   function loadPending(){
     if(paLoaded) return; paLoaded=true;
     fetch("/pending-actions.json",{cache:"no-store"}).then(function(r){return r.json();}).then(function(d){
@@ -364,9 +379,10 @@
       var entries=d.entries||[];
       if(!entries.length){ list.innerHTML='<div class="pa"><div class="body">No pending notes. Everything is cleared.</div></div>';
         document.getElementById("paStat").textContent=""; return; }
-      var doneCount=0;
+      var doneCount=0, hidCount=0;
       list.innerHTML = entries.map(function(e){
         var done = localStorage.getItem(paKey(e.file))==="1"; if(done) doneCount++;
+        if(localStorage.getItem(paHid(e.file))==="1"){ hidCount++; return ""; }
         var notes = (e.notes||[]).map(function(n){
           return '<div class="note">'+(n.verify?'<span class="vflag">verify</span> ':'')+esc(n.text)+'</div>'; }).join("");
         return '<div class="pa'+(done?' done':'')+'" data-f="'+esc(e.file)+'">'+
@@ -377,9 +393,36 @@
       }).join("");
       function updateStat(){
         document.getElementById("paStat").textContent =
-          doneCount+" of "+entries.length+" pages cleared · "+d.total_notes+" notes total";
+          doneCount+" of "+entries.length+" pages cleared · "+d.total_notes+" notes total"+
+          (hidCount?" · "+hidCount+" hidden":"");
+        var showBtn=document.getElementById("paShow");
+        if(showBtn) showBtn.hidden = !hidCount;
+        var clearBtn=document.getElementById("paClear");
+        if(clearBtn) clearBtn.disabled = !list.querySelector("input:checked");
+        if(!list.querySelector(".pa"))
+          list.innerHTML='<div class="pa"><div class="body">Nothing left to review. Use \u201cShow cleared\u201d to bring items back.</div></div>';
       }
       updateStat();
+
+      var clearBtn=document.getElementById("paClear");
+      if(clearBtn) clearBtn.onclick=function(){
+        Array.prototype.forEach.call(list.querySelectorAll(".pa"), function(card){
+          var cb=card.querySelector("input");
+          if(cb && cb.checked){
+            var f=card.getAttribute("data-f");
+            localStorage.setItem(paKey(f),"1");
+            localStorage.setItem(paHid(f),"1");
+            if(!card.classList.contains("done")){ card.classList.add("done"); doneCount++; }
+            card.remove(); hidCount++;
+          }
+        });
+        updateStat();
+      };
+      var showBtn=document.getElementById("paShow");
+      if(showBtn) showBtn.onclick=function(){
+        entries.forEach(function(e){ localStorage.removeItem(paHid(e.file)); });
+        paLoaded=false; loadPending();
+      };
       Array.prototype.forEach.call(list.querySelectorAll(".pa"), function(card){
         var cb=card.querySelector("input");
         cb.addEventListener("change", function(){
@@ -397,7 +440,7 @@
     document.getElementById("locked").classList.add("hide");
     document.getElementById("portal").classList.remove("hide");
     loadExplorer();
-    var initial = (location.hash.slice(1)==="pending") ? "pending" : "visitors";
+    var _ht=location.hash.slice(1); var initial = ({visitors:1,dei:1,pending:1,docs:1})[_ht] ? _ht : "visitors";
     showTab(initial);
   }
   function lock(msg){
