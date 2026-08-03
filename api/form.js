@@ -588,7 +588,17 @@ module.exports = async function handler(req, res) {
     // dataLayer event, so a submit is measurable. The inline page this replaced had no
     // analytics on it at all, which silently killed conversion tracking for every form at
     // the July 2026 cutover off WordPress.
-    res.writeHead(303, { Location: "/thank-you.html?form=" + encodeURIComponent(type) });
+    //
+    // A silently-dropped submission still gets the identical thank-you page, so the bot
+    // learns nothing and keeps wasting its time — but it carries `nc=1`, which tells
+    // thank-you.html to suppress the conversion event. Without this every honeypot hit,
+    // blocked sender and vulnerability scan posts a fake lead into GA4 and, once the
+    // thank-you conversion is imported, straight into Google Ads Smart Bidding. The
+    // 2026-08-01 scanner run alone was 257 requests.
+    const dropped = extra && extra.dropped;
+    res.writeHead(303, {
+      Location: "/thank-you.html?form=" + encodeURIComponent(type) + (dropped ? "&nc=1" : ""),
+    });
     res.end();
   };
 

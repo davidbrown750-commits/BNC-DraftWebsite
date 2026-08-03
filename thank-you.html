@@ -102,14 +102,28 @@
 <meta name="robots" content="noindex,follow">
 <!-- Form-completion event, pushed before the container loads so GTM sees it on this page view.
      Use `form_submission_complete` as the conversion trigger; `form_type` distinguishes
-     quote / contact / rma / etc. -->
+     quote / contact / rma / etc.
+
+     Do NOT trigger the conversion on a pageview of this URL instead. `nc=1` marks a
+     submission that /api/form silently dropped as spam — the bot is shown this page
+     unchanged so it learns nothing, but it must not be counted. A URL-match trigger cannot
+     see that distinction; this event can. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   (function () {
-    var t = (new URLSearchParams(window.location.search).get('form') || 'contact')
+    var q = new URLSearchParams(window.location.search);
+    var t = (q.get('form') || 'contact')
       .toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 32);
     window.BNC_FORM_TYPE = t;
-    window.dataLayer.push({ event: 'form_submission_complete', form_type: t });
+    if (q.get('nc') === '1') { window.BNC_NO_CONVERSION = true; return; }
+    var ev = { event: 'form_submission_complete', form_type: t };
+    /* Attribution captured on the landing page, so the conversion carries the campaign
+       that earned it rather than relying on the referrer of this page. */
+    var a = window.BNC_ATTR || {};
+    if (a.gclid) ev.gclid = a.gclid;
+    if (a.utm_source) ev.utm_source = a.utm_source;
+    if (a.utm_campaign) ev.utm_campaign = a.utm_campaign;
+    window.dataLayer.push(ev);
   })();
 </script>
 <!-- Google Tag Manager -->
