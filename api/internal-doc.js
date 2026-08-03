@@ -10,7 +10,7 @@ const { verifyClerkToken } = require("../lib/clerk");
 const DOCS = require("./internal-docs-data");
 
 const STAFF_DOMAIN = "@berkeleynucleonics.com";
-const STAFF_EXTRA = new Set(["jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"]);
+const STAFF_EXTRA = new Set(["davidbrown750@gmail.com", "jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"]);
 
 async function authorized(req) {
   const auth = req.headers.authorization || "";

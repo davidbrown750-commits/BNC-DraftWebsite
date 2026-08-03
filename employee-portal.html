@@ -128,7 +128,7 @@
 (function(){
   var STAFF_DOMAIN = "@berkeleynucleonics.com";
   // Outside collaborators granted staff-equivalent access (treated like a @berkeleynucleonics.com login).
-  var STAFF_EXTRA = ["jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"];
+  var STAFF_EXTRA = ["davidbrown750@gmail.com", "jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"];
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 
   function bncEmail(){
@@ -262,7 +262,7 @@
     document.getElementById("locked").classList.add("hide");
     document.getElementById("portal").classList.remove("hide");
     loadExplorer();
-    var initial = (location.hash.slice(1)==="pending") ? "pending" : "visitors";
+    var _ht=location.hash.slice(1); var initial = ({visitors:1,dei:1,pending:1,docs:1})[_ht] ? _ht : "visitors";
     showTab(initial);
   }
   function lock(msg){
