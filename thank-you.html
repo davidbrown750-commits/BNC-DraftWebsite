@@ -1,6 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- START BNC consent mode -->
+<script data-cookieconsent="ignore">
+/* Google Consent Mode v2 defaults. Must run before Cookiebot and before the GTM container.
+
+   Everything is denied until the visitor agrees — nothing is stored and no ad identifier is
+   sent before then. Declaring the defaults is what lets the container load for everyone
+   without loading anything *into* storage: Google gets a "denied" signal it can model
+   against, instead of the silence it used to get from anyone who declined the banner.
+
+   url_passthrough keeps the gclid on internal navigation while ad_storage is denied, which
+   is what preserves attribution for a non-consenting click. ads_data_redaction strips ad
+   identifiers from those denied-state pings. */
+(function (w) {
+  w.dataLayer = w.dataLayer || [];
+  function gtag() { w.dataLayer.push(arguments); }
+  w.gtag = w.gtag || gtag;
+
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  gtag('set', 'ads_data_redaction', true);
+  gtag('set', 'url_passthrough', true);
+
+  /* Bridge Cookiebot's answer into Consent Mode. Cookiebot's built-in integration has to be
+     enabled in the Cookiebot admin; this works whether or not it is, and running both is
+     harmless because consent updates are last-write-wins with identical values. */
+  function update() {
+    var c = w.Cookiebot && w.Cookiebot.consent;
+    if (!c) return;
+    gtag('consent', 'update', {
+      ad_storage: c.marketing ? 'granted' : 'denied',
+      ad_user_data: c.marketing ? 'granted' : 'denied',
+      ad_personalization: c.marketing ? 'granted' : 'denied',
+      analytics_storage: c.statistics ? 'granted' : 'denied',
+      functionality_storage: c.preferences ? 'granted' : 'denied',
+      personalization_storage: c.preferences ? 'granted' : 'denied'
+    });
+  }
+  w.addEventListener('CookiebotOnAccept', update);
+  w.addEventListener('CookiebotOnDecline', update);
+  w.addEventListener('CookiebotOnConsentReady', update);
+})(window);
+</script>
+<!-- END BNC consent mode -->
 <!-- START Cookiebot -->
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
 <!-- END Cookiebot -->
@@ -161,7 +212,7 @@
   })();
 </script>
 <!-- Google Tag Manager -->
-<script type="text/plain" data-cookieconsent="statistics">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
+<script data-cookieconsent="ignore">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
 <!-- End Google Tag Manager -->
 <!-- START Visual Visitor -->
 <script type="text/plain" data-cookieconsent="marketing" defer data-cookieblock-src='https://data.processwebsitedata.com/cscripts/yuZy3Z595d-ed010bae.js'></script>
