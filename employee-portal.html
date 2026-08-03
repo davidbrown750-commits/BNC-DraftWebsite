@@ -217,7 +217,7 @@
     document.getElementById("locked").classList.add("hide");
     document.getElementById("portal").classList.remove("hide");
     loadExplorer();
-    var initial = (location.hash.slice(1)==="pending") ? "pending" : "visitors";
+    var _ht=location.hash.slice(1); var initial = ({visitors:1,dei:1,pending:1,docs:1})[_ht] ? _ht : "visitors";
     showTab(initial);
   }
   function lock(msg){
