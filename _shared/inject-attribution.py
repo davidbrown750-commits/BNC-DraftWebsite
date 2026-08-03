@@ -39,8 +39,11 @@ END = "<!-- END BNC attribution -->"
 # always sits first in <head>. Injecting after it keeps Cookiebot first (required — it has
 # to be able to see and block the tags that follow) while staying above the GTM container.
 COOKIEBOT_RE = re.compile(
-    r'<script id="Cookiebot"[^>]*></script>\n?'
+    r'<script id="Cookiebot"[^>]*></script>\n?(?:<!-- END Cookiebot -->\n?)?'
 )
+
+# Matches an already-injected block, so a re-run replaces it rather than skipping.
+BLOCK_RE = re.compile(re.escape(START) + r".*?" + re.escape(END) + r"\n?", re.DOTALL)
 
 BLOCK = START + """
 <script data-cookieconsent="ignore">
@@ -134,6 +137,23 @@ BLOCK = START + """
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', stamp);
   else stamp();
+
+  /* Conversion event for forms that never navigate. The forms that post natively land on
+     thank-you.html, which fires this for them. The fetch-based ones — QuickQuote, the
+     datasheet PDF configurator, the line-card quote, the book resource forms and quizzes —
+     stay on the page and show an inline success, so they have to fire it themselves.
+     Between them they cover most of the site's form volume and none of it was measurable.
+     Call once, on confirmed success only. */
+  w.bncTrackFormSubmit = function (formType) {
+    try {
+      var ev = { event: 'form_submission_complete', form_type: String(formType || 'contact') };
+      var a = w.BNC_ATTR || {};
+      if (a.gclid) ev.gclid = a.gclid;
+      if (a.utm_source) ev.utm_source = a.utm_source;
+      if (a.utm_campaign) ev.utm_campaign = a.utm_campaign;
+      w.dataLayer.push(ev);
+    } catch (e) {}
+  };
 })(window, document);
 </script>
 """ + END + "\n"
@@ -141,30 +161,37 @@ BLOCK = START + """
 
 def main() -> int:
     check_only = "--check" in sys.argv
-    changed, skipped, no_anchor = [], [], []
+    changed, updated, skipped, no_anchor = [], [], [], []
 
     for path in sorted(ROOT.rglob("*.html")):
         if any(p in {".git", "node_modules"} for p in path.parts):
             continue
         text = path.read_text(encoding="utf-8", errors="surrogateescape")
 
-        if START in text:
-            skipped.append(path)
-            continue
-        m = COOKIEBOT_RE.search(text)
+        had_block = START in text
+        # Strip any existing block first, then re-insert at the anchor. Doing it in that
+        # order means a re-run picks up edits to BLOCK *and* relocates it if the anchor
+        # moved, instead of leaving a stale copy behind.
+        stripped = BLOCK_RE.sub("", text, count=1) if had_block else text
+
+        m = COOKIEBOT_RE.search(stripped)
         if not m:
             # Redirect stubs and HTML fragments carry no tag stack at all. Nothing to do.
             no_anchor.append(path)
             continue
 
+        out = stripped[: m.end()] + BLOCK + stripped[m.end():]
+        if out == text:
+            skipped.append(path)
+            continue
         if not check_only:
-            out = text[: m.end()] + BLOCK + text[m.end():]
             path.write_text(out, encoding="utf-8", errors="surrogateescape")
-        changed.append(path)
+        (updated if had_block else changed).append(path)
 
     rel = lambda p: p.relative_to(ROOT)
     print(f"{'would inject' if check_only else 'injected'}: {len(changed)}")
-    print(f"already present, skipped: {len(skipped)}")
+    print(f"{'would update' if check_only else 'updated in place'}: {len(updated)}")
+    print(f"already current, skipped: {len(skipped)}")
     print(f"no Cookiebot anchor (redirect stubs / fragments), skipped: {len(no_anchor)}")
     for p in no_anchor:
         print(f"  - {rel(p)}")

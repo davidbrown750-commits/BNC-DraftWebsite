@@ -30,6 +30,7 @@ const TYPES = {
   rma:           "RMA Request",
   "rma-status":  "RMA Status Check",
   scintiq:       "ScintIQ Configurator Request",
+  configurator:  "QuickQuote Configurator Request",
   book:          "Book / Reading-Map Request",
   "pdf-config":  "Datasheet Configurator Request",
   resource:      "Resource Request",

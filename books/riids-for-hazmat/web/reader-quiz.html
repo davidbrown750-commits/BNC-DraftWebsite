@@ -3,6 +3,7 @@
 <head>
 <!-- START Cookiebot -->
 <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
+<!-- END Cookiebot -->
 <!-- START BNC attribution -->
 <script data-cookieconsent="ignore">
 /* Paid-click attribution. Runs before the GTM container so `dataLayer` exists for every
@@ -95,10 +96,26 @@
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', stamp);
   else stamp();
+
+  /* Conversion event for forms that never navigate. The forms that post natively land on
+     thank-you.html, which fires this for them. The fetch-based ones — QuickQuote, the
+     datasheet PDF configurator, the line-card quote, the book resource forms and quizzes —
+     stay on the page and show an inline success, so they have to fire it themselves.
+     Between them they cover most of the site's form volume and none of it was measurable.
+     Call once, on confirmed success only. */
+  w.bncTrackFormSubmit = function (formType) {
+    try {
+      var ev = { event: 'form_submission_complete', form_type: String(formType || 'contact') };
+      var a = w.BNC_ATTR || {};
+      if (a.gclid) ev.gclid = a.gclid;
+      if (a.utm_source) ev.utm_source = a.utm_source;
+      if (a.utm_campaign) ev.utm_campaign = a.utm_campaign;
+      w.dataLayer.push(ev);
+    } catch (e) {}
+  };
 })(window, document);
 </script>
 <!-- END BNC attribution -->
-<!-- END Cookiebot -->
 <meta name="robots" content="index,follow"><!--draft-noindex-->
 <!-- Google Tag Manager -->
 <script type="text/plain" data-cookieconsent="statistics">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
@@ -406,8 +423,12 @@ function wireForm(){
       console.log("[reader-quiz dev fallback] payload:",Object.fromEntries(data.entries()));
       showSuccess(data); return;
     }
+    // Attribution rides along in the FormData: this form never navigates, so the
+    // hidden inputs the head block stamps onto native forms do not apply here.
+    var _a=window.BNC_ATTR||{}; for(var _k in _a){ if(Object.prototype.hasOwnProperty.call(_a,_k)) data.append(_k,_a[_k]); }
     fetch(FORM_ENDPOINT,{method:"POST",body:data,headers:{"Accept":"application/json"}})
-      .then(function(res){ if(res.ok) showSuccess(data); else throw new Error("post failed"); })
+      // Inline success, no navigation: fire the conversion here or it is never counted.
+      .then(function(res){ if(res.ok){ if(window.bncTrackFormSubmit) window.bncTrackFormSubmit("quiz"); showSuccess(data); } else throw new Error("post failed"); })
       .catch(function(){ alert("Something went wrong. Email davidbrown750@gmail.com and we will sort it out."); });
   });
 }
