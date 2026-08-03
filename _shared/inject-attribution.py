@@ -1,9 +1,48 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-<!-- START Cookiebot -->
-<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
-<!-- START BNC attribution -->
+#!/usr/bin/env python3
+"""Inject the paid-click attribution + dataLayer block into every page's <head>.
+
+Why this exists
+---------------
+Both Google Ads campaigns tag their final URLs with UTMs, but nothing on the site ever
+read them, so a paid click could not be tied to a lead in Nutshell. A repo-wide search for
+`gclid` and `utm_` returned zero matches before this script. That made the core rule of a
+B2B paid-search programme — judge the campaign on qualified pipeline in the CRM, not on
+clicks — impossible to follow.
+
+The block does two things, and both have to happen before the GTM container loads:
+
+  1. Initialises `window.dataLayer`. Only thank-you.html did this; every other page relied
+     on the container's own `w[l]=w[l]||[]`, which does not run until Cookiebot grants
+     consent. So a `dataLayer.push` from page code had nowhere to land.
+  2. Captures gclid / wbraid / gbraid / msclkid / utm_* off the landing URL, carries them
+     across the visit, and exposes them as `window.BNC_ATTR` for the forms to submit.
+
+Storage is deliberately tiered (see the block's own comment): sessionStorage always, the
+90-day cookie only once Cookiebot reports marketing consent.
+
+Idempotent — re-running it will not double-inject. Run from the repo root:
+
+    python3 _shared/inject-attribution.py            # apply
+    python3 _shared/inject-attribution.py --check    # report only, change nothing
+"""
+
+import pathlib
+import re
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+START = "<!-- START BNC attribution -->"
+END = "<!-- END BNC attribution -->"
+
+# Anchor: the Cookiebot loader, which is byte-identical on every page that has it and
+# always sits first in <head>. Injecting after it keeps Cookiebot first (required — it has
+# to be able to see and block the tags that follow) while staying above the GTM container.
+COOKIEBOT_RE = re.compile(
+    r'<script id="Cookiebot"[^>]*></script>\n?'
+)
+
+BLOCK = START + """
 <script data-cookieconsent="ignore">
 /* Paid-click attribution. Runs before the GTM container so `dataLayer` exists for every
    page, and so a gclid is captured on the landing page even if the visitor converts three
@@ -22,7 +61,7 @@
 
   function readCookie() {
     try {
-      var m = d.cookie.match(/(?:^|;\s*)bnc_attr=([^;]*)/);
+      var m = d.cookie.match(/(?:^|;\\s*)bnc_attr=([^;]*)/);
       return m ? JSON.parse(decodeURIComponent(m[1])) : null;
     } catch (e) { return null; }
   }
@@ -83,7 +122,7 @@
     for (var i = 0; i < forms.length; i++) {
       var f = forms[i];
       if (f.getAttribute('data-bnc-attr') === '1') continue;
-      if (!/\/api\/form/.test(f.getAttribute('action') || '')) continue;
+      if (!/\\/api\\/form/.test(f.getAttribute('action') || '')) continue;
       f.setAttribute('data-bnc-attr', '1');
       for (var k in w.BNC_ATTR) {
         if (!Object.prototype.hasOwnProperty.call(w.BNC_ATTR, k)) continue;
@@ -97,31 +136,40 @@
   else stamp();
 })(window, document);
 </script>
-<!-- END BNC attribution -->
-<!-- END Cookiebot -->
-<meta name="robots" content="index,follow"><!--draft-noindex-->
-<!-- Google Tag Manager -->
-<script type="text/plain" data-cookieconsent="statistics">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
-<!-- End Google Tag Manager -->
-<!-- START Visual Visitor -->
-<script type="text/plain" data-cookieconsent="marketing" defer data-cookieblock-src='https://data.processwebsitedata.com/cscripts/yuZy3Z595d-ed010bae.js'></script>
-<!-- END Visual Visitor -->
-<!-- START Bing UET -->
-<script type="text/plain" data-cookieconsent="marketing">(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"187080532", enableAutoSpaTracking: true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
-<!-- END Bing UET -->
+""" + END + "\n"
 
 
-<meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=html/index.html">
-<title>Real-Time Spectrum Analysis Web Book for Engineers | BNC</title>
-<meta name="description" content="Read the free Berkeley Nucleonics web book on real-time spectrum analysis, an online guide to real-time spectrum analyzer concepts. Opens in your browser.">
-<style>body{font-family:Georgia,serif;background:#ECEFF1;color:#003D6B;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center}a{color:#0078B6}</style>
-<script>location.replace("html/index.html");</script>
-<link rel="stylesheet" href="../../_shared/bnc-emerald.css">
-</head>
-<body><div class="bnc-emerald-wave" aria-hidden="true"></div>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) --><p>Opening the book&hellip; if it does not load, <a href="html/index.html">click here to read Real-Time Spectrum Analysis</a>.</p><script defer src="/_shared/bnc-chat.js"></script></body>
-</html>
+def main() -> int:
+    check_only = "--check" in sys.argv
+    changed, skipped, no_anchor = [], [], []
+
+    for path in sorted(ROOT.rglob("*.html")):
+        if any(p in {".git", "node_modules"} for p in path.parts):
+            continue
+        text = path.read_text(encoding="utf-8", errors="surrogateescape")
+
+        if START in text:
+            skipped.append(path)
+            continue
+        m = COOKIEBOT_RE.search(text)
+        if not m:
+            # Redirect stubs and HTML fragments carry no tag stack at all. Nothing to do.
+            no_anchor.append(path)
+            continue
+
+        if not check_only:
+            out = text[: m.end()] + BLOCK + text[m.end():]
+            path.write_text(out, encoding="utf-8", errors="surrogateescape")
+        changed.append(path)
+
+    rel = lambda p: p.relative_to(ROOT)
+    print(f"{'would inject' if check_only else 'injected'}: {len(changed)}")
+    print(f"already present, skipped: {len(skipped)}")
+    print(f"no Cookiebot anchor (redirect stubs / fragments), skipped: {len(no_anchor)}")
+    for p in no_anchor:
+        print(f"  - {rel(p)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
