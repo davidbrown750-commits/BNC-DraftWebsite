@@ -16,6 +16,7 @@ COL = ('<div class="nav-grp2" data-bnc-staff>Employee Portal<span class="nc">&#8
        '<div class="nav-sub">'
        '<a href="/employee-portal.html#visitors" target="_blank" rel="noopener">Website Visitor Review</a>'
        '<a href="/employee-portal.html#pending" target="_blank" rel="noopener">Website Pending Actions</a>'
+       '<a href="/employee-portal.html#docs" target="_blank" rel="noopener">Internal Documentation</a>'
        '</div></div>')
 
 # Match the Support dropdown opening (tolerant of whitespace) and capture it so we can
