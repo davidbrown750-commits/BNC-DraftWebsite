@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lobby Sign — Berkeley Nucleonics</title>
+<!--bnc-auth-->
+<link rel="stylesheet" href="/_shared/bnc-auth.css">
+<script src="/_shared/bnc-auth-config.js"></script>
+<script defer src="/_shared/bnc-auth.js"></script>
+<!--/bnc-auth-->
+<style>
+:root{
+  --navy:#0a1626; --blue:#0655a3; --ink:#113163; --line:#e3e7ee;
+  --bg:#f4f7fb; --muted:#5b6677; --paper:#fff;
+  --ok:#0a7d6b; --warn:#9a5b00; --stop:#c0392b;
+  --font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --r:4px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#1c2c46;font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+.top{background:var(--navy);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:16px}
+.top svg{height:30px;width:auto;display:block}
+.top .t{font-family:var(--font-h);font-weight:700;font-size:17px}
+.top .t span{color:#37b6f0}
+.rule{height:3px;background:linear-gradient(90deg,#89AACC,#4E85BF)}
+.wrap{max-width:960px;margin:0 auto;padding:26px 20px 70px}
+h1,h2,h3{font-family:var(--font-h);color:var(--ink);margin:0}
+h1{font-size:25px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:14px;margin:6px 0 0}
+.hide{display:none!important}
+
+.locked{max-width:520px;margin:70px auto;background:var(--paper);border:1px solid var(--line);
+  border-radius:var(--r);padding:0 0 26px;overflow:hidden;text-align:center}
+.locked .accent{height:4px;background:linear-gradient(90deg,#113163,#0655a3 50%,#37b6f0)}
+.locked h2{font-size:21px;margin:26px 0 8px}
+.locked p{color:var(--muted);font-size:14px;margin:0 26px}
+.locked button{margin-top:18px;background:var(--blue);color:#fff;border:0;border-radius:var(--r);
+  padding:11px 26px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-h)}
+.locked button:hover{background:#054a8c}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-top:18px}
+.card>h2{font-size:17px;margin-bottom:4px}
+.card>.hint{color:var(--muted);font-size:13px;margin:0 0 16px}
+
+.kinds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.kinds button{background:#eef3f9;border:1px solid var(--line);color:var(--ink);border-radius:var(--r);
+  padding:8px 15px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--font-h)}
+.kinds button.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+label{display:block;font-size:12px;font-weight:700;color:var(--ink);text-transform:uppercase;
+  letter-spacing:.06em;margin:14px 0 5px;font-family:var(--font-h)}
+input[type=text],input[type=date],textarea,select{width:100%;border:1px solid var(--line);border-radius:var(--r);
+  padding:10px 11px;font-size:14px;font-family:inherit;color:#1c2c46;background:#fff}
+input:focus,textarea:focus{outline:2px solid #37b6f0;outline-offset:-1px}
+textarea{resize:vertical;min-height:66px}
+.count{float:right;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:620px){.row{grid-template-columns:1fr}}
+
+.drop{border:1px dashed #b9c6d6;border-radius:var(--r);padding:18px;text-align:center;background:#fafcfe;cursor:pointer}
+.drop:hover{border-color:var(--blue);background:#f2f7fc}
+.drop input{display:none}
+.drop .pv{max-width:100%;max-height:210px;border-radius:var(--r);display:block;margin:0 auto 10px}
+.drop p{margin:0;font-size:13px;color:var(--muted)}
+
+.actions{margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:var(--r);padding:11px 24px;font-size:14px;
+  font-weight:700;cursor:pointer;font-family:var(--font-h)}
+.btn:hover{background:#054a8c}
+.btn[disabled]{opacity:.55;cursor:default}
+.btn.ghost{background:#eef3f9;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:#e2ebf5}
+.btn.sm{padding:6px 14px;font-size:12.5px}
+.btn.ok{background:var(--ok)} .btn.ok:hover{background:#08695a}
+.btn.no{background:#eef3f9;color:var(--stop);border:1px solid var(--line)}
+.msg{font-size:13.5px}
+.msg.good{color:var(--ok)} .msg.bad{color:var(--stop)}
+
+.item{border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;margin-top:10px;background:#fff;
+  display:flex;gap:14px;align-items:flex-start}
+.item .body{flex:1;min-width:0}
+.item .ttl{font-weight:700;color:var(--ink);font-size:14.5px}
+.item .det{color:var(--muted);font-size:13px;margin-top:2px}
+.item .meta{color:var(--muted);font-size:11.5px;margin-top:6px;text-transform:uppercase;letter-spacing:.05em}
+.item img{width:96px;height:72px;object-fit:cover;border-radius:var(--r);border:1px solid var(--line)}
+.item .ops{display:flex;gap:8px;flex-shrink:0;align-items:center}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  padding:2px 8px;border-radius:var(--r);font-family:var(--font-h)}
+.pill.pending{background:#fdf3e0;color:var(--warn)}
+.pill.approved{background:#e6f5f2;color:var(--ok)}
+.pill.declined,.pill.removed{background:#fbeceb;color:var(--stop)}
+.empty{color:var(--muted);font-size:13.5px;padding:14px 0}
+.tabs{display:flex;gap:8px;margin-top:26px;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);
+  padding:9px 4px;margin-right:16px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-h)}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--blue)}
+.panel{display:none} .panel.on{display:block}
+.badge{display:inline-block;background:var(--blue);color:#fff;border-radius:9px;font-size:11px;
+  padding:1px 7px;margin-left:5px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg>
+  <div class="t">BERKELEY NUCLEONICS <span>&middot; Lobby Sign</span></div>
+</div>
+<div class="rule"></div>
+
+<div id="locked" class="locked">
+  <div class="accent"></div>
+  <h2>Post to the Lobby Sign</h2>
+  <p>This area is for Berkeley Nucleonics staff. Sign in with your <b>@berkeleynucleonics.com</b> account to continue.</p>
+  <button id="signin" type="button">Sign in</button>
+  <p id="lockmsg" style="margin-top:14px;font-size:12.5px"></p>
+</div>
+
+<div id="app" class="wrap hide">
+
+  <h1>Post to the Lobby Sign</h1>
+  <p class="sub">Anything you send goes to an approver first. Once it is released it appears on the screen in reception within a minute.</p>
+
+  <div class="card">
+    <h2>New post</h2>
+    <p class="hint">Keep it short. The sign is read from across the room, and visitors read it too.</p>
+
+    <div class="kinds" id="kinds">
+      <button type="button" data-kind="announcement" class="on">Announcement</button>
+      <button type="button" data-kind="shoutout">Shout-out</button>
+      <button type="button" data-kind="photo">Photo</button>
+      <button type="button" data-kind="riddle">Riddle</button>
+    </div>
+
+    <div id="f-title-wrap">
+      <label for="f-title"><span id="l-title">Headline</span><span class="count" id="c-title">0 / 90</span></label>
+      <input type="text" id="f-title" maxlength="90" autocomplete="off">
+    </div>
+
+    <div id="f-detail-wrap">
+      <label for="f-detail"><span id="l-detail">Detail line</span><span class="count" id="c-detail">0 / 160</span></label>
+      <textarea id="f-detail" maxlength="160"></textarea>
+    </div>
+
+    <div id="f-answer-wrap" class="hide">
+      <label for="f-answer">Answer<span class="count" id="c-answer">0 / 80</span></label>
+      <input type="text" id="f-answer" maxlength="80" autocomplete="off">
+    </div>
+
+    <div id="f-photo-wrap" class="hide">
+      <label>Photo</label>
+      <label class="drop" for="f-file" id="drop">
+        <img id="preview" class="pv hide" alt="">
+        <p id="dropmsg">Choose a photo. It is resized in your browser before it is sent.</p>
+        <input type="file" id="f-file" accept="image/png,image/jpeg,image/webp">
+      </label>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="f-until">Take it down after (optional)</label>
+        <input type="date" id="f-until">
+      </div>
+      <div>
+        <label for="f-name">Post as</label>
+        <input type="text" id="f-name" maxlength="80" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="send" type="button">Send for approval</button>
+      <span class="msg" id="sendmsg"></span>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button data-tab="mine" class="on" type="button">Your posts</button>
+    <button data-tab="pending" class="hide" id="tab-pending-btn" type="button">Pending review<span class="badge hide" id="pendcount">0</span></button>
+    <button data-tab="live" class="hide" id="tab-live-btn" type="button">On the sign now</button>
+  </div>
+
+  <div class="panel on" id="p-mine"><div id="mine"></div></div>
+  <div class="panel" id="p-pending"><div id="pending"></div></div>
+  <div class="panel" id="p-live"><div id="live"></div></div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var STAFF_DOMAIN = "@berkeleynucleonics.com";
+  var STAFF_EXTRA = ["davidbrown750@gmail.com", "jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"];
+  var MAX_EDGE = 1600, JPEG_Q = 0.82;
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+  function bncEmail(){
+    var u = window.Clerk && window.Clerk.user;
+    var e = u && u.primaryEmailAddress && u.primaryEmailAddress.emailAddress;
+    return e ? e.toLowerCase() : null;
+  }
+  function isStaff(){
+    var e = bncEmail();
+    return !!(e && ((e.length > STAFF_DOMAIN.length && e.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN)
+                    || STAFF_EXTRA.indexOf(e) !== -1));
+  }
+  function waitForClerk(cb, tries){
+    tries = tries || 0;
+    if (window.Clerk && (window.Clerk.loaded || window.Clerk.user !== undefined)) { cb(); return; }
+    if (tries > 60) { cb(); return; }
+    setTimeout(function(){ waitForClerk(cb, tries+1); }, 200);
+  }
+  function token(){
+    if (window.Clerk && window.Clerk.session && window.Clerk.session.getToken) return window.Clerk.session.getToken();
+    return Promise.resolve(null);
+  }
+  function api(opts){
+    return token().then(function(t){
+      if(!t) throw new Error("not signed in");
+      return fetch("/api/lobby" + (opts.query || ""), {
+        method: opts.method || "GET",
+        headers: { "Authorization": "Bearer " + t, "Content-Type": "application/json" },
+        body: opts.body ? JSON.stringify(opts.body) : undefined
+      });
+    }).then(function(r){ return r.json().then(function(j){
+      if(!r.ok || !j.ok) throw new Error(j && j.error ? j.error : ("request failed (" + r.status + ")"));
+      return j; }); });
+  }
+
+  /* ---------- form ---------- */
+  var kind = "announcement", imageData = null;
+  var LABELS = {
+    announcement: { title:"Headline", detail:"Detail line", hintTitle:"Golf competition on September 3" },
+    shoutout:     { title:"Who deserves the credit", detail:"What they did", hintTitle:"The RF team" },
+    photo:        { title:"Caption", detail:"Detail line (optional)", hintTitle:"Summer barbecue" },
+    riddle:       { title:"The riddle", detail:"Hint (optional)", hintTitle:"I am measured in hertz..." }
+  };
+
+  function setKind(k){
+    kind = k;
+    Array.prototype.forEach.call($("kinds").children, function(b){
+      b.classList.toggle("on", b.getAttribute("data-kind") === k); });
+    $("l-title").textContent = LABELS[k].title;
+    $("l-detail").textContent = LABELS[k].detail;
+    $("f-title").placeholder = LABELS[k].hintTitle;
+    $("f-answer-wrap").classList.toggle("hide", k !== "riddle");
+    $("f-photo-wrap").classList.toggle("hide", k !== "photo");
+  }
+  Array.prototype.forEach.call($("kinds").children, function(b){
+    b.addEventListener("click", function(){ setKind(b.getAttribute("data-kind")); });
+  });
+
+  function wireCount(id, cid, max){
+    var el = $(id);
+    el.addEventListener("input", function(){ $(cid).textContent = el.value.length + " / " + max; });
+  }
+  wireCount("f-title","c-title",90); wireCount("f-detail","c-detail",160); wireCount("f-answer","c-answer",80);
+
+  /* Resize in the browser so a phone photo does not arrive as an 8 MB payload, and so
+     the sign is never handed an image far larger than the panel it lands in. */
+  $("f-file").addEventListener("change", function(){
+    var f = this.files && this.files[0];
+    if(!f) return;
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function(){
+      var w = img.width, h = img.height, scale = Math.min(1, MAX_EDGE / Math.max(w, h));
+      var c = document.createElement("canvas");
+      c.width = Math.round(w * scale); c.height = Math.round(h * scale);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      imageData = c.toDataURL("image/jpeg", JPEG_Q);
+      URL.revokeObjectURL(url);
+      $("preview").src = imageData; $("preview").classList.remove("hide");
+      $("dropmsg").textContent = f.name + " — " + Math.round(imageData.length / 1365) + " KB after resizing";
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); msg("That file could not be read as an image.", false); };
+    img.src = url;
+  });
+
+  function msg(text, good){
+    var m = $("sendmsg");
+    m.textContent = text || "";
+    m.className = "msg" + (text ? (good ? " good" : " bad") : "");
+  }
+
+  $("send").addEventListener("click", function(){
+    var title = $("f-title").value.trim();
+    if(!title){ msg("Add a headline first.", false); return; }
+    if(kind === "riddle" && !$("f-answer").value.trim()){ msg("A riddle needs its answer.", false); return; }
+    if(kind === "photo" && !imageData){ msg("Choose a photo first.", false); return; }
+
+    var body = {
+      action: "submit", kind: kind, title: title,
+      detail: $("f-detail").value.trim(),
+      answer: $("f-answer").value.trim(),
+      until: $("f-until").value || null,
+      author_name: $("f-name").value.trim()
+    };
+    if(kind === "photo") body.image = imageData;
+
+    $("send").disabled = true; msg("Sending...", true);
+    api({ method:"POST", body: body }).then(function(){
+      msg("Sent for approval.", true);
+      $("f-title").value = ""; $("f-detail").value = ""; $("f-answer").value = "";
+      $("f-until").value = ""; imageData = null;
+      $("preview").classList.add("hide");
+      $("dropmsg").textContent = "Choose a photo. It is resized in your browser before it is sent.";
+      $("c-title").textContent = "0 / 90"; $("c-detail").textContent = "0 / 160"; $("c-answer").textContent = "0 / 80";
+      loadMine();
+      if(canApprove) loadPending();
+    }).catch(function(e){ msg(e.message || "Could not send.", false); })
+      .then(function(){ $("send").disabled = false; });
+  });
+
+  /* ---------- lists ---------- */
+  var canApprove = false;
+
+  function itemHTML(p, opts){
+    var o = opts || {};
+    var img = p.image_url ? '<img src="' + esc(p.image_url) + '" alt="">' : "";
+    var bits = [];
+    if(o.showStatus && p.status) bits.push('<span class="pill ' + esc(p.status) + '">' + esc(p.status) + "</span>");
+    if(p.author_name) bits.push(esc(p.author_name));
+    bits.push(esc(p.kind));
+    if(p.until) bits.push("until " + esc(p.until));
+    if(p.decline_reason) bits.push("reason: " + esc(p.decline_reason));
+    var ops = "";
+    if(o.review) ops = '<button class="btn ok sm" data-approve="' + esc(p.id) + '">Approve</button>'
+                     + '<button class="btn no sm" data-decline="' + esc(p.id) + '">Decline</button>';
+    else if(o.remove) ops = '<button class="btn no sm" data-remove="' + esc(p.id) + '">Remove</button>';
+    return '<div class="item">' + img + '<div class="body"><div class="ttl">' + esc(p.title) + "</div>"
+      + (p.detail ? '<div class="det">' + esc(p.detail) + "</div>" : "")
+      + (p.answer ? '<div class="det">Answer: ' + esc(p.answer) + "</div>" : "")
+      + '<div class="meta">' + bits.join(" &middot; ") + "</div></div>"
+      + '<div class="ops">' + ops + "</div></div>";
+  }
+
+  function render(host, posts, opts, emptyText){
+    if(!posts.length){ host.innerHTML = '<p class="empty">' + emptyText + "</p>"; return; }
+    host.innerHTML = posts.map(function(p){ return itemHTML(p, opts); }).join("");
+  }
+
+  function loadMine(){
+    api({ query:"?action=mine" }).then(function(j){
+      canApprove = !!j.canApprove;
+      $("tab-pending-btn").classList.toggle("hide", !canApprove);
+      $("tab-live-btn").classList.toggle("hide", !canApprove);
+      render($("mine"), j.posts, { showStatus:true, remove:true },
+        "Nothing yet. Your first post will show here with its status.");
+      if(canApprove) loadPending();
+    }).catch(function(e){ $("mine").innerHTML = '<p class="empty">' + esc(e.message) + "</p>"; });
+  }
+
+  function loadPending(){
+    api({ query:"?action=pending" }).then(function(j){
+      var n = j.posts.length;
+      $("pendcount").textContent = n;
+      $("pendcount").classList.toggle("hide", n === 0);
+      render($("pending"), j.posts, { review:true }, "Nothing waiting. The queue is clear.");
+    }).catch(function(){});
+  }
+
+  function loadLive(){
+    api({ query:"?action=live" }).then(function(j){
+      render($("live"), j.posts, { remove:true, showStatus:true }, "Nothing approved is showing right now.");
+    }).catch(function(){});
+  }
+
+  document.addEventListener("click", function(e){
+    var t = e.target;
+    var ap = t.getAttribute && t.getAttribute("data-approve");
+    var de = t.getAttribute && t.getAttribute("data-decline");
+    var rm = t.getAttribute && t.getAttribute("data-remove");
+    if(ap) review(ap, "approve", t);
+    else if(de){
+      var why = window.prompt("Optional note back to whoever posted it:", "");
+      if(why === null) return;
+      review(de, "decline", t, why);
+    }
+    else if(rm){
+      if(!window.confirm("Take this off the sign?")) return;
+      t.disabled = true;
+      api({ method:"POST", body:{ action:"remove", id:rm } })
+        .then(function(){ loadMine(); if(canApprove){ loadPending(); loadLive(); } })
+        .catch(function(err){ alert(err.message); t.disabled = false; });
+    }
+  });
+
+  function review(id, decision, btn, reason){
+    btn.disabled = true;
+    api({ method:"POST", body:{ action:"review", id:id, decision:decision, reason:reason || "" } })
+      .then(function(){ loadPending(); loadMine(); })
+      .catch(function(err){ alert(err.message); btn.disabled = false; });
+  }
+
+  Array.prototype.forEach.call($("tabs").children, function(b){
+    b.addEventListener("click", function(){
+      var name = b.getAttribute("data-tab");
+      Array.prototype.forEach.call($("tabs").children, function(x){ x.classList.toggle("on", x === b); });
+      ["mine","pending","live"].forEach(function(n){ $("p-" + n).classList.toggle("on", n === name); });
+      if(name === "pending") loadPending();
+      if(name === "live") loadLive();
+    });
+  });
+
+  /* ---------- gate ---------- */
+  function reveal(){
+    $("locked").classList.add("hide");
+    $("app").classList.remove("hide");
+    var e = bncEmail();
+    if(e && !$("f-name").value) $("f-name").value = e.split("@")[0].replace(/[._-]+/g, " ").replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    loadMine();
+  }
+  function lock(why){
+    $("app").classList.add("hide");
+    $("locked").classList.remove("hide");
+    $("lockmsg").textContent = why || "";
+  }
+  $("signin").addEventListener("click", function(){
+    if(window.Clerk && window.Clerk.openSignIn) window.Clerk.openSignIn({});
+  });
+
+  setKind("announcement");
+  waitForClerk(function(){
+    if(isStaff()) reveal();
+    else if(bncEmail()) lock("Signed in as " + bncEmail() + " — that account is not a @berkeleynucleonics.com address.");
+    else lock("");
+    if(window.Clerk && window.Clerk.addListener){
+      window.Clerk.addListener(function(){ if(isStaff()) reveal(); });
+    }
+  });
+})();
+</script>
+</body>
+</html>
