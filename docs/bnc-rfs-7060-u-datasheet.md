@@ -1,4 +1,4 @@
-# Model VSG-Mini-6 USB Vector Signal Generator (9 kHz to 6 GHz)
+# Model RFS-7060-U USB Vector Signal Generator (9 kHz to 6 GHz)
 
 **Berkeley Nucleonics** | Vector Signal Generator | Product Data Sheet
 
@@ -6,11 +6,11 @@ Specifications transcribed verbatim from the source product manual (V1.2). Value
 
 ## Overview
 
-The Berkeley Nucleonics VSG-Mini-6 is the second vector signal generator in the BNC RF and microwave line, sized to sit beside a laptop rather than fill a rack. It generates continuous-wave, swept, and fully vector-modulated signals from 9 kHz to 6 GHz, and it draws power and data over a single USB Type-C cable.
+The Berkeley Nucleonics RFS-7060-U is the second vector signal generator in the BNC RF and microwave line, sized to sit beside a laptop rather than fill a rack. It generates continuous-wave, swept, and fully vector-modulated signals from 9 kHz to 6 GHz, and it draws power and data over a single USB Type-C cable.
 
 Inside the compact housing, a 16-bit DAC and an FPGA-based interpolator build clean waveforms with 100 MHz of modulation bandwidth and 125 MB of playback memory. That combination supports single-tone work, frequency and power sweeps, stored IQ playback, and real-time IQ streaming from a host. An optional built-in GNSS receiver disciplines the reference for timing, positioning, and frequency calibration in the field.
 
-The VSG-Mini-6 runs on Windows and Linux, on x86 and ARM hosts, so it fits embedded and automated setups as readily as a desk.
+The RFS-7060-U runs on Windows and Linux, on x86 and ARM hosts, so it fits embedded and automated setups as readily as a desk.
 
 ## Key Features
 
@@ -130,4 +130,4 @@ The VSG-Mini-6 runs on Windows and Linux, on x86 and ARM hosts, so it fits embed
 
 ---
 
-*Hero image and control-software screenshots carry on-device and on-screen branding from the source product (model silkscreen and application wordmark) that must be rebranded to Berkeley Nucleonics / Model VSG-Mini-6 before publication.*
+*Hero image and control-software screenshots carry on-device and on-screen branding from the source product (model silkscreen and application wordmark) that must be rebranded to Berkeley Nucleonics / Model RFS-7060-U before publication.*

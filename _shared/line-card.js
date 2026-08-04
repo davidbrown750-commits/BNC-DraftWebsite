@@ -182,10 +182,10 @@
    {num:875, model:"Model 875", sum:"Multi-channel VSG, wide coverage", ds:"bnc-model-875-datasheet.html",
     vals:{type:"Vector Signal Generator",freq:"1 kHz to 51 GHz",channels:"1, 2, 3 or 4",switch:"5 µs",power:"-120 to +20 dBm"},
     sort:{type:3,freq:1,channels:1,switch:1,power:1}},
-   {num:875.5, model:"VSG-Mini-6", sum:"USB-powered 6 GHz vector source", ds:"bnc-vsg-mini-6-datasheet.html",
+   {num:875.5, model:"RFS-7060-U", sum:"USB-powered 6 GHz vector source", ds:"bnc-rfs-7060-u-datasheet.html",
     vals:{type:"Vector Signal Generator",freq:"9 kHz to 6 GHz",channels:"1",switch:"≤100 µs",power:"-100 to +14 dBm"},
     sort:{type:3,freq:2,channels:1,switch:2,power:2}},
-   {num:875.6, model:"VSG-mini-6B", sum:"Handheld 6 GHz vector source, 100 MHz playback", ds:"bnc-vsg-mini-6b-datasheet.html",
+   {num:875.6, model:"RFS-7060-T", sum:"Handheld 6 GHz vector source, 100 MHz playback", ds:"bnc-rfs-7060-t-datasheet.html",
     vals:{type:"Vector Signal Generator",freq:"9 kHz to 6 GHz",channels:"1",switch:"≤100 µs",power:"-100 to +14 dBm (+25 opt.)"},
     sort:{type:3,freq:2,channels:1,switch:2,power:2}}
   ]

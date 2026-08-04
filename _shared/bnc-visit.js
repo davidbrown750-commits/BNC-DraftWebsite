@@ -83,11 +83,11 @@
   }, true);
 })();
 
-/* Make VSG-Mini-6 datasheet + user manual searchable in site search (added 2026-07-02; idempotent - a future reindex won't duplicate). */
+/* Make RFS-7060-U datasheet + user manual searchable in site search (added 2026-07-02; idempotent - a future reindex won't duplicate). */
 (function(){
   var extra=[
-    {t:"VSG-Mini-6 USB Vector Signal Generator",u:"docs/bnc-vsg-mini-6-datasheet.html",c:"Berkeley Nucleonics · Data Sheet",k:"vsg-mini-6 vsg mini 6 vsgmini6 usb vector signal generator sga-60 rf microwave signal generator portable"},
-    {t:"VSG-Mini-6 USB Vector Signal Generator — User Manual",u:"docs/bnc-vsg-mini-6-user-manual.html",c:"Berkeley Nucleonics · Manual",k:"vsg-mini-6 vsg mini 6 vsgmini6 usb vector signal generator user manual sga-60 rf microwave"}
+    {t:"RFS-7060-U USB Vector Signal Generator",u:"docs/bnc-rfs-7060-u-datasheet.html",c:"Berkeley Nucleonics · Data Sheet",k:"rfs-7060-u rfs 7060 u rfs7060u usb vector signal generator rf microwave signal generator portable"},
+    {t:"RFS-7060-U USB Vector Signal Generator — User Manual",u:"docs/bnc-rfs-7060-u-user-manual.html",c:"Berkeley Nucleonics · Manual",k:"rfs-7060-u rfs 7060 u rfs7060u usb vector signal generator user manual rf microwave"}
   ];
   function add(){ if(!window.SITE_INDEX||typeof window.SITE_INDEX.push!=="function") return false; for(var i=0;i<extra.length;i++){ var e=extra[i]; if(!window.SITE_INDEX.some(function(o){return o&&o.u===e.u;})) window.SITE_INDEX.push(e); } return true; }
   if(!add()){ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",add);} setTimeout(add,1200); }
@@ -141,7 +141,7 @@
 })();
 
 
-/* VSG-Mini-6 search cover thumbnails: title on top, product photo on bottom; datasheet = navy, manual = lighter blue. Generated client-side and injected into the search cover map (SSIMG). */
+/* RFS-7060-U search cover thumbnails: title on top, product photo on bottom; datasheet = navy, manual = lighter blue. Generated client-side and injected into the search cover map (SSIMG). */
 (function(){
   var tries=0;
   function build(){
@@ -159,7 +159,7 @@
           if(ir>br){sh=hero.naturalHeight;sw=sh*br;sx=(hero.naturalWidth-sw)/2;sy=0;}else{sw=hero.naturalWidth;sh=sw/br;sx=0;sy=(hero.naturalHeight-sh)/2;}
           x.drawImage(hero,sx,sy,sw,sh,0,by,bw,bh);
           x.fillStyle='rgba(255,255,255,.18)';x.fillRect(0,by-2,W,3);
-          x.fillStyle='#fff';x.font='700 60px Arial';x.fillText('VSG-Mini-6',34,76);
+          x.fillStyle='#fff';x.font='700 60px Arial';x.fillText('RFS-7060-U',34,76);
           x.fillStyle='#d3e2f6';x.font='600 26px Arial';x.fillText('USB Vector Signal Generator',36,116);
           var label=dark?'DATA SHEET':'USER MANUAL';x.font='700 23px Arial';
           var tw=x.measureText(label).width,pw=tw+32,ph=40,px=W-pw-26,py=24,r=20;
@@ -169,12 +169,12 @@
           return c.toDataURL('image/png');
         }
         try{
-          window.SSIMG['docs/bnc-vsg-mini-6-datasheet.html']=cover(true);
-          window.SSIMG['docs/bnc-vsg-mini-6-user-manual.html']=cover(false);
+          window.SSIMG['docs/bnc-rfs-7060-u-datasheet.html']=cover(true);
+          window.SSIMG['docs/bnc-rfs-7060-u-user-manual.html']=cover(false);
           window.__vsgCoversDone=true;
         }catch(e){}
       };
-      hero.src='/docs/figures/vsg-mini-6-ds/vsg-mini-6-hero.png';
+      hero.src='/docs/figures/rfs-7060-u-ds/rfs-7060-u-hero.png';
     }catch(e){}
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(build,600);});}else{setTimeout(build,600);}
@@ -338,4 +338,29 @@
   evoAlias();
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', evoAlias);
   setTimeout(evoAlias, 800);
+})();
+
+;(function(){
+  /* The two vector signal generators shipped as VSG-Mini-6 and VSG-mini-6B and are now
+     RFS-7060-U and RFS-7060-T. Customers, old quotes and old datasheets still carry the
+     VSG names, so a search for either name has to land on the same pages. */
+  function vsgAlias(){
+    try{
+      var SI=window.SITE_INDEX; if(!SI||!SI.length) return;
+      for(var i=0;i<SI.length;i++){
+        var e=SI[i]; if(!e) continue;
+        var hay=((e.t||'')+' '+(e.u||'')+' '+(e.k||'')).toLowerCase();
+        if(hay.indexOf('rfs-7060')<0) continue;
+        if(hay.indexOf('vsg')>-1) continue;
+        var legacy=(hay.indexOf('rfs-7060-t')>-1)
+          ? ' vsg-mini-6b vsg mini 6b vsgmini6b vsg-mini vsg mini'
+          : ' vsg-mini-6 vsg mini 6 vsgmini6 vsg-mini vsg mini';
+        e.k=((e.k||'')+legacy).replace(/\s+/g,' ').trim();
+      }
+    }catch(err){}
+  }
+  window.__vsgAliasDone=true;
+  vsgAlias();
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', vsgAlias);
+  setTimeout(vsgAlias, 800);
 })();
