@@ -569,11 +569,17 @@
       var ms=selectedModels(); st.className='qStatus'; st.style.color='var(--muted)'; st.textContent='Sending…';
       b.disabled=true; var lbl=b.textContent; b.textContent='Sending…';
       function done(){ b.disabled=false; b.textContent=lbl; }
-      fetch(QUOTE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
-        body:JSON.stringify({email:email,name:q('.qName').value.trim(),message:q('.qMsg').value.trim(),
+      // Attribution rides along in the payload: this form never navigates, so the hidden
+      // inputs the head block stamps onto native forms do not apply here.
+      var payload={email:email,name:q('.qName').value.trim(),message:q('.qMsg').value.trim(),
           _subject:'Quote request: '+ms.map(function(m){return m.model;}).join(', '),product_line:cfg.productLine||cfg.title,
-          models:ms.map(function(m){return m.model+' ('+m.sum+')';}).join('; ')})})
+          models:ms.map(function(m){return m.model+' ('+m.sum+')';}).join('; ')};
+      var attr=window.BNC_ATTR||{}; for(var ak in attr){ if(Object.prototype.hasOwnProperty.call(attr,ak)) payload[ak]=attr[ak]; }
+      fetch(QUOTE_ENDPOINT,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},
+        body:JSON.stringify(payload)})
        .then(function(r){ done(); if(r.ok){ st.className='qok'; st.textContent='Thank you. Your quote request was sent. Taking you back to where you were…';
+           // Inline success, no navigation: fire the conversion here or it is never counted.
+           if(window.bncTrackFormSubmit) window.bncTrackFormSubmit('quote-index');
            setTimeout(function(){ try{ history.go(-2); }catch(e){ try{ history.back(); }catch(_){} } }, 2500); }
          else { st.style.color='#b3261e'; st.textContent='That did not send. Please try again or email info@berkeleynucleonics.com.'; } })
        .catch(function(){ done(); st.style.color='#b3261e'; st.textContent='Could not reach the server. Email info@berkeleynucleonics.com.'; }); });

@@ -192,10 +192,15 @@
       data.append("page", location.pathname.split("/").pop());
       data.append("submitted_from", (CFG.bookShort||"book")+"-resource-request");
       data.append("_subject", "["+(CFG.bookShort||"BNC")+" Resource Request] "+topic);
+      // Attribution rides along in the FormData: this form never navigates, so the
+      // hidden inputs the head block stamps onto native forms do not apply here.
+      var _a=window.BNC_ATTR||{}; for(var _k in _a){ if(Object.prototype.hasOwnProperty.call(_a,_k)) data.append(_k,_a[_k]); }
       var ep=CFG.formEndpoint;
       if(!ep){ done(); return; }
       fetch(ep,{method:"POST",body:data,headers:{"Accept":"application/json"}})
-        .then(function(r){ if(r.ok) done(); else throw 0; })
+        // Inline success, no navigation: fire the conversion here or it is never counted.
+        // Not inside done(), which also runs when no endpoint is configured.
+        .then(function(r){ if(r.ok){ if(window.bncTrackFormSubmit) window.bncTrackFormSubmit("resource"); done(); } else throw 0; })
         .catch(function(){ alert("Something went wrong. Please email info@berkeleynucleonics.com."); });
       function done(){ box.innerHTML='<p class="done">Thanks. Your request about '+esc(topic)+' is on its way. A BNC engineer will follow up.</p>'; }
     });

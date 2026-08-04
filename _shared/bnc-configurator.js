@@ -709,6 +709,11 @@
     var endpoint = a.family.endpoint || window.BNC_CFG_ENDPOINT || DEFAULT_ENDPOINT;
     if (line) { line.className = "bnc-cfg-form-msg"; line.textContent = "Sending…"; }
 
+    // Attribution rides along in the payload: this form never navigates, so the hidden
+    // inputs the head block stamps onto native forms do not apply here.
+    var attr = window.BNC_ATTR || {};
+    for (var ak in attr) { if (Object.prototype.hasOwnProperty.call(attr, ak)) payload[ak] = attr[ak]; }
+
     var body = Object.keys(payload).map(function (k) {
       return encodeURIComponent(k) + "=" + encodeURIComponent(payload[k]);
     }).join("&");
@@ -719,6 +724,8 @@
       body: body
     }).then(function (res) {
       if (!res.ok) throw new Error("HTTP " + res.status);
+      // Inline success, no navigation: fire the conversion here or it is never counted.
+      if (window.bncTrackFormSubmit) window.bncTrackFormSubmit("configurator");
       quoteSuccess(items);
     }).catch(function () {
       // Offline / local demo fallback: open a prefilled email instead.

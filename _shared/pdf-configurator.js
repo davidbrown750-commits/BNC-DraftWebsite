@@ -199,9 +199,18 @@
       go.disabled = true; msg.style.color = "#0a7"; msg.textContent = "Preparing your PDF…";
 
       try {
+        // Attribution rides along in the payload: this form never navigates, so the hidden
+        // inputs the head block stamps onto native forms do not apply here.
+        var payload = { email: email, _subject: "PDF Configurator: " + DOC_TITLE,
+          document: DOC_TITLE, chapters: sel.map(function(c){ return c.title; }).join("; ") };
+        var attr = window.BNC_ATTR || {};
+        for (var ak in attr) { if (Object.prototype.hasOwnProperty.call(attr, ak)) payload[ak] = attr[ak]; }
         fetch(FORMSPREE, { method:"POST", headers:{ "Accept":"application/json","Content-Type":"application/json" },
-          body: JSON.stringify({ email: email, _subject: "PDF Configurator: " + DOC_TITLE,
-            document: DOC_TITLE, chapters: sel.map(function(c){ return c.title; }).join("; ") }) });
+          body: JSON.stringify(payload) });
+        // Inline flow, no navigation: fire the conversion here or it is never counted. The
+        // POST is deliberately fire-and-forget (the print window must open in this same
+        // click handler for pop-up allowance), so this fires on send rather than on reply.
+        if (window.bncTrackFormSubmit) window.bncTrackFormSubmit("pdf-config");
       } catch (e) {}
 
       // Open the print window inside the click handler (needed for pop-up allowance).
