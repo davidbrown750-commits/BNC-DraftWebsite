@@ -19,7 +19,8 @@ const PRODUCT_RULES = [
   ["Arbitrary Waveform Gen",   /awg/],
   ["ScintIQ",                  /scintiq/],
   ["ICX FieldHawk (RTSA)",     /(icx|fieldhawk|rtsa)/],
-  ["VSG-Mini",                 /vsg-mini/],
+  // Keep vsg-mini: rows recorded before the 2026-08-04 rename carry the old paths.
+  ["RFS-7060 Vector SG",       /(rfs-7060|vsg-mini)/],
   ["Isotope ID & Radiation",   /(riid|isotope|radiation|spectro)/],
   ["Signal Sources (12000)",   /(12000|121\d\d|122\d\d|12108|12206)/],
   ["765 HV Pulse",             /\b765\b/],
