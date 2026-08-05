@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<style>html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#08122e}</style>
+</head>
+<body>
+<title>BNC Outreach — Mission Control</title>
+<style>
+  :root{
+    --ink:#EAF0FF; --ink-dim:#C4D2F2; --muted:#8FA1D0;
+    --panel:rgba(9,15,38,.62);
+    --panel-line:rgba(140,180,255,.20);
+    --blue:#3B9BFF; --blue-deep:#1E5FE0;
+    --signal:#33E6B7; --amber:#FFC24D; --coral:#FF6E8E; --violet:#A98BFF;
+    --glow-blue:0 0 22px rgba(59,155,255,.45);
+    --font-d:"Segoe UI","Helvetica Neue",Arial,system-ui,sans-serif;
+    --font-m:ui-monospace,"SF Mono","Cascadia Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{background:#08122e;color:var(--ink);font-family:var(--font-d);overflow:hidden;-webkit-font-smoothing:antialiased}
+  #sky{position:fixed;inset:0;z-index:0}
+  #fx{position:fixed;inset:0;z-index:6;pointer-events:none}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
+    background:radial-gradient(140% 120% at 50% 38%, transparent 66%, rgba(2,4,14,.42) 100%)}
+
+  .wrap{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;padding:14px 18px 14px;gap:12px}
+  .panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:16px;
+    backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);position:relative;overflow:hidden}
+  .p-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px 8px}
+  .p-head .t{font-family:var(--font-m);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);font-weight:700}
+  .p-head .c{font-family:var(--font-m);font-size:10px;color:var(--muted)}
+
+  /* ---------- race strip ---------- */
+  .race{height:132px;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;padding:0}
+  .race-side{width:236px;flex:0 0 auto;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;
+    border-right:1px solid var(--panel-line);background:linear-gradient(90deg,rgba(9,15,38,.5),transparent)}
+  .race-side .lab{font-family:var(--font-m);font-size:9.5px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;font-weight:700}
+  .race-side .theme{font-size:19px;font-weight:800;line-height:1.05;display:flex;align-items:center;gap:8px;margin-top:2px}
+  .race-side .lead{font-family:var(--font-m);font-size:10.5px;color:var(--signal);margin-top:4px;line-height:1.3}
+  .finalpill{font-family:var(--font-m);font-size:8.5px;letter-spacing:.16em;font-weight:700;color:#08122e;
+    background:var(--amber);border-radius:4px;padding:2px 6px;vertical-align:middle}
+  .track{position:relative;flex:1;overflow:hidden}
+  .lane{position:absolute;left:0;right:0;border-bottom:1px dashed rgba(255,255,255,.14)}
+  .finish{position:absolute;top:0;bottom:0;right:14px;width:8px;
+    background:repeating-linear-gradient(45deg,#fff 0 5px,#111 5px 10px);opacity:.85;border-radius:2px}
+  .racer{position:absolute;transform:translate(-50%,-50%);transition:left .35s linear, margin-top .6s ease-in-out;
+    white-space:nowrap;display:flex;align-items:center;gap:3px}
+  .racer .glyph{display:inline-block;font-size:19px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+  .racer .cart{position:relative;background:linear-gradient(180deg,#2a3550,#151d30);border:1.5px solid #FFC24D;border-radius:4px;padding:1px 5px;font-family:var(--font-m);font-size:10px;font-weight:700;color:var(--ink);box-shadow:0 2px 3px rgba(0,0,0,.4);line-height:1.15}
+  .racer .cart::before,.racer .cart::after{content:"";position:absolute;bottom:-4px;width:6px;height:6px;border-radius:50%;background:#0c1020;border:1px solid #6a7ba8}
+  .racer .cart::before{left:2px}.racer .cart::after{right:2px}
+  .racer .tag{font-family:var(--font-m);font-size:9px;color:var(--ink-dim);background:rgba(9,15,38,.6);padding:1px 5px;border-radius:5px;letter-spacing:.02em}
+  .racer.leadr{filter:drop-shadow(0 0 8px var(--amber))}
+
+  /* ---------- header ---------- */
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:0 0 auto}
+  .brand{display:flex;align-items:center;gap:13px}
+  .emblem{width:46px;height:46px;filter:drop-shadow(var(--glow-blue))}
+  .brand h1{font-size:11px;letter-spacing:.32em;margin:0 0 2px;color:var(--blue);text-transform:uppercase;font-weight:800}
+  .brand h2{font-size:23px;line-height:1;margin:0;font-weight:800}
+  .brand h2 b{color:var(--blue);text-shadow:var(--glow-blue)}
+  .hud{display:flex;align-items:center;gap:12px;font-family:var(--font-m)}
+  .wx{display:flex;gap:10px;align-items:center;padding:7px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-line)}
+  .wx .city{text-align:center}
+  .wx .city .n{font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .wx .city .tmp{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+  .wx .ico{font-size:22px}
+  .season{padding:7px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-line);
+    font-size:12px;letter-spacing:.05em;display:flex;align-items:center;gap:7px}
+  .clock-box{text-align:right}
+  .clock-box .k{font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+  .clock-box .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+  .live{display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:rgba(51,230,183,.09);border:1px solid rgba(51,230,183,.35)}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--signal);box-shadow:0 0 12px var(--signal);animation:pulse 1.6s infinite}
+  .live span{font-family:var(--font-m);font-size:11px;letter-spacing:.2em;color:var(--signal)}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.82)}}
+
+  /* ---------- main ---------- */
+  main{flex:1;display:grid;grid-template-columns:272px minmax(0,1fr) 322px 288px;gap:12px;min-height:0}
+  .col{display:flex;flex-direction:column;gap:12px;min-height:0}
+  .crons{flex:1;display:flex;flex-direction:column;min-height:0}
+  .cron-list{padding:2px 11px 11px;display:flex;flex-direction:column;gap:7px;overflow:hidden}
+  .cron{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:7px 10px;border-radius:11px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(140,180,255,.1)}
+  .cron .cdot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .cron.run .cdot{background:var(--signal);box-shadow:0 0 10px var(--signal);animation:pulse 1.3s infinite}
+  .cron.idle .cdot{background:var(--blue);box-shadow:0 0 8px rgba(59,155,255,.7)}
+  .cron.queue .cdot{background:var(--amber);box-shadow:0 0 8px rgba(255,194,77,.7)}
+  .cron .nm{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cron .nm small{display:block;font-family:var(--font-m);font-size:9.5px;color:var(--muted);font-weight:400}
+  .cron .nx{font-family:var(--font-m);font-size:11px;color:var(--ink-dim);font-variant-numeric:tabular-nums;text-align:right}
+  .cron .nx b{color:var(--signal);font-weight:700}
+
+  .console{height:274px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 12px 12px;text-align:center}
+  #robot{width:138px;height:138px;overflow:visible}
+  .worklog{font-family:var(--font-m);font-size:10px;color:var(--signal);background:#050c1e;border:1px solid rgba(51,230,183,.25);border-radius:7px;padding:5px 8px;margin-top:8px;width:100%;min-height:31px;text-align:left;letter-spacing:.02em;line-height:1.25;overflow:hidden;word-break:break-word}
+  .bench-info .bc{font-size:11px;color:var(--ink-dim);margin-top:3px;font-family:var(--font-m)}
+  .bubble{font-family:var(--font-m);font-size:11px;color:var(--ink-dim);background:rgba(140,180,255,.12);border:1px solid var(--panel-line);
+    padding:6px 11px;border-radius:11px;max-width:240px;min-height:30px;display:flex;align-items:center;justify-content:center;transition:opacity .3s}
+  .console .name{font-family:var(--font-m);font-size:9.5px;letter-spacing:.22em;color:var(--blue);margin-top:7px}
+
+  .stage{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:16px}
+  .rate-wrap{position:relative;display:flex;gap:12px;justify-content:center;margin-bottom:6px}
+  .rate{font-family:var(--font-m);font-size:10.5px;color:var(--muted);border:1px solid var(--panel-line);border-radius:999px;padding:5px 12px;background:rgba(9,15,38,.5)}
+  .rate b{color:var(--ink);font-weight:700}
+  .rate.on b{color:var(--signal)}
+  .headline{position:relative;text-align:center}
+  .headline .big{font-family:var(--font-m);font-size:72px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:var(--amber);text-shadow:0 0 30px rgba(255,194,77,.45)}
+  .headline .lab{font-family:var(--font-m);letter-spacing:.3em;text-transform:uppercase;font-size:11px;color:var(--ink-dim);margin-top:10px}
+  .headline .sub{font-size:12px;color:var(--ink-dim);margin-top:6px;font-family:var(--font-m)}
+
+  .tiles{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;flex:1.15;min-height:0}
+  .tile{border-radius:15px;padding:12px 14px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--panel-line);background:var(--panel)}
+  .tile .tl{font-family:var(--font-m);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .tile .tl .ic{width:17px;height:17px}
+  .tile .num{font-family:var(--font-m);font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;margin-top:5px;transition:transform .18s}
+  .tile .num.bump{transform:scale(1.14)}
+  .tile .foot{font-family:var(--font-m);font-size:9.5px;color:var(--ink-dim);margin-top:5px}
+  .tile.sent .num{color:var(--amber)} .tile.open .num{color:var(--signal)}
+  .tile.reply .num{color:var(--coral)} .tile.meet .num{color:var(--violet)}
+  .meter{height:6px;border-radius:99px;background:rgba(255,255,255,.09);margin-top:8px;overflow:hidden}
+  .meter i{display:block;height:100%;border-radius:99px;background:var(--signal);box-shadow:0 0 12px var(--signal);transition:width .6s}
+
+  .sales{flex:1;display:flex;flex-direction:column;min-height:0}
+  .sales-body{flex:1;display:flex;align-items:center;gap:12px;padding:4px 14px 12px;min-height:0}
+  #donutWrap{position:relative;width:132px;height:132px;flex:0 0 auto}
+  #donut{width:132px;height:132px}
+  .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .donut-center .amt{font-family:var(--font-m);font-size:22px;font-weight:800;color:var(--ink)}
+  .donut-center .cap{font-family:var(--font-m);font-size:8.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .donut-legend{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+  .lg{display:flex;align-items:center;gap:8px;font-size:11px}
+  .lg .sw{width:10px;height:10px;border-radius:3px;flex:0 0 auto}
+  .lg .nm{flex:1;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lg .vl{font-family:var(--font-m);color:var(--ink);font-variant-numeric:tabular-nums}
+
+  /* ---------- footer band ---------- */
+  footer{height:180px;flex:0 0 auto;display:grid;grid-template-columns:1.15fr 1fr 1.25fr 1.1fr;gap:12px}
+  .brief-list{padding:2px 12px 8px;display:flex;flex-direction:column;gap:4px}
+  .brf{display:flex;align-items:center;gap:9px;font-size:12px}
+  .brf .be{font-size:14px} .brf .bn{flex:1;color:var(--ink-dim)}
+  .brf .bv{font-family:var(--font-m);font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .brf .bv.up{color:var(--signal)}
+  .pile{position:relative;overflow:hidden}
+  .pile .stackzone{position:absolute;inset:0;top:30px}
+  /* Photo wall: takes over the reply-pile panel whenever the team has posted pictures. */
+  .stackzone.photos{display:flex;gap:7px;padding:2px 12px 10px;overflow:hidden;align-items:stretch}
+  .stackzone.photos .lp{margin:0;flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+  .stackzone.photos .lp img{width:100%;flex:1;min-height:0;object-fit:cover;border-radius:7px;
+    border:1px solid var(--panel-line)}
+  .stackzone.photos .lp figcaption{font-family:var(--font-m);font-size:9px;color:var(--muted);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .env-card{position:absolute;bottom:10px;width:50px;height:34px;border-radius:5px;background:linear-gradient(180deg,#FF89A3,#FF6E8E);
+    border:1px solid rgba(255,255,255,.25);box-shadow:0 5px 12px rgba(0,0,0,.35);transform-origin:bottom center;animation:drop .5s cubic-bezier(.2,1.3,.4,1) both}
+  .env-card::after{content:"";position:absolute;inset:0;border-radius:5px;
+    background:linear-gradient(135deg,transparent 46%,rgba(255,255,255,.35) 47%,rgba(255,255,255,.35) 53%,transparent 54%),
+               linear-gradient(45deg,transparent 46%,rgba(0,0,0,.12) 47%,rgba(0,0,0,.12) 53%,transparent 54%)}
+  @keyframes drop{from{transform:translateY(-40px) rotate(var(--r,0deg));opacity:0}to{transform:translateY(0) rotate(var(--r,0deg));opacity:1}}
+  .ticker .rows{display:flex;flex-direction:column;gap:5px;padding:4px 12px 10px}
+  .trow{display:flex;align-items:center;gap:9px;font-family:var(--font-m);font-size:11px;color:var(--ink-dim);animation:slidein .45s ease both}
+  .trow .em{font-size:13px}
+  .trow .tm{margin-left:auto;color:var(--muted);font-size:10px;font-variant-numeric:tabular-nums}
+  @keyframes slidein{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+  .riddle{display:flex;flex-direction:column}
+  .riddle .rq{padding:6px 13px 4px;font-size:12.5px;line-height:1.35;color:var(--ink);font-style:italic}
+  .riddle .ra{padding:2px 13px;font-family:var(--font-m);font-size:12px;color:var(--signal);min-height:20px;transition:opacity .4s}
+  .riddle .rbar{height:3px;background:rgba(255,255,255,.09);margin:6px 13px 10px;border-radius:99px;overflow:hidden}
+  .riddle .rbar i{display:block;height:100%;background:var(--violet);width:0%}
+
+  /* logo */
+  .logo{display:flex;align-items:center;gap:11px}
+  .logo .mark{width:54px;height:54px;flex:0 0 auto;filter:drop-shadow(0 0 10px rgba(59,155,255,.4))}
+  .logo .wm .n{font-size:26px;font-weight:800;font-style:italic;color:var(--ink);line-height:.88;letter-spacing:.01em}
+  .logo .wm .c{font-size:9.5px;letter-spacing:.02em;color:var(--ink-dim);font-weight:700;margin-top:3px}
+  .vdiv{width:1px;height:34px;background:var(--panel-line);margin:0 3px}
+  .boardttl{font-size:15px;font-weight:700;color:var(--ink-dim)}
+  .boardttl b{color:var(--blue)}
+  /* stage fills center column */
+  .stage{flex:1;min-height:0}
+  /* news */
+  .news{flex:1;display:flex;flex-direction:column;min-height:0}
+  .news-list{padding:2px 12px 10px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+  .nrow{display:flex;gap:9px;font-size:12px;line-height:1.32;color:var(--ink-dim);animation:slidein .5s ease both}
+  .nrow .ne{font-size:15px;flex:0 0 auto;line-height:1.25}
+  .nrow .nb{min-width:0}
+  .nrow .nb b{display:block;color:var(--ink);font-weight:600;font-size:12.5px;line-height:1.28}
+  .nrow .nb i{display:block;font-style:normal;color:var(--muted);font-size:11px;line-height:1.32;margin-top:2px}
+  .nrow.promo{border-left:3px solid var(--amber);padding-left:8px;margin-left:-2px}
+  .nrow.promo .nb b{color:var(--amber)}
+  /* race finish flag */
+  .flag{position:absolute;right:1px;top:-4px;font-size:22px;z-index:3;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+  /* service bench */
+  .bench{height:272px;flex:0 0 auto;display:flex;flex-direction:column}
+  .bench-body{flex:0 0 auto;display:flex;align-items:center;gap:12px;padding:2px 14px 6px;min-height:0}
+  #benchSvg{height:104px;flex:0 0 auto}
+  .bench-info{flex:1;min-width:0}
+  /* Past-due queue for the Cal Lab technicians. Full panel width so product, model,
+     serial, customer and days-late all fit on one line, readable from across the room. */
+  .pastdue{flex:1;min-height:0;display:flex;flex-direction:column;
+    border-top:1px solid var(--panel-line);margin:0 14px;padding-top:8px}
+  .pd-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px}
+  .pd-t{font-family:var(--font-m);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);font-weight:700}
+  .pd-n{font-family:var(--font-m);font-size:9.5px;color:var(--muted)}
+  .pd-list{flex:1;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+  .pdr{display:grid;grid-template-columns:auto minmax(0,1.35fr) minmax(0,1fr) auto;align-items:center;gap:10px;
+    padding:5px 9px;border-radius:8px;background:rgba(255,110,142,.07);border:1px solid rgba(255,110,142,.22);
+    animation:slidein .45s ease both}
+  .pdr.warn{background:rgba(255,194,77,.07);border-color:rgba(255,194,77,.22)}
+  .pdr .pe{font-size:15px;line-height:1}
+  .pdr .pp{min-width:0;font-size:12px;color:var(--ink);font-weight:600;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pdr .pp span{font-family:var(--font-m);font-size:11px;color:var(--blue);font-weight:700;margin-left:6px}
+  .pdr .pc{min-width:0;font-size:11px;color:var(--muted);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pdr .pl{font-family:var(--font-m);font-size:12px;font-weight:700;color:var(--coral);white-space:nowrap}
+  .pdr.warn .pl{color:var(--amber)}
+  .bench-info .bu{font-size:14px;font-weight:700;color:var(--ink)}
+  .bench-info .bs{font-family:var(--font-m);font-size:11px;color:var(--signal);margin-top:5px}
+  .bench-info .bq{font-family:var(--font-m);font-size:10px;color:var(--muted);margin-top:9px;letter-spacing:.04em}
+  @keyframes poke{0%,100%{transform:translateY(0)}44%,56%{transform:translateY(19px)}}
+  @keyframes sparkk{0%,38%,100%{opacity:0}50%{opacity:1}}
+  #toolHand{animation:poke 2.4s ease-in-out infinite}
+  #benchSpark{animation:sparkk 2.4s ease-in-out infinite}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;animation-iteration-count:1!important;transition:none!important}}
+</style>
+
+<canvas id="sky"></canvas>
+
+<div class="wrap">
+  <!-- RACE -->
+  <div class="panel race">
+    <div class="race-side">
+      <div class="lab" id="raceMonth">—</div>
+      <div class="theme" id="raceTheme">—</div>
+      <div class="lead" id="raceLead">&nbsp;</div>
+    </div>
+    <div class="track" id="track"><div class="finish"></div><div class="flag">🏁</div></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="logo">
+        <svg class="mark" viewBox="0 0 100 100" aria-label="BNC">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="#2170D8" stroke-width="6"/>
+          <polyline points="2,52 34,52 34,30 60,30 60,52 98,52" fill="none" stroke="#2170D8" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+        <div class="wm"><div class="n">BNC</div><div class="c">Berkeley Nucleonics Corp.</div></div>
+      </div>
+      <div class="vdiv"></div>
+      <div class="boardttl">Outreach <b>Mission Control</b></div>
+    </div>
+    <div class="hud">
+      <div class="wx" id="wx"><div class="ico" id="wxIco">☀️</div></div>
+      <div class="season" id="seasonBadge">☀️ Summer</div>
+      <div class="clock-box"><div class="k">San Rafael · Local</div><div class="v" id="clock">--:--:--</div></div>
+      <div class="live"><span class="dot"></span><span>LIVE</span></div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="col">
+      <div class="panel crons">
+        <div class="p-head"><div class="t">Cron Jobs</div><div class="c" id="cronclock">on schedule</div></div>
+        <div class="cron-list" id="cronlist"></div>
+      </div>
+      <div class="panel console">
+        <svg id="robot" viewBox="0 0 200 200" aria-hidden="true"></svg>
+        <div class="bubble" id="bubble">I'm grinding, fellas…</div>
+        <div class="name">PULSE · UNIT-01 ONLINE</div>
+        <div class="worklog" id="worklog"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="panel stage">
+        <div class="rate-wrap">
+          <div class="rate on"><span>SEND RATE </span><b id="sendrate">— /min</b></div>
+          <div class="rate">OPEN RATE <b id="openrate">—%</b></div>
+          <div class="rate">REPLY RATE <b id="replyrate">—%</b></div>
+        </div>
+        <div class="headline">
+          <div class="big" id="sentBig">0</div>
+          <div class="lab">Envelopes launched today</div>
+          <div class="sub" id="stageSub">warming up the send relays…</div>
+        </div>
+      </div>
+      <div class="panel bench">
+        <div class="p-head"><div class="t">In the Cal Lab · Now</div><div class="c" id="pastdueCount">service bench</div></div>
+        <div class="bench-body">
+          <svg id="benchSvg" viewBox="0 0 300 150" aria-hidden="true">
+            <line x1="0" y1="140" x2="300" y2="140" stroke="rgba(140,180,255,.25)" stroke-width="2"/>
+            <rect x="206" y="92" width="72" height="46" rx="6" fill="#16223f" stroke="#3B9BFF" stroke-width="2"/>
+            <rect x="214" y="100" width="42" height="15" rx="2" fill="#08130a" stroke="#33E6B7"/>
+            <circle cx="266" cy="120" r="5" fill="#22346F" stroke="#3B9BFF"/>
+            <rect x="38" y="62" width="152" height="76" rx="8" fill="#16223f" stroke="#3B9BFF" stroke-width="2"/>
+            <rect x="50" y="72" width="128" height="42" rx="4" fill="#0f3d2b" stroke="#1f6b48"/>
+            <rect x="66" y="82" width="24" height="16" rx="2" fill="#0b1f18" stroke="#33E6B7"/>
+            <circle cx="112" cy="90" r="3.2" fill="#FFC24D"/><circle cx="124" cy="94" r="3.2" fill="#FF6E8E"/><circle cx="150" cy="88" r="3.2" fill="#3B9BFF"/>
+            <line x1="96" y1="104" x2="168" y2="104" stroke="#1f6b48" stroke-width="1.5"/>
+            <rect x="38" y="120" width="152" height="18" rx="3" fill="#101a33"/>
+            <circle cx="58" cy="129" r="5" fill="#22346F" stroke="#3B9BFF"/><circle cx="78" cy="129" r="5" fill="#22346F" stroke="#3B9BFF"/><circle cx="98" cy="129" r="5" fill="#22346F" stroke="#3B9BFF"/>
+            <rect x="120" y="124" width="54" height="10" rx="2" fill="#08130a" stroke="#33E6B7"/>
+            <g>
+              <rect x="40" y="-6" width="26" height="40" rx="11" fill="#2A3F86"/>
+              <ellipse cx="58" cy="52" rx="17" ry="13" fill="#F0C7A0"/>
+              <rect x="46" y="54" width="6" height="16" rx="3" fill="#F0C7A0"/><rect x="55" y="56" width="6" height="16" rx="3" fill="#F0C7A0"/><rect x="64" y="54" width="6" height="15" rx="3" fill="#F0C7A0"/>
+            </g>
+            <g id="toolHand">
+              <rect x="150" y="-8" width="26" height="40" rx="11" fill="#2A3F86"/>
+              <ellipse cx="168" cy="46" rx="16" ry="12" fill="#F0C7A0"/>
+              <rect x="161" y="38" width="14" height="28" rx="5" fill="#E5484D"/>
+              <rect x="166" y="64" width="4" height="36" fill="#cfd6e0"/>
+              <g id="benchSpark"><path d="M168 92 L168 108 M160 100 L176 100 M163 95 L173 105 M173 95 L163 105" stroke="#FFE59A" stroke-width="2" stroke-linecap="round"/></g>
+            </g>
+          </svg>
+          <div class="bench-info">
+            <div class="bu" id="benchUnit">—</div>
+            <div class="bc" id="benchCust">—</div>
+            <div class="bs" id="benchSvc">—</div>
+            <div class="bq" id="benchStats">—</div>
+          </div>
+        </div>
+        <div class="pastdue">
+          <div class="pd-head"><span class="pd-t">😠 Past Due · Get It Out</span><span class="pd-n" id="pdN">—</span></div>
+          <div class="pd-list" id="pdList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="tiles">
+        <div class="tile sent">
+          <div class="tl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#FFC24D" stroke-width="2"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>SENT</div>
+          <div class="num" id="sent">0</div><div class="foot" id="sentFoot">today, all campaigns</div>
+        </div>
+        <div class="tile open">
+          <div class="tl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#33E6B7" stroke-width="2"><path d="M3 9l9-6 9 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 9l9 6 9-6"/></svg>OPENED</div>
+          <div class="num" id="open">0</div><div class="meter"><i id="openMeter" style="width:0%"></i></div>
+        </div>
+        <div class="tile reply">
+          <div class="tl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#FF6E8E" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>REPLIES</div>
+          <div class="num" id="reply">0</div><div class="foot" id="replyFoot">conversations</div>
+        </div>
+        <div class="tile meet">
+          <div class="tl"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#A98BFF" stroke-width="2"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>MEETINGS</div>
+          <div class="num" id="meet">0</div><div class="foot" id="meetFoot">demos booked</div>
+        </div>
+      </div>
+      <div class="panel sales">
+        <div class="p-head"><div class="t">Sales · <span id="salesMonth">—</span></div><div class="c" id="salesCap">—</div></div>
+        <div class="sales-body">
+          <div id="donutWrap">
+            <canvas id="donut"></canvas>
+            <div class="donut-center"><div class="amt" id="salesTotal">$0</div><div class="cap">Booked</div></div>
+          </div>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="panel news">
+        <div class="p-head"><div class="t">North Bay · Local</div><div class="c">news &amp; notices</div></div>
+        <div class="news-list" id="bayNews"></div>
+      </div>
+      <div class="panel news">
+        <div class="p-head"><div class="t">World Desk</div><div class="c">EU · Asia · US</div></div>
+        <div class="news-list" id="worldNews"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="panel">
+      <div class="p-head"><div class="t">Daily Briefing</div><div class="c" id="briefDate">—</div></div>
+      <div class="brief-list" id="briefing"></div>
+    </div>
+    <div class="panel pile">
+      <div class="p-head"><div class="t">Replies Piling In</div><div class="c" id="pileCount">0 today</div></div>
+      <div class="stackzone" id="stackzone"></div>
+    </div>
+    <div class="panel ticker">
+      <div class="p-head"><div class="t">Activity</div><div class="c">anonymized</div></div>
+      <div class="rows" id="ticker"></div>
+    </div>
+    <div class="panel riddle">
+      <div class="p-head"><div class="t">Engineer's Riddle</div><div class="c" id="riddleCap">tap to peek</div></div>
+      <div class="rq" id="riddleQ">…</div>
+      <div class="ra" id="riddleA"></div>
+      <div class="rbar"><i id="riddleBar"></i></div>
+    </div>
+  </footer>
+</div>
+
+<canvas id="fx"></canvas>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var pick=function(a){return a[Math.floor(Math.random()*a.length)];};
+  var fmt=function(n){return n.toLocaleString("en-US");};
+  var p2=function(n){return (n<10?"0":"")+n;};
+  var MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  /* ============ SEASON ============ */
+  function seasonOf(m){ if(m<=1||m===11)return"winter"; if(m<=4)return"spring"; if(m<=7)return"summer"; return"fall"; }
+  var SEASONS={
+    winter:{name:"Winter",ico:"❄️",sr:7.4,ss:17.1,hills:["#c6d4e6","#e6eef7"],sky:{day:[[150,190,235],[190,215,240],[220,232,246]]}},
+    spring:{name:"Spring",ico:"🌸",sr:6.4,ss:19.6,hills:["#5cae4f","#82c85f"],sky:{day:[[74,150,235],[130,190,240],[200,232,250]]}},
+    summer:{name:"Summer",ico:"☀️",sr:6.0,ss:20.4,hills:["#2f7d3e","#43a04d"],sky:{day:[[58,150,235],[120,190,245],[200,230,255]]}},
+    fall:{name:"Autumn",ico:"🍂",sr:6.9,ss:18.4,hills:["#b06e2c","#caa23e"],sky:{day:[[86,140,210],[150,175,220],[210,214,232]]}}
+  };
+  var nowD=new Date(), season=SEASONS[seasonOf(nowD.getMonth())];
+  document.getElementById("seasonBadge").textContent=season.ico+" "+season.name;
+
+  function hourNow(){var d=new Date();return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600;}
+
+  /* ============ SKY CANVAS ============ */
+  var sky=document.getElementById("sky"), sc=sky.getContext("2d"), SW=0,SH=0, SDPR=Math.min(2,devicePixelRatio||1);
+  var stars=[], clouds=[];
+  function skyResize(){
+    SW=innerWidth; SH=innerHeight;
+    sky.width=SW*SDPR; sky.height=SH*SDPR; sc.setTransform(SDPR,0,0,SDPR,0,0);
+    stars=[]; for(var i=0;i<150;i++) stars.push({x:Math.random()*SW,y:Math.random()*SH*0.62,r:Math.random()*1.3+.3,t:Math.random()*6.28});
+    clouds=[]; var nc=season.name==="Summer"?4:6;
+    for(var j=0;j<nc;j++) clouds.push({x:Math.random()*SW,y:40+Math.random()*SH*0.32,s:.7+Math.random()*.9,v:(4+Math.random()*7)/1000});
+  }
+  var NIGHT=[[11,15,45],[15,22,60],[20,28,72]], DAWN=[[42,44,96],[128,92,138],[255,150,110]], DUSK=[[46,40,92],[150,86,116],[255,138,88]];
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function lerpC(c1,c2,t){return[Math.round(lerp(c1[0],c2[0],t)),Math.round(lerp(c1[1],c2[1],t)),Math.round(lerp(c1[2],c2[2],t))];}
+  function rgb(c){return"rgb("+c[0]+","+c[1]+","+c[2]+")";}
+  function skyState(h){
+    var sr=season.sr, ss=season.ss, DAY=season.sky.day;
+    var stops=[{h:0,s:NIGHT,star:1},{h:sr-1.1,s:NIGHT,star:1},{h:sr,s:DAWN,star:.35},
+      {h:sr+1.7,s:DAY,star:0},{h:(sr+ss)/2,s:DAY,star:0},{h:ss-1.7,s:DAY,star:0},
+      {h:ss,s:DUSK,star:.3},{h:ss+1.1,s:NIGHT,star:1},{h:24,s:NIGHT,star:1}];
+    var a=stops[0],b=stops[stops.length-1];
+    for(var i=0;i<stops.length-1;i++){ if(h>=stops[i].h&&h<=stops[i+1].h){a=stops[i];b=stops[i+1];break;} }
+    var t=(h-a.h)/((b.h-a.h)||1);
+    return {top:lerpC(a.s[0],b.s[0],t),mid:lerpC(a.s[1],b.s[1],t),bot:lerpC(a.s[2],b.s[2],t),star:lerp(a.star,b.star,t)};
+  }
+  function drawSky(dt){
+    var h=hourNow(), st=skyState(h), horizon=SH*0.72;
+    var g=sc.createLinearGradient(0,0,0,SH);
+    g.addColorStop(0,rgb(st.top)); g.addColorStop(.55,rgb(st.mid)); g.addColorStop(1,rgb(st.bot));
+    sc.fillStyle=g; sc.fillRect(0,0,SW,SH);
+    // stars
+    if(st.star>0.02){ for(var i=0;i<stars.length;i++){var s=stars[i]; s.t+=dt/900;
+      sc.globalAlpha=st.star*(0.5+0.5*Math.sin(s.t)); sc.fillStyle="#fff"; sc.beginPath(); sc.arc(s.x,s.y,s.r,0,6.28); sc.fill(); } sc.globalAlpha=1; }
+    // sun / moon
+    var sr=season.sr, ss=season.ss, isDay=h>sr&&h<ss;
+    var frac=isDay?(h-sr)/(ss-sr):(h<sr?(h+24-ss)/(24-ss+sr):(h-ss)/(24-ss+sr));
+    var bx=SW*(0.08+0.84*frac), by=horizon-Math.sin(Math.max(0,Math.min(1,frac))*Math.PI)*(SH*0.5);
+    if(isDay){ var rad=Math.max(26,SW*0.028);
+      var sg=sc.createRadialGradient(bx,by,0,bx,by,rad*3.4); sg.addColorStop(0,"rgba(255,240,190,.9)"); sg.addColorStop(.3,"rgba(255,214,120,.45)"); sg.addColorStop(1,"rgba(255,214,120,0)");
+      sc.fillStyle=sg; sc.beginPath(); sc.arc(bx,by,rad*3.4,0,6.28); sc.fill();
+      sc.fillStyle="#FFE59A"; sc.beginPath(); sc.arc(bx,by,rad,0,6.28); sc.fill();
+    } else if(st.star>0.15){ var mr=Math.max(18,SW*0.018);
+      sc.fillStyle="rgba(230,238,255,.92)"; sc.beginPath(); sc.arc(bx,by,mr,0,6.28); sc.fill();
+      sc.fillStyle=rgb(st.top); sc.beginPath(); sc.arc(bx+mr*0.5,by-mr*0.35,mr*0.85,0,6.28); sc.fill();
+    }
+    // clouds
+    var cloudA=isDay?0.9:0.25;
+    for(var c=0;c<clouds.length;c++){var cl=clouds[c]; if(!reduce) cl.x+=cl.v*dt*SW*0.02; if(cl.x>SW+90)cl.x=-90;
+      sc.globalAlpha=cloudA*0.8; sc.fillStyle="rgba(255,255,255,.85)";
+      puff(cl.x,cl.y,cl.s);}
+    sc.globalAlpha=1;
+    // hills
+    drawHill(horizon+SH*0.02, season.hills[0], 0.55);
+    drawHill(horizon+SH*0.10, season.hills[1], 1);
+  }
+  function puff(x,y,s){ sc.beginPath();
+    sc.ellipse(x,y,34*s,18*s,0,0,6.28); sc.ellipse(x+30*s,y+6*s,26*s,15*s,0,0,6.28); sc.ellipse(x-28*s,y+7*s,24*s,14*s,0,0,6.28);
+    sc.ellipse(x+6*s,y-10*s,22*s,15*s,0,0,6.28); sc.fill(); }
+  function drawHill(baseY,color,alpha){
+    sc.globalAlpha=alpha; sc.fillStyle=color; sc.beginPath(); sc.moveTo(0,SH);
+    sc.lineTo(0,baseY);
+    var seg=SW/4;
+    sc.quadraticCurveTo(seg*0.5,baseY-40,seg,baseY-10);
+    sc.quadraticCurveTo(seg*1.5,baseY+22,seg*2,baseY-6);
+    sc.quadraticCurveTo(seg*2.5,baseY-46,seg*3,baseY-12);
+    sc.quadraticCurveTo(seg*3.5,baseY+20,SW,baseY-4);
+    sc.lineTo(SW,SH); sc.closePath(); sc.fill(); sc.globalAlpha=1;
+  }
+
+  /* ============ FX CANVAS (envelopes / confetti) ============ */
+  var cv=document.getElementById("fx"), ctx=cv.getContext("2d"), DPR=Math.min(2,devicePixelRatio||1), W=0,H=0;
+  function fxResize(){ W=cv.width=innerWidth*DPR; H=cv.height=innerHeight*DPR; cv.style.width=innerWidth+"px"; cv.style.height=innerHeight+"px"; }
+  /* The donut is static now, so a resize has to repaint it or the canvas comes back blank. */
+  function resizeAll(){ skyResize(); fxResize(); sizeDonut(); if(window.drawDonut)window.drawDonut(); }
+  fxResize(); skyResize(); addEventListener("resize",resizeAll);
+
+  function centerOf(id){var r=document.getElementById(id).getBoundingClientRect();return{x:(r.left+r.width/2)*DPR,y:(r.top+r.height/2)*DPR};}
+  function robotMouth(){var r=document.getElementById("robot").getBoundingClientRect();return{x:(r.left+r.width*0.5)*DPR,y:(r.top+r.height*0.42)*DPR};}
+  var flyers=[],confetti=[];
+  function spawnEnvelope(o){var s=o.from,e=o.to;var cx=(s.x+e.x)/2+(Math.random()-.5)*240*DPR;var cy=Math.min(s.y,e.y)-(110+Math.random()*130)*DPR;
+    flyers.push({s:s,c:{x:cx,y:cy},e:e,t:0,dur:(o.dur||1400)+Math.random()*380,color:o.color,open:o.open,rot:(Math.random()-.5)*.5,onArrive:o.onArrive,done:false,size:o.size||1});}
+  function burst(p,col,n){for(var i=0;i<n;i++){var a=Math.random()*6.28,sp=(2+Math.random()*5)*DPR;confetti.push({x:p.x,y:p.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-2*DPR,life:1,color:col[i%col.length],size:(2+Math.random()*3)*DPR,spin:(Math.random()-.5)*.4,rot:0});}}
+  function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  function drawEnv(x,y,rot,scale,color,open){ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.scale(scale*DPR,scale*DPR);var w=22,h=15;
+    ctx.shadowColor=color;ctx.shadowBlur=14;ctx.fillStyle=color;roundRect(-w/2,-h/2,w,h,3);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle="rgba(0,0,0,.28)";ctx.lineWidth=1.2;
+    if(open){ctx.beginPath();ctx.moveTo(-w/2,-h/2);ctx.lineTo(0,-h/2-8);ctx.lineTo(w/2,-h/2);ctx.stroke();ctx.fillStyle="rgba(255,255,255,.92)";roundRect(-w/2+2,-h/2-2,w-4,h-2,2);ctx.fill();}
+    else{ctx.beginPath();ctx.moveTo(-w/2,-h/2);ctx.lineTo(0,2);ctx.lineTo(w/2,-h/2);ctx.stroke();}ctx.restore();}
+
+  var last=performance.now(), skyAcc=0;
+  function frame(now){
+    var dt=Math.min(50,now-last); last=now;
+    skyAcc+=dt; if(skyAcc>33||reduce){ drawSky(skyAcc); skyAcc=0; }
+    ctx.clearRect(0,0,W,H);
+    for(var i=flyers.length-1;i>=0;i--){var f=flyers[i];f.t+=dt/f.dur;
+      if(f.t>=1){if(!f.done){f.done=true;if(f.onArrive)f.onArrive(f.e);}flyers.splice(i,1);continue;}
+      var u=1-f.t,x=u*u*f.s.x+2*u*f.t*f.c.x+f.t*f.t*f.e.x,y=u*u*f.s.y+2*u*f.t*f.c.y+f.t*f.t*f.e.y;
+      drawEnv(x,y,f.rot*Math.sin(f.t*3),(0.9+0.5*Math.sin(f.t*Math.PI))*f.size,f.color,f.open&&f.t>0.55);}
+    for(var j=confetti.length-1;j>=0;j--){var c=confetti[j];c.vy+=0.12*DPR;c.x+=c.vx;c.y+=c.vy;c.rot+=c.spin;c.life-=dt/1100;
+      if(c.life<=0){confetti.splice(j,1);continue;}ctx.save();ctx.globalAlpha=Math.max(0,c.life);ctx.translate(c.x,c.y);ctx.rotate(c.rot);ctx.fillStyle=c.color;ctx.fillRect(-c.size/2,-c.size/2,c.size,c.size*1.6);ctx.restore();}
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* ============ COUNTERS (ambient, realistic day, self-reset) ============ */
+  var C={sent:0,open:0,reply:0,meet:0};
+  var el={sent:document.getElementById("sent"),sentBig:document.getElementById("sentBig"),open:document.getElementById("open"),reply:document.getElementById("reply"),meet:document.getElementById("meet")};
+  function bump(n){n.classList.add("bump");setTimeout(function(){n.classList.remove("bump");},180);}
+  function paint(){
+    el.sent.textContent=fmt(C.sent); el.sentBig.textContent=fmt(C.sent);
+    el.open.textContent=fmt(C.open); el.reply.textContent=fmt(C.reply); el.meet.textContent=fmt(C.meet);
+    var orate=C.sent?Math.round(C.open/C.sent*100):0;
+    document.getElementById("openMeter").style.width=Math.min(100,orate)+"%";
+    document.getElementById("openrate").textContent=orate+"%";
+    document.getElementById("replyrate").textContent=(C.sent?(C.reply/C.sent*100):0).toFixed(1)+"%";
+    document.getElementById("replyFoot").textContent=C.reply+" conversations";
+    document.getElementById("meetFoot").textContent=C.meet+" demos booked";
+    // When the team has posted photos that panel belongs to them, so leave its header alone.
+    var pile=document.getElementById("stackzone");
+    if(!(pile&&pile.classList.contains("photos")))
+      document.getElementById("pileCount").textContent=C.reply+" today"+(lastReplyAt?" · last "+lastReplyAt:"");
+  }
+  var lastReplyAt=null;
+  var TARGETS={sent:920,meet:12,openRate:0.44,replyRate:0.08};
+  function dayFrac(){var h=hourNow(); if(h<=7)return 0; if(h>=19)return 1; return (h-7)/12;}
+  function expected(){var f=dayFrac(),s=Math.round(TARGETS.sent*f);return{sent:s,open:Math.round(s*TARGETS.openRate),reply:Math.round(s*TARGETS.replyRate),meet:Math.round(TARGETS.meet*f)};}
+  var curDay=new Date().toDateString();
+  function ease(k,node,target,onInc){if(C[k]>=target){C[k]=target;return;}var gap=target-C[k],st=Math.min(gap,gap>40?7:1);for(var i=0;i<st;i++){C[k]++;if(onInc)onInc();}if(node)bump(node);}
+  function modelTick(){
+    var day=new Date().toDateString();
+    if(day!==curDay){curDay=day;C.sent=C.open=C.reply=C.meet=0;var z=document.getElementById("stackzone");if(z)z.innerHTML="";}
+    var e=expected();
+    ease("sent",el.sent,e.sent);el.sentBig.textContent=fmt(C.sent);
+    ease("open",el.open,e.open);
+    ease("reply",el.reply,e.reply,onReplyReal);
+    ease("meet",el.meet,e.meet,onMeetingReal);
+    paint(); updateBriefing();
+  }
+  function onReplyReal(){spawnEnvelope({from:centerOf("open"),to:centerOf("stackzone"),color:"#FF6E8E",dur:1300,size:1.15,onArrive:function(p){burst(p,["#FF6E8E","#FFA6BC"],9);addPile();lastReplyAt=nowHM();paint();robotSay(pick(["A reply! 🎉","New conversation started 💬","They wrote back!"]));}});}
+  function onMeetingReal(){spawnEnvelope({from:centerOf("stackzone"),to:centerOf("meet"),color:"#A98BFF",dur:1500,size:1.2,onArrive:function(p){burst(p,["#A98BFF","#33E6B7","#FFC24D","#FF6E8E","#3B9BFF"],44);robotCheer();}});}
+  function evSendDecor(){spawnEnvelope({from:robotMouth(),to:centerOf("sent"),color:"#FFC24D",onArrive:function(p){burst(p,["#FFC24D","#FFD98A"],7);}});}
+  function evOpenDecor(){spawnEnvelope({from:centerOf("sent"),to:centerOf("open"),color:"#33E6B7",open:true,dur:1100,onArrive:function(p){burst(p,["#33E6B7","#8CFFE0"],6);}});}
+  function updSendRate(){var now=performance.now(),f=dayFrac();var pm=f<=0?Math.round(2+Math.random()*2):Math.round((30+Math.sin(now/9000)*11)*(0.55+0.45*f));document.getElementById("sendrate").textContent=pm+" /min";}
+  (function seedNow(){var e=expected();C.sent=e.sent;C.open=e.open;C.reply=e.reply;C.meet=e.meet;paint();})();
+  setInterval(modelTick,1600);
+
+  /* ============ CLOCK ============ */
+  function tickClock(){var d=new Date();document.getElementById("clock").textContent=p2(d.getHours())+":"+p2(d.getMinutes())+":"+p2(d.getSeconds());}
+  tickClock(); setInterval(tickClock,1000);
+
+  /* ============ WEATHER (ambient diurnal, Bay Area summer) ============ */
+  var CITIES=[{n:"San Rafael",mid:68,amp:13},{n:"San Francisco",mid:60,amp:6},{n:"Sonoma Co.",mid:70,amp:16},{n:"Fairfield",mid:77,amp:18}];
+  function tempFor(c){var h=hourNow();return Math.round(c.mid+c.amp*Math.cos((h-16)/24*2*Math.PI)+(Math.random()*1.4-0.7));}
+  function drawWx(){
+    var h=hourNow(), day=h>season.sr&&h<season.ss;
+    document.getElementById("wxIco").textContent=day?season.ico:"🌙";
+    var box=document.getElementById("wx"), old=box.querySelectorAll(".city"); for(var i=0;i<old.length;i++)old[i].remove();
+    CITIES.forEach(function(c){var d=document.createElement("div");d.className="city";
+      d.innerHTML='<div class="n">'+c.n+'</div><div class="tmp">'+tempFor(c)+'°</div>';box.appendChild(d);});
+  }
+  drawWx(); setInterval(drawWx,45000);
+
+  /* ============ MONTHLY RACE ============ */
+  var RACE_THEMES=[
+    {e:"🐧",label:"Penguin Dash",surf:"#dbe7f2"},{e:"🛷",label:"Sled Sprint",surf:"#e6eef7"},
+    {e:"🚴",label:"Spring Cyclone",surf:"#8fbf6a"},{e:"⛵",label:"Bay Regatta",surf:"#5fa8d8"},
+    {e:"🚀",label:"Launch Week",surf:"#2a2f5e",flip:false},{e:"🏃",label:"Summer 10K",surf:"#57a85a"},
+    {e:"🐎",label:"Derby Days",surf:"#4f9a3f"},{e:"🏎️",label:"Grand Prix",surf:"#3a3f47"},
+    {e:"🦆",label:"Duck Derby",surf:"#4f95c8"},{e:"👻",label:"Spooky Sprint",surf:"#3a2f4a"},
+    {e:"🦃",label:"Turkey Trot",surf:"#9a6a30"},{e:"🦌",label:"Reindeer Run",surf:"#dbe7f2"}
+  ];
+  /* Real booked sales for the closed month, straight from the Monthly Sales Tracker
+     (same engine that writes the ledger and the monthly report). Regenerate with
+     build_sales.py YYYY-MM — do not hand-edit between the markers. */
+  /* BEGIN SALES DATA */
+  var SALESDATA={"month": "2026-07", "monthName": "July", "year": 2026, "orders": 46, "total": 1367504, "ytd": 9836662, "yoy": 29, "winner": "RF / Micro", "flavor": "wire to wire · 3.0× the field", "horses": [{"n": "RF / Micro", "v": 742425, "c": "#33E6B7"}, {"n": "High Voltage/High Current", "v": 244643, "c": "#3B9BFF"}, {"n": "Digital Delay Generators", "v": 199254, "c": "#FFC24D"}, {"n": "Nuclear Spectroscopy", "v": 114250, "c": "#FF6E8E"}, {"n": "Service & Shipping", "v": 38598, "c": "#A98BFF"}, {"n": "BNC Scientific", "v": 22135, "c": "#7FD4FF"}], "unmapped": 6200};
+  /* END SALES DATA */
+  var PRODUCTS=SALESDATA.horses;
+  var rmonth=Math.max(0,parseInt((SALESDATA.month||"-01").split("-")[1],10)-1), rtheme=RACE_THEMES[rmonth];
+  document.getElementById("raceMonth").textContent="🏁 "+SALESDATA.monthName+"'s over · results are in";
+  document.getElementById("raceTheme").innerHTML=rtheme.e+" "+rtheme.label+" <span class='finalpill'>FINAL</span>";
+  document.getElementById("raceLead").textContent="👑 "+SALESDATA.winner+" · "+SALESDATA.flavor;
+  var track=document.getElementById("track");
+  track.style.background="linear-gradient(180deg,"+rtheme.surf+"55,"+rtheme.surf+"22)";
+  /* Standings are final, so positions are fixed: the winner sits on the finish line and
+     every other line is placed in proportion to what it actually booked. */
+  var FINISH=93, START=7;
+  var topVal=PRODUCTS.reduce(function(m,p){return Math.max(m,p.v);},0)||1;
+  var laneH=PRODUCTS.length?100/PRODUCTS.length:100;
+  /* Short label on the cart behind each horse. Literal "first two digits" was the ask,
+     but it ranks wrong across magnitudes — $38,598 renders as "38" and looks like it
+     beat $114,250's "11". Rounded thousands stays just as short and orders correctly. */
+  function firstTwo(v){v=Math.max(0,v);
+    return v>=1e6?((v/1e6).toFixed(1)+"M"):(Math.round(v/1000)+"K");}
+  var racers=PRODUCTS.map(function(pl,i){
+    var lane=document.createElement("div"); lane.className="lane"; lane.style.top=(i*laneH)+"%"; lane.style.height=laneH+"%"; track.appendChild(lane);
+    var el=document.createElement("div"); el.className="racer"+(i===0?" leadr":""); el.style.top=(i*laneH+laneH/2)+"%";
+    el.innerHTML='<span class="cart" style="border-color:'+pl.c+'"><span class="camt">'+firstTwo(pl.v)+'</span></span>'
+      +'<span class="glyph">'+rtheme.e+'</span><span class="tag" style="border-left:3px solid '+pl.c+'">'+pl.n+'</span>';
+    track.appendChild(el);
+    if(rtheme.flip!==false) el.querySelector(".glyph").style.transform="scaleX(-1)";
+    el.style.left=(START+(pl.v/topVal)*(FINISH-START))+"%";
+    return {pl:pl,el:el,phase:i*1.3+0.4};
+  });
+  /* Nothing moves horizontally any more — the result is settled. A small idle bob keeps
+     the strip from looking frozen without ever changing a standing. */
+  if(!reduce)setInterval(function(){var t=performance.now()/1000;
+    racers.forEach(function(r){r.el.style.marginTop=(Math.sin(t*1.1+r.phase)*2.2)+"px";});},80);
+
+  /* ============ SALES DONUT (real, final for the month) ============ */
+  function money(v){return v>=1e6?("$"+(v/1e6).toFixed(2)+"M"):("$"+Math.round(v/1000)+"K");}
+  document.getElementById("salesMonth").textContent=SALESDATA.monthName+" "+SALESDATA.year;
+  document.getElementById("salesCap").textContent="final · "+SALESDATA.orders+" orders";
+  var SALES=PRODUCTS;
+  var dCan=document.getElementById("donut"), dctx=dCan.getContext("2d"), dSize=132;
+  function sizeDonut(){var w=document.getElementById("donutWrap").clientWidth||132;dSize=w;dCan.width=w*DPR;dCan.height=w*DPR;dCan.style.width=w+"px";dCan.style.height=w+"px";dctx.setTransform(DPR,0,0,DPR,0,0);}
+  sizeDonut();
+  var legend=document.getElementById("donutLegend");
+  SALES.forEach(function(s){var d=document.createElement("div");d.className="lg";
+    d.innerHTML='<span class="sw" style="background:'+s.c+'"></span><span class="nm">'+s.n+'</span>'
+      +'<span class="vl">'+money(s.v)+'</span>';legend.appendChild(d);});
+  function drawDonut(){
+    var total=SALES.reduce(function(a,s){return a+s.v;},0);
+    var cx=dSize/2, cy=dSize/2, rO=dSize/2-4, rI=dSize*0.30, a0=-Math.PI/2;
+    dctx.clearRect(0,0,dSize,dSize);
+    SALES.forEach(function(s){var frac=total?s.v/total:0, a1=a0+frac*6.283;
+      dctx.beginPath();dctx.arc(cx,cy,rO,a0+0.02,a1-0.02);dctx.arc(cx,cy,rI,a1-0.02,a0+0.02,true);dctx.closePath();
+      dctx.fillStyle=s.c;dctx.fill();a0=a1;});
+    document.getElementById("salesTotal").textContent=money(SALESDATA.total);
+  }
+  window.drawDonut=drawDonut;
+  drawDonut();
+
+  /* ============ DAILY BRIEFING ============ */
+  document.getElementById("briefDate").textContent=new Date().toLocaleDateString("en-US",{month:"short",day:"numeric"});
+  var BRIEF=[
+    {e:"🌅",n:"Overnight sends",v:function(){return fmt(180+Math.round(dayFrac()*40));}},
+    {e:"💬",n:"New replies today",v:function(){return C.reply;},up:true},
+    {e:"⭐",n:"Meetings today",v:function(){return C.meet;},up:true},
+    {e:"📄",n:"Datasheet PDFs served",v:function(){return fmt(320+Math.round(dayFrac()*260));}},
+    {e:"🔎",n:"Leads enriched",v:function(){return fmt(240+Math.round(dayFrac()*180));}},
+    {e:"↗",n:"Pipeline movement",v:function(){return "+$"+(28+Math.round(dayFrac()*40))+"K";},up:true}
+  ];
+  var briefEl=document.getElementById("briefing");
+  BRIEF.forEach(function(b){var d=document.createElement("div");d.className="brf";d.innerHTML='<span class="be">'+b.e+'</span><span class="bn">'+b.n+'</span><span class="bv'+(b.up?' up':'')+'" id="bv_'+b.n.replace(/\W/g,'')+'"></span>';briefEl.appendChild(d);});
+  function updateBriefing(){BRIEF.forEach(function(b){document.getElementById("bv_"+b.n.replace(/\W/g,'')).textContent=b.v();});}
+  updateBriefing();
+
+  /* ============ NEWS (Bay positive + mixed World; original blurbs, ambient) ============ */
+  /* ---- ANNOUNCEMENTS — EDIT THESE. They ride in the local column in amber.
+     Keep them spec-free and price-free; the lobby is a public room.
+     Optional "until" (YYYY-MM-DD) drops the item automatically the day after, so a
+     dated event never lingers on the board once it has been and gone. ---- */
+  var ANNOUNCE=[
+    {e:"⛳",t:"Golf competition — Thursday, September 3",d:"Save the date. Details to follow.",until:"2026-09-03"},
+    {e:"📰",t:"The BNC Dispatch — Summer 2026 is out",d:"Special Partner Edition, for our reps and distributors worldwide. Now the reps get the BNC love too."},
+    {e:"📣",t:"Year-end order season is open",d:"Federal buying window is live. See sales for the current price list."},
+    {e:"🛠️",t:"Calibration & service agreements available",d:"Cover your instruments before the warranty grace period closes."},
+    {e:"📡",t:"ICX FieldHawk analyzers now shipping",d:"Real-time spectrum analysis, handheld. Ask for a demo unit."}
+  ];
+  /* Drop anything whose day has passed. Compared as plain YYYY-MM-DD strings so there is
+     no timezone drift on a screen that runs for weeks without a reload. */
+  function todayISO(){var d=new Date();
+    return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());}
+  /* Staff posts approved at /lobby. Filled by lobby-feed.js in the hosted build; stays
+     empty in the artifact, which cannot reach the endpoint. */
+  var SUBMITTED=[];
+  function liveAnnouncements(){var t=todayISO();
+    return SUBMITTED.concat(ANNOUNCE).filter(function(a){return !a.until||a.until>=t;});}
+  var BAY=[
+    {e:"🌉",t:"Bay Bridge lights get a dazzling new encore run",d:"The span's light installation returns for another season after a full LED refit."},
+    {e:"🍇",t:"Sonoma County harvest season opens early",d:"Growers report a warm, dry run-up and one of the cleanest crops in years."},
+    {e:"🚈",t:"SMART rail adds weekend service through the North Bay",d:"More trains between Marin and Sonoma, with bike cars on every run."},
+    {e:"🔬",t:"Bay Area lab unveils a new quantum research center",d:"The facility adds cryogenic test bays and opens bench time to local universities."},
+    {e:"🌱",t:"Petaluma farmers markets expand to year-round hours",d:"Vendors stay open through winter for the first time, with covered stalls."},
+    {e:"🎨",t:"Santa Rosa arts district adds a fresh wave of murals",d:"A dozen new works go up downtown, painted by artists from across the county."},
+    {e:"🌊",t:"Record turnout for the Bay shoreline cleanup day",d:"Volunteers cleared several tons of debris across Marin and Sonoma beaches."},
+    {e:"🚀",t:"North Bay clean-tech firms lead a summer hiring boom",d:"Manufacturing and test roles account for most of the new openings."},
+    {e:"🐋",t:"Whale watching off the coast is the best in years",d:"Humpback sightings near Point Reyes are running well above the seasonal average."},
+    {e:"🏞️",t:"Restored waterfront park reopens to the public",d:"New trails, a rebuilt pier, and restored tidal marsh open after two years of work."}
+  ];
+  var WORLD=[
+    {e:"🇪🇺",t:"Europe: new high-speed rail link connects two capitals",d:"The route cuts the trip by several hours and runs on renewable power."},
+    {e:"🌏",t:"Asia: record investment pours into solar manufacturing",d:"New plants are expected to push module costs down again next year."},
+    {e:"🇺🇸",t:"US: national parks report record volunteer turnout",d:"Trail crews and restoration projects filled every seasonal slot this summer."},
+    {e:"🇪🇺",t:"Europe: coastal cities hit fresh clean-energy milestones",d:"Several ports now run their shore-power grids entirely on offshore wind."},
+    {e:"🌏",t:"Asia: researchers share a breakthrough in battery tech",d:"The team published its results openly rather than filing for exclusivity."},
+    {e:"🇺🇸",t:"US: broadband reaches thousands more rural towns",d:"Fiber builds finished ahead of schedule across a dozen states."},
+    {e:"🇪🇺",t:"Europe: a historic city center goes car-free and thrives",d:"Foot traffic and local retail sales both rose in the first year."},
+    {e:"🌏",t:"Asia: reforestation drive plants millions of trees",d:"Native species were chosen over fast-growing monocultures this round."},
+    {e:"🇺🇸",t:"US: small-business optimism ticks upward this quarter",d:"Hiring intentions rose most among manufacturers and specialty trades."}
+  ];
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function newsRow(it){var d=document.createElement("div");d.className="nrow"+(it.promo?" promo":"");
+    d.innerHTML='<span class="ne">'+it.e+'</span><span class="nb"><b>'+it.t+'</b>'+(it.d?'<i>'+it.d+'</i>':'')+'</span>';return d;}
+  /* 45s per item, up from ~8s — long enough to actually read two lines from across the lobby. */
+  var NEWS_DWELL=45000, NEWS_ROWS=3;
+  function newsFeed(id,pool,getPromos){
+    var host=document.getElementById(id),q=shuffle(pool),idx=0,n=0;
+    function next(){ // every 4th slot goes to an announcement, if there are any
+      // Re-read the announcements each time rather than once at load, so an expired
+      // dated item disappears on its own. This screen can run for weeks unattended.
+      var promo=(getPromos?getPromos():[]).map(function(p){
+        var c={};for(var k in p)c[k]=p[k];c.promo=true;return c;});
+      if(promo.length&&n%4===3){var p=promo[Math.floor(n/4)%promo.length];n++;return p;}
+      var it=q[idx];idx=(idx+1)%q.length;n++;return it;}
+    for(var k=0;k<NEWS_ROWS;k++)host.appendChild(newsRow(next()));
+    setInterval(function(){host.insertBefore(newsRow(next()),host.firstChild);
+      while(host.children.length>NEWS_ROWS)host.removeChild(host.lastChild);},NEWS_DWELL);}
+  newsFeed("bayNews",BAY,liveAnnouncements); newsFeed("worldNews",WORLD);
+
+  /* ============ SERVICE BENCH ============ */
+  /* Real open RMAs from the KBNet log. Regenerate with build_rma.py — do not hand-edit
+     between the markers, it gets overwritten. */
+  /* BEGIN CALSTATS DATA */
+  var CALSTATS={"inShop": 173, "onBench": 12, "late": 126, "medianDays": 11};
+  /* END CALSTATS DATA */
+  /* BEGIN BENCH DATA */
+  var BENCH=[
+    {"rma": "12346", "cust": "NSI-MI Technologies", "model": "845-20-OEM-FS", "sn": "420-0496D0000-2905", "svc": "UNABLE TO TUNE TO 1dB power flatness", "state": "in process"},
+    {"rma": "12345", "cust": "NSI-MI Technologies", "model": "845-20-OEM-FS", "sn": "420-0496D0000-3858", "svc": "UNABLE TO TUNE TO 1dB power flatness", "state": "in process"},
+    {"rma": "12344", "cust": "NSI-MI Technologies", "model": "845-20-OEM-FS", "sn": "420-0496D0000-3626", "svc": "UNABLE TO TUNE TO 1dB power flatness", "state": "in process"},
+    {"rma": "12340", "cust": "Northrop Grumman Corp", "model": "508", "sn": "36536", "svc": "Need annual calibration service", "state": "in process"},
+    {"rma": "12335", "cust": "SCD-USA Infrared LLC", "model": "158H-F", "sn": "29850", "svc": "Calibration", "state": "in process"},
+    {"rma": "12328", "cust": "Northrop Grumman Corp", "model": "508-4C", "sn": "36537", "svc": "keys taped on, short attached to back > Annual Cali…", "state": "under evaluation"},
+    {"rma": "12320", "cust": "Starbucks Manufacturing", "model": "907", "sn": "61481", "svc": "Calibration of unit is past due.", "state": "in process"},
+    {"rma": "12319", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A 100000-1100", "svc": "unit does not configure", "state": "under evaluation"},
+    {"rma": "12318", "cust": "Delaware County HazMat", "model": "907", "sn": "61032", "svc": "Request quote for unit calibration. Please include…", "state": "in process"},
+    {"rma": "12317", "cust": "Tetra Tech/USEPA", "model": "SAM-950-G", "sn": "950114", "svc": "No issues, due for annual calibration.", "state": "repaired, in QA"},
+    {"rma": "12306", "cust": "SCD-USA Infrared LLC", "model": "6040", "sn": "33450", "svc": "There is no Light output or pulse output.", "state": "in process"},
+    {"rma": "12305", "cust": "Ccmed", "model": "SAM940", "sn": "940048", "svc": "Cannot be pwr on", "state": "in repair"}
+  ];
+  /* END BENCH DATA */
+  var bi=0;
+  function benchTick(){var b=BENCH[bi];
+    document.getElementById("benchUnit").textContent="Model "+b.model+(b.sn?" · SN "+b.sn:"");
+    document.getElementById("benchCust").textContent="🏷️ "+b.cust+" · RMA "+b.rma;
+    document.getElementById("benchSvc").textContent="🔧 "+b.svc+"…";
+    bi=(bi+1)%BENCH.length;}
+  (function(){var s=document.getElementById("benchStats");
+    s.textContent=CALSTATS.inShop+" units in the shop"
+      +(CALSTATS.medianDays!=null?" · median turnaround "+CALSTATS.medianDays+" days":"");})();
+  benchTick(); setInterval(benchTick,8000);
+
+  /* ============ PAST DUE · CAL LAB ============
+     Requested by John Lauder: what is late, and who is waiting on it.
+     Full model and serial are shown by David's call (2026-07-31). */
+  /* BEGIN PASTDUE DATA */
+  var PASTDUE=[
+    {"rma": "10889", "cust": "Ohio Department of Health", "model": "SAM 940-2GN", "sn": "41070", "late": 1050},
+    {"rma": "11478", "cust": "Colorado Springs Fire Department", "model": "SAM940+G", "sn": "940011", "late": 638},
+    {"rma": "11614", "cust": "Microwave Dynamics LLC", "model": "7300", "sn": "523-035314800-0215", "late": 541},
+    {"rma": "11615", "cust": "WM Phoenix Resources Landfill", "model": "SAM-940", "sn": "41510", "late": 540},
+    {"rma": "11619", "cust": "TEKTRONIX, INC", "model": "7300", "sn": "523-036315910-0247", "late": 528},
+    {"rma": "11653", "cust": "Corwin Health Physics", "model": "DSM-500", "sn": "D500202", "late": 508},
+    {"rma": "11668", "cust": "Loryon", "model": "SAM 940plus GN", "sn": "940064", "late": 498},
+    {"rma": "11667", "cust": "Loryon", "model": "SAM 940plus GN", "sn": "940063", "late": 498},
+    {"rma": "11683", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "41567", "late": 487},
+    {"rma": "11682", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "40681", "late": 487},
+    {"rma": "11681", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "40257", "late": 487},
+    {"rma": "11692", "cust": "Connor-Winfield Corporation", "model": "7070", "sn": "543-03D306F00-0524", "late": 478},
+    {"rma": "11688", "cust": "Dubai Police", "model": "SAM940", "sn": "41130", "late": 478},
+    {"rma": "11687", "cust": "Dubai Police", "model": "SAM940", "sn": "41129", "late": 478},
+    {"rma": "11698", "cust": "Keysight Technologies, Inc.", "model": "845", "sn": "421-33A6D170A-2071", "late": 472},
+    {"rma": "11697", "cust": "Keysight Technologies, Inc.", "model": "845", "sn": "421-33A6D170A-1937", "late": 472},
+    {"rma": "11699", "cust": "Raytheon", "model": "825-M-20-1", "sn": "D15-0N2000002-0300", "late": 471},
+    {"rma": "11715", "cust": "US Air Force 354 MDG", "model": "SAM 940", "sn": "41110", "late": 456},
+    {"rma": "11760", "cust": "Redding Fire", "model": "PM1703M01-1BT", "sn": "hh24g7-gn", "late": 442},
+    {"rma": "11766", "cust": "WVDEP", "model": "940-2GH", "sn": "40507/42187", "late": 437},
+    {"rma": "11774", "cust": "Spektrum Merestechnika Kft.", "model": "SAM 940", "sn": "40138/48102", "late": 434},
+    {"rma": "11777", "cust": "PseudolithIC, Inc", "model": "865-40", "sn": "4F1-3B4D00011-1538", "late": 429},
+    {"rma": "11805", "cust": "SI Scientific Instruments GmbH", "model": "PVX-4110", "sn": "106-787", "late": 407},
+    {"rma": "11804", "cust": "SI Scientific Instruments GmbH", "model": "PVX-4110", "sn": "9949009", "late": 407},
+    {"rma": "11815", "cust": "Indian Institute of Space Science and Techn…", "model": "577-8C", "sn": "36260", "late": 395},
+    {"rma": "11821", "cust": "Tektronix", "model": "765HV", "sn": "BNPR151003", "late": 392},
+    {"rma": "11827", "cust": "Lockheed Martin", "model": "106H21", "sn": "32021", "late": 387},
+    {"rma": "11826", "cust": "(customer not set)", "model": "907", "sn": "25627", "late": 387},
+    {"rma": "11852", "cust": "Tokyo metropolitan islands area", "model": "940", "sn": "40665", "late": 372},
+    {"rma": "11859", "cust": "Lawrence Livermore National Laboratory", "model": "745T-20", "sn": "54124", "late": 361},
+    {"rma": "11819", "cust": "Lockheed Martin", "model": "155H", "sn": "28298", "late": 361},
+    {"rma": "11857", "cust": "MT View Reclamation - Waste Management", "model": "SAM940-2G", "sn": "41354/46675", "late": 352},
+    {"rma": "11879", "cust": "Canadian Nuclear Laboratories", "model": "SAM 950", "sn": "950174", "late": 345},
+    {"rma": "11902", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX3", "late": 331},
+    {"rma": "11901", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX2", "late": 331},
+    {"rma": "11900", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX1", "late": 331},
+    {"rma": "11899", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "HH2AEA-GN", "late": 331},
+    {"rma": "11927", "cust": "Thomas Gray & Associates, Inc", "model": "940-2L", "sn": "41590/39101", "late": 325},
+    {"rma": "11936", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "36261", "late": 323},
+    {"rma": "11935", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35856", "late": 323},
+    {"rma": "11934", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35704", "late": 323},
+    {"rma": "11933", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35703", "late": 323},
+    {"rma": "11966", "cust": "Citrus County Fire Rescue", "model": "SAM 940", "sn": "41317/46664", "late": 297},
+    {"rma": "11965", "cust": "Shanghai Hapstar M&E equipment Co.,Ltd.", "model": "SAM940+", "sn": "HH3AA02-G", "late": 297},
+    {"rma": "11963", "cust": "Brl Test Inc", "model": "PVX-4140", "sn": "03-0426", "late": 297},
+    {"rma": "11968", "cust": "Tata Institute of Fundamental Research", "model": "575-4C", "sn": "31501", "late": 291},
+    {"rma": "11986", "cust": "Fresno Fire", "model": "SAM 940-2-GN", "sn": "40162/46116", "late": 284},
+    {"rma": "11985", "cust": "Fresno Fire", "model": "SAM 940-2-GN", "sn": "40236/46105", "late": 284},
+    {"rma": "12030", "cust": "Harris County Sheriffs Office", "model": "950-GN", "sn": "950019", "late": 255},
+    {"rma": "12029", "cust": "Harris County Sheriffs Office", "model": "950-GN", "sn": "950015", "late": 255},
+    {"rma": "12048", "cust": "Hanford Mission Integration Solutions", "model": "SAM940-XX", "sn": "40307/xxxxx", "late": 242},
+    {"rma": "12050", "cust": "University of Bristol", "model": "SAM940-XX", "sn": "41336/XXXX", "late": 241},
+    {"rma": "12055", "cust": "QORVO Inc.", "model": "RFS1220", "sn": "03719", "late": 228},
+    {"rma": "12063", "cust": "Department of Science and Technology - Phil…", "model": "SAM 940", "sn": "41602", "late": 214},
+    {"rma": "12066", "cust": "Argonne National Laboratory", "model": "76B102/3.5M-CEBR-X-NEG", "sn": "S3AA1849", "late": 212},
+    {"rma": "12076", "cust": "Laboratoire Hubert Curien, UMR CNRS 5516", "model": "577-4C", "sn": "36448", "late": 199},
+    {"rma": "12077", "cust": "Fermionics Opto-Technology", "model": "130FC", "sn": "21543", "late": 193},
+    {"rma": "12088", "cust": "ETH Zurich", "model": "577-8C", "sn": "36207", "late": 177},
+    {"rma": "12099", "cust": "Ohio Department of Natural Resources", "model": "SAM RD120", "sn": "BPADD9-GN", "late": 172},
+    {"rma": "12083", "cust": "Denver Office of Emergency Management", "model": "SAM950", "sn": "950137", "late": 169},
+    {"rma": "12107", "cust": "Technology Service Corp", "model": "845-12", "sn": "471-33A6D0700-1621", "late": 163},
+    {"rma": "12106", "cust": "Garber Metrology", "model": "845-26", "sn": "481-43A6D0000-1359", "late": 163},
+    {"rma": "12111", "cust": "Alltest Equipment Ltd", "model": "BNC555", "sn": "25187", "late": 162},
+    {"rma": "12110", "cust": "Alltest Equipment Ltd", "model": "BNC745", "sn": "53918", "late": 162},
+    {"rma": "12123", "cust": "University of Maryland, College Park", "model": "RFS-1420", "sn": "3711", "late": 147},
+    {"rma": "12115", "cust": "RA Wood & Associates", "model": "855-20-4", "sn": "6C5-0B2D40017-0488", "late": 143},
+    {"rma": "12136", "cust": "Southwest Research Institute", "model": "555-4C-G-H", "sn": "25570", "late": 136},
+    {"rma": "12148", "cust": "Hoizy Tech Limited", "model": "PVX-4140", "sn": "4141-200088", "late": 127},
+    {"rma": "12144", "cust": "Microchip Technologies Inc.", "model": "PVM-1001-P", "sn": "1001-200103", "late": 127},
+    {"rma": "12093", "cust": "Northern Arizona University", "model": "855B-20", "sn": "6C2-0A2B2000A-0430", "late": 127},
+    {"rma": "12170", "cust": "Giga-tronics, Inc.", "model": "7300", "sn": "523-039316C10-0320", "late": 113},
+    {"rma": "12178", "cust": "Micro Precision Calibration", "model": "907", "sn": "NA", "late": 109},
+    {"rma": "12181", "cust": "Ohio Department of Health", "model": "SAM 940Plus", "sn": "940059", "late": 108},
+    {"rma": "12180", "cust": "Ohio Department of Health", "model": "SAM 940Plus", "sn": "940056", "late": 108},
+    {"rma": "12103", "cust": "Georgia Institute of Technology", "model": "670C", "sn": "T0302I22352301", "late": 105},
+    {"rma": "12190", "cust": "Space Sciences Laboratory at University of…", "model": "V38B76/SIP-E3-X2", "sn": "S2AD3833", "late": 102},
+    {"rma": "12200", "cust": "Nucleonix systems private limited", "model": "PB-5", "sn": "28508", "late": 88},
+    {"rma": "12204", "cust": "NASA", "model": "685", "sn": "T0302122102701", "late": 84},
+    {"rma": "12219", "cust": "Visalia Fire Dept.", "model": "1703M", "sn": "53395", "late": 74},
+    {"rma": "12218", "cust": "Visalia Fire Dept.", "model": "1703M", "sn": "2201524", "late": 74},
+    {"rma": "12217", "cust": "Visalia Fire Dept.", "model": "1703M", "sn": "141744", "late": 74},
+    {"rma": "12216", "cust": "Visalia Fire Dept.", "model": "1703M", "sn": "141729", "late": 74},
+    {"rma": "12215", "cust": "Visalia Fire Dept.", "model": "1703M", "sn": "141708", "late": 74},
+    {"rma": "12214", "cust": "Visalia Fire Dept.", "model": "1703M", "sn": "141741", "late": 74},
+    {"rma": "12202", "cust": "NSI-MI Technologies", "model": "845", "sn": "420-0396D0000-0906", "late": 73},
+    {"rma": "12224", "cust": "Bridgeport Fire Department", "model": "951", "sn": "800908", "late": 72},
+    {"rma": "12227", "cust": "Lockheed Martin", "model": "6040", "sn": "16243", "late": 67},
+    {"rma": "12226", "cust": "Lockheed Martin", "model": "6040", "sn": "33423", "late": 67},
+    {"rma": "12236", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3B4C00003-1718", "late": 59},
+    {"rma": "12235", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3C5G00003-2773", "late": 59},
+    {"rma": "12234", "cust": "ManTech International Corp.", "model": "865-26", "sn": "1145", "late": 59},
+    {"rma": "12233", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3A3B00903-1326", "late": 59},
+    {"rma": "12238", "cust": "Amentum Services INC", "model": "SAM940-2GN", "sn": "41586/46817", "late": 57},
+    {"rma": "12248", "cust": "Cal OES", "model": "SAM 950 GN", "sn": "950076", "late": 56},
+    {"rma": "12247", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201915", "late": 56},
+    {"rma": "12246", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201888", "late": 56},
+    {"rma": "12245", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201467", "late": 56},
+    {"rma": "12244", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201927", "late": 56},
+    {"rma": "12243", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201466", "late": 56},
+    {"rma": "12242", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201954", "late": 56},
+    {"rma": "12241", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201894", "late": 56},
+    {"rma": "12251", "cust": "General Fusion", "model": "V150A/5M-EJ301-X-NEG", "sn": "S2AA5962", "late": 53},
+    {"rma": "12250", "cust": "General Fusion", "model": "V150A150/5M-EJ309-X-NEG", "sn": "S2AA5182", "late": 53},
+    {"rma": "12253", "cust": "EMAG Technologies", "model": "845-26", "sn": "482-00385A0600-0511", "late": 51},
+    {"rma": "12255", "cust": "ucla physics and astronomy", "model": "555-8C", "sn": "27376", "late": 46},
+    {"rma": "12240", "cust": "L3Harris", "model": "866-M-40", "sn": "DB0-011000000-0121", "late": 44},
+    {"rma": "12239", "cust": "NSI-MI Technologies", "model": "845", "sn": "420-0396D0000-0907", "late": 44},
+    {"rma": "12257", "cust": "Sage Instruments", "model": "845", "sn": "471-4396D1702-1178", "late": 38},
+    {"rma": "12263", "cust": "John Hopkins Applied Physics lab", "model": "845-LO", "sn": "421-33B6D170A-2715", "late": 37},
+    {"rma": "12268", "cust": "Ccmed", "model": "SAM940", "sn": "940050", "late": 31},
+    {"rma": "12259", "cust": "Ccmed", "model": "SAM940", "sn": "940032", "late": 31},
+    {"rma": "12213", "cust": "Nisko Technologies", "model": "745T-8C", "sn": "54140", "late": 30},
+    {"rma": "12270", "cust": "USAF AFMEDCOM, CSDC Charleston", "model": "SAM940-2GN", "sn": "41558", "late": 29},
+    {"rma": "12261", "cust": "MINISTRY OF INTERIOR", "model": "950", "sn": "950152", "late": 28},
+    {"rma": "12275", "cust": "GANIL", "model": "575-8C-E", "sn": "31706", "late": 23},
+    {"rma": "12281", "cust": "V2X", "model": "7300", "sn": "523-03D316F00-0508", "late": 18},
+    {"rma": "12272", "cust": "Alltest Insturments", "model": "7000", "sn": "523-035314800-0216", "late": 17},
+    {"rma": "12201", "cust": "Nucleonix systems private limited", "model": "PB-5", "sn": "33526", "late": 17},
+    {"rma": "12283", "cust": "San Diego Fire Rescue Department - Hazmat", "model": "SAM 950-LGN", "sn": "950097", "late": 15},
+    {"rma": "12284", "cust": "Boeing", "model": "577", "sn": "37851", "late": 14},
+    {"rma": "12287", "cust": "JF Taylor, Inc.", "model": "670C-4C-256M", "sn": "T0302I25202301", "late": 8},
+    {"rma": "12286", "cust": "Cornell University", "model": "PVM-4210", "sn": "101-028", "late": 8},
+    {"rma": "12290", "cust": "Universidad de Concepción", "model": "PVM-1001-P", "sn": "1001-200125", "late": 7},
+    {"rma": "12289", "cust": "Waste Managment", "model": "SAM940", "sn": "46898", "late": 7},
+    {"rma": "12288", "cust": "Acquitek", "model": "577-8C", "sn": "37187", "late": 7},
+    {"rma": "12294", "cust": "Shenzhen Paragon Data Technology LTD", "model": "508-2C", "sn": "35981", "late": 1}
+  ];
+  /* END PASTDUE DATA */
+  var pdList=document.getElementById("pdList"), pdN=document.getElementById("pdN"),
+      pdCount=document.getElementById("pastdueCount"), PD_ROWS=3, pdIdx=0;
+  function pdRow(it){
+    var d=document.createElement("div");d.className="pdr"+(it.late>=5?"":" warn");
+    d.innerHTML='<span class="pe">'+(it.late>=14?"😠":"⏰")+'</span>'
+      +'<span class="pp">Model '+it.model+'<span>'+(it.sn?"SN "+it.sn+" · ":"")+'RMA '+it.rma+'</span></span>'
+      +'<span class="pc">'+it.cust+'</span>'
+      +'<span class="pl">'+it.late+'d late</span>';
+    return d;}
+  function pdRender(){
+    pdList.innerHTML="";
+    for(var k=0;k<PD_ROWS;k++)pdList.appendChild(pdRow(PASTDUE[(pdIdx+k)%PASTDUE.length]));
+    pdIdx=(pdIdx+PD_ROWS)%PASTDUE.length;
+    var n=PASTDUE.length, yr=PASTDUE.filter(function(x){return x.late>365;}).length;
+    pdN.textContent=n+" late"+(yr?" · "+yr+" over a year":"");
+    if(pdCount)pdCount.textContent=BENCH.length+" on the bench · "+n+" past due";
+  }
+  PASTDUE.sort(function(a,b){return b.late-a.late;});
+  pdRender(); setInterval(pdRender,12000);
+
+  /* ============ WORKLOG (typewriter — what PULSE is working on) ============ */
+  var WORK=[
+    function(){return "Enrichment complete — leads topped up";},
+    function(){return "Send wave dispatched — "+(24+Math.floor(Math.random()*40))+" envelopes away";},
+    function(){return "Reply detected — routing to CRM";},
+    function(){return "Datasheet PDFs refreshed — "+pick(["745T","Model 577","855B","Model 505"])+" series";},
+    function(){return "Scanning inbox for fresh replies…";},
+    function(){return "Scoring new leads by fit + intent…";},
+    function(){return "Meeting booked — syncing to calendar";}
+  ];
+  var wl=document.getElementById("worklog"), wIdx=Math.floor(Math.random()*100), wType=null;
+  function timeHMS(){var d=new Date();return p2(d.getHours())+":"+p2(d.getMinutes())+":"+p2(d.getSeconds());}
+  function typeLine(){
+    var msg="["+timeHMS()+"] "+WORK[wIdx%WORK.length](); wIdx++;
+    var i=0; if(wType)clearInterval(wType);
+    wType=setInterval(function(){ if(i<=msg.length){wl.textContent=msg.slice(0,i)+"▋";i++;} else {clearInterval(wType);wl.textContent=msg+" ▋";} }, 45);
+  }
+  typeLine(); setInterval(typeLine, 20000);
+
+  /* ============ CRON JOBS ============ */
+  var crons=[
+    {nm:"Morning Send Wave",sub:"outbound campaigns",every:0,state:"run"},
+    {nm:"Open & Click Sync",sub:"engagement tracker",every:300,state:"idle"},
+    {nm:"Reply Sweep",sub:"inbox → CRM",every:900,state:"idle"},
+    {nm:"Lead Enrichment",sub:"append + verify",every:3600,state:"idle"},
+    {nm:"Datasheet PDF Refresh",sub:"BNC product docs",every:0,state:"queue"},
+    {nm:"Nightly Ops Report",sub:"summary + metrics",every:0,state:"idle"}
+  ];
+  var cronList=document.getElementById("cronlist");
+  crons.forEach(function(c,i){c.next=c.every?c.every*(0.3+Math.random()*0.7):(600+Math.random()*5400);
+    var d=document.createElement("div");d.className="cron "+c.state;d.innerHTML='<span class="cdot"></span><span class="nm">'+c.nm+'<small>'+c.sub+'</small></span><span class="nx"></span>';cronList.appendChild(d);});
+  function fmtDur(s){s=Math.max(0,Math.floor(s));var m=Math.floor(s/60),ss=s%60;if(s>=3600){return Math.floor(s/3600)+"h"+String(Math.floor(s%3600/60)).padStart(2,"0");}return (m<10?"0":"")+m+":"+(ss<10?"0":"")+ss;}
+  function tickCrons(){var nodes=cronList.children;
+    crons.forEach(function(c,i){c.next-=1;var nx=nodes[i].querySelector(".nx");
+      if(c.state==="run"){nx.innerHTML='<b>RUNNING</b>';if(c.next<=0)c.next=90+Math.random()*120;
+        if(Math.random()<0.03){nodes[i].className="cron idle";c.state="idle";c.next=180+Math.random()*600;}}
+      else{if(c.next<=8){nodes[i].className="cron run";c.state="run";nx.innerHTML='<b>RUNNING</b>';c.next=40+Math.random()*80;
+          if(c.nm==="Reply Sweep")addTicker("💬","Reply sweep synced inbox → CRM");
+          if(c.nm==="Lead Enrichment")addTicker("🔎","Enrichment complete — "+(60+Math.floor(Math.random()*140))+" leads updated");}
+        else{nx.innerHTML='next <b>'+fmtDur(c.next)+'</b>';}}});}
+  setInterval(tickCrons,1000);
+
+  /* ============ REPLY PILE ============ */
+  var stack=document.getElementById("stackzone"), pileN=0;
+  function addPile(){
+    if(stack.classList.contains("photos"))return; // photo wall has the panel
+    pileN++;var card=document.createElement("div");card.className="env-card";var zw=stack.clientWidth||300;var perRow=Math.max(4,Math.floor(zw/58));
+    card.style.left=(10+(pileN%perRow)*56+Math.random()*6)+"px";card.style.setProperty("--r",((Math.random()-.5)*10)+"deg");card.style.bottom=(8+Math.floor(pileN/perRow)*6)+"px";
+    stack.appendChild(card);var cards=stack.querySelectorAll(".env-card");if(cards.length>22)stack.removeChild(cards[0]);}
+
+  /* ============ TICKER ============ */
+  var tickerEl=document.getElementById("ticker");
+  var segs=["Test & Measurement lab","RF / Microwave engineer","Timing & Sync group","Aerospace & Defense team","Quantum research group","Semiconductor test floor","University physics dept","Signal integrity team"];
+  var feed=[
+    {e:"✉️",t:function(){return "Send wave fired — "+(20+Math.floor(Math.random()*40))+" envelopes away";}},
+    {e:"👀",t:function(){return "Opened — "+pick(segs);}},
+    {e:"💬",t:function(){return "Reply received — "+pick(segs);}},
+    {e:"🔎",t:function(){return "Enrichment complete — "+(60+Math.floor(Math.random()*140))+" leads updated";}},
+    {e:"📄",t:function(){return "Datasheet PDF refreshed — "+pick(["745T series","Model 577","855B","Model 505","OCXO line"]);}},
+    {e:"🔥",t:function(){return pick(segs)+" opened "+(2+Math.floor(Math.random()*4))+"×";}},
+    {e:"⭐",t:function(){return "Meeting booked — "+pick(segs);}}
+  ];
+  function nowHM(){var d=new Date();return p2(d.getHours())+":"+p2(d.getMinutes());}
+  function addTicker(emoji,text){var row=document.createElement("div");row.className="trow";
+    row.innerHTML='<span class="em">'+emoji+'</span><span>'+text+'</span><span class="tm">'+nowHM()+'</span>';
+    tickerEl.insertBefore(row,tickerEl.firstChild);while(tickerEl.children.length>5)tickerEl.removeChild(tickerEl.lastChild);}
+  function randomTicker(){var f=pick(feed);addTicker(f.e,f.t());}
+
+  /* ============ RIDDLE ============ */
+  var RIDDLES=[
+    {q:"I'm measured in hertz but I'm no rental car. Double me and my wavelength halves. What am I?",a:"Frequency"},
+    {q:"A clock reads 3:15. What's the angle between the hour and minute hands?",a:"7.5°"},
+    {q:"I have color bands on my body and I resist your advances. Read me right to know my worth. What am I?",a:"A resistor"},
+    {q:"What has keys but no locks, space but no room, and you can enter but not go in?",a:"A keyboard"},
+    {q:"Terminate me in 50 ohms and I'll stop reflecting on things. What am I?",a:"A matched transmission line"},
+    {q:"I'm the only whole number spelled with letters in alphabetical order. What am I?",a:"Forty (F-O-R-T-Y)"},
+    {q:"Which weighs more: a coulomb of feathers or a coulomb of lead?",a:"Trick — a coulomb is charge, not weight (equal charge)"},
+    {q:"Sample me below twice my highest frequency and I'll lie to you about my identity. What am I?",a:"Aliasing (Nyquist)"},
+    {q:"I flip only one bit, yet I turn a 1 into a -128 in a signed byte. What am I?",a:"The sign bit (two's complement MSB)"}
+  ];
+  /* One riddle per clock hour. Anchored to wall-clock time, NOT to page load, so a
+     refresh (or a second screen) never restarts the timer or skips ahead. The answer
+     auto-reveals for the last 10 minutes of the hour; tapping earlier gives a 20s peek. */
+  var RIDDLE_CYCLE=3600, RIDDLE_REVEAL_AT=3000, PEEK=20;
+  var rq=document.getElementById("riddleQ"),ra=document.getElementById("riddleA"),rbar=document.getElementById("riddleBar");
+  var riCap=document.getElementById("riddleCap"), peekUntil=0, riShown=-1;
+  function riddleSecs(){return Math.floor(Date.now()/1000);}
+  function riddleSlot(){return Math.floor(riddleSecs()/RIDDLE_CYCLE);}
+  function riddleElapsed(){return riddleSecs()%RIDDLE_CYCLE;}
+  function riddleIdx(){return ((riddleSlot()%RIDDLES.length)+RIDDLES.length)%RIDDLES.length;}
+  function riddleTick(){
+    var idx=riddleIdx(), el=riddleElapsed(), auto=el>=RIDDLE_REVEAL_AT;
+    if(idx!==riShown){riShown=idx;rq.textContent=RIDDLES[idx].q;peekUntil=0;}
+    var open=auto||riddleSecs()<peekUntil;
+    if(open){ra.textContent="→ "+RIDDLES[idx].a;ra.style.opacity=1;}
+    else{ra.textContent="";ra.style.opacity=0;}
+    rbar.style.width=Math.min(100,el/RIDDLE_CYCLE*100)+"%";
+    if(riCap){var left=Math.max(0,Math.ceil((RIDDLE_CYCLE-el)/60));
+      riCap.textContent=auto?("answer up · next in "+left+"m"):("tap to peek · "+left+"m left");}
+  }
+  document.querySelector(".riddle").addEventListener("click",function(){
+    if(riddleElapsed()<RIDDLE_REVEAL_AT){peekUntil=riddleSecs()+PEEK;riddleTick();}
+  });
+  riddleTick(); setInterval(riddleTick,1000);
+
+  /* ============ LIVE SUBMISSIONS HOOK ============
+     lobby-feed.js (hosted build only) calls these. Each one is written so a feed that
+     arrives mid-hour cannot yank something the room is already looking at. */
+  var BASE_RIDDLES=RIDDLES.slice(), pendingRiddles=null, adoptedSlot=riddleSlot();
+  window.BOARD={
+    setSubmitted:function(items){
+      SUBMITTED=(items||[]).filter(function(a){return a&&a.t;});
+    },
+    setRiddles:function(list){
+      // Hold new riddles until the hour turns. David's whole complaint was riddles
+      // moving under people, so a submission must never change the one on screen.
+      pendingRiddles=(list||[]).filter(function(r){return r&&r.q&&r.a;});
+    },
+    setPhotos:function(list){
+      var host=document.getElementById("stackzone"), head=document.getElementById("pileCount");
+      var photos=(list||[]).filter(function(p){return p&&p.src;});
+      if(!host)return;
+      if(!photos.length){host.classList.remove("photos");return;}
+      host.classList.add("photos");
+      host.innerHTML=photos.slice(0,6).map(function(p){
+        return '<figure class="lp"><img src="'+p.src+'" alt=""><figcaption>'+
+          (p.t||"")+(p.by?" · "+p.by:"")+'</figcaption></figure>';}).join("");
+      if(head)head.textContent=photos.length+" from the team";
+    }
+  };
+  setInterval(function(){
+    var s=riddleSlot();
+    if(s===adoptedSlot||!pendingRiddles)return;
+    adoptedSlot=s;
+    RIDDLES=BASE_RIDDLES.concat(pendingRiddles);
+    pendingRiddles=null;
+    riShown=-1; riddleTick();
+  },5000);
+
+  /* ============ ROBOT ============ */
+  var R=document.getElementById("robot");
+  R.innerHTML=[
+    '<defs><linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A3F86"/><stop offset="1" stop-color="#16225A"/></linearGradient></defs>',
+    '<line x1="100" y1="34" x2="100" y2="18" stroke="#3B9BFF" stroke-width="3"/>',
+    '<circle cx="100" cy="14" r="6" fill="#33E6B7"><animate attributeName="opacity" values="1;.3;1" dur="1.4s" repeatCount="indefinite"/></circle>',
+    '<g id="armL"><rect x="34" y="96" width="12" height="40" rx="6" fill="#22346F"/></g>',
+    '<g id="armR"><rect x="154" y="96" width="12" height="40" rx="6" fill="#22346F"/></g>',
+    '<rect x="46" y="34" width="108" height="96" rx="20" fill="url(#body)" stroke="#3B9BFF" stroke-width="2.5"/>',
+    '<rect x="60" y="52" width="80" height="30" rx="8" fill="#08122E" stroke="#33E6B7" stroke-width="1.5"/>',
+    '<g id="eyes"><circle cx="82" cy="67" r="6" fill="#33E6B7"/><circle cx="118" cy="67" r="6" fill="#33E6B7"/></g>',
+    '<rect x="60" y="92" width="80" height="30" rx="7" fill="#050C22" stroke="#3B9BFF" stroke-width="1.5"/>',
+    '<polyline id="wave" points="" fill="none" stroke="#33E6B7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+    '<rect x="70" y="130" width="60" height="16" rx="6" fill="#22346F"/>',
+    '<rect x="74" y="146" width="16" height="22" rx="5" fill="#16225A" stroke="#3B9BFF" stroke-width="1.5"/>',
+    '<rect x="110" y="146" width="16" height="22" rx="5" fill="#16225A" stroke="#3B9BFF" stroke-width="1.5"/>'
+  ].join("");
+  var wave=R.querySelector("#wave"),eyes=R.querySelector("#eyes"),armL=R.querySelector("#armL"),armR=R.querySelector("#armR"),phase=0;
+  function drawWave(){phase+=0.14;var pts=[];for(var x=0;x<=80;x+=4){var y=107+Math.sin((x/80)*Math.PI*3+phase)*7*Math.exp(-Math.pow((x-40)/34,2)*0.6);pts.push((60+x)+","+y.toFixed(1));}wave.setAttribute("points",pts.join(" "));}
+  if(!reduce)setInterval(drawWave,60);else drawWave();
+  function blink(){eyes.setAttribute("transform","scale(1,0.15)");eyes.style.transformOrigin="100px 67px";setTimeout(function(){eyes.setAttribute("transform","scale(1,1)");},130);setTimeout(blink,2600+Math.random()*3600);}
+  setTimeout(blink,1800);
+  function robotCheer(){armL.style.transition=armR.style.transition="transform .3s cubic-bezier(.3,1.5,.5,1)";armL.style.transformOrigin="40px 100px";armR.style.transformOrigin="160px 100px";
+    armL.setAttribute("transform","rotate(-38 40 100)");armR.setAttribute("transform","rotate(38 160 100)");robotSay(pick(["Meeting booked! 🎉","Demo on the calendar! ⭐","Boom — that's a demo! 🚀"]));
+    setTimeout(function(){armL.setAttribute("transform","");armR.setAttribute("transform","");},1400);}
+  var quips=["I'm grinding, fellas — trying to generate some business for you guys 💪","Nice — another open just landed 👀","Reply relays are humming.","Send wave away! ✉️","Datasheet PDFs fresh and served 📄","Enrichment complete — leads topped up 🔎","Timing looks good. All relays nominal.","Someone's reading our RF pitch right now 🔬","Pipeline's warm ☕"];
+  var bubble=document.getElementById("bubble"),bubbleTimer;
+  function robotSay(txt){bubble.style.opacity=0;setTimeout(function(){bubble.textContent=txt;bubble.style.opacity=1;},180);clearTimeout(bubbleTimer);bubbleTimer=setTimeout(function(){bubble.style.opacity=0;setTimeout(function(){bubble.textContent=pick(quips);bubble.style.opacity=1;},250);},5000);}
+  function setStageSub(){document.getElementById("stageSub").textContent=pick(["relays nominal · send wave active","tracking opens in real time","pipeline warm · conversations flowing","all campaigns green"]);}
+
+  /* ============ DECORATIVE LOOPS ============ */
+  function loop(fn,base,jit){(function go(){fn();setTimeout(go,base+Math.random()*jit);})();}
+  loop(function(){if(dayFrac()>0||Math.random()<0.3){evSendDecor();if(Math.random()<0.4)setStageSub();}},reduce?4000:1200,reduce?0:1500);
+  loop(function(){if(Math.random()<0.8&&(dayFrac()>0||Math.random()<0.4))evOpenDecor();},reduce?6000:2600,2600);
+  loop(function(){randomTicker();},9000,5000);
+
+  for(var k=0;k<4;k++)addTicker(pick(feed).e,pick(feed).t());
+  for(var m=0;m<6;m++)addPile();
+  robotSay("I'm grinding, fellas — trying to generate some business for you guys 💪"); setStageSub(); updSendRate(); setInterval(updSendRate,4000);
+})();
+</script>
+<script src="lobby-feed.js"></script>
+
+</body>
+</html>
