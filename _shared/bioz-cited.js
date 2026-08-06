@@ -57,6 +57,37 @@
       load();
     }
 
+    /* Expand / collapse. The Bioz embed sets overflow:hidden on its own root
+       and never reports its height, so content that grows inside it (the AI
+       summary "More" link, the focus tabs) is clipped at whatever height we
+       give the frame. Compact by default; the toggle opens a reading height,
+       and the first click inside the embed opens it automatically since that
+       is exactly when the widget's content gets taller. */
+    var moreBtn = panel.querySelector(".bioz-cited-more");
+    function setOpen(open) {
+      panel.classList.toggle("is-open", open);
+      if (moreBtn) {
+        moreBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        var m = moreBtn.querySelector("[data-more]");
+        var l = moreBtn.querySelector("[data-less]");
+        if (m) m.hidden = open;
+        if (l) l.hidden = !open;
+      }
+    }
+    if (moreBtn) {
+      moreBtn.addEventListener("click", function () {
+        load();
+        setOpen(!panel.classList.contains("is-open"));
+      });
+    }
+    /* Cross-origin clicks are invisible, but focus moving into the embed is
+       not: the window blurs while the <object> becomes the active element. */
+    window.addEventListener("blur", function () {
+      if (panel.classList.contains("is-open")) return;
+      var ae = document.activeElement;
+      if (ae && frame.contains(ae)) setOpen(true);
+    });
+
     /* The hero badge (and its sticky clone) now scroll to the panel instead of
        opening the old modal. The href stays a real Bioz link so middle-click,
        modifier-click and JS-off all still reach Bioz. pdf-configurator.js
