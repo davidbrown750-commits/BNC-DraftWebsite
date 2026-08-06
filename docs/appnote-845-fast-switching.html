@@ -418,7 +418,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p>TRIG OUT remains high until t = 50 us is reached and switching to the next frequency is initiated. Within tau_inv the switching transient is completed and TRIG OUT goes high again. The new frequency / power pair remains stable until t = 150 us is reached. TRIG OUT goes low for a second time and the next frequency / power pair is programmed.</p>
   <p>Note that the transient time tau_invN and the valid time tau_valN can vary from point to point, but the step time tau_step (= tau_invN + tau_valN) between frequencies is always 50 us. In particular, for the first frequency of the sweep, tau_inv1 is zero and the tau_val1 is 50 us.</p>
   <p>TRIG OUT can be used to precisely synchronize sweeps to any external equipment.</p>
-  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p02-04.png"><figcaption>Figure 1: Timing diagram showing the relationship between TRIG IN, TRIG OUT (signal valid), and RF output across consecutive step times, with the transient (tau_inv) and valid (tau_val) intervals within each 50 us step.</figcaption></figure>
+  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p02-04.png" alt=""><figcaption>Figure 1: Timing diagram showing the relationship between TRIG IN, TRIG OUT (signal valid), and RF output across consecutive step times, with the transient (tau_inv) and valid (tau_val) intervals within each 50 us step.</figcaption></figure>
 </section>
 
 <section>
@@ -477,11 +477,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h3>Graphical User Interface (GUI) Setup</h3>
   <p>In the GUI, the setup is straightforward. First, we configure the trigger system to wait for rising edge and run the entire sweep upon trigger.</p>
   <p>We switch to the TRIGGER tab of the GUI as shown in Figure 2. We set trigger mode to "Repeat", Trigger source to "External Trigger", Trigger Edge to "Rising", and Trigger Parameter to "Execute complete List". In the trigger output setting we set "Valid".</p>
-  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p03-05.png"><figcaption>Figure 2: GUI trigger settings. The TRIGGER tab with trigger mode set to Repeat, trigger source External, trigger edge Rising, trigger parameter Execute complete list, and trigger output set to Valid.</figcaption></figure>
+  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p03-05.png" alt=""><figcaption>Figure 2: GUI trigger settings. The TRIGGER tab with trigger mode set to Repeat, trigger source External, trigger edge Rising, trigger parameter Execute complete list, and trigger output set to Valid.</figcaption></figure>
   <p>Next, we switch to the SWEEP tab of the GUI as shown in Figure 3.</p>
   <p>We set the start frequency to 1 GHz, and stop frequency to 12 GHz. The number of repetitions of the sweep we set to 1, number of points to 10, "Dwell time" to 0.05 ms, disable the "Auto" and set the "Off time" to 0 ms.</p>
   <p>We can choose for the ALC (automatic level control) to operate in "on" or "hold" mode. We can start the sweep with the "on/off" button on the left.</p>
-  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p04-06.png"><figcaption>Figure 3: GUI sweep settings. The FREQ. SWEEP tab showing start and stop frequency entry, linear sweep mode, points over span, dwell time, off time, and ALC mode controls.</figcaption></figure>
+  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p04-06.png" alt=""><figcaption>Figure 3: GUI sweep settings. The FREQ. SWEEP tab showing start and stop frequency entry, linear sweep mode, points over span, dwell time, off time, and ALC mode controls.</figcaption></figure>
 </section>
 
 <section>
@@ -499,7 +499,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section>
   <h3>Measurement Results</h3>
   <p>Figure 4 shows the time domain measurements of the sweep. TRIG IN is applied approximately every 990 microseconds from an external source (red trace). Upon the rising edge, the "signal valid" (green trace) goes high almost instantly, indicating that the first frequency RF (blue trace) is stable. After the ten consecutive frequencies, "signal valid" goes low a last time and remains low until a new sweep starts upon a new trigger rising edge.</p>
-  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p05-07.png"><figcaption>Figure 4: 10 point sweep with 50 us step time. Time domain capture showing TRIG IN (red), signal valid (green), and the RF output (blue) for two successive externally triggered sweeps.</figcaption></figure>
+  <figure class="fig"><img src="../figures/appnotes/845-fast-switching/img-p05-07.png" alt=""><figcaption>Figure 4: 10 point sweep with 50 us step time. Time domain capture showing TRIG IN (red), signal valid (green), and the RF output (blue) for two successive externally triggered sweeps.</figcaption></figure>
 </section>
 
 <section>
