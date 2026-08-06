@@ -384,23 +384,32 @@ th .modelthumb{filter:none;}
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
 <style id="bioz-cited-css">
-.bioz-cited{background:linear-gradient(180deg,#f6f8fb 0%,#eef2f7 100%);border-top:1px solid #dfe6ef;padding:44px 0 52px}
+.bioz-cited{background:linear-gradient(180deg,#0a1626 0%,#0e2038 100%);padding:30px 0 36px}
 .bioz-cited-inner{max-width:1180px;margin:0 auto;padding:0 22px}
-.bioz-cited-head{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-.bioz-cited-mark{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;background:#113163;color:#fff;font:700 12px/1 Arial,Helvetica,sans-serif;letter-spacing:.14em;padding:9px 12px;border-radius:5px;margin-top:3px}
-.bioz-cited-head h2{margin:0 0 4px;font:700 22px/1.25 "Myriad Pro",Arial,Helvetica,sans-serif;color:#113163}
-.bioz-cited-head p{margin:0;font:400 14px/1.55 Arial,Helvetica,sans-serif;color:#5a6472;max-width:68ch}
-.bioz-cited-ext{margin-left:auto;align-self:center;font:700 13px Arial,Helvetica,sans-serif;color:#0655a3;text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(6,85,163,.35)}
-.bioz-cited-ext:hover{border-bottom-color:#0655a3}
-.bioz-cited-frame{position:relative;background:#fff;border:1px solid #dbe3ec;border-radius:8px;box-shadow:0 2px 10px -4px rgba(17,49,99,.18);overflow:hidden;min-height:520px}
-.bioz-cited-frame object{display:block;width:100%;height:560px;border:0}
-.bioz-cited-ph{display:flex;align-items:center;justify-content:center;height:520px;color:#8a94a3;font:400 14px Arial,Helvetica,sans-serif}
+.bioz-cited-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.bioz-cited-mark{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(115deg,#4c1d95 0%,#6d28d9 58%,#7c3aed 100%);color:#fff;font:700 11px/1 Arial,Helvetica,sans-serif;letter-spacing:.14em;padding:8px 11px;border-radius:5px;margin-top:2px;box-shadow:0 4px 14px -6px rgba(124,58,237,.6)}
+.bioz-cited-head h2{margin:0 0 3px;font:700 20px/1.25 "Myriad Pro",Arial,Helvetica,sans-serif;color:#fff}
+.bioz-cited-head p{margin:0;font:400 13px/1.5 Arial,Helvetica,sans-serif;color:#9fb3d0;max-width:68ch}
+.bioz-cited-ext{margin-left:auto;align-self:center;font:700 13px Arial,Helvetica,sans-serif;color:#7cc4ff;text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(124,196,255,.35)}
+.bioz-cited-ext:hover{border-bottom-color:#7cc4ff}
+.bioz-cited-frame{position:relative;background:linear-gradient(180deg,#fbfcfe 0%,#eef3f9 100%);border:1px solid rgba(124,170,220,.28);border-radius:14px;box-shadow:0 18px 44px -18px rgba(2,8,20,.6);overflow:hidden}
+.bioz-cited-frame::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#7c3aed 0%,#37b6f0 100%);z-index:1}
+.bioz-cited-frame object{display:block;width:100%;height:450px;border:0;transition:height .45s ease}
+.bioz-cited-fade{position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(180deg,rgba(238,243,249,0) 0%,#eef3f9 88%);pointer-events:none;transition:opacity .3s ease}
+.bioz-cited.is-open .bioz-cited-frame object{height:960px}
+.bioz-cited.is-open .bioz-cited-fade{opacity:0}
+.bioz-cited-ph{display:flex;align-items:center;justify-content:center;height:450px;color:#8a94a3;font:400 14px Arial,Helvetica,sans-serif}
+.bioz-cited-foot{display:flex;justify-content:center;margin-top:14px}
+.bioz-cited-more{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid rgba(124,196,255,.4);border-radius:999px;color:#9fc7ef;font:700 12px/1 "Myriad Pro",Arial,Helvetica,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease}
+.bioz-cited-more:hover{background:rgba(55,182,240,.12);border-color:#37b6f0;color:#fff}
+.bioz-cited-more svg{transition:transform .3s ease}
+.bioz-cited.is-open .bioz-cited-more svg{transform:rotate(180deg)}
 @media (max-width:720px){
-  .bioz-cited{padding:32px 0 38px}
-  .bioz-cited-head h2{font-size:19px}
+  .bioz-cited{padding:24px 0 30px}
+  .bioz-cited-head h2{font-size:18px}
   .bioz-cited-ext{margin-left:0}
-  .bioz-cited-frame object,.bioz-cited-ph{height:640px}
-  .bioz-cited-frame{min-height:640px}
+  .bioz-cited-frame object,.bioz-cited-ph{height:560px}
+  .bioz-cited.is-open .bioz-cited-frame object{height:1120px}
 }
 @media print{.bioz-cited{display:none}}
 </style>
@@ -598,6 +607,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
   <div class="bioz-cited-frame" data-bioz-src="https://www.bioz.com/v_widget_6_0/13441/pcx-7421">
    <div class="bioz-cited-ph">Loading peer-reviewed citations&hellip;</div>
+   <div class="bioz-cited-fade" aria-hidden="true"></div>
+  </div>
+  <div class="bioz-cited-foot">
+   <button class="bioz-cited-more" type="button" aria-expanded="false" aria-controls="bioz-cited">
+    <span data-more>Show full listings</span><span data-less hidden>Collapse</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+   </button>
   </div>
  </div>
 </section>
