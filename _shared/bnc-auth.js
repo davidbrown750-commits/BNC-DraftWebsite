@@ -156,8 +156,10 @@
     var acct = bar.querySelector('.bnc-acct');
     if (!acct) {
       acct = el('div', 'bnc-acct');
-      var cta = bar.querySelector('.sitenav-cta');
-      if (cta) bar.insertBefore(acct, cta); else bar.appendChild(acct);
+      // Sign up sits at the far right of the bar, past the Get a Quote/Demo
+      // button; the hamburger is the only thing after it.
+      var tgl = bar.querySelector('.navtoggle');
+      if (tgl) bar.insertBefore(acct, tgl); else bar.appendChild(acct);
     }
     acct.innerHTML = '';
     if (isSignedIn()) {
