@@ -107,6 +107,7 @@ KIND_TYPE = {
     "Company": "Product",
 }
 
+SLUGGY_RE = re.compile(r"^[0-9A-Za-z]+([-_][0-9A-Za-z]+)+$")
 WORD_RE = re.compile(r"[a-z0-9]+(?:[.\-+][a-z0-9]+)*")
 # BNC model numbers: 3-4 digits with optional suffix, plus the lettered families
 MODEL_RE = re.compile(
@@ -299,7 +300,13 @@ def main():
         old = old_by_url.get(u)
 
         # -- title ----------------------------------------------------------
-        title = (old or {}).get("t") or p["t"] or p["h1"] or u
+        # The previous index kept some titles that were really filenames
+        # ("02-rf-fundamentals"), so a curated title only wins if it reads like
+        # one.
+        prev_t = (old or {}).get("t") or ""
+        if SLUGGY_RE.match(prev_t.strip()):
+            prev_t = ""
+        title = prev_t or p["t"] or p["h1"] or u
         title = re.sub(r"\s+", " ", title).strip()
 
         # -- category -------------------------------------------------------
