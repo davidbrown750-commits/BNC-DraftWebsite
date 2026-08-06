@@ -394,7 +394,13 @@
         '<object type="text/html" data="'+href+'" style="width:100%;height:100%;border:0"></object>';
       ov.style.display = "flex";
     }
+    /* Pages carrying the on-page "Cited in peer-reviewed research" panel handle
+       badge clicks themselves (bioz-cited.js scrolls to the panel), so the
+       modal stands down there. The modal remains the behaviour on any page that
+       does not have the panel. */
+    var hasPanel = !!document.getElementById("bioz-cited");
     function bindBadge(a){
+      if (hasPanel) return;
       a.addEventListener("click", function(e){
         if (e.metaKey || e.ctrlKey || e.shiftKey) return; // let power users open a tab
         e.preventDefault();
