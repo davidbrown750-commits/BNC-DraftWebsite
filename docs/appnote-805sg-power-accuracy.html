@@ -423,25 +423,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li>The power levels within a power zone are related to each other, while power levels between different power zones are unrelated.</li>
 </ul>
 <p>Measurements made on our test unit in the same conditions as the BAE unit:</p>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p04-01.png"><figcaption>Figure 1: ALC Setpoint values - the values overlap between different power zones.</figcaption></figure>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p04-02.png"><figcaption>Figure 2: Relative power accuracy with Original Calibration. The biggest inaccuracies are at power zone limits 2, 7 and 12 dBm.</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p04-01.png" alt=""><figcaption>Figure 1: ALC Setpoint values - the values overlap between different power zones.</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p04-02.png" alt=""><figcaption>Figure 2: Relative power accuracy with Original Calibration. The biggest inaccuracies are at power zone limits 2, 7 and 12 dBm.</figcaption></figure>
 <p>The results are similar to those of BAE.</p>
 </section>
 
 <section>
 <h3>3. Modified Calibration Method &mdash; the detector attenuator is set to the same value for all power zones</h3>
 <p>We modified the calibration settings so that the attenuation level of the power detector attenuator is the same in all power zones. Furthermore, after calibration, we manually set the set points of the lowest power level of a power zone to be equal to the setpoint of the highest power level of the lower power zone.</p>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p05-03.png"><figcaption>Figure 3: ALC setpoint - all power zones have the same detector attenuation level.</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p05-03.png" alt=""><figcaption>Figure 3: ALC setpoint - all power zones have the same detector attenuation level.</figcaption></figure>
 
 <h4>a) Fully automated power setting</h4>
 <p>For these measurements, the power is stepped through in 0.1 dB step. The power setting is left to the firmware, one shot ALC.</p>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p06-04.png"><figcaption>Figure 4: Relative power accuracy with Modified Calibration. The inaccuracies at power zone limits have been eliminated.</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p06-04.png" alt=""><figcaption>Figure 4: Relative power accuracy with Modified Calibration. The inaccuracies at power zone limits have been eliminated.</figcaption></figure>
 <p>Modified the Calibration allows to eliminate the inaccuracies at power zone limits. However, the &ldquo;one shot&rdquo; Automatic Level Control does not ensure a power step accuracy of 0.05 dB for a 0.1 dB step.</p>
 
 <h4>b) Software simulated Closed ALC loop (Semi-Assisted mode)</h4>
 <p>The &ldquo;one shot&rdquo; ALC not offering accurate enough results, we simulated a closed ALC Loop in our testing software: To do so, the power command is sent until the step accuracy is within the allowed 0.05 dB (maximum 50 attempts).</p>
 <p>The power accuracy was reached on average after 1.2 attempts. The highest number of attempts was 27.</p>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p06-05.png"><figcaption>Figure 5: Relative power accuracy with Modified Calibration and Semi-Assisted power setting (software).</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p06-05.png" alt=""><figcaption>Figure 5: Relative power accuracy with Modified Calibration and Semi-Assisted power setting (software).</figcaption></figure>
 
 <h4>c) Software Full-Assist of power setting</h4>
 <p>The Semi-assisted power setting mode shows that the expected power step accuracy can be easily reached by sending the power command several times until the output power is within the allowed window. It also shows that the APMQS / Model 805-SG internal power detector&rsquo;s accuracy is limited.</p>
@@ -452,7 +452,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li>Use Semi-Assisted power setting until measured output power &gt; target power.</li>
 <li>Binary search of ideal Control Value until target power error &lt; 0.005 dB.</li>
 </ul>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p07-06.png"><figcaption>Figure 6: Relative power accuracy with Modified Calibration and Fully-Assisted power setting (software).</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p07-06.png" alt=""><figcaption>Figure 6: Relative power accuracy with Modified Calibration and Fully-Assisted power setting (software).</figcaption></figure>
 <p>In this attempt, each power setting took about 2 seconds. It should however be possible to optimize the setting time.</p>
 
 <h4>d) Conclusion</h4>
@@ -460,7 +460,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <p>However, we have shown that the target is achievable by simply sending the power command 1.2 times on average (Semi-assisted mode) and even achieve an accuracy of &lt; 0.005 dB (Fully-assisted mode).</p>
 <p>Using the Semi-Assisted or Fully-Assisted modes depend on BAE&rsquo;s capacity to take power level measurements during their operation.</p>
 <p>The Fully-Assisted mode could be turned into a &ldquo;one-shot&rdquo; level setting by building a lookup table but would require best temperature stability.</p>
-<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p08-07.png"><figcaption>Figure 7: Comparison between all proposed power setting methods.</figcaption></figure>
+<figure class="fig"><img src="../figures/appnotes/805sg-power-accuracy/img-p08-07.png" alt=""><figcaption>Figure 7: Comparison between all proposed power setting methods.</figcaption></figure>
 </section>
 </article>
 
