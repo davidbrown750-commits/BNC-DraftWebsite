@@ -1,0 +1,44 @@
+// Edge middleware: routes `Accept: text/markdown` requests to the markdown renderer.
+//
+// Why this exists rather than a vercel.json rewrite: Vercel resolves the filesystem
+// BEFORE it evaluates rewrites, and every page here is a real .html file (and `/`
+// resolves to index.html). A rewrite with a `has` condition on the accept header
+// therefore never fires. Middleware runs ahead of the filesystem, so it can.
+//
+// Cost: this runs only on `/` and on .html page requests, per the matcher below.
+// Assets, PDFs, figures and the API are excluded. For any request whose Accept
+// header does not mention text/markdown, which is every browser request, it returns
+// immediately without doing any work.
+
+export const config = {
+  matcher: [
+    "/",
+    "/((?!api/|_shared/|lib/|figures/|books/|docs/pdfs/|software/).*\\.html)",
+  ],
+};
+
+export default async function middleware(request) {
+  const accept = (request.headers.get("accept") || "").toLowerCase();
+
+  // Browsers send text/html,application/xhtml+xml,... and never text/markdown,
+  // so they fall straight through and are served the normal static page.
+  if (!accept.includes("text/markdown")) return;
+
+  const url = new URL(request.url);
+  const path = url.pathname === "/" ? "/home.html" : url.pathname;
+
+  const target = new URL("/api/md", url.origin);
+  target.searchParams.set("path", path);
+
+  // api/md.js fetches the page with `Accept: text/html`, so that inner request
+  // falls through this middleware untouched and cannot loop back here.
+  const res = await fetch(target.toString(), {
+    headers: { accept: "text/markdown" },
+  });
+
+  // If rendering fails for any reason, fall through to the normal HTML page
+  // rather than serving an error to an agent.
+  if (!res.ok) return;
+
+  return res;
+}
