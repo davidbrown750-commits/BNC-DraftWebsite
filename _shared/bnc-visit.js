@@ -181,29 +181,38 @@
 })();
 
 
-/* Search result badges: classify each result by its page type (data-u slug) and color it. Data Sheet = blue, Manual = purple, Video = green, Application Note (appnote-/brief-) = yellow, Technical Brief (article-) = orange. Only real data sheets keep the Data Sheet label. */
+/* Search result badges: classify each result by its page type (data-u slug) and
+   tag it with a category class. The palette itself lives in the bnc-nav-v2
+   stylesheet, so colour is one source of truth rather than inline styles:
+   Data Sheet orange, Video purple, FAQ green, Manual blue, Application Note
+   gold, Technical Brief rose, E-Book teal, everything else slate. */
 (function(){
-  var COL={
-    ds:['rgba(56,132,208,0.18)','#6fb0ec'],
-    video:['rgba(47,158,107,0.18)','#4fbf8a'],
-    manual:['rgba(124,58,237,0.14)','#a78bfa'],
-    faq:['rgba(255,255,255,0.16)','#ffffff'],
-    appnote:['rgba(240,199,60,0.16)','#f2c94c'],
-    tech:['rgba(242,153,74,0.18)','#f2994a']
-  };
+  var CLS={ds:'ss-b-datasheet',video:'ss-b-video',manual:'ss-b-manual',faq:'ss-b-faq',
+           appnote:'ss-b-application-note',tech:'ss-b-technical-brief',
+           ebook:'ss-b-e-book',product:'ss-b-product'};
   function slug(t){return (t.getAttribute('data-u')||'').split('/').pop().toLowerCase();}
+  function keyFor(u,text){
+    if(u.indexOf('appnote-')===0||u.indexOf('brief-')===0) return 'appnote';
+    if(u.indexOf('article-')===0) return 'tech';
+    var t=(text||'').trim().toLowerCase();
+    if(t.indexOf('data')===0) return 'ds';
+    if(t.indexOf('video')===0) return 'video';
+    if(t.indexOf('manual')===0) return 'manual';
+    if(t.indexOf('faq')===0) return 'faq';
+    if(t.indexOf('e-book')===0||t.indexOf('book')===0) return 'ebook';
+    if(t.indexOf('application')===0) return 'appnote';
+    if(t.indexOf('technical')===0) return 'tech';
+    return 'product';
+  }
   function colorize(){
     var tiles=document.querySelectorAll('.ss-gtile');
     for(var i=0;i<tiles.length;i++){
       var tile=tiles[i], b=tile.querySelector('.ss-gbadge'); if(!b||b.__typed) continue;
-      var u=slug(tile), set=null;
-      if(u.indexOf('appnote-')===0||u.indexOf('brief-')===0){ set=COL.appnote; b.textContent='Application Note'; }
-      else if(u.indexOf('article-')===0){ set=COL.tech; b.textContent='Technical Brief'; }
-      else {
-        var t=(b.textContent||'').trim().toLowerCase();
-        set=t.indexOf('data')===0?COL.ds:(t.indexOf('video')===0?COL.video:(t.indexOf('manual')===0?COL.manual:(t.indexOf('faq')===0?COL.faq:null)));
-      }
-      if(set){ b.style.background=set[0]; b.style.color=set[1]; b.__typed=true; }
+      var u=slug(tile), key=keyFor(u,b.textContent);
+      if(key==='appnote'&&(u.indexOf('appnote-')===0||u.indexOf('brief-')===0)) b.textContent='Application Note';
+      else if(key==='tech'&&u.indexOf('article-')===0) b.textContent='Technical Brief';
+      b.className='ss-gbadge '+CLS[key];
+      b.__typed=true;
     }
   }
   function start(){ try{ colorize(); new MutationObserver(function(){colorize();}).observe(document.body,{childList:true,subtree:true}); }catch(e){} }

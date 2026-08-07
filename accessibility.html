@@ -196,27 +196,114 @@
 <meta property="og:description" content="Our commitment to WCAG 2.1 AA digital accessibility, and how to reach us about it.">
 <meta property="og:url" content="https://www.berkeleynucleonics.com/accessibility.html">
 <style>
-:root{--blue:#0655a3;--navy:#113163;--ink:#16202e;--mut:#5a6b7e;--paper:#fff;--ground:#eef2f7;--line:#d5dee8;--tint:#f5f8fc;--maxw:760px}
+:root{
+  --blue:#0655a3; --navy:#113163; --deep:#0a1c3a; --purple:#6b21a8;
+  --ink:#16202e; --mut:#5a6b7e; --paper:#fff; --ground:#eef2f7;
+  --line:#d5dee8; --tint:#f5f8fc; --maxw:880px; --r:4px;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--ground);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.62;font-size:16px}
-h1,h2,.eyebrow{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif}
-.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:var(--navy);color:#fff;padding:10px 16px;font-weight:700;text-decoration:none;border-radius:0 0 4px 0}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;line-height:1.65;font-size:16px}
+h1,h2,h3,.eyebrow,.tile-v,.chip{font-family:'Myriad Pro','Segoe UI',Arial,Helvetica,sans-serif}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:var(--navy);color:#fff;
+  padding:10px 16px;font-weight:700;text-decoration:none;border-radius:0 0 var(--r) 0}
 .skip-link:focus{left:0}
-.hero{background:linear-gradient(160deg,#0a1c3a,#113163 60%,#0d47a1);color:#fff;padding:30px 24px}
-.hero-in{max-width:var(--maxw);margin:0 auto;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-.hero svg{height:42px}.hero svg path,.hero svg polygon{fill:#fff}
-.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#cdd9ea}
-.hero h1{margin:1px 0 0;font-size:clamp(22px,3.2vw,29px)}
-main{max-width:var(--maxw);margin:24px auto 60px;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px clamp(20px,5vw,44px) 40px;box-shadow:0 2px 10px rgba(16,32,60,.05)}
-h2{color:var(--navy);font-size:18px;border-top:3px solid var(--navy);padding-top:14px;margin:26px 0 8px}
-h2:first-of-type{border-top:none;padding-top:6px;margin-top:8px}
-p{margin:8px 0}ul{margin:8px 0;padding-left:22px}li{margin:5px 0}
+
+/* ---- Hero ---- */
+.phead{background:
+   radial-gradient(1200px 380px at 12% -40%,rgba(6,85,163,.55),transparent 60%),
+   linear-gradient(150deg,var(--deep) 0%,var(--navy) 55%,#0d47a1 130%);
+  color:#fff;padding:40px 0 34px;position:relative;overflow:hidden}
+.phead::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;
+  background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:linear-gradient(105deg,transparent 30%,#000 130%);
+          mask-image:linear-gradient(105deg,transparent 30%,#000 130%)}
+.phead .wrap{position:relative;z-index:1}
+.brandrow{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.brandrow svg{height:40px;flex:none}
+.brandrow svg path,.brandrow svg polygon{fill:#fff}
+.eyebrow{font-size:12px;letter-spacing:.17em;text-transform:uppercase;color:#cdd9ea;font-weight:700}
+.phead h1{margin:6px 0 0;font-size:clamp(26px,4vw,38px);line-height:1.15;letter-spacing:-.01em}
+.lead{margin:14px 0 0;max-width:62ch;color:#dce6f4;font-size:clamp(15px,1.7vw,17px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.24);color:#e8f0fa;border-radius:999px;
+  padding:6px 14px;font-size:12.5px;font-weight:700;letter-spacing:.02em}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:#7fd1a0;flex:none}
+
+/* ---- At a glance ---- */
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;
+  margin:-26px auto 0;position:relative;z-index:2}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+  border-top:3px solid var(--blue);padding:16px 18px;box-shadow:0 3px 12px rgba(16,32,60,.07)}
+.tile-k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.tile-v{margin-top:5px;font-size:16px;font-weight:700;color:var(--navy);line-height:1.35}
+
+/* ---- Body ---- */
+main{max-width:var(--maxw);margin:28px auto 0;padding:0 24px 8px}
+.sec{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+  padding:26px clamp(20px,4vw,34px);margin:0 0 16px;box-shadow:0 2px 8px rgba(16,32,60,.05)}
+.sec h2{margin:0 0 12px;color:var(--navy);font-size:20px;line-height:1.3;
+  padding-left:14px;border-left:4px solid var(--blue)}
+.sec p{margin:10px 0}
+.sec p:first-of-type{margin-top:0}
 a{color:var(--blue);font-weight:700}
-a:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:2px}
-.contact{background:var(--tint);border:1px solid var(--line);border-radius:5px;padding:14px 18px;margin:12px 0}
-.contact b{color:var(--navy)}
-.meta{color:var(--mut);font-size:13px;margin-top:22px;border-top:1px solid var(--line);padding-top:12px}
-@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:2px}
+
+/* checked list */
+ul.support{list-style:none;margin:14px 0 0;padding:0}
+ul.support li{position:relative;padding:0 0 0 30px;margin:11px 0}
+ul.support li::before{content:"";position:absolute;left:0;top:.42em;width:16px;height:16px;
+  background:var(--blue);border-radius:50%;
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/12px no-repeat,linear-gradient(#000,#000);
+  -webkit-mask-composite:xor;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/></svg>") center/12px no-repeat,linear-gradient(#000,#000);
+  mask-composite:exclude}
+
+/* limitations */
+ul.lim{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
+ul.lim li{background:var(--tint);border:1px solid var(--line);border-left:3px solid var(--purple);
+  border-radius:var(--r);padding:14px 18px}
+ul.lim li b{color:var(--navy);display:block;margin-bottom:3px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:16px}
+.ccard{background:var(--tint);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.ccard .k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.ccard .v{margin-top:5px;font-size:15px;line-height:1.5;word-break:break-word}
+.ccard .v a{font-weight:700}
+
+.meta{color:var(--mut);font-size:13.5px;margin:6px 0 0}
+
+/* ---- Footer ---- */
+.pfoot{margin-top:26px;background:var(--navy);color:#c9d8ee;padding:26px 0 30px}
+.pfoot .wrap{display:flex;gap:16px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.pfoot p{margin:0;font-size:13.5px}
+.pfoot a{color:#fff;font-weight:700}
+.backlink{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.3);
+  border-radius:999px;padding:8px 16px;text-decoration:none;font-size:13.5px}
+.backlink:hover{background:rgba(255,255,255,.1)}
+
+@media (max-width:600px){
+  .glance{margin-top:16px}
+  .phead{padding:30px 0 26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+@media print{
+  body{background:#fff;font-size:11pt}
+  .phead{background:#fff;color:#000;padding:0 0 12px;border-bottom:2px solid #000}
+  .phead::after,.chips,.pfoot,.skip-link{display:none}
+  .eyebrow,.lead{color:#333}
+  .brandrow svg path,.brandrow svg polygon{fill:#000}
+  .sec,.tile,.ccard,ul.lim li{border:1px solid #bbb;box-shadow:none;break-inside:avoid}
+  .glance{margin-top:12px}
+}
 </style>
 </head>
 <body>
@@ -225,42 +312,108 @@ a:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:2
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<div class="hero"><div class="hero-in">
-<svg viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></svg>
-<div><div class="eyebrow">Berkeley Nucleonics Corporation</div><h1>Accessibility Statement</h1></div>
-</div></div>
+
+<header class="phead">
+  <div class="wrap">
+    <div class="brandrow">
+      <svg viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></svg>
+      <div><div class="eyebrow">Berkeley Nucleonics Corporation</div></div>
+    </div>
+    <h1>Accessibility Statement</h1>
+    <p class="lead">We build accessibility into the site itself rather than bolting a widget onto
+    it, and we name what still falls short. If anything here stands between you and the
+    information you need, tell us and we will get it to you directly.</p>
+    <div class="chips">
+      <span class="chip"><span class="dot" aria-hidden="true"></span>WCAG 2.1 Level AA</span>
+      <span class="chip">Reviewed August 6, 2026</span>
+      <span class="chip">No overlay widget</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="glance">
+    <div class="tile"><div class="tile-k">Standard</div><div class="tile-v">WCAG 2.1 Level AA</div></div>
+    <div class="tile"><div class="tile-k">Conformance</div><div class="tile-v">Partially conformant</div></div>
+    <div class="tile"><div class="tile-k">Last reviewed</div><div class="tile-v">August 6, 2026</div></div>
+    <div class="tile"><div class="tile-k">Response time</div><div class="tile-v">Three business days</div></div>
+  </div>
+</div>
+
 <main id="main">
+
+<section class="sec">
 <h2>Our commitment</h2>
 <p>Berkeley Nucleonics Corporation is committed to ensuring digital accessibility for people with disabilities. We are continually improving the experience for all users and applying the relevant accessibility standards to www.berkeleynucleonics.com.</p>
+</section>
 
+<section class="sec">
 <h2>Conformance status</h2>
 <p>The Web Content Accessibility Guidelines (WCAG) define requirements to improve accessibility for people with disabilities, at three levels: A, AA, and AAA. Our website is measured against <b>WCAG 2.1 Level AA</b>. We currently consider the site <b>partially conformant</b>, which means some content does not yet fully meet the standard while remediation continues.</p>
+</section>
 
+<section class="sec">
 <h2>How we support accessibility</h2>
-<ul>
+<ul class="support">
 <li>Accessibility is built into our website's own HTML and design. We do <b>not</b> rely on a third-party accessibility overlay or widget.</li>
 <li>Pages use semantic structure and landmarks, a single main heading, and a "skip to content" link.</li>
 <li>The site is operable by keyboard, with a clearly visible focus indicator.</li>
 <li>Images that convey information include text alternatives; decorative images are marked as such.</li>
 <li>Forms have accessible names and clear, specific error messages.</li>
 <li>We maintain sufficient color contrast and respect the reduced-motion preference.</li>
+<li>Decorative animations are hidden from screen readers, and long webinars carry a timestamped transcript on the page beneath the player.</li>
 </ul>
+</section>
 
+<section class="sec">
 <h2>Known limitations</h2>
-<p>Some older downloadable documents (PDFs) may not yet be fully accessible. If you need any document in an accessible or alternative format, contact us and we will provide it.</p>
+<p>We would rather name these plainly than leave you to find them. If any of the following stands
+between you and what you need, contact us and we will get it to you directly.</p>
+<ul class="lim">
+<li><b>Downloadable documents</b> Some older PDFs, including datasheets and user manuals, are not
+yet fully tagged for screen readers. Ask us for any document in an accessible or alternative format
+and we will provide it.</li>
+<li><b>Video captions</b> Every video hosted directly on this site is a short product animation
+with no soundtrack, so there is nothing to caption; each one accompanies a still image that already
+has a text description. Our webinars and tutorials are hosted on YouTube and carry automatic
+captions, which are useful but not error-free. Two of the longer webinars now include a full
+transcript on the page itself, beneath the player. If you need a corrected transcript for any
+video, contact us and we will supply one.</li>
+<li><b>Embedded third-party content</b> A small number of pages include material served by other
+providers, such as scientific citation listings and consent management. We do not control their
+markup, and their accessibility may differ from the rest of the site.</li>
+</ul>
+</section>
 
+<section class="sec">
 <h2>Feedback and contact</h2>
 <p>We welcome your feedback. If you encounter an accessibility barrier or need information in an alternative format, please contact us and we will respond within three business days.</p>
 <div class="contact">
-<p><b>Email:</b> <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a></p>
-<p><b>Phone:</b> <a href="tel:+14154539955">415-453-9955</a></p>
-<p><b>Mail:</b> 2955 Kerner Blvd., Ste D, San Rafael, CA 94901</p>
+  <div class="ccard"><div class="k">Email</div><div class="v"><a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a></div></div>
+  <div class="ccard"><div class="k">Phone</div><div class="v"><a href="tel:+14154539955">415-453-9955</a></div></div>
+  <div class="ccard"><div class="k">Mail</div><div class="v">2955 Kerner Blvd., Ste D<br>San Rafael, CA 94901</div></div>
 </div>
+</section>
 
+<section class="sec">
 <h2>Assessment approach</h2>
 <p>BNC assesses accessibility by self-evaluation, combining automated testing (axe and Lighthouse) with manual keyboard and screen-reader review. We repeat this assessment as the site changes.</p>
+<p>The most recent sweep, on August 6, 2026, covered every page carrying the standard site
+navigation. It verified that each page declares a language and a title, that every content image
+carries a text alternative, that every form field has an accessible name, and that text colors meet
+the 4.5:1 contrast ratio Level AA requires. Contrast was measured rather than estimated: our primary
+blue reaches 7.4:1 on white and our navy 12.8:1, both of which also clear the stricter Level AAA
+threshold. One grey used for placeholder text fell short at 3.1:1 and was darkened until it passed.</p>
+<p class="meta">This statement was last reviewed on August 6, 2026. It replaces our previous use of a third-party accessibility widget.</p>
+</section>
 
-<p class="meta">This statement was last reviewed on July 30, 2026. It replaces our previous use of a third-party accessibility widget.</p>
 </main>
+
+<footer class="pfoot">
+  <div class="wrap">
+    <p>Berkeley Nucleonics Corporation &middot; Test, Measurement and Nuclear Instrumentation since 1963</p>
+    <a class="backlink" href="/">Back to berkeleynucleonics.com</a>
+  </div>
+</footer>
 </body>
 </html>
