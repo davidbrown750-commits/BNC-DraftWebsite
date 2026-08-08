@@ -242,6 +242,12 @@ h1,h2,h3,.eyebrow,.tile-v,.chip{font-family:'Myriad Pro','Segoe UI',Arial,Helvet
   border-top:3px solid var(--blue);padding:16px 18px;box-shadow:0 3px 12px rgba(16,32,60,.07)}
 .tile-k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
 .tile-v{margin-top:5px;font-size:16px;font-weight:700;color:var(--navy);line-height:1.35}
+.tile-v a.tile-link{color:var(--navy);text-decoration:none;border-bottom:1px solid rgba(6,85,163,.4)}
+.tile-v a.tile-link:hover{color:var(--blue);border-bottom-color:var(--blue)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* keep the heading clear of the viewport top when jumped to from the tile */
+#known-limitations{scroll-margin-top:16px}
 
 /* ---- Body ---- */
 main{max-width:var(--maxw);margin:28px auto 0;padding:0 24px 8px}
@@ -334,7 +340,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="wrap">
   <div class="glance">
     <div class="tile"><div class="tile-k">Standard</div><div class="tile-v">WCAG 2.1 Level AA</div></div>
-    <div class="tile"><div class="tile-k">Conformance</div><div class="tile-v">Partially conformant</div></div>
+    <div class="tile"><div class="tile-k">Conformance</div><div class="tile-v"><a class="tile-link" href="#known-limitations">Partially conformant <span aria-hidden="true">&rarr;</span><span class="sr-only">, see known limitations</span></a></div></div>
     <div class="tile"><div class="tile-k">Last reviewed</div><div class="tile-v">August 6, 2026</div></div>
     <div class="tile"><div class="tile-k">Response time</div><div class="tile-v">Three business days</div></div>
   </div>
@@ -349,7 +355,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="sec">
 <h2>Conformance status</h2>
-<p>The Web Content Accessibility Guidelines (WCAG) define requirements to improve accessibility for people with disabilities, at three levels: A, AA, and AAA. Our website is measured against <b>WCAG 2.1 Level AA</b>. We currently consider the site <b>partially conformant</b>, which means some content does not yet fully meet the standard while remediation continues.</p>
+<p>The Web Content Accessibility Guidelines (WCAG) define requirements to improve accessibility for
+people with disabilities, at three levels: A, AA, and AAA. We measure this site against
+<b>WCAG 2.1 Level AA</b>.</p>
+<p>Our status is <b>partially conformant</b>. That is the W3C's own term for a site that meets the
+standard except in specific places, and we list every one of those places under
+<a href="#known-limitations">Known limitations</a> below. We use it deliberately: WCAG conformance
+is all-or-nothing, so any site with a known gap that calls itself conformant is overstating.</p>
 </section>
 
 <section class="sec">
@@ -365,7 +377,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </ul>
 </section>
 
-<section class="sec">
+<section class="sec" id="known-limitations">
 <h2>Known limitations</h2>
 <p>We would rather name these plainly than leave you to find them. If any of the following stands
 between you and what you need, contact us and we will get it to you directly.</p>
