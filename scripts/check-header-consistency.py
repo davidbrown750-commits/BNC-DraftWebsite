@@ -56,6 +56,7 @@ MARKERS = [
     ('<a class="nav-trigger">Applications', "the renamed Applications menu"),
     ('id="ss-js"', "the on-site search"),
     ("bnc-emerald.css", "inward-opening Support flyouts"),
+    ('id="bnc-nav-mobile-wrap"', "the drawer that fits a handset screen"),
 ]
 
 

@@ -63,17 +63,14 @@ async function probe(page) {
     const cs = (el) => (el ? getComputedStyle(el) : null);
     return {
       hasNav: !!nav,
-      // Not scrollWidth: the hidden mega-menu flyouts legitimately overhang, and
-      // html{overflow-x:clip} contains them without shrinking scrollWidth. The
-      // only thing that matters is whether the page can actually be scrolled
-      // sideways, so ask it to and see if it moved.
-      canScrollX: (() => {
-        const before = window.scrollX;
-        window.scrollTo(9999, window.scrollY);
-        const moved = window.scrollX > 0;
-        window.scrollTo(before, window.scrollY);
-        return moved;
-      })(),
+      // Not scrollWidth, and not scrollTo either. The hidden mega-menu flyouts
+      // legitimately overhang, and html{overflow-x:clip} contains them without
+      // shrinking scrollWidth; meanwhile a hidden-like overflow still honours a
+      // programmatic scrollTo even though no user can pan the page. The signal
+      // that means something to a reader is a real horizontal scrollbar, which
+      // steals height from the viewport when it appears. Wheel input is checked
+      // separately, outside the probe, because it needs a real input event.
+      hScrollbar: window.innerHeight - document.documentElement.clientHeight,
       viewW: window.innerWidth,
       navPos: nav ? cs(nav).position : null,
       menu: r(menu), cta: r(cta), search: r(search), logo: r(logo),
@@ -118,8 +115,20 @@ async function run() {
           if (!m.hasNav) { fail(where, 'no .sitenav on the page'); continue; }
 
           // 1. the flyouts must not stretch the document
-          if (m.canScrollX) {
-            fail(where, 'page scrolls sideways', `viewport ${m.viewW}px`);
+          if (m.hScrollbar > 0) {
+            fail(where, 'horizontal scrollbar', `viewport ${m.viewW}px, ${m.hScrollbar}px of height lost`);
+          }
+          // Mobile WebKit has no wheel to send. The handset profiles are covered
+          // by the shrink-to-fit check below instead, which is the failure that
+          // actually shows up on a phone.
+          if (!eng.handset) {
+            await page.mouse.move(Math.round(w / 2), 400);
+            await page.mouse.wheel(400, 0);
+            await page.waitForTimeout(150);
+            if (await page.evaluate(() => window.scrollX > 0)) {
+              fail(where, 'wheel scrolls the page sideways', `viewport ${m.viewW}px`);
+            }
+            await page.evaluate(() => window.scrollTo(0, 0));
           }
           // 2. the CTA must not sit on top of the nav items
           if (m.menuShown && m.menu && m.cta && m.menu.right > m.cta.left + 1) {
@@ -153,10 +162,11 @@ async function run() {
               return !!menu && getComputedStyle(menu).display !== 'none';
             });
             if (!opened) fail(where, 'tapping the hamburger does not reveal the nav');
-            const after = await page.evaluate(() => {
-              window.scrollTo(9999, 0); const moved = window.scrollX > 0; window.scrollTo(0, 0); return !moved;
-            });
-            if (!after) fail(where, 'opening the nav makes the page scroll sideways');
+            // The drawer must fit the screen. If it does not, mobile Chrome
+            // shrinks the page to fit and every word on it gets smaller, which
+            // shows up as the layout viewport growing past the device width.
+            const grew = await page.evaluate((want) => window.innerWidth - want, w);
+            if (grew > 0) fail(where, 'opening the nav zooms the page out', `layout viewport grew ${grew}px past ${w}px`);
           }
 
           if (SHOT && OUT) {

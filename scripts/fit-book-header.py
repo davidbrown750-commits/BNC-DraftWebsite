@@ -33,7 +33,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 # Desktop bar is 66px plus its 1px rule. Below 1040px bnc-mobile-nav-fix lets the
 # bar grow to fit, so the offsets there are measured against its min-height.
 BAR = 67
-BAR_SM = 59
+BAR_SM = 61
 
 BOOK_FIT_CSS = """<style id="sitenav-book-fit">/* the site bar, fitted to a book page */
 /* The reading column is a centred max-width body, so the bar has to leave it to

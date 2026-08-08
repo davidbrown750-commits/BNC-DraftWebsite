@@ -816,5 +816,31 @@ html{overflow-x:clip;}
   .ss-input,.ss-input:focus{width:100%;}
 }
 </style>
+
+<style id="bnc-nav-mobile-wrap">/* the drawer must fit the screen it opens on */
+@media(max-width:1040px){
+  /* These four keep nowrap on the desktop bar, where the labels sit side by side
+     and must not break. In the drawer they stack, so wrapping is what we want,
+     and without it the longest category sets the width of the whole panel. */
+  .sitenav.open .nav-item>a,
+  .sitenav.open .nav-trigger,
+  .sitenav.open .nav-grp2,
+  .sitenav.open .nav-grp3{white-space:normal;}
+  .sitenav.open .sitenav-menu,
+  .sitenav.open .nav-drop,
+  .sitenav.open .nav-drop.nav-casc,
+  .sitenav.open .nav-sub,
+  .sitenav.open .nav-sub3{max-width:100%;min-width:0;}
+  /* iOS Safari zooms the page in when a focused input is under 16px and never
+     zooms back out, which leaves the bar hanging half off the screen. */
+  .ss-input,.ss-ph{font-size:16px;}
+  .ss-input{height:44px;}
+  /* WCAG 2.5.5: 44x44 of hit area. The hamburger was 42x38 and the two buttons
+     were 30px tall, which is small for a thumb and is the control every mobile
+     visitor has to hit first. */
+  .navtoggle{width:44px;height:44px;}
+  .sitenav-cta,.bnc-signin{min-height:44px;}
+}
+</style>
 </body>
 </html>
