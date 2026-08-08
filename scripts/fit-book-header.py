@@ -56,6 +56,17 @@ body{padding-top:%(bar)dpx;}
   .topbar{top:%(barsm)dpx!important;}
   [id]{scroll-margin-top:%(anchorsm)dpx;}
 }
+@media(max-width:1040px){
+  /* Pre-existing, and nothing to do with the bar: a few chapters carry five and
+     six column tables that are wider than a phone, and a table that will not fit
+     makes mobile Chrome shrink the whole page instead. Measured on the riids
+     chapter: 517px of table on a 360px screen took the layout viewport to 531px.
+     Let the table scroll inside its own box and the page stays at 1:1. */
+  /* The books disagree about their content wrapper (main.wrap, div.wrap,
+     div.shell, or none), so match on the table itself. There are no tables
+     in the header or the footer for this to catch by accident. */
+  body table{display:block;overflow-x:auto;max-width:100%%;}
+}
 @media print{.sitenav,.bnc-top-banner,.bnc-search-btn{display:none!important;}body{padding-top:0;}}
 </style>""" % {
     "bar": BAR,
