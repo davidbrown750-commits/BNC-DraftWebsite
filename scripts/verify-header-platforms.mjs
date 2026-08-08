@@ -93,18 +93,30 @@ async function run() {
     const browser = await eng.engine.launch();
     const widths = eng.handset ? HANDSET_WIDTHS : DESKTOP_WIDTHS;
 
-    const ctx = await browser.newContext({
-      viewport: { width: widths[0], height: eng.handset ? 844 : 900 },
-      deviceScaleFactor: eng.dpr || 1,
-      hasTouch: eng.touch,
-      isMobile: !!eng.handset,
-      userAgent: eng.ua || undefined,
-    });
-    const page = await ctx.newPage();
+    // Desktop widths share one context and resize it, because resizing a window
+    // is something a desktop user really does. Handset widths each get a fresh
+    // context: no phone changes width between navigations, and Chromium's mobile
+    // emulation carries a stale shrink-to-fit scale across a setViewportSize +
+    // goto sequence, which reports a page as zoomed out when a real phone would
+    // load it at 1:1.
+    let ctx = null, page = null;
+    async function fresh(w) {
+      if (ctx) await ctx.close();
+      ctx = await browser.newContext({
+        viewport: { width: w, height: eng.handset ? 844 : 900 },
+        deviceScaleFactor: eng.dpr || 1,
+        hasTouch: eng.touch,
+        isMobile: !!eng.handset,
+        userAgent: eng.ua || undefined,
+      });
+      page = await ctx.newPage();
+    }
+    await fresh(widths[0]);
 
     for (const pagePath of PAGES) {
       for (const w of widths) {
-        await page.setViewportSize({ width: w, height: eng.handset ? 844 : 900 });
+        if (eng.handset) await fresh(w);
+        else await page.setViewportSize({ width: w, height: 900 });
         const where = `${eng.key} ${w}px ${pagePath}`;
         try {
           const resp = await page.goto(BASE + pagePath, { waitUntil: 'load', timeout: 30000 });
