@@ -542,4 +542,28 @@ html{overflow-x:clip;}
   .ss-input,.ss-input:focus{width:100%;}
 }
 </style>
+
+<style id="sitenav-book-fit">/* the site bar, fitted to a book page */
+/* The reading column is a centred max-width body, so the bar has to leave it to
+   span the window. Fixed rather than sticky: it is immune to whatever width,
+   margin or padding each book gives its body, and the books disagree. */
+.sitenav{position:fixed;top:0;left:0;right:0;width:auto;max-width:none;margin:0;}
+body{padding-top:67px;}
+/* The books pin three things of their own, all of them at the top, all of them
+   written when nothing was above them. */
+.bnc-top-banner{top:67px!important;}
+.bnc-search-btn{top:81px!important;}
+.topbar{top:67px!important;z-index:40!important;}
+/* 1,505 headings carry an id and the tables of contents link across files into
+   them, so without this every one of those links lands under the bar. */
+[id]{scroll-margin-top:85px;}
+@media(max-width:1040px){
+  body{padding-top:59px;}
+  .bnc-top-banner{top:59px!important;}
+  .bnc-search-btn{top:73px!important;}
+  .topbar{top:59px!important;}
+  [id]{scroll-margin-top:73px;}
+}
+@media print{.sitenav,.bnc-top-banner,.bnc-search-btn{display:none!important;}body{padding-top:0;}}
+</style>
 </body></html>

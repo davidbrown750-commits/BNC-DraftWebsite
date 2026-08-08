@@ -63,7 +63,17 @@ async function probe(page) {
     const cs = (el) => (el ? getComputedStyle(el) : null);
     return {
       hasNav: !!nav,
-      docW: document.documentElement.scrollWidth,
+      // Not scrollWidth: the hidden mega-menu flyouts legitimately overhang, and
+      // html{overflow-x:clip} contains them without shrinking scrollWidth. The
+      // only thing that matters is whether the page can actually be scrolled
+      // sideways, so ask it to and see if it moved.
+      canScrollX: (() => {
+        const before = window.scrollX;
+        window.scrollTo(9999, window.scrollY);
+        const moved = window.scrollX > 0;
+        window.scrollTo(before, window.scrollY);
+        return moved;
+      })(),
       viewW: window.innerWidth,
       navPos: nav ? cs(nav).position : null,
       menu: r(menu), cta: r(cta), search: r(search), logo: r(logo),
@@ -86,28 +96,30 @@ async function run() {
     const browser = await eng.engine.launch();
     const widths = eng.handset ? HANDSET_WIDTHS : DESKTOP_WIDTHS;
 
+    const ctx = await browser.newContext({
+      viewport: { width: widths[0], height: eng.handset ? 844 : 900 },
+      deviceScaleFactor: eng.dpr || 1,
+      hasTouch: eng.touch,
+      isMobile: !!eng.handset,
+      userAgent: eng.ua || undefined,
+    });
+    const page = await ctx.newPage();
+
     for (const pagePath of PAGES) {
       for (const w of widths) {
-        const ctx = await browser.newContext({
-          viewport: { width: w, height: eng.handset ? 844 : 900 },
-          deviceScaleFactor: eng.dpr || 1,
-          hasTouch: eng.touch,
-          isMobile: !!eng.handset,
-          userAgent: eng.ua || undefined,
-        });
-        const page = await ctx.newPage();
+        await page.setViewportSize({ width: w, height: eng.handset ? 844 : 900 });
         const where = `${eng.key} ${w}px ${pagePath}`;
         try {
           const resp = await page.goto(BASE + pagePath, { waitUntil: 'load', timeout: 30000 });
-          if (!resp || resp.status() >= 400) { fail(where, 'page did not load', resp && resp.status()); await ctx.close(); continue; }
+          if (!resp || resp.status() >= 400) { fail(where, 'page did not load', resp && resp.status()); continue; }
           await page.waitForTimeout(350);
           const m = await probe(page);
 
-          if (!m.hasNav) { fail(where, 'no .sitenav on the page'); await ctx.close(); continue; }
+          if (!m.hasNav) { fail(where, 'no .sitenav on the page'); continue; }
 
           // 1. the flyouts must not stretch the document
-          if (m.docW > m.viewW + 1) {
-            fail(where, 'horizontal overflow', `scrollWidth ${m.docW} vs viewport ${m.viewW}`);
+          if (m.canScrollX) {
+            fail(where, 'page scrolls sideways', `viewport ${m.viewW}px`);
           }
           // 2. the CTA must not sit on top of the nav items
           if (m.menuShown && m.menu && m.cta && m.menu.right > m.cta.left + 1) {
@@ -141,8 +153,10 @@ async function run() {
               return !!menu && getComputedStyle(menu).display !== 'none';
             });
             if (!opened) fail(where, 'tapping the hamburger does not reveal the nav');
-            const after = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
-            if (!after) fail(where, 'opening the nav causes horizontal overflow');
+            const after = await page.evaluate(() => {
+              window.scrollTo(9999, 0); const moved = window.scrollX > 0; window.scrollTo(0, 0); return !moved;
+            });
+            if (!after) fail(where, 'opening the nav makes the page scroll sideways');
           }
 
           if (SHOT && OUT) {
@@ -152,9 +166,9 @@ async function run() {
         } catch (e) {
           fail(where, 'exception', String(e).slice(0, 200));
         }
-        await ctx.close();
       }
     }
+    await ctx.close();
     await browser.close();
   }
 
