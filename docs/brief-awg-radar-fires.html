@@ -379,6 +379,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -413,7 +425,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>Why an AWG fits the work</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="ffir-t ffir-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="ffir-t">A closing target on the bench: returns that walk in, pulse by pulse</title>
+<desc id="ffir-d">Schematic two-row timing diagram. Top row: the radar's transmitted pulse train, evenly spaced. Bottom row: the emulated target return after each pulse; the delay between transmit and return shrinks with every repetition because the target is closing, and the return carries the Doppler shift of the closing rate.</desc>
+<defs><marker id="ffir-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="160" y="80" font-size="11.5" fill="#1b2330" text-anchor="end">Transmit pulses</text>
+<text x="160" y="170" font-size="11.5" fill="#1b2330" text-anchor="end">Emulated returns</text>
+<line x1="180" y1="110" x2="780" y2="110" stroke="#e3e7ee"/>
+<line x1="180" y1="200" x2="780" y2="200" stroke="#e3e7ee"/>
+<polyline points="215.0,110.0 218.0,70.0 228.0,70.0 231.0,110.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="307.0,200.0 310.0,174.0 320.0,174.0 323.0,200.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<line x1="223" y1="118" x2="315" y2="166" stroke="#e3e7ee" stroke-dasharray="3 3"/>
+<polyline points="355.0,110.0 358.0,70.0 368.0,70.0 371.0,110.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="429.0,200.0 432.0,174.0 442.0,174.0 445.0,200.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<line x1="363" y1="118" x2="437" y2="166" stroke="#e3e7ee" stroke-dasharray="3 3"/>
+<polyline points="495.0,110.0 498.0,70.0 508.0,70.0 511.0,110.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="551.0,200.0 554.0,174.0 564.0,174.0 567.0,200.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<line x1="503" y1="118" x2="559" y2="166" stroke="#e3e7ee" stroke-dasharray="3 3"/>
+<polyline points="635.0,110.0 638.0,70.0 648.0,70.0 651.0,110.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="673.0,200.0 676.0,174.0 686.0,174.0 689.0,200.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<line x1="643" y1="118" x2="681" y2="166" stroke="#e3e7ee" stroke-dasharray="3 3"/>
+<line x1="315" y1="224" x2="635" y2="224" stroke="#5b6677" marker-end="url(#ffir-a)"/>
+<text x="475" y="242" font-size="11" fill="#5b6677" text-anchor="middle">delay shrinks pulse to pulse: the target is closing; the return also carries its Doppler shift</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+</svg>
+  <figcaption>Schematic: a closing target emulated pulse by pulse. The return delay walks in with each repetition and carries the closing-rate Doppler, which is exactly the truth a tracker under test needs to see.</figcaption>
+  </figure>
+<h3>Why an AWG fits the work</h3>
   <p>Radar and FIRES emulation make demands that few signal sources meet at once. The pulses have to land where the scenario expects them, so timing has to be tight and repeatable from run to run. A target at a given range is a return delayed by a precise interval, and a few picoseconds of slop blurs that range or smears a Doppler bin the tracker depends on. The scenes themselves are long and often layered, with several targets, clutter, and jamming overlapping in time, which calls for deep waveform memory rather than a short repeating loop. When the pattern is too short, it stops looking like the real world and starts looking like a test pattern the system can learn.</p>
   <p>Modern radar also reaches well into the microwave bands and switches modes quickly. Generating the wide instantaneous bandwidth of a chirped or agile pulse takes a high sample rate, and emulating an emitter that hops frequency or pulse shape on the fly takes fast switching between waveform segments without a settling delay that gives the trick away. Multi-element and multi-emitter scenes add another requirement: several channels locked to a shared reference so the relative phase and timing across them stay true. None of these stands alone. The same instrument has to deliver wide bandwidth, a high sample rate, fast switching, deep memory, and tight multi-channel synchronization at once, which is what separates a generator built for radar work from a general-purpose one.</p>
 </section>
@@ -428,6 +468,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h3>Which model fits</h3>
+  <figure class="fig-photo"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"><figcaption>Model 686 arbitrary waveform generator</figcaption></figure>
+
   <p>For wideband radar target generation and agile threat emulation, the <strong>Model 686</strong> is the right starting point. Its <strong>20 GS/s</strong> sample rate renders wideband chirps and fast pulse edges without rounding off the features the radar measures, and its fast segment switching suits agile emitters that change frequency or pulse shape on the fly. Deep waveform memory holds long, layered scenes so a multi-target scenario plays end to end rather than looping. For multi-element or multi-emitter work, multiple Model 686 units synchronize to a shared reference, keeping timing and phase across channels true.</p>
   <p>Where amplitude precision matters more than the highest sample rate, the <strong>Model 685</strong> is the better fit. Its <strong>16-bit</strong> vertical resolution keeps the amplitude steps small and the return faithful, which suits low-observable target emulation, fine clutter modeling, and any scenario where a clean, finely graded envelope carries the information. The 686 and 685 share one architecture and synchronization scheme, so a bench can mix them on a common timebase and lean on each where it is strongest.</p>
   <div class="note"><b>Note.</b> Specifications are drawn from the BNC AWG reference and are preliminary. Confirm sample rate, vertical resolution, switching speed, memory depth, and channel-count figures against the current published Berkeley Nucleonics datasheet before ordering.</div>
