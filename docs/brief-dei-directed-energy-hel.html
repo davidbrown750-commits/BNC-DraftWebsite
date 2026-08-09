@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -421,7 +433,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>The BNC approach</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fqcw-t fqcw-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fqcw-t">Quasi-CW pump drive: long, flat current pulses at managed duty</title>
+<desc id="fqcw-d">Schematic current waveform: repeated long flat-top pulses of hundreds of amps, with the pulse width in the hundreds of microseconds to milliseconds and the off time long enough to hold the thermal duty the diode array tolerates. The flat top is what keeps the optical output stable across the pulse.</desc>
+<defs><marker id="fqcw-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="100" y1="210" x2="780" y2="210" stroke="#b9c4d4"/>
+<polyline points="140.0,210.0 144.0,100.0 258.0,100.0 262.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="350.0,210.0 354.0,100.0 468.0,100.0 472.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="560.0,210.0 564.0,100.0 678.0,100.0 682.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<line x1="144" y1="92" x2="258" y2="92" stroke="#5b6677" marker-start="url(#fqcw-a)" marker-end="url(#fqcw-a)"/>
+<text x="200" y="84" font-size="10.5" fill="#5b6677" text-anchor="middle">long flat-top pulse (QCW)</text>
+<line x1="262" y1="232" x2="350" y2="232" stroke="#5b6677" marker-start="url(#fqcw-a)" marker-end="url(#fqcw-a)"/>
+<text x="306" y="250" font-size="10.5" fill="#5b6677" text-anchor="middle">off time sets the thermal duty</text>
+<text x="84" y="100" font-size="12" fill="#5b6677" text-anchor="end">I</text>
+<text x="84" y="114" font-size="9.5" fill="#5b6677" text-anchor="end">(100s of A)</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+</svg>
+  <figcaption>Schematic: quasi-CW pump drive. Long flat-top current pulses deliver the pump energy while the off time holds the thermal duty the array tolerates; a sag or spike on the flat top shows up directly in the optical output.</figcaption>
+  </figure>
+<h3>The BNC approach</h3>
+  <figure class="fig-photo"><img src="/figures/wp/pco-6131-transparent.png" alt="DEI PCO-6131 OEM laser diode driver module"><figcaption>PCO-6131 125 A OEM driver module</figcaption></figure>
+
   <p>DEI high-current drivers are built to hold long QCW pulses at high current with the compliance to drive deep diode strings. The output is a controlled current source through the full pulse, not just at its leading edge, so a long pump pulse stays flat from start to finish and the gain medium sees the energy the experiment planned. Over-current protection and safe-on-disable behavior guard the array through faults and through the power-up and power-down transitions where expensive arrays are most exposed.</p>
   <p>Because Berkeley Nucleonics builds the drivers, the high-voltage and high-current supplies, and the timing instrumentation around them, a pump bench can stand on a single-vendor timing chain. One support path covers the pump drivers, their triggers, and their built-in voltage and current monitors, which removes the multi-vendor seams that tend to fail first when many channels have to fire together. For a beam-combining test bench that means the pump channels can be referenced to a common timebase and serviced as one system.</p>
   <p>At the high-current end, the <strong>PCM-7700</strong> drives up to 200 A for large arrays and long QCW pulses, and the <strong>PCO-6131</strong> delivers up to 125 A as an OEM module with variable rise-time control for integration into a larger pump architecture. The compact <strong>PIM-Mini-200</strong> brings up to 200 A in a small package where space is tight. For research programs that need still more current, the <strong>PCX-7500-EX</strong> is a preliminary 450 A driver; treat its figures as preliminary capabilities pending the published datasheet. All of these ratings are model capabilities to be confirmed against the current published BNC datasheet for your array and duty plan.</p>
