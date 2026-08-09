@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -416,7 +428,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the BNC HVX-Series line solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 330" role="img" aria-labelledby="fwst-t fwst-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fwst-t">A withstand check in one picture: ramp, hold, watch the leakage, ramp down</title>
+<desc id="fwst-d">Schematic: the applied voltage ramps at a controlled rate to the test level, holds for the dwell time, and ramps down. Below it the leakage current settles after the capacitive charging spike; the unit passes if leakage stays inside the limit for the whole dwell. An arc anywhere in the profile trips the supply instead of the product.</desc>
+<defs><marker id="fwst-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="130" y="86" font-size="11.5" fill="#1b2330" text-anchor="end">Applied voltage</text>
+<text x="130" y="216" font-size="11.5" fill="#1b2330" text-anchor="end">Leakage current</text>
+<polyline points="140.0,130.0 240.0,54.0 560.0,54.0 660.0,130.0 780.0,130.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<line x1="240" y1="46" x2="560" y2="46" stroke="#5b6677" marker-start="url(#fwst-a)" marker-end="url(#fwst-a)"/>
+<text x="400" y="38" font-size="10.5" fill="#5b6677" text-anchor="middle">dwell / hold</text>
+<text x="186" y="78" font-size="10.5" fill="#5b6677" text-anchor="middle">controlled ramp</text>
+<polyline points="140.0,250.0 236.0,250.0 244.0,194.0 262.0,236.0 560.0,238.0 660.0,250.0 780.0,250.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="140.0,216.0 780.0,216.0" fill="none" stroke="#7b8698" stroke-width="1.6" stroke-dasharray="7 5"/>
+<text x="700" y="210" font-size="10.5" fill="#7b8698" text-anchor="middle">leakage limit</text>
+<text x="252" y="268" font-size="10.5" fill="#5b6677" text-anchor="middle">charging spike</text>
+<text x="430" y="268" font-size="10.5" fill="#5b6677" text-anchor="middle">settled leakage: the number that decides pass/fail</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: a withstand check. Controlled ramp, dwell at the test level, controlled ramp down; the settled leakage against its limit decides pass or fail, and arc detection trips the supply instead of scrapping the unit.</figcaption>
+  </figure>
+<h3>How the BNC HVX-Series line solves it</h3>
   <p>The BNC HVX-Series is built to drop into an automated line. Every function is reachable over <strong>Ethernet</strong> and RS232 through a standard <strong>SCPI</strong> command set, so the supply takes its voltage setpoint, ramp, dwell, and read-back commands from the station controller and reports state without a person in the loop. That is what lets the high-voltage step run at line cadence and stay synchronized with the rest of the sequence.</p>
   <p>Two retrofittable options carry the safety and repeatability load. <strong>Arc Detection</strong> watches for flashover, reports it immediately, and can shut the output off the moment it sees one, which protects the operator and the fixture and flags the failing unit cleanly. <strong>Ramp Control</strong> applies the test voltage at a defined gradient, from 1 V/s up to ten times nominal per second, so every unit sees the same controlled rise and the test is repeatable across shifts and across stations. The no-load discharge time is specified under 60 seconds and is type-dependent, which keeps the reset between units tight.</p>
   <p>The supply itself is fully digitally regulated, so the applied test voltage is accurate and stable: 16-bit setting resolution, line regulation tighter than plus or minus 0.01 percent of nominal, and quiet enough that a leakage read is meaningful. The front panel keeps a time-tagged event log, and configurable code protection locks the recipe so a line operator cannot alter it. The 2U enclosure racks into the test station.</p>
@@ -424,6 +456,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h3>Which HVX-Series models and options fit</h3>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
   <p>The right model follows the withstand voltage the product requires. Pick the lowest class that clears the test level with margin, since lower-voltage units carry more current headroom for fast ramp and discharge.</p>
   <table class="spec">
     <tr><th>Withstand level</th><th>Recommended HVX-Series model</th><th>Rating</th></tr>

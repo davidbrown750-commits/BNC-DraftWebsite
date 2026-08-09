@@ -406,6 +406,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -439,6 +451,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
+
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 340" role="img" aria-labelledby="fpoi-t fpoi-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fpoi-t">Guaranteed capture: 100 percent probability-of-intercept time versus FFT size</title>
+<desc id="fpoi-d">Derived log-log line from the published formula: the minimum signal duration captured with certainty equals 2 times N times D times 8 nanoseconds at decimation 1. At an FFT size of 32 the instrument guarantees capture of anything longer than 0.512 microseconds; at 2048, anything longer than 32.768 microseconds. Both endpoints are published datasheet operating points.</desc>
+<defs><marker id="fpoi-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="150" y1="50" x2="150" y2="280" stroke="#edf1f7"/>
+<line x1="252" y1="50" x2="252" y2="280" stroke="#edf1f7"/>
+<line x1="353" y1="50" x2="353" y2="280" stroke="#edf1f7"/>
+<line x1="455" y1="50" x2="455" y2="280" stroke="#edf1f7"/>
+<line x1="557" y1="50" x2="557" y2="280" stroke="#edf1f7"/>
+<line x1="658" y1="50" x2="658" y2="280" stroke="#edf1f7"/>
+<line x1="760" y1="50" x2="760" y2="280" stroke="#edf1f7"/>
+<line x1="150" y1="234" x2="760" y2="234" stroke="#edf1f7"/>
+<line x1="150" y1="119" x2="760" y2="119" stroke="#edf1f7"/>
+<line x1="150" y1="280" x2="760" y2="280" stroke="#b9c4d4"/><line x1="150" y1="50" x2="150" y2="280" stroke="#b9c4d4"/>
+<polyline points="150.0,267.4 251.7,232.8 353.3,198.2 455.0,163.6 556.7,129.0 658.3,94.3 760.0,59.7" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<circle cx="150" cy="267" r="6" fill="#0d9488" stroke="#fff" stroke-width="2"/>
+<text x="162.0" y="255.43395448777943" font-size="11.5" fill="#1b2330" text-anchor="start" font-weight="bold">N=32: anything &#8805; 0.512 &#181;s is captured</text>
+<circle cx="760" cy="60" r="6" fill="#0d9488" stroke="#fff" stroke-width="2"/>
+<text x="748.0" y="47.72325747963245" font-size="11.5" fill="#1b2330" text-anchor="end" font-weight="bold">N=2048: 32.768 &#181;s</text>
+<text x="150.0" y="300" font-size="11" fill="#5b6677" text-anchor="middle">32</text>
+<text x="251.66666666666669" y="300" font-size="11" fill="#5b6677" text-anchor="middle">64</text>
+<text x="353.33333333333337" y="300" font-size="11" fill="#5b6677" text-anchor="middle">128</text>
+<text x="455.0" y="300" font-size="11" fill="#5b6677" text-anchor="middle">256</text>
+<text x="556.6666666666667" y="300" font-size="11" fill="#5b6677" text-anchor="middle">512</text>
+<text x="658.3333333333333" y="300" font-size="11" fill="#5b6677" text-anchor="middle">1024</text>
+<text x="760.0" y="300" font-size="11" fill="#5b6677" text-anchor="middle">2048</text>
+<text x="142" y="238.0" font-size="11" fill="#5b6677" text-anchor="end">1 &#181;s</text>
+<text x="142" y="123.0" font-size="11" fill="#5b6677" text-anchor="end">10 &#181;s</text>
+<text x="455.0" y="322" font-size="11.5" fill="#5b6677" text-anchor="middle">FFT size N (decimation 1)</text>
+<text x="52" y="165" font-size="11.5" fill="#5b6677" text-anchor="middle" transform="rotate(-90 52 165)">100% POI signal duration</text>
+<text x="590" y="66" font-size="11" fill="#5b6677" text-anchor="middle">POI = 2 &#183; N &#183; D &#183; 8 ns &#183; Derived from datasheet</text></svg>
+  <figcaption>Derived from the published datasheet formula (POI = 2 x N x D x 8 ns): at an FFT size of 32 the analyzer guarantees capture of any signal lasting at least 0.512 microseconds. Nothing that brief survives a swept sweep-and-revisit cycle.</figcaption>
+  </figure>
 <h2>How the ICX-FieldHawk line solves it</h2>
 <img class="plain" style="float:right;width:32%;max-width:300px;margin:4px 0 16px 28px;border:none;" src="../figures/product-rugged-cut.png" alt="ICX-FieldHawk-R rugged receiver">
 <p>The ICX-FieldHawk receivers are built around wide real-time bandwidth, so the instrument watches a large span continuously rather than stepping through it. A persistent display reveals the faint, the brief, and the intermittent: signals that a swept analyzer would miss between passes. When something appears, it shows up the moment it transmits.</p>
@@ -449,6 +496,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
 <h2>Which models and accessories fit</h2>
+  <figure class="fig-photo"><img src="/figures/wp/icx-rugged-transparent.png" alt="ICX-FieldHawk rugged tablet real-time spectrum analyzer"><figcaption>ICX-FieldHawk rugged (IP68) analyzer</figcaption></figure>
+
 <p>For most EW and SIGINT field work, the recommended platform is the <strong>ICX-FieldHawk-R</strong>. It carries an IP68 environmental rating, so it survives dust, rain, and immersion that would stop a benchtop unit. Onboard AI assists with signal classification at the edge, flagging emitters of interest without a constant operator watch. For a team moving through unfriendly terrain, ruggedness is not a luxury. It is the difference between an instrument that works and one that stays in the case.</p>
 <p>Where the receiver needs to disappear into a larger system, the <strong>ICX-Series</strong> USB core module is the right tool. It integrates into SDR platforms, vehicle racks, and custom processing chains, exposing the same real-time engine through a programmable interface. C-UAS prototypes, distributed sensor nodes, and embedded direction-finding builds all start here. One sensing core, many host configurations.</p>
 <p>For directional work, pair either receiver with the <strong>ANT-100G</strong> directional antenna. Its gain and front-to-back ratio help an operator bear in on an emitter, separate it from background traffic, and support angle-of-arrival estimates. Detection tells you a signal exists. The ANT-100G helps you point at it.</p>

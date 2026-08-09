@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -416,7 +428,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the BNC HVX-Series line solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 360" role="img" aria-labelledby="fdpt-t fdpt-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fdpt-t">The double-pulse test: two gate pulses, one current ramp, and the switching moments that matter</title>
+<desc id="fdpt-d">Schematic three rows. The gate drives a long first pulse and a short second pulse. The inductor current ramps up during the first pulse, freewheels flat during the off time, and resumes during the second. The device voltage shows the turn-off transition after the first pulse and the turn-on with reverse recovery at the second; those two edges are where switching loss is measured.</desc>
+<defs><marker id="fdpt-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="160" y="60" font-size="11.5" fill="#1b2330" text-anchor="end">Gate</text>
+<text x="160" y="160" font-size="11.5" fill="#1b2330" text-anchor="end">Inductor current</text>
+<text x="160" y="260" font-size="11.5" fill="#1b2330" text-anchor="end">Device voltage</text>
+<polyline points="180.0,90.0 230.0,90.0 233.0,52.0 430.0,52.0 433.0,90.0 470.0,90.0 473.0,52.0 530.0,52.0 533.0,90.0 780.0,90.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="180.0,190.0 233.0,190.0 430.0,126.0 433.0,130.0 470.0,130.0 473.0,130.0 530.0,98.0 533.0,102.0 600.0,102.0 603.0,190.0 780.0,190.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="330" y="108" font-size="10.5" fill="#5b6677" text-anchor="middle">ramp: L sets di/dt</text>
+<text x="452" y="120" font-size="10.5" fill="#5b6677" text-anchor="middle">freewheel</text>
+<polyline points="180.0,220.0 230.0,220.0 233.0,286.0 430.0,286.0 433.0,206.0 437.0,228.0 441.0,216.0 445.0,222.0 470.0,220.0 473.0,282.0 477.0,274.0 481.0,288.0 485.0,282.0 530.0,286.0 533.0,220.0 600.0,220.0 780.0,220.0" fill="none" stroke="#7b8698" stroke-width="2.5"/>
+<text x="437" y="210" font-size="10.5" fill="#1b2330" text-anchor="middle">turn-off spike</text>
+<text x="492" y="310" font-size="10.5" fill="#1b2330" text-anchor="middle">turn-on + reverse recovery</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: the double-pulse test. The inductor sets di/dt during the first pulse, the off time freewheels the current, and the two switching transitions, turn-off spike and turn-on with reverse recovery, are where the loss numbers come from. The bus rail behind all of it has to stay put.</figcaption>
+  </figure>
+<h3>How the BNC HVX-Series line solves it</h3>
   <p>The BNC HVX-Series gives a double-pulse bench the clean, stable rail it needs. The supply is fully digitally regulated with a microcontroller and FPGA, so the bus voltage is held tightly: ripple is specified at 0.01 percent of nominal plus a small fixed term, line regulation is tighter than plus or minus 0.01 percent of nominal across a 10 percent mains swing, and stability holds within 0.01 percent of nominal over an eight-hour session. A quiet rail means the switching-loss numbers reflect the device, not the supply.</p>
   <p>Fast response is the other half of the story. The HVX-Series settles to within 0.1 percent of nominal in <strong>under 1 millisecond</strong>, which lets the bench step the bus to a new characterization point and fire the next pulse without waiting on the supply to catch up. That sub-millisecond response, combined with 16-bit setting resolution across roughly 0.01 to 100 percent of nominal, makes fine voltage sweeps practical and repeatable. The supply charges the bus capacitor, regulates against the load the pulse presents, and reports its state over the on-board interface.</p>
   <p>Control is automation-ready. Ethernet and RS232 with a standard SCPI command set let the supply take bus-voltage commands from the same script that drives the pulse generator and the scope, and the time-tagged event log records the run. Rack the 2U enclosure into the double-pulse bench beside the rest of the instrumentation.</p>
@@ -424,6 +455,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h3>Which HVX-Series models and options fit</h3>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
   <p>Wide-bandgap double-pulse work usually lives between 1.5 kV and 10 kV, set by the device blocking voltage and the bus level the characterization plan calls for.</p>
   <table class="spec">
     <tr><th>Need</th><th>Recommended HVX-Series model</th><th>Rating</th></tr>

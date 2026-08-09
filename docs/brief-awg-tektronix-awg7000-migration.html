@@ -375,6 +375,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -428,7 +440,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <div class="kicker">The fix</div>
-  <h2>The Model 685 puts a clean edge on the bench</h2>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fdp-t fdp-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fdp-t">One programmed pulse, two different outputs</title>
+<desc id="fdp-d">Schematic comparison. Left: the programmed waveform, a single clean pulse. Middle: the legacy AWG7000 output, the intended pulse followed a few nanoseconds later by a smaller ghost pulse wrapped in ringing. Right: the Model 685 output, a single clean pulse with no ghost and no ringing.</desc>
+<defs><marker id="fdp-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<rect x="50" y="60" width="215" height="160" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="157" y="244" font-size="11.5" fill="#1b2330" text-anchor="middle">programmed: one pulse</text>
+<polyline points="66.0,190.0 100.0,190.0 103.0,100.0 150.0,100.0 153.0,190.0 248.0,190.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<rect x="300" y="60" width="215" height="160" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="407" y="244" font-size="11.5" fill="#1b2330" text-anchor="middle">AWG7000 output: pulse + ghost + ringing</text>
+<polyline points="316.0,190.0 348.0,190.0 351.0,102.0 396.0,102.0 399.0,190.0 408.0,190.0 410.0,178.0 416.0,196.0 422.0,182.0 428.0,192.0 432.0,186.0 436.0,190.0 439.0,148.0 462.0,148.0 465.0,190.0 468.0,182.0 474.0,196.0 480.0,185.0 486.0,192.0 492.0,188.0 498.0,190.0 515.0,190.0" fill="none" stroke="#7b8698" stroke-width="2.5"/>
+<text x="452" y="132" font-size="10.5" fill="#5b6677" text-anchor="middle">ghost</text>
+<rect x="555" y="60" width="215" height="160" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="662" y="244" font-size="11.5" fill="#1b2330" text-anchor="middle">Model 685: one clean pulse</text>
+<polyline points="571.0,190.0 605.0,190.0 608.0,100.0 655.0,100.0 658.0,190.0 753.0,190.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="410" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic (waveforms illustrative)</text>
+</svg>
+  <figcaption>Schematic: the artifact and the fix. The AWG7000 workaround tames the ghost pulse by reshaping your edge; the Model 685 simply does not produce one.</figcaption>
+  </figure>
+<h2>The Model 685 puts a clean edge on the bench</h2>
   <p>The Berkeley Nucleonics Model 685 drives a DC-coupled, 50 ohm, 5 Vpp output directly. Rise and fall times come in under 300 ps, jitter under 2 ps, and the baseline sits flat where you set it through a &plusmn;2.5 V offset range. No series resistor. No blocking capacitor. No ghost pulse to chase. The edge you program is the edge that reaches your device.</p>
   <p>And the double pulse? The 685 makes one on purpose. A clean double pulse is a native waveform, alongside sine, square, ramp, pulse, Gaussian, noise, and fully arbitrary playback, so the shape that used to be a defect becomes a setting you dial in. Underneath it all sits 16-bit vertical resolution, which is where the 685 pulls decisively ahead: more levels, lower quantization noise, and pulse and step shapes the 8 to 10-bit AWG7000 path simply cannot render.</p>
 </section>

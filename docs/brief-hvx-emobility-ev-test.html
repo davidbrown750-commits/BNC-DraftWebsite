@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -416,7 +428,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the BNC HVX-Series line solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fev-t fev-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fev-t">Headroom above the bus: the 1.5 kV class against 400 V and 800 V powertrains</title>
+<desc id="fev-d">Derived chart: the two common EV bus classes, around 400 volts and around 800 volts, drawn against the HVX-1500's zero to 1500 volt output range. The supply covers both classes with margin above the nominal rail, which is where withstand and stress testing actually happens.</desc>
+<defs><marker id="fev-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="180" y="101" font-size="12.5" fill="#1b2330" text-anchor="end" font-weight="bold">HVX-1500 range</text>
+<rect x="190" y="88" width="544" height="16" rx="4" fill="#0655a3"/>
+<text x="741.75" y="100" font-size="11" fill="#5b6677" text-anchor="start">0 &#8211; 1.5 kV</text>
+<text x="180" y="165" font-size="12" fill="#1b2330" text-anchor="end">400 V bus class</text>
+<rect x="313" y="153" width="44" height="14" rx="4" fill="#0d9488"/>
+<line x1="335" y1="146" x2="335" y2="174" stroke="#fff"/>
+<text x="364.75" y="164" font-size="10.5" fill="#5b6677" text-anchor="start">test headroom above nominal &#8594;</text>
+<text x="180" y="217" font-size="12" fill="#1b2330" text-anchor="end">800 V bus class</text>
+<rect x="436" y="205" width="87" height="14" rx="4" fill="#0d9488"/>
+<line x1="480" y1="198" x2="480" y2="226" stroke="#fff"/>
+<text x="531.5" y="216" font-size="10.5" fill="#5b6677" text-anchor="start">test headroom above nominal &#8594;</text>
+<line x1="190" y1="252" x2="770" y2="252" stroke="#b9c4d4"/>
+<line x1="190" y1="252" x2="190" y2="257" stroke="#b9c4d4"/>
+<text x="190.0" y="271" font-size="11" fill="#5b6677" text-anchor="middle">0</text>
+<line x1="335" y1="252" x2="335" y2="257" stroke="#b9c4d4"/>
+<text x="335.0" y="271" font-size="11" fill="#5b6677" text-anchor="middle">400</text>
+<line x1="480" y1="252" x2="480" y2="257" stroke="#b9c4d4"/>
+<text x="480.0" y="271" font-size="11" fill="#5b6677" text-anchor="middle">800</text>
+<line x1="625" y1="252" x2="625" y2="257" stroke="#b9c4d4"/>
+<text x="625.0" y="271" font-size="11" fill="#5b6677" text-anchor="middle">1200</text>
+<line x1="770" y1="252" x2="770" y2="257" stroke="#b9c4d4"/>
+<text x="770.0" y="271" font-size="11" fill="#5b6677" text-anchor="middle">1600</text>
+<text x="480.0" y="290" font-size="11.5" fill="#5b6677" text-anchor="middle">voltage (V)</text></svg>
+  <figcaption>Derived: the HVX-1500&#8217;s 0 to 1.5 kV range against the two common EV bus classes. Testing happens above the nominal rail, and the headroom over an 800 V class powertrain is exactly what the 1.5 kV class provides.</figcaption>
+  </figure>
+<h3>How the BNC HVX-Series line solves it</h3>
   <p>The BNC HVX-Series is built for exactly this combination of voltage, current, and topology. At the 1.5 kV class it delivers up to 2000 mA, which is the headroom a powertrain or battery-emulation rig needs to hold bus voltage while the device under test draws current. The supply is fully digitally regulated, so it keeps that set point under load: load regulation stays at or under 0.05 percent of nominal across a 10 to 90 percent step, and it responds in under 1 millisecond, so a transient on the load does not pull the rail off target.</p>
   <p>For potential-free rigs, the HVX-Series offers a true <strong>floating output</strong>. The floating models present an output that is isolated from earth, so the supply sits inside an isolated high-voltage architecture without forcing a ground reference on it. That is the difference between measuring isolation honestly and fighting the instrument. Where a test plan instead needs a defined earth reference or both polarities, reversible earth-referenced models cover that case.</p>
   <p>Because the supply is microcontroller and FPGA based, it talks to the rig natively. Ethernet and RS232 are on board with a standard SCPI command set, the front panel keeps a time-tagged event log, and configurable code protection guards the setup between shifts. Drop it into a benchtop rig or rack it in a 2U slot beside the rest of the powertrain test stack.</p>
@@ -424,6 +467,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h3>Which HVX-Series models and options fit</h3>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
   <p>For e-mobility work the 1.5 kV high-current class is the workhorse, with the floating variant chosen wherever the rig is potential-free.</p>
   <table class="spec">
     <tr><th>Need</th><th>Recommended HVX-Series model</th><th>Rating</th></tr>

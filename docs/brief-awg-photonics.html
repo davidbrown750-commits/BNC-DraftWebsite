@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -422,7 +434,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the Model 686 solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fcar-t fcar-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fcar-t">Pulse carving: the modulator drive waveform decides the optical pulse train</title>
+<desc id="fcar-d">Schematic, three rows. A continuous-wave input beam, the electrical drive waveform applied to the modulator as a clean pulse train, and the carved optical output: light passes only where the drive is high, so the optical train inherits the drive's shape, edges, and timing.</desc>
+<defs><marker id="fcar-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="200" y="56" font-size="11.5" fill="#1b2330" text-anchor="end">CW beam in</text>
+<text x="200" y="136" font-size="11.5" fill="#1b2330" text-anchor="end">Modulator drive (AWG)</text>
+<text x="200" y="216" font-size="11.5" fill="#1b2330" text-anchor="end">Carved optical output</text>
+<polyline points="220.0,80.0 780.0,80.0" fill="none" stroke="#7b8698" stroke-width="2"/>
+<polyline points="220.0,160.0 260.0,160.0 263.0,126.0 312.0,126.0 315.0,160.0 390.0,160.0 393.0,126.0 442.0,126.0 445.0,160.0 520.0,160.0 523.0,126.0 572.0,126.0 575.0,160.0 650.0,160.0 653.0,126.0 702.0,126.0 705.0,160.0 780.0,160.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="260.0,240.0 263.0,210.0 312.0,210.0 315.0,240.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="390.0,240.0 393.0,210.0 442.0,210.0 445.0,240.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="520.0,240.0 523.0,210.0 572.0,210.0 575.0,240.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="650.0,240.0 653.0,210.0 702.0,210.0 705.0,240.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="220.0,240.0 260.0,240.0" fill="none" stroke="#0d9488" stroke-width="1.5"/>
+<polyline points="715.0,240.0 780.0,240.0" fill="none" stroke="#0d9488" stroke-width="1.5"/>
+<polyline points="315.0,240.0 390.0,240.0" fill="none" stroke="#0d9488" stroke-width="1.5"/>
+<polyline points="445.0,240.0 520.0,240.0" fill="none" stroke="#0d9488" stroke-width="1.5"/>
+<polyline points="575.0,240.0 650.0,240.0" fill="none" stroke="#0d9488" stroke-width="1.5"/>
+<line x1="287" y1="132" x2="287" y2="204" stroke="#e3e7ee" stroke-dasharray="4 3"/>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+<text x="410" y="282" font-size="11" fill="#5b6677" text-anchor="middle">edges, width, and spacing of the light follow the electrical drive exactly</text>
+</svg>
+  <figcaption>Schematic: pulse carving. Light passes the modulator only where the electrical drive is high, so the optical train inherits the drive waveform&#8217;s edges, width, and timing exactly.</figcaption>
+  </figure>
+<h3>How the Model 686 solves it</h3>
+  <figure class="fig-photo"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"><figcaption>Model 686 arbitrary waveform generator</figcaption></figure>
+
   <p>The <strong>Model 686</strong> is built for exactly this combination. It samples at <strong>20 GS/s</strong> with <strong>10 GHz</strong> of analog bandwidth and a rise and fall time of <strong>50 ps</strong>, which gives the sharp electrical edges that pulse carving and fast optical gating depend on. It drives <strong>5 Vpp into 50 ohm</strong>, enough to swing many electro-optic and acousto-optic modulators directly, so the modulator sees a clean source rather than the accumulated noise of an external amplifier chain.</p>
   <p>For shaping work the Model 686 carries <strong>14-bit</strong> vertical resolution, fine enough to write smooth intensity envelopes, and it pairs that resolution with in-firmware <strong>pre-compensation</strong> that counteracts modulator nonlinearity directly in the instrument. You define the target optical shape, and the correction is applied to the drive waveform without a separate processing stage. Memory runs up to <strong>9 Gpts</strong>, deep enough to hold long, non-repeating sequences for extended protocols and ranging patterns. Tight multi-channel synchronization keeps pump and probe, or modulator and trigger, locked to a known phase across the experiment.</p>
   <p>Low jitter ties the picture together. Sharp electrical edges only translate into sharp optical pulses if those edges arrive on time, and the Model 686 holds its timing tightly enough that the carved pulse lands where the experiment expects it, pulse after pulse, across a long run.</p>

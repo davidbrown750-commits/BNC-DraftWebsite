@@ -406,6 +406,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -439,7 +451,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h2>How the ICX-FieldHawk line solves it</h2>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="focc-t focc-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="focc-t">An intermittent interferer over a day: why monitoring needs record and playback</title>
+<desc id="focc-d">Schematic occupancy timeline over 24 hours for three channels. The licensed channel is active through the working day. A second channel shows scattered legitimate traffic. The interferer appears as brief unpredictable bursts, including at night; only a continuous recording catches all of them and proves when they happened.</desc>
+<defs><marker id="focc-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="180" y="104" font-size="11.5" fill="#1b2330" text-anchor="end">Licensed user</text>
+<line x1="190" y1="100" x2="780" y2="100" stroke="#e3e7ee"/>
+<rect x="411" y="92" width="209" height="16" rx="3" fill="#0655a3"/>
+<text x="180" y="164" font-size="11.5" fill="#1b2330" text-anchor="end">Other traffic</text>
+<line x1="190" y1="160" x2="780" y2="160" stroke="#e3e7ee"/>
+<rect x="367" y="152" width="10" height="16" rx="3" fill="#0655a3"/>
+<rect x="424" y="152" width="7" height="16" rx="3" fill="#0655a3"/>
+<rect x="485" y="152" width="15" height="16" rx="3" fill="#0655a3"/>
+<rect x="559" y="152" width="7" height="16" rx="3" fill="#0655a3"/>
+<rect x="645" y="152" width="12" height="16" rx="3" fill="#0655a3"/>
+<rect x="706" y="152" width="5" height="16" rx="3" fill="#0655a3"/>
+<text x="180" y="224" font-size="11.5" fill="#1b2330" text-anchor="end">Interferer</text>
+<line x1="190" y1="220" x2="780" y2="220" stroke="#e3e7ee"/>
+<rect x="242" y="212" width="4" height="16" rx="3" fill="#0d9488"/>
+<rect x="308" y="212" width="4" height="16" rx="3" fill="#0d9488"/>
+<rect x="443" y="212" width="4" height="16" rx="3" fill="#0d9488"/>
+<rect x="524" y="212" width="4" height="16" rx="3" fill="#0d9488"/>
+<rect x="667" y="212" width="4" height="16" rx="3" fill="#0d9488"/>
+<rect x="758" y="212" width="4" height="16" rx="3" fill="#0d9488"/>
+<line x1="190" y1="252" x2="780" y2="252" stroke="#b9c4d4"/>
+<line x1="190" y1="252" x2="190" y2="257" stroke="#b9c4d4"/>
+<text x="190.0" y="271" font-size="10.5" fill="#5b6677" text-anchor="middle">00:00</text>
+<line x1="338" y1="252" x2="338" y2="257" stroke="#b9c4d4"/>
+<text x="337.5" y="271" font-size="10.5" fill="#5b6677" text-anchor="middle">06:00</text>
+<line x1="485" y1="252" x2="485" y2="257" stroke="#b9c4d4"/>
+<text x="485.0" y="271" font-size="10.5" fill="#5b6677" text-anchor="middle">12:00</text>
+<line x1="632" y1="252" x2="632" y2="257" stroke="#b9c4d4"/>
+<text x="632.5" y="271" font-size="10.5" fill="#5b6677" text-anchor="middle">18:00</text>
+<line x1="780" y1="252" x2="780" y2="257" stroke="#b9c4d4"/>
+<text x="780.0" y="271" font-size="10.5" fill="#5b6677" text-anchor="middle">24:00</text>
+<text x="485" y="288" font-size="11" fill="#5b6677" text-anchor="middle">time of day</text>
+<text x="485" y="56" font-size="11" fill="#5b6677" text-anchor="middle">brief, unpredictable bursts are what a manual check misses and a recording proves</text>
+<text x="700" y="30" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: a day of channel occupancy. The interferer keys up in brief, unpredictable bursts, day and night; continuous recording is what catches every event and proves when it happened.</figcaption>
+  </figure>
+<h2>How the ICX-FieldHawk line solves it</h2>
   <img class="plain" style="float:right;width:32%;max-width:300px;margin:4px 0 16px 28px;border:none;" src="../figures/product-rugged-cut.png" alt="ICX-FieldHawk-R analyzer">
   <p>The ICX-FieldHawk platform pairs wide frequency coverage with the monitoring tools that make long watches productive. SpectraCore firmware turns the analyzer from a snapshot instrument into a surveillance one.</p>
   <p>Occupancy and heat-map views show how busy each channel is across a span and how that activity changes over time. Instead of staring at a live trace, an operator reads a colored map of the band where persistent users, bursty intruders, and quiet gaps all stand out at a glance. MSCAN, the memory scan function, steps through a stored list of channels and frequencies so a monitoring station can cycle through every band of interest automatically, catching activity on each one without manual retuning.</p>
@@ -448,6 +501,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h2>Which models and accessories fit</h2>
+  <figure class="fig-photo"><img src="/figures/wp/icx-rugged-transparent.png" alt="ICX-FieldHawk rugged tablet real-time spectrum analyzer"><figcaption>ICX-FieldHawk rugged (IP68) analyzer</figcaption></figure>
+
   <p>For mobile monitoring and roaming spot checks, the <strong>ICX-FieldHawk</strong> lets an officer respond to a complaint, capture the offending signal on site, and walk away with a record. It is the instrument for the investigator who has to go to where the interference is.</p>
   <p>For fixed or semi-permanent monitoring stations, the <strong>ICX-Series USB</strong> analyzer integrates into an unattended setup. Connected to a host computer, it can run MSCAN cycles and scheduled recordings around the clock, building a continuous picture of band occupancy without anyone standing watch. For posts exposed to the elements, the <strong>ICX-FieldHawk-R</strong> variant keeps the same monitoring capability working through heat, dust, and weather.</p>
   <p>When the job turns from watching to locating, the <strong>ANT-100G</strong> directional antenna gives the operator a way to take a bearing on an interferer. Its 500 MHz to 10 GHz coverage and switchable pre-amplifier make it the bridge between monitoring a band and tracking down the source inside it.</p>

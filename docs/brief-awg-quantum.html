@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -416,7 +428,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the Model 686 solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fqkd-t fqkd-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fqkd-t">A decoy-state QKD pulse train: three intensity levels, one timing grid</title>
+<desc id="fqkd-d">Schematic pulse train with three amplitude levels chosen pulse by pulse: signal pulses at the highest intensity, decoy pulses at a lower intensity, and vacuum slots with almost no light. The security analysis depends on the levels being exact and the pattern repeatable.</desc>
+<defs><marker id="fqkd-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="90" y1="210" x2="780" y2="210" stroke="#b9c4d4"/>
+<polyline points="120.0,210.0 124.0,90.0 138.0,90.0 142.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="184.0,210.0 188.0,90.0 202.0,90.0 206.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="248.0,210.0 252.0,156.0 266.0,156.0 270.0,210.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="312.0,210.0 316.0,90.0 330.0,90.0 334.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="376.0,210.0 380.0,202.8 394.0,202.8 398.0,210.0" fill="none" stroke="#7b8698" stroke-width="2.5"/>
+<polyline points="440.0,210.0 444.0,156.0 458.0,156.0 462.0,210.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="504.0,210.0 508.0,90.0 522.0,90.0 526.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="568.0,210.0 572.0,202.8 586.0,202.8 590.0,210.0" fill="none" stroke="#7b8698" stroke-width="2.5"/>
+<polyline points="632.0,210.0 636.0,90.0 650.0,90.0 654.0,210.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="696.0,210.0 700.0,156.0 714.0,156.0 718.0,210.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<circle cx="130" cy="52" r="6" fill="#0655a3"/><text x="142" y="56" font-size="12" fill="#1b2330">signal (&#956;)</text>
+<circle cx="250" cy="52" r="6" fill="#0d9488"/><text x="262" y="56" font-size="12" fill="#1b2330">decoy (&#957;)</text>
+<circle cx="370" cy="52" r="6" fill="#7b8698"/><text x="382" y="56" font-size="12" fill="#1b2330">vacuum</text>
+<text x="700" y="56" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+<text x="435" y="238" font-size="11" fill="#5b6677" text-anchor="middle">level accuracy and pulse-to-pulse repeatability carry the protocol&#8217;s security proof</text>
+</svg>
+  <figcaption>Schematic: a decoy-state QKD pulse train. Signal, decoy, and vacuum intensities are chosen pulse by pulse; the protocol&#8217;s security analysis leans on the levels being exact and the pattern repeatable.</figcaption>
+  </figure>
+<h3>How the Model 686 solves it</h3>
+  <figure class="fig-photo"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"><figcaption>Model 686 arbitrary waveform generator</figcaption></figure>
+
   <p>The <strong>Model 686</strong> is built for exactly this kind of work. Its trigger jitter is below <strong>2 ps</strong> against an external master clock, so each waveform fires in a fixed, known relationship to the experiment timebase. Across multiple units the synchronization holds to better than <strong>100 fs</strong>, which is what a distributed quantum setup needs when separate channels drive separate modulators or separate qubits and have to agree on when "now" is.</p>
   <p>Timing resolution is <strong>50 ps</strong>, fine enough to position pulse edges and set inter-pulse spacing for the encoding and interrogation patterns these protocols use. Waveform memory runs up to <strong>9 Gpts</strong>, deep enough to hold the long randomized sequences a decoy-state QKD run or an extended sensing schedule calls for without looping back to a short pattern. Vertical resolution is <strong>14 bits</strong>, which keeps the amplitude steps small and the envelope faithful through the modulator. The output delivers <strong>5 Vpp into 50 ohms</strong>, enough to drive many electro-optic modulators directly without an external amplifier in the path adding its own noise and delay.</p>
   <p>For experiments that outgrow a single chassis, up to <strong>4 units</strong> synchronize together, giving <strong>16 analog channels and 128 digital channels</strong> under one timebase. That is the headroom a multi-qubit register or a multi-channel sensing array needs, and the sub-100 fs cross-unit synchronization means the added channels stay aligned rather than drifting apart over a long run.</p>

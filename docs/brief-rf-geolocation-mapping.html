@@ -406,6 +406,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -439,7 +451,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h2>How the ICX-FieldHawk line solves it</h2>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 330" role="img" aria-labelledby="fgeo-t fgeo-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fgeo-t">From spectrum to map: signal strength along a track plus bearings from a directional antenna</title>
+<desc id="fgeo-d">Schematic map view. A drive track winds through streets, colored by received signal strength from weak to strong as it nears the source. Two bearing lines taken with a directional antenna cross at the source location. Position-tagged measurements are what turn a spectrum reading into a point on the map.</desc>
+<defs><marker id="fgeo-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="140" y1="60" x2="140" y2="290" stroke="#edf1f7" stroke-width="6"/>
+<line x1="300" y1="60" x2="300" y2="290" stroke="#edf1f7" stroke-width="6"/>
+<line x1="460" y1="60" x2="460" y2="290" stroke="#edf1f7" stroke-width="6"/>
+<line x1="620" y1="60" x2="620" y2="290" stroke="#edf1f7" stroke-width="6"/>
+<line x1="80" y1="90" x2="760" y2="90" stroke="#edf1f7" stroke-width="6"/>
+<line x1="80" y1="170" x2="760" y2="170" stroke="#edf1f7" stroke-width="6"/>
+<line x1="80" y1="250" x2="760" y2="250" stroke="#edf1f7" stroke-width="6"/>
+<polyline points="100.0,270.0 220.0,270.0" fill="none" stroke="#9db8d6" stroke-width="5"/>
+<polyline points="220.0,270.0 220.0,170.0" fill="none" stroke="#7ea6cd" stroke-width="5"/>
+<polyline points="220.0,170.0 380.0,170.0" fill="none" stroke="#5f93c4" stroke-width="5"/>
+<polyline points="380.0,170.0 380.0,250.0" fill="none" stroke="#3f80bb" stroke-width="5"/>
+<polyline points="380.0,250.0 540.0,250.0" fill="none" stroke="#2b6eae" stroke-width="5"/>
+<polyline points="540.0,250.0 540.0,120.0" fill="none" stroke="#1a5ea3" stroke-width="5"/>
+<polyline points="540.0,120.0 620.0,120.0" fill="none" stroke="#0f57a0" stroke-width="5"/>
+<circle cx="668" cy="92" r="9" fill="#0d9488" stroke="#fff" stroke-width="2"/>
+<text x="682" y="96" font-size="12" fill="#1b2330" text-anchor="start" font-weight="bold">source</text>
+<line x1="540" y1="250" x2="668" y2="92" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="620" y1="120" x2="668" y2="92" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="500" y="296" font-size="11" fill="#5b6677" text-anchor="start">bearing fixes cross at the source</text>
+<text x="150" y="296" font-size="11" fill="#5b6677" text-anchor="start">track colored by signal strength</text>
+<polyline points="100.0,272.0 140.0,272.0" fill="none" stroke="#9db8d6" stroke-width="5"/>
+<polyline points="100.0,286.0 140.0,286.0" fill="none" stroke="#0655a3" stroke-width="5"/>
+<text x="96" y="276" font-size="9.5" fill="#5b6677" text-anchor="end">weak</text>
+<text x="96" y="290" font-size="9.5" fill="#5b6677" text-anchor="end">strong</text>
+<text x="700" y="46" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: a drive track colored by received signal strength, with directional-antenna bearing fixes crossing at the source. Binding every sample to a GNSS position is what turns spectrum into a map.</figcaption>
+  </figure>
+<h2>How the ICX-FieldHawk line solves it</h2>
   <img class="plain" style="float:right;width:32%;max-width:300px;margin:4px 0 16px 28px;border:none;" src="../figures/product-usb-cut.png" alt="ICX-Series USB analyzer">
   <p>The ICX-FieldHawk platform was built for exactly this kind of work. A compact real-time analyzer streams calibrated spectrum data while SpectraCore firmware ties each capture to GNSS position and timestamp. The software supports two complementary methods, and most field teams use both.</p>
   <p>The first method is the signal-strength heat map. As the operator walks or drives a route, the system records channel power and RSSI at every point along the way, then paints those values directly onto a map as a color gradient. Hot zones glow. Coverage holes fade out. You read the source location off the brightest cluster without any further math. This approach shines when you want a broad picture fast: where a transmitter reaches, where it does not, where a noise floor climbs.</p>
@@ -449,6 +494,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h2>Which models and accessories fit</h2>
+  <figure class="fig-photo"><img src="/figures/wp/icx-handheld-transparent.png" alt="ICX-FieldHawk handheld real-time spectrum analyzer"><figcaption>ICX-FieldHawk handheld analyzer</figcaption></figure>
+
   <p>The right configuration depends on how the team moves and where it works.</p>
   <p>For drone payloads, embedded rigs, and Raspberry Pi hosts, the <strong>ICX-Series USB</strong> analyzer is the natural choice. It is light, it sips power, and it hands clean data to whatever computer you bolt it to. This is the model most teams reach for when the analyzer rides in a vehicle, hangs under a drone, or sits inside a fixed monitoring node.</p>
   <p>For operators on foot who need a self-contained instrument with its own screen, the <strong>ICX-FieldHawk</strong> keeps the survey in one hand. No host computer, no cables to manage, no fragile setup in the rain. For field conditions that punish equipment, the <strong>ICX-FieldHawk-R</strong> variant adds environmental protection without changing the measurement workflow.</p>

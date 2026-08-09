@@ -379,6 +379,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -419,7 +431,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>The BNC Approach</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="fkik-t fkik-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fkik-t">The kicker pulse has to live between bunches: fast rise, flat top, clean return</title>
+<desc id="fkik-d">Schematic two rows. Top: the bunch train, with one bunch highlighted as the one to deflect. Bottom: the kicker high-voltage pulse, rising in the gap before the chosen bunch, holding genuinely flat while it passes, and returning cleanly before the next bunch arrives.</desc>
+<defs><marker id="fkik-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<text x="150" y="60" font-size="11.5" fill="#1b2330" text-anchor="end">Bunch train</text>
+<text x="150" y="174" font-size="11.5" fill="#1b2330" text-anchor="end">Kicker HV pulse</text>
+<line x1="170" y1="100" x2="780" y2="100" stroke="#e3e7ee"/>
+<ellipse cx="210" cy="100" rx="12" ry="20" fill="#7b8698" opacity="0.85"/>
+<ellipse cx="310" cy="100" rx="12" ry="20" fill="#7b8698" opacity="0.85"/>
+<ellipse cx="410" cy="100" rx="12" ry="20" fill="#7b8698" opacity="0.85"/>
+<ellipse cx="510" cy="100" rx="12" ry="20" fill="#0d9488" opacity="0.85"/>
+<ellipse cx="610" cy="100" rx="12" ry="20" fill="#7b8698" opacity="0.85"/>
+<ellipse cx="710" cy="100" rx="12" ry="20" fill="#7b8698" opacity="0.85"/>
+<text x="510" y="66" font-size="11" fill="#0d9488" text-anchor="middle" font-weight="bold">the bunch to deflect</text>
+<polyline points="170.0,230.0 438.0,230.0 444.0,166.0 576.0,166.0 582.0,230.0 780.0,230.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<line x1="444" y1="158" x2="576" y2="158" stroke="#5b6677" marker-start="url(#fkik-a)" marker-end="url(#fkik-a)"/>
+<text x="510" y="150" font-size="10.5" fill="#5b6677" text-anchor="middle">flat top while the bunch passes</text>
+<text x="430" y="252" font-size="10.5" fill="#5b6677" text-anchor="end">rises in the gap</text>
+<text x="592" y="252" font-size="10.5" fill="#5b6677" text-anchor="start">returns before the next bunch</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+</svg>
+  <figcaption>Schematic: the kicker pulse rises in the gap, holds genuinely flat while the chosen bunch passes, and returns before the next one. Flatness during the passage is what keeps the deflection uniform across the bunch.</figcaption>
+  </figure>
+<h3>The BNC Approach</h3>
+  <figure class="fig-photo"><img src="/figures/wp/pvx-4110-transparent.png" alt="DEI PVX-4110 high voltage pulse generator"><figcaption>PVX-4110 high-voltage pulse generator</figcaption></figure>
+
   <p>For the pulsed kickers and deflectors, DEI pulse generators bring a capacitive-load-optimized output that holds a flat top under load. The half-bridge totem-pole stage actively drives the plates up and back, which keeps the rising edge fast and the flat region settled while the bunch passes, then returns the plates cleanly for the next interval. Programmable VHigh and VLow levels set the deflection geometry directly, and the design targets the low trigger-to-output jitter that synchronization to a machine clock requires. Built-in voltage and current monitors bring the real plate waveform to a scope so the kick can be verified against the timing system.</p>
   <p>For the static bias, the <strong><a href="bnc-dei-pnc-series-datasheet.html">PNC-Series</a></strong> high-voltage supplies provide stable, low-ripple DC for deflectors, electrostatic optics, and detector biasing, with very high voltage capability where the beamline calls for it. Pairing a DEI pulse generator on the kicker with a PNC-Series supply on the static electrodes lets one vendor cover both the pulsed and the steady sides of the deflection chain. Treat the figures here as capability targets and confirm them against the current published datasheets for your machine.</p>
 </section>

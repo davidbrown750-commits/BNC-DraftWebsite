@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -422,7 +434,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the Model 686 solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="fagl-t fagl-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fagl-t">What an agile emitter looks like in frequency versus time</title>
+<desc id="fagl-d">Schematic frequency-versus-time plot. First a train of linear FM chirps, each sweeping upward. Then a frequency-hopping segment stepping pseudo-randomly between levels. Then a fixed-frequency pulse burst. A threat-emulation bench has to produce all three, layered and on time.</desc>
+<defs><marker id="fagl-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="110" y1="250" x2="780" y2="250" stroke="#b9c4d4"/><line x1="110" y1="50" x2="110" y2="250" stroke="#b9c4d4"/>
+<polyline points="130.0,230.0 176.0,90.0" fill="none" stroke="#0655a3" stroke-width="3"/>
+<polyline points="192.0,230.0 238.0,90.0" fill="none" stroke="#0655a3" stroke-width="3"/>
+<polyline points="254.0,230.0 300.0,90.0" fill="none" stroke="#0655a3" stroke-width="3"/>
+<text x="212" y="262" font-size="11.5" fill="#1b2330" text-anchor="middle">LFM chirps</text>
+<polyline points="340.0,150.0 370.0,150.0" fill="none" stroke="#0d9488" stroke-width="3.5"/>
+<polyline points="374.0,90.0 404.0,90.0" fill="none" stroke="#0d9488" stroke-width="3.5"/>
+<polyline points="408.0,190.0 438.0,190.0" fill="none" stroke="#0d9488" stroke-width="3.5"/>
+<polyline points="442.0,120.0 472.0,120.0" fill="none" stroke="#0d9488" stroke-width="3.5"/>
+<polyline points="476.0,210.0 506.0,210.0" fill="none" stroke="#0d9488" stroke-width="3.5"/>
+<polyline points="510.0,100.0 540.0,100.0" fill="none" stroke="#0d9488" stroke-width="3.5"/>
+<text x="440" y="262" font-size="11.5" fill="#1b2330" text-anchor="middle">frequency hopping</text>
+<polyline points="570.0,160.0 596.0,160.0" fill="none" stroke="#7b8698" stroke-width="3.5"/>
+<polyline points="616.0,160.0 642.0,160.0" fill="none" stroke="#7b8698" stroke-width="3.5"/>
+<polyline points="662.0,160.0 688.0,160.0" fill="none" stroke="#7b8698" stroke-width="3.5"/>
+<polyline points="708.0,160.0 734.0,160.0" fill="none" stroke="#7b8698" stroke-width="3.5"/>
+<text x="660" y="262" font-size="11.5" fill="#1b2330" text-anchor="middle">fixed-frequency pulse train</text>
+<text x="445.0" y="292" font-size="11.5" fill="#5b6677" text-anchor="middle">time</text>
+<text x="36" y="150" font-size="11.5" fill="#5b6677" text-anchor="middle" transform="rotate(-90 36 150)">frequency</text>
+<text x="700" y="36" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+</svg>
+  <figcaption>Schematic: an agile emitter in frequency versus time. Chirps, pseudo-random hops, and fixed-frequency bursts are the three behaviors a threat-emulation waveform has to reproduce, often layered.</figcaption>
+  </figure>
+<h3>How the Model 686 solves it</h3>
+  <figure class="fig-photo"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"><figcaption>Model 686 arbitrary waveform generator</figcaption></figure>
+
   <p>The Berkeley Nucleonics <strong>Model 686</strong> is built for exactly this combination of bandwidth, depth, agility, and scale. It samples at <strong>20 GS/s</strong> with <strong>10 GHz</strong> of analog bandwidth, and it delivers a direct sine output to <strong>6.5 GHz</strong>, which lets the bench synthesize wideband IF and a useful range of RF directly rather than relying on an external upconverter for every band. That direct path keeps the signal chain short and the fidelity high.</p>
   <p>Memory is sized for real scenarios. With up to <strong>9 Gpts</strong> of waveform memory, the Model 686 plays long, non-repeating pulse trains and multi-emitter scenes without the short-loop repeat that betrays a simulator. Edges are fast and clean, with <strong>50 ps</strong> rise and fall times and <strong>sub-2 ps</strong> jitter, so pulse timing reflects the scenario and not the instrument. That timing precision is what makes the difference between a believable threat and an artifact a receiver can reject.</p>
   <p>For multi-channel and multi-emitter scenes, the Model 686 synchronizes <strong>up to 4 units</strong> into a single coherent system, giving <strong>16 analog channels and 128 digital channels</strong>. That channel count and tight inter-unit synchronization is what angle-of-arrival emulation and dense multi-emitter scenes demand: several phase-stable outputs that hold a known relationship across the whole bench. Fast switching between waveform segments lets each channel carry frequency-agile and hopping behavior within the scene.</p>

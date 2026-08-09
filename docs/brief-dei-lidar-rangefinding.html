@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -422,7 +434,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>The BNC approach</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="fedg-t fedg-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fedg-t">A faster current edge means a sharper time zero</title>
+<desc id="fedg-d">Schematic: two drive edges crossing the same trigger threshold with the same amplitude noise band. The slow edge turns the noise band into a wide window of crossing times; the fast edge collapses it. Timing jitter is roughly the noise divided by the slew rate, which is why rise-time control sets ranging precision.</desc>
+<defs><marker id="fedg-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<polyline points="120.0,250.0 150.0,250.0 340.0,90.0 460.0,90.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<line x1="120" y1="170" x2="460" y2="170" stroke="#5b6677" stroke-dasharray="5 4"/>
+<rect x="120" y="158" width="340" height="24" fill="#0d9488" opacity="0.12"/>
+<line x1="231" y1="278" x2="259" y2="278" stroke="#0d9488" stroke-width="3"/>
+<text x="215" y="300" font-size="11" fill="#1b2330" text-anchor="middle">slow edge: wide timing window</text>
+<polyline points="470.0,250.0 500.0,250.0 544.0,90.0 664.0,90.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<line x1="470" y1="170" x2="664" y2="170" stroke="#5b6677" stroke-dasharray="5 4"/>
+<rect x="470" y="158" width="194" height="24" fill="#0d9488" opacity="0.12"/>
+<line x1="519" y1="278" x2="525" y2="278" stroke="#0d9488" stroke-width="3"/>
+<text x="565" y="300" font-size="11" fill="#1b2330" text-anchor="middle">fast edge: narrow window</text>
+<text x="210" y="76" font-size="10.5" fill="#5b6677" text-anchor="middle">threshold</text>
+<text x="410" y="160" font-size="10.5" fill="#0d9488" text-anchor="middle">noise band</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+</svg>
+  <figcaption>Schematic: the same noise band crossed by a slow and a fast edge. Timing jitter is roughly noise over slew rate, so the faster current edge gives the rangefinder a sharper time zero and finer range precision.</figcaption>
+  </figure>
+<h3>The BNC approach</h3>
+  <figure class="fig-photo"><img src="/figures/wp/pco-6131-transparent.png" alt="DEI PCO-6131 OEM laser diode driver module"><figcaption>PCO-6131 OEM driver module</figcaption></figure>
+
   <p>DEI rangefinder and LiDAR drivers are built as fast current sources with the edge under the designer's control. Variable rise-time control is a defining feature of the OEM modules: rather than living with a single fixed edge, the integrator sets the rise to match the ranging task, trading edge speed against pulse energy where the application calls for it. That single knob lets one driver serve a short-range, high-resolution mode and a longer-range mode in the same product.</p>
   <p>The modules are designed to drop into a sensor. They present a defined trigger interface, run from practical supply rails, and are packaged for embedding rather than for a bench. The output stage and the recommended cabling are treated together, because a fast edge into a low-impedance diode survives only if the path between driver and emitter stays low in inductance. Keep that connection short and tightly paired and the diode sees the edge the driver produced; let it grow and the edge softens and the range resolution suffers with it.</p>
   <p>For the fast, embedded case, the <strong>PCO-7121</strong> is the OEM module built for rangefinder, LiDAR, and atmospheric-communication service, producing fast high-current pulses into pulsed laser diodes. Where a design needs more current with adjustable edges, the <strong>PCO-6141</strong> delivers up to 60 A with variable rise-time control and the <strong>PCO-6131</strong> delivers up to 125 A, also with variable rise-time control, both as OEM modules. Treat the current, rise-time, and rate figures as model capabilities and confirm them against the current published datasheet for your exact build.</p>

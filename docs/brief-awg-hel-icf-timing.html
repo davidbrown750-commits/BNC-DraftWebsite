@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -421,7 +433,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the Model 686 solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 330" role="img" aria-labelledby="fhel-t fhel-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fhel-t">Pre-compensation: shaping the drive so the amplified pulse lands on target</title>
+<desc id="fhel-d">Schematic in two rows. Top row: a flat-top drive pulse into the amplifier chain comes out drooped, because gain saturates across the pulse. Bottom row: a pre-compensated drive with a rising ramp comes out as the intended flat-top pulse. The waveform generator applies the inverse of the chain's distortion in firmware.</desc>
+<defs><marker id="fhel-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<rect x="60" y="50" width="200" height="90" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="160.0" y="156" font-size="11" fill="#5b6677" text-anchor="middle">naive drive: flat top</text>
+<polyline points="80.0,125.0 110.0,125.0 112.0,72.0 208.0,72.0 210.0,125.0 240.0,125.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<rect x="500" y="50" width="200" height="90" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="600.0" y="156" font-size="11" fill="#5b6677" text-anchor="middle">amplified output: drooped</text>
+<polyline points="520.0,125.0 550.0,125.0 552.0,68.0 600.0,80.0 660.0,98.0 708.0,104.0 710.0,125.0 680.0,125.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<line x1="280" y1="95" x2="480" y2="95" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fhel-a)"/>
+<text x="380" y="86" font-size="11" fill="#5b6677" text-anchor="middle">amplifier chain</text>
+<text x="380" y="112" font-size="10.5" fill="#5b6677" text-anchor="middle">gain saturates: the back of the pulse sags</text>
+<rect x="60" y="190" width="200" height="90" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="160.0" y="296" font-size="11" fill="#5b6677" text-anchor="middle">pre-compensated drive: rising ramp</text>
+<polyline points="80.0,265.0 110.0,265.0 112.0,225.0 150.0,220.0 200.0,208.0 208.0,205.0 210.0,265.0 240.0,265.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<rect x="500" y="190" width="200" height="90" rx="6" fill="#fbfcfe" stroke="#e3e7ee"/>
+<text x="600.0" y="296" font-size="11" fill="#5b6677" text-anchor="middle">amplified output: on-target flat top</text>
+<polyline points="520.0,265.0 550.0,265.0 552.0,208.0 708.0,208.0 710.0,265.0 680.0,265.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<line x1="280" y1="235" x2="480" y2="235" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fhel-a)"/>
+<text x="380" y="226" font-size="11" fill="#5b6677" text-anchor="middle">same amplifier chain</text>
+<text x="380" y="252" font-size="10.5" fill="#5b6677" text-anchor="middle">in-firmware pre-distortion cancels the sag</text>
+<text x="410" y="30" font-size="11" fill="#5b6677" text-anchor="middle">Schematic (waveforms illustrative)</text>
+</svg>
+  <figcaption>Schematic: in-firmware pre-compensation. The drive waveform is distorted with the inverse of the amplifier chain&#8217;s saturation so the amplified pulse, not the drive, lands on the target shape.</figcaption>
+  </figure>
+<h3>How the Model 686 solves it</h3>
+  <figure class="fig-photo"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"><figcaption>Model 686 arbitrary waveform generator</figcaption></figure>
+
   <p>The <strong>Model 686</strong> closes that gap by putting synchronization and arbitrary shaping in one instrument, so the front-end timing stage is a single box on the bench rather than a hand-built chain.</p>
   <p>It locks to the facility master clock with <strong>sub-2 ps trigger jitter</strong>, which keeps the gated seed pulse aligned to the shared timebase tightly enough for multi-beam ICF work. Where a shot needs more than one drive channel, or more than one 686, the units hold <strong>sub-100 fs channel alignment</strong> across separate instruments, so a multi-beamline front end stays coherent rather than drifting beam to beam.</p>
   <p>Pulse pre-compensation lives <strong>in firmware</strong>. The drive waveform can be pre-distorted on the instrument to counteract the nonlinear gain of the downstream amplifier chain, so the seed is shaped to produce the intended output rather than the intended input. That correction stays with the instrument and the stored waveform, not in an external box that has to be re-trimmed.</p>

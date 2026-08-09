@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -418,6 +430,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
+
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="fcap-t fcap-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fcap-t">Constant-current charging: a straight voltage ramp, then a clean handoff to regulation</title>
+<desc id="fcap-d">Derived from capacitor physics: at constant charging current the bank voltage rises as a straight line, V equals I times t over C. When the setpoint is reached the supply hands off to voltage regulation, current falls away, and the bank waits for the shot. The programmable ramp is what makes every shot identical.</desc>
+<defs><marker id="fcap-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="130" y1="250" x2="770" y2="250" stroke="#b9c4d4"/><line x1="130" y1="50" x2="130" y2="250" stroke="#b9c4d4"/>
+<polyline points="130.0,246.0 470.0,90.0 770.0,90.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<polyline points="130.0,120.0 470.0,120.0 484.0,244.0 770.0,244.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="300" y="96" font-size="11.5" fill="#0655a3" text-anchor="middle" font-weight="bold">V: straight ramp (V = I&#183;t/C)</text>
+<text x="300" y="142" font-size="11.5" fill="#0d9488" text-anchor="middle" font-weight="bold">I: constant</text>
+<text x="600" y="78" font-size="11" fill="#1b2330" text-anchor="middle">setpoint reached: regulate</text>
+<text x="600" y="226" font-size="11" fill="#0d9488" text-anchor="middle">current falls away</text>
+<line x1="470" y1="70" x2="470" y2="250" stroke="#e3e7ee" stroke-dasharray="4 4"/>
+<text x="450.0" y="272" font-size="11.5" fill="#5b6677" text-anchor="middle">time</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Derived</text></svg>
+  <figcaption>Derived from capacitor physics: at constant charging current the bank voltage is a straight ramp, V = I&#183;t/C, followed by a clean handoff to regulation at the setpoint. A programmable ramp is what makes shot 1,000 identical to shot 1.</figcaption>
+  </figure>
 <h2>How the BNC HVX-Series line solves it</h2>
 <p>The Berkeley Nucleonics HVX-Series is a fully digitally regulated DC high-voltage supply with a microcontroller and FPGA control core, and that fast digital loop is what makes it a good capacitor charger. The regulation responds in under 1 millisecond to within 0.1 percent of nominal, so the supply handles the transition from constant-current charging to constant-voltage hold without overshoot, and it lands repeatably on the target voltage shot after shot.</p>
 <p>The retrofittable ramp-control option is built for this work. It sets a defined gradient from 1 V/s up to ten times nominal volts per second, which lets an operator program a controlled rate of rise rather than charging at the bare current limit. A controlled ramp protects the dielectric, makes inrush predictable, and gives a repeatable charge profile that automated pulsed-power sequences depend on.</p>
@@ -426,6 +456,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
 <h2>Which HVX-Series models and options fit</h2>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
 <p>For charging duty the model is chosen by the bank voltage and the charge rate the system needs. Higher power shortens charge time and raises the achievable repetition rate, so the 3 kW class is usually the right starting point where throughput matters.</p>
 <table class="spec">
 <thead><tr><th>Charging profile</th><th>Recommended HVX-Series model</th><th>Output</th></tr></thead>

@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -421,13 +433,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the HVX-Series solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="fcoat-t fcoat-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fcoat-t">The field does the work: charged particles follow it to the grounded part, even around the back</title>
+<desc id="fcoat-d">Schematic: a charged spray electrode on the left, a grounded workpiece on the right. Electric field lines bow outward and terminate all around the part, and charged particles ride them, which is why electrostatic coating wraps around edges the airflow alone would miss.</desc>
+<defs><marker id="fcoat-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<circle cx="160" cy="160" r="12" fill="#0655a3"/>
+<text x="160" y="136" font-size="11.5" fill="#1b2330" text-anchor="middle">charged electrode (HV)</text>
+<path d="M 600 90 q 70 70 0 140 l 34 0 q -60 -70 0 -140 Z" fill="#dfe7f1" stroke="#7b8698"/>
+<text x="670" y="164" font-size="11.5" fill="#1b2330" text-anchor="start">grounded part</text>
+<path d="M 172 146.0 C 320 41.0, 460 41.0, 624 97.0" fill="none" stroke="#0d9488" stroke-width="1.6" marker-end="url(#fcoat-a)"/>
+<path d="M 172 153.0 C 320 100.5, 460 100.5, 608 128.5" fill="none" stroke="#0d9488" stroke-width="1.6" marker-end="url(#fcoat-a)"/>
+<path d="M 172 160.0 C 320 160.0, 460 160.0, 608 160.0" fill="none" stroke="#0d9488" stroke-width="1.6" marker-end="url(#fcoat-a)"/>
+<path d="M 172 167.0 C 320 219.5, 460 219.5, 608 191.5" fill="none" stroke="#0d9488" stroke-width="1.6" marker-end="url(#fcoat-a)"/>
+<path d="M 172 174.0 C 320 279.0, 460 279.0, 624 223.0" fill="none" stroke="#0d9488" stroke-width="1.6" marker-end="url(#fcoat-a)"/>
+<text x="360" y="296" font-size="11" fill="#5b6677" text-anchor="middle">particles follow the field lines, including around the back of the part</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: charged particles ride the field lines from the electrode to the grounded part, including around its back. The wrap-around that makes electrostatic coating efficient exists only while the field is held stable.</figcaption>
+  </figure>
+<h3>How the HVX-Series solves it</h3>
   <p>The HVX-Series is a fully digitally regulated DC high-voltage supply built around a microcontroller and FPGA, which gives an electrostatic or coating line exactly the controllable field these processes need. Voltage is set digitally with 16-bit resolution across roughly 0.01 to 100 percent of nominal, so the field can be placed precisely and recalled exactly. Once set, it stays put: line regulation is tighter than plus or minus 0.01 percent of nominal across a 10 percent mains swing, load regulation is within 0.05 percent of nominal over a 10 to 90 percent load step, and stability holds within 0.01 percent of nominal over an eight-hour run. Ripple is specified at 0.01 percent of nominal plus a small fixed term. A quiet, steady field is what makes a coating result repeatable.</p>
   <p><strong>Ramp Control</strong> is the option that suits these processes best. It brings the output up along an adjustable gradient, from 1 V/s up to ten times nominal per second, so the field builds gently and the process settles before it reaches working strength rather than snapping on and triggering corona or an arc. <strong>Arc Detection</strong> is the companion option, and for coating work it is essential. It detects a flashover, reports it, and can shut the output off, so a spark in a paint booth or a precipitator does not turn into sustained energy into the fault. Polarity is electrically reversible, positive or negative, which covers the negative-polarity processes common in this area and supports development work that needs both. On board, Ethernet and RS232 with a standard SCPI command set let the supply take field commands from a line controller or recipe sequencer, while the time-tagged event log records every set point and arc event for the process record.</p>
 </section>
 
 <section>
   <h3>Which HVX-Series models and options fit</h3>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
   <p>Field strength sets the model. Lower-voltage coating heads and many spray applications live in the single-digit kilovolt range, while precipitation electrodes, electrospinning, and the highest-field deposition and chuck processes push toward the top of the line.</p>
   <table class="spec">
     <tr><th>Need</th><th>Recommended HVX-Series model</th><th>Rating</th></tr>

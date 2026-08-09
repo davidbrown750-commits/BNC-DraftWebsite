@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -421,7 +433,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>The BNC approach</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 340" role="img" aria-labelledby="fdiv-t fdiv-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fdiv-t">Why diodes are current-driven: the I-V curve is nearly vertical above turn-on</title>
+<desc id="fdiv-d">Derived chart: a laser diode's exponential current-versus-voltage curve. Above turn-on the curve is nearly vertical, so a few tens of millivolts of change in forward voltage swings the current enormously. Holding the voltage and hoping for a current is uncontrolled; a current-source driver sets the current directly and lets the voltage fall where the junction puts it.</desc>
+<defs><marker id="fdiv-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="140" y1="280" x2="700" y2="280" stroke="#b9c4d4"/><line x1="140" y1="50" x2="140" y2="280" stroke="#b9c4d4"/>
+<polyline points="180.0,276.0 186.1,276.0 192.2,276.0 198.2,276.0 204.3,276.0 210.4,276.0 216.5,275.9 222.5,275.9 228.6,275.9 234.7,275.9 240.8,275.9 246.8,275.9 252.9,275.8 259.0,275.8 265.1,275.8 271.1,275.7 277.2,275.7 283.3,275.7 289.4,275.6 295.4,275.6 301.5,275.5 307.6,275.5 313.7,275.4 319.7,275.3 325.8,275.2 331.9,275.2 338.0,275.1 344.1,275.0 350.1,274.8 356.2,274.7 362.3,274.6 368.4,274.4 374.4,274.2 380.5,274.0 386.6,273.8 392.7,273.6 398.7,273.3 404.8,273.0 410.9,272.7 417.0,272.3 423.0,271.9 429.1,271.5 435.2,271.0 441.3,270.4 447.3,269.8 453.4,269.2 459.5,268.4 465.6,267.6 471.6,266.7 477.7,265.7 483.8,264.6 489.9,263.4 495.9,262.0 502.0,260.5 508.1,258.9 514.2,257.1 520.3,255.0 526.3,252.8 532.4,250.3 538.5,247.6 544.6,244.5 550.6,241.2 556.7,237.4 562.8,233.3 568.9,228.8 574.9,223.7 581.0,218.1 587.1,212.0 593.2,205.1 599.2,197.6 605.3,189.2 611.4,180.0 617.5,169.7 623.5,158.4 629.6,145.8 635.7,132.0 641.8,116.6 647.8,99.6 653.9,80.8 660.0,60.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<line x1="569" y1="80" x2="569" y2="280" stroke="#0d9488" stroke-dasharray="5 4"/>
+<line x1="601" y1="80" x2="601" y2="280" stroke="#0d9488" stroke-dasharray="5 4"/>
+<text x="584.8" y="72" font-size="10.5" fill="#0d9488" text-anchor="middle" font-weight="bold">a few tens of mV</text>
+<line x1="720" y1="227" x2="720" y2="197" stroke="#0d9488" stroke-width="2" marker-start="url(#fdiv-a)" marker-end="url(#fdiv-a)"/>
+<text x="708" y="211.7" font-size="11" fill="#1b2330" text-anchor="end">huge current swing</text>
+<text x="708" y="227.7" font-size="10" fill="#5b6677" text-anchor="end">(this is the hazard)</text>
+<text x="420.0" y="304" font-size="11.5" fill="#5b6677" text-anchor="middle">forward voltage</text>
+<text x="46" y="165" font-size="11.5" fill="#5b6677" text-anchor="middle" transform="rotate(-90 46 165)">junction current</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Derived (diode equation)</text>
+</svg>
+  <figcaption>Derived from the diode equation: above turn-on the I-V curve is nearly vertical, so tens of millivolts swing the current enormously. A current-source driver sets the current directly instead of hoping a voltage lands on the right spot.</figcaption>
+  </figure>
+<h3>The BNC approach</h3>
+  <figure class="fig-photo"><img src="/figures/wp/pcx-7421-transparent.png" alt="DEI PCX-7421 pulsed laser diode driver"><figcaption>PCX-7421 pulsed laser diode driver</figcaption></figure>
+
   <p>DEI drivers are built as true current sources with the output stage and protection treated as one system. The user programs current, and the driver holds that current across the pulse as long as it stays inside its compliance window, which is published per model so a system designer can budget headroom against the diode string before ordering. This matters most for QCW operation, where the device runs quasi-continuous-wave bursts that sit between short pulsed shots and full CW drive. QCW lets an array reach high average optical power without the continuous thermal load of true CW, and it depends on a driver that can hold a long, flat current pulse rather than just a fast spike.</p>
   <p>Output protection is designed in rather than bolted on. The drivers are built so that a disabled output is a safe output, with the load shorted on disable rather than left to ring or reverse. Over-current limiting and reverse-voltage guarding protect the array through fault events and through the moments of power-up and power-down when many systems are most vulnerable. To keep the delivered edge clean, BNC recommends low-inductance cabling kept as short and as tightly paired as the layout allows, because the driver can only present a fast edge to the diode if the path between them does not swallow it.</p>
   <p>The lineup spans the practical range of optical loads. For a single emitter or a small bar where precision matters more than raw current, the <strong>PCX-7401</strong> delivers up to 3 A with 15 V of compliance and roughly 100 ns rise, across a 5 Hz to 1 MHz range. Where a bench needs more current with both CW and QCW capability, the <strong>PCX-7421</strong> supplies 21.5 A with 24 V compliance and edges under 25 ns. For OEM integration into a larger instrument, the <strong>PCO-6131</strong> and <strong>PCO-6141</strong> modules deliver 125 A and 60 A respectively with variable rise-time control, and the high-current end is served by the <strong>PCM-7700</strong> at 200 A and the compact <strong>PIM-Mini-200</strong>, also at up to 200 A in a small package. These figures are model capabilities; confirm the exact amplitude, compliance, and edge for your configuration against the current published datasheet.</p>

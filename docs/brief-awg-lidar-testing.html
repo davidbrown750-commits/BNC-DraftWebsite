@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -421,7 +433,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the Model 686 solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="flts-t flts-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="flts-t">A LiDAR return scene the test bench has to reproduce</title>
+<desc id="flts-d">Schematic timeline. The emitted pulse at time zero is followed by returns: a strong near-target return, two layered mid-range returns close together in time, and a faint far-target return late in the window. Amplitude falls and delay grows with range; the generator must place each return where the physics would.</desc>
+<defs><marker id="flts-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<line x1="90" y1="220" x2="780" y2="220" stroke="#b9c4d4"/>
+<polyline points="118.0,220.0 125.2,70.0 134.8,70.0 142.0,220.0" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+<text x="130" y="52" font-size="11.5" fill="#1b2330" text-anchor="middle" font-weight="bold">emitted pulse</text>
+<polyline points="280.0,220.0 286.0,124.0 294.0,124.0 300.0,220.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="290" y="108" font-size="11" fill="#1b2330" text-anchor="middle">near target</text>
+<polyline points="446.0,220.0 451.4,160.0 458.6,160.0 464.0,220.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<polyline points="483.0,220.0 488.4,172.0 495.6,172.0 501.0,220.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="474" y="138" font-size="11" fill="#1b2330" text-anchor="middle">layered objects, close in time</text>
+<polyline points="672.0,220.0 676.8,194.0 683.2,194.0 688.0,220.0" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="680" y="178" font-size="11" fill="#1b2330" text-anchor="middle">far target, faint</text>
+<line x1="142" y1="238" x2="668" y2="238" stroke="#5b6677" marker-end="url(#flts-a)"/>
+<text x="405" y="254" font-size="11" fill="#5b6677" text-anchor="middle">delay grows with range (t = 2R/c); amplitude falls with range</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text>
+</svg>
+  <figcaption>Schematic: the return scene a LiDAR bench has to reproduce. Each emulated return sits at t = 2R/c for its target, with amplitude falling as range grows and layered objects only nanoseconds apart.</figcaption>
+  </figure>
+<h3>How the Model 686 solves it</h3>
+  <figure class="fig-photo"><img src="../figures/awg-686-photo.png" alt="Berkeley Nucleonics Model 686 arbitrary waveform generator"><figcaption>Model 686 arbitrary waveform generator</figcaption></figure>
+
   <p>The Berkeley Nucleonics Model 686 is built for exactly this combination of long records and tight timing. It addresses memory depth directly with up to <strong>9 Gpts per channel</strong>, which is enough to store an extended LiDAR scenario in a single contiguous record rather than splicing fragments. A full scene of layered returns, across a wide time window, fits without compromise.</p>
   <p>Timing is where the instrument earns its place on a LiDAR bench. Trigger jitter holds below <strong>2 ps</strong> relative to an external master clock, so every scenario fires against the system reference with picosecond consistency. When a bench needs more channels than a single unit provides, separate Model 686 units synchronize to better than <strong>100 fs</strong>, which lets a multi-emitter or multi-detector setup behave as one coherent system rather than a loose collection of generators. Within that timing budget, <strong>50 ps timing resolution</strong> places each emulated reflected pulse precisely where the scene calls for it, so near and far targets land at their true ranges.</p>
   <p>The output stage is matched to the application as well. The Model 686 delivers <strong>5 Vpp into 50 ohm</strong>, enough to drive many pulsed-laser-diode test fixtures directly, without an external amplifier in the path adding its own delay and distortion. When a fixture needs more current than a 50 ohm AWG output can supply, the Model 686 pairs with a Berkeley Nucleonics high-voltage pulse generator that produces square-wave outputs up to <strong>50 V into 1 A</strong>, giving the bench the drive level that high-power laser diodes require while keeping the timing under AWG control.</p>
