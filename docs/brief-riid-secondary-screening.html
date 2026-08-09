@@ -375,6 +375,14 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -404,6 +412,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h2>The Challenge</h2>
   <p>The core difficulty in adjudication is separating three look-alikes: a real threat, naturally occurring radioactive material, and a medical isotope. A gross-count alarm cannot tell them apart. Only an energy spectrum and an isotope identification can, and the quality of that identification depends on the detector and the algorithm behind it. A weak source, a shielded source, or a mixed field all push an identifier toward an ambiguous result, which is exactly when a confidence-rated answer and a path to expert review matter most.</p>
   <p>There is also a documentation and category problem. Identifiers sort results into categories such as special nuclear material, industrial, medical, and NORM, and they assign a confidence level. An operator has to read those categories correctly and know when the instrument's confidence is high enough to act on. When it is not, the workflow has to move the spectrum, the photos, and the location to a reachback analyst without friction. The line below covers the field call and the expert backstop.</p>
+
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 330" role="img" aria-labelledby="fadj-t fadj-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fadj-t">The secondary-screening adjudication workflow</title>
+<desc id="fadj-d">Schematic flow. A primary alarm from a portal, pager, or backpack leads to a handheld spectrum and isotope identification. Three outcomes: naturally occurring or medical, cleared and documented; unclear or low confidence, sent to reachback where an expert reviews the same spectrum; threat signature, hold and escalate.</desc>
+<defs><marker id="fadj-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<rect x="40" y="120" width="170" height="60" rx="8" fill="#fff" stroke="#5b6677" stroke-width="2"/><text x="125.0" y="144" font-size="12.5" fill="#1b2330" text-anchor="middle" font-weight="bold">Primary alarm</text><text x="125.0" y="162" font-size="11" fill="#5b6677" text-anchor="middle">portal &#183; pager &#183; backpack</text>
+<rect x="280" y="120" width="190" height="60" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="375.0" y="144" font-size="12.5" fill="#1b2330" text-anchor="middle" font-weight="bold">Handheld spectrum</text><text x="375.0" y="162" font-size="11" fill="#5b6677" text-anchor="middle">isotope ID with confidence</text>
+<rect x="560" y="30" width="220" height="60" rx="8" fill="#fff" stroke="#0d9488" stroke-width="2"/><text x="670.0" y="54" font-size="12.5" fill="#1b2330" text-anchor="middle" font-weight="bold">Clear &amp; document</text><text x="670.0" y="72" font-size="11" fill="#5b6677" text-anchor="middle">NORM or medical, confirmed</text>
+<rect x="560" y="120" width="220" height="60" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="670.0" y="144" font-size="12.5" fill="#1b2330" text-anchor="middle" font-weight="bold">Reachback</text><text x="670.0" y="162" font-size="11" fill="#5b6677" text-anchor="middle">expert reviews the same spectrum</text>
+<rect x="560" y="215" width="220" height="60" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="670.0" y="239" font-size="12.5" fill="#1b2330" text-anchor="middle" font-weight="bold">Hold &amp; escalate</text><text x="670.0" y="257" font-size="11" fill="#5b6677" text-anchor="middle">threat signature or unresolved</text>
+<line x1="210" y1="150" x2="280" y2="150" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fadj-a)"/>
+<path d="M 470 138 C 515 120 520 70 560 62" fill="none" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fadj-a)"/>
+<line x1="470" y1="150" x2="560" y2="150" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fadj-a)"/>
+<path d="M 470 162 C 515 180 520 235 560 243" fill="none" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fadj-a)"/>
+<text x="512" y="98" font-size="10.5" fill="#5b6677">benign</text>
+<text x="500" y="142" font-size="10.5" fill="#5b6677">low confidence</text>
+<text x="512" y="212" font-size="10.5" fill="#5b6677">threat-like</text>
+<path d="M 670 120 C 660 104 660 104 668 90" fill="none" stroke="#0d9488" stroke-width="1.5" marker-end="url(#fadj-a)" stroke-dasharray="4 3"/>
+<text x="410" y="316" font-size="11" fill="#5b6677" text-anchor="middle">Schematic: most alarms clear as NORM or medical; the identifier&#8217;s confidence rating decides when reachback enters.</text>
+</svg>
+  <figcaption>Schematic: the adjudication workflow. Most alarms clear as NORM or medical; the identifier&#8217;s confidence rating is what decides when a spectrum goes to reachback instead of a guess.</figcaption>
+  </figure>
+
 </section>
 
 <section>
