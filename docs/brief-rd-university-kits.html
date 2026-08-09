@@ -406,6 +406,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -439,6 +451,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
+
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fapi-t fapi-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fapi-t">One receiver, many front ends: the open API is the teaching surface</title>
+<desc id="fapi-d">Schematic architecture. The USB receiver feeds a documented API layer, and on top of that sit the supplied analyzer application, Python and MATLAB scripting for coursework, and custom student or research applications. Every seat gets the same programmable instrument.</desc>
+<defs><marker id="fapi-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<rect x="80" y="190" width="220" height="64" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="190.0" y="216" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">USB / LAN receiver</text><text x="190.0" y="234" font-size="10.5" fill="#5b6677" text-anchor="middle">9 kHz &#8211; 40 GHz (ICX-400U)</text>
+<rect x="360" y="190" width="180" height="64" rx="8" fill="#fff" stroke="#0d9488" stroke-width="2"/><text x="450.0" y="216" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Open API</text><text x="450.0" y="234" font-size="10.5" fill="#5b6677" text-anchor="middle">documented, scriptable</text>
+<rect x="70" y="60" width="180" height="56" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="160.0" y="92.0" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Analyzer app</text>
+<rect x="320" y="60" width="180" height="56" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="410.0" y="92.0" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Python / MATLAB</text>
+<rect x="570" y="60" width="180" height="56" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/><text x="660.0" y="92.0" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Custom apps</text>
+<line x1="300" y1="222" x2="360" y2="222" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fapi-a)"/>
+<line x1="450" y1="190" x2="160" y2="116" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fapi-a)"/>
+<line x1="450" y1="190" x2="410" y2="116" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fapi-a)"/>
+<line x1="450" y1="190" x2="660" y2="116" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fapi-a)"/>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: the receiver&#8217;s open API sits between the hardware and everything a lab or classroom builds on it, from the supplied analyzer application to Python and MATLAB coursework to student projects.</figcaption>
+  </figure>
 <h2>How the ICX-FieldHawk line solves it</h2>
 <img class="plain" style="float:right;width:32%;max-width:300px;margin:4px 0 16px 28px;border:none;" src="../figures/product-usb-cut.png" alt="ICX-Series USB receiver">
 <p>The <strong>ICX-Series</strong> USB receiver is built to be an affordable lab instrument rather than a sealed appliance. It draws power and data over a single USB connection to a laptop, so a full real-time receiver fits in a bag and runs anywhere there is a host computer. Several units cost what one traditional analyzer costs, which is what lets a department equip a whole class instead of a single station.</p>
@@ -449,6 +479,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
 <h2>Which models and accessories fit</h2>
+  <figure class="fig-photo"><img src="/figures/wp/icx-400u-transparent.png" alt="ICX-400U USB/LAN real-time spectrum analyzer module, 9 kHz to 40 GHz"><figcaption>ICX-400U USB/LAN module</figcaption></figure>
+
 <p>For teaching and benchtop research, the recommended model is the <strong>ICX-Series</strong>. Its price point, USB form factor, and full open API make it the natural choice for departments outfitting multiple stations or a portable demonstration kit. Buy several and a lab gains hands-on coverage for an entire cohort, with each receiver identical and scriptable.</p>
 <p>For courses or projects that also study antenna behavior, gain, and direction finding, add the <strong>ANT-100G</strong> directional antenna. It turns an abstract lecture on radiation patterns and bearing into a measurement students can run themselves, and it supports research into angle-of-arrival techniques. Where a program needs a field-capable instrument alongside the bench units, the ICX-FieldHawk handheld provides a self-contained display, and the ICX-FieldHawk-R rugged receiver suits outdoor field exercises.</p>
 <p>The common thread is that every model shares the same SpectraCore software and interfaces. Code written against a USB unit in the lab carries over to the handheld and rugged receivers without rework, so a research method developed on the bench transfers cleanly to the field. Learn once, deploy across the line.</p>

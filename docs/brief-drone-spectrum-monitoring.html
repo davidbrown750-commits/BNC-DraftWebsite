@@ -406,6 +406,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -439,6 +451,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
+
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="fdrn-t fdrn-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fdrn-t">Altitude changes the geometry: what the ground cannot see, the airborne receiver can</title>
+<desc id="fdrn-d">Schematic terrain cross-section. A ridge blocks the line of sight between a ground team and an interference source in the next valley. A drone carrying the sub-200 gram USB receiver at altitude sees over the ridge and holds line of sight to both the source and the area beyond it.</desc>
+<defs><marker id="fdrn-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<polyline points="60.0,270.0 180.0,268.0 300.0,262.0 380.0,200.0 430.0,150.0 470.0,196.0 560.0,258.0 700.0,264.0 790.0,268.0" fill="none" stroke="#7b8698" stroke-width="2.5"/>
+<path d="M 60 270 L 180 268 L 300 262 L 380 200 L 430 150 L 470 196 L 560 258 L 700 264 L 790 268 L 790 300 L 60 300 Z" fill="#e7edf5"/>
+<text x="432" y="140" font-size="11" fill="#5b6677" text-anchor="middle">ridge</text>
+<circle cx="150" cy="256" r="7" fill="#0655a3"/>
+<text x="150" y="240" font-size="11" fill="#1b2330" text-anchor="middle">ground team</text>
+<circle cx="650" cy="250" r="8" fill="#0d9488"/>
+<text x="650" y="236" font-size="11" fill="#1b2330" text-anchor="middle">source</text>
+<line x1="158" y1="252" x2="428" y2="170" stroke="#7b8698" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="300" y="186" font-size="10.5" fill="#7b8698" text-anchor="middle">blocked</text>
+<circle cx="390" cy="70" r="6" fill="#0655a3"/>
+<polyline points="364.0,62.0 382.0,68.0" fill="none" stroke="#0655a3" stroke-width="2"/>
+<polyline points="398.0,68.0 416.0,62.0" fill="none" stroke="#0655a3" stroke-width="2"/>
+<text x="356" y="56" font-size="11" fill="#1b2330" text-anchor="end">UAV + sub-200 g USB receiver</text>
+<line x1="395" y1="75" x2="645" y2="243" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="560" y="140" font-size="10.5" fill="#0d9488" text-anchor="middle">clear line of sight</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: the geometry problem altitude solves. The ridge blocks the ground team&#8217;s line of sight; the UAV-carried USB receiver sees over it and surveys the far valley in a single pass.</figcaption>
+  </figure>
 <h2>How the ICX-FieldHawk line solves it</h2>
 <img class="plain" style="float:right;width:32%;max-width:300px;margin:4px 0 16px 28px;border:none;" src="../figures/product-usb-cut.png" alt="ICX-Series USB core module">
 <p>The <strong>ICX-Series</strong> is a USB core module rather than a boxed instrument, and that form factor is what makes airborne work practical. At well under 200 grams, it fits inside a UAV weight budget that a traditional analyzer would blow through immediately. Low power draw means it runs off the platform without draining the flight battery in minutes. The receiver becomes part of the aircraft, not a burden strapped to it.</p>
@@ -449,6 +485,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
 <h2>Which models and accessories fit</h2>
+  <figure class="fig-photo"><img src="/figures/wp/icx-400u-transparent.png" alt="ICX-400U USB/LAN real-time spectrum analyzer module, 9 kHz to 40 GHz"><figcaption>ICX-400U USB/LAN module</figcaption></figure>
+
 <p>For airborne spectrum monitoring, the clear fit is the <strong>ICX-Series</strong>. Its weight, power profile, and USB interface are exactly what a UAV integration needs, and nothing else in the line packs the real-time engine into a payload this small. It mounts to a companion computer such as a single-board Linux carrier, takes a GNSS feed, and reports position-tagged spectrum throughout the flight.</p>
 <p>Antenna choice depends on the survey. A broadband omnidirectional element suits wide-area mapping, where the goal is to detect whatever is present across the footprint. When the mission shifts toward locating a specific emitter, the <strong>ANT-100G</strong> directional antenna adds gain and bearing, supporting airborne direction finding as the aircraft maneuvers. Mounting and weight should be checked against the platform, since directional elements add mass and wind load.</p>
 <p>The receiver pairs naturally with mapping and geolocation software. Position-tagged sweeps become coverage layers, and repeated passes sharpen an emitter fix through changing geometry, something only flight makes easy. The ground-based ICX-FieldHawk handheld and ICX-FieldHawk-R rugged receivers complement the airborne kit for follow-up work once a survey narrows the search area.</p>
