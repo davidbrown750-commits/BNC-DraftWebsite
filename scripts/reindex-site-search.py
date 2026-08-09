@@ -31,7 +31,7 @@ import sys
 from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-HARVEST = pathlib.Path("/Users/davidbrown/.claude/jobs/d192174c/tmp/page-harvest.json")
+HARVEST = pathlib.Path(__file__).resolve().parent / "page-harvest.json"
 
 # --------------------------------------------------------------------------
 # vocabulary
