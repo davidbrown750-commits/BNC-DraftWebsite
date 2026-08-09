@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -415,7 +427,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the HVX-Series solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 300" role="img" aria-labelledby="fmsc-t fmsc-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="fmsc-t">One instrument, many biases: every stage of the chain rides on the supply behind it</title>
+<desc id="fmsc-d">Schematic of a mass spectrometer's electrical chain: ion source bias, ion optics and lens stack, the analyzer stage, and the detector bias. Each block carries its own precisely set high voltage, and ripple on any of them ends up in the mass spectrum.</desc>
+<defs><marker id="fmsc-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<rect x="70" y="100" width="150" height="70" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/>
+<text x="145" y="128" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Ion source</text>
+<text x="145" y="148" font-size="10.5" fill="#5b6677" text-anchor="middle">source bias</text>
+<line x1="145" y1="182" x2="145" y2="206" stroke="#0d9488" stroke-width="2"/>
+<text x="145" y="224" font-size="10.5" fill="#0d9488" text-anchor="middle">HV bias</text>
+<line x1="220" y1="135" x2="256" y2="135" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fmsc-a)"/>
+<rect x="256" y="100" width="150" height="70" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/>
+<text x="331" y="128" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Ion optics</text>
+<text x="331" y="148" font-size="10.5" fill="#5b6677" text-anchor="middle">lens stack</text>
+<line x1="331" y1="182" x2="331" y2="206" stroke="#0d9488" stroke-width="2"/>
+<text x="331" y="224" font-size="10.5" fill="#0d9488" text-anchor="middle">HV bias</text>
+<line x1="406" y1="135" x2="442" y2="135" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fmsc-a)"/>
+<rect x="442" y="100" width="150" height="70" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/>
+<text x="517" y="128" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Analyzer</text>
+<text x="517" y="148" font-size="10.5" fill="#5b6677" text-anchor="middle">quad / ToF stage</text>
+<line x1="517" y1="182" x2="517" y2="206" stroke="#0d9488" stroke-width="2"/>
+<text x="517" y="224" font-size="10.5" fill="#0d9488" text-anchor="middle">HV bias</text>
+<line x1="592" y1="135" x2="628" y2="135" stroke="#5b6677" stroke-width="1.5" marker-end="url(#fmsc-a)"/>
+<rect x="628" y="100" width="150" height="70" rx="8" fill="#fff" stroke="#0655a3" stroke-width="2"/>
+<text x="703" y="128" font-size="12" fill="#1b2330" text-anchor="middle" font-weight="bold">Detector</text>
+<text x="703" y="148" font-size="10.5" fill="#5b6677" text-anchor="middle">multiplier / dynode</text>
+<line x1="703" y1="182" x2="703" y2="206" stroke="#0d9488" stroke-width="2"/>
+<text x="703" y="224" font-size="10.5" fill="#0d9488" text-anchor="middle">HV bias</text>
+<text x="410" y="268" font-size="11" fill="#5b6677" text-anchor="middle">set accurately, hold quietly: drift at any stage moves or smears the peaks</text>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: the bias chain of a mass spectrometer. Source, optics, analyzer, and detector each ride their own precisely set high voltage; drift at any stage moves or smears the peaks downstream.</figcaption>
+  </figure>
+<h3>How the HVX-Series solves it</h3>
   <p>The HVX-Series is a fully digitally regulated DC high-voltage supply built around a microcontroller and an FPGA, and the regulation numbers map straight onto what a mass spectrometer asks for. Ripple is specified at 0.01 percent of nominal plus 100 mV, low enough that the rail contributes little to peak width or baseline. Line regulation is tighter than plus or minus 0.01 percent of nominal across a 10 percent mains swing, and stability holds within 0.01 percent of nominal over an eight-hour session, with a temperature coefficient of 0.01 percent of nominal per degree. A bench can hold calibration across a full working day instead of re-tuning between runs.</p>
   <p>Setting is digital and fine-grained. The 16-bit setting resolution spans roughly 0.01 to 100 percent of nominal, so a lens or accelerating voltage can be placed precisely and reproduced exactly on the next run. Response is under 1 millisecond to within 0.1 percent of nominal, which lets a method step electrode voltages and move on without waiting. Polarity is electrically reversible, so a single supply switches between positive-ion and negative-ion operation, and floating-output variants serve stages that must sit potential-free above ground.</p>
   <p>Control is automation-ready. Ethernet and RS232 with a standard SCPI command set let the instrument software set every bias from the same sequence that runs the acquisition and drives mode switching, and the time-tagged event log records the run. <strong>Arc Detection</strong> watches for flashover and can shut the output off, which protects sensitive ion optics and the detector multiplier from a discharge event. The supply ships in a 2U enclosure (3.5 inches high, 19.7 inches deep) that racks into the instrument cabinet, with a rear HV connector and a roughly 10 ft HV cable.</p>
@@ -423,6 +468,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h3>Which HVX-Series models and options fit</h3>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
   <p>Mass-spectrometry bias rails span a wide range. Source and ion-optic potentials usually live below a few kilovolts, while time-of-flight accelerating stages reach higher. Match the model to the stage.</p>
   <table class="spec">
     <tr><th>Need</th><th>Recommended HVX-Series model</th><th>Rating</th></tr>

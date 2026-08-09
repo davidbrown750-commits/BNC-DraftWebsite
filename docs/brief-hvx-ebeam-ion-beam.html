@@ -381,6 +381,18 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style id="brief-fig-css">
+.fig-chart{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 12px 8px;margin:22px 0;clear:both;}
+.fig-chart figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;text-align:center;}
+.fig-photo{float:right;width:320px;max-width:45%;margin:4px 0 14px 22px;}
+.fig-photo img{width:100%;height:auto;display:block;}
+.fig-photo figcaption{margin-top:4px;font-size:.78rem;color:var(--muted);font-style:italic;text-align:center;}
+@media(max-width:1040px){
+.fig-chart{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.fig-chart svg{min-width:640px;}
+.fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
+}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -416,7 +428,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <section>
-  <h3>How the HVX-Series solves it</h3>
+  
+  <figure class="fig fig-chart">
+<svg viewBox="0 0 820 320" role="img" aria-labelledby="febm-t febm-d" font-family="Arial,Helvetica,sans-serif" style="width:100%;height:auto;display:block">
+<title id="febm-t">The column in one line: beam energy is charge times accelerating voltage</title>
+<desc id="febm-d">Schematic electron or ion column. Particles leave the source, accelerate across the high-voltage gap where they gain energy equal to charge times voltage, pass the focusing elements, and land on the target. The accelerating rail's stability becomes the beam's energy stability.</desc>
+<defs><marker id="febm-a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5b6677"/></marker></defs>
+<rect x="370" y="46" width="80" height="30" rx="6" fill="#fff" stroke="#0655a3" stroke-width="2"/>
+<text x="410" y="66" font-size="11.5" fill="#1b2330" text-anchor="middle">source</text>
+<line x1="340" y1="106" x2="480" y2="106" stroke="#0655a3" stroke-width="3"/>
+<line x1="340" y1="146" x2="480" y2="146" stroke="#0655a3" stroke-width="3"/>
+<text x="494" y="130" font-size="11.5" fill="#1b2330" text-anchor="start" font-weight="bold">accelerating gap: energy gained = q &#183; V</text>
+<text x="494" y="148" font-size="10.5" fill="#5b6677" text-anchor="start">(the HV rail sets it)</text>
+<ellipse cx="410" cy="196" rx="52" ry="10" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+<text x="494" y="200" font-size="11" fill="#1b2330" text-anchor="start">focus / optics</text>
+<rect x="350" y="252" width="120" height="16" rx="4" fill="#7b8698"/>
+<text x="494" y="264" font-size="11" fill="#1b2330" text-anchor="start">target</text>
+<line x1="410" y1="76" x2="410" y2="250" stroke="#5b6677" stroke-width="2" marker-end="url(#febm-a)" stroke-dasharray="2 4"/>
+<text x="700" y="40" font-size="11" fill="#5b6677" text-anchor="middle">Schematic</text></svg>
+  <figcaption>Schematic: the column in one line. Beam energy is charge times accelerating voltage, so the stability of the high-voltage rail is, directly, the stability of the beam energy.</figcaption>
+  </figure>
+<h3>How the HVX-Series solves it</h3>
   <p>The BNC HVX-Series is built for exactly this kind of precision high-voltage duty. Each unit is fully digitally regulated with a microcontroller and FPGA, so the accelerating potential is held tight: line regulation is better than plus or minus 0.01 percent of nominal across a 10 percent mains swing, stability holds within 0.01 percent of nominal over an eight-hour run, and ripple is specified at 0.01 percent of nominal plus a small fixed term. A quiet, drift-free rail means the beam energy and focus you set in the morning are the same ones you have at the end of the shift.</p>
   <p>Setting the operating point is just as precise. Voltage is set with 16-bit resolution across roughly 0.01 to 100 percent of nominal, fine enough to dial in an extraction or acceleration potential and step it in small increments for a focus or energy sweep. The supply responds to a command in <strong>under 1 millisecond</strong> to within 0.1 percent of nominal, so a recipe can move the beam to a new condition and proceed without waiting on the rail to settle.</p>
   <p>The output suits real beam columns. Floating, potential-free versions let the supply sit on a source or extraction electrode that is referenced well away from earth, and reversible polarity lets the same hardware serve an electron configuration or an ion configuration. <strong>Ramp Control</strong> brings electrodes up at a defined gradient, anywhere from 1 V/s to ten times nominal per second, so the column comes up cleanly instead of in an inrush step. <strong>Arc Detection</strong> watches for vacuum flashover, reports it, and, with the output shut-off option, drops the rail the moment a flashover starts. That protects the column and the surrounding instrumentation and captures the event in the time-tagged log. Ethernet and RS232 with a standard SCPI command set let the tool controller own the recipe and read back state.</p>
@@ -424,6 +456,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section>
   <h3>Which HVX-Series models and options fit</h3>
+  <figure class="fig-photo"><img src="/figures/hvx-unit-cut.png" alt="HVX-Series digitally regulated high-voltage power supply, 2U rack unit"><figcaption>HVX-Series high-voltage power supply</figcaption></figure>
+
   <p>Beam tools span a wide range of potentials, from a few kilovolts on a focusing electrode to tens of kilovolts on a high-energy acceleration stage. The table below maps the common stages to the recommended HVX-Series model.</p>
   <table class="spec">
     <tr><th>Need</th><th>Recommended HVX-Series model</th><th>Rating</th></tr>
