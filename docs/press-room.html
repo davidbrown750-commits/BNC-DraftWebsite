@@ -679,4 +679,30 @@ function ssgBadge(c,kind){if(kind==="video")return "Video";if(kind==="faq")retur
 var SSG_ICONS={"Datasheet":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/><path d='M14 3v5h5'/><path d='M9 13h6M9 17h6M9 9h1'/></svg>","Application Note":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6'/><path d='M10 21h4'/><path d='M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.2 1 2.5h6c0-1.3.3-1.8 1-2.5A6 6 0 0 0 12 3z'/></svg>","Technical Brief":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5'/><path d='M14 3v5h5'/><circle cx='17.5' cy='16.5' r='2.2'/><path d='M17.5 13.6v-1M17.5 20.4v-1M20.4 16.5h-1M15.6 16.5h-1'/></svg>","Manual":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/></svg>","FAQ":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.5 9a2.5 2.5 0 0 1 4.8.9c0 1.7-2.3 2.1-2.3 3.6'/><path d='M12 17h.01'/></svg>","Book":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/><path d='M9 7.5h7M9 11h7'/></svg>","Product":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8l-9-5-9 5v8l9 5 9-5z'/><path d='M3 8l9 5 9-5'/><path d='M12 13v8'/></svg>"};
 window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function ssgGraphic(t){if(t.kind==="video"){return "<img src=\"https://img.youtube.com/vi/"+ssgEsc(t.id)+"/mqdefault.jpg\" alt=\"\" loading=\"lazy\">";}var im=window.SSIMG&&window.SSIMG[t.u];var src=im?(im.indexOf("http")===0?im:base+im):null;if(src){return "<img src=\""+ssgEsc(src)+"\" alt=\"\" loading=\"lazy\" onerror=\"this.onerror=null;var p=this.parentNode;if(p){p.innerHTML=window.ssgIconFor('"+t.badge+"');}\">";}return SSG_ICONS[t.badge]||SSG_ICONS.Product;}
 })();</script>
+
+<style id="bnc-nav-mobile-wrap">/* the drawer must fit the screen it opens on */
+@media(max-width:1040px){
+  /* These four keep nowrap on the desktop bar, where the labels sit side by side
+     and must not break. In the drawer they stack, so wrapping is what we want,
+     and without it the longest category sets the width of the whole panel. */
+  .sitenav.open .nav-item>a,
+  .sitenav.open .nav-trigger,
+  .sitenav.open .nav-grp2,
+  .sitenav.open .nav-grp3{white-space:normal;}
+  .sitenav.open .sitenav-menu,
+  .sitenav.open .nav-drop,
+  .sitenav.open .nav-drop.nav-casc,
+  .sitenav.open .nav-sub,
+  .sitenav.open .nav-sub3{max-width:100%;min-width:0;}
+  /* iOS Safari zooms the page in when a focused input is under 16px and never
+     zooms back out, which leaves the bar hanging half off the screen. */
+  .ss-input,.ss-ph{font-size:16px;}
+  .ss-input{height:44px;}
+  /* WCAG 2.5.5: 44x44 of hit area. The hamburger was 42x38 and the two buttons
+     were 30px tall, which is small for a thumb and is the control every mobile
+     visitor has to hit first. */
+  .navtoggle{width:44px;height:44px;}
+  .sitenav-cta,.bnc-signin{min-height:44px;}
+}
+</style>
 </body></html>
