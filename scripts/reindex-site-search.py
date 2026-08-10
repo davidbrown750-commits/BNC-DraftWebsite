@@ -22,6 +22,7 @@ Run from the repository root. Re-running is a no-op.
 
 import json
 import math
+import hashlib
 import pathlib
 import posixpath
 import re
@@ -30,7 +31,7 @@ import sys
 from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-HARVEST = pathlib.Path("/Users/davidbrown/.claude/jobs/d192174c/tmp/page-harvest.json")
+HARVEST = pathlib.Path(__file__).resolve().parent / "page-harvest.json"
 
 # --------------------------------------------------------------------------
 # vocabulary
@@ -49,6 +50,28 @@ berkeley nucleonics corporation bnc inc com www http https html pdf
 use used using uses need needs provide provides provided make makes made
 new full high low good best better since per via etc
 """.split())
+
+# Confidential OEM supplier names, which must never reach a generated keyword.
+# The index is a public artifact: every keyword in it is served to anyone who
+# loads the site. On 2026-08-09 one such name had reached the live SAM 940+ index
+# entry, harvested out of the manual's own text.
+#
+# The names are held as SHA-256 digests rather than as plain words because this
+# file is itself served: /scripts/reindex-site-search.py returns 200 to anyone who
+# asks. Writing the words here in the clear would republish exactly what the list
+# exists to suppress. Add a name with:  hashlib.sha256(b"name").hexdigest()
+#
+# Removing a digest re-exposes that supplier site-wide on the next reindex.
+BLOCKED_DIGESTS = {
+    "570217f38dbbd8dd63db461cac47244f5a99dc5ae437617eb5cb6de6515f25c8",
+    "2aedd2a1f235c076693b2dfb8129f8c6947e51d3e04f090cf4159da85d2c25f3",
+}
+
+
+def blocked(word):
+    """True if this token names a confidential supplier and must not be indexed."""
+    return hashlib.sha256(word.encode("utf-8")).hexdigest() in BLOCKED_DIGESTS
+
 
 # Words that mean the same thing to a customer as the word they typed. The
 # search engine has its own synonym map for queries; this one widens what a
@@ -182,7 +205,8 @@ def page_images(rel_page):
 
 
 def toks(text):
-    return [w for w in WORD_RE.findall((text or "").lower()) if len(w) > 1 and w not in STOP]
+    return [w for w in WORD_RE.findall((text or "").lower())
+            if len(w) > 1 and w not in STOP and not blocked(w)]
 
 
 def main():
@@ -343,7 +367,7 @@ def main():
 
         seen, out = set(), []
         for w in kw:
-            if w and w not in seen and w not in STOP:
+            if w and w not in seen and w not in STOP and not blocked(w):
                 seen.add(w)
                 out.append(w)
         index.append({"t": title, "u": u, "c": cat, "k": " ".join(out)})

@@ -247,7 +247,7 @@
    */
    {num:40, model:"ICX-400U", sum:"40 GHz USB flagship", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 40 GHz", form:"USB / host PC"}, sort:{freq:40, form:1}},
-   /* RAMMED-OUT 2026-07-20 (Harogic SAN-45):
+   /* RAMMED-OUT 2026-07-20:
    {num:4.5, model:"ICX-045", sum:"Field handheld", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 4.5 GHz", form:"Handheld (touchscreen)"}, sort:{freq:4.5, form:2}},
    */

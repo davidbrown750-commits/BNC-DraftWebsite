@@ -12,15 +12,20 @@ CHROME='<header class="sitenav">'
 CSS_LINK='<link rel="stylesheet" href="/_shared/bnc-a11y.css">'
 SKIP='<a class="skip-link" href="#main">Skip to main content</a>'
 
-def process(path):
+def process(path, forced=False):
     s=open(path,encoding="utf-8",errors="surrogatepass").read()
-    if CHROME not in s or "</head>" not in s or "<body" not in s:
+    if "</head>" not in s or "<body" not in s:
         return None
-    if "bnc-a11y.css" in s:
+    if CHROME not in s and not forced:
+        return None
+    # complete only when all three pieces are present; a page carrying just
+    # the stylesheet (or just the link) still gets finished on a re-run
+    if "bnc-a11y.css" in s and "skip-link" in s and 'id="main"' in s:
         return "skip"
     orig=s
     # 1. css link
-    s=s.replace("</head>", CSS_LINK+"\n</head>", 1)
+    if "bnc-a11y.css" not in s:
+        s=s.replace("</head>", CSS_LINK+"\n</head>", 1)
     # 2. skip link after <body ...>
     if "skip-link" not in s:
         s=re.sub(r'(<body[^>]*>)', lambda m: m.group(1)+"\n"+SKIP, s, count=1)
@@ -28,8 +33,10 @@ def process(path):
     if 'id="main"' not in s:
         if re.search(r'<main(?![^>]*\bid=)', s):
             s=re.sub(r'<main(?![^>]*\bid=)', '<main id="main"', s, count=1)
-        else:
+        elif "</header>" in s:
             s=s.replace("</header>", '</header>\n<div id="main" tabindex="-1"></div>', 1)
+        else:
+            s=s.replace(SKIP, SKIP+'\n<div id="main" tabindex="-1"></div>', 1)
     if s!=orig:
         open(path,"w",encoding="utf-8",errors="surrogatepass").write(s)
         return "patched"
@@ -37,6 +44,14 @@ def process(path):
 
 def main():
     counts={"patched":0,"skip":0,"nochange":0,"notchrome":0}
+    if len(sys.argv)>1:
+        # explicit targets: apply even without the sitenav chrome
+        for p in sys.argv[1:]:
+            r=process(os.path.join(ROOT,p), forced=True)
+            print(p, "->", r or "notchrome")
+            counts[r or "notchrome"]=counts.get(r or "notchrome",0)+1
+        print("a11y injector:", counts)
+        return
     for dirpath,dirs,files in os.walk(ROOT):
         if "/.git" in dirpath:
             dirs[:]=[d for d in dirs if d!=".git"]; continue

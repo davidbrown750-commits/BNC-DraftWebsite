@@ -1488,8 +1488,8 @@
   };
 
   /* ---------------------------------------------------------
-     FAMILY 6: ICX FieldHawk Spectrum Analyzers (Harogic OEM)
-     BNC option part numbers = Harogic option code + "B"
+     FAMILY 6: ICX FieldHawk Spectrum Analyzers
+     BNC option part numbers carry a "B" suffix on the base option code
      --------------------------------------------------------- */
 
   function icxOpt(o) { return Object.assign({ pn: "" }, o); }
