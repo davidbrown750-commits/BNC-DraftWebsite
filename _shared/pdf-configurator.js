@@ -344,7 +344,7 @@
         "display:inline-block;margin-top:12px;background:" + BTN_BG + ";color:#fff;" +
         "border:none;border-radius:4px;padding:11px 18px;" +
         "font:700 13.5px Arial,Helvetica,sans-serif;text-decoration:none;cursor:pointer;");
-      heroBtn.textContent = "Datasheet PDF →";
+      heroBtn.textContent = "Download PDF →";
       heroBtn.addEventListener("mouseenter", function(){ heroBtn.style.background = BTN_BG_HOVER; });
       heroBtn.addEventListener("mouseleave", function(){ heroBtn.style.background = BTN_BG; });
 
