@@ -355,7 +355,11 @@ def main():
         if old and old.get("k"):
             kw += toks(old["k"])          # keep what was curated by hand
 
-        blob = " ".join([title, p["d"], p["words"][:1200]]).lower()
+        # Model numbers are pulled from the page's full text, not a truncated
+        # slice of it. A 1200-char cap here silently dropped every model past
+        # the opening of long reference pages such as obsolete-products.html,
+        # which is precisely the page that most needs every model captured.
+        blob = " ".join([title, p["d"], p["words"]]).lower()
         kw += [m.group(1) for m in MODEL_RE.finditer(blob)]
 
         # the terms this page leans on that the rest of the site does not
