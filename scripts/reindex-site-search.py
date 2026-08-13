@@ -429,8 +429,6 @@ def main():
     for u in no_img[:10]:
         print("   no image: %s" % u)
 
-    json.dump({"SITE_INDEX": index, "SSDESC": ssdesc, "SSIMG": ssimg},
-              open("/Users/davidbrown/.claude/jobs/d192174c/tmp/new-index.json", "w"))
     return write_blocks(index, ssdesc, ssimg, faqs)
 
 
