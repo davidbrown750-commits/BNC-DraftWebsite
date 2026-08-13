@@ -38,7 +38,12 @@ INTERNAL = [
     "books/scintillators/figures/scionix/INDEX.html",
 ]
 
-QUIZ_RE = re.compile(r"(?:^|/)(?:quiz-\d+|reader-quiz|appendix-[BC]-quiz[^/]*)\.html$", re.I)
+# Any quiz page, however the book names it. The earlier pattern anchored on
+# `quiz-\d+.html` and so let through `quiz-01-why-rf-why-now.html`,
+# `quiz-chapter-07.html`, `quiz-11_future.html` and the E/G answer keys - 70 quiz
+# pages reached the sitemap. Match the word anywhere in the filename instead.
+# `progress.html` is a per-reader tracker with no content of its own.
+QUIZ_RE = re.compile(r"(?:^|/)(?:[^/]*quiz[^/]*|progress)\.html$", re.I)
 MATTER_RE = re.compile(
     r"(?:^|/)(?:00-front-matter|about-the-authors|appendix-D-contributors)\.html$", re.I
 )
