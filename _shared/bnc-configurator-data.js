@@ -1663,23 +1663,21 @@
           {
             id: "freq", label: "Model / frequency range", type: "radio",
             options: [
-              { code: "090R", label: "ICX-090R", note: "9 kHz to 9.5 GHz, IP68", pn: "-090R",
+              { code: "095R", label: "ICX-095R", note: "9 kHz to 9.5 GHz, IP68", pn: "-095R",
                 desc: "IP68 spectrum analyzer, 9 kHz to 9.5 GHz",
-                info: "IP68-rated analyzer covering 9 kHz to 9.5 GHz for harsh environments.", default: true },
-              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
+                info: "Rugged IP68-rated spectrum analyzer covering 9 kHz to 9.5 GHz for reliable RF monitoring in harsh environments.", default: true },
               { code: "200R", label: "ICX-200R", note: "9 kHz to 20 GHz, IP68", pn: "-200R",
                 desc: "IP68 spectrum analyzer, 9 kHz to 20 GHz",
-                info: "IP68 handheld analyzer covering 9 kHz to 20 GHz for demanding industrial and military use." },
-              */
+                info: "Ruggedized handheld spectrum analyzer covering 9 kHz to 20 GHz, designed for demanding industrial, military, and field applications." },
               { code: "400R", label: "ICX-400R", note: "9 kHz to 40 GHz, IP68, OCXO included", pn: "-400R",
                 desc: "IP68 spectrum analyzer, 9 kHz to 40 GHz (OCXO included)",
-                info: "IP68-rated analyzer covering 9 kHz to 40 GHz for mission-critical monitoring. The OCXO reference is included as standard." }
+                info: "IP68-rated handheld spectrum analyzer covering 9 kHz to 40 GHz for mission-critical RF monitoring in extreme operating conditions. The OCXO reference is included as standard." }
             ]
           },
           {
             id: "options", label: "Options", hint: "BNC option part numbers carry a B suffix.", type: "check",
             options: [
-              icxOCXO(["090R"], "Included as standard on the ICX-400R"),
+              icxOCXO(["095R", "200R"], "Included as standard on the ICX-400R"),
               icxOpt({ code: "O08", codeLabel: "opt 08B", label: "Onboard Nvidia Jetson Orin NX AI accelerator, 117 TOPS",
                 acc: "opt 08B", desc: "onboard Nvidia Jetson Orin NX 8G AI accelerator (117 TOPS)", badge: "AI onboard",
                 info: "Adds an onboard Nvidia Jetson Orin NX 8G module (117 TOPS) for edge AI signal processing." }),
