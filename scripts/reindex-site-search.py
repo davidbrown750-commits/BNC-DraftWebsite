@@ -74,6 +74,30 @@ def blocked(word):
     return hashlib.sha256(word.encode("utf-8")).hexdigest() in BLOCKED_DIGESTS
 
 
+# Discontinued products whose own datasheet/manual page must not appear in
+# search, so a customer searching a model number sees obsolete-products.html
+# steering them to the current replacement, rather than a datasheet for a
+# product BNC no longer sells reading as if it were still available. The
+# page itself is untouched and still reachable by direct link or nav; it is
+# only left out of the generated index. Add a page here only once its exact
+# model number is confirmed obsolete on obsolete-products.html - a model
+# number can be reused by an unrelated current product (Model 676 currently
+# names both an obsolete unit and a shipping AWG), so do not add an entry
+# from the model number alone without checking its page is really the
+# discontinued one.
+SUPERSEDED_URLS = {
+    "docs/bnc-model-588-datasheet.html",
+    "docs/bnc-model-588-user-manual.html",
+    "docs/bnc-dei-pco-7121-datasheet.html",
+    "docs/bnc-dei-pco-7121-user-manual.html",
+    "docs/bnc-model-960-datasheet.html",
+    "docs/bnc-pm1703gna-datasheet.html",
+    "docs/bnc-sam-940-datasheet.html",
+    "docs/bnc-sam-945-datasheet.html",
+    "docs/bnc-sam-945-user-manual.html",
+}
+
+
 # Words that mean the same thing to a customer as the word they typed. The
 # search engine has its own synonym map for queries; this one widens what a
 # PAGE answers to, which is the half that was missing.
@@ -322,6 +346,8 @@ def main():
 
     for p in pages:
         u = p["u"]
+        if u in SUPERSEDED_URLS:
+            continue
         old = old_by_url.get(u)
 
         # -- title ----------------------------------------------------------
