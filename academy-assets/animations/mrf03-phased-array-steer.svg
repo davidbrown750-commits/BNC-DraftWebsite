@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial, Helvetica, sans-serif">
+  <!-- background -->
+  <rect x="0" y="0" width="900" height="520" fill="#f5f7fa"/>
+
+  <!-- title -->
+  <text x="450" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#113163">Phased array beam steering</text>
+  <text x="450" y="62" text-anchor="middle" font-size="15" fill="#5a6472">Phase shifts ripple across the elements — the wavefront tilts and the beam sweeps with no moving parts</text>
+
+  <!-- boresight reference -->
+  <line x1="450" y1="425" x2="450" y2="115" stroke="#5a6472" stroke-width="1.5" stroke-dasharray="6 6" opacity="0.45"/>
+  <text x="462" y="128" font-size="13" fill="#5a6472">boresight</text>
+
+  <!-- rotating beam group (pivot at array center 450,425) -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      values="-22 450 425; 22 450 425; -22 450 425"
+      keyTimes="0; 0.5; 1" dur="8s" repeatCount="indefinite"/>
+
+    <!-- sidelobes -->
+    <path d="M 450 425 C 396 402, 362 386, 336 372 C 366 404, 406 420, 450 425 Z" fill="#37b6f0" opacity="0.16"/>
+    <path d="M 450 425 C 504 402, 538 386, 564 372 C 534 404, 494 420, 450 425 Z" fill="#37b6f0" opacity="0.16"/>
+
+    <!-- main lobe -->
+    <path d="M 450 425 C 398 332, 404 205, 450 112 C 496 205, 502 332, 450 425 Z"
+          fill="#37b6f0" opacity="0.28" stroke="#0655a3" stroke-width="1.5"/>
+
+    <!-- beam axis -->
+    <line x1="450" y1="425" x2="450" y2="112" stroke="#0655a3" stroke-width="2"/>
+
+    <!-- traveling wavefronts (curved, perpendicular to beam axis) -->
+    <path d="M 392 392 Q 450 378 508 392" fill="none" stroke="#113163" stroke-width="3" stroke-linecap="round" opacity="0">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -240" dur="2.4s" begin="0s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0; 0.85; 0.85; 0" keyTimes="0; 0.12; 0.7; 1" dur="2.4s" begin="0s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 392 392 Q 450 378 508 392" fill="none" stroke="#113163" stroke-width="3" stroke-linecap="round" opacity="0">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -240" dur="2.4s" begin="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0; 0.85; 0.85; 0" keyTimes="0; 0.12; 0.7; 1" dur="2.4s" begin="0.8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 392 392 Q 450 378 508 392" fill="none" stroke="#113163" stroke-width="3" stroke-linecap="round" opacity="0">
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 -240" dur="2.4s" begin="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0; 0.85; 0.85; 0" keyTimes="0; 0.12; 0.7; 1" dur="2.4s" begin="1.6s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- main beam label -->
+  <text x="640" y="180" font-size="14" fill="#0655a3" font-weight="bold">main beam sweeps</text>
+  <path d="M 636 176 L 560 160" stroke="#0655a3" stroke-width="1.2" fill="none"/>
+
+  <!-- tilted wavefront label -->
+  <text x="150" y="250" font-size="14" fill="#113163" font-weight="bold">tilted wavefront</text>
+  <path d="M 262 246 L 350 262" stroke="#113163" stroke-width="1.2" fill="none"/>
+
+  <!-- ================= radiating elements ================= -->
+  <!-- element glow pulses: staggered ripple across the row -->
+  <g fill="#37b6f0">
+    <circle cx="170" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="250" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0.15s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0.15s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="330" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0.3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0.3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="410" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0.45s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0.45s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="490" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="570" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0.75s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0.75s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="650" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="0.9s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="0.9s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="730" cy="410" r="3" opacity="0">
+      <animate attributeName="r" values="3;15" dur="1.2s" begin="1.05s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.2s" begin="1.05s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- element bodies -->
+  <g fill="#113163">
+    <rect x="160" y="412" width="20" height="14" rx="2"/>
+    <rect x="240" y="412" width="20" height="14" rx="2"/>
+    <rect x="320" y="412" width="20" height="14" rx="2"/>
+    <rect x="400" y="412" width="20" height="14" rx="2"/>
+    <rect x="480" y="412" width="20" height="14" rx="2"/>
+    <rect x="560" y="412" width="20" height="14" rx="2"/>
+    <rect x="640" y="412" width="20" height="14" rx="2"/>
+    <rect x="720" y="412" width="20" height="14" rx="2"/>
+  </g>
+
+  <!-- ================= phase shifters ================= -->
+  <g>
+    <!-- boxes -->
+    <g fill="#ffffff" stroke="#d8dde4" stroke-width="1.5">
+      <rect x="154" y="444" width="32" height="36" rx="3"/>
+      <rect x="234" y="444" width="32" height="36" rx="3"/>
+      <rect x="314" y="444" width="32" height="36" rx="3"/>
+      <rect x="394" y="444" width="32" height="36" rx="3"/>
+      <rect x="474" y="444" width="32" height="36" rx="3"/>
+      <rect x="554" y="444" width="32" height="36" rx="3"/>
+      <rect x="634" y="444" width="32" height="36" rx="3"/>
+      <rect x="714" y="444" width="32" height="36" rx="3"/>
+    </g>
+    <!-- phi labels -->
+    <g font-size="14" fill="#5a6472" font-style="italic">
+      <text x="163" y="468">φ</text>
+      <text x="243" y="468">φ</text>
+      <text x="323" y="468">φ</text>
+      <text x="403" y="468">φ</text>
+      <text x="483" y="468">φ</text>
+      <text x="563" y="468">φ</text>
+      <text x="643" y="468">φ</text>
+      <text x="723" y="468">φ</text>
+    </g>
+    <!-- phase-delay bars: gradient across the row grows and collapses with the sweep -->
+    <g fill="#0655a3">
+      <rect x="175" y="474" width="6" height="2">
+        <animate attributeName="height" values="4;2;4;2;4" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="472;474;472;474;472" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="255" y="474" width="6" height="2">
+        <animate attributeName="height" values="7;2;7;2;7" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="469;474;469;474;469" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="335" y="474" width="6" height="2">
+        <animate attributeName="height" values="10;2;10;2;10" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="466;474;466;474;466" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="415" y="474" width="6" height="2">
+        <animate attributeName="height" values="13;2;13;2;13" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="463;474;463;474;463" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="495" y="474" width="6" height="2">
+        <animate attributeName="height" values="16;2;16;2;16" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="460;474;460;474;460" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="575" y="474" width="6" height="2">
+        <animate attributeName="height" values="19;2;19;2;19" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="457;474;457;474;457" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="655" y="474" width="6" height="2">
+        <animate attributeName="height" values="22;2;22;2;22" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="454;474;454;474;454" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="735" y="474" width="6" height="2">
+        <animate attributeName="height" values="25;2;25;2;25" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="451;474;451;474;451" keyTimes="0;0.25;0.5;0.75;1" dur="8s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+  </g>
+
+  <!-- feed network -->
+  <g stroke="#5a6472" stroke-width="1.5">
+    <line x1="170" y1="480" x2="170" y2="500"/>
+    <line x1="250" y1="480" x2="250" y2="500"/>
+    <line x1="330" y1="480" x2="330" y2="500"/>
+    <line x1="410" y1="480" x2="410" y2="500"/>
+    <line x1="490" y1="480" x2="490" y2="500"/>
+    <line x1="570" y1="480" x2="570" y2="500"/>
+    <line x1="650" y1="480" x2="650" y2="500"/>
+    <line x1="730" y1="480" x2="730" y2="500"/>
+    <line x1="130" y1="500" x2="770" y2="500" stroke-width="2.5"/>
+  </g>
+  <text x="90" y="505" font-size="13" fill="#5a6472" text-anchor="end">RF feed</text>
+
+  <!-- side labels -->
+  <text x="810" y="423" font-size="13" fill="#113163">radiating</text>
+  <text x="810" y="438" font-size="13" fill="#113163">elements</text>
+  <text x="810" y="462" font-size="13" fill="#5a6472">phase</text>
+  <text x="810" y="477" font-size="13" fill="#5a6472">shifters</text>
+</svg>

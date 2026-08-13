@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial, Helvetica, sans-serif" role="img" aria-label="A swept analyzer marker crawls across a band and misses a pulsed signal that fires while it looks elsewhere, while overlapping FFT frames tile the same timeline with no gaps and catch every pulse">
+  <rect x="0" y="0" width="900" height="520" fill="#f5f7fa"/>
+  <text x="450" y="30" text-anchor="middle" font-size="19" font-weight="bold" fill="#113163">Same band, same eight seconds, two architectures</text>
+
+  <!-- ===== Top panel: swept analyzer ===== -->
+  <rect x="60" y="46" width="780" height="200" rx="6" fill="#ffffff" stroke="#d8dde4" stroke-width="1.5"/>
+  <text x="78" y="72" font-size="15" font-weight="bold" fill="#113163">Swept analyzer: one frequency at a time</text>
+
+  <!-- frequency axis -->
+  <line x1="70" y1="218" x2="810" y2="218" stroke="#5a6472" stroke-width="1.5"/>
+  <text x="70" y="236" font-size="13" fill="#5a6472">f_start</text>
+  <text x="810" y="236" text-anchor="end" font-size="13" fill="#5a6472">f_stop</text>
+
+  <!-- noise floor -->
+  <path d="M70,207 L130,205 L190,208 L250,206 L310,207 L370,205 L430,208 L490,206 L550,207 L610,205 L670,208 L730,206 L810,207" fill="none" stroke="#5a6472" stroke-width="1" opacity="0.5"/>
+
+  <!-- pulsed emitter ghost + label -->
+  <rect x="344" y="100" width="12" height="110" fill="none" stroke="#c0392b" stroke-width="1" stroke-dasharray="4 3" opacity="0.45"/>
+  <text x="350" y="92" text-anchor="middle" font-size="12.5" fill="#c0392b">pulsed emitter</text>
+
+  <!-- pulse bursts (three per cycle) -->
+  <rect x="344" y="100" width="12" height="110" fill="#c0392b" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.175;0.177;0.219;0.221;1"/>
+  </rect>
+  <rect x="344" y="100" width="12" height="110" fill="#c0392b" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5125;0.5145;0.5563;0.5583;1"/>
+  </rect>
+  <rect x="344" y="100" width="12" height="110" fill="#c0392b" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.825;0.827;0.869;0.871;1"/>
+  </rect>
+
+  <!-- MISSED flags -->
+  <text x="390" y="130" font-size="14" font-weight="bold" fill="#c0392b" opacity="0">MISSED
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.22;0.24;0.34;0.36;1"/>
+  </text>
+  <text x="390" y="130" font-size="14" font-weight="bold" fill="#c0392b" opacity="0">MISSED
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.557;0.577;0.677;0.697;1"/>
+  </text>
+  <text x="390" y="130" font-size="14" font-weight="bold" fill="#c0392b" opacity="0">MISSED
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.87;0.89;0.97;0.99;1"/>
+  </text>
+
+  <!-- swept filter marker -->
+  <g>
+    <rect x="70" y="96" width="26" height="120" fill="#37b6f0" opacity="0.35"/>
+    <line x1="83" y1="96" x2="83" y2="216" stroke="#0655a3" stroke-width="2"/>
+    <text x="83" y="112" text-anchor="middle" font-size="12" font-weight="bold" fill="#0655a3" transform="translate(0,-22)">RBW filter</text>
+    <animateTransform attributeName="transform" type="translate" values="0 0;714 0" dur="8s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- ===== Bottom panel: real-time engine ===== -->
+  <rect x="60" y="266" width="780" height="210" rx="6" fill="#ffffff" stroke="#d8dde4" stroke-width="1.5"/>
+  <text x="78" y="292" font-size="15" font-weight="bold" fill="#113163">Real-time engine: overlapping FFT frames, gap-free</text>
+
+  <!-- FFT frames: two staggered rows, hop = half a frame -->
+  <!-- even-index row -->
+  <rect x="80" y="330" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.5">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.5;0.5;0.15;0.15" keyTimes="0;0.2;0.201;1"/>
+  </rect>
+  <rect x="228" y="330" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.2;0.201;0.4;0.401;1"/>
+  </rect>
+  <rect x="376" y="330" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.4;0.401;0.6;0.601;1"/>
+  </rect>
+  <rect x="524" y="330" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.6;0.601;0.8;0.801;1"/>
+  </rect>
+  <rect x="672" y="330" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5" keyTimes="0;0.8;0.801;1"/>
+  </rect>
+  <!-- odd-index row (offset by half a frame) -->
+  <rect x="154" y="378" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.1;0.101;0.3;0.301;1"/>
+  </rect>
+  <rect x="302" y="378" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.3;0.301;0.5;0.501;1"/>
+  </rect>
+  <rect x="450" y="378" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.5;0.501;0.7;0.701;1"/>
+  </rect>
+  <rect x="598" y="378" width="148" height="42" rx="4" fill="#37b6f0" stroke="#0655a3" stroke-width="1" fill-opacity="0.15">
+    <animate attributeName="fill-opacity" dur="8s" repeatCount="indefinite" values="0.15;0.15;0.5;0.5;0.15;0.15" keyTimes="0;0.7;0.701;0.9;0.901;1"/>
+  </rect>
+
+  <!-- pulse marks on the timeline (appear when they fire, stay for the rest of the cycle) -->
+  <rect x="205.5" y="326" width="8" height="98" rx="2" fill="#c0392b" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;0.175;0.185;1"/>
+  </rect>
+  <text x="221" y="320" font-size="13" font-weight="bold" fill="#0655a3" opacity="0">CAUGHT
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;0.205;0.225;1"/>
+  </text>
+  <rect x="455.5" y="326" width="8" height="98" rx="2" fill="#c0392b" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;0.5125;0.5225;1"/>
+  </rect>
+  <text x="471" y="320" font-size="13" font-weight="bold" fill="#0655a3" opacity="0">CAUGHT
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;0.5425;0.5625;1"/>
+  </text>
+  <rect x="686.5" y="326" width="8" height="98" rx="2" fill="#c0392b" opacity="0">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;0.825;0.835;1"/>
+  </rect>
+  <text x="702" y="320" font-size="13" font-weight="bold" fill="#0655a3" opacity="0">CAUGHT
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;0.855;0.875;1"/>
+  </text>
+
+  <!-- time axis -->
+  <line x1="80" y1="452" x2="820" y2="452" stroke="#5a6472" stroke-width="1.5"/>
+  <text x="80" y="470" font-size="13" fill="#5a6472">0 s</text>
+  <text x="820" y="470" text-anchor="end" font-size="13" fill="#5a6472">8 s</text>
+  <text x="450" y="470" text-anchor="middle" font-size="12.5" fill="#5a6472">a new frame begins every half frame, so every instant is inside at least one whole frame</text>
+
+  <!-- moving "now" cursor -->
+  <g>
+    <line x1="80" y1="312" x2="80" y2="452" stroke="#113163" stroke-width="2"/>
+    <text x="80" y="308" text-anchor="middle" font-size="12" font-weight="bold" fill="#113163">now</text>
+    <animateTransform attributeName="transform" type="translate" values="0 0;740 0" dur="8s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- caption -->
+  <text x="450" y="504" text-anchor="middle" font-size="14" fill="#5a6472">The swept trace can prove only where the filter was looking. The frames leave the pulse nowhere to hide.</text>
+</svg>

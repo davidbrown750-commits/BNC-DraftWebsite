@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Arial, Helvetica, sans-serif">
+  <rect x="0" y="0" width="900" height="520" fill="#f5f7fa"/>
+
+  <!-- Title -->
+  <text x="450" y="44" text-anchor="middle" font-size="24" font-weight="bold" fill="#113163">One Pulse Repetition Time (PRT)</text>
+  <text x="450" y="72" text-anchor="middle" font-size="16" fill="#5a6472">The pulse fires, the receiver listens, then the set housekeeps until the next pulse.</text>
+
+  <!-- Zone bands (light up in sequence as the clock bar sweeps) -->
+  <!-- Transmit zone: 80 to 154 -->
+  <rect x="80" y="120" width="74" height="240" fill="#37b6f0">
+    <animate attributeName="opacity" values="0.45;0.45;0.12;0.12;0.45" keyTimes="0;0.1;0.12;0.98;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+  <!-- Receiving zone: 154 to 672 -->
+  <rect x="154" y="120" width="518" height="240" fill="#0655a3">
+    <animate attributeName="opacity" values="0.10;0.10;0.32;0.32;0.10;0.10" keyTimes="0;0.1;0.12;0.8;0.82;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+  <!-- Dead-time zone: 672 to 820 -->
+  <rect x="672" y="120" width="148" height="240" fill="#5a6472">
+    <animate attributeName="opacity" values="0.12;0.12;0.40;0.40;0.12" keyTimes="0;0.8;0.82;0.98;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Zone labels -->
+  <text x="117" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#113163">Transmit (PW)</text>
+  <text x="413" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#113163">Receiving time</text>
+  <text x="746" y="108" text-anchor="middle" font-size="16" font-weight="bold" fill="#113163">Dead time</text>
+
+  <!-- Zone divider ticks -->
+  <line x1="80" y1="120" x2="80" y2="360" stroke="#d8dde4" stroke-width="1"/>
+  <line x1="154" y1="120" x2="154" y2="360" stroke="#d8dde4" stroke-width="1"/>
+  <line x1="672" y1="120" x2="672" y2="360" stroke="#d8dde4" stroke-width="1"/>
+  <line x1="820" y1="120" x2="820" y2="360" stroke="#d8dde4" stroke-width="1"/>
+
+  <!-- Baseline axis -->
+  <line x1="60" y1="330" x2="856" y2="330" stroke="#5a6472" stroke-width="2"/>
+  <path d="M856,330 l-12,-6 v12 z" fill="#5a6472"/>
+  <text x="874" y="336" font-size="15" fill="#5a6472">t</text>
+
+  <!-- Transmitted pulse (flashes bright while firing) -->
+  <path d="M80,330 L80,190 L154,190 L154,330" fill="#37b6f0" stroke="#0655a3" stroke-width="2.5">
+    <animate attributeName="fill-opacity" values="0.95;0.95;0.35;0.35;0.95" keyTimes="0;0.1;0.13;0.98;1" dur="8s" repeatCount="indefinite"/>
+  </path>
+  <text x="117" y="178" text-anchor="middle" font-size="15" font-weight="bold" fill="#0655a3">Pulse</text>
+
+  <!-- Next pulse, start of the following PRT (ghosted at right edge) -->
+  <path d="M820,330 L820,190 L858,190" fill="none" stroke="#0655a3" stroke-width="2.5" stroke-dasharray="6 5" opacity="0.55"/>
+  <text x="838" y="178" text-anchor="middle" font-size="13" fill="#5a6472">next</text>
+
+  <!-- Returning echo (appears when the clock bar reaches it) -->
+  <g>
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.42;0.44;0.8;0.84;1" dur="8s" repeatCount="indefinite"/>
+    <path d="M380,330 L380,292 L420,292 L420,330" fill="#3fd0c4" fill-opacity="0.85" stroke="#0655a3" stroke-width="2"/>
+    <text x="400" y="280" text-anchor="middle" font-size="15" font-weight="bold" fill="#0655a3">Echo</text>
+  </g>
+
+  <!-- Sweeping clock bar -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" from="80 0" to="820 0" dur="8s" repeatCount="indefinite"/>
+    <line x1="0" y1="118" x2="0" y2="368" stroke="#113163" stroke-width="3"/>
+    <circle cx="0" cy="118" r="7" fill="#113163"/>
+  </g>
+
+  <!-- PRT span arrow -->
+  <line x1="80" y1="402" x2="820" y2="402" stroke="#113163" stroke-width="2"/>
+  <path d="M80,402 l12,-6 v12 z" fill="#113163"/>
+  <path d="M820,402 l-12,-6 v12 z" fill="#113163"/>
+  <line x1="80" y1="392" x2="80" y2="412" stroke="#113163" stroke-width="2"/>
+  <line x1="820" y1="392" x2="820" y2="412" stroke="#113163" stroke-width="2"/>
+  <text x="450" y="432" text-anchor="middle" font-size="18" font-weight="bold" fill="#113163">PRT = 1 / PRF</text>
+
+  <!-- Phase status line (switches with the sweep) -->
+  <text x="450" y="482" text-anchor="middle" font-size="18" font-weight="bold" fill="#0655a3">
+    Transmitting
+    <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.1;0.12;0.98;1" dur="8s" repeatCount="indefinite"/>
+  </text>
+  <text x="450" y="482" text-anchor="middle" font-size="18" font-weight="bold" fill="#113163">
+    Listening for echoes
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.1;0.12;0.8;0.82;1" dur="8s" repeatCount="indefinite"/>
+  </text>
+  <text x="450" y="482" text-anchor="middle" font-size="18" font-weight="bold" fill="#5a6472">
+    Dead time: self-test and beam steering
+    <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.8;0.82;0.98;1" dur="8s" repeatCount="indefinite"/>
+  </text>
+</svg>

@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <clipPath id="scopeClip"><rect x="500" y="120" width="360" height="280"/></clipPath>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37b6f0"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="450" y="42" text-anchor="middle" font-size="24" font-weight="bold" fill="#113163">The half-bridge output stage</text>
+  <text x="450" y="68" text-anchor="middle" font-size="15" fill="#5a6472">Two switches alternate. The output node swings between the +HV rail and return, and the load sees the pulse.</text>
+
+  <!-- ============ LEFT: circuit ============ -->
+  <!-- +HV rail -->
+  <line x1="80" y1="130" x2="330" y2="130" stroke="#113163" stroke-width="3"/>
+  <text x="80" y="118" font-size="15" font-weight="bold" fill="#113163">+HV rail</text>
+
+  <!-- return rail -->
+  <line x1="80" y1="410" x2="330" y2="410" stroke="#5a6472" stroke-width="3"/>
+  <text x="80" y="436" font-size="15" font-weight="bold" fill="#5a6472">Return (0 V)</text>
+
+  <!-- vertical stub from +HV to high-side switch top contact -->
+  <line x1="205" y1="130" x2="205" y2="170" stroke="#113163" stroke-width="3"/>
+  <!-- high-side conduction glow -->
+  <line x1="205" y1="130" x2="205" y2="270" stroke="#37b6f0" stroke-width="9" stroke-linecap="round" opacity="0.55">
+    <animate attributeName="opacity" values="0.55;0.55;0;0;0.55" keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- high-side switch: contacts + lever -->
+  <circle cx="205" cy="170" r="5" fill="#113163"/>
+  <circle cx="205" cy="222" r="5" fill="#113163"/>
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 205 170;0 205 170;38 205 170;38 205 170;0 205 170"
+      keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+    <line x1="205" y1="170" x2="205" y2="222" stroke="#0655a3" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <text x="230" y="200" font-size="15" font-weight="bold" fill="#0655a3">S_H  high side</text>
+  <text x="230" y="218" font-size="12.5" fill="#5a6472">closed &#8594; output = +HV</text>
+
+  <!-- wire between switches: switch bottom to output node -->
+  <line x1="205" y1="222" x2="205" y2="270" stroke="#113163" stroke-width="3"/>
+  <line x1="205" y1="270" x2="205" y2="318" stroke="#113163" stroke-width="3"/>
+
+  <!-- low-side conduction glow -->
+  <line x1="205" y1="270" x2="205" y2="410" stroke="#37b6f0" stroke-width="9" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="0;0;0.55;0.55;0" keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- low-side switch -->
+  <circle cx="205" cy="318" r="5" fill="#113163"/>
+  <circle cx="205" cy="370" r="5" fill="#113163"/>
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      values="38 205 318;38 205 318;0 205 318;0 205 318;38 205 318"
+      keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+    <line x1="205" y1="318" x2="205" y2="370" stroke="#0655a3" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <text x="230" y="348" font-size="15" font-weight="bold" fill="#0655a3">S_L  low side</text>
+  <text x="230" y="366" font-size="12.5" fill="#5a6472">closed &#8594; output = 0 V</text>
+
+  <!-- stub low-side bottom to return -->
+  <line x1="205" y1="370" x2="205" y2="410" stroke="#5a6472" stroke-width="3"/>
+
+  <!-- output node -->
+  <circle cx="205" cy="270" r="7" fill="#37b6f0">
+    <animate attributeName="fill" values="#113163;#113163;#5a6472;#5a6472;#113163" keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  <text x="112" y="262" font-size="14" font-weight="bold" fill="#113163">Output</text>
+  <text x="120" y="279" font-size="14" font-weight="bold" fill="#113163">node</text>
+
+  <!-- output node voltage readout -->
+  <g>
+    <text x="128" y="300" font-size="14" font-weight="bold" fill="#0655a3">+HV
+      <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+    </text>
+    <text x="128" y="300" font-size="14" font-weight="bold" fill="#5a6472" opacity="0">0 V
+      <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+    </text>
+  </g>
+
+  <!-- wire from output node to load -->
+  <line x1="205" y1="270" x2="382" y2="270" stroke="#113163" stroke-width="3" marker-end="url(#arrowBlue)"/>
+
+  <!-- load -->
+  <rect x="388" y="240" width="44" height="60" fill="#f5f7fa" stroke="#113163" stroke-width="3" rx="4"/>
+  <text x="410" y="276" text-anchor="middle" font-size="14" font-weight="bold" fill="#113163">Z</text>
+  <text x="410" y="322" text-anchor="middle" font-size="14" font-weight="bold" fill="#5a6472">Load</text>
+  <!-- load return leg -->
+  <line x1="410" y1="300" x2="410" y2="410" stroke="#5a6472" stroke-width="3"/>
+  <line x1="330" y1="410" x2="410" y2="410" stroke="#5a6472" stroke-width="3"/>
+
+  <!-- ============ RIGHT: scope window ============ -->
+  <rect x="500" y="120" width="360" height="280" fill="#f5f7fa" stroke="#d8dde4" stroke-width="2"/>
+  <text x="680" y="110" text-anchor="middle" font-size="15" font-weight="bold" fill="#113163">Pulse at the load</text>
+
+  <!-- level gridlines + labels -->
+  <line x1="500" y1="180" x2="860" y2="180" stroke="#d8dde4" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <line x1="500" y1="320" x2="860" y2="320" stroke="#d8dde4" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <text x="866" y="185" font-size="13" fill="#0655a3" font-weight="bold">+HV</text>
+  <text x="866" y="325" font-size="13" fill="#5a6472" font-weight="bold">0 V</text>
+
+  <!-- scrolling square wave, newest sample at the right edge -->
+  <g clip-path="url(#scopeClip)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;-160 0" dur="4s" repeatCount="indefinite" calcMode="linear"/>
+      <path d="M380,180 H460 V320 H540 V180 H620 V320 H700 V180 H780 V320 H860 V180 H940 V320 H1020 V180 H1100 V320 H1180 V180 H1260"
+            fill="none" stroke="#37b6f0" stroke-width="4" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- "now" cursor at right edge -->
+  <line x1="860" y1="130" x2="860" y2="390" stroke="#0655a3" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+  <circle cx="860" cy="180" r="7" fill="#0655a3">
+    <animate attributeName="cy" values="180;180;320;320;180" keyTimes="0;0.475;0.5;0.975;1" dur="4s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- time axis -->
+  <line x1="500" y1="400" x2="860" y2="400" stroke="#5a6472" stroke-width="2"/>
+  <text x="680" y="424" text-anchor="middle" font-size="13" fill="#5a6472">time &#8594;  (trace scrolls; newest point at the cursor)</text>
+
+  <!-- footer note -->
+  <text x="450" y="486" text-anchor="middle" font-size="14" fill="#5a6472">One switch closes only after the other opens. Dead time between the two prevents shoot-through</text>
+  <text x="450" y="506" text-anchor="middle" font-size="14" fill="#5a6472">from the +HV rail straight to return through both switches.</text>
+</svg>

@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial,Helvetica,sans-serif">
+  <title>From a rotating phasor to interleaved I/Q sample streams</title>
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="22" font-weight="bold" fill="#113163">One rotating phasor, two sample streams</text>
+  <text x="450" y="58" text-anchor="middle" font-size="15" fill="#5a6472">The I and Q projections of the phasor are sampled together: every tick of the sample clock emits one (I, Q) pair</text>
+
+  <!-- ===== IQ plane ===== -->
+  <g>
+    <circle cx="215.0" cy="267.0" r="130.0" fill="#f5f7fa" stroke="#d8dde4" stroke-width="2"/>
+    <line x1="60.0" y1="267.0" x2="370.0" y2="267.0" stroke="#d8dde4" stroke-width="2"/>
+    <line x1="215.0" y1="112.0" x2="215.0" y2="422.0" stroke="#d8dde4" stroke-width="2"/>
+    <text x="375.0" y="272.0" font-size="16" font-weight="bold" fill="#0655a3">I</text>
+    <text x="221.0" y="105.0" font-size="16" font-weight="bold" fill="#37b6f0">Q</text>
+
+    <!-- projection lines (dashed) -->
+    <line x1="345.0" y1="267.0" x2="345.0" y2="267.0" stroke="#0655a3" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.65">
+      <animate attributeName="x1" values="345.0;215.0;85.0;215.0;345.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="345.0;215.0;85.0;215.0;345.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="y1" values="267.0;137.0;267.0;397.0;267.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715" dur="6s" repeatCount="indefinite"/>
+    </line>
+    <line x1="345.0" y1="267.0" x2="215.0" y2="267.0" stroke="#37b6f0" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.65">
+      <animate attributeName="x1" values="345.0;215.0;85.0;215.0;345.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="y1" values="267.0;137.0;267.0;397.0;267.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="y2" values="267.0;137.0;267.0;397.0;267.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715" dur="6s" repeatCount="indefinite"/>
+    </line>
+
+    <!-- rotating phasor -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 215.0 267.0" to="-360 215.0 267.0" dur="6s" repeatCount="indefinite"/>
+      <line x1="215.0" y1="267.0" x2="345.0" y2="267.0" stroke="#113163" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="345.0" cy="267.0" r="9" fill="#113163"/>
+    </g>
+
+    <!-- projection dots on axes -->
+    <circle cx="345.0" cy="267.0" r="7" fill="#0655a3"><animate attributeName="cx" values="345.0;215.0;85.0;215.0;345.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1" dur="6s" repeatCount="indefinite"/></circle>
+    <circle cx="215.0" cy="267.0" r="7" fill="#37b6f0"><animate attributeName="cy" values="267.0;137.0;267.0;397.0;267.0" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715" dur="6s" repeatCount="indefinite"/></circle>
+    <text x="215.0" y="445.0" text-anchor="middle" font-size="14" fill="#5a6472">The phasor turns once per cycle of the tuned signal</text>
+  </g>
+
+  <!-- ===== wave strips ===== -->
+  <defs>
+    <clipPath id="clipI"><rect x="430" y="88" width="420" height="124"/></clipPath>
+    <clipPath id="clipQ"><rect x="430" y="323" width="420" height="124"/></clipPath>
+  </defs>
+
+  <text x="430" y="82" font-size="15" font-weight="bold" fill="#0655a3">I stream = cosine projection</text>
+  <g clip-path="url(#clipI)">
+    <line x1="430" y1="150" x2="850" y2="150" stroke="#d8dde4" stroke-width="1.5"/>
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;120 0" dur="6s" repeatCount="indefinite" calcMode="linear"/>
+      <path d="M290.0,122.50 L294.0,113.20 L298.0,105.50 L302.0,99.75 L306.0,96.20 L310.0,95.00 L314.0,96.20 L318.0,99.75 L322.0,105.50 L326.0,113.20 L330.0,122.50 L334.0,133.00 L338.0,144.25 L342.0,155.75 L346.0,167.00 L350.0,177.50 L354.0,186.80 L358.0,194.50 L362.0,200.25 L366.0,203.80 L370.0,205.00 L374.0,203.80 L378.0,200.25 L382.0,194.50 L386.0,186.80 L390.0,177.50 L394.0,167.00 L398.0,155.75 L402.0,144.25 L406.0,133.00 L410.0,122.50 L414.0,113.20 L418.0,105.50 L422.0,99.75 L426.0,96.20 L430.0,95.00 L434.0,96.20 L438.0,99.75 L442.0,105.50 L446.0,113.20 L450.0,122.50 L454.0,133.00 L458.0,144.25 L462.0,155.75 L466.0,167.00 L470.0,177.50 L474.0,186.80 L478.0,194.50 L482.0,200.25 L486.0,203.80 L490.0,205.00 L494.0,203.80 L498.0,200.25 L502.0,194.50 L506.0,186.80 L510.0,177.50 L514.0,167.00 L518.0,155.75 L522.0,144.25 L526.0,133.00 L530.0,122.50 L534.0,113.20 L538.0,105.50 L542.0,99.75 L546.0,96.20 L550.0,95.00 L554.0,96.20 L558.0,99.75 L562.0,105.50 L566.0,113.20 L570.0,122.50 L574.0,133.00 L578.0,144.25 L582.0,155.75 L586.0,167.00 L590.0,177.50 L594.0,186.80 L598.0,194.50 L602.0,200.25 L606.0,203.80 L610.0,205.00 L614.0,203.80 L618.0,200.25 L622.0,194.50 L626.0,186.80 L630.0,177.50 L634.0,167.00 L638.0,155.75 L642.0,144.25 L646.0,133.00 L650.0,122.50 L654.0,113.20 L658.0,105.50 L662.0,99.75 L666.0,96.20 L670.0,95.00 L674.0,96.20 L678.0,99.75 L682.0,105.50 L686.0,113.20 L690.0,122.50 L694.0,133.00 L698.0,144.25 L702.0,155.75 L706.0,167.00 L710.0,177.50 L714.0,186.80 L718.0,194.50 L722.0,200.25 L726.0,203.80 L730.0,205.00 L734.0,203.80 L738.0,200.25 L742.0,194.50 L746.0,186.80 L750.0,177.50 L754.0,167.00 L758.0,155.75 L762.0,144.25 L766.0,133.00 L770.0,122.50 L774.0,113.20 L778.0,105.50 L782.0,99.75 L786.0,96.20 L790.0,95.00 L794.0,96.20 L798.0,99.75 L802.0,105.50 L806.0,113.20 L810.0,122.50 L814.0,133.00 L818.0,144.25 L822.0,155.75 L826.0,167.00 L830.0,177.50 L834.0,186.80 L838.0,194.50 L842.0,200.25 L846.0,203.80 L850.0,205.00 L854.0,203.80 L858.0,200.25 L862.0,194.50 L866.0,186.80 L870.0,177.50" fill="none" stroke="#0655a3" stroke-width="2.5"/>
+      <circle cx="290.0" cy="122.50" r="4" fill="#0655a3"/>
+<circle cx="320.0" cy="102.37" r="4" fill="#0655a3"/>
+<circle cx="350.0" cy="177.50" r="4" fill="#0655a3"/>
+<circle cx="380.0" cy="197.63" r="4" fill="#0655a3"/>
+<circle cx="410.0" cy="122.50" r="4" fill="#0655a3"/>
+<circle cx="440.0" cy="102.37" r="4" fill="#0655a3"/>
+<circle cx="470.0" cy="177.50" r="4" fill="#0655a3"/>
+<circle cx="500.0" cy="197.63" r="4" fill="#0655a3"/>
+<circle cx="530.0" cy="122.50" r="4" fill="#0655a3"/>
+<circle cx="560.0" cy="102.37" r="4" fill="#0655a3"/>
+<circle cx="590.0" cy="177.50" r="4" fill="#0655a3"/>
+<circle cx="620.0" cy="197.63" r="4" fill="#0655a3"/>
+<circle cx="650.0" cy="122.50" r="4" fill="#0655a3"/>
+<circle cx="680.0" cy="102.37" r="4" fill="#0655a3"/>
+<circle cx="710.0" cy="177.50" r="4" fill="#0655a3"/>
+<circle cx="740.0" cy="197.63" r="4" fill="#0655a3"/>
+<circle cx="770.0" cy="122.50" r="4" fill="#0655a3"/>
+<circle cx="800.0" cy="102.37" r="4" fill="#0655a3"/>
+<circle cx="830.0" cy="177.50" r="4" fill="#0655a3"/>
+<circle cx="860.0" cy="197.63" r="4" fill="#0655a3"/>
+    </g>
+  </g>
+
+  <text x="430" y="317" font-size="15" font-weight="bold" fill="#37b6f0">Q stream = sine projection</text>
+  <g clip-path="url(#clipQ)">
+    <line x1="430" y1="385" x2="850" y2="385" stroke="#d8dde4" stroke-width="1.5"/>
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;120 0" dur="6s" repeatCount="indefinite" calcMode="linear"/>
+      <path d="M290.0,337.37 L294.0,344.13 L298.0,352.67 L302.0,362.63 L306.0,373.56 L310.0,385.00 L314.0,396.44 L318.0,407.37 L322.0,417.33 L326.0,425.87 L330.0,432.63 L334.0,437.31 L338.0,439.70 L342.0,439.70 L346.0,437.31 L350.0,432.63 L354.0,425.87 L358.0,417.33 L362.0,407.37 L366.0,396.44 L370.0,385.00 L374.0,373.56 L378.0,362.63 L382.0,352.67 L386.0,344.13 L390.0,337.37 L394.0,332.69 L398.0,330.30 L402.0,330.30 L406.0,332.69 L410.0,337.37 L414.0,344.13 L418.0,352.67 L422.0,362.63 L426.0,373.56 L430.0,385.00 L434.0,396.44 L438.0,407.37 L442.0,417.33 L446.0,425.87 L450.0,432.63 L454.0,437.31 L458.0,439.70 L462.0,439.70 L466.0,437.31 L470.0,432.63 L474.0,425.87 L478.0,417.33 L482.0,407.37 L486.0,396.44 L490.0,385.00 L494.0,373.56 L498.0,362.63 L502.0,352.67 L506.0,344.13 L510.0,337.37 L514.0,332.69 L518.0,330.30 L522.0,330.30 L526.0,332.69 L530.0,337.37 L534.0,344.13 L538.0,352.67 L542.0,362.63 L546.0,373.56 L550.0,385.00 L554.0,396.44 L558.0,407.37 L562.0,417.33 L566.0,425.87 L570.0,432.63 L574.0,437.31 L578.0,439.70 L582.0,439.70 L586.0,437.31 L590.0,432.63 L594.0,425.87 L598.0,417.33 L602.0,407.37 L606.0,396.44 L610.0,385.00 L614.0,373.56 L618.0,362.63 L622.0,352.67 L626.0,344.13 L630.0,337.37 L634.0,332.69 L638.0,330.30 L642.0,330.30 L646.0,332.69 L650.0,337.37 L654.0,344.13 L658.0,352.67 L662.0,362.63 L666.0,373.56 L670.0,385.00 L674.0,396.44 L678.0,407.37 L682.0,417.33 L686.0,425.87 L690.0,432.63 L694.0,437.31 L698.0,439.70 L702.0,439.70 L706.0,437.31 L710.0,432.63 L714.0,425.87 L718.0,417.33 L722.0,407.37 L726.0,396.44 L730.0,385.00 L734.0,373.56 L738.0,362.63 L742.0,352.67 L746.0,344.13 L750.0,337.37 L754.0,332.69 L758.0,330.30 L762.0,330.30 L766.0,332.69 L770.0,337.37 L774.0,344.13 L778.0,352.67 L782.0,362.63 L786.0,373.56 L790.0,385.00 L794.0,396.44 L798.0,407.37 L802.0,417.33 L806.0,425.87 L810.0,432.63 L814.0,437.31 L818.0,439.70 L822.0,439.70 L826.0,437.31 L830.0,432.63 L834.0,425.87 L838.0,417.33 L842.0,407.37 L846.0,396.44 L850.0,385.00 L854.0,373.56 L858.0,362.63 L862.0,352.67 L866.0,344.13 L870.0,337.37" fill="none" stroke="#37b6f0" stroke-width="2.5"/>
+      <circle cx="290.0" cy="337.37" r="4" fill="#37b6f0"/>
+<circle cx="320.0" cy="412.50" r="4" fill="#37b6f0"/>
+<circle cx="350.0" cy="432.63" r="4" fill="#37b6f0"/>
+<circle cx="380.0" cy="357.50" r="4" fill="#37b6f0"/>
+<circle cx="410.0" cy="337.37" r="4" fill="#37b6f0"/>
+<circle cx="440.0" cy="412.50" r="4" fill="#37b6f0"/>
+<circle cx="470.0" cy="432.63" r="4" fill="#37b6f0"/>
+<circle cx="500.0" cy="357.50" r="4" fill="#37b6f0"/>
+<circle cx="530.0" cy="337.37" r="4" fill="#37b6f0"/>
+<circle cx="560.0" cy="412.50" r="4" fill="#37b6f0"/>
+<circle cx="590.0" cy="432.63" r="4" fill="#37b6f0"/>
+<circle cx="620.0" cy="357.50" r="4" fill="#37b6f0"/>
+<circle cx="650.0" cy="337.37" r="4" fill="#37b6f0"/>
+<circle cx="680.0" cy="412.50" r="4" fill="#37b6f0"/>
+<circle cx="710.0" cy="432.63" r="4" fill="#37b6f0"/>
+<circle cx="740.0" cy="357.50" r="4" fill="#37b6f0"/>
+<circle cx="770.0" cy="337.37" r="4" fill="#37b6f0"/>
+<circle cx="800.0" cy="412.50" r="4" fill="#37b6f0"/>
+<circle cx="830.0" cy="432.63" r="4" fill="#37b6f0"/>
+<circle cx="860.0" cy="357.50" r="4" fill="#37b6f0"/>
+    </g>
+  </g>
+
+  <!-- now markers at strip entry -->
+  <circle cx="430" cy="95" r="6" fill="#113163">
+    <animate attributeName="cy" values="95;150;205;150;95" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1" dur="6s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="430" cy="385" r="6" fill="#113163">
+    <animate attributeName="cy" values="385;330;385;440;385" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.39 0.575 0.565 1;0.47 0 0.745 0.715;0.39 0.575 0.565 1;0.47 0 0.745 0.715" dur="6s" repeatCount="indefinite"/>
+  </circle>
+  <text x="640" y="238" text-anchor="middle" font-size="14" fill="#5a6472">older samples scroll off to the right &#8594;</text>
+
+  <!-- interleaved pair readout -->
+  <g>
+    <rect x="430" y="462" width="420" height="42" rx="6" fill="#f5f7fa" stroke="#d8dde4"/>
+    <text x="446" y="488" font-size="15" fill="#113163" font-weight="bold">Delivered stream:</text>
+    <text x="586" y="488" font-size="15" font-family="Arial,Helvetica,sans-serif"><tspan fill="#0655a3" font-weight="bold">I[0]</tspan><tspan fill="#37b6f0" font-weight="bold"> Q[0]</tspan><tspan fill="#0655a3" font-weight="bold"> I[1]</tspan><tspan fill="#37b6f0" font-weight="bold"> Q[1]</tspan><tspan fill="#0655a3" font-weight="bold"> I[2]</tspan><tspan fill="#37b6f0" font-weight="bold"> Q[2]</tspan><tspan fill="#5a6472"> &#8230;</tspan></text>
+  </g>
+  <text x="215" y="488" text-anchor="middle" font-size="14" fill="#5a6472">One sample = one (I, Q) pair, not two samples</text>
+</svg>

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial, Helvetica, sans-serif">
+  <title>FMCW ranging: a delayed frequency sweep produces a constant beat frequency</title>
+  <defs>
+    <clipPath id="plot">
+      <rect x="90" y="80" width="770" height="340"/>
+    </clipPath>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="450" y="42" text-anchor="middle" font-size="22" font-weight="bold" fill="#113163">FMCW ranging: a delayed sweep becomes a constant beat frequency</text>
+
+  <!-- plot frame and gridlines -->
+  <rect x="90" y="80" width="770" height="340" fill="#f5f7fa" stroke="#d8dde4" stroke-width="1"/>
+  <g stroke="#d8dde4" stroke-width="1" stroke-dasharray="3 5">
+    <line x1="90" y1="140" x2="860" y2="140"/>
+    <line x1="90" y1="200" x2="860" y2="200"/>
+    <line x1="90" y1="260" x2="860" y2="260"/>
+    <line x1="90" y1="320" x2="860" y2="320"/>
+    <line x1="90" y1="380" x2="860" y2="380"/>
+  </g>
+
+  <!-- axes -->
+  <line x1="90" y1="420" x2="872" y2="420" stroke="#5a6472" stroke-width="2"/>
+  <polygon points="872,420 860,415 860,425" fill="#5a6472"/>
+  <line x1="90" y1="420" x2="90" y2="68" stroke="#5a6472" stroke-width="2"/>
+  <polygon points="90,68 85,80 95,80" fill="#5a6472"/>
+  <text x="820" y="446" font-size="16" fill="#5a6472">Time</text>
+  <text x="40" y="250" font-size="16" fill="#5a6472" transform="rotate(-90 40 250)">Frequency</text>
+
+  <!-- sliding ramps -->
+  <g clip-path="url(#plot)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" from="0 0" to="-240 0" dur="6s" repeatCount="indefinite" calcMode="linear"/>
+
+      <!-- transmit sawtooth -->
+      <path d="M 90,380 L 330,140 L 330,380 L 570,140 L 570,380 L 810,140 L 810,380 L 1050,140 L 1050,380 L 1290,140"
+            fill="none" stroke="#0655a3" stroke-width="3"/>
+
+      <!-- delayed echo sawtooth (shifted right by the round-trip delay) -->
+      <path d="M -110,380 L 130,140 L 130,380 L 370,140 L 370,380 L 610,140 L 610,380 L 850,140 L 850,380 L 1090,140 L 1090,380 L 1330,140"
+            fill="none" stroke="#37b6f0" stroke-width="3" stroke-dasharray="9 6"/>
+
+      <!-- round-trip delay markers at each sweep reset -->
+      <g stroke="#5a6472" stroke-width="1.5" fill="#5a6472" font-size="14">
+        <g>
+          <line x1="330" y1="398" x2="370" y2="398"/>
+          <line x1="330" y1="393" x2="330" y2="403"/>
+          <line x1="370" y1="393" x2="370" y2="403"/>
+          <text x="350" y="416" text-anchor="middle" stroke="none">&#964;</text>
+        </g>
+        <g>
+          <line x1="570" y1="398" x2="610" y2="398"/>
+          <line x1="570" y1="393" x2="570" y2="403"/>
+          <line x1="610" y1="393" x2="610" y2="403"/>
+          <text x="590" y="416" text-anchor="middle" stroke="none">&#964;</text>
+        </g>
+        <g>
+          <line x1="810" y1="398" x2="850" y2="398"/>
+          <line x1="810" y1="393" x2="810" y2="403"/>
+          <line x1="850" y1="393" x2="850" y2="403"/>
+          <text x="830" y="416" text-anchor="middle" stroke="none">&#964;</text>
+        </g>
+        <g>
+          <line x1="1050" y1="398" x2="1090" y2="398"/>
+          <line x1="1050" y1="393" x2="1050" y2="403"/>
+          <line x1="1090" y1="393" x2="1090" y2="403"/>
+          <text x="1070" y="416" text-anchor="middle" stroke="none">&#964;</text>
+        </g>
+      </g>
+
+      <!-- pulsing beat-frequency gap markers (constant vertical gap) -->
+      <g stroke="#c77e00" fill="#c77e00">
+        <animate attributeName="opacity" values="0.35;1;0.35" dur="1.5s" repeatCount="indefinite"/>
+        <g>
+          <line x1="480" y1="236" x2="480" y2="264" stroke-width="3"/>
+          <polygon points="480,230 475,238 485,238" stroke="none"/>
+          <polygon points="480,270 475,262 485,262" stroke="none"/>
+          <text x="492" y="256" font-size="17" font-weight="bold" stroke="none">&#916;f</text>
+        </g>
+        <g>
+          <line x1="720" y1="236" x2="720" y2="264" stroke-width="3"/>
+          <polygon points="720,230 715,238 725,238" stroke="none"/>
+          <polygon points="720,270 715,262 725,262" stroke="none"/>
+          <text x="732" y="256" font-size="17" font-weight="bold" stroke="none">&#916;f</text>
+        </g>
+        <g>
+          <line x1="960" y1="236" x2="960" y2="264" stroke-width="3"/>
+          <polygon points="960,230 955,238 965,238" stroke="none"/>
+          <polygon points="960,270 955,262 965,262" stroke="none"/>
+          <text x="972" y="256" font-size="17" font-weight="bold" stroke="none">&#916;f</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- legend -->
+  <g font-size="15">
+    <line x1="110" y1="100" x2="150" y2="100" stroke="#0655a3" stroke-width="3"/>
+    <text x="158" y="105" fill="#113163">Transmit sweep</text>
+    <line x1="300" y1="100" x2="340" y2="100" stroke="#37b6f0" stroke-width="3" stroke-dasharray="9 6"/>
+    <text x="348" y="105" fill="#113163">Echo, delayed by &#964; = 2R/c</text>
+  </g>
+
+  <!-- caption -->
+  <text x="450" y="478" text-anchor="middle" font-size="16" fill="#5a6472">The echo returns &#964; seconds late, so at every instant it lags the transmit ramp by the same frequency offset &#916;f.</text>
+  <text x="450" y="502" text-anchor="middle" font-size="16" fill="#5a6472">&#916;f is proportional to range: measure the beat frequency and you have the distance.</text>
+</svg>

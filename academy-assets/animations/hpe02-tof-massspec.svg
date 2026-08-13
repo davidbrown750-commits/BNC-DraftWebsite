@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Arial, Helvetica, sans-serif">
+  <!-- Time-of-flight mass spectrometry: one extraction cycle -->
+  <rect x="0" y="0" width="900" height="520" fill="#f5f7fa"/>
+
+  <text x="450" y="34" text-anchor="middle" font-size="21" font-weight="bold" fill="#113163">Time-of-flight mass spectrometry: one extraction cycle</text>
+
+  <!-- ============ Extraction pulse inset (top left) ============ -->
+  <rect x="40" y="56" width="215" height="88" rx="6" fill="#ffffff" stroke="#d8dde4" stroke-width="1.5"/>
+  <text x="52" y="76" font-size="14" font-weight="bold" fill="#5a6472">Extraction pulse</text>
+  <!-- baseline (always visible) -->
+  <polyline points="52,128 240,128" fill="none" stroke="#d8dde4" stroke-width="2"/>
+  <!-- the pulse itself: appears when it fires -->
+  <polyline points="52,128 92,128 96,90 168,90 172,128 240,128" fill="none" stroke="#37b6f0" stroke-width="3" stroke-linejoin="round">
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.048;0.0625;0.55;0.6;1" dur="8s" repeatCount="indefinite"/>
+  </polyline>
+  <text x="92" y="142" font-size="12" fill="#5a6472">t = 0</text>
+
+  <!-- ============ Flight tube ============ -->
+  <text x="440" y="182" text-anchor="middle" font-size="15" font-weight="bold" fill="#5a6472">Flight tube (vacuum)</text>
+  <rect x="150" y="200" width="600" height="100" rx="10" fill="#ffffff" stroke="#5a6472" stroke-width="2"/>
+
+  <!-- Ion source -->
+  <rect x="92" y="212" width="58" height="76" rx="6" fill="#113163"/>
+  <text x="121" y="320" text-anchor="middle" font-size="14" fill="#113163" font-weight="bold">Ion source</text>
+
+  <!-- Extraction grid (flashes when the pulse fires) -->
+  <line x1="176" y1="205" x2="176" y2="295" stroke="#37b6f0" stroke-width="4" stroke-dasharray="7 5">
+    <animate attributeName="opacity" values="0.25;0.25;1;1;0.25;0.25" keyTimes="0;0.048;0.0625;0.11;0.16;1" dur="8s" repeatCount="indefinite"/>
+  </line>
+  <text x="176" y="150" text-anchor="middle" font-size="14" fill="#0655a3" font-weight="bold">Extraction grid</text>
+  <line x1="176" y1="156" x2="176" y2="196" stroke="#0655a3" stroke-width="1.5"/>
+
+  <!-- Detector -->
+  <rect x="736" y="205" width="12" height="90" rx="3" fill="#0655a3"/>
+  <text x="742" y="320" text-anchor="middle" font-size="14" fill="#113163" font-weight="bold">Detector</text>
+  <!-- detector flashes as each ion strikes -->
+  <rect x="732" y="205" width="20" height="90" rx="4" fill="#37b6f0">
+    <animate attributeName="opacity" values="0;0;1;0;0;1;0;0;1;0;0" keyTimes="0;0.37;0.378;0.4;0.57;0.578;0.6;0.77;0.778;0.8;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- ============ The three ions ============ -->
+  <!-- light ion: fastest, arrives first -->
+  <circle cy="230" r="7" fill="#37b6f0">
+    <animate attributeName="cx" values="160;160;736;736" keyTimes="0;0.0625;0.375;1" dur="8s" repeatCount="indefinite" calcMode="linear"/>
+    <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.0625;0.375;0.39;1" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  <!-- medium ion -->
+  <circle cy="252" r="10" fill="#0655a3">
+    <animate attributeName="cx" values="160;160;736;736" keyTimes="0;0.0625;0.575;1" dur="8s" repeatCount="indefinite" calcMode="linear"/>
+    <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.0625;0.575;0.59;1" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  <!-- heavy ion: slowest, arrives last -->
+  <circle cy="276" r="13" fill="#113163">
+    <animate attributeName="cx" values="160;160;736;736" keyTimes="0;0.0625;0.775;1" dur="8s" repeatCount="indefinite" calcMode="linear"/>
+    <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.0625;0.775;0.79;1" dur="8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- legend: same energy, different mass -->
+  <g font-size="14" fill="#5a6472">
+    <circle cx="560" cy="163" r="5" fill="#37b6f0"/>
+    <text x="572" y="168">light</text>
+    <circle cx="628" cy="163" r="7" fill="#0655a3"/>
+    <text x="642" y="168">medium</text>
+    <circle cx="716" cy="163" r="9" fill="#113163"/>
+    <text x="732" y="168">heavy</text>
+  </g>
+  <text x="450" y="345" text-anchor="middle" font-size="14" fill="#5a6472" font-style="italic">Same kinetic energy, different mass: the light ion is faster and arrives first.</text>
+
+  <!-- ============ Spectrum panel ============ -->
+  <text x="140" y="382" font-size="15" font-weight="bold" fill="#113163">Mass spectrum builds up in arrival order</text>
+  <!-- axes -->
+  <line x1="150" y1="480" x2="750" y2="480" stroke="#5a6472" stroke-width="2"/>
+  <line x1="150" y1="480" x2="150" y2="392" stroke="#5a6472" stroke-width="2"/>
+  <text x="758" y="485" font-size="14" fill="#5a6472">m/z</text>
+  <text x="136" y="470" font-size="13" fill="#5a6472" text-anchor="middle" transform="rotate(-90 136 470)">counts</text>
+
+  <!-- peak 1: light ion, lowest m/z, appears first -->
+  <rect x="248" width="26" fill="#37b6f0">
+    <animate attributeName="y" values="480;480;392;392" keyTimes="0;0.375;0.42;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="height" values="0;0;88;88" keyTimes="0;0.375;0.42;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.925;0.975;0.985;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+  <text x="261" y="500" text-anchor="middle" font-size="13" fill="#5a6472">m1</text>
+
+  <!-- peak 2: medium ion -->
+  <rect x="428" width="26" fill="#0655a3">
+    <animate attributeName="y" values="480;480;414;414" keyTimes="0;0.575;0.62;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="height" values="0;0;66;66" keyTimes="0;0.575;0.62;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.925;0.975;0.985;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+  <text x="441" y="500" text-anchor="middle" font-size="13" fill="#5a6472">m2</text>
+
+  <!-- peak 3: heavy ion, highest m/z, appears last -->
+  <rect x="608" width="26" fill="#113163">
+    <animate attributeName="y" values="480;480;432;432" keyTimes="0;0.775;0.82;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="height" values="0;0;48;48" keyTimes="0;0.775;0.82;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.925;0.975;0.985;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+  <text x="621" y="500" text-anchor="middle" font-size="13" fill="#5a6472">m3</text>
+</svg>

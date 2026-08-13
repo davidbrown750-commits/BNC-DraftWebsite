@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial, Helvetica, sans-serif">
+  <title>Raising the repetition rate shrinks the period until the furthest pulse collides with the next cycle</title>
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="40" y="48" font-size="24" font-weight="bold" fill="#113163">Raise the rate, shrink the budget</text>
+
+  <!-- Rate readout -->
+  <rect x="640" y="22" width="230" height="56" rx="8" fill="#113163"/>
+  <text x="662" y="57" font-size="16" fill="#8fb4dd">PRF</text>
+  <text x="856" y="58" text-anchor="end" font-size="22" font-weight="bold" fill="#ffffff" opacity="1">10.0 kHz
+    <animate attributeName="opacity" values="1;0;1" keyTimes="0;0.1;0.75" calcMode="discrete" dur="8s" repeatCount="indefinite"/>
+  </text>
+  <text x="856" y="58" text-anchor="end" font-size="22" font-weight="bold" fill="#ffffff" opacity="0">11.2 kHz
+    <animate attributeName="opacity" values="0;1;0;1;0" keyTimes="0;0.1;0.2;0.70;0.75" calcMode="discrete" dur="8s" repeatCount="indefinite"/>
+  </text>
+  <text x="856" y="58" text-anchor="end" font-size="22" font-weight="bold" fill="#ffffff" opacity="0">12.6 kHz
+    <animate attributeName="opacity" values="0;1;0;1;0" keyTimes="0;0.2;0.3;0.65;0.70" calcMode="discrete" dur="8s" repeatCount="indefinite"/>
+  </text>
+  <text x="856" y="58" text-anchor="end" font-size="22" font-weight="bold" fill="#c0392b" opacity="0">14.4 kHz
+    <animate attributeName="opacity" values="0;1;0" keyTimes="0;0.3;0.65" calcMode="discrete" dur="8s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- T0 -->
+  <line x1="100" y1="120" x2="100" y2="400" stroke="#113163" stroke-width="2"/>
+  <text x="100" y="112" text-anchor="middle" font-size="16" font-weight="bold" fill="#113163">T0</text>
+
+  <!-- One period span -->
+  <line x1="100" y1="136" x2="812" y2="136" stroke="#5a6472" stroke-width="1.5">
+    <animate attributeName="x2" values="812;592;592;812;812" keyTimes="0;0.375;0.5625;0.8125;1" dur="8s" repeatCount="indefinite"/>
+  </line>
+  <text x="456" y="130" text-anchor="middle" font-size="15" fill="#5a6472">one period
+    <animate attributeName="x" values="456;346;346;456;456" keyTimes="0;0.375;0.5625;0.8125;1" dur="8s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- Channel baselines and labels -->
+  <line x1="100" y1="192" x2="880" y2="192" stroke="#d8dde4" stroke-width="1"/>
+  <line x1="100" y1="257" x2="880" y2="257" stroke="#d8dde4" stroke-width="1"/>
+  <line x1="100" y1="322" x2="880" y2="322" stroke="#d8dde4" stroke-width="1"/>
+  <text x="88" y="182" text-anchor="end" font-size="15" fill="#5a6472">CH A</text>
+  <text x="88" y="247" text-anchor="end" font-size="15" fill="#5a6472">CH B</text>
+  <text x="88" y="312" text-anchor="end" font-size="15" fill="#5a6472">CH C</text>
+
+  <!-- Channel pulses -->
+  <rect x="140" y="160" width="90" height="32" rx="3" fill="#0655a3"/>
+  <rect x="300" y="225" width="130" height="32" rx="3" fill="#0655a3"/>
+  <rect x="560" y="290" width="100" height="32" rx="3" fill="#37b6f0"/>
+
+  <!-- Overrun portion of CH C, grows as the boundary sweeps across it -->
+  <rect x="660" y="290" width="0" height="32" rx="3" fill="#c0392b">
+    <animate attributeName="x" values="660;660;600;600;660;660" keyTimes="0;0.273;0.375;0.5625;0.631;1" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="width" values="0;0;60;60;0;0" keyTimes="0;0.273;0.375;0.5625;0.631;1" dur="8s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Longest delay + width annotation -->
+  <line x1="100" y1="340" x2="660" y2="340" stroke="#37b6f0" stroke-width="1.5"/>
+  <line x1="100" y1="334" x2="100" y2="346" stroke="#37b6f0" stroke-width="1.5"/>
+  <line x1="660" y1="334" x2="660" y2="346" stroke="#37b6f0" stroke-width="1.5"/>
+  <text x="380" y="360" text-anchor="middle" font-size="14" fill="#0655a3">longest delay + width</text>
+
+  <!-- Margin annotation, visible only while the program is healthy -->
+  <g>
+    <animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0;0.2;0.27;0.63;0.72;1" dur="8s" repeatCount="indefinite"/>
+    <line x1="668" y1="306" x2="812" y2="306" stroke="#5a6472" stroke-width="1.5" stroke-dasharray="3 3">
+      <animate attributeName="x2" values="812;592;592;812;812" keyTimes="0;0.375;0.5625;0.8125;1" dur="8s" repeatCount="indefinite"/>
+    </line>
+    <text x="740" y="284" text-anchor="middle" font-size="14" fill="#5a6472">margin</text>
+  </g>
+
+  <!-- Next-cycle boundary and ghost pulses, sweeping left as the rate climbs -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0 0;-220 0;-220 0;0 0;0 0" keyTimes="0;0.375;0.5625;0.8125;1" dur="8s" repeatCount="indefinite"/>
+    <line x1="820" y1="120" x2="820" y2="400" stroke="#113163" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="820" y="112" text-anchor="middle" font-size="16" font-weight="bold" fill="#113163">next cycle</text>
+    <rect x="860" y="160" width="90" height="32" rx="3" fill="#d8dde4" stroke="#5a6472" stroke-width="1" stroke-dasharray="4 3"/>
+    <rect x="1020" y="225" width="130" height="32" rx="3" fill="#d8dde4" stroke="#5a6472" stroke-width="1" stroke-dasharray="4 3"/>
+  </g>
+
+  <!-- Collision flash -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0.35;1;0.35;1;0;0" keyTimes="0;0.375;0.40;0.44;0.48;0.52;0.56;0.60;1" dur="8s" repeatCount="indefinite"/>
+    <polygon fill="#c0392b" points="628,306 610.2,310.2 619.8,325.8 604.2,316.2 600,334 595.8,316.2 580.2,325.8 589.8,310.2 572,306 589.8,301.8 580.2,286.2 595.8,295.8 600,278 604.2,295.8 619.8,286.2 610.2,301.8"/>
+    <text x="600" y="262" text-anchor="middle" font-size="20" font-weight="bold" fill="#c0392b">OVERLAP</text>
+  </g>
+
+  <!-- Captions -->
+  <text x="450" y="470" text-anchor="middle" font-size="17" fill="#0655a3" opacity="1">Healthy: the furthest reach lands inside the period with margin.
+    <animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0;0.33;0.375;0.60;0.65;1" dur="8s" repeatCount="indefinite"/>
+  </text>
+  <text x="450" y="470" text-anchor="middle" font-size="17" fill="#c0392b" opacity="0">Overlap: delay + width crosses the boundary into the next cycle.
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.35;0.40;0.55;0.60;1" dur="8s" repeatCount="indefinite"/>
+  </text>
+</svg>
