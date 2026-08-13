@@ -28,6 +28,7 @@ import posixpath
 import re
 import subprocess
 import sys
+import tempfile
 from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -429,6 +430,8 @@ def main():
     for u in no_img[:10]:
         print("   no image: %s" % u)
 
+    json.dump({"SITE_INDEX": index, "SSDESC": ssdesc, "SSIMG": ssimg},
+              open(pathlib.Path(tempfile.gettempdir()) / "new-index.json", "w"))
     return write_blocks(index, ssdesc, ssimg, faqs)
 
 
