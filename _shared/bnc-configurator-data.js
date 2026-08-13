@@ -1614,16 +1614,21 @@
           {
             id: "freq", label: "Model / frequency range", type: "radio",
             options: [
-              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
+              { code: "045", label: "ICX-045", note: "9 kHz to 4.5 GHz, real-time", pn: "-045",
+                desc: "portable handheld spectrum analyzer, 9 kHz to 4.5 GHz",
+                info: "Portable handheld spectrum analyzer covering 9 kHz to 4.5 GHz for field testing, interference detection, and wireless signal analysis." },
+              { code: "060", label: "ICX-060", note: "9 kHz to 6 GHz, real-time", pn: "-060",
+                desc: "handheld spectrum analyzer, 9 kHz to 6 GHz",
+                info: "Handheld spectrum analyzer covering 9 kHz to 6 GHz, offering portable real-time RF analysis for field and laboratory use." },
+              { code: "090", label: "ICX-090", note: "9 kHz to 9 GHz, real-time", pn: "-090",
+                desc: "compact handheld spectrum analyzer, 9 kHz to 9 GHz",
+                info: "Compact handheld spectrum analyzer covering 9 kHz to 9 GHz, ideal for wireless, microwave, and spectrum monitoring applications." },
               { code: "095", label: "ICX-095", note: "9 kHz to 9.5 GHz, real-time", pn: "-095",
                 desc: "advanced handheld real-time spectrum analyzer, 9 kHz to 9.5 GHz",
-                info: "Advanced real-time handheld analyzer covering 9 kHz to 9.5 GHz with high-speed signal capture.", default: true },
-              */
-              /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
+                info: "Advanced handheld real-time spectrum analyzer covering 9 kHz to 9.5 GHz with high-speed signal analysis capabilities. Analysis bandwidth 100 MHz." },
               { code: "200", label: "ICX-200", note: "9 kHz to 20 GHz, real-time", pn: "-200",
                 desc: "high-performance handheld spectrum analyzer, 9 kHz to 20 GHz",
-                info: "High-performance handheld analyzer covering 9 kHz to 20 GHz." },
-              */
+                info: "High-performance handheld spectrum analyzer covering 9 kHz to 20 GHz for advanced RF testing, monitoring, and interference analysis. Analysis bandwidth 100 MHz." },
               { code: "400", label: "ICX-400", note: "9 kHz to 40 GHz, OCXO included", pn: "-400",
                 desc: "flagship handheld spectrum analyzer, 9 kHz to 40 GHz (OCXO included)",
                 info: "Flagship handheld analyzer covering 9 kHz to 40 GHz. The OCXO reference is included as standard.", default: true }
@@ -1632,9 +1637,7 @@
           {
             id: "options", label: "Options", hint: "BNC option part numbers carry a B suffix.", type: "check",
             options: [
-              /* RAMMED-OUT 2026-07-23 (only ICX-400 live; OCXO is standard on it, so no optional-OCXO handheld model remains):
-              icxOCXO(["095", "200"], "Included as standard on the ICX-400"),
-              */
+              icxOCXO(["045", "060", "090", "095", "200"], "Included as standard on the ICX-400"),
               ICX_OPT_71, ICX_OPT_72
             ]
           },
