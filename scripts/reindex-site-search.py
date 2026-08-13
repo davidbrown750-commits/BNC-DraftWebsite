@@ -161,7 +161,7 @@ WORD_RE = re.compile(r"[a-z0-9]+(?:[.\-+][a-z0-9]+)*")
 MODEL_RE = re.compile(
     r"\b(?:model\s+)?("
     r"\d{3,4}[a-z]?(?:-[a-z0-9]{1,6})*"
-    r"|(?:pvx|pvm|pvp|pco|pcx|pcm|pnc|pim|rfs|vsg|sam|icx|hvx|awg|db|ap|tb|pb)-?[a-z0-9]{1,8}(?:-[a-z0-9]{1,6})*"
+    r"|(?:pvx|pvm|pvp|pco|pcx|pcm|pnc|pim|pm|rfs|vsg|sam|icx|hvx|awg|db|ap|tb|pb)-?[a-z0-9]{1,8}(?:-[a-z0-9]{1,6})*"
     r")\b"
 )
 
