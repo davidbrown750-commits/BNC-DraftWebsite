@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Arial, Helvetica, sans-serif">
+  <!-- background -->
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+  <rect x="150" y="62" width="726" height="392" fill="#f5f7fa" rx="6"/>
+
+  <!-- title -->
+  <text x="450" y="38" text-anchor="middle" font-size="22" font-weight="bold" fill="#113163">Anatomy of a trigger cycle</text>
+
+  <!-- row labels -->
+  <text x="28" y="146" font-size="17" font-weight="bold" fill="#113163">Trigger in</text>
+  <text x="28" y="296" font-size="17" font-weight="bold" fill="#113163">Analog out</text>
+  <text x="28" y="406" font-size="17" font-weight="bold" fill="#113163">Marker out</text>
+
+  <!-- baselines -->
+  <line x1="160" y1="140" x2="866" y2="140" stroke="#d8dde4" stroke-width="2"/>
+  <line x1="160" y1="290" x2="866" y2="290" stroke="#d8dde4" stroke-width="2"/>
+  <line x1="160" y1="400" x2="866" y2="400" stroke="#d8dde4" stroke-width="2"/>
+
+  <!-- time axis -->
+  <line x1="160" y1="470" x2="850" y2="470" stroke="#5a6472" stroke-width="2"/>
+  <polygon points="850,464 866,470 850,476" fill="#5a6472"/>
+  <text x="820" y="492" font-size="15" fill="#5a6472">time</text>
+
+  <!-- latency band (fixed delay between edge and first sample out) -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.11;0.16;0.86;0.92;1" dur="6s" repeatCount="indefinite"/>
+    <rect x="230" y="80" width="90" height="360" fill="#37b6f0" opacity="0.20"/>
+    <line x1="230" y1="80" x2="230" y2="440" stroke="#37b6f0" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <line x1="320" y1="80" x2="320" y2="440" stroke="#37b6f0" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="275" y="436" text-anchor="middle" font-size="15" fill="#0655a3">latency (fixed)</text>
+  </g>
+
+  <!-- jitter band around the burst start -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0.25;1;0.25;0.9;0;0" keyTimes="0;0.17;0.20;0.23;0.26;0.29;0.40;0.55;1" dur="6s" repeatCount="indefinite"/>
+    <rect x="308" y="80" width="24" height="360" fill="#c77e00" opacity="0.30"/>
+    <text x="320" y="74" text-anchor="middle" font-size="15" fill="#c77e00">jitter</text>
+  </g>
+
+  <!-- trigger pulse (appears when the edge arrives) -->
+  <g opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.10;0.115;0.92;0.94;1" dur="6s" repeatCount="indefinite"/>
+    <path d="M230,140 L230,100 L290,100 L290,140" fill="none" stroke="#113163" stroke-width="3"/>
+    <text x="230" y="92" text-anchor="middle" font-size="15" fill="#113163">trigger edge</text>
+  </g>
+
+  <!-- flash at the trigger edge -->
+  <circle cx="230" cy="120" r="4" fill="none" stroke="#0655a3" stroke-width="2.5" opacity="0">
+    <animate attributeName="r" values="4;4;28;28" keyTimes="0;0.10;0.24;1" dur="6s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;0;0.9;0;0" keyTimes="0;0.10;0.115;0.24;1" dur="6s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- burst + marker drawn together, left to right, via animated clip -->
+  <clipPath id="playClip">
+    <rect x="316" y="60" height="400" width="0">
+      <animate attributeName="width" values="0;0;380;380;0;0" keyTimes="0;0.26;0.72;0.955;0.97;1" dur="6s" repeatCount="indefinite"/>
+    </rect>
+  </clipPath>
+  <g clip-path="url(#playClip)">
+    <!-- analog burst: five sine cycles -->
+    <path d="M320,290 q18.5,-90 37,0 q18.5,90 37,0 q18.5,-90 37,0 q18.5,90 37,0 q18.5,-90 37,0 q18.5,90 37,0 q18.5,-90 37,0 q18.5,90 37,0 q18.5,-90 37,0 q18.5,90 37,0" fill="none" stroke="#0655a3" stroke-width="3"/>
+    <!-- marker pulse riding alongside, tied to a sample index -->
+    <path d="M320,400 L320,368 L468,368 L468,400" fill="none" stroke="#37b6f0" stroke-width="3"/>
+    <text x="394" y="358" text-anchor="middle" font-size="15" fill="#0655a3">marker</text>
+  </g>
+
+  <!-- status readout -->
+  <g font-size="17" font-weight="bold">
+    <text x="450" y="510" text-anchor="middle" fill="#5a6472" opacity="1">Armed: waiting for a trigger
+      <animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0;0.09;0.11;0.975;0.99;1" dur="6s" repeatCount="indefinite"/>
+    </text>
+    <text x="450" y="510" text-anchor="middle" fill="#113163" opacity="0">Edge accepted: fixed latency, then a small jitter window
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.105;0.125;0.24;0.27;1" dur="6s" repeatCount="indefinite"/>
+    </text>
+    <text x="450" y="510" text-anchor="middle" fill="#0655a3" opacity="0">Burst plays once, marker rides with it
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.27;0.30;0.72;0.78;1" dur="6s" repeatCount="indefinite"/>
+    </text>
+    <text x="450" y="510" text-anchor="middle" fill="#5a6472" opacity="0">Re-arming for the next trigger
+      <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.90;0.92;0.965;0.975;1" dur="6s" repeatCount="indefinite"/>
+    </text>
+  </g>
+</svg>

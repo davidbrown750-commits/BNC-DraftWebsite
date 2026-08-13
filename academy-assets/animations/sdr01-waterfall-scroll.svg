@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="Arial,Helvetica,sans-serif">
+  <title>The waterfall records the burst the live trace keeps missing</title>
+  <defs>
+    <clipPath id="wfclip"><rect x="70" y="270" width="760" height="200"/></clipPath>
+    <linearGradient id="wffade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#113163" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0a1c3a" stop-opacity="0.75"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+  <text x="450" y="32" text-anchor="middle" font-size="22" font-weight="bold" fill="#113163">One instant versus the whole history</text>
+  <text x="450" y="55" text-anchor="middle" font-size="14.5" fill="#5a6472">A short burst fires every few seconds. The live trace shows it only while it is on; the waterfall keeps every firing as a streak.</text>
+
+  <!-- ===== Top panel: live spectrum trace ===== -->
+  <rect x="70" y="78" width="760" height="152" fill="#f5f7fa" stroke="#d8dde4" stroke-width="1.5"/>
+  <text x="80" y="95" font-size="12.5" font-weight="bold" fill="#0655a3">LIVE TRACE (clear write: this instant only)</text>
+
+  <!-- noise floor + steady carrier -->
+  <polyline fill="none" stroke="#0655a3" stroke-width="2.5" stroke-linejoin="round" points="
+    80,206 100,203 120,208 140,202 160,207 180,204 200,209 220,203 240,207 260,205 280,208
+    285,206 292,152 300,116 308,152 315,206
+    340,204 360,208 380,203 400,207 420,205 440,209 460,203 480,207 500,204 520,208 540,205
+    560,207 580,204 600,208 620,206 640,209 660,204 680,207 700,205 720,208 740,204 760,207
+    780,205 800,208 820,206"/>
+  <text x="300" y="110" text-anchor="middle" font-size="12" fill="#5a6472">steady carrier</text>
+
+  <!-- intermittent burst: visible only briefly each 3 s -->
+  <g>
+    <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.03;0.13;0.17;1" dur="3s" repeatCount="indefinite"/>
+    <polyline fill="none" stroke="#c0392b" stroke-width="2.5" stroke-linejoin="round" points="600,208 611,146 619,128 627,146 640,209"/>
+  </g>
+  <text x="619" y="122" text-anchor="middle" font-size="12" fill="#c0392b">a burst fires here, then vanishes</text>
+  <line x1="70" y1="212" x2="830" y2="212" stroke="#d8dde4" stroke-width="1"/>
+  <text x="826" y="226" text-anchor="end" font-size="11.5" fill="#5a6472">amplitude vs frequency, redrawn every update</text>
+
+  <!-- ===== Bottom panel: waterfall ===== -->
+  <rect x="70" y="270" width="760" height="200" fill="#113163"/>
+  <g clip-path="url(#wfclip)">
+    <!-- scrolling noise texture -->
+    <g stroke="#2a5a9c" stroke-width="2" opacity="0.4">
+      <animateTransform attributeName="transform" type="translate" from="0 0" to="0 25" dur="1.125s" repeatCount="indefinite"/>
+      <line x1="70" y1="248" x2="830" y2="248" stroke-dasharray="16 26" stroke-dashoffset="4"/>
+      <line x1="70" y1="273" x2="830" y2="273" stroke-dasharray="12 30" stroke-dashoffset="19"/>
+      <line x1="70" y1="298" x2="830" y2="298" stroke-dasharray="20 24" stroke-dashoffset="9"/>
+      <line x1="70" y1="323" x2="830" y2="323" stroke-dasharray="14 28" stroke-dashoffset="27"/>
+      <line x1="70" y1="348" x2="830" y2="348" stroke-dasharray="18 22" stroke-dashoffset="2"/>
+      <line x1="70" y1="373" x2="830" y2="373" stroke-dasharray="12 32" stroke-dashoffset="15"/>
+      <line x1="70" y1="398" x2="830" y2="398" stroke-dasharray="22 20" stroke-dashoffset="11"/>
+      <line x1="70" y1="423" x2="830" y2="423" stroke-dasharray="14 26" stroke-dashoffset="23"/>
+      <line x1="70" y1="448" x2="830" y2="448" stroke-dasharray="18 28" stroke-dashoffset="6"/>
+      <line x1="70" y1="473" x2="830" y2="473" stroke-dasharray="16 24" stroke-dashoffset="17"/>
+    </g>
+    <!-- steady carrier: an unbroken stripe down the whole history -->
+    <rect x="294" y="270" width="12" height="200" fill="#37b6f0" opacity="0.9"/>
+    <!-- burst streaks: one spawns at the top each time the burst fires, then rides down -->
+    <rect x="597" y="264" width="44" height="9" rx="2" fill="#c0392b" stroke="#ffffff" stroke-width="1">
+      <animate attributeName="y" from="264" to="476" dur="9s" begin="0s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="597" y="264" width="44" height="9" rx="2" fill="#c0392b" stroke="#ffffff" stroke-width="1">
+      <animate attributeName="y" from="264" to="476" dur="9s" begin="-3s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="597" y="264" width="44" height="9" rx="2" fill="#c0392b" stroke="#ffffff" stroke-width="1">
+      <animate attributeName="y" from="264" to="476" dur="9s" begin="-6s" repeatCount="indefinite"/>
+    </rect>
+    <!-- older history fades toward the bottom -->
+    <rect x="70" y="270" width="760" height="200" fill="url(#wffade)"/>
+  </g>
+  <rect x="70" y="270" width="760" height="200" fill="none" stroke="#d8dde4" stroke-width="1.5"/>
+  <text x="80" y="287" font-size="12.5" font-weight="bold" fill="#ffffff">WATERFALL (every spectrum kept as one row)</text>
+  <text x="80" y="303" font-size="11.5" fill="#c9d6e8">now</text>
+  <text x="80" y="463" font-size="11.5" fill="#c9d6e8">older</text>
+  <text x="300" y="463" text-anchor="middle" font-size="11.5" fill="#c9d6e8">unbroken stripe = always on</text>
+  <text x="723" y="303" text-anchor="start" font-size="11.5" fill="#ffffff">streak = one firing,</text>
+  <text x="723" y="318" text-anchor="start" font-size="11.5" fill="#ffffff">kept on record</text>
+
+  <text x="450" y="492" text-anchor="middle" font-size="13" fill="#5a6472">Frequency &#8594;   (time runs downward in the waterfall)</text>
+  <text x="450" y="511" text-anchor="middle" font-size="13" fill="#113163" font-weight="bold">Glance at the trace and the burst is not there. Glance at the waterfall and it was never anywhere else.</text>
+</svg>

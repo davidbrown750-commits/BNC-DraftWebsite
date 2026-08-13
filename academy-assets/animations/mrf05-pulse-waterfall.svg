@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 520" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <clipPath id="wf"><rect x="60" y="70" width="600" height="380"/></clipPath>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5a6472"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+
+  <text x="450" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#113163">Waterfall view: pulses, chirps, and a frequency-mask trigger</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#5a6472">New rows arrive at the top; the mask fires the instant an agile hop lands inside it.</text>
+
+  <!-- Waterfall background -->
+  <rect x="60" y="70" width="600" height="380" fill="#113163" stroke="#d8dde4" stroke-width="1"/>
+
+  <!-- Time arrow, left side -->
+  <line x1="42" y1="90" x2="42" y2="180" stroke="#5a6472" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="34" y="140" font-size="12" fill="#5a6472" text-anchor="middle" transform="rotate(-90 34 140)">time</text>
+
+  <!-- Scrolling signal content -->
+  <g clip-path="url(#wf)">
+    <g transform="translate(0,70)">
+      <g>
+        <g id="tile">
+          <!-- Pulse train: fixed-frequency radar, one pulse every 38 px -->
+          <rect x="117" y="-373" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-335" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-297" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-259" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-221" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-183" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-145" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-107" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-69" width="26" height="6" fill="#37b6f0"/>
+          <rect x="117" y="-31" width="26" height="6" fill="#37b6f0"/>
+
+          <!-- Rising LFM chirp: frequency climbs as time advances (newer rows higher) -->
+          <line x1="220" y1="-20" x2="540" y2="-320" stroke="#d8dde4" stroke-width="12" stroke-linecap="round" opacity="0.25"/>
+          <line x1="220" y1="-20" x2="540" y2="-320" stroke="#d8dde4" stroke-width="6" stroke-linecap="round"/>
+
+          <!-- Frequency-agile hopper: a new frequency for every pulse -->
+          <rect x="273" y="-353" width="34" height="7" fill="#ffffff"/>
+          <rect x="403" y="-303" width="34" height="7" fill="#ffffff"/>
+          <rect x="323" y="-253" width="34" height="7" fill="#ffffff"/>
+          <rect x="463" y="-203" width="34" height="7" fill="#ffffff"/>
+          <rect x="573" y="-163" width="34" height="7" fill="#ffffff"/>
+          <rect x="303" y="-113" width="34" height="7" fill="#ffffff"/>
+          <rect x="443" y="-63" width="34" height="7" fill="#ffffff"/>
+          <rect x="363" y="-13" width="34" height="7" fill="#ffffff"/>
+        </g>
+        <use xlink:href="#tile" href="#tile" y="380"/>
+        <animateTransform attributeName="transform" type="translate" from="0 0" to="0 380" dur="6s" repeatCount="indefinite"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Frequency-mask trigger region (fixed over the newest rows) -->
+  <rect x="560" y="70" width="90" height="70" fill="#c0392b" fill-opacity="0.12" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4">
+    <animate attributeName="fill-opacity" values="0.12;0.12;0.55;0.25;0.55;0.25;0.12;0.12" keyTimes="0;0.42;0.44;0.48;0.52;0.56;0.61;1" dur="6s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="2;2;4;4;2;2" keyTimes="0;0.42;0.44;0.59;0.62;1" dur="6s" repeatCount="indefinite"/>
+  </rect>
+  <text x="605" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="#c0392b">frequency mask</text>
+  <text x="605" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff" opacity="0">TRIGGER
+    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.43;0.45;0.58;0.62;1" dur="6s" repeatCount="indefinite"/>
+  </text>
+
+  <!-- Frequency axis -->
+  <line x1="60" y1="455" x2="660" y2="455" stroke="#5a6472" stroke-width="1"/>
+  <text x="60" y="472" text-anchor="middle" font-size="11" fill="#5a6472">2.40 GHz</text>
+  <text x="260" y="472" text-anchor="middle" font-size="11" fill="#5a6472">2.45</text>
+  <text x="460" y="472" text-anchor="middle" font-size="11" fill="#5a6472">2.50</text>
+  <text x="660" y="472" text-anchor="middle" font-size="11" fill="#5a6472">2.55 GHz</text>
+  <text x="360" y="492" text-anchor="middle" font-size="12" fill="#5a6472">frequency</text>
+
+  <!-- Legend -->
+  <g font-size="13" fill="#5a6472">
+    <text x="690" y="105" font-size="14" font-weight="700" fill="#113163">Legend</text>
+    <rect x="690" y="122" width="26" height="6" fill="#37b6f0"/>
+    <text x="726" y="130">pulsed radar</text>
+    <line x1="690" y1="162" x2="716" y2="148" stroke="#d8dde4" stroke-width="6" stroke-linecap="round"/>
+    <text x="726" y="160">rising LFM chirp</text>
+    <rect x="690" y="180" width="26" height="7" fill="#ffffff" stroke="#5a6472" stroke-width="1"/>
+    <text x="726" y="189">agile hopper</text>
+    <rect x="690" y="206" width="26" height="16" fill="#c0392b" fill-opacity="0.25" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="726" y="218">mask trigger</text>
+    <text x="690" y="258" font-size="12" fill="#5a6472">The hopper is somewhere</text>
+    <text x="690" y="274" font-size="12" fill="#5a6472">new on every pulse. The</text>
+    <text x="690" y="290" font-size="12" fill="#5a6472">mask waits on one band</text>
+    <text x="690" y="306" font-size="12" fill="#5a6472">and catches the hop that</text>
+    <text x="690" y="322" font-size="12" fill="#5a6472">lands inside it.</text>
+  </g>
+
+  <text x="450" y="512" text-anchor="middle" font-size="12" fill="#5a6472">A swept analyzer would sample each frequency briefly and miss most of this. The real-time view keeps every pulse.</text>
+</svg>
