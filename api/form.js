@@ -37,12 +37,25 @@ const TYPES = {
   quiz:          "Book Reader Quiz",
   newsletter:    "Newsletter Signup",
   "launch-list": "Launch List Signup",
+  // The BNC Dispatch partner edition — one type per mail-in coupon, so each response
+  // lands on the rep's own Nutshell record with a label that says which ask it answers.
+  "partner-shows":       "Partner — Trade Show (next 12 months)",
+  "partner-comarketing": "Partner — Co-Marketing Idea",
+  "partner-region":      "Partner — What's Hot in My Region",
+  "partner-website":     "Partner — Website Refresh",
 };
 const DEFAULT_NOTIFY = "website@berkeleynucleonics.com";
 // Per-form-type recipients (override DEFAULT_NOTIFY; a FORM_NOTIFY_<TYPE> env var still wins over this).
 const TYPE_NOTIFY = {
   rma: "operations@berkeleynucleonics.com",          // RMA repair / authorization request
   "rma-status": "operations@berkeleynucleonics.com", // RMA status check
+  // Partner-edition coupons: these are channel replies, not leads, so they go to David and
+  // sales rather than website@. The 2026 rep newsletter drew zero responses partly because
+  // its only reply path was partners@berkeleynucleonics.com, a mailbox that never existed.
+  "partner-shows":       "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
+  "partner-comarketing": "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
+  "partner-region":      "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
+  "partner-website":     "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
 };
 const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1, form: 1, token: 1, "cf-turnstile-response": 1, "g-recaptcha-response": 1 };
 
