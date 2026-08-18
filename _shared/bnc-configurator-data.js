@@ -1569,6 +1569,15 @@
                 onlyForReason: "This T1 variant covers the ICX-400U",
                 excludes: ["O401"],
                 info: "Extends the operating temperature range to -20 C through +65 C." }),
+              /* FLAG 2026-08-17: this option is now inconsistent with the published
+                 datasheet for one of the two models it is offered on. David Brown set the
+                 ICX-060U at 25 MHz standard with 50 MHz optional, so a 100 MHz upgrade
+                 cannot be built on that model and quoting one here risks an order we
+                 cannot ship. The ICX-090U was not part of that ruling and is unaffected.
+                 Deliberately left unchanged pending David: restricting opt 50B to the
+                 090U would remove the 060U's upgrade path from quoting, and no part
+                 number has been published for the 060U's 50 MHz option, so inventing one
+                 is not an option either. Decide, then edit onlyFor accordingly. */
               icxOpt({ code: "O50", codeLabel: "opt 50B", label: "100 MHz analysis bandwidth",
                 acc: "opt 50B", desc: "100 MHz real-time analysis bandwidth", badge: "100 MHz BW",
                 onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
