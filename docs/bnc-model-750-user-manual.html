@@ -449,7 +449,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section id="ch-1">
 <h2><span class="num">1</span> Introduction</h2>
 <p>The Model 750 is a mini pulse and delay generator providing up to 8 independent delayed pulses at up to 50 MHz. The base unit ships with 4 channels; an 8-channel version is available with the channel-extension option.</p>
-<p>Delays up to 100 seconds can be programmed with 100 ps resolution and channel-to-channel jitter under 50 ps RMS. An option enhances delay resolution to 1 ps, with jitter down to 5 ps RMS. SMB outputs deliver 1.5 V to 5 V, 1 ns rise-time pulses into 50 &#937;, with amplitude, polarity, burst count, and width independently adjustable per channel; optional output modules extend amplitude to 3&ndash;10 V, 15&ndash;50 V, or LVDS level.</p>
+<p>Delays up to 100 seconds can be programmed with 100 ps resolution and channel-to-channel jitter under 50 ps RMS. An option enhances delay resolution to 1 ps. SMB outputs deliver 1.5 V to 5 V, 1 ns rise-time pulses into 50 &#937;, with amplitude, polarity, burst count, and width independently adjustable per channel.</p>
 <p>Two trigger inputs and three internal synchronized timers (0.01 Hz to 50 MHz), plus a software command, can trigger all selected delay channels, each set to single-shot or repetitive. With its multi-trigger system, the Model 750 can be thought of as up to four independent generators in a single box.</p>
 <table class="spec">
   <tr><th>Generator</th><th>Typically triggered from</th></tr>
@@ -491,11 +491,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <li><b>External trigger mode:</b> a rising edge on the front-panel TRIG input triggers all delay channels. Each channel's rate can be single-shot, repetitive, or inhibited. A prescaler divides the trigger input frequency by an integer from 1 to 1,000,000,000.</li>
 <li><b>Internal trigger mode:</b> delay channels are triggered from three frequency-programmable timers. Each channel's rate can be single-shot, repetitive, burst, or inhibited.</li>
 </ul>
-<p>The Gate input quickly inhibits all or selected channel outputs, and can be reconfigured as a second external trigger or as an input/output for daisy-chaining two Model 750 units together. The RUN/STOP button enables or disables the output for all delay channels.</p>
+<p>The Gate input quickly inhibits all or selected channel outputs, and can be reconfigured as a second external trigger. The RUN/STOP button enables or disables the output for all delay channels.</p>
 
 <h3>Delay Channels &amp; Output</h3>
-<p>There are 4 independent delay channels (8 with the channel-extension option). Delay from the selected trigger source is programmable up to 100 seconds, in 100 ps increments (1 ps with the resolution option). Each output pulse (T1&ndash;T4, and T5&ndash;T8 with the extension option) is independently adjustable in level, width, and polarity, and may be ORed with other outputs in its group of four. Outputs are designed to drive a 50 &#937; load; on a high-impedance load, output level doubles. As an option, channel output level can be 3&ndash;10 V, 15&ndash;50 V, or LVDS/HSTL standard.</p>
-<p>A narrow-pulse mode (with the resolution or LVDS options) couples channels 2 at a time &mdash; the first starting the pulse, the second stopping it &mdash; for pulse widths down to 500 ps, precisely and independently adjustable.</p>
+<p>There are 4 independent delay channels (8 with the channel-extension option). Delay from the selected trigger source is programmable up to 100 seconds, in 100 ps increments (1 ps with the resolution option). Each output pulse (T1&ndash;T4, and T5&ndash;T8 with the extension option) is independently adjustable in level (1.5 V to 5 V in 10 mV steps), width (10 ns to 10 s in 5 ns steps), and polarity, and may be ORed with other outputs in its group of four. Outputs are designed to drive a 50 &#937; load; on a high-impedance load, output level doubles (3.0 V to 10 V). A narrow-pulse mode, available with the resolution option, couples two delay channels &mdash; one starting the pulse, one stopping it &mdash; for pulse widths as narrow as 3 ns, precisely and independently adjustable in 1 ps steps.</p>
 
 <h3>Example Channel-Output Modes</h3>
 <p>The Model 750's trigger sources combine to produce several common patterns:</p>
@@ -507,14 +506,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </ul>
 
 <h3>Delay Jitter &amp; Accuracy</h3>
-<p>Jitter is the delay uncertainty of a channel output edge between successive triggers, measured in RMS picoseconds over an observation period of up to 10 seconds. Delay accuracy is the difference between the programmed and measured delay value, referenced against a channel programmed with delay = 0, averaged over 1000 measurements at a 1 kHz rate. Both jitter and accuracy scale with the programmed delay &mdash; see the Specifications tables on the Model 750 datasheet for the applicable formulas and typical curves.</p>
-<div class="note">Because per-bank power consumption is limited, some combinations of trigger rate, polarity, and width are restricted between the two channels of a bank (T1/T2, T3/T4, etc). The embedded software checks these automatically before RUN and reports a configuration error if a setting would risk random behavior or thermal shutdown.</div>
+<p>Jitter is the delay uncertainty of a channel output edge between successive triggers, measured in RMS picoseconds over an observation period of up to 10 seconds: under 50 ps + delay &times; 10<sup>-7</sup> channel-to-channel, and under 1 ns from an external trigger to any channel. Delay accuracy is the difference between the programmed and measured delay value, referenced against a channel programmed with delay = 0, averaged over 1000 measurements at a 1 kHz rate: under 500 ps + delay &times; 10<sup>-6</sup>.</p>
+<div class="note">Because per-bank power consumption is limited, some combinations of trigger rate, polarity, and width are restricted between the two channels of a bank (T1/T2, T3/T4, etc). On the 4-channel unit, if one channel in a bank runs above 1 MHz the other must stay at or below 1 MHz (at most 2 channels total may run above 1 MHz); on the 8-channel unit, at most 4 channels total may run above 1 MHz. Within a bank, if one channel's polarity is negative the other must be positive, and if one channel's width exceeds 10 ms the other's must stay under 10 ms. There is no rate limitation when every channel's amplitude is at or below 2.5 V (TTL level). The embedded software checks these automatically before RUN and reports a configuration error if a setting would violate them.</div>
+<p>Maximum allowed power consumption, internal temperature, and minimum supply voltage are continuously monitored by the embedded software and reported in the control panel's status area. If any value reaches its limit, the overload indicator lights and the unit automatically stops; reduce the trigger rate below 1 MHz to clear the condition, then click the control panel's overload indicator to acknowledge it.</p>
 
 <h3>Front &amp; Rear Panel</h3>
-<div class="fig-ph"><span class="fig-tag rebrand">Photo pending rebrand</span><span class="fig-desc">Front panel: TRIG input, T1&ndash;T4 channel outputs with LEDs, Comm/Ext Clk/Lock/Fault status LEDs, RUN/STOP button.</span></div>
-<p>The front panel carries a TRIG input, one SMB output per channel, and status LEDs: TRIG (blinks on external trigger), per-channel output LEDs, RUN/STOP (yellow = stopped, green = running), Comm (USB traffic), Ext Clk (running on external clock), Lock (internal clock system locked), and Fault (internal error detected).</p>
+<div class="fig-ph"><span class="fig-tag rebrand">Photo pending rebrand</span><span class="fig-desc">Front panel: TRIG input, T1&ndash;T4 channel outputs with LEDs, Comm/Ext Clk/Lock status LEDs, RUN/STOP button.</span></div>
+<p>The front panel carries a TRIG input, one SMB output per channel, and status LEDs: TRIG (blinks on external trigger), per-channel output LEDs (blink at channel recurrence), RUN/STOP (also the power switch &mdash; yellow when stopped, green when running), Comm (USB traffic), Ext Clk (running on external clock), and Lock (internal clock system locked, lights green once the unit is ready). A short press of RUN/STOP starts or stops the trigger system; holding it for about 5 seconds powers the unit off.</p>
 <div class="fig-ph"><span class="fig-tag rebrand">Photo pending rebrand</span><span class="fig-desc">Rear panel: Gate/Trig, Clock In, Clock Out, USB, LAN (RJ45), GPIO (SMH-103 Samtec), +5 V DC power jack.</span></div>
-<p>The rear panel carries a Gate/Trig SMB connector, Clock In and Clock Out SMB connectors, a USB micro-AB connector, an RJ45 Ethernet connector, a GPIO connector (SMH-103 Samtec), and a +5 V DC power jack, along with Over Current and USB Link indicator LEDs.</p>
+<p>The rear panel carries a Gate/Trig SMB connector, Clock In and Clock Out SMB connectors, a USB micro-AB connector, an RJ45 Ethernet connector, a GPIO connector (SMH-103 Samtec), and a +5 V DC power jack, along with Gate (blinks when the Gate input is active), Over Current, USB Link, and Ext DC indicator LEDs. A grounding screw is also provided. Powering the unit from USB alone may limit the maximum current draw to 500 mA, which can restrict output performance and available configuration.</p>
 
 <h3>GPIO Interface</h3>
 <p>Four GPIO lines on the rear panel are individually configurable as input or output under software command. Input levels run 1&ndash;2.3 V, input impedance is &gt;20 k&#937;; output levels run 0.1&ndash;3 V with 100 &#937; output impedance and 5 ns rise/fall time. An optional cable breaks the GPIO connector out to a standard DB9.</p>
@@ -536,11 +536,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h3>Easy Remote: the Web Control Panel</h3>
 <div class="fig-ph"><span class="fig-tag rebrand">Screenshot pending rebrand</span><span class="fig-desc">Browser control panel: Trigger and Clock System, Delay Channel table, Extended Setup (burst/gate/MUX), Status and Utilities, RUN button, Chart View.</span></div>
 <p>After connecting the Model 750's Ethernet port to your network and powering it on, enter the unit's IP address into any standard browser (Chrome, Firefox, or Edge) to open the control panel automatically. The default IP address is <code>192.168.0.10</code>, netmask <code>255.0.0.0</code>, gateway <code>192.168.0.1</code>; if the address is ever lost, hold the internal reset button (accessible through the rear-panel "RAZ" hole) during power-up to restore it, or query it over USB with <code>NETWORK:IPADDRESS?</code>.</p>
-<p>The main menu displays and controls the trigger and clock system (level, edge, prescaler, external clock, clock output, three internal generators), the delay channel table (trigger source, rate, delay, amplitude, width, polarity), a RUN button, and a Trigger button for single-shot channels. An Extended Setup panel exposes per-channel burst count/period, gate enable, and MUX grouping. A Status and Utilities panel shows temperature, current draw, clock lock, external power, fault, and overload indicators, alongside Save/Recall (8 named user sets), Settings (IP address / DHCP), GPIO configuration, and an Info panel reporting installed options, licenses, and firmware/software versions.</p>
-<p>A Chart View button opens a real-time, oscilloscope-style display of every channel's output pulses on a common time chart; mouse-wheel zoom (horizontal or vertical, positioned where you want to zoom) reveals fine timing detail without losing resolution, and hovering reports the delay value under the cursor.</p>
+<p>The main menu displays and controls the trigger and clock system (level, prescaler, external clock, clock output, three internal generators), the delay channel table (trigger source, rate, delay, amplitude, width, polarity), a RUN button, and a Trigger button for single-shot channels. An Extended Setup panel exposes per-channel burst count/period, gate enable, and MUX grouping. A Parameters page lets you change the IP address and other network settings, and a GPIO page configures the four I/O lines. All settings are stored and saved on the unit itself, so the control panel simply reflects the instrument's current state.</p>
+<p>The following factory-default values apply out of the box, or after a reset:</p>
+<table class="spec">
+  <tr><th>Parameter</th><th>Default</th></tr>
+  <tr><td>IP address</td><td>192.168.0.10</td></tr>
+  <tr><td>Gateway</td><td>192.168.0.1</td></tr>
+  <tr><td>Netmask</td><td>255.0.0.0</td></tr>
+  <tr><td>External clock</td><td>Off (internal reference)</td></tr>
+  <tr><td>External clock frequency</td><td>100,000,000 Hz</td></tr>
+  <tr><td>Clock output</td><td>Off</td></tr>
+  <tr><td>Generators F1 / F2 / F3</td><td>10,000 Hz / 1,000 Hz / 1 Hz</td></tr>
+  <tr><td>External trigger 1 / 2 threshold</td><td>1500 mV each</td></tr>
+  <tr><td>Rear Gate/Trig input mode</td><td>Gate</td></tr>
+  <tr><td>Channel trigger source</td><td>Off</td></tr>
+  <tr><td>Channel trigger rate</td><td>Single</td></tr>
+  <tr><td>Channel delay / width / amplitude</td><td>0 ps / 100 ns / 1500 mV</td></tr>
+  <tr><td>Channel polarity</td><td>Positive</td></tr>
+  <tr><td>Burst count / period</td><td>1 / 200 ns</td></tr>
+  <tr><td>Gate / MUX</td><td>Off for both</td></tr>
+</table>
+
+<h3>Setting Up a First Pulse</h3>
+<p>As a worked example, here is how to produce a repetitive 1 Hz, 5 V, 1 &micro;s pulse on channel T1 from the web control panel:</p>
+<ol>
+<li>Connect the Model 750's Ethernet port to your network and power it on; set your PC's IP address to <code>192.168.0.100</code> with netmask <code>255.0.0.0</code>, then browse to <code>192.168.0.10:8080</code>.</li>
+<li>Set internal generator F1 to 1.000 Hz.</li>
+<li>Set channel T1: trigger source F1, rate repetitive, delay 0 ps, width 1000 ns, amplitude 5000 mV, positive polarity.</li>
+<li>Click <b>RUN</b>. The T1 indicator on the front panel blinks at 1 Hz; confirm the pulse on an oscilloscope, then click <b>STOP</b> to end it.</li>
+</ol>
 
 <h3>General Remote: USB and Ethernet</h3>
-<p>Over USB, the Model 750 presents a virtual serial (COM) port: 115200 baud, 8 data bits, 1 stop bit, no parity, no flow control. Any terminal emulator (PuTTY, for example) or the included control application can issue commands directly. Over Ethernet, the same ASCII command set is available on TCP port 4000; set the unit's IP address, netmask, and gateway either from the web control panel's Settings page or with the <code>NETWORK:*</code> commands described in the Programming Reference below.</p>
+<p>Over USB, the Model 750 presents a virtual serial (COM) port: 9600 baud, 8 data bits, 1 stop bit, no parity, no flow control. Any terminal emulator (PuTTY, for example) or the included control application can issue commands directly. Over Ethernet, the same ASCII command set is available on TCP port 4000; set the unit's IP address, netmask, and gateway either from the web control panel's Parameters page or with the <code>NETWORK:*</code> commands described in the Programming Reference below.</p>
 <p>Free control software is provided for Windows and Linux, presenting the same interface as the web control panel. Both connect over USB and auto-detect the assigned COM port; if the Model 750 is plugged in over USB but not powered on with the front-panel button, the software will see the port but report a connection error until the unit is switched on.</p>
 </section>
 
@@ -548,57 +575,52 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h2><span class="num">4</span> Programming Reference</h2>
 <p>Every command below is sent as plain ASCII text terminated with <code>&lt;cr&gt;&lt;lf&gt;</code>, over either the USB virtual COM port or an Ethernet connection to TCP port 4000. A command with a trailing <code>?</code> is a query and returns the current value; most settings support both a <code>SET</code> form (with a parameter) and a <code>?</code> query form. Multi-word commands use a colon between keywords, and a caret (^) in the syntax column below marks a single blank space.</p>
 
-<h3>Identification &amp; Help</h3>
+<h3>Identification</h3>
 <table class="spec">
   <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
   <tr><td><code>*IDN?</code> / <code>IDN?</code></td><td>&mdash;</td><td>Returns instrument model, serial number, firmware, and software version</td></tr>
-  <tr><td><code>HELP?</code></td><td>&mdash;</td><td>Returns a short command summary</td></tr>
-  <tr><td><code>OPT?</code></td><td>&mdash;</td><td>Returns installed hardware options (output module types by channel bank)</td></tr>
-  <tr><td><code>LICENSE:LIST?</code></td><td>&mdash;</td><td>Returns installed licenses (jitter reduction, frequency generation) and their validity</td></tr>
+</table>
+
+<h3>Auto RUN</h3>
+<p>Two functions can be set to activate automatically at power-up. <b>Auto RUN</b> starts output pulses automatically once the unit powers on. <b>Auto POWER</b> makes the generator power on by itself at startup for embedded/OEM applications, and inhibits the RUN/STOP button while active &mdash; contact Berkeley Nucleonics to enable it.</p>
+<table class="spec">
+  <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
+  <tr><td><code>MNT:OPT:RUN</code></td><td>1 / 0, YES / NO, or ON / OFF</td><td>Enable/disable Auto RUN: automatically restore the RUN/STOP state at power-up</td></tr>
 </table>
 
 <h3>Clock System</h3>
 <table class="spec">
   <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
-  <tr><td><code>CLOCK:INTERNAL:FREQUENCY</code></td><td>counter 1&ndash;3, frequency in Hz (0.01 to 50,000,000)</td><td>Set/query one of the three internal frequency generators</td></tr>
-  <tr><td><code>CLOCK:INTERNAL:UNIT</code></td><td>NS or HZ</td><td>Display the internal counters in frequency or period</td></tr>
+  <tr><td><code>CLOCK:INTERNAL:FREQUENCY</code></td><td>counter 1&ndash;3, frequency in Hz (0.01 to 50,000,000, in 5 ns period steps)</td><td>Set/query one of the three internal frequency generators</td></tr>
   <tr><td><code>CLOCK:EXTERNAL:ENABLE</code></td><td>YES / NO</td><td>Switch between internal and external clock reference</td></tr>
   <tr><td><code>CLOCK:EXTERNAL:FREQUENCY</code></td><td>frequency in Hz (10 M&ndash;240 MHz)</td><td>Set the external clock reference frequency</td></tr>
   <tr><td><code>CLOCK:OUTPUT:ENABLE</code></td><td>YES / NO</td><td>Enable/disable the rear-panel clock output</td></tr>
   <tr><td><code>CLOCK:ADJUST</code></td><td>integer, 0&ndash;65535</td><td>Fine-trim the internal 100 MHz reference</td></tr>
-  <tr><td><code>CLOCK:SYNCOUT:SYNC</code></td><td>&mdash;</td><td>Send a synchronization pulse when daisy-chaining two units</td></tr>
-  <tr><td><code>CLOCK:SYNCOUT:DELAY</code></td><td>delay in ps</td><td>Compensate cable propagation delay between two chained units</td></tr>
 </table>
 
 <h3>Gate &amp; Trigger</h3>
 <table class="spec">
   <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
-  <tr><td><code>GATE:ACTIVE</code></td><td>HIGH / LOW</td><td>Set the active level of the external gate</td></tr>
-  <tr><td><code>TRIGGER:LEVEL</code></td><td>input 1 or 2, level in mV (50&ndash;5000)</td><td>Set the external trigger/gate threshold</td></tr>
-  <tr><td><code>TRIGGER:EDGE</code></td><td>input 1 or 2, RISING / FALLING</td><td>Set the active trigger edge</td></tr>
+  <tr><td><code>TRIGGER:LEVEL</code></td><td>input 1 or 2 (1 = front TRIG, 2 = rear GATE/TRIG), level in mV (50&ndash;5000)</td><td>Set the external trigger/gate threshold</td></tr>
   <tr><td><code>TRIGGER:PRESCALER</code></td><td>input 1 or 2, integer 1&ndash;1,000,000,000</td><td>Set the external trigger frequency divider</td></tr>
-  <tr><td><code>TRIGGER:INPUT:EXTERNAL2</code></td><td>GATE / TRIGGER / SYNCIN / SYNCOUT</td><td>Configure the rear-panel Gate/Trig connector's function</td></tr>
+  <tr><td><code>TRIGGER:INPUT:EXTERNAL2</code></td><td>GATE / TRIGGER</td><td>Set the rear-panel Gate/Trig connector to Gate or Trigger mode</td></tr>
   <tr><td><code>TRIGGER:EXEC</code></td><td>&mdash;</td><td>Fire a manual trigger (Manual source) or a single shot (Single rate)</td></tr>
   <tr><td><code>RUN</code></td><td>ON / OFF</td><td>Start or stop all channel outputs</td></tr>
-  <tr><td><code>TRIGGER:JITTER:REDUCTION</code></td><td>ON / OFF</td><td>Enable the jitter-reduction option, where licensed</td></tr>
 </table>
 
 <h3>Channel Configuration</h3>
 <table class="spec">
   <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
-  <tr><td><code>CHANNEL:DELAY</code></td><td>channel 1&ndash;4, delay in ps (0&ndash;100 s)</td><td>Set the channel delay</td></tr>
+  <tr><td><code>CHANNEL:DELAY</code></td><td>channel 1&ndash;4, delay in ps (0&ndash;100 s, 100 ps steps)</td><td>Set the channel delay</td></tr>
   <tr><td><code>CHANNEL:SOURCE</code></td><td>channel, OFF / F1 / F2 / F3 / EXT1 / EXT2 / MANUAL</td><td>Set the channel trigger source</td></tr>
   <tr><td><code>CHANNEL:RATE</code></td><td>channel, SINGLE / REPETITIVE</td><td>Set the channel trigger rate</td></tr>
-  <tr><td><code>CHANNEL:AMPLITUDE</code></td><td>channel, level in mV</td><td>Set the channel output level</td></tr>
-  <tr><td><code>CHANNEL:WIDTH</code></td><td>channel, width in ns (10 ns&ndash;10 s)</td><td>Set the channel output pulse width</td></tr>
+  <tr><td><code>CHANNEL:AMPLITUDE</code></td><td>channel, level in mV (1500&ndash;5000, 10 mV steps)</td><td>Set the channel output level</td></tr>
+  <tr><td><code>CHANNEL:WIDTH</code></td><td>channel, width in ns (10 ns&ndash;10 s, 5 ns steps)</td><td>Set the channel output pulse width</td></tr>
   <tr><td><code>CHANNEL:POLARITY</code></td><td>channel, POSITIVE / NEGATIVE</td><td>Set the channel output polarity</td></tr>
   <tr><td><code>CHANNEL:BURST:COUNT</code></td><td>channel, integer 1&ndash;1,000,000,000</td><td>Set the number of pulses per burst</td></tr>
-  <tr><td><code>CHANNEL:BURST:PERIOD</code></td><td>channel, period in ns</td><td>Set the time between burst pulses</td></tr>
+  <tr><td><code>CHANNEL:BURST:PERIOD</code></td><td>channel, period in ns (20 ns&ndash;1 s, 5 ns steps)</td><td>Set the time between burst pulses</td></tr>
   <tr><td><code>CHANNEL:GATED</code></td><td>channel, YES / NO</td><td>Enable/disable the external gate for a channel</td></tr>
   <tr><td><code>CHANNEL:MUX</code></td><td>channel, 4 booleans</td><td>OR two or more channels within a group of four</td></tr>
-  <tr><td><code>CHANNEL:NARROW</code></td><td>channel, ON / OFF</td><td>Enable narrow-pulse mode (couples a channel pair)</td></tr>
-  <tr><td><code>CHANNEL:DIFF:MODE</code></td><td>channel, LVDS05/07/10/12, HSTL08/11, CMOS</td><td>Set output format on an LVDS/HSTL-equipped channel</td></tr>
-  <tr><td><code>LRN?</code></td><td>channel 1&ndash;4, or 0 for device-wide</td><td>Return the complete configuration of a channel, or of the whole device</td></tr>
 </table>
 
 <h3>GPIO</h3>
@@ -614,31 +636,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
   <tr><td><code>STAT?^TEMP</code></td><td>&mdash;</td><td>Internal temperature, &deg;C</td></tr>
   <tr><td><code>STAT?^POW</code></td><td>&mdash;</td><td>Core voltage, current, and power source (internal/external)</td></tr>
-  <tr><td><code>STAT?^ALARM</code></td><td>&mdash;</td><td>Current, voltage, temperature, and quick-current alarm states</td></tr>
-  <tr><td><code>STAT?^SYN</code></td><td>&mdash;</td><td>System status bitfield (clock lock, alarms, clock-in frequency, trigger rate)</td></tr>
-  <tr><td><code>STAT?^CR</code></td><td>&mdash;</td><td>Per-channel triggered state since the last clear</td></tr>
+  <tr><td><code>STAT?^ALARM</code></td><td>&mdash;</td><td>Current, voltage, temperature, and quick-current alarm states (0 OK, 1 warning, 2 critical); critical alarms latch until cleared</td></tr>
+  <tr><td><code>STAT?^SYN</code></td><td>&mdash;</td><td>System status bitfield: bit 0 clock unlocked, bit 1 warning active, bit 2 critical alarm active, bit 7 locked with no alarm</td></tr>
   <tr><td><code>STAT^CLEAR</code></td><td>&mdash;</td><td>Clear latched alarms</td></tr>
-  <tr><td><code>FREQUENCY:MEASUREMENT?</code></td><td>&mdash;</td><td>Measured frequency on CLK IN, TRIG, and GATE/TRIG inputs</td></tr>
 </table>
 
-<h3>User Sets &amp; Network</h3>
+<h3>Network</h3>
 <table class="spec">
   <tr><th>Command</th><th>Parameters</th><th>Description</th></tr>
-  <tr><td><code>USERSET:SAVE</code></td><td>set 1&ndash;8, name</td><td>Save all current settings to a named user set</td></tr>
-  <tr><td><code>USERSET:RECALL</code></td><td>set 1&ndash;8</td><td>Recall a saved user set</td></tr>
-  <tr><td><code>USERSET:NAME?</code></td><td>set 1&ndash;8</td><td>Return a user set's name</td></tr>
-  <tr><td><code>USERSET:CLEAR</code></td><td>set 1&ndash;8</td><td>Delete a saved user set</td></tr>
   <tr><td><code>NETWORK:IPADDRESS</code></td><td>xxx.xxx.xxx.xxx</td><td>Set/query the unit's IP address</td></tr>
   <tr><td><code>NETWORK:NETMASK</code></td><td>xxx.xxx.xxx.xxx</td><td>Set/query the network mask</td></tr>
   <tr><td><code>NETWORK:GWADDRESS</code></td><td>xxx.xxx.xxx.xxx</td><td>Set/query the gateway address</td></tr>
   <tr><td><code>NETWORK:TCP:TIMEOUT</code></td><td>seconds (0 = none)</td><td>Set the network idle disconnect timeout</td></tr>
   <tr><td><code>NETWORK:MACADDRESS?</code></td><td>&mdash;</td><td>Return the unit's MAC address</td></tr>
-  <tr><td><code>NETWORK:DHCP</code></td><td>YES / NO</td><td>Enable/disable DHCP addressing</td></tr>
-  <tr><td><code>OPT:RUN</code></td><td>YES / NO</td><td>Auto-start output pulses (Auto-RUN) after power-up</td></tr>
 </table>
 
-<h3>Programming Example</h3>
-<p>Provide a repetitive 10 &micro;s, 4.5 V pulse on T1 at 1 Hz:</p>
+<h3>Programming Examples</h3>
+<p><b>Example 1 &mdash; repetitive pulse on T1</b> (width 10 &micro;s, amplitude 4.5 V, rate 1 Hz):</p>
 <table class="spec">
   <tr><td><code>CLOCK:INTERNAL:FREQUENCY^1,1.0</code></td><td>Set internal generator F1 to 1 Hz</td></tr>
   <tr><td><code>CHANNEL:AMPLITUDE^1,4500</code></td><td>Set channel 1 amplitude to 4.5 V</td></tr>
@@ -648,36 +662,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <tr><td><code>RUN^ON</code></td><td>Start output on T1</td></tr>
 </table>
 <p>On the front panel, the T1 indicator should blink at 1 Hz. Send <code>RUN^OFF</code> to stop.</p>
+
+<p><b>Example 2 &mdash; a 2-pulse burst on T1</b> (width 10 &micro;s, amplitude 4.5 V, rate 10 kHz):</p>
+<table class="spec">
+  <tr><td><code>CLOCK:INTERNAL:FREQUENCY^1,10000</code></td><td>Set internal generator F1 to 10 kHz</td></tr>
+  <tr><td><code>CHANNEL:BURST:COUNT^1,2</code></td><td>Set channel 1 burst count to 2 pulses</td></tr>
+  <tr><td><code>CHANNEL:BURST:PERIOD^1,20000</code></td><td>Set channel 1 burst period to 20 &micro;s</td></tr>
+  <tr><td><code>RUN^ON</code></td><td>Start output on T1</td></tr>
+</table>
+
+<p><b>Example 3 &mdash; combine T1 and T2 onto one output</b> (T1: width 10 &micro;s; T2: width 20 &micro;s, delayed 20 &micro;s; both at 4.5 V, 10 kHz):</p>
+<table class="spec">
+  <tr><td><code>CHANNEL:DELAY^1,0</code></td><td>Set channel 1 delay to 0 ps</td></tr>
+  <tr><td><code>CHANNEL:WIDTH^1,10000</code></td><td>Set channel 1 width to 10 &micro;s</td></tr>
+  <tr><td><code>CHANNEL:DELAY^2,20000000</code></td><td>Set channel 2 delay to 20 &micro;s</td></tr>
+  <tr><td><code>CHANNEL:WIDTH^2,20000</code></td><td>Set channel 2 width to 20 &micro;s</td></tr>
+  <tr><td><code>CHANNEL:AMPLITUDE^2,4500</code></td><td>Set channel 2 amplitude to 4.5 V</td></tr>
+  <tr><td><code>CHANNEL:RATE^1,REPETITIVE</code></td><td>Set channel 1 and 2 rate</td></tr>
+  <tr><td><code>CHANNEL:RATE^2,REPETITIVE</code></td><td></td></tr>
+  <tr><td><code>CHANNEL:SOURCE^1,F1</code></td><td>Trigger channel 1 and 2 from generator F1</td></tr>
+  <tr><td><code>CHANNEL:SOURCE^2,F1</code></td><td></td></tr>
+  <tr><td><code>CHANNEL:MUX^1,YES,YES,NO,NO</code></td><td>Combine channel 1 with channel 2</td></tr>
+</table>
+<p>C programming examples over the USB or Ethernet port are available on request from Berkeley Nucleonics.</p>
 </section>
 
 <section id="ch-5">
 <h2><span class="num">5</span> Options</h2>
 <table class="spec">
   <tr><th>Option</th><th>What it changes</th></tr>
-  <tr><td>Channel extension</td><td>4 &rarr; 8 channels. Per-bank power limits apply between adjacent channel pairs; the embedded software rejects settings that would risk thermal shutdown.</td></tr>
-  <tr><td>1 ps resolution</td><td>Delay resolution improves to 1 ps (4-channel base unit only), with channel-to-channel jitter under 10 ps at short delay. Enables narrow-pulse mode: two channels couple to start/stop a pulse as narrow as 3 ns (500 ps with LVDS).</td></tr>
-  <tr><td>3&ndash;10 V / 15&ndash;50 V output</td><td>Replaces a bank of 2 channels' output stage with a higher-voltage driver. Trigger rate is limited as a function of pulse width and amplitude to stay within the driver's average power rating; the unit enforces this automatically in internal-trigger mode.</td></tr>
-  <tr><td>LVDS/HSTL output</td><td>Replaces a bank of 1 channel (2 SMB connectors) with a differential driver offering 7 selectable output standards (LVDS 0.5/0.7/1.0/1.25, HSTL 0.8/1.1, CMOS). Supports narrow-pulse mode down to 500 ps.</td></tr>
-  <tr><td>Frequency generation license</td><td>Repurposes an LVDS-equipped channel pair as a continuous differential clock output, independently programmable to 800 MHz with 71 ps phase steps, instead of a delayed pulse.</td></tr>
-  <tr><td>Jitter-reduction license</td><td>Improves external-trigger-to-output jitter from ~5 ns peak-to-peak to under 100 ps RMS. Lowers the maximum external trigger rate to 10 MHz and slightly increases insertion delay.</td></tr>
-  <tr><td>Chaining two units</td><td>Connect CLK OUT and GATE/TRIG (SyncOut) on a master unit to CLK IN and GATE/TRIG (SyncIn) on a second unit to combine up to 16 channels (two 8-channel units) with about 50 ps RMS jitter between units at short delay, over cable runs of 10 m or more.</td></tr>
-  <tr><td>Accessory cables</td><td>SMB-to-BNC adapter cable, and a GPIO-to-DB9 breakout cable, are available for connecting to standard lab equipment.</td></tr>
+  <tr><td>Channel extension</td><td>4 &rarr; 8 channels. Per-bank power limits apply between adjacent channel pairs (see Delay Jitter &amp; Accuracy above); the embedded software rejects settings that would risk thermal shutdown.</td></tr>
+  <tr><td>1 ps resolution</td><td>Delay resolution improves to 1 ps (4-channel base unit only), with channel-to-channel jitter under 10 ps at short delay.</td></tr>
+  <tr><td>5&Prime; SMB-to-BNC cable</td><td>Adapter cable accessory for connecting a channel output or the trigger/gate/clock inputs to standard BNC-terminated lab equipment.</td></tr>
 </table>
-<div class="note warn"><b>Verify.</b> Confirm every option code, combination rule, and specification above against the current, engineering-approved Model 750 documentation before it is quoted, sold, or published &mdash; this section is adapted from a source manual ahead of internal review.</div>
 </section>
 
 <section id="ch-6">
 <h2><span class="num">6</span> Glossary</h2>
 <dl>
 <dt><b>Burst mode</b></dt><dd>A channel emits a fixed number of pulses (burst count) at a fixed period per trigger, instead of a single pulse.</dd>
-<dt><b>Daisy chaining</b></dt><dd>Connecting the clock and gate/trigger lines of two Model 750 units so one (the master) drives the timing of the other (the slave), extending the total channel count.</dd>
 <dt><b>Delay resolution</b></dt><dd>The smallest step by which a channel's delay can be adjusted &mdash; 100 ps standard, 1 ps with the resolution option.</dd>
-<dt><b>Gate</b></dt><dd>An input that inhibits selected channel outputs while active; can alternately serve as a second trigger or a chaining link.</dd>
+<dt><b>Gate</b></dt><dd>An input that inhibits selected channel outputs while active; can alternately serve as a second trigger.</dd>
 <dt><b>GPIO</b></dt><dd>General-purpose input/output lines, individually configurable and controlled over the remote command interface, independent of the delay-channel logic.</dd>
 <dt><b>Jitter (RMS)</b></dt><dd>The statistical uncertainty in a channel's output edge timing between successive triggers, expressed as a root-mean-square value in picoseconds.</dd>
-<dt><b>LVDS / HSTL</b></dt><dd>Low-voltage and high-speed differential signaling standards, offered as an optional output driver for lower-swing, higher-speed pulse or clock outputs.</dd>
 <dt><b>MUX mode</b></dt><dd>Logically ORing two or more channel outputs within a group of four onto a single output.</dd>
-<dt><b>Narrow-pulse mode</b></dt><dd>A mode that couples two delay channels &mdash; one starting, one stopping the pulse &mdash; to produce output pulses narrower than the standard driver's minimum width.</dd>
+<dt><b>Narrow-pulse mode</b></dt><dd>A mode, available with the resolution option, that couples two delay channels &mdash; one starting, one stopping the pulse &mdash; to produce output pulses as narrow as 3 ns.</dd>
 <dt><b>Prescaler</b></dt><dd>An integer divider applied to an external trigger input before it reaches the trigger controller, for triggering from a higher-rate source.</dd>
 <dt><b>User set</b></dt><dd>One of 8 complete, named configurations of channel and clock settings that can be saved to and recalled from the unit's non-volatile memory.</dd>
 </dl>
