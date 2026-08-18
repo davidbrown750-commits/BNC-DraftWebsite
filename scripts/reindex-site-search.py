@@ -86,6 +86,7 @@ def blocked(word):
 # from the model number alone without checking its page is really the
 # discontinued one.
 SUPERSEDED_URLS = {
+    "docs/bnc-awg-676-datasheet.html",
     "docs/bnc-model-588-datasheet.html",
     "docs/bnc-model-588-user-manual.html",
     "docs/bnc-dei-pco-7121-datasheet.html",
