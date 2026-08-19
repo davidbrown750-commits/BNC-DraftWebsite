@@ -231,46 +231,32 @@
     {key:"form", label:"Form Factor"}
   ],
   models: [
-   /* RAMMED-OUT 2026-07-20 (pulled from lineup, may return; see PR rtsa-ram-out-models):
    {num:4.5, model:"ICX-045U", sum:"Compact USB analyzer", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 4.5 GHz", form:"USB / host PC"}, sort:{freq:4.5, form:1}},
-   */
    {num:6.3, model:"ICX-060U", sum:"USB, mid-band", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 6.3 GHz", form:"USB / host PC"}, sort:{freq:6.3, form:1}},
    {num:9.5, model:"ICX-090U", sum:"Wideband USB", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 9.5 GHz", form:"USB / host PC"}, sort:{freq:9.5, form:1}},
-   /* RAMMED-OUT 2026-07-20:
    {num:20, model:"ICX-200U", sum:"Microwave USB", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 20 GHz", form:"USB / host PC"}, sort:{freq:20, form:1}},
-   */
    {num:40, model:"ICX-400U", sum:"40 GHz USB flagship", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 40 GHz", form:"USB / host PC"}, sort:{freq:40, form:1}},
-   /* RAMMED-OUT 2026-07-20:
    {num:4.5, model:"ICX-045", sum:"Field handheld", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 4.5 GHz", form:"Handheld (touchscreen)"}, sort:{freq:4.5, form:2}},
-   */
-   /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
    {num:6, model:"ICX-060", sum:"Handheld, mid-band", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 6 GHz", form:"Handheld (touchscreen)"}, sort:{freq:6, form:2}},
-   */
-   /* RAMMED-OUT 2026-07-20:
    {num:9, model:"ICX-090", sum:"Compact handheld", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 9 GHz", form:"Handheld (touchscreen)"}, sort:{freq:9, form:2}},
    {num:9.5, model:"ICX-095", sum:"Real-time handheld", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 9.5 GHz", form:"Handheld (touchscreen)"}, sort:{freq:9.5, form:2}},
-   */
-   /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
    {num:20, model:"ICX-200", sum:"Microwave handheld", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 20 GHz", form:"Handheld (touchscreen)"}, sort:{freq:20, form:2}},
-   */
    {num:40, model:"ICX-400", sum:"40 GHz handheld flagship", ds:"bnc-icx-fieldhawk-handheld-datasheet.html",
     vals:{freq:"9 kHz to 40 GHz", form:"Handheld (touchscreen)"}, sort:{freq:40, form:2}},
    {num:9.5, model:"ICX-090R", sum:"IP68 field unit", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
     vals:{freq:"9 kHz to 9.5 GHz", form:"IP68"}, sort:{freq:9.5, form:3}}, // CORRECTED 2026-07-20: was ICX-095R, aligned to ICX-090R per rugged datasheet/manual — VERIFY with BNC.
-   /* RAMMED-OUT 2026-07-23 (hidden for now, may return):
    {num:20, model:"ICX-200R", sum:"Field-Ready, microwave", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
     vals:{freq:"9 kHz to 20 GHz", form:"IP68"}, sort:{freq:20, form:3}},
-   */
    {num:40, model:"ICX-400R", sum:"Field-Ready 40 GHz, mission-critical", ds:"bnc-icx-fieldhawk-rugged-datasheet.html",
     vals:{freq:"9 kHz to 40 GHz", form:"IP68"}, sort:{freq:40, form:3}}
   ]
