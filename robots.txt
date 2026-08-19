@@ -7,10 +7,11 @@
 User-agent: *
 Content-Signal: ai-train=no, search=yes, ai-input=yes
 Allow: /
+Disallow: /api/
 
-# Block internal search and parameter spam
-Disallow: /*?s=
-Disallow: /*?replytocom=
+# Legacy ?s= and ?replytocom= parameter URLs are 301-redirected to the clean
+# path at the edge (middleware.js), so they are intentionally NOT disallowed:
+# crawlers must be able to fetch them to see the redirect and deindex them.
 
 # Optional crawl delay for aggressive bots
 Crawl-delay: 2
@@ -20,57 +21,74 @@ Crawl-delay: 2
 # =========================================
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /api/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /api/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /api/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
 
 User-agent: meta-externalagent
 Allow: /
+Disallow: /api/
 
 User-agent: YouBot
 Allow: /
+Disallow: /api/
 
 User-agent: MistralBot
 Allow: /
+Disallow: /api/
 
 User-agent: CCBot
 Allow: /
+Disallow: /api/
 
 # =========================================
 # Traditional Search Engines
 # =========================================
 User-agent: Googlebot
 Allow: /
+Disallow: /api/
 
 User-agent: Googlebot-Image
 Allow: /
+Disallow: /api/
 
 User-agent: Googlebot-News
 Allow: /
+Disallow: /api/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
 
 User-agent: Slurp
 Allow: /
+Disallow: /api/
 
 User-agent: DuckDuckBot
 Allow: /
+Disallow: /api/
 
 # =========================================
 # Sitemap
