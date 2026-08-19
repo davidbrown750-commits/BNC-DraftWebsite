@@ -28,6 +28,7 @@ import posixpath
 import re
 import subprocess
 import sys
+import tempfile
 from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -71,6 +72,31 @@ BLOCKED_DIGESTS = {
 def blocked(word):
     """True if this token names a confidential supplier and must not be indexed."""
     return hashlib.sha256(word.encode("utf-8")).hexdigest() in BLOCKED_DIGESTS
+
+
+# Discontinued products whose own datasheet/manual page must not appear in
+# search, so a customer searching a model number sees obsolete-products.html
+# steering them to the current replacement, rather than a datasheet for a
+# product BNC no longer sells reading as if it were still available. The
+# page itself is untouched and still reachable by direct link or nav; it is
+# only left out of the generated index. Add a page here only once its exact
+# model number is confirmed obsolete on obsolete-products.html - a model
+# number can be reused by an unrelated current product (Model 676 currently
+# names both an obsolete unit and a shipping AWG), so do not add an entry
+# from the model number alone without checking its page is really the
+# discontinued one.
+SUPERSEDED_URLS = {
+    "docs/bnc-awg-676-datasheet.html",
+    "docs/bnc-model-588-datasheet.html",
+    "docs/bnc-model-588-user-manual.html",
+    "docs/bnc-dei-pco-7121-datasheet.html",
+    "docs/bnc-dei-pco-7121-user-manual.html",
+    "docs/bnc-model-960-datasheet.html",
+    "docs/bnc-pm1703gna-datasheet.html",
+    "docs/bnc-sam-940-datasheet.html",
+    "docs/bnc-sam-945-datasheet.html",
+    "docs/bnc-sam-945-user-manual.html",
+}
 
 
 # Words that mean the same thing to a customer as the word they typed. The
@@ -136,7 +162,7 @@ WORD_RE = re.compile(r"[a-z0-9]+(?:[.\-+][a-z0-9]+)*")
 MODEL_RE = re.compile(
     r"\b(?:model\s+)?("
     r"\d{3,4}[a-z]?(?:-[a-z0-9]{1,6})*"
-    r"|(?:pvx|pvm|pvp|pco|pcx|pcm|pnc|pim|rfs|vsg|sam|icx|hvx|awg|db|ap|tb|pb)-?[a-z0-9]{1,8}(?:-[a-z0-9]{1,6})*"
+    r"|(?:pvx|pvm|pvp|pco|pcx|pcm|pnc|pim|pm|rfs|vsg|sam|icx|hvx|awg|db|ap|tb|pb)-?[a-z0-9]{1,8}(?:-[a-z0-9]{1,6})*"
     r")\b"
 )
 
@@ -321,6 +347,8 @@ def main():
 
     for p in pages:
         u = p["u"]
+        if u in SUPERSEDED_URLS:
+            continue
         old = old_by_url.get(u)
 
         # -- title ----------------------------------------------------------
@@ -354,7 +382,11 @@ def main():
         if old and old.get("k"):
             kw += toks(old["k"])          # keep what was curated by hand
 
-        blob = " ".join([title, p["d"], p["words"][:1200]]).lower()
+        # Model numbers are pulled from the page's full text, not a truncated
+        # slice of it. A 1200-char cap here silently dropped every model past
+        # the opening of long reference pages such as obsolete-products.html,
+        # which is precisely the page that most needs every model captured.
+        blob = " ".join([title, p["d"], p["words"]]).lower()
         kw += [m.group(1) for m in MODEL_RE.finditer(blob)]
 
         # the terms this page leans on that the rest of the site does not
@@ -430,7 +462,7 @@ def main():
         print("   no image: %s" % u)
 
     json.dump({"SITE_INDEX": index, "SSDESC": ssdesc, "SSIMG": ssimg},
-              open("/Users/davidbrown/.claude/jobs/d192174c/tmp/new-index.json", "w"))
+              open(pathlib.Path(tempfile.gettempdir()) / "new-index.json", "w"))
     return write_blocks(index, ssdesc, ssimg, faqs)
 
 

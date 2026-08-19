@@ -188,7 +188,44 @@
 <script data-cookieconsent="ignore">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
 <!-- End Google Tag Manager -->
 <!-- START Visual Visitor -->
-<script type="text/plain" data-cookieconsent="marketing" defer data-cookieblock-src='https://data.processwebsitedata.com/cscripts/yuZy3Z595d-ed010bae.js'></script>
+<script data-cookieconsent="ignore">
+/* Visual Visitor, loaded by hand rather than by Cookiebot's manual-mode activation.
+
+   Cookiebot runs here in manual blocking mode. Manual mode only flips a gated tag's `type`
+   from text/plain to text/javascript. Restoring `data-cookieblock-src` into `src` is the
+   automatic-mode mechanism and it never runs in manual mode, so the tag this replaces
+   turned into a script element with a type and no source. Visual Visitor loaded on no page
+   between 2026-07-28 and this change.
+
+   The consent gate is unchanged, only the mechanism is. Marketing consent granted, the
+   script is injected once. Not granted, nothing loads. US visitors resolve to implied
+   consent with marketing already granted, so they are tracked exactly as before, while
+   EU, EEA and UK visitors stay behind the dialog. If Cookiebot itself fails to load,
+   nothing fires, which is the safe direction to fail. */
+(function (w, d) {
+  var SRC = 'https://data.processwebsitedata.com/cscripts/yuZy3Z595d-ed010bae.js';
+  var done = false;
+
+  function granted() {
+    var c = w.Cookiebot && w.Cookiebot.consent;
+    return !!(c && c.marketing);
+  }
+
+  function load() {
+    if (done || !granted()) return;
+    done = true;
+    if (d.querySelector('script[src="' + SRC + '"]')) return;
+    var s = d.createElement('script');
+    s.src = SRC;
+    s.defer = true;
+    (d.head || d.documentElement).appendChild(s);
+  }
+
+  load();
+  w.addEventListener('CookiebotOnAccept', load);
+  w.addEventListener('CookiebotOnConsentReady', load);
+})(window, document);
+</script>
 <!-- END Visual Visitor -->
 <!-- START Bing UET -->
 <script type="text/plain" data-cookieconsent="marketing">(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"187080532", enableAutoSpaTracking: true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
@@ -196,7 +233,7 @@
 
 
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICX-Series &amp; N Analyzer Manual, 4.5-40 GHz | BNC</title>
+<title>ICX-Series/N Spectrum Analyzer Manual, 20 GHz | BNC</title>
 <style>
 :root{
  --blue:#0655a3;--blue-dark:#113163;--blue-600:#054a8c;
@@ -244,9 +281,10 @@ h1,h2,h3,h4{font-family:var(--font-h);color:var(--blue-dark);line-height:1.2;mar
 .toc a:hover{color:var(--blue);border-left-color:var(--blue);text-decoration:none;}
 .content,.article{min-width:0;}
 .article{max-width:840px;margin:0 auto;padding:34px 28px 64px;}
-.content section{padding:4px 0 16px;border-top:1px solid var(--line);margin-top:20px;}
+.content section{padding:22px 0 16px;border-top:3px solid var(--blue-dark);margin-top:30px;clear:both;}
 .content section:first-child,.article section:first-child{border-top:none;margin-top:0;}
 .article section{padding:6px 0 14px;}
+.content h2,.content h3,.content h4,.article h2,.article h3,.article h4{clear:both;}
 .content h2,.article h2{font-size:1.32rem;margin:.3em 0 .5em;}
 .content h2 .num{color:var(--blue);margin-right:.5em;}
 .content h3,.article h3{font-size:1.06rem;color:var(--blue);margin:1.2em 0 .3em;}
@@ -261,6 +299,12 @@ table.spec td,table.matrix td{border-top:1px solid var(--line);padding:7px 11px;
 table.spec tr:nth-child(even) td,table.matrix tr:nth-child(even) td{background:var(--bg-2);}
 table.spec td:first-child,table.matrix td:first-child{font-weight:600;color:var(--ink);}
 table.matrix th:first-child{background:var(--bg-3);}
+/* full grid lines + grouped rows + nowrap short tokens */
+table.spec td,table.spec th{border:1px solid var(--line);}
+table.spec th{border-bottom:2px solid var(--blue);}
+table.spec tr.grp td{background:var(--bg-3);font-weight:700;color:var(--blue-dark);}
+table.spec td.sub{padding-left:26px;font-weight:400;}
+table.spec td.nw{white-space:nowrap;}
 .modelthumb{display:block;height:44px;width:auto;margin:0 auto 5px;}
 th .modelthumb{filter:none;}
 /* ---- figures ---- */
@@ -273,14 +317,14 @@ th .modelthumb{filter:none;}
 .fig img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r);display:block;}
 .fig img.plain{border:none;}
 .fig figcaption{margin-top:6px;font-size:.82rem;color:var(--muted);font-style:italic;}
-/* large centered screenshot/chart (read the menu text) */
+/* centered large figure that stays inside its section; side-by-side rows */
+.fig.figctr{float:none;clear:both;max-width:640px;margin:16px auto;}
+.figrow{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;margin:16px 0;clear:both;}
+.figrow figure{flex:1 1 300px;margin:0;}
+.figrow img{width:100%;border:1px solid var(--line);border-radius:var(--r);display:block;}
+.figrow figcaption{margin-top:6px;font-size:.82rem;color:var(--muted);font-style:italic;}
 .fig.figgraph{float:none;clear:both;width:100%;max-width:760px;margin:18px auto;}
 .fig.figgraph img{width:100%;}
-.fig.figctr{float:none;clear:both;max-width:680px;margin:18px auto;}
-.figrow{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:18px 0;clear:both;}
-.figrow .fig{margin:0;}
-.figrow .fig img{width:100%;}
-@media(max-width:760px){.figrow{grid-template-columns:1fr;}}
 /* ---- callouts ---- */
 .note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
 .note.warn{border-left-color:#c77e00;background:#fff7e9;}
@@ -367,19 +411,19 @@ th .modelthumb{filter:none;}
 @media(max-width:860px){.gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}.gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}.gfoot .gacad{text-align:left;}.gfoot .gsocial{justify-content:center;}.gfoot .gcompany ul{text-align:left;}.gfoot .gbottom{justify-content:center;text-align:center;}.gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}}
 </style>
 <style id="navgrplink">.sitenav .nav-grp-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer;display:contents;}.sitenav .nav-grp-link:hover{color:#5fd0ff;}</style><!--seo-meta-->
-<meta name="description" content="This ICX-Series and ICX-FieldHawk-N manual covers compact USB and Ethernet real-time spectrum analyzers from 4.5 GHz to 40 GHz with one unified API.">
-<link rel="canonical" href="https://www.berkeleynucleonics.com/docs/bnc-icx-usb-lan-san-nx-manual.html">
+<meta name="description" content="This ICX-Series and ICX-FieldHawk-N real-time spectrum analyzer manual covers 9 kHz to 9.5 or 20 GHz USB and Ethernet models with 100 MHz bandwidth.">
+<link rel="canonical" href="https://www.berkeleynucleonics.com/docs/bnc-icx-series-usb-lan-20ghz-manual.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Berkeley Nucleonics">
-<meta property="og:title" content="ICX-Series &amp; N Analyzer Manual, 4.5-40 GHz | BNC">
-<meta property="og:description" content="This ICX-Series and ICX-FieldHawk-N manual covers compact USB and Ethernet real-time spectrum analyzers from 4.5 GHz to 40 GHz with one unified API.">
-<meta property="og:url" content="https://www.berkeleynucleonics.com/docs/bnc-icx-usb-lan-san-nx-manual.html">
+<meta property="og:title" content="ICX-Series/N Spectrum Analyzer Manual, 20 GHz | BNC">
+<meta property="og:description" content="This ICX-Series and ICX-FieldHawk-N real-time spectrum analyzer manual covers 9 kHz to 9.5 or 20 GHz USB and Ethernet models with 100 MHz bandwidth.">
+<meta property="og:url" content="https://www.berkeleynucleonics.com/docs/bnc-icx-series-usb-lan-20ghz-manual.html">
 <meta property="og:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ICX-Series &amp; N Analyzer Manual, 4.5-40 GHz | BNC">
-<meta name="twitter:description" content="This ICX-Series and ICX-FieldHawk-N manual covers compact USB and Ethernet real-time spectrum analyzers from 4.5 GHz to 40 GHz with one unified API.">
+<meta name="twitter:title" content="ICX-Series/N Spectrum Analyzer Manual, 20 GHz | BNC">
+<meta name="twitter:description" content="This ICX-Series and ICX-FieldHawk-N real-time spectrum analyzer manual covers 9 kHz to 9.5 or 20 GHz USB and Ethernet models with 100 MHz bandwidth.">
 <meta name="twitter:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "ICX-Series / ICX-FieldHawk-N Product Manual", "description": "HomeProducts &#9662;Pulse & Delay Generators&#8250;HomeDigital Delay/Pulse&#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&#8250;Model 588BHigh-Curren", "url": "https://www.berkeleynucleonics.com/docs/bnc-icx-usb-lan-san-nx-manual.html", "author": {"@type": "Organization", "name": "Berkeley Nucleonics"}, "publisher": {"@type": "Organization", "name": "Berkeley Nucleonics Corporation", "logo": {"@type": "ImageObject", "url": "https://www.berkeleynucleonics.com/figures/home/hero.png"}}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "ICX-Series / ICX-FieldHawk-N Product Manual", "description": "HomeProducts &#9662;Pulse & Delay Generators&#8250;HomeDigital Delay/Pulse&#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&#8250;Model 588BHigh-Curren", "url": "https://www.berkeleynucleonics.com/docs/bnc-icx-series-usb-lan-20ghz-manual.html", "author": {"@type": "Organization", "name": "Berkeley Nucleonics"}, "publisher": {"@type": "Organization", "name": "Berkeley Nucleonics Corporation", "logo": {"@type": "ImageObject", "url": "https://www.berkeleynucleonics.com/figures/home/hero.png"}}}</script>
 <!--/seo-meta-->
 <!--bnc-auth-->
 <link rel="stylesheet" href="../_shared/bnc-auth.css">
@@ -422,85 +466,77 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="sitenav"><div class="sitenav-inner">
   <a class="sitenav-logo" href="../home.html" aria-label="Berkeley Nucleonics home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
   <div class="ss-wrap"><span class="ss-field"><input class="ss-input" type="search" placeholder=" " aria-label="Search the site" autocomplete="off"><span class="ss-ph" aria-hidden="true">Search<span class="ss-dots"><i></i><i></i><i></i></span></span></span><div class="ss-panel" role="listbox"></div></div>
-  <nav class="sitenav-menu"><div class="nav-item"><a href="../home.html">Home</a></div><div class="nav-item"><a class="nav-trigger">Products &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../pdg-home.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../pdg-home.html">Home</a><div class="nav-grp3">Digital Delay/Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-525-datasheet.html" target="_blank" rel="noopener">Model 525</a><a href="bnc-model-575-datasheet.html" target="_blank" rel="noopener">Model 575</a><a href="bnc-model-577-datasheet.html" target="_blank" rel="noopener">Model 577</a><a href="bnc-model-588-datasheet.html" target="_blank" rel="noopener">Model 588</a><a href="bnc-model-725-datasheet.html" target="_blank" rel="noopener">Model 725</a></div></div><div class="nav-grp3">High-Density Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-588b-datasheet.html" target="_blank" rel="noopener">Model 588B</a></div></div><div class="nav-grp3">High-Current Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-507-datasheet.html" target="_blank" rel="noopener">Model 507</a><a href="bnc-model-508-datasheet.html" target="_blank" rel="noopener">Model 508</a></div></div><div class="nav-grp3">Femtosecond Delay<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-745t-datasheet.html" target="_blank" rel="noopener">Model 745T</a></div></div><div class="nav-grp3">High-Performance Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-765-datasheet.html" target="_blank" rel="noopener">Model 765</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">Model 765-HV</a></div></div><div class="nav-grp3">NIM Pulse Generator<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-pb-5-datasheet.html" target="_blank" rel="noopener">Model PB-5</a><a href="../nim-home.html#db-2" target="_blank" rel="noopener">Model DB-2</a><a href="../nim-home.html#ap-3" target="_blank" rel="noopener">Model AP-3</a><a href="../nim-home.html#tb-4" target="_blank" rel="noopener">Model TB-4</a></div></div><a href="pdg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rfsg-home.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../rfsg-home.html">Home</a><div class="nav-grp3">Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-835-datasheet.html" target="_blank" rel="noopener">Model 835</a><a href="bnc-model-845-datasheet.html" target="_blank" rel="noopener">Model 845</a><a href="bnc-model-855b-datasheet.html" target="_blank" rel="noopener">Model 855B</a><a href="bnc-model-865b-datasheet.html" target="_blank" rel="noopener">Model 865B</a><a href="bnc-model-870a-datasheet.html" target="_blank" rel="noopener">Model 870A</a><a href="bnc-model-871-datasheet.html" target="_blank" rel="noopener">Model 871</a><a href="bnc-model-805sg-datasheet.html" target="_blank" rel="noopener">Model 805-SG</a><a href="bnc-model-845oem-datasheet.html" target="_blank" rel="noopener">Model 845-OEM</a><a href="bnc-rfs-1000-datasheet.html" target="_blank" rel="noopener">RFS-1000 USB Series</a></div></div><div class="nav-grp3">Synthesizers &amp; Sources<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-805m-datasheet.html" target="_blank" rel="noopener">Model 805-M</a><a href="bnc-model-825m-datasheet.html" target="_blank" rel="noopener">Model 825-M</a><a href="bnc-model-845m-datasheet.html" target="_blank" rel="noopener">Model 845-M</a><a href="bnc-model-866m-datasheet.html" target="_blank" rel="noopener">Model 866-M</a><a href="bnc-model-865bm-datasheet.html" target="_blank" rel="noopener">Model 865B-M</a><a href="bnc-model-865bm-40x-datasheet.html" target="_blank" rel="noopener">Model 865B-M-40-X</a></div></div><div class="nav-grp3">Vector Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-875-datasheet.html" target="_blank" rel="noopener">Model 875</a><a href="bnc-rfs-7060-u-datasheet.html" target="_blank" rel="noopener">RFS-7060-U</a><a href="bnc-rfs-7060-t-datasheet.html" target="_blank" rel="noopener">RFS-7060-T</a></div></div><div class="nav-grp3">RF USB Power Sensors<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-12100-power-sensor-datasheet.html" target="_blank" rel="noopener">Model 12100 Series Power Sensors</a></div></div><div class="nav-grp3">Phase Noise Analyzers<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-7000-series-phase-noise-datasheet.html" target="_blank" rel="noopener">7000 Series (7070 / 7300 / 7340)</a></div></div><a href="rfsg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../scintiq-home.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../scintiq-home.html">ScintIQ Home</a><a href="bnc-scintiq-naitl-datasheet.html" target="_blank" rel="noopener">NaI(Tl)</a><a href="bnc-scintiq-csitl-datasheet.html" target="_blank" rel="noopener">CsI(Tl)</a><a href="bnc-scintiq-labr3-datasheet.html" target="_blank" rel="noopener">LaBr3(Ce)</a><a href="bnc-scintiq-cebr3-datasheet.html" target="_blank" rel="noopener">CeBr3</a><a href="bnc-scintiq-lbc-datasheet.html" target="_blank" rel="noopener">LBC</a><a href="bnc-scintiq-sri2eu-datasheet.html" target="_blank" rel="noopener">SrI2(Eu)</a><a href="bnc-scintiq-cllbc-datasheet.html" target="_blank" rel="noopener">CLLBC</a><a href="bnc-scintiq-clyc-datasheet.html" target="_blank" rel="noopener">CLYC:Ce</a><a href="bnc-scintiq-baf2-datasheet.html" target="_blank" rel="noopener">BaF2</a><a href="bnc-scintiq-yapce-datasheet.html" target="_blank" rel="noopener">YAP:Ce</a><a href="bnc-scintiq-yag-datasheet.html" target="_blank" rel="noopener">YAG:Ce</a><a href="bnc-scintiq-gaggce-datasheet.html" target="_blank" rel="noopener">GAGG:Ce</a><a href="bnc-scintiq-lyso-datasheet.html" target="_blank" rel="noopener">LYSO</a><a href="bnc-scintiq-bgo-datasheet.html" target="_blank" rel="noopener">BGO</a><a href="scintiq-material-comparison.html" target="_blank" rel="noopener">Material Comparison Tool</a><a href="scintiq-selector.html" target="_blank" rel="noopener">Detector Selector</a><a href="scintiq-configurator.html" target="_blank" rel="noopener">Detector Configurator</a><a href="scintiq-index.html" target="_blank" rel="noopener">All ScintIQ Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../awg-home.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../awg-home.html">AWG Home</a><a href="bnc-awg-686-datasheet.html" target="_blank" rel="noopener">Model 686</a><a href="bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685</a><a href="bnc-awg-685c-datasheet.html" target="_blank" rel="noopener">Model 685C</a><a href="bnc-awg-675-datasheet.html" target="_blank" rel="noopener">Model 675</a><a href="bnc-awg-676-datasheet.html" target="_blank" rel="noopener">Model 676</a><a href="bnc-awg-670c-datasheet.html" target="_blank" rel="noopener">Model 670C</a><a href="bnc-awg-645-datasheet.html" target="_blank" rel="noopener">Model 645</a><a href="bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener">Model A2255</a><a href="bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener">Model A2085</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../riid-home.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../riid-home.html">Isotope ID Home</a><div class="nav-grp3">Handheld<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-sam-920-sprd-datasheet.html" target="_blank" rel="noopener">SAM 920+ SPRD</a><a href="bnc-sam-940-plus-datasheet.html" target="_blank" rel="noopener">SAM 940+</a><a href="bnc-sam-950-datasheet.html" target="_blank" rel="noopener">SAM 950</a><a href="bnc-model-907-datasheet.html" target="_blank" rel="noopener">Model 907</a><a href="bnc-model-951-datasheet.html" target="_blank" rel="noopener">Model 951</a><a href="bnc-pm1703gna-datasheet.html" target="_blank" rel="noopener">Model 1703</a><a href="bnc-metrad-1-datasheet.html" target="_blank" rel="noopener">MetRad 1</a></div></div><div class="nav-grp3">Backpack/Vehicle/Lab/Drone<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-medusa-ms-series-datasheet.html" target="_blank" rel="noopener">MS Series</a><a href="bnc-sampack-120-datasheet.html" target="_blank" rel="noopener">SAMpack 120</a><a href="bnc-sammobile-150-datasheet.html" target="_blank" rel="noopener">SAMmobile 150</a><a href="bnc-model-960-datasheet.html" target="_blank" rel="noopener">Model 960 Monitoring System</a><a href="bnc-model-970-mca-datasheet.html" target="_blank" rel="noopener">Model 970 MCA</a><a href="bnc-model-971-datasheet.html" target="_blank" rel="noopener">Model 971</a></div></div><a href="riid-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../dei-home.html">High Power/Current Pulsers &amp; Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../dei-home.html">DEI Pulsers Home</a><a href="bnc-dei-pvx-4151-datasheet.html" target="_blank" rel="noopener">PVX-4151 (&plusmn;1.5 kV)</a><a href="bnc-dei-pvx-4141-datasheet.html" target="_blank" rel="noopener">PVX-4141 Pulse Generator</a><a href="bnc-dei-pvx-4110-datasheet.html" target="_blank" rel="noopener">PVX-4110 (±10 kV)</a><a href="bnc-dei-pvx-4000-datasheet.html" target="_blank" rel="noopener">PVX-4000 Series</a><a href="bnc-dei-pcx-7421-datasheet.html" target="_blank" rel="noopener">PCX-7421 Laser Diode Driver</a><a href="bnc-dei-pco-6131-datasheet.html" target="_blank" rel="noopener">PCO-6131 (125 A OEM)</a><a href="bnc-dei-pcm-7700-datasheet.html" target="_blank" rel="noopener">PCM-7700 (200 A)</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">765-HV (&plusmn;50 V, 1 A)</a><a href="../hvx-home.html">HVX High Voltage Power Supplies</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rtsa-home.html">Real-Time Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../rtsa-home.html">ICX Home</a><a href="bnc-icx-fieldhawk-handheld-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk</a><a href="bnc-icx-fieldhawk-rugged-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk-R</a><a href="bnc-icx-fieldhawk-usb-datasheet.html" target="_blank" rel="noopener">ICX-Series USB</a><a href="bnc-ant-106-directional-antenna-manual.html" target="_blank" rel="noopener">ANT-100G Antenna (accessory)</a><a href="bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener">Product Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../bnc-scientific.html">BNC Scientific</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../brightspec-home.html">BrightSpec MCAs</a><a href="../spectechniques-home.html">SpecTechniques Radiation Sources</a><a href="../megiq-home.html">MegIQ VNAs &amp; Antenna Measurement</a><a href="../medusa-home.html">MedUSA Environmental</a><a href="../heinzinger-home.html">Heinzinger High Voltage</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Applications &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-pdg-physics-timing.html">Physics &amp; Accelerator Timing</a><a href="brief-pdg-laser-qswitch-pockels.html">Laser Q-Switch &amp; Pockels Cell</a><a href="brief-pdg-lidar-ranging.html">LiDAR &amp; Time-of-Flight Ranging</a><a href="brief-pdg-quantum-coldatom.html">Quantum &amp; Cold-Atom Experiments</a><a href="brief-pdg-ate-production.html">Automated Test &amp; Production</a><a href="brief-pdg-medical-imaging-gating.html">Medical Imaging &amp; Gating</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rfsg-radar-ew.html">Radar &amp; Electronic Warfare</a><a href="brief-rfsg-satcom.html">SATCOM &amp; Ground Station</a><a href="brief-rfsg-quantum-control.html">Quantum &amp; Qubit Control</a><a href="brief-rfsg-wireless-5g6g.html">5G / 6G &amp; Wireless Test</a><a href="brief-rfsg-ate-receiver-test.html">ATE &amp; Receiver Test</a><a href="brief-rfsg-aerospace-defense.html">Aerospace &amp; Defense</a><a href="brief-rfsg-antenna-emc.html">Antenna &amp; EMC Test</a><a href="brief-power-sensor-measurement-principles.html">RF Power Sensor: Measurement Principles</a><a href="brief-power-sensor-essential-tools.html">RF Power Sensors: Essential Tools</a><a href="brief-power-sensor-meters-vs-sensors.html">Power Meters and Power Sensors</a><a href="brief-power-sensor-radar-satellite.html">Power Sensors: Radar & Satellite</a><a href="brief-power-sensor-mri.html">A Closer Look at MRI</a><a href="brief-power-sensor-temperature.html">12100 Power Sensor Temperature Sensitivity</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-scint-homeland-security.html">Homeland Security &amp; Threat Detection</a><a href="brief-scint-medical-imaging.html">Medical Imaging</a><a href="brief-scint-environmental-monitoring.html">Environmental Monitoring</a><a href="brief-scint-high-energy-physics.html">High-Energy &amp; Nuclear Physics</a><a href="brief-scint-neutron-detection.html">Neutron Detection</a><a href="brief-scint-well-logging-industrial.html">Well Logging &amp; Industrial</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-hel-icf-timing.html">HEL / ICF Front-End Timing</a><a href="brief-awg-lidar-testing.html">LiDAR Testing</a><a href="brief-awg-laser-diode-pulse.html">Pulsed Laser Diode Test</a><a href="brief-awg-quantum.html">Quantum: QKD &amp; Sensing</a><a href="brief-awg-radar-ew.html">Radar &amp; EW Simulation</a><a href="brief-awg-photonics.html">Optics &amp; Photonics</a><a href="brief-awg-mri.html">MRI &amp; Medical Imaging</a><a href="brief-awg-radar-fires.html">Radar &amp; Fire-Control</a><a href="brief-awg-spg.html">Serial Pattern Generation</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-riid-homeland-security.html">Homeland Security &amp; Border</a><a href="brief-riid-first-responders-hazmat.html">First Responders &amp; HazMat</a><a href="brief-riid-nuclear-power.html">Nuclear Power Facilities</a><a href="brief-riid-scrap-metal.html">Scrap Metal &amp; Recycling</a><a href="brief-riid-naval-maritime.html">Naval &amp; Maritime</a><a href="brief-riid-environmental.html">Environmental Monitoring</a><a href="brief-riid-secondary-screening.html">Secondary Screening &amp; Reachback</a></div></div><div class="nav-grp2">High Power/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-dei-mass-spectrometry.html">Time-of-Flight Mass Spectrometry</a><a href="brief-dei-pockels-q-switch.html">Pockels Cell &amp; Q-Switch Driving</a><a href="brief-dei-laser-diode-arrays.html">Laser Diode &amp; Array Driving</a><a href="brief-dei-lidar-rangefinding.html">LiDAR &amp; Rangefinding</a><a href="brief-dei-directed-energy-hel.html">Directed-Energy &amp; HEL Systems</a><a href="brief-dei-accelerators-kickers.html">Accelerators &amp; Beam Kickers</a><a href="brief-dei-eo-modulation-gating.html">Electro-Optic Modulation &amp; Gating</a><a href="brief-dei-hv-test-detector-bias.html">HV Test &amp; Detector Biasing</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rf-geolocation-mapping.html">RF Geolocation &amp; Mapping</a><a href="brief-5g-cellular-coverage.html">5G &amp; Cellular Coverage</a><a href="brief-spectrum-monitoring.html">Spectrum Monitoring</a><a href="brief-ew-sigint.html">EW &amp; SIGINT</a><a href="brief-drone-spectrum-monitoring.html">Drone Spectrum Monitoring</a><a href="brief-rd-university-kits.html">R&amp;D &amp; University Kits</a><a href="brief-aerospace-defense-radar.html">Aerospace, Defense &amp; Radar</a><a href="brief-wireless-5g6g-validation.html">Wireless &amp; 5G/6G Validation</a><a href="brief-emi-emc-precompliance.html">EMI / EMC Pre-Compliance</a><a href="brief-physics-synthesizer.html">Physics &amp; Synthesizer Diagnostics</a></div></div><div class="nav-grp2">Software Defined Radios<span class="nc">&#8250;</span><div class="nav-sub"><a href="handbook-sdr-rtsa.html">SDR Integration Handbook (ICX-FieldHawk)</a><a href="handbook-sdr-products.html">SDR Product Handbook (Choosing a Receiver)</a></div></div><div class="nav-grp2">HVX High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-hvx-semiconductor-hv-test.html">Semiconductor HV Test</a><a href="brief-hvx-emobility-ev-test.html">E-Mobility / EV Test</a><a href="brief-hvx-double-pulse.html">Double-Pulse Test</a><a href="brief-hvx-end-of-line-test.html">End-of-Line Test</a><a href="brief-hvx-calibration-metrology.html">Calibration &amp; Metrology</a><a href="brief-hvx-rd-hv-lab.html">R&amp;D / HV Lab</a><a href="brief-hvx-capacitor-charging.html">Capacitor Charging / Pulsed Power</a><a href="brief-hvx-mass-spectrometry.html">Mass Spectrometry</a><a href="brief-hvx-xray-systems.html">X-Ray Generation Systems</a><a href="brief-hvx-ebeam-ion-beam.html">Electron-Beam &amp; Ion-Beam</a><a href="brief-hvx-electrostatic-coating.html">Electrostatic &amp; Coating</a><a href="brief-hvx-detectors-nuclear.html">Detectors &amp; Nuclear</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Technical Notes &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-pdg-delay-vs-pulse.html">Delay vs Pulse Generators</a><a href="article-pdg-jitter-timing-accuracy.html">Jitter, Resolution &amp; Timing Accuracy</a><a href="article-pdg-triggering-sync.html">Triggering &amp; Synchronization</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-rfsg-phase-noise.html">Understanding Phase Noise</a><a href="article-rfsg-switching-speed.html">Frequency Switching Speed</a><a href="article-rfsg-vector-modulation.html">Vector Modulation &amp; I/Q</a><a href="article-rfsg-choosing-signal-generator.html">How to Choose a Signal Generator</a><a href="article-pnt-what-is-a-phase-noise-analyzer.html">What Is a Phase Noise Analyzer?</a><a href="article-pnt-phase-noise-testing-basics.html">Phase Noise Testing Basics</a><a href="appnote-pnt-cross-correlation-ocxo.html">Cross-Correlation &amp; OCXOs</a><a href="appnote-pnt-additive-phase-noise.html">Additive Phase Noise</a><a href="article-pnt-automated-pulsed-measurements.html">Automated Pulsed Measurements</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-scint-choosing-a-scintillator.html">How to Choose a Scintillator</a><a href="article-scint-neutron-gamma-discrimination.html">Neutron / Gamma Discrimination</a><a href="article-scint-sipm-vs-pmt-readout.html">SiPM vs PMT Readout</a><a href="article-scint-energy-resolution-explained.html">Understanding Energy Resolution</a><a href="/books/scintillators/index.html">Nuts &amp; Bolts of Scintillation Detectors</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-tektronix-awg7000-migration.html">Replacing Legacy 7000 Series ARBs</a><a href="article-awg-685-optics-photonics-lasers.html">685 AWGs in Optics &amp; Photonics</a><a href="article-awg-685-optics-photonics-lasers.html">685 for Optics, Photonics &amp; Lasers</a><a href="article-awg-digital-option.html">ArbRider Digital Option</a><a href="/books/arbitrary-waveform/index.html">Nuts &amp; Bolts of Arbitrary Waveform Generators</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-riid-how-to-choose.html">How to Choose an Isotope Identifier</a><a href="article-riid-detector-materials.html">NaI vs LaBr3 vs CeBr3 Detectors</a><a href="article-riid-neutron-detection.html">Neutron Detection Explained</a><a href="/books/riids-for-hazmat/index.html">Nuts &amp; Bolts: RIIDs for HazMat</a></div></div><div class="nav-grp2">High Power/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-dei-choosing-pulse-generator.html">Selecting an HV Pulse Generator</a><a href="article-dei-driving-laser-diodes.html">Driving Laser Diodes Safely</a><a href="article-dei-capacitive-load-pulsing.html">Capacitive-Load Pulsing</a><a href="article-dei-slowing-rise-time.html">How Do I Slow the Rise Time?</a><a href="/books/high-power-pulse/index.html">Nuts &amp; Bolts of High Power</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="bnc-how-to-choose-handheld-analyzer.html">How to Choose a Handheld Analyzer</a><a href="article-rtsa-practical-guide.html">RTSA Practical Guide</a><a href="article-ew-rtsa.html">RTSA for Electronic Warfare</a><a href="/books/realtime-spectrum-analyzers/index.html">Nuts &amp; Bolts of RTSAs</a></div></div><div class="nav-grp2">HVX High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-hvx-choosing-hv-supply.html">Choosing an HV Supply</a><a href="article-hvx-polarity-floating.html">Polarity &amp; Floating Outputs</a><a href="article-hvx-ripple-regulation.html">Ripple &amp; Regulation</a><a href="/books/high-power-pulse/index.html">Nuts &amp; Bolts of High Power</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Support &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2" data-bnc-staff>Employee Portal<span class="nc">&#8250;</span><div class="nav-sub"><a href="/employee-portal.html#visitors" target="_blank" rel="noopener">Website Visitor Review</a><a href="/employee-portal.html#pending" target="_blank" rel="noopener">Website Pending Actions</a><a href="/employee-portal.html#docs" target="_blank" rel="noopener">Internal Documentation</a></div></div><div class="nav-grp2">Product Documentation<span class="nc">&#8250;</span><div class="nav-sub"><a href="pdg-index.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators</a><a href="rfsg-index.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators &amp; Sensors</a><a href="scintiq-index.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ)</a><a href="awg-index.html" target="_blank" rel="noopener">Arbitrary Waveform Generators</a><a href="riid-index.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection</a><a href="dei-index.html" target="_blank" rel="noopener">High Power/Current Pulsers</a><a href="index.html" target="_blank" rel="noopener">ICX-FieldHawk Spectrum Analyzers</a><a href="hvx-index.html" target="_blank" rel="noopener">HVX High Voltage Power Supplies</a><a href="webinar-library.html" target="_blank" rel="noopener">Webinar Library</a></div></div><div class="nav-grp2">Service &amp; Resources<span class="nc">&#8250;</span><div class="nav-sub"><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a><a href="../pricing.html">Budgetary Pricing</a><a href="../contact.html" target="_blank" rel="noopener">Contact Regional Representative</a><a href="software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a><a href="../obsolete-products.html">Obsolete Product Support</a><a href="../academy-free-access.html">Free Academy Course Access</a></div></div><div class="nav-grp2">Frequently Asked Questions<span class="nc">&#8250;</span><div class="nav-sub"><a href="../faq.html">View all FAQs</a><a href="../faq.html#cat-pdg">Pulse &amp; Delay Generators</a><a href="../faq.html#cat-awg">Waveform Generators</a><a href="../faq.html#cat-rf">RF &amp; Microwave</a><a href="../faq.html#cat-pulsed-power">Pulsed Power</a><a href="../faq.html#cat-radiation">Radiation Detection &amp; Isotope Identification</a><a href="../faq.html#cat-scintillation">Scintillation Detectors</a><a href="../faq.html#cat-scientific">BNC Scientific</a><a href="../faq.html#cat-ordering">Ordering &amp; Contact</a></div></div><div class="nav-grp2">About Us<span class="nc">&#8250;</span><div class="nav-sub"><a href="../our-history.html">Our History</a><a href="../management.html">Management Team</a><a href="press-room.html">Historical Press Room</a></div></div></div></div></nav>
+  <nav class="sitenav-menu"><div class="nav-item"><a href="../home.html">Home</a></div><div class="nav-item"><a class="nav-trigger">Products &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../pdg-home.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../pdg-home.html">Home</a><div class="nav-grp3">Digital Delay/Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-525-datasheet.html" target="_blank" rel="noopener">Model 525</a><a href="bnc-model-575-datasheet.html" target="_blank" rel="noopener">Model 575</a><a href="bnc-model-577-datasheet.html" target="_blank" rel="noopener">Model 577</a><a href="bnc-model-588-datasheet.html" target="_blank" rel="noopener">Model 588</a><a href="bnc-model-725-datasheet.html" target="_blank" rel="noopener">Model 725</a><a href="bnc-model-750-datasheet.html" target="_blank" rel="noopener">Model 750</a></div></div><div class="nav-grp3">High-Density Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-588b-datasheet.html" target="_blank" rel="noopener">Model 588B</a></div></div><div class="nav-grp3">High-Current Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-507-datasheet.html" target="_blank" rel="noopener">Model 507</a><a href="bnc-model-508-datasheet.html" target="_blank" rel="noopener">Model 508</a></div></div><div class="nav-grp3">Femtosecond Delay<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-745t-datasheet.html" target="_blank" rel="noopener">Model 745T</a></div></div><div class="nav-grp3">High-Performance Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-765-datasheet.html" target="_blank" rel="noopener">Model 765</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">Model 765-HV</a></div></div><div class="nav-grp3">NIM Pulse Generator<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-pb-5-datasheet.html" target="_blank" rel="noopener">Model PB-5</a><a href="../nim-home.html#db-2" target="_blank" rel="noopener">Model DB-2</a><a href="../nim-home.html#ap-3" target="_blank" rel="noopener">Model AP-3</a><a href="../nim-home.html#tb-4" target="_blank" rel="noopener">Model TB-4</a></div></div><a href="pdg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rfsg-home.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../rfsg-home.html">Home</a><div class="nav-grp3">Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-835-datasheet.html" target="_blank" rel="noopener">Model 835</a><a href="bnc-model-845-datasheet.html" target="_blank" rel="noopener">Model 845</a><a href="bnc-model-855b-datasheet.html" target="_blank" rel="noopener">Model 855B</a><a href="bnc-model-865b-datasheet.html" target="_blank" rel="noopener">Model 865B</a><a href="bnc-model-870a-datasheet.html" target="_blank" rel="noopener">Model 870A</a><a href="bnc-model-871-datasheet.html" target="_blank" rel="noopener">Model 871</a><a href="bnc-model-805sg-datasheet.html" target="_blank" rel="noopener">Model 805-SG</a><a href="bnc-model-845oem-datasheet.html" target="_blank" rel="noopener">Model 845-OEM</a><a href="bnc-rfs-1000-datasheet.html" target="_blank" rel="noopener">RFS-1000 USB Series</a></div></div><div class="nav-grp3">Synthesizers &amp; Sources<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-805m-datasheet.html" target="_blank" rel="noopener">Model 805-M</a><a href="bnc-model-825m-datasheet.html" target="_blank" rel="noopener">Model 825-M</a><a href="bnc-model-845m-datasheet.html" target="_blank" rel="noopener">Model 845-M</a><a href="bnc-model-866m-datasheet.html" target="_blank" rel="noopener">Model 866-M</a><a href="bnc-model-865bm-datasheet.html" target="_blank" rel="noopener">Model 865B-M</a><a href="bnc-model-865bm-40x-datasheet.html" target="_blank" rel="noopener">Model 865B-M-40-X</a></div></div><div class="nav-grp3">Vector Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-875-datasheet.html" target="_blank" rel="noopener">Model 875</a><a href="bnc-rfs-7060-u-datasheet.html" target="_blank" rel="noopener">RFS-7060-U</a><a href="bnc-rfs-7060-t-datasheet.html" target="_blank" rel="noopener">RFS-7060-T</a></div></div><div class="nav-grp3">RF USB Power Sensors<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-12100-power-sensor-datasheet.html" target="_blank" rel="noopener">Model 12100 Series Power Sensors</a></div></div><div class="nav-grp3">Phase Noise Analyzers<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-7000-series-phase-noise-datasheet.html" target="_blank" rel="noopener">7000 Series (7070 / 7300 / 7340)</a></div></div><a href="rfsg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../scintiq-home.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../scintiq-home.html">ScintIQ Home</a><a href="bnc-scintiq-naitl-datasheet.html" target="_blank" rel="noopener">NaI(Tl)</a><a href="bnc-scintiq-csitl-datasheet.html" target="_blank" rel="noopener">CsI(Tl)</a><a href="bnc-scintiq-labr3-datasheet.html" target="_blank" rel="noopener">LaBr3(Ce)</a><a href="bnc-scintiq-cebr3-datasheet.html" target="_blank" rel="noopener">CeBr3</a><a href="bnc-scintiq-lbc-datasheet.html" target="_blank" rel="noopener">LBC</a><a href="bnc-scintiq-sri2eu-datasheet.html" target="_blank" rel="noopener">SrI2(Eu)</a><a href="bnc-scintiq-cllbc-datasheet.html" target="_blank" rel="noopener">CLLBC</a><a href="bnc-scintiq-clyc-datasheet.html" target="_blank" rel="noopener">CLYC:Ce</a><a href="bnc-scintiq-baf2-datasheet.html" target="_blank" rel="noopener">BaF2</a><a href="bnc-scintiq-yapce-datasheet.html" target="_blank" rel="noopener">YAP:Ce</a><a href="bnc-scintiq-yag-datasheet.html" target="_blank" rel="noopener">YAG:Ce</a><a href="bnc-scintiq-gaggce-datasheet.html" target="_blank" rel="noopener">GAGG:Ce</a><a href="bnc-scintiq-lyso-datasheet.html" target="_blank" rel="noopener">LYSO</a><a href="bnc-scintiq-bgo-datasheet.html" target="_blank" rel="noopener">BGO</a><a href="scintiq-material-comparison.html" target="_blank" rel="noopener">Material Comparison Tool</a><a href="scintiq-selector.html" target="_blank" rel="noopener">Detector Selector</a><a href="scintiq-configurator.html" target="_blank" rel="noopener">Detector Configurator</a><a href="scintiq-index.html" target="_blank" rel="noopener">All ScintIQ Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../awg-home.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../awg-home.html">AWG Home</a><a href="bnc-awg-686-datasheet.html" target="_blank" rel="noopener">Model 686</a><a href="bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685</a><a href="bnc-awg-685c-datasheet.html" target="_blank" rel="noopener">Model 685C</a><a href="bnc-awg-675-datasheet.html" target="_blank" rel="noopener">Model 675</a><a href="bnc-awg-676-datasheet.html" target="_blank" rel="noopener">Model 676</a><a href="bnc-awg-670c-datasheet.html" target="_blank" rel="noopener">Model 670C</a><a href="bnc-awg-645-datasheet.html" target="_blank" rel="noopener">Model 645</a><a href="bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener">Model A2255</a><a href="bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener">Model A2085</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../riid-home.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../riid-home.html">Isotope ID Home</a><div class="nav-grp3">Handheld<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-sam-920-sprd-datasheet.html" target="_blank" rel="noopener">SAM 920+ SPRD</a><a href="bnc-sam-940-plus-datasheet.html" target="_blank" rel="noopener">SAM 940+</a><a href="bnc-sam-950-datasheet.html" target="_blank" rel="noopener">SAM 950</a><a href="bnc-model-907-datasheet.html" target="_blank" rel="noopener">Model 907</a><a href="bnc-model-951-datasheet.html" target="_blank" rel="noopener">Model 951</a><a href="bnc-pm1703gna-datasheet.html" target="_blank" rel="noopener">Model 1703</a><a href="bnc-metrad-1-datasheet.html" target="_blank" rel="noopener">MetRad 1</a></div></div><div class="nav-grp3">Backpack/Vehicle/Lab/Drone<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-medusa-ms-series-datasheet.html" target="_blank" rel="noopener">MS Series</a><a href="bnc-sampack-120-datasheet.html" target="_blank" rel="noopener">SAMpack 120</a><a href="bnc-sammobile-150-datasheet.html" target="_blank" rel="noopener">SAMmobile 150</a><a href="bnc-model-960-datasheet.html" target="_blank" rel="noopener">Model 960 Monitoring System</a><a href="bnc-model-970-mca-datasheet.html" target="_blank" rel="noopener">Model 970 MCA</a><a href="bnc-model-971-datasheet.html" target="_blank" rel="noopener">Model 971</a></div></div><a href="riid-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../dei-home.html">High Power/Current Pulsers &amp; Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../dei-home.html">DEI Pulsers Home</a><a href="bnc-dei-pvx-4151-datasheet.html" target="_blank" rel="noopener">PVX-4151 (&plusmn;1.5 kV)</a><a href="bnc-dei-pvx-4141-datasheet.html" target="_blank" rel="noopener">PVX-4141 Pulse Generator</a><a href="bnc-dei-pvx-4110-datasheet.html" target="_blank" rel="noopener">PVX-4110 (±10 kV)</a><a href="bnc-dei-pvx-4000-datasheet.html" target="_blank" rel="noopener">PVX-4000 Series</a><a href="bnc-dei-pcx-7421-datasheet.html" target="_blank" rel="noopener">PCX-7421 Laser Diode Driver</a><a href="bnc-dei-pco-6131-datasheet.html" target="_blank" rel="noopener">PCO-6131 (125 A OEM)</a><a href="bnc-dei-pcm-7700-datasheet.html" target="_blank" rel="noopener">PCM-7700 (200 A)</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">765-HV (&plusmn;50 V, 1 A)</a><a href="../hvx-home.html">HVX High Voltage Power Supplies</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rtsa-home.html">Real-Time Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../rtsa-home.html">ICX Home</a><a href="bnc-icx-fieldhawk-handheld-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk</a><a href="bnc-icx-fieldhawk-rugged-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk-R</a><a href="bnc-icx-fieldhawk-usb-datasheet.html" target="_blank" rel="noopener">ICX-Series USB</a><a href="bnc-ant-106-directional-antenna-manual.html" target="_blank" rel="noopener">ANT-100G Antenna (accessory)</a><a href="bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener">Product Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../bnc-scientific.html">BNC Scientific</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../brightspec-home.html">BrightSpec MCAs</a><a href="../spectechniques-home.html">SpecTechniques Radiation Sources</a><a href="../megiq-home.html">MegIQ VNAs &amp; Antenna Measurement</a><a href="../medusa-home.html">MedUSA Environmental</a><a href="../heinzinger-home.html">Heinzinger High Voltage</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Applications &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-pdg-physics-timing.html">Physics &amp; Accelerator Timing</a><a href="brief-pdg-laser-qswitch-pockels.html">Laser Q-Switch &amp; Pockels Cell</a><a href="brief-pdg-lidar-ranging.html">LiDAR &amp; Time-of-Flight Ranging</a><a href="brief-pdg-quantum-coldatom.html">Quantum &amp; Cold-Atom Experiments</a><a href="brief-pdg-ate-production.html">Automated Test &amp; Production</a><a href="brief-pdg-medical-imaging-gating.html">Medical Imaging &amp; Gating</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rfsg-radar-ew.html">Radar &amp; Electronic Warfare</a><a href="brief-rfsg-satcom.html">SATCOM &amp; Ground Station</a><a href="brief-rfsg-quantum-control.html">Quantum &amp; Qubit Control</a><a href="brief-rfsg-wireless-5g6g.html">5G / 6G &amp; Wireless Test</a><a href="brief-rfsg-ate-receiver-test.html">ATE &amp; Receiver Test</a><a href="brief-rfsg-aerospace-defense.html">Aerospace &amp; Defense</a><a href="brief-rfsg-antenna-emc.html">Antenna &amp; EMC Test</a><a href="brief-power-sensor-measurement-principles.html">RF Power Sensor: Measurement Principles</a><a href="brief-power-sensor-essential-tools.html">RF Power Sensors: Essential Tools</a><a href="brief-power-sensor-meters-vs-sensors.html">Power Meters and Power Sensors</a><a href="brief-power-sensor-radar-satellite.html">Power Sensors: Radar & Satellite</a><a href="brief-power-sensor-mri.html">A Closer Look at MRI</a><a href="brief-power-sensor-temperature.html">12100 Power Sensor Temperature Sensitivity</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-scint-homeland-security.html">Homeland Security &amp; Threat Detection</a><a href="brief-scint-medical-imaging.html">Medical Imaging</a><a href="brief-scint-environmental-monitoring.html">Environmental Monitoring</a><a href="brief-scint-high-energy-physics.html">High-Energy &amp; Nuclear Physics</a><a href="brief-scint-neutron-detection.html">Neutron Detection</a><a href="brief-scint-well-logging-industrial.html">Well Logging &amp; Industrial</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-hel-icf-timing.html">HEL / ICF Front-End Timing</a><a href="brief-awg-lidar-testing.html">LiDAR Testing</a><a href="brief-awg-laser-diode-pulse.html">Pulsed Laser Diode Test</a><a href="brief-awg-quantum.html">Quantum: QKD &amp; Sensing</a><a href="brief-awg-radar-ew.html">Radar &amp; EW Simulation</a><a href="brief-awg-photonics.html">Optics &amp; Photonics</a><a href="brief-awg-mri.html">MRI &amp; Medical Imaging</a><a href="brief-awg-radar-fires.html">Radar &amp; Fire-Control</a><a href="brief-awg-spg.html">Serial Pattern Generation</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-riid-homeland-security.html">Homeland Security &amp; Border</a><a href="brief-riid-first-responders-hazmat.html">First Responders &amp; HazMat</a><a href="brief-riid-nuclear-power.html">Nuclear Power Facilities</a><a href="brief-riid-scrap-metal.html">Scrap Metal &amp; Recycling</a><a href="brief-riid-naval-maritime.html">Naval &amp; Maritime</a><a href="brief-riid-environmental.html">Environmental Monitoring</a><a href="brief-riid-secondary-screening.html">Secondary Screening &amp; Reachback</a></div></div><div class="nav-grp2">High Voltage/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-dei-mass-spectrometry.html">Time-of-Flight Mass Spectrometry</a><a href="brief-dei-pockels-q-switch.html">Pockels Cell &amp; Q-Switch Driving</a><a href="brief-dei-laser-diode-arrays.html">Laser Diode &amp; Array Driving</a><a href="brief-dei-lidar-rangefinding.html">LiDAR &amp; Rangefinding</a><a href="brief-dei-directed-energy-hel.html">Directed-Energy &amp; HEL Systems</a><a href="brief-dei-accelerators-kickers.html">Accelerators &amp; Beam Kickers</a><a href="brief-dei-eo-modulation-gating.html">Electro-Optic Modulation &amp; Gating</a><a href="brief-dei-hv-test-detector-bias.html">HV Test &amp; Detector Biasing</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rf-geolocation-mapping.html">RF Geolocation &amp; Mapping</a><a href="brief-5g-cellular-coverage.html">5G &amp; Cellular Coverage</a><a href="brief-spectrum-monitoring.html">Spectrum Monitoring</a><a href="brief-ew-sigint.html">EW &amp; SIGINT</a><a href="brief-drone-spectrum-monitoring.html">Drone Spectrum Monitoring</a><a href="brief-rd-university-kits.html">R&amp;D &amp; University Kits</a><a href="brief-aerospace-defense-radar.html">Aerospace, Defense &amp; Radar</a><a href="brief-wireless-5g6g-validation.html">Wireless &amp; 5G/6G Validation</a><a href="brief-emi-emc-precompliance.html">EMI / EMC Pre-Compliance</a><a href="brief-physics-synthesizer.html">Physics &amp; Synthesizer Diagnostics</a></div></div><div class="nav-grp2">Software Defined Radios<span class="nc">&#8250;</span><div class="nav-sub"><a href="handbook-sdr-rtsa.html">SDR Integration Handbook (ICX-FieldHawk)</a><a href="handbook-sdr-products.html">SDR Product Handbook (Choosing a Receiver)</a></div></div><div class="nav-grp2">HVX High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-hvx-semiconductor-hv-test.html">Semiconductor HV Test</a><a href="brief-hvx-emobility-ev-test.html">E-Mobility / EV Test</a><a href="brief-hvx-double-pulse.html">Double-Pulse Test</a><a href="brief-hvx-end-of-line-test.html">End-of-Line Test</a><a href="brief-hvx-calibration-metrology.html">Calibration &amp; Metrology</a><a href="brief-hvx-rd-hv-lab.html">R&amp;D / HV Lab</a><a href="brief-hvx-capacitor-charging.html">Capacitor Charging / Pulsed Power</a><a href="brief-hvx-mass-spectrometry.html">Mass Spectrometry</a><a href="brief-hvx-xray-systems.html">X-Ray Generation Systems</a><a href="brief-hvx-ebeam-ion-beam.html">Electron-Beam &amp; Ion-Beam</a><a href="brief-hvx-electrostatic-coating.html">Electrostatic &amp; Coating</a><a href="brief-hvx-detectors-nuclear.html">Detectors &amp; Nuclear</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Technical Notes &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-pdg-delay-vs-pulse.html">Delay vs Pulse Generators</a><a href="article-pdg-jitter-timing-accuracy.html">Jitter, Resolution &amp; Timing Accuracy</a><a href="article-pdg-triggering-sync.html">Triggering &amp; Synchronization</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-rfsg-phase-noise.html">Understanding Phase Noise</a><a href="article-rfsg-switching-speed.html">Frequency Switching Speed</a><a href="article-rfsg-vector-modulation.html">Vector Modulation &amp; I/Q</a><a href="article-rfsg-choosing-signal-generator.html">How to Choose a Signal Generator</a><a href="article-pnt-what-is-a-phase-noise-analyzer.html">What Is a Phase Noise Analyzer?</a><a href="article-pnt-phase-noise-testing-basics.html">Phase Noise Testing Basics</a><a href="appnote-pnt-cross-correlation-ocxo.html">Cross-Correlation &amp; OCXOs</a><a href="appnote-pnt-additive-phase-noise.html">Additive Phase Noise</a><a href="article-pnt-automated-pulsed-measurements.html">Automated Pulsed Measurements</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-scint-choosing-a-scintillator.html">How to Choose a Scintillator</a><a href="article-scint-neutron-gamma-discrimination.html">Neutron / Gamma Discrimination</a><a href="article-scint-sipm-vs-pmt-readout.html">SiPM vs PMT Readout</a><a href="article-scint-energy-resolution-explained.html">Understanding Energy Resolution</a><a href="/books/scintillators/index.html">Nuts &amp; Bolts of Scintillation Detectors</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-tektronix-awg7000-migration.html">Replacing Legacy 7000 Series ARBs</a><a href="article-awg-685-optics-photonics-lasers.html">685 for Optics, Photonics &amp; Lasers</a><a href="article-awg-digital-option.html">ArbRider Digital Option</a><a href="/books/arbitrary-waveform/index.html">Nuts &amp; Bolts of Arbitrary Waveform Generators</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-riid-how-to-choose.html">How to Choose an Isotope Identifier</a><a href="article-riid-detector-materials.html">NaI vs LaBr3 vs CeBr3 Detectors</a><a href="article-riid-neutron-detection.html">Neutron Detection Explained</a><a href="/books/riids-for-hazmat/index.html">Nuts &amp; Bolts: RIIDs for HazMat</a></div></div><div class="nav-grp2">High Voltage/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-dei-choosing-pulse-generator.html">Selecting an HV Pulse Generator</a><a href="article-dei-driving-laser-diodes.html">Driving Laser Diodes Safely</a><a href="article-dei-capacitive-load-pulsing.html">Capacitive-Load Pulsing</a><a href="article-dei-slowing-rise-time.html">How Do I Slow the Rise Time?</a><a href="/books/high-power-pulse/index.html">Nuts &amp; Bolts of High Power</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="bnc-how-to-choose-handheld-analyzer.html">How to Choose a Handheld Analyzer</a><a href="article-rtsa-practical-guide.html">RTSA Practical Guide</a><a href="article-ew-rtsa.html">RTSA for Electronic Warfare</a><a href="/books/realtime-spectrum-analyzers/index.html">Nuts &amp; Bolts of RTSAs</a></div></div><div class="nav-grp2">HVX High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-hvx-choosing-hv-supply.html">Choosing an HV Supply</a><a href="article-hvx-polarity-floating.html">Polarity &amp; Floating Outputs</a><a href="article-hvx-ripple-regulation.html">Ripple &amp; Regulation</a><a href="/books/high-power-pulse/index.html">Nuts &amp; Bolts of High Power</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Support &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2" data-bnc-staff>Employee Portal<span class="nc">&#8250;</span><div class="nav-sub"><a href="/employee-portal.html#visitors" target="_blank" rel="noopener">Website Visitor Review</a><a href="/employee-portal.html#pending" target="_blank" rel="noopener">Website Pending Actions</a><a href="/employee-portal.html#docs" target="_blank" rel="noopener">Internal Documentation</a></div></div><div class="nav-grp2">Product Documentation<span class="nc">&#8250;</span><div class="nav-sub"><a href="pdg-index.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators</a><a href="rfsg-index.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators &amp; Sensors</a><a href="scintiq-index.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ)</a><a href="awg-index.html" target="_blank" rel="noopener">Arbitrary Waveform Generators</a><a href="riid-index.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection</a><a href="dei-index.html" target="_blank" rel="noopener">High Power/Current Pulsers</a><a href="index.html" target="_blank" rel="noopener">ICX-FieldHawk Spectrum Analyzers</a><a href="hvx-index.html" target="_blank" rel="noopener">HVX High Voltage Power Supplies</a><a href="webinar-library.html" target="_blank" rel="noopener">Webinar Library</a></div></div><div class="nav-grp2">Service &amp; Resources<span class="nc">&#8250;</span><div class="nav-sub"><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a><a href="../pricing.html">Budgetary Pricing</a><a href="../contact.html" target="_blank" rel="noopener">Contact Regional Representative</a><a href="software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a><a href="../obsolete-products.html">Obsolete Product Support</a><a href="../academy-free-access.html">Free Academy Course Access</a></div></div><div class="nav-grp2">Frequently Asked Questions<span class="nc">&#8250;</span><div class="nav-sub"><a href="../faq.html">View all FAQs</a><a href="../faq.html#cat-pdg">Pulse &amp; Delay Generators</a><a href="../faq.html#cat-awg">Waveform Generators</a><a href="../faq.html#cat-rf">RF &amp; Microwave</a><a href="../faq.html#cat-pulsed-power">Pulsed Power</a><a href="../faq.html#cat-radiation">Radiation Detection &amp; Isotope Identification</a><a href="../faq.html#cat-scintillation">Scintillation Detectors</a><a href="../faq.html#cat-scientific">BNC Scientific</a><a href="../faq.html#cat-ordering">Ordering &amp; Contact</a></div></div><div class="nav-grp2">About Us<span class="nc">&#8250;</span><div class="nav-sub"><a href="../our-history.html">Our History</a><a href="../management.html">Management Team</a><a href="press-room.html">Historical Press Room</a></div></div></div></div></nav>
   <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">RFQ/Demo</a><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
-
 <section class="doc-hero"><div class="wrap">
  <a class="reqpdf" href="../contact.html" target="_blank" rel="noopener" onclick="window.open('../contact.html?notes='+encodeURIComponent('Please send a PDF or print copy of: '+location.href),'_blank');return false;">Request PDF / Print Copy</a><div class="ht">
   <div class="kicker">Product Manual</div>
-  <h1>ICX-Series &amp; ICX-FieldHawk-N USB / Networked Real-Time Spectrum Analyzers</h1>
-  <p>A compact family of USB and Ethernet real-time spectrum analyzers spanning 4.5 GHz to 40 GHz. Strong RF performance, a unified API, and a full set of standard measurements, in a form factor built for embedded and automated test systems.</p>
-  <div class="ver">Document: ICX-MAN-FHUNX &middot; 2026</div>
+  <h1>ICX-Series / ICX-FieldHawk-N Real-Time Spectrum Analyzers</h1>
+  <p>Compact USB and Ethernet real-time spectrum analyzers covering 9 kHz to 9.5 or 20 GHz, with a 100 MHz analysis bandwidth, an FPGA real-time FFT engine, and a unified cross-platform API. High RF performance in a form factor built for space- and cost-constrained test systems.</p>
+  <div class="ver">Document ICX-MAN-FHUN &middot; Rev V1.8 &middot; Berkeley Nucleonics Corporation</div>
  </div>
- <div class="hero-img"><img src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-Series USB and ICX-FieldHawk-N networked real-time spectrum analyzers"></div>
+ <div class="hero-img"><img src="../figures/product-usb-cut.png" alt="ICX-FieldHawk USB real-time spectrum analyzer"></div>
 </div></section>
 
 <div class="layout">
- <nav class="toc">
-  <h4>Contents</h4>
+ <nav class="toc"><h4>Contents</h4>
+  <a href="#notes-block" data-webmaster>Branding &amp; verification notes</a>
   <a href="#s1">1. Overview</a>
   <a href="#s2">2. Operating Modes</a>
   <a href="#s3">3. Measurement Functions</a>
-  <a href="#s4">4. Frequency</a>
+  <a href="#s4">4. Frequency Specifications</a>
   <a href="#s5">5. Spectrum Purity</a>
   <a href="#s6">6. Amplitude</a>
   <a href="#s7">7. DANL</a>
   <a href="#s8">8. Standard Spectrum Analysis</a>
   <a href="#s9">9. IQ Recording</a>
-  <a href="#s10">10. Detection Analysis</a>
+  <a href="#s10">10. Power Detection Analysis</a>
   <a href="#s11">11. Real-Time Spectrum Analysis</a>
-  <a href="#s12">12. RBW</a>
-  <a href="#s13">13. General &amp; Physical</a>
-  <a href="#s14">14. Inputs &amp; Outputs</a>
-  <a href="#s15">15. Options</a>
-  <a href="#s16">16. Built-In Signal Generator</a>
-  <a href="#s17">17. Model Selection</a>
+  <a href="#s12">12. General &amp; Physical</a>
+  <a href="#s13">13. Options</a>
+  <a href="#s14">14. Model &amp; Software Reference</a>
  </nav>
-
  <main id="main" class="content">
   <section id="notes-block" data-webmaster>
-   <div class="note warn"><b>Branding and verification notes.</b> This Product Manual is rebranded from a third-party SAN/SAM/NXN/NXM series source manual. The following assumptions were applied. Please confirm before publication.
+   <div class="note warn"><b>Branding &amp; verification notes.</b> This manual is reconciled from the ICX-090 / ICX-200 series source documentation. The following assumptions were applied; please confirm before publication.
     <ul>
-     <li><b>Model mapping.</b> The numeric part of each model is the source model number (frequency-derived) and is preserved, zero-padded to three digits. USB models (source SAN / SAM) map to the <b>ICX-Series</b> line with a <code>U</code> suffix. Networked / Ethernet models (source NXN / NXM) map to the <b>ICX-FieldHawk-N</b> line with a proposed <code>N</code> suffix. The economy tier carries no extra mark; the performance tier (source SAM / NXM) carries a <code>-P</code> performance designation, for example <b>ICX-060U-P</b>. <b>The "-N" networked suffix and the "-P" performance designation are proposed conventions. verify.</b></li>
-     <li><b>Firmware rename.</b> The source control software is renamed throughout to <b>SpectraCore</b>, Berkeley Nucleonics' spectrum analysis firmware. Described functionality is unchanged.</li>
-     <li><b>Antenna accessories.</b> External antennas are presented as accessories, not options, drawn from the <b>ANT-100G / ANT-200G</b> family. Confirm the part number. <b>verify.</b></li>
+     <li><b>Model numbering.</b> The numeric part is the maximum frequency in GHz times 10, zero-padded to three digits. USB models belong to the <b>ICX-Series</b> and carry a <code>U</code> suffix (<b>ICX-090U</b>, <b>ICX-200U</b>). LAN / Ethernet models belong to <b>ICX-FieldHawk-N</b> and carry an <code>N</code> suffix (<b>ICX-090N</b>, <b>ICX-200N</b>). <b>The "-N" LAN suffix is a proposed convention. verify.</b></li>
+     <li><b>Software rename.</b> The source control software is renamed throughout to <b>SpectraCore</b>, Berkeley Nucleonics' spectrum analysis firmware. Described functionality is unchanged.</li>
+     <li><b>Antenna accessories.</b> External antennas are presented as accessories, not options, drawn from the ANT-100G / ANT-200G family. Confirm the part number. <b>verify.</b></li>
      <li><b>Specifications.</b> All spec values are reproduced identically from the source for the same hardware. Tables were lightly regrouped for readability. Values remain preliminary pending verification against the published BNC datasheet. <b>verify.</b></li>
-     <li><b>In-firmware branding.</b> The SpectraCore screenshots in sections 2 and 3 are sourced from the original application. The vendor wordmark has been masked and relabeled to SpectraCore. Recapture with the production BNC build before publication. <b>verify.</b></li>
+     <li><b>In-software branding.</b> The SpectraCore screenshots in sections 2 and 3 still show the source vendor wordmark in the application title bar. Relabel to the BNC / SpectraCore mark when the screenshots are recaptured. <b>verify.</b></li>
     </ul>
    </div>
   </section>
 
   <section id="s1"><h2><span class="num">1</span>Overview</h2>
-   <figure class="fig figctr" data-fig="rebrand"><img src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-Series and ICX-FieldHawk-N real-time spectrum analyzers"><figcaption>Figure 1-1. ICX-Series USB and ICX-FieldHawk-N networked real-time spectrum analyzers.</figcaption></figure>
+   <figure class="fig figctr" data-fig="rebrand"><img src="../figures/icx-series-usb-lan-20ghz-man/sae-nxe-units-front.png" alt="ICX-Series (USB) and ICX-FieldHawk-N (networked) real-time spectrum analyzers"><figcaption>Figure 1-1. The ICX-Series (front, USB) and ICX-FieldHawk-N (rear, networked) real-time spectrum analyzers. The housings in this photo are not yet carrying the BNC / ICX-FieldHawk mark; recapture with production-labelled units. <b>verify.</b></figcaption></figure>
 
-   <p>The ICX-Series and ICX-FieldHawk-N families are compact real-time spectrum analyzers that deliver excellent RF performance while holding cost down. Their miniaturized design integrates easily into automated test systems and preserves spectral purity, which makes them well suited to space- and cost-constrained applications where a full benchtop instrument would be impractical. The result is well-balanced performance, cost, and size across a wide range of models.</p>
+   <p>The ICX-Series and ICX-FieldHawk-N are high-performance real-time spectrum analyzers that deliver strong RF performance in a compact package. They integrate cleanly into automated test systems, hold spectral purity under demanding conditions, and cut both deployment and operating cost. That combination makes them well suited to space- and cost-constrained applications where a full benchtop instrument would be impractical.</p>
 
-   <h3>USB and Ethernet connectivity</h3>
-   <p>The two lines differ in how they connect to the host. The <b>ICX-Series</b> line (USB) supports USB 3.0 and USB 2.0 over a single Type-C interface. The <b>ICX-FieldHawk-N</b> line (networked) connects over Ethernet and is compatible with 1000M and 100M networks. Beyond the host interface, the two lines are functionally aligned.</p>
-
-   <h3>A wide range of models</h3>
-   <p>The economy tier (the ICX-Series and ICX-FieldHawk-N base models) focuses on cost efficiency, with three frequency options: 4.5 GHz, 6.3 GHz, and 40 GHz. The performance tier (the <code>-P</code> designation) prioritizes RF performance, with 6.3 GHz and 8.5 GHz options. The combination of interface type, frequency range, and cost tier gives you a fully optimized choice for a wide variety of applications.</p>
-   <figure class="fig figgraph" data-fig="keep"><img class="plain" src="../figures/icx-usb-lan-san-nx-man/model-family-chart.png" alt="USB and Ethernet spectrum analyzer family positioned by frequency and performance tier"><figcaption>Figure 1-2. The USB and Ethernet analyzer family, positioned by frequency ceiling and performance tier. USB-interface models (source SAN / SAM / SAE) map to the ICX-Series line; Ethernet-interface models (source NXN / NXM / NXE) map to the ICX-FieldHawk-N line.</figcaption></figure>
+   <h3>Connectivity</h3>
+   <p>The two lines differ in how they connect. The <b>ICX-Series</b> line (USB) supports USB 3.0 and USB 2.0 over a single Type-C interface. The <b>ICX-FieldHawk-N</b> line (LAN) connects over Ethernet and is compatible with 1000M and 100M networks. Beyond the host interface, the instruments are functionally aligned.</p>
 
    <h3>Unified API</h3>
-   <p>Every series and model shares one consistent API. You can migrate between units, or from USB to Ethernet, without changing application code. Development is supported in C/C++, C#, Python, MATLAB, Qt, and LabVIEW, on both Windows and Linux.</p>
+   <p>Every series and model shares one consistent API. You can migrate from one unit to another, or from USB to Ethernet, without changing application code. Development is supported in C/C++, C#, Python, MATLAB, Qt, and LabVIEW, on both Windows and Linux. The instruments also speak the standard SCPI protocol.</p>
 
-   <h3>Rich standard measurement functions</h3>
+   <h3>Measurement functions</h3>
    <p>A rich set of advanced measurements ships as standard, including channel power, occupied bandwidth, X dB bandwidth, harmonic measurement, spectrum emission mask (SEM), AM and FM demodulation, and automatic phase noise analysis.</p>
 
    <h3>Key features</h3>
-   <ul>
-    <li>Frequency range: 9 kHz to 4.5 GHz, 6.3 GHz, 8.5 GHz, or 40 GHz, depending on model</li>
-    <li>Up to 100 MHz real-time analysis bandwidth</li>
-    <li>FPGA-based, gapless, overlap-free real-time FFT engine</li>
-    <li>ICX-Series supports USB 3.0 / 2.0 over Type-C</li>
-    <li>ICX-FieldHawk-N supports 1000M / 100M Ethernet</li>
-    <li>Seven operating modes, including real-time spectrum, IQ streaming, and phase noise</li>
-    <li>Highly compatible, hardware-portable API across C/C++, C#, Python, MATLAB, Qt, and LabVIEW</li>
-    <li>Windows 11 / 10 / 8 / 7 (x86, x64, AArch64). AArch64 is available on the ICX-FieldHawk-N (networked) line only.</li>
-    <li>Debian 12 / 11 / 10 (x64, AArch64)</li>
-    <li>Ubuntu 24.04 / 22.04 / 20.04 / 18.04 (x64, AArch64)</li>
+   <ul class="man-list">
+    <li><strong>Frequency:</strong> 9 kHz to 9.5 GHz (ICX-090U / ICX-090N) or 9 kHz to 20 GHz (ICX-200U / ICX-200N)</li>
+    <li><strong>1 GHz DANL:</strong> -166 dBm/Hz</li>
+    <li><strong>1 GHz phase noise:</strong> better than -100 dBc/Hz at 10 kHz offset</li>
+    <li><strong>Analysis bandwidth:</strong> 100 MHz</li>
+    <li><strong>ICX-Series (SAE):</strong> USB 3.0 / 2.0 Type-C interfaces</li>
+    <li><strong>ICX-FieldHawk-N (NXE):</strong> 1000M / 100M Ethernet interfaces</li>
+    <li><strong>Unified API:</strong> highly compatible, hardware-portable API interface</li>
+    <li><strong>Windows support:</strong> 11 / 10 / 8 / 7 (x86, x64, AArch64). AArch64 is available on the ICX-FieldHawk-N (networked) line only.</li>
+    <li><strong>Debian support:</strong> 12 / 11 / 10 (x64, AArch64)</li>
+    <li><strong>Ubuntu support:</strong> 24.04 / 22.04 / 20.04 / 18.04 (x64, AArch64)</li>
+    <li><strong>Standard SCPI protocol support</strong></li>
    </ul>
   </section>
 
@@ -509,380 +545,288 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
    <h3>Standard Spectrum Analysis</h3>
    <p>This mode provides a wide range of measurement functions, including full-span spectrum sweep, channel power, OBW, ACPR, IM3, and SEM. It also supports spectrum recording and playback. Combined with auxiliary tools such as signal tracking, the peak table, and amplitude correction, it gives you a one-stop platform for thorough spectrum inspection.</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-standard-spectrum.png" alt="SpectraCore screenshot: Standard Spectrum Analysis mode"><figcaption>Figure 2-1. Standard Spectrum Analysis mode in SpectraCore.</figcaption></figure>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-01.png" alt="SpectraCore screenshot: Standard Spectrum Analysis mode in SpectraCore."><figcaption>Figure 2-1. Standard Spectrum Analysis mode in SpectraCore.</figcaption></figure>
 
    <h3>IQ Streaming</h3>
    <p>This mode supports up to 100 MHz of analysis bandwidth and acquires IQ data through multiple trigger methods. It provides IQ time-domain waveform display, spectrum and spectrogram views, AM and FM demodulation, and digital down conversion (DDC).</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-iq-streaming.png" alt="SpectraCore screenshot: IQ Streaming mode"><figcaption>Figure 2-2. IQ Streaming mode in SpectraCore.</figcaption></figure>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-02.png" alt="SpectraCore screenshot: IQ Streaming mode in SpectraCore."><figcaption>Figure 2-2. IQ Streaming mode in SpectraCore.</figcaption></figure>
 
    <h3>Power Detection Analysis</h3>
    <p>This mode detects and analyzes time-domain signals within the analysis bandwidth. It suits applications focused on in-band power versus time, such as pulse signal measurement.</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-power-detection.png" alt="SpectraCore screenshot: Power Detection Analysis mode"><figcaption>Figure 2-3. Power Detection Analysis mode in SpectraCore.</figcaption></figure>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-03.png" alt="SpectraCore screenshot: Power Detection Analysis mode in SpectraCore."><figcaption>Figure 2-3. Power Detection Analysis mode in SpectraCore.</figcaption></figure>
 
    <h3>Real-Time Spectrum Analysis</h3>
-   <p>This mode is powered by a high-speed FPGA-based FFT engine. The FFT is strictly gapless and overlap-free, which delivers true real-time monitoring across the full bandwidth with no missing samples between frames.</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-realtime-spectrum.png" alt="SpectraCore screenshot: Real-Time Spectrum Analysis mode"><figcaption>Figure 2-4. Real-Time Spectrum Analysis mode in SpectraCore.</figcaption></figure>
+   <p>This mode is powered by a high-speed, FPGA-based FFT engine. The FFT is strictly gapless and overlap-free, so the instrument achieves true real-time monitoring across the full bandwidth with no samples lost between frames.</p>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-04.png" alt="SpectraCore screenshot: Real-Time Spectrum Analysis mode in SpectraCore."><figcaption>Figure 2-4. Real-Time Spectrum Analysis mode in SpectraCore.</figcaption></figure>
 
    <h3>Digital Demodulation (option)</h3>
-   <p>This mode supports 2ASK, 2FSK, 4FSK, GMSK, BPSK, QPSK, 8PSK, 16QAM, 64QAM, 128QAM, and 256QAM signals.</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-digital-demod.png" alt="SpectraCore screenshot: Digital Demodulation mode"><figcaption>Figure 2-5. Digital Demodulation mode in SpectraCore.</figcaption></figure>
+   <p>This optional mode supports 2ASK, 2FSK, 4FSK, GMSK, BPSK, QPSK, 8PSK, 16QAM, 64QAM, 128QAM, and 256QAM signals.</p>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-05.png" alt="SpectraCore screenshot: Digital Demodulation mode in SpectraCore."><figcaption>Figure 2-5. Digital Demodulation mode in SpectraCore.</figcaption></figure>
 
    <h3>Harmonics Analysis</h3>
-   <p>This mode detects and measures up to 10 harmonic components, including harmonic peaks, harmonic channel power, and total harmonic distortion.</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-harmonics-analysis.png" alt="SpectraCore screenshot: Harmonics Analysis mode"><figcaption>Figure 2-6. Harmonics Analysis mode in SpectraCore.</figcaption></figure>
+   <p>This mode detects and measures up to 10 harmonic components, reporting harmonic peaks, harmonic channel power, and total harmonic distortion.</p>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-06.png" alt="SpectraCore screenshot: Harmonics Analysis mode in SpectraCore."><figcaption>Figure 2-6. Harmonics Analysis mode in SpectraCore.</figcaption></figure>
 
    <h3>Phase Noise Measurement</h3>
-   <p>This mode supports offset ranges from 1 Hz to 10 MHz for evaluating carrier phase stability. A built-in automatic carrier search locates the target carrier quickly, with no manual adjustment.</p>
-   <figure class="fig figgraph" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/mode-phase-noise.png" alt="SpectraCore screenshot: Phase Noise Measurement mode"><figcaption>Figure 2-7. Phase Noise Measurement mode in SpectraCore.</figcaption></figure>
+   <p>This mode covers offset ranges from 1 Hz to 10 MHz for evaluating carrier phase stability. A built-in automatic carrier search quickly locates the target carrier, so no manual tuning is needed.</p>
+   <figure class="fig" data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig2-07.png" alt="SpectraCore screenshot: Phase Noise Measurement mode in SpectraCore."><figcaption>Figure 2-7. Phase Noise Measurement mode in SpectraCore.</figcaption></figure>
   </section>
 
   <section id="s3"><h2><span class="num">3</span>Measurement Functions</h2>
-   <p>The following measurements come standard in SpectraCore unless marked as an option. Each screenshot is captured from the firmware running on an ICX-FieldHawk analyzer.</p>
+   <p>The following functions are available within SpectraCore. Each is illustrated with a representative measurement screenshot in the source material.</p>
 
+   <h3>Power and channel measurements</h3>
    <div class="figrow">
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-channel-power.png" alt="Channel Power measurement"><figcaption>Figure 3-1. Channel Power.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-obw.png" alt="Occupied Bandwidth measurement"><figcaption>Figure 3-2. OBW (Occupied Bandwidth).</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-acpr.png" alt="ACPR measurement"><figcaption>Figure 3-3. ACPR (Adjacent Channel Power Ratio).</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-im3.png" alt="IM3 measurement"><figcaption>Figure 3-4. IM3 (Third-Order Intermodulation).</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-sem.png" alt="SEM measurement"><figcaption>Figure 3-5. SEM (Spectrum Emission Mask).</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-am-demod.png" alt="AM Demodulation"><figcaption>Figure 3-6. AM Demodulation.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-fm-demod.png" alt="FM Demodulation"><figcaption>Figure 3-7. FM Demodulation.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-pulse-detection.png" alt="Pulse Detection"><figcaption>Figure 3-8. Pulse Detection (option).</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-antenna-factor.png" alt="Antenna Factor"><figcaption>Figure 3-9. Antenna Factor.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-amplitude-offset.png" alt="Amplitude Offset"><figcaption>Figure 3-10. Amplitude Offset.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-signal-track.png" alt="Signal Track"><figcaption>Figure 3-11. Signal Track.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-peak-table.png" alt="Peak Table"><figcaption>Figure 3-12. Peak Table.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-data-record-playback.png" alt="Data Record and Playback"><figcaption>Figure 3-13. Data Record and Playback.</figcaption></figure>
-    <figure class="fig" data-fig="keep"><img src="../figures/icx-usb-lan-san-nx-man/fn-multiple-unit-display.png" alt="Multiple Unit Display"><figcaption>Figure 3-14. Multiple Unit Display.</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-01.png" alt="SpectraCore screenshot: Channel Power."><figcaption>Figure 3-1. Channel Power.</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-02.png" alt="SpectraCore screenshot: OBW (Occupied Bandwidth)."><figcaption>Figure 3-2. OBW (Occupied Bandwidth).</figcaption></figure>
+   </div>
+   <div class="figrow">
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-03.png" alt="SpectraCore screenshot: ACPR (Adjacent Channel Power Ratio)."><figcaption>Figure 3-3. ACPR (Adjacent Channel Power Ratio).</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-04.png" alt="SpectraCore screenshot: IM3 (Third-Order Intermodulation)."><figcaption>Figure 3-4. IM3 (Third-Order Intermodulation).</figcaption></figure>
+   </div>
+
+   <h3>Mask and modulation analysis</h3>
+   <div class="figrow">
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-05.png" alt="SpectraCore screenshot: SEM (Spectrum Emission Mask)."><figcaption>Figure 3-5. SEM (Spectrum Emission Mask).</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-06.png" alt="SpectraCore screenshot: AM Demodulation."><figcaption>Figure 3-6. AM Demodulation.</figcaption></figure>
+   </div>
+   <div class="figrow">
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-07.png" alt="SpectraCore screenshot: FM Demodulation."><figcaption>Figure 3-7. FM Demodulation.</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-08.png" alt="SpectraCore screenshot: Pulse Detection (option)."><figcaption>Figure 3-8. Pulse Detection (option).</figcaption></figure>
+   </div>
+
+   <h3>Correction and tooling</h3>
+   <div class="figrow">
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-09.png" alt="SpectraCore screenshot: Antenna Factor."><figcaption>Figure 3-9. Antenna Factor.</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-10.png" alt="SpectraCore screenshot: Amplitude Offset."><figcaption>Figure 3-10. Amplitude Offset.</figcaption></figure>
+   </div>
+   <div class="figrow">
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-11.png" alt="SpectraCore screenshot: Signal Track."><figcaption>Figure 3-11. Signal Track.</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-12.png" alt="SpectraCore screenshot: Peak Table."><figcaption>Figure 3-12. Peak Table.</figcaption></figure>
+   </div>
+   <div class="figrow">
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-13.png" alt="SpectraCore screenshot: Data Record and Playback."><figcaption>Figure 3-13. Data Record and Playback.</figcaption></figure>
+    <figure data-fig="keep"><img src="../figures/icx-series-usb-lan-20ghz-man/fig3-14.png" alt="SpectraCore screenshot: Multiple Unit Display."><figcaption>Figure 3-14. Multiple Unit Display.</figcaption></figure>
    </div>
   </section>
 
-  <section id="s4"><h2><span class="num">4</span>Frequency</h2>
-   <h3>Frequency range by model</h3>
+  <section id="s4"><h2><span class="num">4</span>Frequency Specifications</h2>
    <table class="spec">
-    <tr><th>USB model</th><th>Networked model</th><th>Frequency range</th></tr>
-    <tr><td>ICX-045U</td><td>ICX-045N</td><td>9 kHz to 4.5 GHz</td></tr>
-    <tr><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>ICX-060U</td> --><td>-</td><td>ICX-060N</td><td>9 kHz to 6.3 GHz</td></tr>
-    <tr><td>ICX-060U-P</td><td>ICX-060N-P</td><td>9 kHz to 6.3 GHz</td></tr>
-    <tr><td>ICX-080U-P</td><td>ICX-080N-P</td><td>9 kHz to 8.5 GHz</td></tr>
-    <tr><td>ICX-400U</td><td>ICX-400N</td><td>9 kHz to 40 GHz</td></tr>
-   </table>
-
-   <h3>Reference clock and stability</h3>
-   <table class="spec">
-    <tr><th>Parameter</th><th>Configuration</th><th>Specification</th></tr>
-    <tr><td>Reference clock</td><td>Standard</td><td>Internal or external</td></tr>
-    <tr><td>Frequency accuracy</td><td>TCXO (std.)</td><td>&lt;1 ppm, manual correction available</td></tr>
-    <tr><td>Frequency accuracy</td><td>OCXO (opt 01)</td><td>&lt;1 ppm, manual correction available</td></tr>
-    <tr><td>Frequency accuracy</td><td>GNSS-disciplined OCXO (opt 23 / 06)</td><td>&lt;0.05 ppm, when locked to GNSS</td></tr>
-    <tr><td>Aging and temperature stability</td><td>TCXO (std.)</td><td>&lt;1 ppm/year, &lt;1 ppm</td></tr>
-    <tr><td>Aging and temperature stability</td><td>OCXO (opt 01)</td><td>&lt;1 ppm/year, &lt;0.15 ppm</td></tr>
-    <tr><td>Aging and temperature stability</td><td>GNSS-disciplined OCXO (opt 23 / 06)</td><td>&lt;1 ppm/year, &lt;0.05 ppm</td></tr>
+    <tr><th>Parameter</th><th>ICX-090U / ICX-090N</th><th>ICX-200U / ICX-200N</th></tr>
+    <tr><td>Frequency range</td><td>9 kHz to 9.5 GHz</td><td>9 kHz to 20 GHz</td></tr>
+    <tr><td>Reference clock</td><td colspan="2">Internal or external</td></tr>
+    <tr><td>Frequency accuracy, TCXO (std.)</td><td colspan="2">&lt;1 ppm, manual correction available</td></tr>
+    <tr><td>Frequency accuracy, OCXO (opt 01)</td><td colspan="2">&lt;1 ppm, manual correction available</td></tr>
+    <tr><td>Frequency accuracy, GNSS-disciplined OCXO (opt 23/06)</td><td colspan="2">&lt;0.05 ppm when locked to GNSS</td></tr>
+    <tr><td>Aging &amp; temp. stability, TCXO (std.)</td><td colspan="2">&lt;1 ppm/year, &lt;1 ppm</td></tr>
+    <tr><td>Aging &amp; temp. stability, OCXO (opt 01)</td><td colspan="2">&lt;1 ppm/year, &lt;0.15 ppm</td></tr>
+    <tr><td>Aging &amp; temp. stability, GNSS-disciplined OCXO (opt 23/06)</td><td colspan="2">&lt;1 ppm/year, &lt;0.05 ppm</td></tr>
    </table>
   </section>
 
   <section id="s5"><h2><span class="num">5</span>Spectrum Purity</h2>
    <h3>SSB phase noise (dBc/Hz)</h3>
    <table class="spec">
-    <tr><th>Offset</th><th>ICX-045 (1 GHz)</th><th>ICX-045 (4.5 GHz)</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060 (1 GHz)</th><th>ICX-060 (6.3 GHz)</th> --><th>ICX-060-P (1 GHz)</th><th>ICX-060-P (6.3 GHz)</th><th>ICX-080-P (1 GHz)</th><th>ICX-080-P (8.5 GHz)</th><th>ICX-400 (1 GHz)</th><th>ICX-400 (40 GHz)</th></tr>
-    <tr><td>1 kHz</td><td>-103.4</td><td>-93.5</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-105.2</td><td>-91.2</td> --><td>-107.5</td><td>-92.7</td><td>-110.3</td><td>-93.5</td><td>-99.0</td><td>-78.4</td></tr>
-    <tr><td>10 kHz</td><td>-111.3</td><td>-100.3</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-110.4</td><td>-99.3</td> --><td>-114.2</td><td>-99.7</td><td>-120.0</td><td>-100.5</td><td>-107.5</td><td>-85.7</td></tr>
-    <tr><td>100 kHz</td><td>-109.3</td><td>-98.5</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-110.5</td><td>-97.4</td> --><td>-112.5</td><td>-98.6</td><td>-120.1</td><td>-100.8</td><td>-107.7</td><td>-85.1</td></tr>
-    <tr><td>1 MHz</td><td>-129.5</td><td>-121.9</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-130.1</td><td>-119.9</td> --><td>-132.8</td><td>-120.1</td><td>-131.4</td><td>-116.9</td><td>-122.7</td><td>-100.8</td></tr>
+    <tr><th>Offset</th><th>ICX-090U / 090N &middot; 1 GHz</th><th>ICX-090U / 090N &middot; 9.5 GHz</th><th>ICX-200U / 200N &middot; 1 GHz</th><th>ICX-200U / 200N &middot; 20 GHz</th></tr>
+    <tr><td>1 kHz</td><td>-95.2</td><td>-91.5</td><td>-91.2</td><td>-80.6</td></tr>
+    <tr><td>10 kHz</td><td>-101.6</td><td>-98.5</td><td>-99.7</td><td>-90.6</td></tr>
+    <tr><td>100 kHz</td><td>-100.6</td><td>-99.7</td><td>-101.1</td><td>-96.2</td></tr>
+    <tr><td>1 MHz</td><td>-120.9</td><td>-116.2</td><td>-121.6</td><td>-111.5</td></tr>
    </table>
-   <p class="fig-desc">Carrier frequencies per column as labeled. Columns apply equally to the matching USB (-U) and networked (-N) variants.</p>
 
-   <h3>Residual response (dBm), RBW = 1 kHz, PosPeak detector</h3>
+   <h3>Residual response (dBm)</h3>
+   <p>Conditions: spur reject = bypass, RBW = 1 kHz, PosPeak detector.</p>
    <table class="spec">
-    <tr><th>Band / R.L.</th><th>ICX-045 (0 dBm)</th><th>ICX-045 (-50 dBm)</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060 (0 dBm)</th><th>ICX-060 (-50 dBm)</th> --><th>ICX-060-P (0 dBm)</th><th>ICX-060-P (-50 dBm)</th><th>ICX-080-P (0 dBm)</th><th>ICX-080-P (-50 dBm)</th><th>ICX-400 (0 dBm)</th><th>ICX-400 (-50 dBm)</th></tr>
-    <tr><td>100 kHz to 100 MHz</td><td>-85</td><td>-110</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-90</td><td>-110</td> --><td>-101</td><td>-123</td><td>-99</td><td>-122</td><td>-72</td><td>-103</td></tr>
-    <tr><td>100 MHz to 4.5 GHz</td><td>-85</td><td>-110</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-90</td><td>-110</td> --><td>-87</td><td>-116</td><td>-88</td><td>-119</td><td>-72</td><td>-103</td></tr>
-    <tr><td>4.5 GHz to 6.3 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-90</td><td>-110</td> --><td>-87</td><td>-116</td><td>-88</td><td>-119</td><td>-72</td><td>-103</td></tr>
-    <tr><td>6.3 GHz to 8.5 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-84</td><td>-113</td><td>-72</td><td>-103</td></tr>
-    <tr><td>8.5 GHz to 10 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-</td><td>-</td><td>-72</td><td>-103</td></tr>
-    <tr><td>10 GHz to 20 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-</td><td>-</td><td>-91</td><td>-115</td></tr>
-    <tr><td>10 GHz to 40 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-</td><td>-</td><td>-85</td><td>-105</td></tr>
+    <tr><th>Frequency band</th><th>090U / 090N &middot; R.L. 0 dBm</th><th>090U / 090N &middot; R.L. -50 dBm</th><th>200U / 200N &middot; R.L. 0 dBm</th><th>200U / 200N &middot; R.L. -50 dBm</th></tr>
+    <tr><td>9 kHz to 1 GHz</td><td>-83</td><td>-120</td><td>-90</td><td>-120</td></tr>
+    <tr><td>1 GHz to 3 GHz</td><td>-83</td><td>-120</td><td>-80</td><td>-120</td></tr>
+    <tr><td>3 GHz to 9.5 GHz</td><td>-90</td><td>-130</td><td>-90</td><td>-120</td></tr>
+    <tr><td>9.5 GHz to 20 GHz</td><td>-</td><td>-</td><td>-90</td><td>-120</td></tr>
    </table>
-   <p class="fig-desc"><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): Spur reject: enhanced for ICX-045 / ICX-060 / ICX-060-P / ICX-080-P; bypass for ICX-400. -->Spur reject: enhanced for ICX-045 / ICX-060-P / ICX-080-P; bypass for ICX-400.</p>
 
    <h3>Image rejection (dBc), typical</h3>
    <table class="spec">
-    <tr><th>Band</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P (standard) -->ICX-045 / ICX-060-P / ICX-080-P (standard)</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P (bypass) -->ICX-045 / ICX-060-P / ICX-080-P (bypass)</th><th>ICX-400 (standard)</th><th>ICX-400 (bypass)</th></tr>
-    <tr><td>90 MHz to 4.5 / 6.3 / 8.5 GHz</td><td>&gt;90</td><td>&gt;35</td><td>&gt;90</td><td>&gt;80</td></tr>
-    <tr><td>8.5 GHz to 33 GHz</td><td>-</td><td>-</td><td>&gt;90</td><td>No rejection</td></tr>
-    <tr><td>33 GHz to 40 GHz</td><td>-</td><td>-</td><td>&gt;58</td><td>No rejection</td></tr>
+    <tr><th>Frequency band</th><th>090U / 090N &middot; standard</th><th>090U / 090N &middot; bypass</th><th>200U / 200N &middot; standard</th><th>200U / 200N &middot; bypass</th></tr>
+    <tr><td>90 MHz to 3 GHz</td><td>&gt;90</td><td>&gt;76</td><td>&gt;90</td><td>&gt;79</td></tr>
+    <tr><td>3 GHz to 9.5 GHz</td><td>&gt;90</td><td>&gt;60</td><td>&gt;90</td><td>&gt;68</td></tr>
+    <tr><td>9.5 GHz to 20 GHz</td><td>-</td><td>-</td><td>&gt;90</td><td>&gt;60</td></tr>
    </table>
 
    <h3>IF rejection and spurious (dBc), typical</h3>
    <table class="spec">
-    <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>Low IF architecture</td><td>8.2 to 21.75 GHz: &gt;68; other bands: &gt;90</td></tr>
-    <tr><td>Local oscillator related spurious</td><td>&lt;-65 dBc, at center frequency &plusmn; (N/M) &times; 125 MHz, N, M = 1, 2, 3, 4, 5&hellip;</td></tr>
+    <tr><th>Parameter</th><th>Spur reject enhanced</th><th>Bypass</th></tr>
+    <tr><td>IF rejection</td><td>&gt;90</td><td>&gt;80</td></tr>
+    <tr><td>Local oscillator related spurious</td><td colspan="2">&lt;-65 dBc at center frequency &plusmn; (N/M) &times; 125 MHz, where N, M = 1, 2, 3, 4, 5...</td></tr>
    </table>
 
    <h3>IIP3 / IIP2 (dBm)</h3>
    <table class="spec">
-    <tr><th>Model</th><th>Carrier</th><th>R.L. = 20 dBm</th><th>R.L. = 0 dBm</th><th>R.L. = -20 dBm</th></tr>
-    <tr><td>ICX-045</td><td>1 GHz</td><td>47.4 / 85.8</td><td>35.1 / 85.5</td><td>10.0 / 66.3</td></tr>
-    <tr><td>ICX-045</td><td>4.5 GHz</td><td>45.6 / 98.0</td><td>26.1 / 91.6</td><td>6.9 / 19.4</td></tr>
-    <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <tr><td>ICX-060</td><td>1 GHz</td><td>46.6 / 86.0</td><td>29.6 / 85.8</td><td>10.5 / 67.3</td></tr> -->
-    <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <tr><td>ICX-060</td><td>6.3 GHz</td><td>42.9 / 109.5</td><td>24.6 / 98.5</td><td>3.9 / 17.1</td></tr> -->
-    <tr><td>ICX-060-P</td><td>1 GHz</td><td>51.0 / 84.9</td><td>40.1 / 85.1</td><td>10.0 / 66.4</td></tr>
-    <tr><td>ICX-060-P</td><td>6.3 GHz</td><td>43.4 / 65.9</td><td>25.3 / 94.6</td><td>4.7 / 17.7</td></tr>
-    <tr><td>ICX-080-P</td><td>1 GHz</td><td>49.6 / 87.5</td><td>35.6 / 84.3</td><td>11.5 / 67.4</td></tr>
-    <tr><td>ICX-080-P</td><td>8.5 GHz</td><td>41.0 / 57.4</td><td>25.5 / 44.8</td><td>2.4 / 34.2</td></tr>
-    <tr><td>ICX-400</td><td>1 GHz</td><td>40.3 / 75.5</td><td>27.4 / 45.3</td><td>8.7 / 25.2</td></tr>
-    <tr><td>ICX-400</td><td>40 GHz</td><td>31.7 / 88.6</td><td>10.3 / 86.1</td><td>4.8 / 66.6</td></tr>
+    <tr><th>Reference level</th><th>090U / 090N &middot; 1 GHz</th><th>090U / 090N &middot; 9.5 GHz</th><th>200U / 200N &middot; 1 GHz</th><th>200U / 200N &middot; 20 GHz</th></tr>
+    <tr><td>R.L. = 20 dBm</td><td>46.1 / 83.2</td><td>40.5 / 92.8</td><td>45.5 / 82.6</td><td>35.3 / 93.6</td></tr>
+    <tr><td>R.L. = 0 dBm</td><td>26.7 / 85.0</td><td>19.2 / 90.3</td><td>25.5 / 81.1</td><td>21.0 / 89.0</td></tr>
+    <tr><td>R.L. = -20 dBm</td><td>10.5 / 82.2</td><td>2.0 / 49.3</td><td>7.9 / 81.5</td><td>-4.5 / 55.3</td></tr>
    </table>
   </section>
 
   <section id="s6"><h2><span class="num">6</span>Amplitude</h2>
    <table class="spec">
-    <tr><th>Parameter</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P -->ICX-045 / ICX-060-P / ICX-080-P</th><th>ICX-400</th></tr>
-    <tr><td>Display range</td><td>DANL to 23 dBm</td><td>DANL to 20 dBm</td></tr>
-    <tr><td>Reference level (R.L.)</td><td>-50 dBm to +23 dBm</td><td>-50 dBm to +20 dBm</td></tr>
-    <tr><td>Amplitude accuracy</td><td>9 kHz to 4.5 / 6.3 / 8.5 GHz: &plusmn;2.0 dB</td><td>9 kHz to 9.5 GHz: &plusmn;2.0 dB; 9.5 GHz to 40 GHz: &plusmn;3.0 dB</td></tr>
-    <tr><td>Max. input power (CW)</td><td>23 dBm (30 MHz to 4.5 / 6.3 / 8.5 GHz, preamp off); 10 dBm (9 kHz to 30 MHz or preamp on)</td><td>23 dBm (50 MHz to 40 GHz, preamp off); 10 dBm (9 kHz to 50 MHz or preamp on)</td></tr>
-    <tr><td>VSWR</td><td>30 MHz to 4.5 / 6.3 / 8.5 GHz: &lt;2.5:1</td><td>90 MHz to 16 GHz: &lt;2.0:1; 16 GHz to 40 GHz: &lt;3.0:1</td></tr>
-    <tr><td>Max. DC voltage</td><td>&plusmn;10 VDC</td><td>&plusmn;10 VDC</td></tr>
-    <tr><td>IF in-band flatness</td><td>&plusmn;2.0 dB</td><td>&plusmn;2.0 dB</td></tr>
-    <tr><td>RF preamplifiers</td><td>Automatically turn on or forcibly turn off</td><td>Automatically turn on or forcibly turn off</td></tr>
+    <tr><th>Parameter</th><th>Value</th><th>Condition</th></tr>
+    <tr><td>Max. input power (CW)</td><td>23 dBm</td><td>50 MHz to 9.5/20 GHz, preamplifier off</td></tr>
+    <tr><td>Max. input power (CW)</td><td>10 dBm</td><td>9 kHz to 50 MHz, or preamplifier on</td></tr>
+    <tr><td>Max. DC voltage</td><td>&plusmn;10 VDC</td><td></td></tr>
+    <tr><td>Display range</td><td>DANL to 23 dBm</td><td></td></tr>
+    <tr><td>Amplitude accuracy</td><td>&plusmn;2.0 dB</td><td>9 kHz to 9.5 GHz</td></tr>
+    <tr><td>Amplitude accuracy</td><td>&plusmn;3.0 dB</td><td>9.5 GHz to 20 GHz</td></tr>
+    <tr><td>IF in-band flatness</td><td>&plusmn;2.0 dB</td><td></td></tr>
+    <tr><td>Reference level (R.L.)</td><td>-50 dBm to +23 dBm</td><td></td></tr>
+    <tr><td>RF preamplifiers</td><td>Automatic on, or forced off</td><td></td></tr>
+    <tr><td>VSWR</td><td>&lt;2.0:1</td><td>90 MHz to max. frequency</td></tr>
    </table>
   </section>
 
   <section id="s7"><h2><span class="num">7</span>Display Average Noise Level (DANL)</h2>
-   <p>DANL in dBm/Hz, RBW = 1 kHz. Columns apply equally to the matching USB (-U) and networked (-N) variants.</p>
+   <p>Units: dBm/Hz. Condition: RBW = 1 kHz.</p>
    <table class="spec">
-    <tr><th>Band / R.L.</th><th>ICX-045 (-20 dBm)</th><th>ICX-045 (-50 dBm)</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060 (-20 dBm)</th><th>ICX-060 (-50 dBm)</th> --><th>ICX-060-P (-20 dBm)</th><th>ICX-060-P (-50 dBm)</th><th>ICX-080-P (-20 dBm)</th><th>ICX-080-P (-50 dBm)</th><th>ICX-400 (-20 dBm)</th><th>ICX-400 (-50 dBm)</th></tr>
-    <tr><td>9 kHz to 1 MHz</td><td>-134.6</td><td>-150.3</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-136.4</td><td>-147.9</td> --><td>-135.9</td><td>-148.5</td><td>-141.4</td><td>-151.7</td><td>-136.0</td><td>-145.8</td></tr>
-    <tr><td>1 MHz to 30 MHz</td><td>-140.2</td><td>-162.6</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-139.7</td><td>-162.3</td> --><td>-140.7</td><td>-162.8</td><td>-154.2</td><td>-161.6</td><td>-153.7</td><td>-158.0</td></tr>
-    <tr><td>30 MHz to 3.0 GHz</td><td>-153.2</td><td>-163.5</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-152.7</td><td>-164.8</td> --><td>-152.1</td><td>-163.9</td><td>-150.8</td><td>-167.1</td><td>-153.7</td><td>-158.0</td></tr>
-    <tr><td>3.0 GHz to 4.5 GHz</td><td>-155.2</td><td>-162.7</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-157.1</td><td>-163.5</td> --><td>-151.3</td><td>-162.0</td><td>-155.6</td><td>-164.7</td><td>-154.1</td><td>-159.9</td></tr>
-    <tr><td>4.5 GHz to 6.3 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-151.9</td><td>-160.4</td> --><td>-151.3</td><td>-162.0</td><td>-155.6</td><td>-164.7</td><td>-154.1</td><td>-159.9</td></tr>
-    <tr><td>6.3 GHz to 8.5 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-144.0</td><td>-157.2</td><td>-154.1</td><td>-159.9</td></tr>
-    <tr><td>8.5 GHz to 19 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-</td><td>-</td><td>-154.1</td><td>-159.9</td></tr>
-    <tr><td>19 GHz to 40 GHz</td><td>-</td><td>-</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>-</td><td>-</td> --><td>-</td><td>-</td><td>-</td><td>-</td><td>-145.2</td><td>-149.3</td></tr>
+    <tr><th>Frequency band</th><th>090U / 090N &middot; R.L. -20 dBm</th><th>090U / 090N &middot; R.L. -50 dBm</th><th>200U / 200N &middot; R.L. -20 dBm</th><th>200U / 200N &middot; R.L. -50 dBm</th></tr>
+    <tr><td>9 kHz to 1 MHz</td><td>-143.0</td><td>-152.4</td><td>-143.6</td><td>-152.6</td></tr>
+    <tr><td>1 MHz to 90 MHz</td><td>-152.0</td><td>-159.2</td><td>-151.8</td><td>-160.0</td></tr>
+    <tr><td>90 MHz to 3.0 GHz</td><td>-146.0</td><td>-167.5</td><td>-149.7</td><td>-166.3</td></tr>
+    <tr><td>3.0 GHz to 9.5 GHz</td><td>-153.6</td><td>-167.0</td><td>-151.4</td><td>-157.5</td></tr>
+    <tr><td>9.5 GHz to 20 GHz</td><td>-</td><td>-</td><td>-156.1</td><td>-160.6</td></tr>
    </table>
   </section>
 
   <section id="s8"><h2><span class="num">8</span>Standard Spectrum Analysis</h2>
    <table class="spec">
-    <tr><th>Parameter</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P -->ICX-045 / ICX-060-P / ICX-080-P</th><th>ICX-400</th></tr>
-    <tr><td>RBW</td><td>0.1 Hz to 2.5 MHz</td><td>0.1 Hz to 10 MHz</td></tr>
-    <tr><td>VBW</td><td>0.1 Hz to 10 MHz</td><td>0.1 Hz to 10 MHz</td></tr>
-    <tr><td>Detector</td><td colspan="2">PosPeak, NegPeak, Sample, Average, RMS, MaxPower</td></tr>
-    <tr><td>Data chart</td><td colspan="2">SpectraCore provides spectrum, spectrogram, and historical trace</td></tr>
-    <tr><td>Measurements</td><td colspan="2">Channel power, OBW, X dB bandwidth, ACPR, IM3</td></tr>
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Detector</td><td>PosPeak, NegPeak, Sample, Average, RMS, MaxPower</td></tr>
+    <tr><td>RBW</td><td>0.1 Hz to 10 MHz</td></tr>
+    <tr><td>VBW</td><td>0.1 Hz to 10 MHz</td></tr>
+    <tr><td>Data chart</td><td>SpectraCore provides spectrum, spectrogram, and historical trace views</td></tr>
+    <tr><td>Measurements</td><td>Channel power, OBW, X dB bandwidth, adjacent channel power ratio, IM3</td></tr>
    </table>
 
    <h3>Sweep speed</h3>
    <table class="spec">
-    <tr><th>Model</th><th>RBW = 250 kHz, FPGA, spur reject bypass</th><th>RBW = 250 kHz, FPGA, spur reject standard</th><th>RBW = 50 kHz, FPGA, spur reject bypass</th><th>RBW = 1 kHz, CPU, spur reject bypass</th></tr>
-    <tr><td>ICX-045U</td><td>186.0 GHz/s</td><td>86.9 GHz/s</td><td>79.0 GHz/s</td><td>5.7 GHz/s</td></tr>
-    <tr><td>ICX-045N</td><td>152.5 GHz/s</td><td>73.8 GHz/s</td><td>70.8 GHz/s</td><td>3.5 GHz/s</td></tr>
-    <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <tr><td>ICX-060U</td><td>444.5 GHz/s</td><td>209.4 GHz/s</td><td>157.3 GHz/s</td><td>6.2 GHz/s</td></tr> -->
-    <tr><td>ICX-060N</td><td>285.7 GHz/s</td><td>132.3 GHz/s</td><td>132.9 GHz/s</td><td>3.5 GHz/s</td></tr>
-    <tr><td>ICX-060U-P</td><td>793.3 GHz/s</td><td>382.7 GHz/s</td><td>242.2 GHz/s</td><td>5.9 GHz/s</td></tr>
-    <tr><td>ICX-060N-P</td><td>354.4 GHz/s</td><td>178.2 GHz/s</td><td>178.2 GHz/s</td><td>3.5 GHz/s</td></tr>
-    <tr><td>ICX-080U-P</td><td>822.1 GHz/s</td><td>359.2 GHz/s</td><td>230.8 GHz/s</td><td>5.8 GHz/s</td></tr>
-    <tr><td>ICX-080N-P</td><td>355.8 GHz/s</td><td>178.2 GHz/s</td><td>178.2 GHz/s</td><td>3.5 GHz/s</td></tr>
-    <tr><td>ICX-400U</td><td>1.1 THz/s</td><td>584.6 GHz/s</td><td>215.6 GHz/s</td><td>4.3 GHz/s</td></tr>
-    <tr><td>ICX-400N</td><td>657.4 GHz/s</td><td>330.8 GHz/s</td><td>166.3 GHz/s</td><td>3.4 GHz/s</td></tr>
+    <tr><th>Condition</th><th>ICX-090U / ICX-090N</th><th>ICX-200U / ICX-200N</th></tr>
+    <tr><td>RBW = 250 kHz, FPGA, spur reject = bypass</td><td>1.1 THz/s</td><td>665.6 GHz/s</td></tr>
+    <tr><td>RBW = 250 kHz, FPGA, spur reject = standard</td><td>561.7 GHz/s</td><td>324.6 GHz/s</td></tr>
+    <tr><td>RBW = 50 kHz, FPGA, spur reject = bypass</td><td>209.8 GHz/s</td><td>161.6 GHz/s</td></tr>
+    <tr><td>RBW = 1 kHz, CPU, spur reject = bypass</td><td>4.0 GHz/s</td><td>3.3 GHz/s</td></tr>
    </table>
   </section>
 
   <section id="s9"><h2><span class="num">9</span>IQ Recording</h2>
    <table class="spec">
-    <tr><th>Parameter</th><th>ICX-045</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060</th> --><th>ICX-060-P / ICX-080-P</th><th>ICX-400</th></tr>
-    <tr><td>IQ sample rate (max.)</td><td>7.8125 MSPS</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>31.25 MSPS</td> --><td>125 MSPS</td><td>125 MSPS</td></tr>
-    <tr><td>Decimation factor</td><td>2&#8319; (n = 0 to 8)</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>2&#8319; (n = 0 to 10)</td> --><td>2&#8319; (n = 0 to 12)</td><td>2&#8319; (n = 0 to 12)</td></tr>
-    <tr><td>Burst recording bandwidth (max.)</td><td>6.25 MHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>25 MHz</td> --><td>100 MHz</td><td>100 MHz</td></tr>
+    <tr><th>Parameter</th><th>ICX-090U / ICX-090N</th><th>ICX-200U / ICX-200N</th></tr>
+    <tr><td>Continuous recording bandwidth</td><td>Maximum 50 MHz</td><td>Maximum 6.25 MHz</td></tr>
+    <tr><td>Burst recording bandwidth</td><td colspan="2">Maximum 100 MHz. Built-in memory depth is 128 Mbytes.</td></tr>
+    <tr><td>IQ sample rate</td><td colspan="2">Maximum 125 MSPS. Decimate factor: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096.</td></tr>
+    <tr><td>External trigger response</td><td colspan="2">Maximum frequency response: 500 times/s</td></tr>
    </table>
-   <table class="spec">
-    <tr><th>Parameter</th><th>ICX-045, ICX-400, and networked ICX-060N / ICX-400N</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060U</th> --><th>ICX-060-P / ICX-080-P (USB)</th></tr>
-    <tr><td>Continuous recording bandwidth (max.)</td><td>6.25 MHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>25 MHz</td> --><td>50 MHz</td></tr>
-    <tr><td>External trigger response</td><td colspan="2">Maximum frequency response: 500 times/sec</td></tr>
-   </table>
-   <p class="fig-desc">Built-in memory depth is 128 Mbytes. Networked (-N) models cap continuous recording bandwidth at 6.25 MHz. <b>Continuous-recording grouping reflects the source layout. verify per model.</b></p>
   </section>
 
-  <section id="s10"><h2><span class="num">10</span>Detection Analysis</h2>
+  <section id="s10"><h2><span class="num">10</span>Power Detection Analysis</h2>
    <table class="spec">
-    <tr><th>Parameter</th><th>ICX-045</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060</th> --><th>ICX-060-P / ICX-080-P / ICX-400</th></tr>
-    <tr><td>Lowest time resolution</td><td>128 ns</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>32 ns</td> --><td>8 ns</td></tr>
-    <tr><td>Max. analysis bandwidth</td><td>6.25 MHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>25 MHz</td> --><td>100 MHz</td></tr>
-    <tr><td>Detector</td><td colspan="2">PosPeak, NegPeak, Sample, Average, RMS, MaxPower</td></tr>
+    <tr><th>Parameter</th><th>Specification</th></tr>
+    <tr><td>Lowest time resolution</td><td>8 ns</td></tr>
+    <tr><td>Max. analysis bandwidth</td><td>100 MHz</td></tr>
+    <tr><td>Detector</td><td>PosPeak, NegPeak, Sample, Average, RMS, MaxPower</td></tr>
    </table>
   </section>
 
   <section id="s11"><h2><span class="num">11</span>Real-Time Spectrum Analysis</h2>
-   <p>The FFT engine is implemented in FPGA. Frame compression and trace detection are supported, with no missing samples between FFT frames. FFT frame update rate = 10<sup>9</sup> ns / (N &times; D &times; lowest time resolution); POI = 2 &times; N &times; D &times; lowest time resolution, where N is FFT points (2048, 1024, 512, 256, 128, 64, 32) and D is the decimate factor (1, 2, 4, 8&hellip;).</p>
+   <p>The FFT engine is implemented in the FPGA. Frame compression and trace detection are supported, and there are no missing samples between FFT frames. The frame update rate and probability of intercept (POI) follow these relations:</p>
+   <p><code>FFT frame update rate = 10^9 ns / (N &times; D &times; 8 ns)</code><br><code>POI = 2 &times; N &times; D &times; 8 ns</code></p>
+   <p>where <b>N</b> is the FFT point count (2048, 1024, 512, 256, 128, 64, 32) and <b>D</b> is the decimate factor (1, 2, 4, 8, ...).</p>
    <table class="spec">
-    <tr><th>Parameter</th><th>ICX-045</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060</th> --><th>ICX-060-P / ICX-080-P / ICX-400</th></tr>
-    <tr><td>POI (N = 2048, D = 1)</td><td>524.288 us</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>131.072 us</td> --><td>32.768 us</td></tr>
-    <tr><td>POI (N = 32, D = 1)</td><td>8.192 us</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>2.048 us</td> --><td>0.512 us</td></tr>
-    <tr><td>FFT refresh rate (N = 2048, D = 1)</td><td>3,814 times/sec</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>15,258 times/sec</td> --><td>61,035 times/sec</td></tr>
-    <tr><td>FFT refresh rate (N = 32, D = 1)</td><td>244,140 times/sec</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>976,562 times/sec</td> --><td>3,906,250 times/sec</td></tr>
-    <tr><td>Max. analysis bandwidth</td><td>6.25 MHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>25 MHz</td> --><td>100 MHz</td></tr>
+    <tr><th>Typical setting</th><th>FFT refresh rate</th><th>POI</th></tr>
+    <tr><td>N = 2048, D = 1</td><td>61,035 times/sec</td><td>32.768 us</td></tr>
+    <tr><td>N = 32, D = 1</td><td>3,906,250 times/sec</td><td>0.512 us</td></tr>
    </table>
-  </section>
-
-  <section id="s12"><h2><span class="num">12</span>RBW (Real-Time)</h2>
-   <table class="spec">
-    <tr><th>Parameter</th><th>ICX-045</th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th>ICX-060</th> --><th>ICX-060-P / ICX-080-P / ICX-400</th></tr>
-    <tr><td>Flat-top window</td><td>920 kHz to 3.59 kHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>3.68 MHz to 3.59 kHz</td> --><td>14.73 MHz to 3.59 kHz</td></tr>
-    <tr><td>B-Nuttall window</td><td>488 kHz to 1.90 kHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>1.95 MHz to 1.90 kHz</td> --><td>7.81 MHz to 1.90 kHz</td></tr>
-    <tr><td>Window type</td><td>9 grades</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>11 grades</td> --><td>13 grades</td></tr>
-    <tr><td>Window function</td><td colspan="2">B-Nuttall, Flat-top, LowSideLobe</td></tr>
-    <tr><td>Amplitude resolution</td><td colspan="2">0.75 dB</td></tr>
-   </table>
-  </section>
-
-  <section id="s13"><h2><span class="num">13</span>General &amp; Physical</h2>
-   <table class="spec">
-    <tr><th>Parameter</th><th>ICX-Series (USB)</th><th>ICX-FieldHawk-N (networked)</th></tr>
-    <tr><td>Power</td><td>Type-C, 5V 2A supply (4.75 to 5.25 V, ripple &lt;200 mVpp)</td><td>Type-C, 12V 2A supply (9 to 12 V, ripple &lt;200 mVpp)</td></tr>
-    <tr><td>Data interface</td><td>Type-C, USB 3.0 (USB 2.0 bandwidth limited); requires 5V 0.9A supply</td><td>RJ45, 1000 Mbps &times; 1, 100 Mbps &times; 1</td></tr>
-    <tr><td>GNSS type</td><td>External</td><td>Internal</td></tr>
-    <tr><td>GNSS 1PPS synchronization accuracy</td><td>Opt 21: &plusmn;100 ns; Opt 22: &plusmn;75 ns; Opt 23: &plusmn;50 ns</td><td>Std.: &plusmn;100 ns; Opt 05: &plusmn;75 ns; Opt 06: &plusmn;50 ns</td></tr>
-    <tr><td>Packaging and accessories</td><td>Flash disk &times; 1, USB 3.0 cable &times; 2, power adapter &times; 1</td><td>Flash disk &times; 1, USB 2.0 cable &times; 1, power adapter &times; 1</td></tr>
-   </table>
-
-   <h3>Environmental and system</h3>
    <table class="spec">
     <tr><th>Parameter</th><th>Specification</th></tr>
-    <tr><td>System requirements</td><td>Windows 11 / 10 / 8 / 7 (x86, x64, AArch64); only the ICX-FieldHawk-N line supports AArch64. Debian 12 / 11 / 10 (x64, AArch64). Ubuntu 24.04 / 22.04 / 20.04 / 18.04 (x64, AArch64).</td></tr>
-    <tr><td>Operating / storage temperature (ambient)</td><td>T0 class (std.): 0 to 50 &deg;C / -20 to +70 &deg;C. T1 class (opt 40): -20 to +65 &deg;C / -40 to +85 &deg;C. T2 class (opt 41): -40 to +65 &deg;C / -40 to +85 &deg;C.</td></tr>
-    <tr><td>Operating relative humidity</td><td>Ambient 0 to 40 &deg;C: 5 to 75%. Ambient &gt;40 &deg;C: 5 to 45%.</td></tr>
-   </table>
-
-   <h3>Size, weight, power consumption</h3>
-   <table class="spec">
-    <tr><th>Models</th><th>Size</th><th>Weight</th><th>Power consumption</th></tr>
-    <tr><td>ICX-400U</td><td>139 &times; 68 &times; 31 mm</td><td>&lt;420 g</td><td>10 to 14 W</td></tr>
-    <tr><td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045U / ICX-060U / ICX-060U-P / ICX-080U-P -->ICX-045U / ICX-060U-P / ICX-080U-P</td><td>156 &times; 62 &times; 22 mm</td><td>&lt;305 g</td><td>9 to 12 W</td></tr>
-    <tr><td>ICX-045N / ICX-060N / ICX-400N / ICX-060N-P / ICX-080N-P</td><td>167 &times; 117 &times; 30 mm</td><td>&lt;665 g</td><td>13 to 16 W</td></tr>
-   </table>
-
-   <div class="note"><b>Specification conditions.</b> Specifications apply after start-up and a 10-minute warm-up; at 25 &deg;C ambient (50 &deg;C core); in standard spectrum analysis mode with spurious rejection standard on; with adequate heat dissipation to keep ambient and core temperature within the rated range. Sweep speed and DANL test conditions: MCU 0.55.57, FPGA 0.55.22, API 0.55.61.</div>
-  </section>
-
-  <section id="s14"><h2><span class="num">14</span>Inputs &amp; Outputs</h2>
-   <table class="spec">
-    <tr><th>Port</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P (USB) -->ICX-045 / ICX-060-P / ICX-080-P (USB)</th><th>ICX-FieldHawk-N (networked)</th><th>ICX-400U</th></tr>
-    <tr><td>External trigger input</td><td>Type-C, 3.3 V CMOS, high impedance</td><td>MMCX (F), 3.3 V CMOS, high impedance</td><td>Integrated in AUXIO, 3.3 V CMOS, high impedance</td></tr>
-    <tr><td>Trigger output</td><td>Type-C, 3.3 V CMOS</td><td>MMCX (F), 3.3 V CMOS</td><td>Integrated in AUXIO, 3.3 V CMOS</td></tr>
-   </table>
-   <table class="spec">
-    <tr><th>Port</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P -->ICX-045 / ICX-060-P / ICX-080-P</th><th>ICX-400</th></tr>
-    <tr><td>RF input</td><td>SMA (F), impedance 50 &Omega;</td><td>2.92 mm (F), impedance 50 &Omega;</td></tr>
-    <tr><td>RF output</td><td>SMA (F), impedance 50 &Omega;</td><td>-</td></tr>
-    <tr><td>Reference clock input</td><td>MCX (F), amplitude &ge;1.5 Vpp, impedance 330 &Omega;</td><td>MMCX (F), amplitude &ge;1.5 Vpp, impedance 330 &Omega;</td></tr>
-    <tr><td>Reference clock output</td><td>Unavailable</td><td>Integrated in AUXIO, 3.3 V CMOS, programmable on/off</td></tr>
-    <tr><td>IF output</td><td>Unavailable</td><td>MMCX (F), max. output power -25 dBm, impedance 50 &Omega;, 307.2 MHz &plusmn; 50 MHz</td></tr>
+    <tr><td>Max. analysis bandwidth</td><td>100 MHz</td></tr>
+    <tr><td>Window function</td><td>B-Nuttall, Flat-top, LowSideLobe</td></tr>
+    <tr><td>RBW</td><td>14.73 MHz to 3.59 kHz (Flat-top); 7.81 MHz to 1.90 kHz (B-Nuttall); 13 grades for each window type</td></tr>
+    <tr><td>Amplitude resolution</td><td>0.75 dB</td></tr>
    </table>
   </section>
 
-  <section id="s15"><h2><span class="num">15</span>Options &amp; Accessories</h2>
-   <h3>Options</h3>
-   <p>Functional upgrades to the analyzer.</p>
+  <section id="s12"><h2><span class="num">12</span>General and Physical</h2>
+   <h3>Input and output</h3>
+   <table class="spec">
+    <tr><th>Parameter</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-090U real-time spectrum analyzer">ICX-090U</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-200U real-time spectrum analyzer">ICX-200U</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-090N real-time spectrum analyzer">ICX-090N</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-200N real-time spectrum analyzer">ICX-200N</th></tr>
+    <tr><td>RF input</td><td>SMA (F)</td><td>2.92 mm (F)</td><td>SMA (F)</td><td>2.92 mm (F)</td></tr>
+    <tr><td>Impedance</td><td colspan="4">50 &Omega;</td></tr>
+    <tr><td>Power</td><td colspan="2">Type-C, 5V 2A supply capacity. Voltage range 4.75 to 5.25 V, ripple less than 200 mVpp.</td><td colspan="2">Type-C, 12V 2A supply capacity. Voltage range 9 to 12 V, ripple less than 200 mVpp.</td></tr>
+    <tr><td>Host port</td><td colspan="2">Type-C, USB 3.0 (USB 2.0 bandwidth limited). Requires 5V 0.9A power supply.</td><td colspan="2">RJ45: 1000 Mbps &times; 1, 100 Mbps &times; 1</td></tr>
+    <tr><td>External trigger input</td><td colspan="2">Integrated in AUXIO, 3.3 V CMOS, high impedance</td><td colspan="2">MMCX (F), 3.3 V CMOS, high impedance</td></tr>
+    <tr><td>Trigger output</td><td colspan="2">Integrated in AUXIO, 3.3 V CMOS</td><td colspan="2">MMCX (F), 3.3 V CMOS</td></tr>
+    <tr><td>Analog IF output</td><td colspan="4">MMCX (F), maximum output power -25 dBm, impedance 50 &Omega;, 307.2 MHz &plusmn; 50 MHz</td></tr>
+    <tr><td>External reference clock input</td><td colspan="4">MMCX (F), amplitude &ge; 1.5 Vpp, impedance 330 &Omega;</td></tr>
+    <tr><td>Reference clock output</td><td colspan="4">Integrated in AUXIO, 3.3 V CMOS, programmable on/off</td></tr>
+   </table>
+
+   <h3>Physical and environmental</h3>
+   <table class="spec">
+    <tr><th>Parameter</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-090U real-time spectrum analyzer">ICX-090U</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-200U real-time spectrum analyzer">ICX-200U</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-090N real-time spectrum analyzer">ICX-090N</th><th><img class="modelthumb" src="../figures/product-usb-cut.png" alt="ICX-200N real-time spectrum analyzer">ICX-200N</th></tr>
+    <tr><td>Weight</td><td>383 g</td><td>408 g</td><td>680 g</td><td>658 g</td></tr>
+    <tr><td>Size (D &times; W &times; H)</td><td>131 &times; 70 &times; 30 mm</td><td>139 &times; 68 &times; 31 mm</td><td colspan="2">167 &times; 117 &times; 30 mm</td></tr>
+    <tr><td>Power consumption</td><td colspan="2">10 to 14 W</td><td colspan="2">13 to 16 W</td></tr>
+    <tr><td>GNSS type</td><td colspan="2">External</td><td colspan="2">Internal</td></tr>
+    <tr><td>GNSS 1PPS sync accuracy</td><td colspan="2">Opt21 &plusmn;100 ns; Opt22 &plusmn;75 ns; opt23 &plusmn;50 ns</td><td colspan="2">Std &plusmn;100 ns; Opt05 &plusmn;75 ns; Opt06 &plusmn;50 ns</td></tr>
+    <tr><td>Packaging and accessories</td><td colspan="2">Flash disk &times; 1, USB 3.0 cable &times; 2, power adapter &times; 1</td><td colspan="2">Flash disk &times; 1, USB 2.0 cable &times; 1, power adapter &times; 1</td></tr>
+    <tr><td>System requirements</td><td colspan="4">Windows 11/10/8/7 (x86, x64, AArch64; AArch64 only on the ICX-FieldHawk-N networked line). Debian 12/11/10 (x64, AArch64). Ubuntu 24.04/22.04/20.04/18.04 (x64, AArch64).</td></tr>
+    <tr><td>Operating / storage temperature (ambient), T0 class (std.)</td><td colspan="4">0 to 50 &deg;C / -20 to +70 &deg;C</td></tr>
+    <tr><td>Operating / storage temperature, T1 class (opt40)</td><td colspan="4">-20 to +65 &deg;C / -40 to +85 &deg;C</td></tr>
+    <tr><td>Operating / storage temperature, T2 class (opt41)</td><td colspan="4">-40 to +65 &deg;C / -40 to +85 &deg;C</td></tr>
+    <tr><td>Operating relative humidity</td><td colspan="4">5 to 75% at ambient 0 to 40 &deg;C; 5 to 45% at ambient above 40 &deg;C</td></tr>
+   </table>
+
+   <div class="note"><b>Specification conditions.</b> Specifications apply under the following conditions: (1) startup and warm-up for 10 minutes; (2) ambient temperature 25 &deg;C, core temperature 50 &deg;C; (3) standard spectrum analysis mode with spurious rejection set to standard; (4) adequate heat dissipation so that ambient and core temperatures stay within the rated range simultaneously; (5) sweep speed and DANL tested with firmware MCU 0.55.57, FPGA 0.55.22, API 0.55.61.</div>
+  </section>
+
+  <section id="s13"><h2><span class="num">13</span>Options</h2>
+   <p>The following option codes are reproduced from the source documentation. Each is a built-in hardware option, an accessory, or a software license. The option-numbering scheme and antenna part numbers are inherited from the source and should be reconciled to the Berkeley Nucleonics catalog before quoting. <b>verify.</b></p>
    <table class="spec">
     <tr><th>Code</th><th>Description</th><th>Type</th></tr>
-    <tr><td>OPT-010</td><td>Built-in OCXO reference clock</td><td>Built-in hardware</td></tr>
-    <tr><td>OPT-110</td><td>Built-in signal generator (tracking generator)</td><td>Built-in hardware</td></tr>
-    <tr><td>OPT-220</td><td>Internal high-precision GNSS</td><td>Built-in hardware</td></tr>
-    <tr><td>OPT-221</td><td>Built-in GNSS-disciplined reference clock</td><td>Built-in hardware</td></tr>
-    <tr><td>OPT-310</td><td>AUXIO I/O expansion board</td><td>Accessory</td></tr>
-    <tr><td>OPT-230</td><td>External GNSS</td><td>Accessory</td></tr>
-    <tr><td>OPT-231</td><td>External high-precision GNSS</td><td>Accessory</td></tr>
-    <tr><td>OPT-232</td><td>External GNSS-disciplined OCXO reference clock</td><td>Accessory</td></tr>
-    <tr><td>OPT-040</td><td>T1 temperature class</td><td>Built-in hardware</td></tr>
-    <tr><td>OPT-041</td><td>T2 temperature class (core only)</td><td>Built-in hardware</td></tr>
-    <tr><td>OPT-410</td><td>Basic digital demodulation</td><td>Software</td></tr>
-    <tr><td>OPT-420</td><td>Pulse detection</td><td>Software</td></tr>
+    <tr class="grp"><td colspan="3">Built-in hardware</td></tr>
+    <tr><td class="sub nw">01</td><td>Built-in OCXO reference clock</td><td class="nw">Built-in hardware</td></tr>
+    <tr><td class="sub nw">05</td><td>Internal high precision GNSS</td><td class="nw">Built-in hardware</td></tr>
+    <tr><td class="sub nw">06</td><td>Built-in GNSS disciplined reference clock</td><td class="nw">Built-in hardware</td></tr>
+    <tr><td class="sub nw">40</td><td>T1 temperature class</td><td class="nw">Built-in hardware</td></tr>
+    <tr><td class="sub nw">41</td><td>T2 temperature class, only available for core</td><td class="nw">Built-in hardware</td></tr>
+    <tr class="grp"><td colspan="3">Accessories</td></tr>
+    <tr><td class="sub nw">20</td><td>AUXIO I/O expansion board</td><td class="nw">Accessory</td></tr>
+    <tr><td class="sub nw">21</td><td>External GNSS</td><td class="nw">Accessory</td></tr>
+    <tr><td class="sub nw">22</td><td>External high precision GNSS</td><td class="nw">Accessory</td></tr>
+    <tr><td class="sub nw">23</td><td>External GNSS disciplined OCXO reference clock</td><td class="nw">Accessory</td></tr>
+    <tr><td class="sub nw">34</td><td>External omnidirectional antenna, 400 MHz to 8000 MHz, gain &lt;2 dBi</td><td class="nw">Accessory</td></tr>
+    <tr><td class="sub nw">35</td><td>External active directional antenna, frequency range 0.5 to 10 GHz, gain &lt;5 dBi (amp off), &lt;25 dBi (amp on)</td><td class="nw">Accessory</td></tr>
+    <tr class="grp"><td colspan="3">Software</td></tr>
+    <tr><td class="sub nw">71</td><td>Basic digital demodulation</td><td class="nw">Software</td></tr>
+    <tr><td class="sub nw">72</td><td>Pulse detection</td><td class="nw">Software</td></tr>
    </table>
-   <h3>Accessories</h3>
-   <p>Antennas and physical add-ons drawn from the Berkeley Nucleonics antenna line.</p>
-   <table class="spec">
-    <tr><th>Accessory</th><th>Description</th><th>Type</th></tr>
-    <tr><td>ANT-100G</td><td>Directional antenna, 500 MHz to 10 GHz</td><td>Antenna accessory</td></tr>
-    <tr><td>ANT-200G</td><td>Directional antenna, 500 MHz to 20 GHz</td><td>Antenna accessory</td></tr>
-    <tr><td>Omnidirectional antenna</td><td>External omnidirectional antenna, 400 MHz to 8000 MHz, gain &lt;2 dBi</td><td>Antenna accessory</td></tr>
-   </table>
-   <div class="note"><b>Antenna accessories.</b> For BNC-supplied directional antennas, see the <a href="bnc-ant-106-directional-antenna-manual.html" target="_blank" rel="noopener">ANT-100G</a> family (ANT-100G and ANT-200G). Confirm part numbers before quoting. <b>verify.</b></div>
+   <div class="note"><b>Antenna options.</b> Options 34 and 35 are the external antennas listed in the source. For Berkeley Nucleonics directional antennas, see the <a href="bnc-ant-106-directional-antenna-manual.html" target="_blank" rel="noopener">ANT-100G family</a>. Confirm part numbers before quoting. <b>verify.</b></div>
   </section>
 
-  <section id="s16"><h2><span class="num">16</span>Built-In Signal Generator (OPT-110)</h2>
+  <section id="s14"><h2><span class="num">14</span>Model and Software Reference</h2>
+   <h3>Model mapping</h3>
    <table class="spec">
-    <tr><th>Parameter</th><th><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): ICX-045 / ICX-060 / ICX-060-P / ICX-080-P -->ICX-045 / ICX-060-P / ICX-080-P</th></tr>
-    <tr><td>Frequency range</td><td>100 kHz to 6.3 GHz, step 10 Hz</td></tr>
-    <tr><td>Power range</td><td>-50 dBm to 0 dBm, step 0.25 dB</td></tr>
-    <tr><td>VSWR</td><td>30 MHz to 6.3 GHz: &lt;2.0:1</td></tr>
-    <tr><td>Non-harmonic spurs</td><td>&lt;-50 dBc</td></tr>
+    <tr><th>BNC ICX model</th><th>Product line</th><th>Interface</th><th>Frequency range</th></tr>
+    <tr><td>ICX-090U</td><td>ICX-Series</td><td>USB 3.0 / 2.0 (Type-C)</td><td>9 kHz to 9.5 GHz</td></tr>
+    <tr><td>ICX-200U</td><td>ICX-Series</td><td>USB 3.0 / 2.0 (Type-C)</td><td>9 kHz to 20 GHz</td></tr>
+    <tr><td>ICX-090N</td><td>ICX-FieldHawk-N</td><td>1000M / 100M Ethernet</td><td>9 kHz to 9.5 GHz</td></tr>
+    <tr><td>ICX-200N</td><td>ICX-FieldHawk-N</td><td>1000M / 100M Ethernet</td><td>9 kHz to 20 GHz</td></tr>
    </table>
+   <p>The numeric part of each model number is the maximum frequency in GHz multiplied by 10. The <b>U</b> suffix denotes the USB (ICX-Series) line; the <b>N</b> suffix denotes the LAN / Ethernet (ICX-FieldHawk-N) line. The "-N" suffix is a proposed convention pending final approval.</p>
 
-   <h3>Harmonics</h3>
-   <table class="spec">
-    <tr><th>Frequency range</th><th>Second harmonic</th><th>Third harmonic and above</th></tr>
-    <tr><td>100 kHz to 30 MHz</td><td>&lt;-10 dBc</td><td>&lt;-10 dBc</td></tr>
-    <tr><td>30 MHz to 1.6 GHz</td><td>&lt;-10 dBc</td><td>&lt;-10 dBc</td></tr>
-    <tr><td>1.6 GHz to 3 GHz</td><td>&lt;-20 dBc</td><td>&lt;-20 dBc</td></tr>
-    <tr><td>3 GHz to 3.2 GHz</td><td>&lt;-20 dBc</td><td>&lt;-20 dBc</td></tr>
-    <tr><td>3.2 GHz to 6.3 GHz</td><td>&lt;-20 dBc</td><td>&lt;-20 dBc</td></tr>
-   </table>
-
-   <h3>Leakage to receiver</h3>
-   <table class="spec">
-    <tr><th>Frequency range</th><th>Leakage</th></tr>
-    <tr><td>100 kHz to 30 MHz</td><td>&gt;90 dBc</td></tr>
-    <tr><td>30 MHz to 3 GHz</td><td>&gt;80 dBc</td></tr>
-    <tr><td>3 GHz to 6.3 GHz</td><td>&gt;70 dBc</td></tr>
-   </table>
-  </section>
-
-  <section id="s17"><h2><span class="num">17</span>Model Selection</h2>
-   <p>The ICX-Series (USB) and ICX-FieldHawk-N (networked) lines share the same measurement engine and firmware. Choose the interface that fits your host, the frequency ceiling your work demands, and the economy or performance tier. The networked line adds AArch64 support and internal GNSS.</p>
-
-   <h4>USB line, by frequency and tier (ICX-Series)</h4>
-   <table class="matrix">
-    <tr>
-     <th>Specification</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-045U USB analyzer">ICX-045U</th>
-     <!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-060U USB analyzer">ICX-060U</th> -->
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-060U-P USB analyzer">ICX-060U-P</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-080U-P USB analyzer">ICX-080U-P</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-400U USB analyzer">ICX-400U</th>
-    </tr>
-    <tr><td>Frequency range</td><td>9 kHz to 4.5 GHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>9 kHz to 6.3 GHz</td> --><td>9 kHz to 6.3 GHz</td><td>9 kHz to 8.5 GHz</td><td>9 kHz to 40 GHz</td></tr>
-    <tr><td>Tier</td><td>Economy</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>Economy</td> --><td>Performance</td><td>Performance</td><td>Economy</td></tr>
-    <tr><td>Max. analysis bandwidth</td><td>6.25 MHz</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>25 MHz</td> --><td>100 MHz</td><td>100 MHz</td><td>100 MHz</td></tr>
-    <tr><td>IQ sample rate (max.)</td><td>7.8125 MSPS</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>31.25 MSPS</td> --><td>125 MSPS</td><td>125 MSPS</td><td>125 MSPS</td></tr>
-    <tr><td>RF connector</td><td>SMA (F)</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>SMA (F)</td> --><td>SMA (F)</td><td>SMA (F)</td><td>2.92 mm (F)</td></tr>
-    <tr><td>Interface</td><td>USB 3.0 / 2.0</td><!-- RAMMED-OUT 2026-07-23 (hidden for now, may return): <td>USB 3.0 / 2.0</td> --><td>USB 3.0 / 2.0</td><td>USB 3.0 / 2.0</td><td>USB 3.0 / 2.0</td></tr>
-   </table>
-
-   <h4>Networked line, by frequency and tier (ICX-FieldHawk-N)</h4>
-   <table class="matrix">
-    <tr>
-     <th>Specification</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-045N networked analyzer">ICX-045N</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-060N networked analyzer">ICX-060N</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-060N-P networked analyzer">ICX-060N-P</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-080N-P networked analyzer">ICX-080N-P</th>
-     <th><img class="modelthumb" src="../figures/icx-usb-lan-san-nx-man/cover-san-nxn-devices.png" alt="ICX-400N networked analyzer">ICX-400N</th>
-    </tr>
-    <tr><td>Frequency range</td><td>9 kHz to 4.5 GHz</td><td>9 kHz to 6.3 GHz</td><td>9 kHz to 6.3 GHz</td><td>9 kHz to 8.5 GHz</td><td>9 kHz to 40 GHz</td></tr>
-    <tr><td>Tier</td><td>Economy</td><td>Economy</td><td>Performance</td><td>Performance</td><td>Economy</td></tr>
-    <tr><td>Max. analysis bandwidth</td><td>6.25 MHz</td><td>25 MHz</td><td>100 MHz</td><td>100 MHz</td><td>100 MHz</td></tr>
-    <tr><td>Interface</td><td>1000M / 100M Ethernet</td><td>1000M / 100M Ethernet</td><td>1000M / 100M Ethernet</td><td>1000M / 100M Ethernet</td><td>1000M / 100M Ethernet</td></tr>
-    <tr><td>RF connector</td><td>SMA (F)</td><td>SMA (F)</td><td>SMA (F)</td><td>SMA (F)</td><td>2.92 mm (F)</td></tr>
-    <tr><td>AArch64 / internal GNSS</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-   </table>
-
-   <div class="note"><b>Naming note.</b> The "-N" networked suffix and the "-P" performance designation are proposed conventions for the rebranded line. Final model names are subject to confirmation. <b>verify.</b></div>
+   <h3>Software</h3>
+   <p>All measurement modes and functions described in this manual run in <b>SpectraCore</b>, Berkeley Nucleonics' spectrum analysis firmware. SpectraCore runs on Windows and Linux and pairs with the unified API for automated control. The figures in sections 2 and 3 are SpectraCore screenshots.</p>
 
    <h3>Contact and ordering</h3>
-   <p>To configure a unit, request a quote, or arrange a demonstration, contact Berkeley Nucleonics at <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> or <a href="tel:+18002347858">800-234-7858</a>. Our team can help you match interface, frequency, and tier to your application.</p>
+   <p>To request a quote, arrange a demonstration, or confirm configuration and options for your application, reach the Berkeley Nucleonics team at <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> or <a href="tel:+18002347858">800-234-7858</a>. Berkeley Nucleonics Corporation, 2955 Kerner Blvd, San Rafael, CA 94901.</p>
   </section>
  </main>
 </div>
@@ -920,6 +864,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="gbooks"><span class="gbooks-l">Free reference books</span><a href="/books/rf-and-microwave/index.html" target="_blank" rel="noopener">RF &amp; Microwave</a> &middot; <a href="/books/quantum-computing/index.html" target="_blank" rel="noopener">Quantum Computing</a> &middot; <a href="/books/arbitrary-waveform/index.html" target="_blank" rel="noopener">Arbitrary Waveform</a> &middot; <a href="/books/high-power-pulse/index.html" target="_blank" rel="noopener">High Power Pulse</a> &middot; <a href="/books/precision-timing/index.html" target="_blank" rel="noopener">Precision Timing</a> &middot; <a href="/books/radar/index.html" target="_blank" rel="noopener">Radar</a> &middot; <a href="/books/realtime-spectrum-analyzers/index.html" target="_blank" rel="noopener">Real-Time Spectrum Analyzers</a> &middot; <a href="/books/rf-power-measurements/index.html" target="_blank" rel="noopener">RF Power Measurements</a> &middot; <a href="/books/riids-for-hazmat/index.html" target="_blank" rel="noopener">RIIDs for HazMat</a> &middot; <a href="/books/scintillators/index.html" target="_blank" rel="noopener">Scintillators</a></div>
   <div class="gbottom"><span>&copy; 2026 Berkeley Nucleonics Corporation</span><span>2955 Kerner Blvd, San Rafael, CA 94901 USA</span><span><a href="mailto:info@berkeleynucleonics.com" style="color:inherit;text-decoration:none;">info@berkeleynucleonics.com</a></span><span><a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">berkeleynucleonics.com</a></span><span><a href="tel:+18002347858" style="color:inherit;text-decoration:none;">800-234-7858</a></span></div>
 </div></footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
 
 
 
@@ -937,8 +882,11 @@ var PREROLL=5;/* seconds to start before the matched words are spoken */
 function toks(q){q=(q||"").toLowerCase().replace(/[^a-z0-9 .+-]/g," ");var p=q.split(/\s+/).filter(Boolean),T={};p.forEach(function(t){if(STOP[t]||t.length<2)return;T[t]=Math.max(T[t]||0,1);(SYN[t]||[]).forEach(function(s){T[s]=Math.max(T[s]||0,.55);});});return T;}
 function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
 function loadVids(){if(VIDS||vidLoading)return;vidLoading=true;fetch(base+"video-search-index.json").then(function(r){return r.ok?r.json():null;}).then(function(d){VIDS=(d&&d.videos)||[];if(inp.value)run(inp.value);}).catch(function(){VIDS=[];});}
-/* whole-word presence test (no substring false hits like "ic" inside "electronics") */
-function wbHas(hay,t){if(!hay)return false;var i=hay.indexOf(t);while(i>=0){var a=i>0?hay.charAt(i-1):" ",b=i+t.length<hay.length?hay.charAt(i+t.length):" ";if(!/[a-z0-9]/.test(a)&&!/[a-z0-9]/.test(b))return true;i=hay.indexOf(t,i+1);}return false;}
+/* word-start presence test: matches a whole word, or a prefix of one, but never
+   a substring that starts mid-word (no false hit for "ic" inside "electronics").
+   The prefix half is what lets a suffixed model number like ICX-060U-P answer
+   to the shorter ICX-060 a visitor actually types. */
+function wbHas(hay,t){if(!hay)return false;var i=hay.indexOf(t);while(i>=0){var a=i>0?hay.charAt(i-1):" ";if(!/[a-z0-9]/.test(a))return true;i=hay.indexOf(t,i+1);}return false;}
 /* split caption text into positioned words */
 function words(txt){var re=/[a-z0-9]+(?:[.+-][a-z0-9]+)*/g,m,a=[];while((m=re.exec(txt))){a.push(m[0]);}return a;}
 function scoreVideos(T,keys){if(!VIDS||!VIDS.length)return [];var lits=keys.filter(function(t){return T[t]>=1;});return VIDS.map(function(v){var ti=(v.title||"").toLowerCase(),kw=(v.kw||[]).join(" ").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(ti,t))g=3.2;else if(wbHas(kw,t))g=2;if(g){sc+=g*w;hit++;}});var segs=v.seg||[],best=null,si,li,wi;for(si=0;si<segs.length;si++){var txt=(segs[si][1]||"").toLowerCase(),ws=words(txt),pos={},first=1e9,cnt=0;for(li=0;li<lits.length;li++){var t=lits[li];for(wi=0;wi<ws.length;wi++){if(ws[wi]===t||(t.length>=5&&ws[wi].indexOf(t)===0)){pos[t]=wi;cnt++;if(wi<first)first=wi;break;}}}if(!cnt)continue;var order=[];for(var k in pos)order.push(pos[k]);order.sort(function(a,b){return a-b;});var span=order.length>1?order[order.length-1]-order[0]:0;var prox=order.length>1?(span<=order.length+1?1.6:(span<=7?0.7:0)):0.2;var segScore=cnt*1.5+prox*cnt+(cnt===lits.length?1.0:0);if(!best||segScore>best.ss){var start=segs[si][0],end=(si+1<segs.length?segs[si+1][0]:start+8),frac=ws.length?first/ws.length:0;best={ss:segScore,cnt:cnt,mt:start+frac*(end-start)};}}if(best){sc+=1.6+best.cnt*1.1+best.ss*0.25;hit++;}if(!hit)return null;var mt=best?Math.round(best.mt):0,seek=Math.max(0,mt-PREROLL);return {v:v,s:sc,t:seek,mt:mt,inText:!!best};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,4);}

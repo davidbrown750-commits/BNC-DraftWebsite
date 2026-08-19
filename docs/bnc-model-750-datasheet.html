@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- START BNC consent mode -->
+<script data-cookieconsent="ignore">
+/* Google Consent Mode v2 defaults. Must run before Cookiebot and before the GTM container.
+
+   Everything is denied until the visitor agrees — nothing is stored and no ad identifier is
+   sent before then. Declaring the defaults is what lets the container load for everyone
+   without loading anything *into* storage: Google gets a "denied" signal it can model
+   against, instead of the silence it used to get from anyone who declined the banner.
+
+   url_passthrough keeps the gclid on internal navigation while ad_storage is denied, which
+   is what preserves attribution for a non-consenting click. ads_data_redaction strips ad
+   identifiers from those denied-state pings. */
+(function (w) {
+  w.dataLayer = w.dataLayer || [];
+  function gtag() { w.dataLayer.push(arguments); }
+  w.gtag = w.gtag || gtag;
+
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  gtag('set', 'ads_data_redaction', true);
+  gtag('set', 'url_passthrough', true);
+
+  /* Bridge Cookiebot's answer into Consent Mode. Cookiebot's built-in integration has to be
+     enabled in the Cookiebot admin; this works whether or not it is, and running both is
+     harmless because consent updates are last-write-wins with identical values. */
+  function update() {
+    var c = w.Cookiebot && w.Cookiebot.consent;
+    if (!c) return;
+    gtag('consent', 'update', {
+      ad_storage: c.marketing ? 'granted' : 'denied',
+      ad_user_data: c.marketing ? 'granted' : 'denied',
+      ad_personalization: c.marketing ? 'granted' : 'denied',
+      analytics_storage: c.statistics ? 'granted' : 'denied',
+      functionality_storage: c.preferences ? 'granted' : 'denied',
+      personalization_storage: c.preferences ? 'granted' : 'denied'
+    });
+  }
+  w.addEventListener('CookiebotOnAccept', update);
+  w.addEventListener('CookiebotOnDecline', update);
+  w.addEventListener('CookiebotOnConsentReady', update);
+})(window);
+</script>
+<!-- END BNC consent mode -->
+<!-- START Cookiebot -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
+<!-- END Cookiebot -->
+<!-- START BNC attribution -->
+<script data-cookieconsent="ignore">
+/* Paid-click attribution. Runs before the GTM container so `dataLayer` exists for every
+   page, and so a gclid is captured on the landing page even if the visitor converts three
+   pages later. `window.BNC_ATTR` is what the forms read on submit.
+
+   Storage is tiered on purpose. sessionStorage is always written, so an ad click that
+   converts in the same visit is attributable regardless of the cookie banner. The 90-day
+   first-party cookie — the only part that tracks across visits — is written only once
+   Cookiebot reports marketing consent. */
+(function (w, d) {
+  w.dataLayer = w.dataLayer || [];
+  var KEYS = ['gclid', 'wbraid', 'gbraid', 'msclkid',
+              'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  var CLICK_IDS = ['gclid', 'wbraid', 'gbraid', 'msclkid'];
+  var NAME = 'bnc_attr', MAX_AGE = 7776000; /* 90 days */
+
+  function readCookie() {
+    try {
+      var m = d.cookie.match(/(?:^|;\s*)bnc_attr=([^;]*)/);
+      return m ? JSON.parse(decodeURIComponent(m[1])) : null;
+    } catch (e) { return null; }
+  }
+  function writeCookie(o) {
+    try {
+      d.cookie = NAME + '=' + encodeURIComponent(JSON.stringify(o)) + ';path=/;max-age=' +
+        MAX_AGE + ';samesite=lax' + (location.protocol === 'https:' ? ';secure' : '');
+    } catch (e) {}
+  }
+  function readSession() {
+    try { return JSON.parse(sessionStorage.getItem(NAME) || 'null'); } catch (e) { return null; }
+  }
+  function writeSession(o) {
+    try { sessionStorage.setItem(NAME, JSON.stringify(o)); } catch (e) {}
+  }
+  function marketingOk() {
+    try { return !!(w.Cookiebot && w.Cookiebot.consent && w.Cookiebot.consent.marketing); }
+    catch (e) { return false; }
+  }
+
+  var q, fresh = {}, hasFresh = false, hasClickId = false;
+  try { q = new URLSearchParams(location.search); } catch (e) { q = null; }
+  if (q) {
+    for (var i = 0; i < KEYS.length; i++) {
+      var v = q.get(KEYS[i]);
+      if (v) {
+        fresh[KEYS[i]] = String(v).slice(0, 200);
+        hasFresh = true;
+        if (CLICK_IDS.indexOf(KEYS[i]) !== -1) hasClickId = true;
+      }
+    }
+  }
+
+  var attr = readSession() || readCookie();
+  /* A new click id always wins — it is a fresh paid visit. Campaign params without a click
+     id only fill in when nothing is stored yet, so an internal link carrying stale UTMs
+     cannot overwrite the real acquisition source. */
+  if (hasFresh && (hasClickId || !attr)) {
+    fresh.landing_page = String(location.pathname).slice(0, 300);
+    fresh.first_seen = new Date().toISOString();
+    attr = fresh;
+    writeSession(attr);
+    if (marketingOk()) writeCookie(attr);
+  }
+  w.BNC_ATTR = attr || {};
+
+  /* Cookiebot resolves after this script. Promote to the cross-visit cookie once, if and
+     when marketing consent lands. */
+  function promote() { if (w.BNC_ATTR && w.BNC_ATTR.first_seen && marketingOk()) writeCookie(w.BNC_ATTR); }
+  w.addEventListener('CookiebotOnAccept', promote);
+  w.addEventListener('CookiebotOnConsentReady', promote);
+
+  /* Native (non-fetch) forms post straight to /api/form, so the values have to ride along
+     as hidden inputs. Fetch-based forms read window.BNC_ATTR directly instead. */
+  function stamp() {
+    if (!w.BNC_ATTR || !w.BNC_ATTR.first_seen) return;
+    var forms = d.getElementsByTagName('form');
+    for (var i = 0; i < forms.length; i++) {
+      var f = forms[i];
+      if (f.getAttribute('data-bnc-attr') === '1') continue;
+      if (!/\/api\/form/.test(f.getAttribute('action') || '')) continue;
+      f.setAttribute('data-bnc-attr', '1');
+      for (var k in w.BNC_ATTR) {
+        if (!Object.prototype.hasOwnProperty.call(w.BNC_ATTR, k)) continue;
+        var el = d.createElement('input');
+        el.type = 'hidden'; el.name = k; el.value = w.BNC_ATTR[k];
+        f.appendChild(el);
+      }
+    }
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', stamp);
+  else stamp();
+
+  /* Conversion event for forms that never navigate. The forms that post natively land on
+     thank-you.html, which fires this for them. The fetch-based ones — QuickQuote, the
+     datasheet PDF configurator, the line-card quote, the book resource forms and quizzes —
+     stay on the page and show an inline success, so they have to fire it themselves.
+     Between them they cover most of the site's form volume and none of it was measurable.
+     Call once, on confirmed success only. */
+  w.bncTrackFormSubmit = function (formType) {
+    try {
+      var ev = { event: 'form_submission_complete', form_type: String(formType || 'contact') };
+      var a = w.BNC_ATTR || {};
+      if (a.gclid) ev.gclid = a.gclid;
+      if (a.utm_source) ev.utm_source = a.utm_source;
+      if (a.utm_campaign) ev.utm_campaign = a.utm_campaign;
+      w.dataLayer.push(ev);
+    } catch (e) {}
+  };
+
+  /* A form carrying `_next` sends the visitor back where they came from instead of to
+     thank-you.html — the ScintIQ configurator does this — so the conversion has to travel
+     with them. /api/form appends `bnc_fs=<form type>` to that redirect and this fires it on
+     arrival. The param is then stripped from the address bar so a refresh or a shared link
+     cannot count a second time. */
+  if (q) {
+    var fs = q.get('bnc_fs');
+    if (fs) {
+      w.bncTrackFormSubmit(String(fs).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 32));
+      try {
+        q.delete('bnc_fs');
+        var rest = q.toString();
+        history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+      } catch (e) {}
+    }
+  }
+})(window, document);
+</script>
+<!-- END BNC attribution -->
+<meta name="robots" content="index,follow"><!--draft-noindex-->
+<!-- Google Tag Manager -->
+<script data-cookieconsent="ignore">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
+<!-- End Google Tag Manager -->
+<!-- START Visual Visitor -->
+<script data-cookieconsent="ignore">
+/* Visual Visitor, loaded by hand rather than by Cookiebot's manual-mode activation.
+
+   Cookiebot runs here in manual blocking mode. Manual mode only flips a gated tag's `type`
+   from text/plain to text/javascript. Restoring `data-cookieblock-src` into `src` is the
+   automatic-mode mechanism and it never runs in manual mode, so the tag this replaces
+   turned into a script element with a type and no source. Visual Visitor loaded on no page
+   between 2026-07-28 and this change.
+
+   The consent gate is unchanged, only the mechanism is. Marketing consent granted, the
+   script is injected once. Not granted, nothing loads. US visitors resolve to implied
+   consent with marketing already granted, so they are tracked exactly as before, while
+   EU, EEA and UK visitors stay behind the dialog. If Cookiebot itself fails to load,
+   nothing fires, which is the safe direction to fail. */
+(function (w, d) {
+  var SRC = 'https://data.processwebsitedata.com/cscripts/yuZy3Z595d-ed010bae.js';
+  var done = false;
+
+  function granted() {
+    var c = w.Cookiebot && w.Cookiebot.consent;
+    return !!(c && c.marketing);
+  }
+
+  function load() {
+    if (done || !granted()) return;
+    done = true;
+    if (d.querySelector('script[src="' + SRC + '"]')) return;
+    var s = d.createElement('script');
+    s.src = SRC;
+    s.defer = true;
+    (d.head || d.documentElement).appendChild(s);
+  }
+
+  load();
+  w.addEventListener('CookiebotOnAccept', load);
+  w.addEventListener('CookiebotOnConsentReady', load);
+})(window, document);
+</script>
+<!-- END Visual Visitor -->
+<!-- START Bing UET -->
+<script type="text/plain" data-cookieconsent="marketing">(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"187080532", enableAutoSpaTracking: true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
+<!-- END Bing UET -->
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model 750 Multi-Channel Pulse &amp; Delay Generator | BNC</title>
+<style>
+:root{
+ --blue:#0655a3;--blue-dark:#113163;--blue-600:#054a8c;
+ --ink:#1b2330;--muted:#5b6677;--line:#e3e7ee;--bg:#f4f7fb;--bg-2:#eaf0f7;--bg-3:#e1e9f2;
+ --font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
+ --font-b:Arial,'Segoe UI',Helvetica,sans-serif;--font-mono:'Courier New',monospace;
+ --r:5px;--wrap:1180px;
+}
+*{box-sizing:border-box;}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:var(--font-b);color:var(--ink);background:var(--bg);margin:0;line-height:1.62;font-size:15px;}
+a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
+h1,h2,h3,h4{font-family:var(--font-h);color:var(--blue-dark);line-height:1.2;margin:0;}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;}
+/* ---- site header (dark) ---- */
+.sitenav{position:sticky;top:0;z-index:200;background:#0a1626;border-bottom:1px solid rgba(120,170,225,.18);font-family:var(--font-h);}
+.sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:22px;}
+.sitenav-logo{display:flex;align-items:center;}.sitenav-logo svg{height:48px;width:auto;}
+.sitenav-menu{margin-left:auto;display:flex;gap:2px;align-items:stretch;height:62px;}
+.nav-item{position:relative;display:flex;align-items:center;}
+.nav-item>a{display:flex;align-items:center;height:62px;padding:0 12px;color:#c4d6ee;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;}
+.nav-item:hover>a{color:#fff;}
+.nav-drop{position:absolute;top:58px;left:0;min-width:248px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.55);padding:8px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s,transform .15s,visibility .15s;}
+.nav-item:hover .nav-drop,.nav-item:focus-within .nav-drop{opacity:1;visibility:visible;transform:translateY(0);}
+.nav-drop a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;text-transform:none;letter-spacing:0;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.nav-drop a:hover{background:rgba(55,182,240,.14);color:#fff;text-decoration:none;}
+.sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.84rem;padding:.58em 1.1em;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.sitenav-cta:hover{filter:brightness(1.09);text-decoration:none;}
+@media(max-width:1040px){.sitenav-menu{display:none;}}
+.doc-header{display:none;}
+/* ---- light hero ---- */
+.doc-hero{background:var(--bg-2);border-bottom:2px solid var(--blue);}
+.doc-hero .wrap{padding:28px 28px 24px;display:flex;gap:30px;align-items:center;flex-wrap:wrap;}
+.doc-hero .ht{flex:1;min-width:280px;}
+.doc-hero .kicker,.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--blue);margin-bottom:8px;}
+.doc-hero h1{font-size:1.85rem;margin:0 0 8px;}
+.doc-hero p{max-width:72ch;font-size:1rem;color:var(--muted);margin:0;}
+.doc-hero .ver{margin-top:10px;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);}
+.doc-hero .hero-img{flex:0 0 400px;max-width:420px;}
+.doc-hero .hero-img img{width:100%;height:auto;mix-blend-mode:multiply;}
+/* ---- layout + toc ---- */
+.layout{display:grid;grid-template-columns:226px 1fr;gap:36px;max-width:var(--wrap);margin:0 auto;padding:32px 28px 64px;}
+.toc{position:sticky;top:80px;align-self:start;border-left:2px solid var(--line);padding-left:16px;font-size:.85rem;max-height:calc(100vh - 104px);overflow:auto;}
+.toc h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--muted);margin:0 0 10px;}
+.toc a{display:block;color:var(--muted);padding:4px 0;border-left:2px solid transparent;margin-left:-18px;padding-left:16px;}
+.toc a:hover{color:var(--blue);border-left-color:var(--blue);text-decoration:none;}
+.content,.article{min-width:0;}
+.article{max-width:840px;margin:0 auto;padding:34px 28px 64px;}
+.content section{padding:4px 0 16px;border-top:1px solid var(--line);margin-top:20px;}
+.content section:first-child,.article section:first-child{border-top:none;margin-top:0;}
+.article section{padding:6px 0 14px;}
+.content h2,.article h2{font-size:1.32rem;margin:.3em 0 .5em;}
+.content h2 .num{color:var(--blue);margin-right:.5em;}
+.content h3,.article h3{font-size:1.06rem;color:var(--blue);margin:1.2em 0 .3em;}
+.content h4,.article h4{font-size:.96rem;color:var(--ink);margin:1em 0 .2em;}
+.content p,.content li,.article p,.article li{font-size:.95rem;color:var(--ink);}
+.content strong,.article strong{color:var(--blue-dark);}
+code{font-family:var(--font-mono);font-size:.85em;background:var(--bg-3);border:1px solid var(--line);padding:.1em .35em;border-radius:3px;color:var(--blue-dark);}
+/* ---- spec tables ---- */
+table.spec,table.matrix{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;border:1px solid var(--line);}
+table.spec th,table.matrix th{background:var(--bg-3);color:var(--blue-dark);font-family:var(--font-h);font-weight:700;text-align:left;padding:8px 11px;border-bottom:2px solid var(--blue);}
+table.spec td,table.matrix td{border-top:1px solid var(--line);padding:7px 11px;color:var(--ink);vertical-align:top;}
+table.spec tr:nth-child(even) td,table.matrix tr:nth-child(even) td{background:var(--bg-2);}
+table.spec td:first-child,table.matrix td:first-child{font-weight:600;color:var(--ink);}
+table.matrix th:first-child{background:var(--bg-3);}
+.modelthumb{display:block;height:44px;width:auto;margin:0 auto 5px;}
+th .modelthumb{filter:none;}
+/* ---- figures ---- */
+.fig{margin:18px 0;}
+.fig-ph{border:1px dashed #b9c4d4;border-radius:var(--r);background:var(--bg-2);padding:18px;display:flex;flex-direction:column;gap:7px;min-height:84px;justify-content:center;}
+.fig-tag{align-self:flex-start;font-family:var(--font-h);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 9px;border-radius:999px;}
+.fig-tag.keep{background:#e6f4f0;color:#0a7d6b;border:1px solid #b8e0d6;}
+.fig-tag.rebrand{background:#eef0ff;color:#5b54c9;border:1px solid #cdd1f5;}
+.fig-desc{color:var(--muted);font-size:.88rem;}
+.fig img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r);display:block;}
+.fig img.plain{border:none;}
+.fig figcaption{margin-top:6px;font-size:.82rem;color:var(--muted);font-style:italic;}
+.inlinefig{float:right;width:340px;max-width:42%;margin:2px 0 12px 24px;}
+.inlinefig img{width:100%;}
+@media(max-width:680px){.inlinefig{float:none;width:auto;max-width:430px;margin:14px auto;}}
+/* ---- callouts ---- */
+.note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
+.note.warn{border-left-color:#c77e00;background:#fff7e9;}
+.note b{color:var(--blue-dark);}
+/* ---- footer (dark, so white logo shows) ---- */
+.doc-footer{background:#0e2038;border-top:1px solid var(--line);padding:30px 0;color:#9bb0cc;font-size:.82rem;}
+.doc-footer .wrap{max-width:var(--wrap);}
+.doc-footer .disclaimer{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:11px 15px;margin-bottom:16px;color:#c4d6ee;}
+.doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
+.doc-footer a{color:#9bb0cc;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+</style>
+
+
+<style id="nav-cascade-css">.nav-drop.nav-casc{min-width:206px;padding:7px;transition-delay:.20s;}.nav-item:hover .nav-drop.nav-casc,.nav-item:focus-within .nav-drop.nav-casc{transition-delay:0s;}.nav-grp2{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp2:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp2 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub{position:absolute;top:-7px;left:100%;min-width:238px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:6;}.nav-grp2:hover .nav-sub,.nav-grp2:focus-within .nav-sub{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub a:hover{background:rgba(55,182,240,.14);color:#fff;}.sitenav-menu .nav-item:last-child .nav-drop.nav-casc{left:auto;right:0;}.sitenav-menu .nav-item:last-child .nav-sub{left:auto;right:100%;transform:translateX(-8px);}.sitenav-menu .nav-item:last-child .nav-grp2:hover .nav-sub,.sitenav-menu .nav-item:last-child .nav-grp2:focus-within .nav-sub{transform:translateX(0);}@media(max-width:1040px){.sitenav.open .nav-drop.nav-casc{min-width:0;}.sitenav.open .nav-grp2{display:block;font-weight:700;color:#8fb4dd;text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:10px 24px 4px;}.sitenav.open .nav-grp2 .nc{display:none;}.sitenav.open .nav-sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub a{padding:8px 38px;white-space:normal;}}</style>
+<style id="ss-css">.ss-wrap{position:relative;margin-left:10px;}.ss-input{width:150px;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,225,.35);color:#dce8f7;font:inherit;font-size:.82rem;padding:.5em .8em;border-radius:6px;outline:none;transition:width .18s,border-color .18s;}.ss-input::placeholder{color:#7f9bc0;}.ss-input:focus{width:220px;border-color:#37b6f0;}.ss-panel{position:absolute;top:42px;right:0;width:340px;max-width:84vw;background:#0e2038;border:1px solid rgba(120,170,225,.28);border-radius:10px;box-shadow:0 18px 44px -12px rgba(0,0,0,.7);padding:6px;display:none;max-height:70vh;overflow:auto;z-index:300;}.ss-panel.open{display:block;}.ss-item{display:block;padding:9px 11px;border-radius:7px;text-decoration:none;}.ss-item:hover,.ss-item.active{background:rgba(55,182,240,.14);}.ss-item .st{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:600;font-size:.9rem;color:#fff;display:block;}.ss-item .sc{font-size:.69rem;text-transform:uppercase;letter-spacing:.07em;color:#5f9fe0;}.ss-none{padding:12px;color:#8aa0bd;font-size:.85rem;}@media(max-width:1040px){.ss-wrap{order:6;width:100%;margin:8px 0 0;}.ss-input,.ss-input:focus{width:100%;}.ss-panel{width:100%;}}</style>
+<style id="gfoot-v3">
+.gfoot{position:relative;overflow:hidden;background:#0e2038;color:#9bb0cc;padding:22px 0 11px;font-size:.9rem;font-family:Arial,'Segoe UI',Helvetica,sans-serif;}
+.gfoot::before{content:"";position:absolute;left:50%;bottom:-150px;transform:translateX(-50%);width:600px;height:330px;background:radial-gradient(circle at 50% 50%,rgba(55,182,240,.20),rgba(63,208,196,.06) 46%,transparent 70%);pointer-events:none;animation:gfglow 6s ease-in-out infinite;}
+@keyframes gfglow{0%,100%{opacity:.6}50%{opacity:.95}}
+.gfoot .gwrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 28px;}
+.gfoot .gcols{display:grid;grid-template-columns:1.15fr 1.25fr 1fr;gap:30px;align-items:start;margin-bottom:10px;}
+/* brand + academy + social */
+.gfoot .gbrand .gbnc{height:56px;width:auto;display:block;margin-bottom:9px;}
+.gfoot .gtagline{margin:0 0 12px;max-width:32ch;color:#aebfd4;font-size:.82rem;line-height:1.5;}
+.gfoot .gacad{display:flex;align-items:center;gap:11px;text-decoration:none;border-top:1px solid rgba(255,255,255,.1);padding-top:11px;max-width:34ch;}
+.gfoot .gacad img{height:58px;width:auto;flex:0 0 auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));}.gfoot .gbrand a.gbnc-link{display:inline-block;line-height:0;}.gfoot .gacad a.gacad-logo{flex:0 0 auto;display:inline-flex;line-height:0;}.gfoot .gbottom a:hover{color:#5fd0ff;}
+.gfoot .gacad span{font-size:.72rem;line-height:1.4;color:#9bb0cc;}
+.gfoot .gacad b{color:#fff;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-size:.82rem;display:block;margin-bottom:1px;}
+.gfoot .gacad a{text-decoration:none;}.gfoot .gacad a:hover b{color:#5fd0ff;}
+.gfoot .gsocial{display:flex;gap:10px;margin-top:0;}
+.gfoot .gsocial a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(120,170,225,.3);border-radius:7px;color:#9bb0cc;transition:all .16s;}
+.gfoot .gsocial a[aria-label="YouTube"]{color:#ff0000;border-color:rgba(255,0,0,.45);}.gfoot .gsocial a[aria-label="LinkedIn"]{color:#0a66c2;border-color:rgba(10,102,194,.45);}.gfoot .gsocial a:hover{filter:brightness(1.18);background:rgba(255,255,255,.06);}.gfoot .gsocial-label{font-size:.68rem;color:#9bb0cc;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 4px;font-weight:600;}
+.gfoot .gsocial svg{width:16px;height:16px;fill:currentColor;}
+/* map */
+.gfoot .gmap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;}
+.gfoot .gmap-img{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 5px 16px rgba(55,182,240,.28));}
+.gfoot .gmap .gtag{margin:2px 0 0;font-size:1.2rem;line-height:1.35;color:#c4d6ee;}
+.gfoot .gmap .gtag a{color:#5fd0ff;font-weight:700;text-decoration:none;}
+.gfoot .gmap .gtag a:hover{color:#8fe2ff;text-decoration:underline;}
+/* company links */
+.gfoot .gcompany h5{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;color:#fff;font-size:.78rem;margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;}
+.gfoot .gcompany ul{list-style:none;padding:0;margin:0;columns:2;column-gap:20px;}
+.gfoot .gcompany li{margin-bottom:5px;font-size:.79rem;break-inside:avoid;}
+.gfoot .gcompany a{color:#9bb0cc;text-decoration:none;}
+.gfoot .gcompany a:hover{color:#fff;text-decoration:underline;}
+/* books */
+.gfoot .gbooks{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:4px;font-size:.66rem;color:#7f97b5;line-height:1.6;white-space:nowrap;overflow-x:auto;}
+.gfoot .gbooks .gbooks-l{color:#9bb0cc;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.68rem;display:block;margin:0 0 4px;}
+.gfoot .gbooks a{color:#7f97b5;text-decoration:none;}
+.gfoot .gbooks a:hover{color:#5fd0ff;text-decoration:underline;}
+/* bottom */
+.gfoot .gbottom{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.12);padding-top:9px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font-size:.74rem;color:#8aa0bd;}
+.gfoot .gbottom span{white-space:nowrap;}
+@media(max-width:860px){.gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}.gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}.gfoot .gacad{text-align:left;}.gfoot .gsocial{justify-content:center;}.gfoot .gcompany ul{text-align:left;}.gfoot .gbottom{justify-content:center;text-align:center;}.gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}}
+</style>
+<style id="navgrplink">.sitenav .nav-grp-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer;display:contents;}.sitenav .nav-grp-link:hover{color:#5fd0ff;}</style><!--seo-meta-->
+<meta name="description" content="The Model 750 packs 4 or 8 independent delay channels, 100 ps (1 ps optional) resolution, and Ethernet/USB remote control into an ultra-compact pulse and delay generator.">
+<link rel="canonical" href="https://www.berkeleynucleonics.com/docs/bnc-model-750-datasheet.html">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Berkeley Nucleonics">
+<meta property="og:title" content="Model 750 Multi-Channel Pulse &amp; Delay Generator | BNC">
+<meta property="og:description" content="The Model 750 packs 4 or 8 independent delay channels, 100 ps (1 ps optional) resolution, and Ethernet/USB remote control into an ultra-compact pulse and delay generator.">
+<meta property="og:url" content="https://www.berkeleynucleonics.com/docs/bnc-model-750-datasheet.html">
+<meta property="og:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Model 750 Multi-Channel Pulse &amp; Delay Generator | BNC">
+<meta name="twitter:description" content="The Model 750 packs 4 or 8 independent delay channels, 100 ps (1 ps optional) resolution, and Ethernet/USB remote control into an ultra-compact pulse and delay generator.">
+<meta name="twitter:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Model 750 Multi-Channel Pulse &amp; Delay Generator","description":"Model 750 mini pulse and delay generator with 4 or 8 independent delay channels, 100 ps (1 ps optional) resolution, and Ethernet/USB remote control.","url":"https://www.berkeleynucleonics.com/docs/bnc-model-750-datasheet.html","model":"750","mpn":"750","sku":"750","brand":{"@type":"Brand","name":"Berkeley Nucleonics"},"manufacturer":{"@type":"Organization","name":"Berkeley Nucleonics Corporation"},"category":"Pulse and Delay Generator","additionalProperty":[{"@type":"PropertyValue","name":"Delay channels","value":"4 (8 with option)"},{"@type":"PropertyValue","name":"Delay range","value":"100 seconds"},{"@type":"PropertyValue","name":"Delay resolution","value":"100 ps (1 ps optional)"},{"@type":"PropertyValue","name":"Channel-to-channel RMS jitter","value":"&lt;50 ps + delay x 10^-7"},{"@type":"PropertyValue","name":"Output amplitude","value":"1.5 V to 5 V into 50 ohm"},{"@type":"PropertyValue","name":"Internal trigger rate","value":"0.01 Hz to 50 MHz"},{"@type":"PropertyValue","name":"External trigger rate","value":"up to 40 MHz"},{"@type":"PropertyValue","name":"Communication","value":"USB, Ethernet 10/100 Mb/s"}],"offers":{"@type":"Offer","url":"https://www.berkeleynucleonics.com/get-quote.html","availability":"https://schema.org/InStock","priceCurrency":"USD","seller":{"@type":"Organization","name":"Berkeley Nucleonics Corporation"}}}</script>
+<!--/seo-meta-->
+<!--bnc-auth-->
+<link rel="stylesheet" href="../_shared/bnc-auth.css">
+<script src="../_shared/bnc-auth-config.js"></script>
+<script defer src="../_shared/bnc-auth.js"></script><script defer src="../_shared/bnc-visit.js"></script><script defer src="../_shared/bnc-chat.js"></script>
+<!--/bnc-auth-->
+<style id="ds-table-fixes">table.spec td,table.spec th,table.matrix td,table.matrix th{border:1px solid var(--line);}table.spec th,table.matrix th{border-bottom:2px solid var(--blue);}table.spec tr.grp td{background:var(--bg-3);}table.spec tr.grp td:first-child{font-weight:700;color:var(--blue-dark);}table.spec td.sub{padding-left:30px;font-weight:400;}table.spec td.nw{white-space:nowrap;}.fig.figgraph{float:none;clear:both;width:100%;max-width:900px;margin:18px auto;}.fig.figgraph img{width:100%;}</style><link rel="stylesheet" href="../_shared/bnc-emerald.css">
+<style id="bnc-mobile-nav-fix">
+@media(max-width:1040px){
+  .sitenav-inner{flex-wrap:wrap;height:auto;min-height:58px;gap:10px;padding:8px 16px;align-items:center;}
+  .sitenav-logo{margin-right:auto;}
+  .sitenav-logo svg{height:36px;}
+  .bnc-acct{order:4;display:flex;align-items:center;}
+  .bnc-welcome{display:none;}
+  .navtoggle{display:flex;order:5;margin:0;width:42px;height:38px;background:transparent;border:1px solid rgba(120,170,225,.4);border-radius:6px;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:0;}
+  .navtoggle span{display:block;width:20px;height:2px;background:#c4d6ee;border-radius:2px;}
+  .sitenav-cta{display:none;}
+  .ss-wrap{display:none;margin:0;}
+  .sitenav.open .ss-wrap{display:block;order:6;flex:0 0 100%;width:100%;margin:6px 0 0;}
+  .sitenav.open .ss-input,.sitenav.open .ss-input:focus{width:100%;box-sizing:border-box;}
+  .sitenav.open .ss-panel{width:100%;max-width:none;}
+  .sitenav.open .sitenav-cta{display:block;order:7;flex:0 0 100%;width:100%;box-sizing:border-box;margin:8px 0 0;text-align:center;}
+  .sitenav.open .sitenav-menu{display:flex;order:8;flex:0 0 100%;width:100%;flex-direction:column;position:static;top:auto;left:auto;right:auto;max-height:64vh;overflow:auto;border-radius:0;margin:8px 0 0;padding:6px 0;border-top:1px solid rgba(120,170,225,.18);background:#0e2038;align-items:stretch;gap:0;}
+  table.spec,table.matrix{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;}
+  img,figure,video,iframe{max-width:100%;height:auto;}
+  .doc-hero .wrap{flex-direction:column;align-items:stretch;}
+  .doc-hero .hero-img{flex:0 1 auto;width:100%;max-width:100%;}
+  #nutshell-boot-73885{display:none!important;}
+  html{overflow-x:clip;}
+}
+</style>
+<style id="tvp-style">
+.toc-videos,.toc-press{margin-top:16px;background:#f3faf5;border:1px solid #cbe3d2;border-radius:6px;padding:12px 13px 11px;}
+.toc-press{margin-top:12px;}
+.toc-videos h4,.toc-press h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:#0d6b3a;margin:0 0 7px;}
+.toc-videos a.tv-link,.toc-press a.tp-link{display:flex;align-items:flex-start;gap:7px;color:#25323b;margin-left:0;border-left:0;padding:4px 0;line-height:1.35;font-size:.82rem;text-decoration:none;}
+.toc-videos a.tv-link svg,.toc-press a.tp-link svg{flex:0 0 12px;width:12px;height:12px;fill:#12854a;margin-top:2px;}
+.toc-videos a.tv-link:hover,.toc-press a.tp-link:hover{color:#0d6b3a;border-left:0;}
+.toc-videos a.tv-more,.toc-press a.tp-more{display:block;margin-left:0;border-left:0;margin-top:7px;padding:0;font-size:.78rem;font-weight:700;color:#0d6b3a;text-decoration:none;}
+.toc-videos a.tv-more:hover,.toc-press a.tp-more:hover{border-left:0;}
+.toc-videos a.tv-more:hover,.toc-press a.tp-more:hover{text-decoration:underline;}
+.yt-lightbox{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;background:rgba(8,16,30,.82);padding:4vh 4vw;}
+.yt-lightbox.open{display:flex;}
+.yt-shell{position:relative;width:min(920px,100%);}
+.yt-shell .yt-close{position:absolute;top:-38px;right:0;background:none;border:none;color:#c4d6ee;font:700 15px/1 Arial,sans-serif;letter-spacing:.05em;cursor:pointer;padding:8px;}
+.yt-shell .yt-close:hover{color:#fff;}
+.yt-shell .yt-box{position:relative;padding-top:56.25%;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 24px 70px -20px rgba(0,0,0,.8);}
+.yt-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+</style>
+<link rel="stylesheet" href="/_shared/bnc-a11y.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header class="sitenav"><div class="sitenav-inner">
+  <a class="sitenav-logo" href="../home.html" aria-label="Berkeley Nucleonics home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
+  <div class="ss-wrap"><span class="ss-field"><input class="ss-input" type="search" placeholder=" " aria-label="Search the site" autocomplete="off"><span class="ss-ph" aria-hidden="true">Search<span class="ss-dots"><i></i><i></i><i></i></span></span></span><div class="ss-panel" role="listbox"></div></div>
+  <nav class="sitenav-menu"><div class="nav-item"><a href="../home.html">Home</a></div><div class="nav-item"><a class="nav-trigger">Products &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../pdg-home.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../pdg-home.html">Home</a><div class="nav-grp3">Digital Delay/Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-525-datasheet.html" target="_blank" rel="noopener">Model 525</a><a href="bnc-model-575-datasheet.html" target="_blank" rel="noopener">Model 575</a><a href="bnc-model-577-datasheet.html" target="_blank" rel="noopener">Model 577</a><a href="bnc-model-588-datasheet.html" target="_blank" rel="noopener">Model 588</a><a href="bnc-model-725-datasheet.html" target="_blank" rel="noopener">Model 725</a><a href="bnc-model-750-datasheet.html" target="_blank" rel="noopener">Model 750</a></div></div><div class="nav-grp3">High-Density Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-588b-datasheet.html" target="_blank" rel="noopener">Model 588B</a></div></div><div class="nav-grp3">High-Current Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-507-datasheet.html" target="_blank" rel="noopener">Model 507</a><a href="bnc-model-508-datasheet.html" target="_blank" rel="noopener">Model 508</a></div></div><div class="nav-grp3">Femtosecond Delay<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-745t-datasheet.html" target="_blank" rel="noopener">Model 745T</a></div></div><div class="nav-grp3">High-Performance Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-765-datasheet.html" target="_blank" rel="noopener">Model 765</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">Model 765-HV</a></div></div><div class="nav-grp3">NIM Pulse Generator<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-pb-5-datasheet.html" target="_blank" rel="noopener">Model PB-5</a><a href="../nim-home.html#db-2" target="_blank" rel="noopener">Model DB-2</a><a href="../nim-home.html#ap-3" target="_blank" rel="noopener">Model AP-3</a><a href="../nim-home.html#tb-4" target="_blank" rel="noopener">Model TB-4</a></div></div><a href="pdg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rfsg-home.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../rfsg-home.html">Home</a><div class="nav-grp3">Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-835-datasheet.html" target="_blank" rel="noopener">Model 835</a><a href="bnc-model-845-datasheet.html" target="_blank" rel="noopener">Model 845</a><a href="bnc-model-855b-datasheet.html" target="_blank" rel="noopener">Model 855B</a><a href="bnc-model-865b-datasheet.html" target="_blank" rel="noopener">Model 865B</a><a href="bnc-model-870a-datasheet.html" target="_blank" rel="noopener">Model 870A</a><a href="bnc-model-871-datasheet.html" target="_blank" rel="noopener">Model 871</a><a href="bnc-model-805sg-datasheet.html" target="_blank" rel="noopener">Model 805-SG</a><a href="bnc-model-845oem-datasheet.html" target="_blank" rel="noopener">Model 845-OEM</a><a href="bnc-rfs-1000-datasheet.html" target="_blank" rel="noopener">RFS-1000 USB Series</a></div></div><div class="nav-grp3">Synthesizers &amp; Sources<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-805m-datasheet.html" target="_blank" rel="noopener">Model 805-M</a><a href="bnc-model-825m-datasheet.html" target="_blank" rel="noopener">Model 825-M</a><a href="bnc-model-845m-datasheet.html" target="_blank" rel="noopener">Model 845-M</a><a href="bnc-model-866m-datasheet.html" target="_blank" rel="noopener">Model 866-M</a><a href="bnc-model-865bm-datasheet.html" target="_blank" rel="noopener">Model 865B-M</a><a href="bnc-model-865bm-40x-datasheet.html" target="_blank" rel="noopener">Model 865B-M-40-X</a></div></div><div class="nav-grp3">Vector Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-model-875-datasheet.html" target="_blank" rel="noopener">Model 875</a><a href="bnc-rfs-7060-u-datasheet.html" target="_blank" rel="noopener">RFS-7060-U</a><a href="bnc-rfs-7060-t-datasheet.html" target="_blank" rel="noopener">RFS-7060-T</a></div></div><div class="nav-grp3">RF USB Power Sensors<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-12100-power-sensor-datasheet.html" target="_blank" rel="noopener">Model 12100 Series Power Sensors</a></div></div><div class="nav-grp3">Phase Noise Analyzers<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-7000-series-phase-noise-datasheet.html" target="_blank" rel="noopener">7000 Series (7070 / 7300 / 7340)</a></div></div><a href="rfsg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../scintiq-home.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../scintiq-home.html">ScintIQ Home</a><a href="bnc-scintiq-naitl-datasheet.html" target="_blank" rel="noopener">NaI(Tl)</a><a href="bnc-scintiq-csitl-datasheet.html" target="_blank" rel="noopener">CsI(Tl)</a><a href="bnc-scintiq-labr3-datasheet.html" target="_blank" rel="noopener">LaBr3(Ce)</a><a href="bnc-scintiq-cebr3-datasheet.html" target="_blank" rel="noopener">CeBr3</a><a href="bnc-scintiq-lbc-datasheet.html" target="_blank" rel="noopener">LBC</a><a href="bnc-scintiq-sri2eu-datasheet.html" target="_blank" rel="noopener">SrI2(Eu)</a><a href="bnc-scintiq-cllbc-datasheet.html" target="_blank" rel="noopener">CLLBC</a><a href="bnc-scintiq-clyc-datasheet.html" target="_blank" rel="noopener">CLYC:Ce</a><a href="bnc-scintiq-baf2-datasheet.html" target="_blank" rel="noopener">BaF2</a><a href="bnc-scintiq-yapce-datasheet.html" target="_blank" rel="noopener">YAP:Ce</a><a href="bnc-scintiq-yag-datasheet.html" target="_blank" rel="noopener">YAG:Ce</a><a href="bnc-scintiq-gaggce-datasheet.html" target="_blank" rel="noopener">GAGG:Ce</a><a href="bnc-scintiq-lyso-datasheet.html" target="_blank" rel="noopener">LYSO</a><a href="bnc-scintiq-bgo-datasheet.html" target="_blank" rel="noopener">BGO</a><a href="scintiq-material-comparison.html" target="_blank" rel="noopener">Material Comparison Tool</a><a href="scintiq-selector.html" target="_blank" rel="noopener">Detector Selector</a><a href="scintiq-configurator.html" target="_blank" rel="noopener">Detector Configurator</a><a href="scintiq-index.html" target="_blank" rel="noopener">All ScintIQ Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../awg-home.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../awg-home.html">AWG Home</a><a href="bnc-awg-686-datasheet.html" target="_blank" rel="noopener">Model 686</a><a href="bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685</a><a href="bnc-awg-685c-datasheet.html" target="_blank" rel="noopener">Model 685C</a><a href="bnc-awg-675-datasheet.html" target="_blank" rel="noopener">Model 675</a><a href="bnc-awg-676-datasheet.html" target="_blank" rel="noopener">Model 676</a><a href="bnc-awg-670c-datasheet.html" target="_blank" rel="noopener">Model 670C</a><a href="bnc-awg-645-datasheet.html" target="_blank" rel="noopener">Model 645</a><a href="bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener">Model A2255</a><a href="bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener">Model A2085</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../riid-home.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../riid-home.html">Isotope ID Home</a><div class="nav-grp3">Handheld<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-sam-920-sprd-datasheet.html" target="_blank" rel="noopener">SAM 920+ SPRD</a><a href="bnc-sam-940-plus-datasheet.html" target="_blank" rel="noopener">SAM 940+</a><a href="bnc-sam-950-datasheet.html" target="_blank" rel="noopener">SAM 950</a><a href="bnc-model-907-datasheet.html" target="_blank" rel="noopener">Model 907</a><a href="bnc-model-951-datasheet.html" target="_blank" rel="noopener">Model 951</a><a href="bnc-pm1703gna-datasheet.html" target="_blank" rel="noopener">Model 1703</a><a href="bnc-metrad-1-datasheet.html" target="_blank" rel="noopener">MetRad 1</a></div></div><div class="nav-grp3">Backpack/Vehicle/Lab/Drone<span class="nc">&#8250;</span><div class="nav-sub3"><a href="bnc-medusa-ms-series-datasheet.html" target="_blank" rel="noopener">MS Series</a><a href="bnc-sampack-120-datasheet.html" target="_blank" rel="noopener">SAMpack 120</a><a href="bnc-sammobile-150-datasheet.html" target="_blank" rel="noopener">SAMmobile 150</a><a href="bnc-model-960-datasheet.html" target="_blank" rel="noopener">Model 960 Monitoring System</a><a href="bnc-model-970-mca-datasheet.html" target="_blank" rel="noopener">Model 970 MCA</a><a href="bnc-model-971-datasheet.html" target="_blank" rel="noopener">Model 971</a></div></div><a href="riid-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../dei-home.html">High Power/Current Pulsers &amp; Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../dei-home.html">DEI Pulsers Home</a><a href="bnc-dei-pvx-4151-datasheet.html" target="_blank" rel="noopener">PVX-4151 (&plusmn;1.5 kV)</a><a href="bnc-dei-pvx-4141-datasheet.html" target="_blank" rel="noopener">PVX-4141 Pulse Generator</a><a href="bnc-dei-pvx-4110-datasheet.html" target="_blank" rel="noopener">PVX-4110 (±10 kV)</a><a href="bnc-dei-pvx-4000-datasheet.html" target="_blank" rel="noopener">PVX-4000 Series</a><a href="bnc-dei-pcx-7421-datasheet.html" target="_blank" rel="noopener">PCX-7421 Laser Diode Driver</a><a href="bnc-dei-pco-6131-datasheet.html" target="_blank" rel="noopener">PCO-6131 (125 A OEM)</a><a href="bnc-dei-pcm-7700-datasheet.html" target="_blank" rel="noopener">PCM-7700 (200 A)</a><a href="bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">765-HV (&plusmn;50 V, 1 A)</a><a href="../hvx-home.html">HVX High Voltage Power Supplies</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rtsa-home.html">Real-Time Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../rtsa-home.html">ICX Home</a><a href="bnc-icx-fieldhawk-handheld-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk</a><a href="bnc-icx-fieldhawk-rugged-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk-R</a><a href="bnc-icx-fieldhawk-usb-datasheet.html" target="_blank" rel="noopener">ICX-Series USB</a><a href="bnc-ant-106-directional-antenna-manual.html" target="_blank" rel="noopener">ANT-100G Antenna (accessory)</a><a href="bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener">Product Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../bnc-scientific.html">BNC Scientific</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../brightspec-home.html">BrightSpec MCAs</a><a href="../spectechniques-home.html">SpecTechniques Radiation Sources</a><a href="../megiq-home.html">MegIQ VNAs &amp; Antenna Measurement</a><a href="../medusa-home.html">MedUSA Environmental</a><a href="../heinzinger-home.html">Heinzinger High Voltage</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Applications &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-pdg-physics-timing.html">Physics &amp; Accelerator Timing</a><a href="brief-pdg-laser-qswitch-pockels.html">Laser Q-Switch &amp; Pockels Cell</a><a href="brief-pdg-lidar-ranging.html">LiDAR &amp; Time-of-Flight Ranging</a><a href="brief-pdg-quantum-coldatom.html">Quantum &amp; Cold-Atom Experiments</a><a href="brief-pdg-ate-production.html">Automated Test &amp; Production</a><a href="brief-pdg-medical-imaging-gating.html">Medical Imaging &amp; Gating</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rfsg-radar-ew.html">Radar &amp; Electronic Warfare</a><a href="brief-rfsg-satcom.html">SATCOM &amp; Ground Station</a><a href="brief-rfsg-quantum-control.html">Quantum &amp; Qubit Control</a><a href="brief-rfsg-wireless-5g6g.html">5G / 6G &amp; Wireless Test</a><a href="brief-rfsg-ate-receiver-test.html">ATE &amp; Receiver Test</a><a href="brief-rfsg-aerospace-defense.html">Aerospace &amp; Defense</a><a href="brief-rfsg-antenna-emc.html">Antenna &amp; EMC Test</a><a href="brief-power-sensor-measurement-principles.html">RF Power Sensor: Measurement Principles</a><a href="brief-power-sensor-essential-tools.html">RF Power Sensors: Essential Tools</a><a href="brief-power-sensor-meters-vs-sensors.html">Power Meters and Power Sensors</a><a href="brief-power-sensor-radar-satellite.html">Power Sensors: Radar & Satellite</a><a href="brief-power-sensor-mri.html">A Closer Look at MRI</a><a href="brief-power-sensor-temperature.html">12100 Power Sensor Temperature Sensitivity</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-scint-homeland-security.html">Homeland Security &amp; Threat Detection</a><a href="brief-scint-medical-imaging.html">Medical Imaging</a><a href="brief-scint-environmental-monitoring.html">Environmental Monitoring</a><a href="brief-scint-high-energy-physics.html">High-Energy &amp; Nuclear Physics</a><a href="brief-scint-neutron-detection.html">Neutron Detection</a><a href="brief-scint-well-logging-industrial.html">Well Logging &amp; Industrial</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-hel-icf-timing.html">HEL / ICF Front-End Timing</a><a href="brief-awg-lidar-testing.html">LiDAR Testing</a><a href="brief-awg-laser-diode-pulse.html">Pulsed Laser Diode Test</a><a href="brief-awg-quantum.html">Quantum: QKD &amp; Sensing</a><a href="brief-awg-radar-ew.html">Radar &amp; EW Simulation</a><a href="brief-awg-photonics.html">Optics &amp; Photonics</a><a href="brief-awg-mri.html">MRI &amp; Medical Imaging</a><a href="brief-awg-radar-fires.html">Radar &amp; Fire-Control</a><a href="brief-awg-spg.html">Serial Pattern Generation</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-riid-homeland-security.html">Homeland Security &amp; Border</a><a href="brief-riid-first-responders-hazmat.html">First Responders &amp; HazMat</a><a href="brief-riid-nuclear-power.html">Nuclear Power Facilities</a><a href="brief-riid-scrap-metal.html">Scrap Metal &amp; Recycling</a><a href="brief-riid-naval-maritime.html">Naval &amp; Maritime</a><a href="brief-riid-environmental.html">Environmental Monitoring</a><a href="brief-riid-secondary-screening.html">Secondary Screening &amp; Reachback</a></div></div><div class="nav-grp2">High Voltage/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-dei-mass-spectrometry.html">Time-of-Flight Mass Spectrometry</a><a href="brief-dei-pockels-q-switch.html">Pockels Cell &amp; Q-Switch Driving</a><a href="brief-dei-laser-diode-arrays.html">Laser Diode &amp; Array Driving</a><a href="brief-dei-lidar-rangefinding.html">LiDAR &amp; Rangefinding</a><a href="brief-dei-directed-energy-hel.html">Directed-Energy &amp; HEL Systems</a><a href="brief-dei-accelerators-kickers.html">Accelerators &amp; Beam Kickers</a><a href="brief-dei-eo-modulation-gating.html">Electro-Optic Modulation &amp; Gating</a><a href="brief-dei-hv-test-detector-bias.html">HV Test &amp; Detector Biasing</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-rf-geolocation-mapping.html">RF Geolocation &amp; Mapping</a><a href="brief-5g-cellular-coverage.html">5G &amp; Cellular Coverage</a><a href="brief-spectrum-monitoring.html">Spectrum Monitoring</a><a href="brief-ew-sigint.html">EW &amp; SIGINT</a><a href="brief-drone-spectrum-monitoring.html">Drone Spectrum Monitoring</a><a href="brief-rd-university-kits.html">R&amp;D &amp; University Kits</a><a href="brief-aerospace-defense-radar.html">Aerospace, Defense &amp; Radar</a><a href="brief-wireless-5g6g-validation.html">Wireless &amp; 5G/6G Validation</a><a href="brief-emi-emc-precompliance.html">EMI / EMC Pre-Compliance</a><a href="brief-physics-synthesizer.html">Physics &amp; Synthesizer Diagnostics</a></div></div><div class="nav-grp2">Software Defined Radios<span class="nc">&#8250;</span><div class="nav-sub"><a href="handbook-sdr-rtsa.html">SDR Integration Handbook (ICX-FieldHawk)</a><a href="handbook-sdr-products.html">SDR Product Handbook (Choosing a Receiver)</a></div></div><div class="nav-grp2">HVX High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-hvx-semiconductor-hv-test.html">Semiconductor HV Test</a><a href="brief-hvx-emobility-ev-test.html">E-Mobility / EV Test</a><a href="brief-hvx-double-pulse.html">Double-Pulse Test</a><a href="brief-hvx-end-of-line-test.html">End-of-Line Test</a><a href="brief-hvx-calibration-metrology.html">Calibration &amp; Metrology</a><a href="brief-hvx-rd-hv-lab.html">R&amp;D / HV Lab</a><a href="brief-hvx-capacitor-charging.html">Capacitor Charging / Pulsed Power</a><a href="brief-hvx-mass-spectrometry.html">Mass Spectrometry</a><a href="brief-hvx-xray-systems.html">X-Ray Generation Systems</a><a href="brief-hvx-ebeam-ion-beam.html">Electron-Beam &amp; Ion-Beam</a><a href="brief-hvx-electrostatic-coating.html">Electrostatic &amp; Coating</a><a href="brief-hvx-detectors-nuclear.html">Detectors &amp; Nuclear</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Technical Notes &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2">Pulse &amp; Delay Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-pdg-delay-vs-pulse.html">Delay vs Pulse Generators</a><a href="article-pdg-jitter-timing-accuracy.html">Jitter, Resolution &amp; Timing Accuracy</a><a href="article-pdg-triggering-sync.html">Triggering &amp; Synchronization</a></div></div><div class="nav-grp2">RF &amp; Microwave Signal Generators &amp; Sensors<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-rfsg-phase-noise.html">Understanding Phase Noise</a><a href="article-rfsg-switching-speed.html">Frequency Switching Speed</a><a href="article-rfsg-vector-modulation.html">Vector Modulation &amp; I/Q</a><a href="article-rfsg-choosing-signal-generator.html">How to Choose a Signal Generator</a><a href="article-pnt-what-is-a-phase-noise-analyzer.html">What Is a Phase Noise Analyzer?</a><a href="article-pnt-phase-noise-testing-basics.html">Phase Noise Testing Basics</a><a href="appnote-pnt-cross-correlation-ocxo.html">Cross-Correlation &amp; OCXOs</a><a href="appnote-pnt-additive-phase-noise.html">Additive Phase Noise</a><a href="article-pnt-automated-pulsed-measurements.html">Automated Pulsed Measurements</a></div></div><div class="nav-grp2">Scintillation Detectors (ScintIQ)<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-scint-choosing-a-scintillator.html">How to Choose a Scintillator</a><a href="article-scint-neutron-gamma-discrimination.html">Neutron / Gamma Discrimination</a><a href="article-scint-sipm-vs-pmt-readout.html">SiPM vs PMT Readout</a><a href="article-scint-energy-resolution-explained.html">Understanding Energy Resolution</a><a href="/books/scintillators/index.html">Nuts &amp; Bolts of Scintillation Detectors</a></div></div><div class="nav-grp2">Arbitrary Waveform Generators<span class="nc">&#8250;</span><div class="nav-sub"><a href="brief-awg-tektronix-awg7000-migration.html">Replacing Legacy 7000 Series ARBs</a><a href="article-awg-685-optics-photonics-lasers.html">685 for Optics, Photonics &amp; Lasers</a><a href="article-awg-digital-option.html">ArbRider Digital Option</a><a href="/books/arbitrary-waveform/index.html">Nuts &amp; Bolts of Arbitrary Waveform Generators</a></div></div><div class="nav-grp2">Isotope ID &amp; Radiation Detection<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-riid-how-to-choose.html">How to Choose an Isotope Identifier</a><a href="article-riid-detector-materials.html">NaI vs LaBr3 vs CeBr3 Detectors</a><a href="article-riid-neutron-detection.html">Neutron Detection Explained</a><a href="/books/riids-for-hazmat/index.html">Nuts &amp; Bolts: RIIDs for HazMat</a></div></div><div class="nav-grp2">High Voltage/Current Pulsers<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-dei-choosing-pulse-generator.html">Selecting an HV Pulse Generator</a><a href="article-dei-driving-laser-diodes.html">Driving Laser Diodes Safely</a><a href="article-dei-capacitive-load-pulsing.html">Capacitive-Load Pulsing</a><a href="article-dei-slowing-rise-time.html">How Do I Slow the Rise Time?</a><a href="/books/high-power-pulse/index.html">Nuts &amp; Bolts of High Power</a></div></div><div class="nav-grp2">ICX-FieldHawk Spectrum Analyzers<span class="nc">&#8250;</span><div class="nav-sub"><a href="bnc-how-to-choose-handheld-analyzer.html">How to Choose a Handheld Analyzer</a><a href="article-rtsa-practical-guide.html">RTSA Practical Guide</a><a href="article-ew-rtsa.html">RTSA for Electronic Warfare</a><a href="/books/realtime-spectrum-analyzers/index.html">Nuts &amp; Bolts of RTSAs</a></div></div><div class="nav-grp2">HVX High Voltage Power Supplies<span class="nc">&#8250;</span><div class="nav-sub"><a href="article-hvx-choosing-hv-supply.html">Choosing an HV Supply</a><a href="article-hvx-polarity-floating.html">Polarity &amp; Floating Outputs</a><a href="article-hvx-ripple-regulation.html">Ripple &amp; Regulation</a><a href="/books/high-power-pulse/index.html">Nuts &amp; Bolts of High Power</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Support &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2" data-bnc-staff>Employee Portal<span class="nc">&#8250;</span><div class="nav-sub"><a href="/employee-portal.html#visitors" target="_blank" rel="noopener">Website Visitor Review</a><a href="/employee-portal.html#pending" target="_blank" rel="noopener">Website Pending Actions</a><a href="/employee-portal.html#docs" target="_blank" rel="noopener">Internal Documentation</a></div></div><div class="nav-grp2">Product Documentation<span class="nc">&#8250;</span><div class="nav-sub"><a href="pdg-index.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators</a><a href="rfsg-index.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators &amp; Sensors</a><a href="scintiq-index.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ)</a><a href="awg-index.html" target="_blank" rel="noopener">Arbitrary Waveform Generators</a><a href="riid-index.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection</a><a href="dei-index.html" target="_blank" rel="noopener">High Power/Current Pulsers</a><a href="index.html" target="_blank" rel="noopener">ICX-FieldHawk Spectrum Analyzers</a><a href="hvx-index.html" target="_blank" rel="noopener">HVX High Voltage Power Supplies</a><a href="webinar-library.html" target="_blank" rel="noopener">Webinar Library</a></div></div><div class="nav-grp2">Service &amp; Resources<span class="nc">&#8250;</span><div class="nav-sub"><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a><a href="../pricing.html">Budgetary Pricing</a><a href="../contact.html" target="_blank" rel="noopener">Contact Regional Representative</a><a href="software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a><a href="../obsolete-products.html">Obsolete Product Support</a><a href="../academy-free-access.html">Free Academy Course Access</a></div></div><div class="nav-grp2">Frequently Asked Questions<span class="nc">&#8250;</span><div class="nav-sub"><a href="../faq.html">View all FAQs</a><a href="../faq.html#cat-pdg">Pulse &amp; Delay Generators</a><a href="../faq.html#cat-awg">Waveform Generators</a><a href="../faq.html#cat-rf">RF &amp; Microwave</a><a href="../faq.html#cat-pulsed-power">Pulsed Power</a><a href="../faq.html#cat-radiation">Radiation Detection &amp; Isotope Identification</a><a href="../faq.html#cat-scintillation">Scintillation Detectors</a><a href="../faq.html#cat-scientific">BNC Scientific</a><a href="../faq.html#cat-ordering">Ordering &amp; Contact</a></div></div><div class="nav-grp2">About Us<span class="nc">&#8250;</span><div class="nav-sub"><a href="../our-history.html">Our History</a><a href="../management.html">Management Team</a><a href="press-room.html">Historical Press Room</a></div></div></div></div></nav>
+  <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">RFQ/Demo</a><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
+</div></header>
+
+<section class="doc-hero"><div class="wrap"><div class="ht"><div class="kicker">Product Data Sheet</div><h1>Model 750 Multi-Channel Pulse &amp; Delay Generator</h1><p>An ultra-compact pulse and delay generator with 4 or 8 independent delay channels, 100 ps resolution (1 ps optional), and remote control over USB or Ethernet from any standard browser.</p><div class="ver">4 or 8 channels &middot; 100 ps resolution (1 ps option) &middot; USB/Ethernet control</div></div><div class="hero-img">
+  <img src="/figures/wp/750.png" alt="Berkeley Nucleonics Model 750 mini pulse and delay generator">
+</div></div></section>
+
+<div class="layout">
+<nav class="toc">
+  <h4>Contents</h4>
+  <a href="#s1">1. Overview</a>
+  <a href="#s2">2. Key Features</a>
+  <a href="#s3">3. Applications</a>
+  <a href="#s4">4. Front &amp; Rear Panel</a>
+  <a href="#s5">5. Pulse Shaping Modules</a>
+  <a href="#s6">6. Specifications</a>
+  <a href="#s7">7. Options &amp; Ordering</a>
+  <a href="#s8">8. Operating Principles</a>
+  <a href="#s9">9. Example of Channel Outputs Mode</a>
+  <a href="#s10">10. Control &amp; Software</a>
+</nav>
+<main id="main" class="content">
+
+<section id="s1">
+  <h2><span class="num">1</span>Overview</h2>
+  <p>The Model 750 provides 4 (or 8, with the channel-extension option) independent delayed pulses. Delays up to 100 seconds can be programmed with 100 ps resolution, with channel-to-channel jitter under 50 ps RMS. An option enhances delay resolution to 1 ps and reduces jitter to under 10 ps RMS.</p>
+  <p>Each output delivers 1.5 V to 5 V pulses with 1 ns rise/fall time into 50 &#937;. Pulse amplitude, polarity, width, and burst count are independently adjustable on every channel.</p>
+  <p>Two external trigger inputs or three internal synchronized timers (0.01 Hz to 50 MHz) or a software command can trigger any selected channel, in either single-shot or repetitive mode. A Gate input quickly inhibits selected channel outputs, and can also be configured as a second external trigger or as a link for daisy-chaining two Model 750 units together for additional channels.</p>
+  <p>The Model 750 uses an internal 100 MHz TCXO clock reference, or an external user-programmable clock from 10 MHz to 240 MHz. Front-panel LED indicators show input/output activity, and a RUN/STOP button enables or disables all channel outputs at once. A multi-channel Real-Time Chart View lets you visualize every channel output on a common time chart from a PC, with zoom and cursor tools for precise timing measurement.</p>
+</section>
+
+<section id="s2">
+  <h2><span class="num">2</span>Key Features</h2>
+  <ul>
+    <li>4 independent delay channels (8 with the channel-extension option)</li>
+    <li>100 ps delay resolution (1 ps with the resolution option)</li>
+    <li>50 ps channel-to-channel RMS jitter</li>
+    <li>1.5 V to 5 V output into 50 &#937;, 1 ns rise/fall, independently adjustable width, polarity, amplitude, burst, and MUX mode per channel</li>
+    <li>Up to 50 MHz independent trigger rate (single-shot or repetitive) per channel</li>
+    <li>External trigger mode with prescaler, or internal trigger from three synchronous programmable timers, or software command</li>
+    <li>Gate input, selectable as a second trigger or as a daisy-chain link between two units</li>
+    <li>External clocking up to 240 MHz, user programmable</li>
+    <li>USB and Ethernet control, with a browser-based control panel &mdash; no software install required</li>
+    <li>Ultra-compact, low-power packaging</li>
+  </ul>
+</section>
+
+<section id="s3">
+  <h2><span class="num">3</span>Applications</h2>
+  <ul>
+    <li>System laser timing control</li>
+    <li>ATE applications</li>
+    <li>Laser pulse picking</li>
+    <li>Precision pulse applications</li>
+    <li>Instrument triggering</li>
+    <li>Component test</li>
+  </ul>
+  <p>A common application synchronizes every device in a picosecond laser system from one compact unit and one interface: the Model 750's clock reference input receives a signal from the laser oscillator (via an optical-to-electrical converter). Each amplifier in the chain &mdash; pump laser, Q-switch, Pockels cell &mdash; or diagnostic instrument &mdash; digitizer, calorimeter, camera &mdash; then receives repetitive or single pulses, independently adjusted in rate, delay, amplitude, polarity, and width, synchronized to that reference with very low jitter. Four GPIO lines under software control add security or low-frequency device interlocks to the same setup.</p>
+</section>
+
+<section id="s4">
+  <h2><span class="num">4</span>Front &amp; Rear Panel</h2>
+  <figure class="fig figgraph"><img src="../figures/750-ds/750-front-panel.png" alt="Model 750 front panel with numbered callouts: trigger input, four channel outputs, status LEDs, and power/run-stop switch"><figcaption>Front panel: 1&ndash;5 trigger and channel outputs, 6 power/RUN-STOP switch.</figcaption></figure>
+  <figure class="fig figgraph"><img src="../figures/750-ds/750-rear-panel.png" alt="Model 750 rear panel with numbered callouts: gate/trigger, clock input and output, USB/UART, LAN, GPIO, and DC power connectors"><figcaption>Rear panel: 7 gate/trigger, 8&ndash;9 clock in/out, A USB/UART, B LAN, C GPIO, D DC power.</figcaption></figure>
+  <table class="spec">
+    <tr><th colspan="2">Front Panel</th><th colspan="2">Rear Panel</th></tr>
+    <tr><td>1</td><td>Trigger input: SMB connector</td><td>7</td><td>Gate input: SMB connector</td></tr>
+    <tr><td>2</td><td>T1 channel output: SMB connector</td><td>8</td><td>Clock input: SMB connector</td></tr>
+    <tr><td>3</td><td>T2 channel output: SMB connector</td><td>9</td><td>Clock output: SMB connector</td></tr>
+    <tr><td>4</td><td>T3 channel output: SMB connector</td><td>A</td><td>USB connection: micro-AB connector</td></tr>
+    <tr><td>5</td><td>T4 channel output: SMB connector</td><td>B</td><td>LAN connection: RJ45 connector</td></tr>
+    <tr><td>6</td><td>Power ON/OFF, or RUN/STOP for channel outputs</td><td>C</td><td>GPIO: SHM-103 Samtec connector</td></tr>
+    <tr><td></td><td></td><td>D</td><td>+5 V DC power plug: 2.10 mm jack</td></tr>
+  </table>
+</section>
+
+<section id="s5">
+  <h2><span class="num">5</span>Pulse Shaping Modules</h2>
+  <p>Optional accessory modules condition the Model 750's SMB outputs for specific application needs.</p>
+  <table class="spec">
+    <tr><th>Function</th><th>Description</th></tr>
+    <tr><td>Electrical-to-optical pulse converter</td><td>1 ns rise time</td></tr>
+    <tr><td>Optical-to-electrical converter</td><td>Paired with the electrical-to-optical converter, transmits a fast pulse over up to 1 km</td></tr>
+    <tr><td>Sub-nanosecond pulse stretcher</td><td>From a pickup diode, to provide the Model 750's clock reference</td></tr>
+    <tr><td>Line driver</td><td>1 to 4 lines, 50 &#937;, up to 150 MHz rate</td></tr>
+    <tr><td>HV pulse generator</td><td>15&ndash;70 V, &lt;2 ns rise time into 50 &#937;</td></tr>
+    <tr><td>TTL line driver</td><td>4 channels, 50 &#937;, up to 150 MHz rate</td></tr>
+  </table>
+</section>
+
+<section id="s6">
+  <h2><span class="num">6</span>Specifications</h2>
+  <table class="spec">
+    <tr><th colspan="2">Delay Channels</th></tr>
+    <tr><td>Number</td><td>4 independent (8 with channel-extension option)</td></tr>
+    <tr><td>Range</td><td>100 seconds</td></tr>
+    <tr><td>Resolution</td><td>100 ps (1 ps with resolution option)</td></tr>
+    <tr><td>RMS jitter</td><td>&lt;50 ps + delay &times; 10<sup>-7</sup>, channel to channel<br>&lt;1 ns, external trigger to any channel<br>&lt;50 ps, external clock to any channel (10 ps with resolution option)</td></tr>
+    <tr><td>Accuracy</td><td>&lt;250 ps + delay &times; 10<sup>-6</sup> (&lt;100 ps + delay &times; 10<sup>-6</sup> with resolution option)</td></tr>
+    <tr><td>Time base</td><td>Internal 200 MHz, &plusmn;1 ppm stability</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">External Trigger Mode</th></tr>
+    <tr><td>Input "TRIG"</td><td>Single or repetitive rate up to 40 MHz, programmable prescaler, adjustable threshold +100 mV to +5 V (1 mV step), adjustable positive/negative slope, 5 ns min pulse width</td></tr>
+    <tr><td>Trigger delay</td><td>&lt;85 ns insertion delay</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">Internal Trigger Mode</th></tr>
+    <tr><td>Rate, repetitive</td><td>Three timers, 0.01 Hz to 50 MHz (5 ns steps)</td></tr>
+    <tr><td>Rate, single</td><td>Synchronized on internal timers or software command</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">Channel Output Pulse (T1&ndash;T4, and T5&ndash;T8 with option)</th></tr>
+    <tr><td>Amplitude</td><td>1.5 V to 5 V, 1 mV steps, into 50 &#937; (3.0 V to 10 V, 2 mV steps, into high impedance &gt;1 k&#937;)</td></tr>
+    <tr><td>Rise/fall time</td><td>1 ns / 1 ns into 50 &#937;; 2 ns / 2 ns into high impedance, at full scale</td></tr>
+    <tr><td>Width</td><td>10 ns to 10 s, 5 ns steps</td></tr>
+    <tr><td>Polarity</td><td>Positive or negative</td></tr>
+    <tr><td>Burst mode</td><td>1 to 1,000,000,000 pulses, adjustable period in 5 ns steps</td></tr>
+    <tr><td>MUX mode</td><td>Any channel may be ORed to all outputs, per group of 4</td></tr>
+    <tr><td>Connector</td><td>SMB</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">External Clock Reference</th></tr>
+    <tr><td>Threshold</td><td>0 V, internal 50 &#937;</td></tr>
+    <tr><td>Level</td><td>Min &minus;10 dBm, typical 6 dBm</td></tr>
+    <tr><td>Frequency</td><td>10 MHz to 240 MHz; user programmable in 0.25 MHz steps up to 120 MHz, then 0.50 MHz steps to 240 MHz</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">Clock Output</th></tr>
+    <tr><td>Level</td><td>&gt;500 mV p-p into 50 &#937;, AC coupled</td></tr>
+    <tr><td>Frequency</td><td>100 MHz on internal clock, or matches the external reference when externally clocked</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">Gate / Second Trigger / Daisy Chaining</th></tr>
+    <tr><td>Function</td><td>Gate, or second external trigger with adjustable threshold, or daisy chaining to a second Model 750</td></tr>
+    <tr><td>Input</td><td>Active high or low in gate mode; positive/negative slope, rate &lt;40 MHz, in trigger mode</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">GPIO</th></tr>
+    <tr><td>Lines</td><td>4 &times; input or output, 0 or 3 V level, &gt;20 k&#937; input impedance, 100 &#937; output impedance</td></tr>
+  </table>
+  <table class="spec">
+    <tr><th colspan="2">General</th></tr>
+    <tr><td>Interface control</td><td>USB to UART, Ethernet 10/100 Mb/s</td></tr>
+    <tr><td>User's sets</td><td>8 sets to save/recall specific configurations</td></tr>
+    <tr><td>Software tools</td><td>Free drivers for Windows and Linux; browser-based control panel; USB application with GUI included</td></tr>
+    <tr><td>Power consumption</td><td>2.5 W to 15 W depending on configuration</td></tr>
+    <tr><td>Power supply</td><td>USB, or external AC (80&ndash;264 V / 47&ndash;63 Hz) to DC (5 V, 4 A); adapter included</td></tr>
+    <tr><td>Size and weight</td><td>108 &times; 58.6 &times; 129 mm, &lt;1 kg</td></tr>
+  </table>
+</section>
+
+<section id="s7">
+  <h2><span class="num">7</span>Options &amp; Ordering</h2>
+  <table class="spec">
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td>Channel extension</td><td>Extends the base 4-channel unit to 8 channels</td></tr>
+    <tr><td>1 ps resolution</td><td>1 ps delay resolution (4-channel model only), with channel-to-channel jitter &lt;10 ps at short delay and 50 ns minimum width; narrow-pulse mode allows 3 ns minimum width in 1 ps steps on two channel outputs</td></tr>
+    <tr><td>5&Prime; SMB-to-BNC cable</td><td>Adapter cable accessory</td></tr>
+  </table>
+  <div class="note">Options may be combined; the 1 ps resolution option is only available on the 4-channel base unit. Contact BNC to confirm a configuration before ordering.</div>
+  <table class="spec">
+    <tr><th>Model</th><th>Description</th></tr>
+    <tr><td>Model 750-4C</td><td>4-channel mini pulse &amp; delay generator (base version)</td></tr>
+    <tr><td>Model 750-8C</td><td>8-channel mini pulse &amp; delay generator (with the channel-extension option)</td></tr>
+  </table>
+  <p>To request a quote or discuss a configuration, contact Berkeley Nucleonics Corporation at <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a> or 800-234-7858.</p>
+</section>
+
+<section id="s8">
+  <h2><span class="num">8</span>Operating Principles</h2>
+  <svg viewBox="0 0 780 340" style="width:100%; height:auto; font-family:Arial; font-size:11px;">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0655a3"/></marker>
+    </defs>
+    <rect x="10" y="10" width="110" height="34" fill="#f3f4f6" stroke="#333"/><text x="65" y="31" text-anchor="middle">EXTERNAL CLOCK</text>
+    <rect x="330" y="10" width="90" height="34" fill="#f3f4f6" stroke="#333"/><text x="375" y="27" text-anchor="middle">Time</text><text x="375" y="39" text-anchor="middle">Base</text>
+    <rect x="650" y="10" width="110" height="34" fill="#f3f4f6" stroke="#333"/><text x="705" y="27" text-anchor="middle">CLOCK</text><text x="705" y="39" text-anchor="middle">OUTPUT</text>
+    <line x1="120" y1="27" x2="328" y2="27" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="420" y1="27" x2="648" y2="27" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <rect x="10" y="60" width="110" height="30" fill="#f3f4f6" stroke="#333"/><text x="65" y="79" text-anchor="middle">RUN or STOP</text>
+    <rect x="10" y="98" width="110" height="30" fill="#f3f4f6" stroke="#333"/><text x="65" y="113" text-anchor="middle">GATE or</text><text x="65" y="124" text-anchor="middle">TRIGGER</text>
+    <rect x="10" y="136" width="70" height="30" fill="#f3f4f6" stroke="#333"/><text x="45" y="151" text-anchor="middle">TRIGGER</text><text x="45" y="162" text-anchor="middle">INPUT</text>
+    <rect x="86" y="136" width="60" height="30" fill="#f3f4f6" stroke="#333"/><text x="116" y="155" text-anchor="middle">Prescaler</text>
+    <rect x="10" y="174" width="110" height="30" fill="#f3f4f6" stroke="#333"/><text x="65" y="189" text-anchor="middle">Trigger</text><text x="65" y="200" text-anchor="middle">Timers</text>
+    <rect x="230" y="70" width="100" height="140" fill="#f3f4f6" stroke="#333"/>
+    <text x="280" y="130" text-anchor="middle">Trigger</text><text x="280" y="143" text-anchor="middle">Controller</text>
+    <line x1="120" y1="75" x2="228" y2="90" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="120" y1="113" x2="228" y2="115" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="146" y1="151" x2="228" y2="140" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="120" y1="189" x2="228" y2="165" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <rect x="380" y="60" width="150" height="60" fill="#f3f4f6" stroke="#333"/><text x="455" y="94" text-anchor="middle">4 Delay Channels</text>
+    <rect x="380" y="130" width="150" height="60" fill="#f3f4f6" stroke="#333" stroke-dasharray="4,3"/><text x="455" y="155" text-anchor="middle">4 Delay Channels</text><text x="455" y="168" text-anchor="middle">(Option)</text>
+    <line x1="330" y1="90" x2="378" y2="90" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="330" y1="160" x2="378" y2="160" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <rect x="560" y="60" width="90" height="60" fill="#f3f4f6" stroke="#333"/><text x="605" y="94" text-anchor="middle">Channel</text><text x="605" y="106" text-anchor="middle">Outputs</text>
+    <rect x="560" y="130" width="90" height="60" fill="#f3f4f6" stroke="#333" stroke-dasharray="4,3"/><text x="605" y="164" text-anchor="middle">Channel</text><text x="605" y="176" text-anchor="middle">Outputs</text>
+    <line x1="530" y1="90" x2="558" y2="90" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="530" y1="160" x2="558" y2="160" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <text x="700" y="68" font-weight="bold">T1</text><text x="700" y="82" font-weight="bold">T2</text>
+    <text x="700" y="96" font-weight="bold">T3</text><text x="700" y="110" font-weight="bold">T4</text>
+    <line x1="650" y1="66" x2="695" y2="66" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="650" y1="80" x2="695" y2="80" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="650" y1="94" x2="695" y2="94" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="650" y1="108" x2="695" y2="108" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <text x="700" y="138" font-weight="bold" opacity="0.6">T5</text><text x="700" y="152" font-weight="bold" opacity="0.6">T6</text>
+    <text x="700" y="166" font-weight="bold" opacity="0.6">T7</text><text x="700" y="180" font-weight="bold" opacity="0.6">T8</text>
+    <line x1="650" y1="136" x2="695" y2="136" stroke="#0655a3" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+    <line x1="650" y1="150" x2="695" y2="150" stroke="#0655a3" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+    <line x1="650" y1="164" x2="695" y2="164" stroke="#0655a3" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+    <line x1="650" y1="178" x2="695" y2="178" stroke="#0655a3" stroke-dasharray="3,2" marker-end="url(#arrow)"/>
+    <rect x="10" y="290" width="90" height="34" fill="#f3f4f6" stroke="#333"/><text x="55" y="311" text-anchor="middle">GPIO</text>
+    <rect x="120" y="290" width="540" height="34" fill="#f3f4f6" stroke="#333"/><text x="390" y="311" text-anchor="middle">Interface Controller</text>
+    <rect x="680" y="290" width="90" height="34" fill="#f3f4f6" stroke="#333"/><text x="725" y="304" text-anchor="middle">USB</text><text x="725" y="316" text-anchor="middle">ETHERNET</text>
+    <line x1="55" y1="288" x2="55" y2="220" stroke="#0655a3"/>
+    <line x1="100" y1="307" x2="118" y2="307" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="662" y1="307" x2="678" y2="307" stroke="#0655a3" marker-end="url(#arrow)"/>
+    <line x1="280" y1="288" x2="280" y2="212" stroke="#0655a3"/>
+    <line x1="455" y1="288" x2="455" y2="192" stroke="#0655a3"/>
+    <line x1="605" y1="288" x2="605" y2="192" stroke="#0655a3"/>
+  </svg>
+  <p>A time-base function supplies a 200 MHz internal reference, or accepts an external 10&ndash;240 MHz reference; the internal time base is also available on the rear-panel clock output. A trigger controller provides two modes. In external trigger mode, a rising edge on the front-panel TRIG input triggers all delay channels, with each channel's rate set to single-shot, repetitive, or inhibited; a prescaler divides the trigger input frequency by an integer from 1 to 1,000,000,000. In internal trigger mode, delay channels are triggered from three frequency-programmable timers, with each channel's rate again set to single-shot, repetitive, or inhibited.</p>
+  <p>The Gate input quickly inhibits all selected channel outputs, and can alternately be configured as a second external trigger or as an input/output for daisy-chaining two Model 750 units to increase the total channel count. A RUN/STOP button (also the power switch) enables or disables the output for all channels at once.</p>
+  <table class="spec">
+    <tr><th>Trigger source</th><th>Trigger In</th><th>Gate In</th><th>Timer 1</th><th>Timer 2</th><th>Timer 3</th><th>Command</th><th>Inhibited</th></tr>
+    <tr><td>External mode</td><td class="nw">X</td><td class="nw">X</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Internal mode</td><td></td><td></td><td class="nw">X</td><td class="nw">X</td><td class="nw">X</td><td class="nw">X</td><td class="nw">X</td></tr>
+  </table>
+  <p>Each output pulse can be independently adjusted in level, width, and polarity, and may be ORed with other outputs in its group of four. Outputs are designed to drive a 50 &#937; load; on a high-impedance load, output level doubles. A burst mode adjusts the number of pulses per trigger via burst count and burst period. A narrow-pulse mode (available with the resolution option) uses a pair of delay channels &mdash; one to start the output pulse, one to stop it &mdash; for precisely adjustable pulse widths down to 500 ps.</p>
+  <p>The unit can run stand-alone, without a PC: an Auto-Run option starts output pulses automatically at power-up, and all parameter values are stored in non-volatile memory across 8 selectable user sets.</p>
+</section>
+
+<section id="s9">
+  <h2><span class="num">9</span>Example of Channel Outputs Mode</h2>
+  <h3 class="sub">Mode Repetitive and Single</h3>
+  <svg viewBox="0 0 780 150" style="width:100%; height:auto; font-family:Arial; font-size:9px;">
+    <g stroke="#0655a3" fill="none">
+      <text x="0" y="15" fill="#374151">Channel T1</text><text x="0" y="25" fill="#374151">(Repetitive from Timer n&deg;1)</text>
+      <path d="M150,20 h20 v-10 h20 v10 h60 v-10 h20 v10 h60 v-10 h20 v10 h60 v-10 h20 v10 h60 v-10 h20 v10 h60 v-10 h20 v10 h40" stroke-width="1.3"/>
+      <text x="0" y="40" fill="#374151">Channel T2</text><text x="0" y="50" fill="#374151">(Repetitive from Timer n&deg;2)</text>
+      <path d="M150,45 h20 v-10 h20 v10 h140 v-10 h20 v10 h140 v-10 h20 v10 h140 v-10 h20 v10 h20" stroke-width="1.3"/>
+      <text x="0" y="65" fill="#374151">Channel T3</text><text x="0" y="75" fill="#374151">(Repetitive from Timer n&deg;3)</text>
+      <path d="M150,70 h20 v-10 h20 v10 h300 v-10 h20 v10 h300" stroke-width="1.3"/>
+      <text x="0" y="95" fill="#374151">Single shot command</text>
+      <path d="M150,100 h270 v-10 h20 v10 h320" stroke-width="1.3"/>
+      <text x="0" y="120" fill="#374151">Channel T4</text><text x="0" y="130" fill="#374151">(Single pulse from Timer n&deg;3)</text>
+      <path d="M150,125 h330 v-10 h20 v10 h260" stroke-width="1.3"/>
+      <path d="M460,95 q-30,15 -10,25" stroke-dasharray="2,2" fill="none"/>
+    </g>
+    <line x1="470" y1="15" x2="470" y2="135" stroke="#d1d5db" stroke-dasharray="3,2"/>
+  </svg>
+
+  <h3 class="sub">Mode Burst and Mux</h3>
+  <svg viewBox="0 0 780 120" style="width:100%; height:auto; font-family:Arial; font-size:9px;">
+    <g stroke="#0655a3" fill="none" stroke-width="1.3">
+      <text x="0" y="15" fill="#374151">Channel T1</text><text x="0" y="25" fill="#374151">(Repetitive from Timer n&deg;1)</text>
+      <path d="M150,20 h100 v-10 h20 v10 h180 v-10 h20 v10 h180 v-10 h20 v10 h90"/>
+      <text x="0" y="38" fill="#374151">Channel T2 (Repetitive from</text><text x="0" y="48" fill="#374151">Timer n&deg;1, Burst count=3)</text>
+      <path d="M150,45 h100 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h150 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h150 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h60"/>
+      <text x="0" y="63" fill="#374151">Channel T3 (Repetitive from</text><text x="0" y="73" fill="#374151">Timer n&deg;1 and delay)</text>
+      <path d="M150,70 h140 v-10 h20 v10 h220 v-10 h20 v10 h220"/>
+      <line x1="150" y1="55" x2="150" y2="80" stroke="#9ca3af" stroke-width="0.8"/>
+      <line x1="290" y1="55" x2="290" y2="80" stroke="#9ca3af" stroke-width="0.8"/>
+      <path d="M150,58 h140" stroke="#9ca3af" stroke-width="0.8" marker-end="url(#arrow)"/>
+      <text x="200" y="56" fill="#6b7280" stroke="none">Delay</text>
+      <text x="0" y="93" fill="#374151">Channel T4 (Mux = T2+T3)</text>
+      <path d="M150,98 h100 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h20 v-10 h20 v10 h60 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h20 v-10 h20 v10 h60 v-10 h10 v10 h10 v-10 h10 v10 h10 v-10 h10 v10 h20 v-10 h20 v10 h30"/>
+    </g>
+  </svg>
+
+  <h3 class="sub">Pulse Picking <span style="font-weight:400;">(synchronized on Timer N&deg;3)</span></h3>
+  <svg viewBox="0 0 780 150" style="width:100%; height:auto; font-family:Arial; font-size:9px;">
+    <defs><marker id="arrow2" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#9ca3af"/></marker></defs>
+    <g stroke="#0655a3" fill="none" stroke-width="1">
+      <text x="0" y="15" fill="#374151">External clock</text><text x="0" y="25" fill="#374151">(80 MHz for example)</text>
+      <path d="M150,22 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8 h5 v-8 h5 v8" stroke-width="0.7"/>
+    </g>
+    <g stroke="#0655a3" fill="none" stroke-width="1.3">
+      <text x="0" y="45" fill="#374151">Channel T1</text><text x="0" y="55" fill="#374151">(Repetitive from Timer n&deg;1)</text>
+      <path d="M150,50 h100 v-10 h20 v10 h180 v-10 h20 v10 h180 v-10 h20 v10 h90"/>
+      <text x="0" y="70" fill="#374151">Channel T3</text><text x="0" y="80" fill="#374151">(Repetitive from Timer n&deg;3)</text>
+      <path d="M150,75 h300 v-10 h20 v10 h290"/>
+      <text x="0" y="100" fill="#374151">Single shot command</text>
+      <path d="M150,105 h270 v-10 h20 v10 h320"/>
+      <text x="0" y="125" fill="#374151">Channel T4</text><text x="0" y="135" fill="#374151">(Single pulse picking)</text>
+      <path d="M150,130 h330 v-10 h20 v10 h260"/>
+      <path d="M460,100 q-30,15 -10,25" stroke-dasharray="2,2" fill="none" stroke="#0655a3"/>
+    </g>
+  </svg>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>Control &amp; Software</h2>
+  <p>Two ways to control the Model 750: an easy remote path over Ethernet through an embedded web server, with no software install required, and a general remote path over Ethernet or USB using the included control software or your own application.</p>
+
+  <h3 class="sub">Easy Remote (Web Control Panel)</h3>
+  <p>Via Ethernet and the control panel's web pages, with no specific software application required. The page, served by the unit's embedded web server, provides an easy way to configure every setting.</p>
+  <ul>
+    <li>A main menu displays and controls the trigger and clock system (level, slope, prescaler, clock input/output, trigger generators), per-channel delay/width/amplitude/polarity settings, extended settings (burst mode, gate, MUX mode), a RUN button enabling output on all channels, and a Trigger button for a single trigger synchronized to the selected source</li>
+    <li>A parameters menu changes the IP address and other unit-level settings</li>
+    <li>A GPIO menu configures the four input/output lines</li>
+    <li>A Chart View opens a window showing every channel's output on a common time chart in real time, with zoom and cursor tools for detailed timing inspection</li>
+  </ul>
+  <p>The instrument stores its own configuration, so the control panel simply reflects it. The page opens in any standard browser (Chrome, Firefox, or Edge): connect the Model 750's Ethernet port to your network, enter the unit's IP address (see the User's Manual) into your browser, and the control panel loads automatically.</p>
+  <h3 class="sub">General Remote (Ethernet/USB)</h3>
+  <p>Via Ethernet or USB and a software application (see examples in the User's Manual). A USB application with a GUI similar to the web control panel is included, alongside an ASCII command set over USB (virtual COM port) or Ethernet (TCP port 4000) covering clock configuration, trigger and gate setup, per-channel delay/amplitude/width/polarity/burst/MUX, GPIO, status queries, user-set save/recall, and network configuration. Free Windows and Linux drivers are included.</p>
+</section>
+
+</main>
+</div>
+
+
+<footer class="gfoot"><div class="gwrap">
+  <div class="gcols">
+    <div class="gbrand">
+      <a class="gbnc-link" href="../home.html" aria-label="Berkeley Nucleonics home"><svg class="gbnc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
+      <p class="gtagline">Test, Measurement and Nuclear Instrumentation since 1963...</p>
+      <div class="gacad"><a class="gacad-logo" href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener"><img src="../figures/home/bnc-academy-logo.png" alt="Berkeley Nucleonics Academy"></a><span><b><a href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener">Berkeley Nucleonics Academy</a></b>Accredited courses introducing terminology and technique for your products and applications.</span></div>
+      
+    </div>
+    <div class="gmap">
+      <img class="gmap-img" src="../figures/world-map.svg" alt="Berkeley Nucleonics representatives in over 60 countries">
+      <p class="gtag"><a href="../contact.html" target="_blank" rel="noopener">Reach your local rep</a> in over 60 countries.</p>
+    </div>
+    <div class="gcompany"><h5>Company</h5><ul>
+      <li><a href="../home.html">Homepage</a></li>
+      <li></li>
+      <li><a href="software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a></li>
+      <li><a href="../faq.html">FAQs</a></li>
+      <li><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a></li>
+      <li></li>
+      <li><a href="../get-quote.html" target="_blank" rel="noopener">Get a Quote</a></li>
+      <li><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a></li>
+      <li><a href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener">BNC Academy</a></li>
+      <li><a href="../privacy.html">Privacy</a><a href="../accessibility.html">Accessibility</a></li>
+      <li><a href="../compliance-and-legal-notices.html">Compliance &amp; Legal</a></li>
+    </ul>
+      <div class="gsocial-label">Social Links</div><div class="gsocial">
+        <a href="https://www.youtube.com/@BerkeleyNucleonicsMedia" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
+        <a href="https://www.linkedin.com/companies/berkeley-nucleonics-corporation" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+      </div></div>
+  </div>
+  <div class="gbooks"><span class="gbooks-l">Free reference books</span><a href="/books/rf-and-microwave/index.html" target="_blank" rel="noopener">RF &amp; Microwave</a> &middot; <a href="/books/quantum-computing/index.html" target="_blank" rel="noopener">Quantum Computing</a> &middot; <a href="/books/arbitrary-waveform/index.html" target="_blank" rel="noopener">Arbitrary Waveform</a> &middot; <a href="/books/high-power-pulse/index.html" target="_blank" rel="noopener">High Power Pulse</a> &middot; <a href="/books/precision-timing/index.html" target="_blank" rel="noopener">Precision Timing</a> &middot; <a href="/books/radar/index.html" target="_blank" rel="noopener">Radar</a> &middot; <a href="/books/realtime-spectrum-analyzers/index.html" target="_blank" rel="noopener">Real-Time Spectrum Analyzers</a> &middot; <a href="/books/rf-power-measurements/index.html" target="_blank" rel="noopener">RF Power Measurements</a> &middot; <a href="/books/riids-for-hazmat/index.html" target="_blank" rel="noopener">RIIDs for HazMat</a> &middot; <a href="/books/scintillators/index.html" target="_blank" rel="noopener">Scintillators</a></div>
+  <div class="gbottom"><span>&copy; 2026 Berkeley Nucleonics Corporation</span><span>2955 Kerner Blvd, San Rafael, CA 94901 USA</span><span><a href="mailto:info@berkeleynucleonics.com" style="color:inherit;text-decoration:none;">info@berkeleynucleonics.com</a></span><span><a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">berkeleynucleonics.com</a></span><span><a href="tel:+18002347858" style="color:inherit;text-decoration:none;">800-234-7858</a></span></div>
+</div></footer>
+
+
+<script id="ss-data">window.SS_BASE="../";</script><script src="../_shared/bnc-search-index.js"></script><script id="ss-js">/*ssx v4: word-boundary match + phrase/proximity + time interpolation + -5s preroll + IC-testing routing + FAQ answers section*/(function(){var idx=window.SITE_INDEX||[],base=window.SS_BASE||"";var FAQS=window.SS_FAQS||[];var wrap=document.querySelector(".ss-wrap");if(!wrap)return;
+/* half-strength dim behind the results overlay (sits under the sticky bar) */
+function ssDim(on){var d=document.getElementById("ss-dim");if(!d){d=document.createElement("div");d.id="ss-dim";d.className="ss-dim";document.body.appendChild(d);d.addEventListener("click",function(){ssClose();});}if(on){void d.offsetHeight;d.classList.add("open");}else{d.classList.remove("open");}}
+function ssClose(){panel.setAttribute("class","ss-panel");ssDim(false);}
+var inp=wrap.querySelector(".ss-input"),panel=wrap.querySelector(".ss-panel"),active=-1,results=[],vids=[],pins=[],faqs=[],VIDS=null,vidLoading=false,expanded=false;
+/* inject styles for sections, video rows, and modal player (once) */
+if(!document.getElementById("ssx-css")){var st=document.createElement("style");st.id="ssx-css";st.textContent=".ss-panel{width:380px;max-width:90vw;}.ss-sec{font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.11em;text-transform:uppercase;color:#5f9fe0;padding:8px 11px 3px;}.ss-div{height:1px;background:rgba(120,170,225,.22);margin:7px 9px;}.ss-vid{display:flex;gap:10px;align-items:center;}.ss-vid img{width:78px;height:44px;object-fit:cover;border-radius:4px;flex:0 0 auto;background:#06121f;}.ss-vid .stx{min-width:0;display:block;}.ss-vid .st{white-space:normal;}.ssx-modal{position:fixed;inset:0;background:rgba(4,10,20,.84);z-index:1000;display:none;align-items:center;justify-content:center;padding:26px;}.ssx-modal.open{display:flex;}.ssx-box{position:relative;width:min(900px,94vw);}.ssx-frame{position:relative;width:100%;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(0,0,0,.8);}.ssx-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}.ssx-cap{color:#c4d6ee;font:500 .82rem/'Myriad Pro',Arial,sans-serif;margin-top:10px;text-align:center;}.ssx-x{position:absolute;top:-42px;right:0;background:none;border:0;color:#fff;font-size:2rem;line-height:1;cursor:pointer;opacity:.85;}.ssx-x:hover{opacity:1;}.ss-panel.ss-grid{padding:14px 14px 16px;}.ss-gwrap{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;}@media(max-width:920px){.ss-gwrap{grid-template-columns:repeat(3,1fr);}}@media(max-width:560px){.ss-gwrap{grid-template-columns:repeat(2,1fr);}}.ss-gtile{position:relative;display:flex;flex-direction:column;background:#113163;border:1px solid rgba(120,170,225,.22);border-radius:10px;padding:10px;cursor:pointer;overflow:hidden;text-align:left;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease;}.ss-gtile:hover{transform:translateY(-3px) scale(1.02);border-color:#37b6f0;background:#16407a;box-shadow:0 0 0 1px rgba(55,182,240,.55),0 14px 30px -10px rgba(55,182,240,.55);}.ss-gthumb{height:74px;border-radius:7px;background:#0a1626;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;flex:0 0 auto;}.ss-gthumb img{width:100%;height:100%;object-fit:cover;}.ss-gthumb svg{width:34px;height:34px;}.ss-gbadge{display:inline-block;align-self:flex-start;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;color:#a78bfa;background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.4);padding:2px 7px;border-radius:20px;margin-bottom:5px;}.ss-gtitle{font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.76rem;line-height:1.2;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px;}.ss-gdesc{font-size:.67rem;line-height:1.3;color:#bcd2ec;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}.ss-ghint{grid-column:1/-1;text-align:center;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#5f9fe0;margin-top:11px;}.ss-none{color:#9fb6d4;padding:18px;font-size:.85rem;text-align:center;}.ss-input{color:#fff !important;}.ss-input::placeholder{color:#aab8d0 !important;}.ss-input:focus{background:rgba(255,255,255,.10)!important;color:#fff!important;}.ss-input:-webkit-autofill,.ss-input:-webkit-autofill:focus{-webkit-text-fill-color:#fff!important;transition:background-color 9999s;}";document.head.appendChild(st);}
+var STOP={the:1,a:1,an:1,of:1,to:1,in:1,on:1,for:1,and:1,or:1,is:1,are:1,do:1,does:1,did:1,how:1,what:1,which:1,why:1,when:1,where:1,who:1,i:1,my:1,me:1,we:1,our:1,you:1,your:1,can:1,could:1,would:1,should:1,with:1,it:1,its:1,as:1,at:1,by:1,be:1,this:1,that:1,from:1,into:1,need:1,want:1,get:1,use:1,using:1,there:1,any:1,best:1};
+var SYN={laser:["laser","diode","driver","qswitch","pockels","lidar","photonics","optical"],lasers:["laser","diode","driver"],diode:["diode","laser","driver"],trigger:["trigger","delay","gate","sync","pulse","timing","strobe"],triggering:["trigger","delay","gate","sync"],gate:["gate","trigger","delay"],sync:["sync","trigger","delay","timing"],synchronize:["sync","trigger","delay","timing"],timing:["timing","delay","trigger","jitter","pulse"],delay:["delay","trigger","timing","ddg","jitter"],pulse:["pulse","trigger","delay","width","rise"],jitter:["jitter","timing","delay","phase"],qubit:["qubit","quantum","coherent","control"],quantum:["quantum","qubit","coherent","qkd"],radar:["radar","ew","pulse","chirp","pdw","sigint"],ew:["ew","radar","sigint","jamming"],neutron:["neutron","lif","clyc","cllbc","scintillator","snm"],gamma:["gamma","scintillator","spectroscopy","isotope","nai","labr","cebr","riid"],isotope:["isotope","riid","gamma","sam","identify","spectroscopy"],scintillator:["scintillator","crystal","nai","labr","cebr","clyc","sipm","pmt","scintiq"],crystal:["crystal","scintillator","nai","labr","cebr"],power:["power","sensor","supply","dbm","watt","measurement"],sensor:["sensor","power","measurement","dbm","usb"],phase:["phase","noise","coherent","jitter"],noise:["noise","phase","dbc"],switching:["switching","fast","agile","speed"],vector:["vector","modulation","vsg","pdw"],modulation:["modulation","vector","pulse"],sweep:["sweep","list","frequency","scan"],calibration:["calibration","calibrate","cal","metrology"],calibrate:["calibrate","calibration","cal"],warranty:["warranty","service","support","repair"],rma:["rma","repair","return","service"],voltage:["voltage","hv","pulser","supply"],current:["current","amp","pulser","driver"],microwave:["microwave","rf","signal","generator"],rf:["rf","microwave","signal","generator","power"],waveform:["waveform","awg","arbitrary","arb"],awg:["awg","waveform","arbitrary"],spectrum:["spectrum","analyzer","rtsa","icx"],analyzer:["analyzer","spectrum","rtsa","icx"],detector:["detector","scintillator","radiation","gamma","neutron"],radiation:["radiation","detector","gamma","neutron","dose","riid"],obsolete:["obsolete","discontinued","replacement","legacy"]};
+var PREROLL=5;/* seconds to start before the matched words are spoken */
+function toks(q){q=(q||"").toLowerCase().replace(/[^a-z0-9 .+-]/g," ");var p=q.split(/\s+/).filter(Boolean),T={};p.forEach(function(t){if(STOP[t]||t.length<2)return;T[t]=Math.max(T[t]||0,1);(SYN[t]||[]).forEach(function(s){T[s]=Math.max(T[s]||0,.55);});});return T;}
+function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
+function loadVids(){if(VIDS||vidLoading)return;vidLoading=true;fetch(base+"video-search-index.json").then(function(r){return r.ok?r.json():null;}).then(function(d){VIDS=(d&&d.videos)||[];if(inp.value)run(inp.value);}).catch(function(){VIDS=[];});}
+/* word-start presence test: matches a whole word, or a prefix of one, but never
+   a substring that starts mid-word (no false hit for "ic" inside "electronics").
+   The prefix half is what lets a suffixed model number like ICX-060U-P answer
+   to the shorter ICX-060 a visitor actually types. */
+function wbHas(hay,t){if(!hay)return false;var i=hay.indexOf(t);while(i>=0){var a=i>0?hay.charAt(i-1):" ";if(!/[a-z0-9]/.test(a))return true;i=hay.indexOf(t,i+1);}return false;}
+/* split caption text into positioned words */
+function words(txt){var re=/[a-z0-9]+(?:[.+-][a-z0-9]+)*/g,m,a=[];while((m=re.exec(txt))){a.push(m[0]);}return a;}
+function scoreVideos(T,keys){if(!VIDS||!VIDS.length)return [];var lits=keys.filter(function(t){return T[t]>=1;});return VIDS.map(function(v){var ti=(v.title||"").toLowerCase(),kw=(v.kw||[]).join(" ").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(ti,t))g=3.2;else if(wbHas(kw,t))g=2;if(g){sc+=g*w;hit++;}});var segs=v.seg||[],best=null,si,li,wi;for(si=0;si<segs.length;si++){var txt=(segs[si][1]||"").toLowerCase(),ws=words(txt),pos={},first=1e9,cnt=0;for(li=0;li<lits.length;li++){var t=lits[li];for(wi=0;wi<ws.length;wi++){if(ws[wi]===t||(t.length>=5&&ws[wi].indexOf(t)===0)){pos[t]=wi;cnt++;if(wi<first)first=wi;break;}}}if(!cnt)continue;var order=[];for(var k in pos)order.push(pos[k]);order.sort(function(a,b){return a-b;});var span=order.length>1?order[order.length-1]-order[0]:0;var prox=order.length>1?(span<=order.length+1?1.6:(span<=7?0.7:0)):0.2;var segScore=cnt*1.5+prox*cnt+(cnt===lits.length?1.0:0);if(!best||segScore>best.ss){var start=segs[si][0],end=(si+1<segs.length?segs[si+1][0]:start+8),frac=ws.length?first/ws.length:0;best={ss:segScore,cnt:cnt,mt:start+frac*(end-start)};}}if(best){sc+=1.6+best.cnt*1.1+best.ss*0.25;hit++;}if(!hit)return null;var mt=best?Math.round(best.mt):0,seek=Math.max(0,mt-PREROLL);return {v:v,s:sc,t:seek,mt:mt,inText:!!best};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,4);}
+/* IC (integrated-circuit) testing intent -> steer to AWG 685/686 + 765 pulse generator */
+function icIntent(raw){raw=" "+(raw||"").toLowerCase()+" ";if(raw.indexOf("integrated circuit")>=0)return true;var act=/\b(test|testing|character|validat|bench|ate|probe|stimulus|stimuli)\b/;if(/\b(semiconductor|wafer|asic|fpga|soc|die|chip)\b/.test(raw)&&act.test(raw))return true;if(/\bic\b/.test(raw)&&act.test(raw))return true;return false;}
+var IC_DOCS=["bnc-awg-685-datasheet.html","bnc-awg-686-datasheet.html","bnc-model-765-datasheet.html"];
+function pinDocs(files,cat){var out=[];files.forEach(function(f){for(var i=0;i<idx.length;i++){var u=idx[i].u||"";if(u.indexOf(f)>=0){out.push({e:{t:idx[i].t,u:u,c:cat}});break;}}});return out;}
+function scoreFaqs(T,keys){if(!FAQS||!FAQS.length)return [];return FAQS.map(function(e){var q=(e.q||"").toLowerCase(),kw=(e.kw||"").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(q,t))g=3;else if(wbHas(kw,t))g=2;if(g){sc+=g*w;hit++;}});if(!hit)return null;sc+=hit*0.6;return{e:e,s:sc};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,6);}
+function run(q){var raw=q||"",T=toks(q),keys=Object.keys(T);pins=[];if(!keys.length){ssClose();panel.innerHTML="";return;}if(icIntent(raw)){T.awg=Math.max(T.awg||0,1.2);T["685"]=1.3;T["686"]=1.3;T["765"]=1.0;T.waveform=Math.max(T.waveform||0,1.0);T.arbitrary=Math.max(T.arbitrary||0,.8);keys=Object.keys(T);pins=pinDocs(IC_DOCS,"Recommended for IC testing");}results=idx.map(function(e){var ti=(e.t||"").toLowerCase(),kw=(e.k||"").toLowerCase(),ca=(e.c||"").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(ti,t))g=3;else if(wbHas(kw,t))g=2;else if(wbHas(ca,t))g=1;if(g){sc+=g*w;hit++;}});if(!hit)return null;sc+=hit*0.6;return{e:e,s:sc};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,60);if(pins.length){var pu={};pins.forEach(function(p){pu[p.e.u]=1;});results=results.filter(function(r){return !pu[r.e.u];});}vids=scoreVideos(T,keys);faqs=scoreFaqs(T,keys);active=-1;draw();}
+function ssgDescOf(e){var u=e.u||"";return (window.SSDESC&&window.SSDESC[u])||ssgTypeText(e.c);}function tileDoc(e,sc){var u=e.u||"";return{kind:"doc",u:u,title:e.t||"",desc:ssgDescOf(e),badge:ssgBadge(e.c,"doc"),s:sc};}function buildTiles(cap){var docTiles=pins.map(function(p){return tileDoc(p.e,1e6);}).concat(results.filter(function(r){var c=(''+(r.e.c||'')).toLowerCase();if(c.indexOf('faq')<0)return true;var u=r.e.u||'';for(var i=0;i<faqs.length;i++){if(faqs[i].e.u===u)return false;}return true;}).map(function(r){return tileDoc(r.e,r.s);}));var vidTiles=vids.map(function(r){return{kind:"video",id:r.v.id,title:r.v.title||"BNC Video",desc:r.v.title||"BNC Video",badge:"Video",t:r.t,mt:r.mt,inText:r.inText,s:r.s};});var faqTiles=faqs.map(function(r){return{kind:"faq",u:r.e.u,title:r.e.q||"",desc:r.e.q||"",badge:"FAQ",s:r.s};});var tech=docTiles.filter(function(t){return t.badge==="Technical Brief";});var sheets=docTiles.filter(function(t){return t.badge==="Datasheet";});var allRanked=docTiles.concat(vidTiles,faqTiles).sort(function(a,b){return b.s-a.s;});var picked=[],used={};function K(t){return t.kind==="video"?"v:"+t.id:(t.kind==="faq"?"f:"+t.u:"d:"+t.u);}function add(t){if(!t)return false;var k=K(t);if(used[k])return false;used[k]=1;picked.push(t);return true;}function take(pool,n){var c=0;for(var i=0;i<pool.length&&c<n&&picked.length<cap;i++){if(add(pool[i]))c++;}return c;}function fill(){for(var i=0;i<allRanked.length&&picked.length<cap;i++){add(allRanked[i]);}}take(sheets,1);take(vidTiles,1);take(tech,1);take(faqTiles,1);fill();return picked;}function tileHtml(t){var attrs=t.kind==="video"?("data-vid=\""+ssgEsc(t.id)+"\" data-t=\""+(t.t|0)+"\" data-title=\""+ssgEsc(t.title)+"\""):("data-u=\""+ssgEsc(t.u)+"\"");return "<div class=\"ss-gtile\" "+attrs+"><div class=\"ss-gthumb\">"+ssgGraphic(t)+"</div><span class=\"ss-gbadge ss-b-"+ssgSlug(t.badge)+"\">"+ssgEsc(t.badge)+((t.kind==="video"&&t.inText)?(" &middot; "+fmt(t.mt)):"")+"</span><div class=\"ss-gtitle\">"+ssgEsc(t.title)+"</div><div class=\"ss-gdesc\">"+ssgEsc(t.desc)+"</div></div>";}function draw(){if(!results.length&&!vids.length&&!faqs.length&&!pins.length){ssClose();panel.innerHTML="";return;}var cap=expanded?36:18;var tiles=buildTiles(cap);if(!tiles.length){ssClose();panel.innerHTML="";return;}var total=expanded?tiles.length:buildTiles(36).length;var html="<div class=\"ss-gwrap\">"+tiles.map(tileHtml).join("");if(!expanded&&total>tiles.length){html+="<div class=\"ss-ghint\">Press Enter for more results</div>";}html+="</div>";panel.innerHTML=html;panel.className="ss-panel ss-grid open";ssDim(true);Array.prototype.forEach.call(panel.querySelectorAll(".ss-gtile"),function(el){el.addEventListener("click",function(){var vid=el.getAttribute("data-vid");if(vid){openVideo(vid,parseInt(el.getAttribute("data-t"),10)||0,el.getAttribute("data-title"));}else{window.open(base+el.getAttribute("data-u"),"_blank","noopener");ssClose();}});});}
+function openVideo(id,t,title){var ov=document.getElementById("ssx-modal");if(!ov){ov=document.createElement("div");ov.id="ssx-modal";ov.className="ssx-modal";ov.innerHTML="<div class=\"ssx-box\"><button class=\"ssx-x\" aria-label=\"Close\">&times;</button><div class=\"ssx-frame\"></div><div class=\"ssx-cap\"></div></div>";document.body.appendChild(ov);ov.addEventListener("click",function(e){if(e.target===ov||e.target.className==="ssx-x")closeVideo();});document.addEventListener("keydown",function(e){if(e.key==="Escape")closeVideo();});}ov.querySelector(".ssx-frame").innerHTML="<iframe src=\"https://www.youtube.com/embed/"+id+"?start="+(t|0)+"&autoplay=1&rel=0\" title=\"Berkeley Nucleonics video\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";ov.querySelector(".ssx-cap").textContent=title||"";ov.classList.add("open");ssClose();}
+function closeVideo(){var ov=document.getElementById("ssx-modal");if(ov){ov.classList.remove("open");ov.querySelector(".ssx-frame").innerHTML="";}}
+inp.addEventListener("input",function(){expanded=false;loadVids();run(inp.value);});
+inp.addEventListener("focus",function(){loadVids();if(inp.value)run(inp.value);});
+inp.addEventListener("keydown",function(ev){if(ev.key==="Enter"){if(inp.value&&inp.value.trim()&&(results.length||vids.length||faqs.length||pins.length)){ev.preventDefault();expanded=true;draw();}}else if(ev.key==="Escape"){expanded=false;ssClose();inp.blur();}});
+
+document.addEventListener("click",function(e){if(!wrap.contains(e.target))ssClose();});
+/* ssx grid v1: curated graphical results overlay opened on Enter */
+function ssgSlug(s){return (""+(s==null?"":s)).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+function ssgEsc(s){return (s==null?"":(""+s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");}
+function ssgTypeText(c){if(!c)return "Berkeley Nucleonics";var p=(""+c).split("·");return (p.length>1?p[p.length-1]:p[0]).trim();}
+function ssgBadge(c,kind){if(kind==="video")return "Video";if(kind==="faq")return "FAQ";var t=ssgTypeText(c).toLowerCase();if(t.indexOf("data sheet")>=0||t.indexOf("datasheet")>=0)return "Datasheet";if(t.indexOf("application brief")>=0||t.indexOf("application note")>=0)return "Application Note";if(t.indexOf("technical note")>=0||t.indexOf("technical brief")>=0)return "Technical Brief";if(t.indexOf("manual")>=0)return "Manual";if(t.indexOf("faq")>=0)return "FAQ";if(t.indexOf("book")>=0)return "E-Book";return "Product";}
+var SSG_ICONS={"Datasheet":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/><path d='M14 3v5h5'/><path d='M9 13h6M9 17h6M9 9h1'/></svg>","Application Note":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6'/><path d='M10 21h4'/><path d='M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.2 1 2.5h6c0-1.3.3-1.8 1-2.5A6 6 0 0 0 12 3z'/></svg>","Technical Brief":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5'/><path d='M14 3v5h5'/><circle cx='17.5' cy='16.5' r='2.2'/><path d='M17.5 13.6v-1M17.5 20.4v-1M20.4 16.5h-1M15.6 16.5h-1'/></svg>","Manual":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/></svg>","FAQ":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.5 9a2.5 2.5 0 0 1 4.8.9c0 1.7-2.3 2.1-2.3 3.6'/><path d='M12 17h.01'/></svg>","Book":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/><path d='M9 7.5h7M9 11h7'/></svg>","Product":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8l-9-5-9 5v8l9 5 9-5z'/><path d='M3 8l9 5 9-5'/><path d='M12 13v8'/></svg>"};
+window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function ssgGraphic(t){if(t.kind==="video"){return "<img src=\"https://img.youtube.com/vi/"+ssgEsc(t.id)+"/mqdefault.jpg\" alt=\"\" loading=\"lazy\">";}var im=window.SSIMG&&window.SSIMG[t.u];var src=im?(im.indexOf("http")===0?im:base+im):null;if(src){return "<img src=\""+ssgEsc(src)+"\" alt=\"\" loading=\"lazy\" onerror=\"this.onerror=null;var p=this.parentNode;if(p){p.innerHTML=window.ssgIconFor('"+t.badge+"');}\">";}return SSG_ICONS[t.badge]||SSG_ICONS.Product;}
+})();</script>
+<style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="Model 750 Multi-Channel Pulse &amp; Delay Generator"></script>
+<script defer src="../_shared/bnc-nutshell.js"></script>
+<!--tvp-lb--><div class="yt-lightbox" id="ytLightbox" role="dialog" aria-modal="true" aria-label="Video player">
+  <div class="yt-shell">
+    <button class="yt-close" type="button" aria-label="Close video">CLOSE &#10005;</button>
+    <div class="yt-box"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('ytLightbox');if(!lb)return;
+  var box=lb.querySelector('.yt-box'),last=null;
+  function close(){lb.classList.remove('open');box.innerHTML='';document.body.style.overflow='';if(last){last.focus();last=null;}}
+  function open(id,start){
+    box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0'+(start?'&start='+start:'')+'" title="BNC video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    lb.classList.add('open');document.body.style.overflow='hidden';lb.querySelector('.yt-close').focus();
+  }
+  document.querySelectorAll('.toc-videos a[data-yt]').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();last=a;open(a.getAttribute('data-yt'),a.getAttribute('data-start'));});
+  });
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  lb.querySelector('.yt-close').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&lb.classList.contains('open'))close();});
+})();
+</script><!--/tvp-lb-->
+<script src="/_shared/bioz-cited.js" defer></script>
+<style id="bnc-nav-v2">/* header v3: search left, evenly spread bar, one control height */
+.sitenav-inner{position:relative;gap:16px;}
+.sitenav-logo{flex:0 0 auto;}
+/* min-width:max-content is what stops a long signed-in name from collapsing the
+   nav and pushing the RFQ button on top of the Support menu */
+.sitenav-menu{margin-left:0;flex:1 1 auto;min-width:max-content;justify-content:space-evenly;gap:0;}
+.nav-item>a{padding:0 12px;font-size:.8rem;}
+/* one height and one font size for search, RFQ/Demo and Sign up */
+.ss-input,.sitenav-cta,.bnc-signin{height:30px;box-sizing:border-box;padding:0 1em;border-radius:6px;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-size:.8rem;white-space:nowrap;}
+.sitenav-cta,.bnc-signin{display:inline-flex;align-items:center;justify-content:center;line-height:1;font-weight:700;}
+.sitenav-cta{margin-left:0;border:1px solid transparent;flex:0 0 auto;}
+.bnc-acct{margin-left:0;flex:0 0 auto;gap:10px;}
+.bnc-welcome{font-size:.8rem;}
+/* the search box is what yields width when the bar gets tight */
+.ss-wrap{position:static;margin-left:0;flex:0 1 auto;min-width:0;}
+.ss-field{position:relative;display:inline-flex;align-items:center;max-width:100%;}
+.ss-input{display:block;width:186px;max-width:100%;min-width:104px;line-height:28px;font-weight:600;color:#fff;transition:border-color .18s;}
+.ss-input:focus{width:186px;}
+.ss-input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;}
+/* resting state: bright white "Search" plus three waiting dots */
+.ss-ph{position:absolute;left:calc(1em + 1px);top:50%;transform:translateY(-50%);display:flex;align-items:center;pointer-events:none;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:600;font-size:.8rem;letter-spacing:.01em;color:#fff;transition:opacity .15s ease;}
+.ss-input:not(:placeholder-shown)~.ss-ph{opacity:0;}
+.ss-dots{display:inline-flex;align-items:center;gap:3px;margin-left:4px;}
+.ss-dots i{display:block;width:3px;height:3px;border-radius:50%;background:#fff;animation:ss-dot 1.3s infinite ease-in-out;}
+.ss-dots i:nth-child(2){animation-delay:.17s;}
+.ss-dots i:nth-child(3){animation-delay:.34s;}
+@keyframes ss-dot{0%,58%,100%{opacity:.3;transform:translateY(0);}29%{opacity:1;transform:translateY(-3px);}}
+@media(prefers-reduced-motion:reduce){.ss-dots i{animation:none;opacity:.9;}}
+/* The mega-menu flyouts are laid out even while hidden, so the rightmost ones
+   stretch the document and raise a horizontal scrollbar. The site already
+   clipped this below 1040px; do it at every width. `clip` rather than `hidden`,
+   because `hidden` on the root would break the sticky header. */
+html{overflow-x:clip;}
+/* results overlay: pinned to the header container so it never runs off-screen */
+.ss-panel{left:28px;right:28px;width:auto;max-width:none;top:calc(100% - 6px);}
+.ss-panel.ss-grid{width:auto;max-width:none;}
+.ss-gwrap{grid-template-columns:repeat(6,1fr);}
+@media(max-width:1240px){.ss-gwrap{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:1080px){.ss-gwrap{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:920px){.ss-gwrap{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:560px){.ss-gwrap{grid-template-columns:repeat(2,1fr);}}
+/* one colour per result category, white text on a solid box. The old badge was
+   light purple on translucent purple for every type, which read as one blur. */
+.ss-gbadge{font-size:.58rem;letter-spacing:.08em;padding:3px 8px;border:0;color:#fff;background:#475569;}
+.ss-gbadge.ss-b-datasheet{background:#c2410c;}
+.ss-gbadge.ss-b-video{background:#7e22ce;}
+.ss-gbadge.ss-b-faq{background:#15803d;}
+.ss-gbadge.ss-b-manual{background:#0655a3;}
+.ss-gbadge.ss-b-application-note{background:#a16207;}
+.ss-gbadge.ss-b-technical-brief{background:#be123c;}
+.ss-gbadge.ss-b-e-book{background:#4338ca;}
+.ss-gbadge.ss-b-product{background:#475569;}
+/* half-strength dim over the page behind the overlay; the bar stays lit */
+.ss-dim{position:fixed;inset:0;background:rgba(4,10,20,.5);opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s;z-index:190;}
+.ss-dim.open{opacity:1;visibility:visible;}
+@media(max-width:1240px){
+  .sitenav-inner{gap:12px;}
+  .nav-item>a{padding:0 8px;font-size:.77rem;}
+  .ss-input,.ss-input:focus{width:150px;}
+}
+@media(max-width:1150px){
+  .sitenav-inner{gap:8px;}
+  .nav-item>a{padding:0 6px;font-size:.74rem;letter-spacing:.03em;}
+  .ss-input,.ss-input:focus{width:118px;}
+  .ss-input,.sitenav-cta,.bnc-signin,.ss-ph,.bnc-welcome{font-size:.75rem;}
+  .sitenav-cta,.bnc-signin{padding:0 .7em;}
+}
+@media(max-width:1040px){
+  .ss-wrap{position:relative;}
+  .ss-panel{left:0;right:auto;width:100%;top:calc(100% + 8px);}
+  .ss-panel.ss-grid{width:100%;}
+  .ss-field{width:100%;}
+  .ss-input,.ss-input:focus{width:100%;}
+}
+</style>
+
+<style id="bnc-nav-mobile-wrap">/* the drawer must fit the screen it opens on */
+@media(max-width:1040px){
+  /* These four keep nowrap on the desktop bar, where the labels sit side by side
+     and must not break. In the drawer they stack, so wrapping is what we want,
+     and without it the longest category sets the width of the whole panel. */
+  .sitenav.open .nav-item>a,
+  .sitenav.open .nav-trigger,
+  .sitenav.open .nav-grp2,
+  .sitenav.open .nav-grp3{white-space:normal;}
+  .sitenav.open .sitenav-menu,
+  .sitenav.open .nav-drop,
+  .sitenav.open .nav-drop.nav-casc,
+  .sitenav.open .nav-sub,
+  .sitenav.open .nav-sub3{max-width:100%;min-width:0;}
+  /* iOS Safari zooms the page in when a focused input is under 16px and never
+     zooms back out, which leaves the bar hanging half off the screen. */
+  .ss-input,.ss-ph{font-size:16px;}
+  .ss-input{height:44px;}
+  /* WCAG 2.5.5: 44x44 of hit area. The hamburger was 42x38 and the two buttons
+     were 30px tall, which is small for a thumb and is the control every mobile
+     visitor has to hit first. */
+  .navtoggle{width:44px;height:44px;}
+  .sitenav-cta,.bnc-signin{min-height:44px;}
+}
+</style>
+</body>
+</html>
