@@ -8,9 +8,9 @@ User-agent: *
 Content-Signal: ai-train=no, search=yes, ai-input=yes
 Allow: /
 
-# Block internal search and parameter spam
-Disallow: /*?s=
-Disallow: /*?replytocom=
+# Legacy ?s= and ?replytocom= parameter URLs are 301-redirected to the clean
+# path at the edge (middleware.js), so they are intentionally NOT disallowed:
+# crawlers must be able to fetch them to see the redirect and deindex them.
 
 # Optional crawl delay for aggressive bots
 Crawl-delay: 2

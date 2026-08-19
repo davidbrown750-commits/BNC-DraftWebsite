@@ -18,6 +18,19 @@ export const config = {
 };
 
 export default async function middleware(request) {
+  // Legacy WordPress parameter URLs (?s= site search, ?replytocom= comment
+  // replies) used to be robots-blocked, which left Google unable to crawl the
+  // ones it had already indexed. 301 them to the clean path instead so search
+  // engines consolidate onto the canonical URL.
+  {
+    const url = new URL(request.url);
+    if (url.searchParams.has("s") || url.searchParams.has("replytocom")) {
+      url.searchParams.delete("s");
+      url.searchParams.delete("replytocom");
+      return Response.redirect(url.toString(), 301);
+    }
+  }
+
   const accept = (request.headers.get("accept") || "").toLowerCase();
 
   // Browsers send text/html,application/xhtml+xml,... and never text/markdown,
