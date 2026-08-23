@@ -323,6 +323,12 @@ th .modelthumb{filter:none;}
 .doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
 .doc-footer a{color:#9bb0cc;}
 @media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+/* ---- kicker breadcrumbs v3 ---- */
+nav.kicker[aria-label="Breadcrumb"]{text-transform:none;letter-spacing:.05em;}
+nav.kicker[aria-label="Breadcrumb"] a{color:inherit;text-decoration:none;}
+nav.kicker[aria-label="Breadcrumb"] a:hover{color:var(--blue-dark);text-decoration:underline;}
+nav.kicker[aria-label="Breadcrumb"] .sep{margin:0 6px;opacity:.5;font-weight:400;}
+nav.kicker[aria-label="Breadcrumb"] .pfx{opacity:.6;margin-right:6px;font-weight:400;}
 </style>
 
 
@@ -424,6 +430,7 @@ th .modelthumb{filter:none;}
 .fig-photo{float:none;width:100%;max-width:420px;margin:10px auto;}
 }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.berkeleynucleonics.com/home.html"},{"@type":"ListItem","position":2,"name":"Arbitrary Waveform Generators","item":"https://www.berkeleynucleonics.com/awg-home.html"},{"@type":"ListItem","position":3,"name":"the problem","item":"https://www.berkeleynucleonics.com/docs/brief-awg-tektronix-awg7000-migration.html"}]}</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -440,7 +447,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="doc-hero"><div class="wrap">
   <div class="ht">
-    <div class="kicker">Application Brief &middot; AWG Migration</div>
+    <nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../awg-home.html">arbitrary waveform generators</a><span class="sep">/</span><span aria-current="page">application brief &middot; awg migration</span></nav>
     <h1>Still fighting the double pulse on a Tektronix AWG7000?</h1>
     <p>If you run a Tektronix AWG7082C, you know the workaround: a series resistor or a capacitor tacked onto the output to tame a secondary pulse and the ringing that rides with it. The Berkeley Nucleonics Model 685 puts a clean edge on the bench without the band-aid, and it produces a true double pulse only when you ask for one. The AWG7000 series is also discontinued, so that workaround is now your long-term support plan. It does not have to be.</p>
     <div class="ver">Berkeley Nucleonics Model 685 ArbRider AWG</div>

@@ -348,7 +348,13 @@ th .modelthumb{filter:none;}
     .sitenav.open .nav-item>a{height:auto;padding:13px 24px;border-top:1px solid rgba(120,170,225,.12);}
     .sitenav.open .nav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:rgba(255,255,255,.03);padding:4px 0 10px;min-width:0;border-radius:0;}
     .sitenav.open .nav-drop a{padding:8px 38px;white-space:normal;}
-  }</style>
+  }/* ---- kicker breadcrumbs v3 ---- */
+nav.kicker[aria-label="Breadcrumb"]{text-transform:none;letter-spacing:.05em;}
+nav.kicker[aria-label="Breadcrumb"] a{color:inherit;text-decoration:none;}
+nav.kicker[aria-label="Breadcrumb"] a:hover{color:var(--blue-dark);text-decoration:underline;}
+nav.kicker[aria-label="Breadcrumb"] .sep{margin:0 6px;opacity:.5;font-weight:400;}
+nav.kicker[aria-label="Breadcrumb"] .pfx{opacity:.6;margin-right:6px;font-weight:400;}
+</style>
 
 
 
@@ -443,6 +449,7 @@ th .modelthumb{filter:none;}
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.berkeleynucleonics.com/home.html"},{"@type":"ListItem","position":2,"name":"Real-Time Spectrum Analyzers","item":"https://www.berkeleynucleonics.com/rtsa-home.html"},{"@type":"ListItem","position":3,"name":"technical article","item":"https://www.berkeleynucleonics.com/docs/article-rtsa-practical-guide.html"}]}</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -459,7 +466,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="doc-hero"><div class="wrap">
   <a class="reqpdf" href="../contact.html" target="_blank" rel="noopener" onclick="window.open('../contact.html?notes='+encodeURIComponent('Please send a PDF or print copy of: '+location.href),'_blank');return false;">Request PDF / Print Copy</a><div class="ht">
-    <div class="kicker">Technical Article</div>
+    <nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../rtsa-home.html">real-time spectrum analyzers</a><span class="sep">/</span><span aria-current="page">technical article</span></nav>
     <h1>A Practical Guide to Real-Time Spectrum Analysis</h1>
     <p>How real-time analyzers digitize a wide band, run gap-free FFTs, and catch the brief, agile signals that swept instruments miss.</p>
     <div class="ver">ICX-FieldHawk &middot; SpectraCore &middot; 9 kHz to 40 GHz</div>
