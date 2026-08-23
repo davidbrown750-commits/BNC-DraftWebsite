@@ -580,7 +580,73 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h2><span class="num">4</span>An Open SDR Platform</h2>
   <p>What makes an instrument software defined? Access to the samples through open, vendor-neutral interfaces. SoapySDR is the open-source hardware abstraction layer that the SDR world standardized on: applications such as GNU Radio talk to one unified API for device discovery, frequency and gain configuration, sample-rate and bandwidth setting, and IQ streaming, while a per-vendor driver translates those calls to the hardware underneath.</p>
   <p>For the ICX line that driver is <a href="https://github.com/HAROGIC-Technologies/soapy-htra" target="_blank" rel="noopener">soapy-htra</a>, which bridges the SoapySDR framework to the receiver's native API. Once installed, <code>SoapySDRUtil --find</code> reports the unit as a registered SoapySDR device, and any SoapySDR-compatible application can stream from it. The documented host environment for SoapySDR service is Ubuntu 22.04 or later on x86_64 with GNU Radio 3.9 or later; the instrument's own unified API additionally supports C/C++, C#, Python, MATLAB, Qt, and LabVIEW on Windows and Linux.</p>
-  <ul class="man-list">
+    <p>The diagram below is the whole working principle in one picture. Application code on the host has three ways in: GNU Radio flowgraphs reach the receiver through the gr-htra out-of-tree module and its SoapySDR interface; the standard SpectraCore analyzer software and SCPI remote control take the middle path; and custom programs call the API directly from C/C++, C#, Python, MATLAB, LabVIEW, or Qt. Every path lands on the same unified API, shipped as a Windows DLL and a Linux shared object with a C interface, and identical across the handheld, rugged, and USB/LAN form factors. Below that sits only the transport, USB or Ethernet, and the instrument itself. That single convergence point is why a flowgraph built against a bench module runs unchanged on a handheld in the field, and why there is no separate SDR firmware to maintain: the analyzer and the SDR are the same instrument reached through different doors.</p>
+
+  <figure class="fig figctr" style="max-width:820px;" aria-label="ICX software architecture diagram">
+  <svg viewBox="0 0 880 600" role="img" style="width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r);" xmlns="http://www.w3.org/2000/svg">
+    <title>ICX working principle: three software paths converge on one unified API</title>
+    <defs>
+      <marker id="sdrarrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#5b6677"/>
+      </marker>
+    </defs>
+    <style>
+      .bx{fill:#f4f7fb;stroke:#113163;stroke-width:1.5;rx:8;}
+      .bx2{fill:#ffffff;stroke:#0655a3;stroke-width:1.5;}
+      .bar{fill:#113163;stroke:none;}
+      .t{font:600 15px Arial,Helvetica,sans-serif;fill:#1b2330;}
+      .ts{font:400 12.5px Arial,Helvetica,sans-serif;fill:#5b6677;}
+      .tw{font:700 15px Arial,Helvetica,sans-serif;fill:#ffffff;}
+      .tws{font:400 12.5px Arial,Helvetica,sans-serif;fill:#c4d6ee;}
+      .edge{stroke:#5b6677;stroke-width:1.6;marker-end:url(#sdrarrow);}
+      .lbl{font:600 11.5px Arial,Helvetica,sans-serif;fill:#0655a3;}
+    </style>
+    <!-- user code -->
+    <rect class="bx" x="60" y="24" width="760" height="58" rx="8"/>
+    <text class="t" x="440" y="48" text-anchor="middle">User application code</text>
+    <text class="ts" x="440" y="68" text-anchor="middle">Windows or Linux, on the local host PC</text>
+    <!-- three paths -->
+    <line class="edge" x1="200" y1="82" x2="200" y2="130"/>
+    <line class="edge" x1="440" y1="82" x2="440" y2="130"/>
+    <line class="edge" x1="690" y1="82" x2="690" y2="130"/>
+    <!-- left column: GNU Radio -->
+    <rect class="bx2" x="80" y="130" width="240" height="58" rx="8"/>
+    <text class="t" x="200" y="154" text-anchor="middle">GNU Radio</text>
+    <text class="ts" x="200" y="174" text-anchor="middle">flowgraphs and SDR applications</text>
+    <line class="edge" x1="200" y1="188" x2="200" y2="240"/>
+    <rect class="bx2" x="80" y="240" width="240" height="58" rx="8"/>
+    <text class="t" x="200" y="264" text-anchor="middle">gr-htra (OOT module)</text>
+    <text class="ts" x="200" y="284" text-anchor="middle">SoapySDR interface</text>
+    <line class="edge" x1="200" y1="298" x2="200" y2="392"/>
+    <text class="lbl" x="210" y="350">Python, C++</text>
+    <!-- middle column: SpectraCore / SCPI -->
+    <rect class="bx2" x="320" y="130" width="240" height="58" rx="8"/>
+    <text class="t" x="440" y="154" text-anchor="middle">SpectraCore software</text>
+    <text class="ts" x="440" y="174" text-anchor="middle">or SCPI remote control</text>
+    <line class="edge" x1="440" y1="188" x2="440" y2="392"/>
+    <text class="lbl" x="450" y="300">C++</text>
+    <!-- right column: direct API -->
+    <rect class="bx2" x="580" y="130" width="220" height="76" rx="8"/>
+    <text class="t" x="690" y="156" text-anchor="middle">Direct API programming</text>
+    <text class="ts" x="690" y="176" text-anchor="middle">C/C++, C#, Python,</text>
+    <text class="ts" x="690" y="193" text-anchor="middle">MATLAB, LabVIEW, Qt</text>
+    <line class="edge" x1="690" y1="206" x2="690" y2="392"/>
+    <!-- unified API bar -->
+    <rect class="bar" x="60" y="392" width="760" height="64" rx="8"/>
+    <text class="tw" x="440" y="418" text-anchor="middle">Unified API, identical across ICX-FieldHawk, ICX-FieldHawk-R, and ICX-U/LAN</text>
+    <text class="tws" x="440" y="440" text-anchor="middle">Windows DLL and Linux .so with a C interface</text>
+    <!-- transport -->
+    <line class="edge" x1="440" y1="456" x2="440" y2="504"/>
+    <text class="lbl" x="452" y="486">USB or Ethernet</text>
+    <!-- driver -->
+    <rect class="bx" x="60" y="504" width="760" height="58" rx="8"/>
+    <text class="t" x="440" y="528" text-anchor="middle">Instrument driver and ICX receiver hardware</text>
+    <text class="ts" x="440" y="548" text-anchor="middle">RF front end, FPGA FFT engine, IQ streaming</text>
+  </svg>
+  <figcaption>ICX working principle. Three software paths, GNU Radio through the gr-htra SoapySDR module, SpectraCore or SCPI, and direct API code, all converge on one unified API over USB or Ethernet.</figcaption>
+  </figure>
+
+<ul class="man-list">
     <li><strong>Vendor neutrality.</strong> Code written against the SoapySDR interface is portable: applications do not need to know which receiver sits underneath.</li>
     <li><strong>One API across the family.</strong> A flowgraph or acquisition program developed on a USB module runs unchanged on a handheld or a LAN unit.</li>
     <li><strong>Build your own instrument.</strong> Teams integrating spectrum monitoring, direction finding, or signal intelligence systems use the ICX as a calibrated front end and write their own application on top, in their own language and user interface.</li>
