@@ -306,6 +306,9 @@ def main():
         which is why those tiles rendered as a bare icon."""
         if not path:
             return ""
+        # an inline data: URI is not a file on disk, and stat() on one throws
+        if path.startswith("data:") or len(path) > 500:
+            return ""
         path = path.lstrip("/")
         if path in GENERIC:
             return ""
