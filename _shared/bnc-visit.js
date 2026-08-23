@@ -298,7 +298,7 @@
       if(anchor.parentNode.querySelector('a[data-rfs4220]')) return;
       var na=anchor.cloneNode(true);
       na.setAttribute('data-rfs4220','1');
-      na.textContent='RFS-4220';
+      na.textContent='RFS-4220T';
       na.setAttribute('href', anchor.getAttribute('href').replace('bnc-rfs-1000-datasheet','bnc-rfs-4220-datasheet'));
       anchor.parentNode.insertBefore(na, anchor.nextSibling);
     }catch(_){}
