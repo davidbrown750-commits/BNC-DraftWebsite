@@ -295,7 +295,13 @@ h1{font-family:var(--font-h);color:#fff;font-size:2.5rem;margin:0 0 12px;letter-
     .sitenav.open .nav-item>a{height:auto;padding:13px 24px;border-top:1px solid rgba(120,170,225,.12);}
     .sitenav.open .nav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:rgba(255,255,255,.03);padding:4px 0 10px;min-width:0;border-radius:0;}
     .sitenav.open .nav-drop a{padding:8px 38px;white-space:normal;}
-  }</style>
+  }/* ---- kicker breadcrumbs v3 ---- */
+nav.kicker[aria-label="Breadcrumb"]{text-transform:none;letter-spacing:.05em;}
+nav.kicker[aria-label="Breadcrumb"] a{color:inherit;text-decoration:none;}
+nav.kicker[aria-label="Breadcrumb"] a:hover{color:var(--blue-dark);text-decoration:underline;}
+nav.kicker[aria-label="Breadcrumb"] .sep{margin:0 6px;opacity:.5;font-weight:400;}
+nav.kicker[aria-label="Breadcrumb"] .pfx{opacity:.6;margin-right:6px;font-weight:400;}
+</style>
 
 
 
@@ -427,6 +433,7 @@ h1{font-family:var(--font-h);color:#fff;font-size:2.5rem;margin:0 0 12px;letter-
 }
 @media print{.bioz-cited{display:none}}
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.berkeleynucleonics.com/home.html"},{"@type":"ListItem","position":2,"name":"Isotope ID & Radiation Detection","item":"https://www.berkeleynucleonics.com/riid-home.html"},{"@type":"ListItem","position":3,"name":"documentation","item":"https://www.berkeleynucleonics.com/docs/riid-index.html"}]}</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -443,7 +450,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="main" tabindex="-1"></div>
 
 <section class="hero"><div class="wrap">
- <div class="kicker">Documentation</div>
+ <nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../riid-home.html">isotope id &amp; radiation detection</a><span class="sep">/</span><span aria-current="page">documentation</span></nav>
  <h1>Isotope ID &amp; Radiation Detection Library</h1>
  <p>Product data sheets, user manuals, technical notes, and application briefs for the Berkeley Nucleonics isotope identification and radiation detection instruments. Handheld RIIDs, search backpacks and vehicle systems, personal and survey detectors, and multichannel analyzers. NaI, LaBr3, and CeBr3 detectors, gamma and neutron, with ANSI category libraries.</p>
 <!-- Bioz citation badge: 940 (individual). Live panel opens via the shared pdf-configurator.js modal. -->
