@@ -233,10 +233,6 @@
   models: [
    {num:4.5, model:"ICX-045U", sum:"Compact USB analyzer", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 4.5 GHz", form:"USB / host PC"}, sort:{freq:4.5, form:1}},
-   {num:6.3, model:"ICX-060U", sum:"USB, mid-band", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
-    vals:{freq:"9 kHz to 6.3 GHz", form:"USB / host PC"}, sort:{freq:6.3, form:1}},
-   {num:9.5, model:"ICX-090U", sum:"Wideband USB", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
-    vals:{freq:"9 kHz to 9.5 GHz", form:"USB / host PC"}, sort:{freq:9.5, form:1}},
    {num:20, model:"ICX-200U", sum:"Microwave USB", ds:"bnc-icx-fieldhawk-usb-datasheet.html",
     vals:{freq:"9 kHz to 20 GHz", form:"USB / host PC"}, sort:{freq:20, form:1}},
    {num:40, model:"ICX-400U", sum:"40 GHz USB flagship", ds:"bnc-icx-fieldhawk-usb-datasheet.html",

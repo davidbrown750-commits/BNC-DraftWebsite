@@ -1526,63 +1526,30 @@
       {
         id: "icx-u",
         name: "ICX USB series",
-        blurb: "USB receivers, 6.3 to 40 GHz, PC-driven real-time analysis",
-        info: "Compact USB spectrum analyzers driven from a PC running ICX Studio, covering 9 kHz up to 6.3, 9.5 or 40 GHz.",
+        blurb: "USB receiver, 40 GHz, PC-driven real-time analysis",
+        info: "Compact USB spectrum analyzer driven from a PC running ICX Studio, covering 9 kHz up to 40 GHz.",
         image: FIG + "icx-usb.png",
         pnBase: "ICX",
         groups: [
           {
             id: "freq", label: "Model / frequency range", type: "radio",
             options: [
-              { code: "060U", label: "ICX-060U", note: "9 kHz to 6.3 GHz", pn: "-060U",
-                desc: "USB spectrum analyzer, 9 kHz to 6.3 GHz",
-                info: "USB spectrum analyzer covering 9 kHz to 6.3 GHz for RF development, troubleshooting and monitoring.", default: true },
-              { code: "090U", label: "ICX-090U", note: "9 kHz to 9.5 GHz", pn: "-090U",
-                desc: "wideband USB spectrum analyzer, 9 kHz to 9.5 GHz",
-                info: "Wideband USB spectrum analyzer covering 9 kHz to 9.5 GHz for advanced RF, microwave and wireless analysis." },
               { code: "400U", label: "ICX-400U", note: "9 kHz to 40 GHz, OCXO included", pn: "-400U",
                 desc: "professional USB spectrum analyzer, 9 kHz to 40 GHz (OCXO included)",
-                info: "Professional USB spectrum analyzer covering 9 kHz to 40 GHz. The OCXO reference is included as standard." }
+                info: "Professional USB spectrum analyzer covering 9 kHz to 40 GHz. The OCXO reference is included as standard.", default: true }
             ]
           },
           {
             id: "options", label: "Options", hint: "BNC option part numbers carry a B suffix.", type: "check",
             options: [
-              icxOCXO(["060U", "090U"], "Included as standard on the ICX-400U"),
-              icxOpt({ code: "O05", codeLabel: "opt 05B", label: "Internal high-precision GNSS",
-                acc: "opt 05B", desc: "internal high-precision GNSS",
-                onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
-                onlyForReason: "Offered on the ICX-060U and 090U",
-                info: "Internal high-precision GNSS receiver for location-stamped measurements and timing." }),
               icxOpt({ code: "O20", codeLabel: "opt 20B", label: "IO extension board",
                 acc: "opt 20B", desc: "IO extension board",
                 info: "IO extension board adding trigger and reference connectivity." }),
-              icxOpt({ code: "O401", codeLabel: "opt 40-1B", label: "T1 extended temperature, -20 C to +65 C",
-                acc: "opt 40-1B", desc: "T1 extended temperature class (-20 C to +65 C)",
-                onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
-                onlyForReason: "T1 class for the ICX-060U/090U; the 400U uses opt 40-3B",
-                excludes: ["O403"],
-                info: "Extends the operating temperature range to -20 C through +65 C." }),
               icxOpt({ code: "O403", codeLabel: "opt 40-3B", label: "T1 extended temperature, -20 C to +65 C",
                 acc: "opt 40-3B", desc: "T1 extended temperature class (-20 C to +65 C)",
                 onlyFor: { group: { id: "freq", in: ["400U"] } },
                 onlyForReason: "This T1 variant covers the ICX-400U",
-                excludes: ["O401"],
                 info: "Extends the operating temperature range to -20 C through +65 C." }),
-              /* FLAG 2026-08-17: this option is now inconsistent with the published
-                 datasheet for one of the two models it is offered on. David Brown set the
-                 ICX-060U at 25 MHz standard with 50 MHz optional, so a 100 MHz upgrade
-                 cannot be built on that model and quoting one here risks an order we
-                 cannot ship. The ICX-090U was not part of that ruling and is unaffected.
-                 Deliberately left unchanged pending David: restricting opt 50B to the
-                 090U would remove the 060U's upgrade path from quoting, and no part
-                 number has been published for the 060U's 50 MHz option, so inventing one
-                 is not an option either. Decide, then edit onlyFor accordingly. */
-              icxOpt({ code: "O50", codeLabel: "opt 50B", label: "100 MHz analysis bandwidth",
-                acc: "opt 50B", desc: "100 MHz real-time analysis bandwidth", badge: "100 MHz BW",
-                onlyFor: { group: { id: "freq", in: ["060U", "090U"] } },
-                onlyForReason: "Offered on the ICX-060U and 090U",
-                info: "Widens the real-time analysis bandwidth to 100 MHz." }),
               ICX_OPT_71, ICX_OPT_72
             ]
           },
