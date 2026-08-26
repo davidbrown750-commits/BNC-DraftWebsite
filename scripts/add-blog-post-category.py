@@ -22,7 +22,11 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 BADGE = "Blog Post"
-COLOUR = "#0d9488"          # teal: the one hue the other eight badges leave free
+COLOUR = "#0f766e"          # teal: the one hue the other eight badges leave free,
+                        # dark enough for white text at WCAG AA (5.47:1). The
+                        # brighter #0d9488 reads better but lands at 3.74:1,
+                        # which would make this the only badge on the site that
+                        # fails the contrast level BNC publishes a commitment to.
 ICON = (
     "\"" + BADGE + "\":\"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' "
     "stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'>"
