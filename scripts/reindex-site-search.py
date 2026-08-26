@@ -33,6 +33,7 @@ from collections import Counter
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 HARVEST = pathlib.Path(__file__).resolve().parent / "page-harvest.json"
+PRESS = ROOT / "_shared" / "bnc-press-articles.json"
 
 # --------------------------------------------------------------------------
 # vocabulary
@@ -152,6 +153,7 @@ KIND_TYPE = {
     "FAQ": "FAQ",
     "Book Chapter": "Book Chapter",
     "Book": "Book",
+    "Blog Post": "Blog Post",
     "Product": "Product",
     "Company": "Product",
 }
@@ -208,8 +210,11 @@ def resolve(rel_page, src):
 
 
 def page_images(rel_page):
-    """The page's own subject image, best first: a real figure from the body,
-    then its social image."""
+    """Every subject image the page shows, best first: real figures from the
+    body in document order, then its social image. The old cap of three was
+    enough when a page needed one picture; the tile assignment needs the whole
+    list, because a chapter carrying thirty figures is what lets the thirty
+    pages around it each end up with a different one."""
     try:
         html = (ROOT / rel_page).read_text(encoding="utf-8", errors="replace")
     except OSError:
@@ -220,7 +225,7 @@ def page_images(rel_page):
         r = resolve(rel_page, m.group(1))
         if r and r not in out:
             out.append(r)
-        if len(out) >= 3:
+        if len(out) >= 40:
             break
     m = OG_RE.search(html)
     if m:
@@ -230,9 +235,295 @@ def page_images(rel_page):
     return out
 
 
+# --------------------------------------------------------------------------
+# press room articles
+# --------------------------------------------------------------------------
+# The press room is 136 articles served by one page, docs/press-article.html,
+# which reads _shared/bnc-press-articles.json and renders whichever ?id= it is
+# handed. A crawler that walks .html files on disk therefore sees exactly one
+# press page, so none of the writing in the press room could be found by search.
+# Each article is folded in here as its own result, keyed by the query-string URL
+# the reader actually opens. The result badge reads Blog Post.
+
+TAG_RE = re.compile(r"<[^>]+>")
+ENT = {"&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '"', "&#8217;": "'",
+       "&rsquo;": "'", "&lsquo;": "'", "&ldquo;": '"', "&rdquo;": '"',
+       "&nbsp;": " ", "&ndash;": "-", "&mdash;": ", ", "&#8211;": "-",
+       "&#8212;": ", ", "&hellip;": "...", "&deg;": " deg", "&times;": "x",
+       "&apos;": "'", "&#039;": "'", "&#8230;": "..."}
+
+# "May 5th 2023 - " and friends. The date is already the article's own field, and
+# leading it in the result title pushes the actual subject out of the two-line clamp.
+DATELEAD_RE = re.compile(
+    r"^\s*(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?"
+    r"|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\s+"
+    r"\d{1,2}(?:st|nd|rd|th)?[,]?\s*\d{4}\s*[\u2013\u2014:-]+\s*", re.I)
+
+
+def detag(html):
+    """Article bodies are stored as HTML. Search wants the words."""
+    t = re.sub(r"<(script|style)\b.*?</\1>", " ", html or "", flags=re.S | re.I)
+    t = re.sub(r"<(li|p|h[1-6]|div|br|tr)\b[^>]*>", " . ", t, flags=re.I)
+    t = TAG_RE.sub(" ", t)
+    for k, v in ENT.items():
+        t = t.replace(k, v)
+    t = re.sub(r"&#(\d+);",
+               lambda m: chr(int(m.group(1))) if int(m.group(1)) < 0x11000 else " ", t)
+    t = re.sub(r"\s*\.\s*(\.\s*)+", ". ", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def press_line(text):
+    """Which product line an article belongs to, by which line's vocabulary it
+    uses most. Same test the FAQ tiles use, so the two agree."""
+    low = text.lower()
+    best, best_hits = "general", 0
+    for ln, terms in LINE_TERMS.items():
+        if ln in ("books", "general"):
+            continue
+        hits = sum(1 for t in set(terms.split())
+                   if re.search(r"\b%s\b" % re.escape(t), low))
+        if hits > best_hits:
+            best, best_hits = ln, hits
+    return best if best_hits >= 2 else "general"
+
+
+def press_pages():
+    """The press room, as index entries shaped like every other page."""
+    if not PRESS.exists():
+        return []
+    try:
+        arts = json.load(open(PRESS, encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    out = []
+    for a in arts:
+        aid = (a.get("id") or "").strip()
+        if not aid:
+            continue
+        title = detag(a.get("title") or "")
+        title = DATELEAD_RE.sub("", title).strip().strip("-\u2013\u2014: ")
+        body = detag(a.get("body") or "")
+        if not title:
+            title = body[:70]
+        # the tile prints the headline directly above the description, so the
+        # description opens on the article's own first line instead
+        lede = body
+        if lede.lower().startswith(title.lower()[:40]):
+            lede = lede[len(title):].lstrip(" .:-")
+        img = (a.get("img") or "").strip().lstrip("/")
+        out.append({
+            "u": "docs/press-article.html?id=" + aid,
+            "t": title,
+            "d": lede[:400],
+            "og": img,
+            "h1": title,
+            "firstimg": img,
+            "kind": "Blog Post",
+            "line": press_line(title + " " + body),
+            "words": (title + " " + body)[:24000],
+            "_press": {"date": a.get("date") or "", "img": img,
+                       "cats": a.get("cats") or [], "body": body},
+        })
+    return out
+
+
 def toks(text):
     return [w for w in WORD_RE.findall((text or "").lower())
             if len(w) > 1 and w not in STOP and not blocked(w)]
+
+
+# --------------------------------------------------------------------------
+# result descriptions
+# --------------------------------------------------------------------------
+# The line under a result tile used to be whatever the page put in its meta
+# description, and for the 295 pages with no meta description it was the first
+# 170 characters of the page text. That produced tiles reading "(c) 2026
+# Berkeley Nucleonics Corporation. Progress is stored..." and a dozen more that
+# opened with the company name before saying anything. A searcher already knows
+# whose site this is. What they cannot see is what the thing they are about to
+# click actually is, and whether it covers the words they typed. So every
+# description now names the form first, then says what it covers.
+
+# the form noun, deliberately more specific than the badge: a quiz, a glossary
+# and a chapter all badge as E-Book, and they are not the same thing to read
+DESC_FORM = {
+    "Data Sheet": "Datasheet",
+    "User Manual": "Operating manual",
+    "Application Brief": "Application note",
+    "Technical Note": "Technical brief",
+    "Book Chapter": "Book chapter",
+    "Book": "Free web book",
+    "Blog Post": "Press-room article",
+    "Product": "Product overview",
+    "Company": "",
+    "FAQ": "",
+}
+
+# filename tells us more than the harvested kind does for book furniture
+FORM_BY_NAME = [
+    (re.compile(r"/quiz-|/[0-9]+-quiz|reader-quiz", re.I), "Chapter quiz"),
+    (re.compile(r"glossary", re.I), "Glossary"),
+    (re.compile(r"bibliograph|further-reading", re.I), "Reading list"),
+    (re.compile(r"about-the-authors", re.I), "About the authors"),
+    (re.compile(r"/progress\.html$", re.I), "Reading-progress tracker"),
+    (re.compile(r"front-matter", re.I), "Book front matter"),
+    (re.compile(r"answer-key", re.I), "Quiz answer key"),
+    (re.compile(r"/appendix", re.I), "Book appendix"),
+    (re.compile(r"/OUTLINE\.html$", re.I), "Book outline"),
+]
+
+# attribution and legal furniture, none of which tells a searcher anything
+BOILER = [
+    (re.compile(r"(?i)(?:\u00a9|&copy;|\(c\))\s*\d{4}[^.]*\.?"), " "),
+    (re.compile(r"(?i)\bcopyright\b[^.]*\.?"), " "),
+    (re.compile("(?:\u00a9|&copy;)"), " "),
+    (re.compile(r"(?i)all rights reserved\.?"), " "),
+    (re.compile(r"(?i)\bberkeley\s+nucleonics\s+corporation\b,?"), " "),
+    (re.compile(r"(?i)\bberkeley\s+nucleonics\b,?"), " "),
+    (re.compile(r"(?i)\bthe nuts and bolts of\b"), " "),
+    (re.compile(r"(?i)\b(?:contact|call)\s+us\b[^.]*\.?"), " "),
+    (re.compile(r"(?i)\brequest a quote\b[^.]*\.?"), " "),
+    (re.compile(r"(?i)\bskip to (?:main )?content\b"), " "),
+    (re.compile(r"(?i)\bprivacy policy\b|\bterms of use\b"), " "),
+]
+
+SENT_RE = re.compile(r"(?<=[.!?])\s+")
+
+
+def scrub(text):
+    """Strip attribution and legal furniture, then tidy what is left."""
+    t = " " + re.sub(r"\s+", " ", text or "") + " "
+    for rx, rep in BOILER:
+        t = rx.sub(rep, t)
+    t = re.sub(r"\s+([,.;:])", r"\1", t)
+    t = re.sub(r"([,.;:])\1+", r"\1", t)
+    t = re.sub(r"^[\s,.;:\-\u2013\u2014]+", "", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    if t and t[0].islower() and not re.match(r"^[a-z]{1,4}[0-9(]", t):
+        t = t[0].upper() + t[1:]
+    return t
+
+
+def first_real_sentences(words, limit=150):
+    """The opening of the page's own prose, skipping nav crumbs and stubs."""
+    body = scrub(re.sub(r"\s+", " ", words or "")[:2400])
+    out = []
+    for s in SENT_RE.split(body):
+        s = s.strip()
+        if len(s) < 35 or s.count(" ") < 4:
+            continue
+        if re.match(r"(?i)^(home|products|support|menu|search|next|previous)\b", s):
+            continue
+        out.append(s)
+        if sum(len(x) + 1 for x in out) >= limit:
+            break
+    return " ".join(out)
+
+
+def trim_to(text, n):
+    """Cut on a sentence boundary where possible, a word boundary otherwise."""
+    text = text.strip()
+    if len(text) <= n:
+        return text
+    cut = text[:n]
+    dot = max(cut.rfind(". "), cut.rfind("? "), cut.rfind("! "))
+    if dot > n * 0.55:
+        return cut[:dot + 1].strip()
+    return cut.rsplit(" ", 1)[0].rstrip(" ,;:") + "..."
+
+
+def drop_echo(detail, *headings):
+    """Cut a heading the tile already shows off the front of the description.
+
+    Page text usually opens by restating its own title, so an untreated
+    description spent its first and most visible line saying a second time
+    what the title directly above it had just said."""
+    variants = []
+    for h in headings:
+        h = re.sub(r"\s+", " ", (h or "")).strip()
+        # "Why Scintillation, Why Now | Scintillation Detectors" is one heading
+        # wearing the site's title suffix; both halves are worth testing
+        # "Appendix C. Industry Trends" is a label plus a heading, and the page
+        # text opens on the heading alone
+        parts = [h] + re.split(r"\s*[|\u00b7\u2013\u2014]\s*", h)
+        parts.append(re.sub(r"(?i)^(?:appendix\s+[a-z0-9]+|chapter\s+\d+)[.:]?\s*", "", h))
+        for part in parts:
+            part = part.strip(" .|:-")
+            if len(part) >= 6 and part not in variants:
+                variants.append(part)
+    variants.sort(key=len, reverse=True)
+
+    for _ in range(3):
+        cut = False
+        for h in variants:
+            if detail[:len(h)].lower() != h.lower():
+                continue
+            rest = detail[len(h):]
+            tail = rest.lstrip(" .:|-\u2013\u2014")
+            # A heading is followed by punctuation or by a new sentence. A lower
+            # case word means the title was this sentence's subject, so removing
+            # it would leave the description starting on a bare verb.
+            if rest[:1] not in ("", " ") or not tail:
+                continue
+            if not (rest.lstrip()[:1] in (".", ":", "|", "\u2013", "\u2014")
+                    or tail[:1].isupper() or tail[:1].isdigit()):
+                continue
+            detail, cut = tail, True
+            break
+        # "1.1 What a Scintillator Does, in One Paragraph A scintillator is"
+        stripped = re.sub(r"^\d+(?:\.\d+)*\s+", "", detail)
+        cut = cut or stripped != detail
+        detail = stripped
+        if not cut:
+            break
+    return detail.strip()
+
+
+def make_desc(p, terms):
+    """One tile description: the form, then what it covers, then the distinctive
+    terms it answers to. Never the company name, never a copyright line."""
+    u = p["u"]
+    form = ""
+    for rx, f in FORM_BY_NAME:
+        if rx.search("/" + u):
+            form = f
+            break
+    if not form:
+        form = DESC_FORM.get(p["kind"], "")
+
+    detail = drop_echo(scrub(p.get("d") or ""), p.get("t"), p.get("h1"))
+    if len(detail) < 45:
+        detail = drop_echo(first_real_sentences(p.get("words") or ""),
+                           p.get("t"), p.get("h1"))
+    detail = trim_to(detail, 165)
+
+    parts = []
+    if form:
+        parts.append(form + ".")
+    if detail:
+        parts.append(detail if detail.endswith((".", "!", "?")) else detail + ".")
+    out = " ".join(parts).strip()
+
+    # the words this page answers to that the sentence above did not already
+    # say, so a searcher can see why their query landed here
+    low = out.lower()
+    extra = []
+    for w in terms:
+        if len(w) < 4 or w in low:
+            continue
+        if not re.search(r"[a-z]{3}", w):        # "0.80", "51b51", "5-16"
+            continue
+        if any(w in e or e in w for e in extra):  # "crystal" then "crystals"
+            continue
+        extra.append(w)
+        if len(extra) == 4:
+            break
+    if extra and len(out) < 190:
+        tail = " Covers: " + ", ".join(extra) + "."
+        if len(out) + len(tail) <= 240:      # never cut a list off mid-item
+            out = (out + tail).strip()
+    return trim_to(out, 240) or (form or "Reference page.")
 
 
 def main():
@@ -240,6 +531,9 @@ def main():
         print("missing harvest: %s" % HARVEST, file=sys.stderr)
         return 1
     pages = json.load(open(HARVEST, encoding="utf-8"))
+    press = press_pages()
+    pages = pages + press
+    print("pages: %d harvested + %d press-room articles" % (len(pages) - len(press), len(press)))
 
     # ---- carry the previous index's hand-written keywords forward ----------
     src = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -294,11 +588,17 @@ def main():
                 r"^(The\s+)?Nuts (and|&amp;|&) Bolts of\s+", "", p["t"]
             ).strip()
 
-    # ---- fallback tile images ---------------------------------------------
-    # Every result must carry a real, page-relevant picture. The site-wide hero
-    # is what most docs/ pages declare as og:image, so it is explicitly demoted:
-    # a genuine figure from the page body beats a shared banner every time.
+    # ---- tile pictures: the candidate pools -------------------------------
+    # Every result carries a real, page-relevant picture, and no two results
+    # carry the same one. The old build handed a page a single image and fell
+    # back to one representative shot per product line when the page had none
+    # of its own, which is why a scintillator search returned the MetRad 1
+    # product photo forty-five times over. Each page now offers a ranked list
+    # of candidates and an assignment pass gives every result its own.
     GENERIC = {"figures/home/hero.png", "figures/hero.png", "figures/og/hero.png"}
+    # book furniture, not subject matter: the Going Deeper banner is injected
+    # into every chapter, so it is a picture of nothing in particular.
+    POOL_SKIP = ("going-deeper", "-thumb", "sprite", "divider", "rule.")
 
     def usable(path):
         """A tile image has to be a real subject picture that actually exists.
@@ -312,46 +612,149 @@ def main():
         path = path.lstrip("/")
         if path in GENERIC:
             return ""
-        if any(w in path.lower() for w in SKIP_IMG) or COVER_CROP_RE.search(path.lower()):
+        low = path.lower()
+        if any(w in low for w in SKIP_IMG) or COVER_CROP_RE.search(low):
+            return ""
+        if any(w in low for w in POOL_SKIP):
             return ""
         return path if (ROOT / path).is_file() else ""
 
     own_cache = {}
 
-    def own(pg):
+    def own_all(pg):
+        """Every picture the page itself shows, best first."""
         u = pg["u"]
         if u not in own_cache:
-            cands = [c for c in page_images(u) if usable(c)]
-            own_cache[u] = cands[0] if cands else ""
+            if "?" in u:                    # press article: its own artwork
+                own_cache[u] = [c for c in [usable(pg.get("firstimg") or "")] if c]
+            else:
+                seen, out = set(), []
+                for c in page_images(u):
+                    c = usable(c)
+                    if c and c not in seen:
+                        seen.add(c)
+                        out.append(c)
+                own_cache[u] = out
         return own_cache[u]
 
-    # one representative image per product line, taken from a real product page
-    line_img = {}
-    for pg in pages:
-        if pg["kind"] in ("Data Sheet", "Product"):
-            img = own(pg)
-            if img and pg["line"] not in line_img:
-                line_img[pg["line"]] = img
-    for pg in pages:                       # second pass, any page type
-        img = own(pg)
-        if img and pg["line"] not in line_img:
-            line_img[pg["line"]] = img
+    IMG_EXT = (".png", ".jpg", ".jpeg", ".svg", ".webp", ".gif")
 
-    # one cover per book, taken from that book's own landing page
-    book_img = {}
+    def dir_pool(rel_dir):
+        d = ROOT / rel_dir
+        if not d.is_dir():
+            return []
+        out = []
+        for f in sorted(d.rglob("*")):
+            if f.is_file() and f.suffix.lower() in IMG_EXT:
+                r = usable(f.relative_to(ROOT).as_posix())
+                if r:
+                    out.append(r)
+        return out
+
+    # every figure each book ships, so a chapter with no <img> of its own still
+    # gets a picture out of its own book rather than a product photo
+    pool_cache = {}
+
+    def cached_pool(key, rel_dir):
+        if key not in pool_cache:
+            pool_cache[key] = dir_pool(rel_dir)
+        return pool_cache[key]
+
+    CHAPNUM_RE = re.compile(r"(?:^|[/-])(?:chapter-|quiz-|appendix-)?(\d{1,2})[-.]")
+
+    def book_slug(u):
+        return u.split("/")[1] if u.startswith("books/") and u.count("/") > 1 else ""
+
+    def chapter_key(u):
+        m = CHAPNUM_RE.search(u.rsplit("/", 1)[-1])
+        return "%02d" % int(m.group(1)) if m else ""
+
+    def book_candidates(u):
+        """That book's own figures, the ones belonging to this chapter first."""
+        slug = book_slug(u)
+        if not slug:
+            return []
+        pool = cached_pool("book:" + slug, "books/%s/figures" % slug)
+        ck = chapter_key(u)
+        if not ck:
+            return pool
+        n = int(ck)
+        # fig-03-..., chapter-03-opener, Ch3_Sec3.1_Figure2, 03-materials
+        pats = [re.compile(r"(?:^|[/_-])(?:fig|chapter|ch)?[-_]?0?%d[-_.]" % n, re.I),
+                re.compile(r"(?:^|/)ch0?%d[_-]" % n, re.I)]
+        mine = [p for p in pool if any(r.search(p.rsplit("/", 1)[-1]) for r in pats)]
+        rest = [p for p in pool if p not in mine]
+        return mine + rest
+
+    DOCFIG_RE = re.compile(r"^docs/(?:bnc-)?(.+?)-(datasheet|user-manual)\.html$")
+
+    def doc_candidates(u):
+        """A datasheet or manual keeps its own figure folder under docs/figures."""
+        m = DOCFIG_RE.match(u)
+        if not m:
+            return []
+        stem = m.group(1).replace("bnc-", "")
+        suffix = "ds" if m.group(2) == "datasheet" else "man"
+        out = []
+        for cand in ("%s-%s" % (stem, suffix), stem):
+            out += cached_pool("doc:" + cand, "docs/figures/" + cand)
+        return out
+
+    # every picture that any page of a product line actually shows, so a line
+    # fallback is a real pool rather than one repeated photo
+    line_pool = {}
     for pg in pages:
-        if pg["kind"] == "Book":
-            img = own(pg)
-            if img:
-                book_img[pg["u"].split("/")[1]] = img
+        line_pool.setdefault(pg["line"], [])
+        for c in own_all(pg):
+            if c not in line_pool[pg["line"]]:
+                line_pool[pg["line"]].append(c)
+
+    GLOBAL_POOL = []
+    for _ln in sorted(line_pool):
+        for c in line_pool[_ln]:
+            if c not in GLOBAL_POOL:
+                GLOBAL_POOL.append(c)
+    for _d in ("figures/apps", "figures/scint", "figures/wp", "docs/figures"):
+        for c in cached_pool("g:" + _d, _d):
+            if c not in GLOBAL_POOL:
+                GLOBAL_POOL.append(c)
+
+    def borrowable(paths):
+        """Pictures a page may inherit. A page keeps whatever it displays
+        itself, but a name that identifies a supplier does not get carried onto
+        tiles for pages that never showed it."""
+        return [c for c in paths if "scionix" not in c.lower()]
+
+    def candidates(pg):
+        """Ranked pictures for one result. Rank is priority, not quality: the
+        page's own artwork always outranks anything borrowed."""
+        u = pg["u"]
+        out = []
+
+        def push(paths):
+            for c in paths:
+                c = usable(c)
+                if c and c not in out:
+                    out.append(c)
+
+        push(own_all(pg))
+        push([pg.get("og") or "", pg.get("firstimg") or ""])
+        push(borrowable(doc_candidates(u)))
+        push(borrowable(book_candidates(u)))
+        push(borrowable(line_pool.get(pg["line"], [])))
+        return out
 
     index, ssdesc, ssimg = [], {}, {}
+    cand_of = {}
     no_img = []
 
+
+    seen_urls = set()
     for p in pages:
         u = p["u"]
-        if u in SUPERSEDED_URLS:
+        if u in SUPERSEDED_URLS or u in seen_urls:
             continue
+        seen_urls.add(u)
         old = old_by_url.get(u)
 
         # -- title ----------------------------------------------------------
@@ -408,26 +811,14 @@ def main():
         index.append({"t": title, "u": u, "c": cat, "k": " ".join(out)})
 
         # -- tile description ----------------------------------------------
-        desc = p["d"].strip()
-        if not desc:
-            desc = re.sub(r"\s+", " ", p["words"]).strip()[:170]
-            desc = desc.rsplit(" ", 1)[0] if len(desc) == 170 else desc
-        ssdesc[u] = desc
+        ssdesc[u] = make_desc(p, [w for _, w in scored[:14]])
 
-        # -- tile image ------------------------------------------------------
-        # curated thumbnail, then the page's own figure, then its og image,
-        # then the book cover or the product line, and only then the site hero
-        img = usable(old_img.get(u, "")) or own(p)
-        if not img and u.startswith("books/"):
-            img = book_img.get(u.split("/")[1], "")
-        if not img:
-            img = line_img.get(p["line"], "")
-        if not img:
-            img = p["og"] or p["firstimg"] or line_img.get("general", "")
-        if img:
-            ssimg[u] = img
-        else:
-            no_img.append(u)
+        # -- tile pictures, ranked; which one it gets is settled below -------
+        c = candidates(p)
+        prev = usable(old_img.get(u, ""))
+        if prev:
+            c = [prev] + [x for x in c if x != prev]
+        cand_of[u] = c
 
     # -- FAQ answers are results too, and they need a picture ---------------
     # They live in their own array keyed by faq.html#q-..., so they never had an
@@ -445,18 +836,80 @@ def main():
             faqs = []
     for e in faqs:
         u = e.get("u", "")
-        if not u or u in ssimg:
+        if not u or u in cand_of:
             continue
         text = ((e.get("q") or "") + " " + (e.get("kw") or "")).lower()
-        best, best_hits = "general", 0
-        for ln, terms in LINE_TERMS.items():
-            hits = sum(1 for t in set(terms.split()) if re.search(r"\b%s\b" % re.escape(t), text))
-            if hits > best_hits:
-                best, best_hits = ln, hits
-        img = line_img.get(best) or line_img.get("general")
-        if img:
-            ssimg[u] = img
-    print("faq tile images added: %d of %d" % (sum(1 for e in faqs if e.get("u") in ssimg), len(faqs)))
+        ranked = sorted(
+            LINE_TERMS,
+            key=lambda ln: -sum(1 for t in set(LINE_TERMS[ln].split())
+                                if re.search(r"\b%s\b" % re.escape(t), text)))
+        pool = []
+        for ln in ranked[:3]:
+            for c in line_pool.get(ln, []):
+                if c not in pool:
+                    pool.append(c)
+        cand_of[u] = pool
+
+    # ---- one distinct picture per result -----------------------------------
+    # A first-come walk is what produced the duplicates: whichever page was
+    # reached first claimed the product photo and every later page that had no
+    # picture of its own inherited the same one. This is an assignment instead.
+    # Kuhn's augmenting path maximises how many results get a picture drawn from
+    # their own page, and it keeps re-running while any result can still be
+    # improved, so the loop only stops once no two tiles can be made to differ.
+    def solve(cands):
+        owner = {}                       # image -> url that holds it
+        got = {}                         # url -> image
+
+        def augment(u, seen, depth):
+            for c in cands.get(u, ()):
+                if c in seen:
+                    continue
+                seen.add(c)
+                holder = owner.get(c)
+                if holder is None or (depth < 24 and augment(holder, seen, depth + 1)):
+                    owner[c] = u
+                    got[u] = c
+                    return True
+            return False
+
+        # scarcest first: a page with one possible picture must choose before a
+        # page that could have used any of two hundred
+        for u in sorted(cands, key=lambda k: (len(cands[k]), k)):
+            augment(u, set(), 0)
+        return got, owner
+
+    sys.setrecursionlimit(10000)
+    assigned, owner = solve(cand_of)
+
+    # results that could not be matched to a picture of their own draw from the
+    # site-wide pool, still without repeating one another
+    spare = [c for c in GLOBAL_POOL if c not in owner]
+    si = 0
+    borrowed = 0
+    for u in sorted(cand_of):
+        if u in assigned:
+            ssimg[u] = assigned[u]
+            continue
+        if si < len(spare):
+            ssimg[u] = spare[si]
+            owner[spare[si]] = u
+            si += 1
+            borrowed += 1
+        elif cand_of[u]:
+            ssimg[u] = cand_of[u][0]     # supply exhausted: repeat, do not blank
+        else:
+            no_img.append(u)
+
+    distinct = len(set(ssimg.values()))
+    print("tile images: %d results, %d distinct (%d borrowed from the site pool, "
+          "%d with no picture)" % (len(ssimg), distinct, borrowed, len(no_img)))
+    if distinct < len(ssimg):
+        dupes = Counter(ssimg.values())
+        for pth, n in dupes.most_common(5):
+            if n > 1:
+                print("   still shared %dx: %s" % (n, pth))
+
 
     index.sort(key=lambda e: e["u"])
     print("index %d entries (was %d), ssdesc %d, ssimg %d, no image %d"
