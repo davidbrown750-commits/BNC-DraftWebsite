@@ -36,6 +36,9 @@ const TYPES = {
   resource:      "Resource Request",
   quiz:          "Book Reader Quiz",
   newsletter:    "Newsletter Signup",
+  // BNC Academy complimentary class passes (academy-free-access.html). One checkbox per
+  // class, so the submission carries course_<CODE> keys rather than a single "course" field.
+  "academy-access": "BNC Academy Complimentary Pass Request",
   "launch-list": "Launch List Signup",
   // The BNC Dispatch partner edition — one type per mail-in coupon, so each response
   // lands on the rep's own Nutshell record with a label that says which ask it answers.
@@ -48,6 +51,8 @@ const DEFAULT_NOTIFY = "website@berkeleynucleonics.com";
 // Per-form-type recipients (override DEFAULT_NOTIFY; a FORM_NOTIFY_<TYPE> env var still wins over this).
 const TYPE_NOTIFY = {
   rma: "operations@berkeleynucleonics.com",          // RMA repair / authorization request
+  // Academy pass requests are handled by the Academy team, not the website inbox.
+  "academy-access": "info@berkeleynucleonics.com",
   "rma-status": "operations@berkeleynucleonics.com", // RMA status check
   // Partner-edition coupons: these are channel replies, not leads, so they go to David and
   // sales rather than website@. The 2026 rep newsletter drew zero responses partly because
@@ -65,7 +70,7 @@ const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1,
 // Deliberately NOT acknowledged: "rma-status", "quote-index" (product index quote buttons),
 // "scintiq" (detector configurator), and "launch-list" (the RFS-4220 coming-soon signup, which
 // must never promise pricing and lead time on an unreleased product).
-const ACK_TYPES = { rma: 1, quote: 1, contact: 1 };
+const ACK_TYPES = { rma: 1, quote: 1, contact: 1, "academy-access": 1 };
 // operations@ (not service@): service@ was never confirmed as a monitored mailbox, and the
 // support@ mailbox it sat alongside has been archived. RMA notifications already route to
 // operations@ (TYPE_NOTIFY below), so the customer's reply now lands with the same team.
@@ -80,13 +85,27 @@ const ACK_PHONE = "+1 (800) 234-7858";
 const ACK_BCC = (process.env.FORM_ACK_BCC === undefined ? "bcc@nutshell.com" : process.env.FORM_ACK_BCC)
   .split(",").map((s) => s.trim()).filter(Boolean);
 
-// Who each acknowledgement comes from. Every one of these is a berkeleynucleonics.com sender,
-// and the domain is already authenticated in SendGrid, so none of them needs new verification.
-// Per-type env overrides (FORM_ACK_FROM_QUOTE / FORM_ACK_REPLY_TO_CONTACT, ...) win over these.
+// Who each acknowledgement comes from. Per-type env overrides (FORM_ACK_FROM_QUOTE /
+// FORM_ACK_REPLY_TO_CONTACT, ...) win over these.
+//
+// All but one are berkeleynucleonics.com senders, and that domain is already authenticated
+// in SendGrid. The exception is the Academy sender, which is on the SEPARATE domain
+// berkeleynucleonicsacademy.com. That domain is already SendGrid domain-authenticated too
+// (checked 2026-08-27: SPF "v=spf1 include:sendgrid.net include:amazonses.com ~all",
+// DKIM s1/s2._domainkey CNAMEd to sendgrid.net, and a _dmarc record), so acknowledgements
+// from it sign and align without any new setup.
+//
+// It has no MX record, so inbound mail falls back to the apex A record on Bluehost. If a
+// reply to alec@berkeleynucleonicsacademy.com ever bounces, that mailbox is the reason, and
+// FORM_ACK_REPLY_TO_ACADEMY_ACCESS repoints replies without a deploy.
 const ACK_IDENTITY = {
   rma:     { from: ACK_FROM, replyTo: ACK_REPLY_TO },
   quote:   { from: "Berkeley Nucleonics Sales <sales@berkeleynucleonics.com>", replyTo: "sales@berkeleynucleonics.com" },
   contact: { from: "Berkeley Nucleonics <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
+  "academy-access": {
+    from: "Berkeley Nucleonics Academy <alec@berkeleynucleonicsacademy.com>",
+    replyTo: "alec@berkeleynucleonicsacademy.com",
+  },
 };
 
 function ackIdentity(type) {
@@ -393,6 +412,59 @@ function ackSerials(serialField, description) {
 }
 
 // The acknowledgement shell, shared by every form type. Brand shell (BNC blue, Myriad Pro
+// ---------------------------------------------------------------------------
+// BNC Academy class catalog (academy-free-access.html).
+//
+// The landing page posts one checkbox per class, named course_<CODE>, because parseBody
+// runs the urlencoded body through Object.fromEntries(new URLSearchParams(...)), which keeps
+// only the LAST value of a repeated key. Twenty-one boxes sharing a single `course` name
+// would silently collapse to one class.
+//
+// The submitted VALUE is deliberately ignored. This endpoint is unauthenticated, and the
+// class list is echoed back in a DKIM-signed email we send to an address the poster chose,
+// so the title always comes from this table and an unknown code is dropped. Keep in sync
+// with the checkbox list on academy-free-access.html.
+const ACADEMY_CATALOG = {
+  NUC01: ["NUC 01", "Nuclear Radiation 101"],
+  NUC02: ["NUC 02", "The Fascinating World of Scintillation Detector Technology"],
+  NUC03: ["NUC 03", "Identifying Special Nuclear Material (SNM)"],
+  NUC04: ["NUC 04", "Thermal Neutron Detectors and Detection"],
+  NUC06: ["NUC 06", "The Art of Compton Suppression"],
+  NUC07: ["NUC 07", "Nuclear Radiation Basics and Worker Safety"],
+  UNT01: ["UNT 01", "SAM 945 / RD-120 User Training"],
+  UNT02: ["UNT 02", "SAM 950 User Training"],
+  MRF01: ["MRF 01", "RF Boot Camp"],
+  MRF02: ["MRF 02", "Demystifying Phase Noise Measurements"],
+  MRF03: ["MRF 03", "An Introduction to Radar Principles"],
+  MRF04: ["MRF 04", "Introduction to RF Power Measurements"],
+  MRF05: ["MRF 05", "Real-Time Spectrum Analysis in Practice"],
+  MRF06: ["MRF 06", "Vector Signal Generation and Arbitrary Waveforms"],
+  SDR01: ["SDR 01", "Hands-On Software-Defined Radio: SDR++ and SoapySDR"],
+  TMI01: ["TMI 01", "Precision Timing Terminology and Fundamentals"],
+  TMI02: ["TMI 02", "Advanced Pulse Generation and Precision Timing"],
+  QC01:  ["QC 01", "The Nuts and Bolts (and Qubits) of Quantum Computing"],
+  QC02:  ["QC 02", "Quantum Computing Instrumentation in Use Today"],
+  HPE01: ["HPE 01", "The Nuts and Bolts of High Power Pulse Generators"],
+  HPE02: ["HPE 02", "High-Voltage Amplifiers and High-Power Pulse Applications"],
+};
+// Catalog order, so the email reads in the same order as the page no matter how the
+// browser happened to serialize the checkboxes.
+const ACADEMY_ORDER = Object.keys(ACADEMY_CATALOG);
+
+// Pull the checked classes out of the body. Marks each course_* key consumed so it does not
+// also appear as its own row in the generic "extra fields" table. Returns [[code, title], ...].
+function academyPicks(body, consumed) {
+  const hit = {};
+  for (const k of Object.keys(body)) {
+    const m = /^course_([A-Za-z0-9]+)$/.exec(k);
+    if (!m) continue;
+    if (consumed) consumed.add(k.toLowerCase());
+    const code = m[1].toUpperCase();
+    if (has(ACADEMY_CATALOG, code)) hit[code] = true;
+  }
+  return ACADEMY_ORDER.filter((c) => hit[c]).map((c) => ACADEMY_CATALOG[c]);
+}
+
 // headings with an Arial fallback), table layout so Outlook renders it, and the customer's own
 // details repeated back so they can see we captured the right thing. Returns { html, text }.
 function ackShell({ preheader, heading, hello, intro, rows, callout, signName, replyTo }) {
@@ -488,6 +560,34 @@ function ackQuote({ hello, replyTo, model, quantity, country, company }) {
     replyTo,
   });
   return Object.assign({ subject: "We have your quote request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics" }, shell);
+}
+
+// Academy complimentary pass: thank them, list the classes back so they can see we captured
+// the right ones, and set the expectation that a human sends the enrollment details. Class
+// titles come from ACADEMY_CATALOG, never from the request body.
+function ackAcademy({ hello, replyTo, picks, company }) {
+  const n = picks.length;
+  const shell = ackShell({
+    preheader: n
+      ? "We have your request for " + n + (n === 1 ? " complimentary class pass." : " complimentary class passes.")
+      : "We have your BNC Academy request.",
+    heading: "Thank you for your interest in BNC Academy",
+    hello,
+    intro: n
+      ? "Thank you for your interest in Berkeley Nucleonics Academy. We have your request for " +
+        (n === 1 ? "a complimentary pass to the class below" : "complimentary passes to the " + n + " classes below") +
+        ". Someone from the Academy team will send your enrollment details shortly. There is nothing to pay and nothing else you need to do."
+      : "Thank you for your interest in Berkeley Nucleonics Academy. We have your request and someone from the Academy team will follow up shortly.",
+    rows: picks.map((p) => [p[0], p[1]]).concat(company ? [["Company", company]] : []),
+    callout: "Our classes are written by the engineers who build and support the instruments, so if a question comes up while you are working through one, reply to this email and it will reach someone who can answer it properly.",
+    signName: "Berkeley Nucleonics Academy",
+    replyTo,
+  });
+  return Object.assign({
+    subject: n
+      ? "Thank you for your interest \u00b7 Your BNC Academy " + (n === 1 ? "class pass" : "class passes")
+      : "Thank you for your interest in BNC Academy",
+  }, shell);
 }
 
 // Does a contact submission look like a real lead, or like the junk that lands on the
@@ -749,12 +849,24 @@ module.exports = async function handler(req, res) {
     if (claims) verified = true;
   }
 
+  // Academy pass requests arrive as one checkbox per class. Resolve them against the
+  // server-side catalog first, so the course_* keys are marked consumed and do not each
+  // land as their own row in the generic extra-field table below.
+  const acadPicks = academyPicks(body, consumed);
+
   // Collect the "extra" fields (everything not reserved / not the standard four) for the note + email + log.
   const extra = {};
   for (const k of Object.keys(body)) {
     if (RESERVED[k] || consumed.has(k.toLowerCase())) continue;
     const v = body[k];
     if (v != null && String(v).trim() !== "") extra[k] = String(v).slice(0, 4000);
+  }
+
+  // One readable line for the internal notice, the Nutshell note and the Supabase row,
+  // in place of twenty-one course_* rows.
+  if (acadPicks.length) {
+    extra["Classes requested"] = acadPicks.map((p) => p[0] + " " + p[1]).join("\n");
+    extra["Classes requested count"] = String(acadPicks.length);
   }
 
   // Record when a contact acknowledgement was withheld, and why. This rides the normal
@@ -979,6 +1091,8 @@ module.exports = async function handler(req, res) {
           quantity: lc["quantity"] || "",
           country: lc["country"] || "",
         });
+      } else if (type === "academy-access") {
+        ack = ackAcademy({ hello, replyTo: id.replyTo, picks: acadPicks, company });
       } else if (type === "contact") {
         ack = ackContact({
           hello, replyTo: id.replyTo, company, phone,
@@ -1012,5 +1126,6 @@ module.exports = async function handler(req, res) {
 module.exports.ackRma = ackRma;
 module.exports.ackQuote = ackQuote;
 module.exports.ackContact = ackContact;
+module.exports.ackAcademy = ackAcademy;
 module.exports.ackIdentity = ackIdentity;
 module.exports.ACK_BCC = ACK_BCC;
