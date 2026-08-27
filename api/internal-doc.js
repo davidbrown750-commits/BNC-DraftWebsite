@@ -7,7 +7,13 @@
 // enforced server-side (falling back to the portal's client-side domain gate when
 // Clerk is not configured to include the email claim).
 const { verifyClerkToken } = require("../lib/clerk");
-const DOCS = require("./internal-docs-data");
+// The board lives in its own generated module so that regenerating it produces a
+// self-contained diff instead of churning the hand-maintained document set.
+const DOCS = Object.assign(
+  {},
+  require("./internal-docs-data"),
+  require("./academy-board-data")
+);
 
 const STAFF_DOMAIN = "@berkeleynucleonics.com";
 const STAFF_EXTRA = new Set(["davidbrown750@gmail.com", "jsaldi@regencyinteractive.com", "rcabe@regencyinteractive.com"]);
