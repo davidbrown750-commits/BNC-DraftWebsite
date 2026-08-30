@@ -581,7 +581,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <section id="s7"><h2><span class="num">7</span>Reference and triggering</h2>
 <p>The RFS-4220T includes external 10 MHz reference input capability for synchronization to a shared lab frequency standard, plus external triggering for synchronized test operation coordinated with other equipment in a measurement system.</p></section>
 <section id="s8"><h2><span class="num">8</span>Applications</h2>
-<p>General RF and microwave laboratory testing, automated test environments, production verification, RF component characterization, local oscillator sourcing, antenna development, EMC and pre-compliance testing, wireless infrastructure development, educational labs, aerospace and defense research, radar and receiver testing, and networked RF test systems.</p></section>
+<p>The RFS-4220T is a continuous-wave and swept microwave source with touchscreen, front-panel and remote control. The notes below describe where it fits in each application and which of its capabilities carries the work.</p>
+<div class="appgroup">Bench and laboratory</div>
+<div class="appgrid">
+<div class="appcard"><h4>General RF Lab Use</h4><p>One instrument covers the bench from 0.1 GHz through 20 GHz calibrated and sets as high as 22 GHz, at levels from -45 dBm up to +15 dBm. The touchscreen, the front-panel buttons and the rotary knob each drive the full instrument, so a quick check never waits on a PC to boot. At 5.6 lbs and 8.6 by 4 by 12.25 inches it moves between benches without a cart.</p></div>
+<div class="appcard"><h4>Educational / University Lab Use</h4><p>A student can produce a calibrated signal in the first minute of a lab session, because nothing has to be installed first. The same unit then teaches remote control properly, since every front-panel function is reachable over SCPI when the course moves on to automation. One box spans VHF through microwave, so a teaching lab does not need three.</p></div>
+<div class="appcard"><h4>Flexible LO Sourcing</h4><p>Low phase noise and an internal 10 MHz OCXO holding 10 ppb make this a clean local oscillator for mixers, converters and receiver front ends. Feed the external 10 MHz input from the house standard when the measurement has to stay coherent with everything else on the bench. Fine level control puts drive exactly where the mixer wants it.</p></div>
+<div class="appcard"><h4>Up-converting and Down-converting</h4><p>As the LO behind a mixer, this generator sets the conversion. A 1 Hz step size lets you land an intermediate frequency precisely rather than trimming afterwards, and the OCXO holds it there through the measurement. Harmonics are specified at -25 dBc typical, so plan a filter when a conversion demands a purer tone.</p></div>
+</div>
+<div class="appgroup">Automation and production</div>
+<div class="appgrid">
+<div class="appcard"><h4>Automated Testing Environments</h4><p>SCPI over LAN or USB puts every function under program control, and the external trigger input lets the source step in time with the rest of the rack instead of being polled. Sweep lists live in internal storage, so a station recalls a saved CSV rather than rebuilding the sweep at run time. Multi-session control lets more than one host share the instrument without a switchbox.</p></div>
+<div class="appcard"><h4>Production Verification and Test Setups</h4><p>Automatic network discovery means a replacement unit joins the line without anyone editing an address into a test script. Saved sweep lists make the stimulus identical on Monday and on Friday, which is what makes a production result comparable. Power accuracy of 2.0 dB typical sets a known bound when you write the limits.</p></div>
+</div>
+<div class="appgroup">Antenna, EMC and compliance</div>
+<div class="appgrid">
+<div class="appcard"><h4>Antenna Design</h4><p>Run a stored sweep list while the antenna rotates, then recall the identical sweep for the next build so two patterns can honestly be compared. Coverage to 22 GHz reaches modern patch, horn and array work in one instrument. Output to +15 dBm supplies useful drive for chamber and near-field measurements.</p></div>
+<div class="appcard"><h4>EMC Testing</h4><p>For pre-compliance immunity work, the generator steps through a saved frequency list while a monitor watches the product under test. The external trigger keeps each step aligned with dwell and measurement timing, so the log lines up with the stimulus. Knowing the harmonic content is -25 dBc typical tells you when to add a filter and keep a failure attributable to the product rather than the source.</p></div>
+</div>
+<div class="appgroup">Communications, radar and satellite</div>
+<div class="appgrid">
+<div class="appcard"><h4>802.11n Development / Testing</h4><p>This is a CW and swept source, so in a wireless lab its job is the interferer and the local oscillator rather than the modulated waveform. Place a clean tone in the 2.4 GHz or 5 GHz bands to measure receiver desensitization, adjacent-channel rejection and blocker performance. Levels down to -45 dBm let sensitivity work happen at realistic amplitudes.</p></div>
+<div class="appcard"><h4>5G Testing</h4><p>The same role applies to sub-6 GHz and mid-band 5G development: a stable CW stimulus, a clean LO for a converter stage, or a controlled blocker for receiver characterization. Frequency coverage well past the FR1 bands leaves headroom for harmonic and spurious investigations that stop at the band edge on a narrower source.</p></div>
+<div class="appcard"><h4>Ku-band Satellite Link Testing</h4><p>Coverage reaches both the roughly 12 GHz downlink and 14 GHz uplink ranges from a single box, which is the awkward span for many bench sources. Note that the output range changes above 13.5 GHz to -26 dBm through +15 dBm, so check the uplink side against your link budget. Lock to a station reference where the measurement has to stay coherent.</p></div>
+<div class="appcard"><h4>X-Band Radar Applications</h4><p>The 8 GHz to 12 GHz band sits comfortably inside the calibrated range, with the phase noise performance a radar receiver chain expects from its local oscillator. Stored sweeps repeat the same frequency profile across builds and across shifts. The external trigger ties the source to the radar's own timing rather than to a stopwatch.</p></div>
+<div class="appcard"><h4>Line of Sight Link Testing</h4><p>Point-to-point links need a source that holds a frequency and a level for as long as the test runs, then returns to exactly the same settings tomorrow. The OCXO reference and saved instrument states cover both. Coverage to 22 GHz reaches the licensed microwave bands these links occupy.</p></div>
+<div class="appcard"><h4>Wireless Infrastructure Design</h4><p>During base station and repeater development the generator serves as the reference tone for gain and flatness, the LO for a conversion stage, or the unwanted signal for isolation and rejection tests. Remote control over LAN keeps it in the rack while the engineer works from a desk. One box covers the cellular bands and the microwave backhaul above them.</p></div>
+<div class="appcard"><h4>Transponder Verification</h4><p>Interrogate a transponder with a precisely placed carrier, and step through a saved list to confirm the response across its operating range. The 1 Hz step size resolves narrow channel plans, and level control from -45 dBm establishes the threshold at which the unit still answers.</p></div>
+<div class="appcard"><h4>Aerospace / Defense Research</h4><p>Programs in this space usually need reach, repeatability and a documented reference. Coverage to 22 GHz, an OCXO time base with an external reference input, and SCPI control provide all three from a benchtop chassis that runs on standard mains. Saved sweep lists keep a test reproducible long after the engineer who wrote it has moved on.</p></div>
+</div>
+<p class="note"><b>Not a modulated-waveform source.</b> The RFS-4220T generates CW and swept signals. Where an application calls for vector modulation or arbitrary waveforms, pair it with a vector signal generator and use the RFS-4220T as the local oscillator, the interferer, or the reference tone.</p>
+</section>
 <section id="s9"><h2><span class="num">9</span>Ordering information</h2>
 <table class="spec">
 <tr><th>Model</th><th>Product</th><th>Description</th></tr>
@@ -801,6 +831,17 @@ html{overflow-x:clip;}
   .navtoggle{width:44px;height:44px;}
   .sitenav-cta,.bnc-signin{min-height:44px;}
 }
+
+/* Applications cards (section 8) */
+.appgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:12px;margin:12px 0 6px}
+.appcard{border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:0 var(--r) var(--r) 0;
+  background:var(--bg-2);padding:12px 15px}
+.appcard h4{font-family:var(--font-h);color:var(--blue-dark);font-size:.94rem;margin:0 0 5px;line-height:1.25}
+.appcard p{margin:0;font-size:.845rem;line-height:1.55;color:var(--ink)}
+.appgroup{font-family:var(--font-h);color:var(--blue);font-size:.78rem;letter-spacing:.09em;
+  text-transform:uppercase;font-weight:700;margin:22px 0 2px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.appgroup:first-of-type{margin-top:10px}
+@media(max-width:640px){.appgrid{grid-template-columns:1fr}}
 </style>
 </body>
 </html>
