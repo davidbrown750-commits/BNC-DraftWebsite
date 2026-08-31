@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICX-FieldHawk Real-Time Spectrum Analyzers | Demo, Quote or Engineer Chat</title>
+<link rel="icon" href="https://www.berkeleynucleonics.com/favicon.ico">
+<meta name="description" content="Real-time spectrum analysis from 9 kHz to 40 GHz. Handheld tablet, IP68 field-ready tablet, or pocket USB receiver. Pick a model and request a demo, a quote, or a chat with an engineer.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="ICX-FieldHawk Real-Time Spectrum Analyzers | Berkeley Nucleonics">
+<meta property="og:description" content="9 kHz to 40 GHz, 100 MHz real-time bandwidth. One platform, one software, the full band in view.">
+<meta property="og:image" content="https://www.berkeleynucleonics.com/figures/product-handheld-cut.png">
+<meta property="og:type" content="website">
+
+<!--
+  ICX-FieldHawk Google Ads landing page. Content simplified from rtsa-home.html.
+  Built on the bnc-design tokens and the /lp/<campaign>/ URL convention already
+  used by /lp/rfs-4220t/. noindex,nofollow: paid traffic only, not organic search.
+
+  FORM: posts to the live /api/form?form=quote endpoint, same pattern as
+  /lp/rfs-4220t/. Each checkbox posts its own uniquely named non-reserved field
+  (ff_*, freq_*, want_*, sdr_use), which api/form.js funnels into `extra` and on
+  into the Nutshell timeline note, the Supabase log, and the internal notify
+  email with no backend change. JS additionally composes the reserved
+  product_or_model / request_type / application fields so the CRM record reads
+  cleanly; the uniquely named checkboxes are the no-JS fallback.
+  _next redirects back here with ?submitted=true, which swaps in the thank-you.
+-->
+
+<!-- Cookiebot consent (same data-cbid as the live site) -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
+
+<!-- Google Tag Manager (same container as the live site, so traffic lands in the existing GA4 property) -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
+<!-- End Google Tag Manager -->
+
+<style>
+:root{
+  --bnc-blue:#0655a3;
+  --bnc-blue-dark:#113163;
+  --bnc-blue-600:#054a8c;
+  --bnc-black:#000000;
+  --bnc-white:#ffffff;
+  --g50:#f9fafb; --g100:#f3f4f6; --g200:#e5e7eb; --g300:#d1d5db;
+  --g500:#6b7280; --g700:#374151;
+  --font-header:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  --font-body:Arial,'Segoe UI',Helvetica,sans-serif;
+  --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+  --s6:2rem; --s8:3rem; --s10:4rem;
+  --r:4px;
+  --sh-sm:0 1px 2px 0 rgba(0,0,0,.05);
+  --sh-lg:0 18px 40px -12px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);color:var(--bnc-black);background:var(--g100);margin:0;line-height:1.625;}
+
+/* ---------- header ---------- */
+.bnc-header{background:var(--bnc-white);border-bottom:3px solid var(--bnc-blue);padding:var(--s3) var(--s6);}
+.bnc-header .inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:var(--s4);}
+.bnc-header .logo-link{display:inline-flex;line-height:0;}
+.bnc-header .bnc-logo{height:40px;width:auto;flex:0 0 auto;}
+.bnc-header .callus{margin-left:auto;font-family:var(--font-header);font-weight:600;font-size:.95rem;color:var(--bnc-blue-dark);text-decoration:none;}
+.bnc-header .callus:hover{color:var(--bnc-blue);}
+
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(135deg,var(--bnc-blue-dark) 0%,var(--bnc-blue) 100%);color:var(--bnc-white);padding:var(--s8) var(--s6) var(--s10);}
+.hero .inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:var(--s8);align-items:start;}
+.hero .eyebrow{font-family:var(--font-header);text-transform:uppercase;letter-spacing:.09em;font-size:.76rem;font-weight:700;color:#bcd6f2;margin:0 0 var(--s2);}
+.hero h1{font-family:var(--font-header);font-weight:700;font-size:2.65rem;line-height:1.1;margin:0 0 var(--s3);letter-spacing:-.02em;color:var(--bnc-white);}
+.hero p.subhead{margin:0 0 var(--s5);max-width:34em;font-size:1.12rem;opacity:.95;}
+.hero .shot{margin:0 0 var(--s5);}
+.hero .shot img{width:100%;max-width:420px;height:auto;display:block;filter:drop-shadow(0 16px 26px rgba(0,0,0,.4));}
+.statbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s3);margin:0;padding:0;list-style:none;}
+.statbar li{border-left:2px solid rgba(255,255,255,.35);padding-left:var(--s3);}
+.statbar .v{font-family:var(--font-header);font-weight:700;font-size:1.05rem;display:block;line-height:1.25;white-space:nowrap;}
+.statbar .k{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:#bcd6f2;}
+
+/* ---------- form ---------- */
+.formcard{background:var(--bnc-white);color:var(--bnc-black);border-radius:6px;box-shadow:var(--sh-lg);padding:var(--s5) var(--s5) var(--s6);position:sticky;top:var(--s4);}
+.formcard h2{font-family:var(--font-header);color:var(--bnc-blue-dark);font-size:1.32rem;font-weight:700;margin:0 0 var(--s1);letter-spacing:-.01em;}
+.formcard p.formlead{margin:0 0 var(--s5);color:var(--g700);font-size:.88rem;}
+.formcard fieldset{border:0;margin:0 0 var(--s5);padding:0;}
+.formcard legend{font-family:var(--font-header);font-weight:700;font-size:.82rem;color:var(--bnc-blue-dark);text-transform:uppercase;letter-spacing:.05em;padding:0;margin-bottom:var(--s2);}
+.num{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:var(--bnc-blue);color:var(--bnc-white);font-size:.7rem;margin-right:7px;vertical-align:1px;}
+.chips{display:flex;flex-wrap:wrap;gap:var(--s2);}
+.chip{position:relative;display:inline-flex;}
+.chip input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;}
+.chip span{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--g300);border-radius:var(--r);background:var(--bnc-white);color:var(--g700);font-family:var(--font-header);font-weight:600;font-size:.92rem;padding:.55em 1em;transition:all .15s ease;cursor:pointer;}
+.chip span::before{content:"";width:15px;height:15px;border:1.5px solid var(--g300);border-radius:3px;background:var(--bnc-white);flex:0 0 auto;transition:all .15s ease;}
+.chip input:checked + span{border-color:var(--bnc-blue);background:#eaf3fc;color:var(--bnc-blue-dark);}
+.chip input:checked + span::before{background-color:var(--bnc-blue);border-color:var(--bnc-blue);background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 8.4l3.2 3.2L13 4.8'/%3E%3C/svg%3E");background-size:12px 12px;background-position:center;background-repeat:no-repeat;}
+.chip input:focus-visible + span{outline:2px solid var(--bnc-blue);outline-offset:2px;}
+.chip span small{font-family:var(--font-body);font-weight:400;color:var(--g500);font-size:.78rem;}
+.chip input:checked + span small{color:var(--bnc-blue-600);}
+
+.formcard .emailrow{margin-bottom:var(--s3);}
+.formcard label.fl{display:block;font-family:var(--font-header);font-weight:700;font-size:.82rem;color:var(--bnc-blue-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--s2);}
+.formcard input[type=email]{width:100%;font-family:var(--font-body);font-size:1rem;padding:.7em .8em;border:1px solid var(--g300);border-radius:var(--r);background:var(--bnc-white);color:var(--bnc-black);}
+.formcard input[type=email]:focus{outline:2px solid var(--bnc-blue);outline-offset:1px;border-color:var(--bnc-blue);}
+.optbox{margin:0 0 var(--s5);}
+.optbox .chip span{font-weight:400;font-family:var(--font-body);font-size:.86rem;border-style:dashed;}
+.optbox .chip input:checked + span{border-style:solid;}
+.btn-submit{width:100%;background:#f5a623;color:var(--bnc-blue-dark);font-family:var(--font-header);font-weight:700;font-size:1.06rem;padding:.9em 1.4em;border:none;border-radius:var(--r);cursor:pointer;transition:background .16s ease;}
+.btn-submit:hover{background:#ffb63d;}
+.formcard .fineprint{margin:var(--s3) 0 0;font-size:.74rem;color:var(--g500);text-align:center;line-height:1.5;}
+.hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+.thanks{display:none;}
+.thanks h2{margin-bottom:var(--s3);}
+.thanks p{color:var(--g700);font-size:.95rem;margin:0 0 var(--s3);}
+
+/* ---------- main ---------- */
+main{max-width:1140px;margin:0 auto;padding:var(--s8) var(--s6);}
+.sec-title{font-family:var(--font-header);color:var(--bnc-blue-dark);font-size:1.75rem;font-weight:700;margin:0 0 var(--s2);letter-spacing:-.01em;text-align:center;}
+.sec-sub{text-align:center;color:var(--g700);margin:0 auto var(--s6);max-width:56ch;}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s5);}
+.pcard{background:var(--bnc-white);border:1px solid var(--g200);border-radius:6px;padding:var(--s5);box-shadow:var(--sh-sm);display:flex;flex-direction:column;}
+.pcard .pimg{height:150px;display:flex;align-items:center;justify-content:center;margin-bottom:var(--s4);}
+.pcard .pimg img{max-height:150px;max-width:100%;width:auto;height:auto;object-fit:contain;}
+.pcard .tag{font-family:var(--font-header);font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;color:var(--bnc-blue);margin:0 0 var(--s1);}
+.pcard h3{font-family:var(--font-header);color:var(--bnc-blue-dark);font-size:1.18rem;font-weight:700;margin:0 0 var(--s2);}
+.pcard p{margin:0 0 var(--s4);color:var(--g700);font-size:.92rem;}
+.pcard .models{margin-top:auto;border-top:1px solid var(--g200);padding-top:var(--s3);font-size:.8rem;color:var(--g500);}
+.pcard .models b{font-family:var(--font-header);color:var(--bnc-blue-dark);display:block;text-transform:uppercase;letter-spacing:.06em;font-size:.68rem;margin-bottom:2px;}
+
+.specs{background:var(--bnc-white);border:1px solid var(--g200);border-radius:6px;box-shadow:var(--sh-sm);margin-top:var(--s6);padding:var(--s6);}
+.specs h2{font-family:var(--font-header);color:var(--bnc-blue-dark);font-size:1.35rem;font-weight:700;margin:0 0 var(--s5);letter-spacing:-.01em;}
+.specgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s5);margin:0;padding:0;list-style:none;}
+.specgrid li{border-left:3px solid var(--bnc-blue);padding-left:var(--s3);}
+.specgrid .v{font-family:var(--font-header);font-weight:700;font-size:1.3rem;color:var(--bnc-blue-dark);display:block;line-height:1.2;}
+.specgrid .k{font-family:var(--font-header);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--bnc-blue);display:block;margin-bottom:3px;}
+.specgrid .d{font-size:.8rem;color:var(--g500);display:block;margin-top:3px;line-height:1.45;}
+
+.uses{margin-top:var(--s6);background:var(--bnc-white);border:1px solid var(--g200);border-radius:6px;box-shadow:var(--sh-sm);padding:var(--s6);}
+.uses h2{font-family:var(--font-header);color:var(--bnc-blue-dark);font-size:1.35rem;font-weight:700;margin:0 0 var(--s4);letter-spacing:-.01em;}
+.uses ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s4) var(--s5);}
+.uses li{padding-left:var(--s5);position:relative;font-size:.93rem;color:var(--g700);}
+.uses li::before{content:"";position:absolute;left:0;top:.5em;width:9px;height:9px;border-radius:50%;background:var(--bnc-blue);}
+.uses li b{font-family:var(--font-header);color:var(--bnc-blue-dark);display:block;}
+
+.final{background:var(--bnc-blue-dark);color:var(--bnc-white);text-align:center;padding:var(--s8) var(--s6);}
+.final h2{font-family:var(--font-header);font-size:1.75rem;font-weight:700;margin:0 0 var(--s3);letter-spacing:-.01em;color:var(--bnc-white);}
+.final p{margin:0 0 var(--s5);color:#c4d6ee;}
+.final .btn-up{display:inline-block;background:#f5a623;color:var(--bnc-blue-dark);font-family:var(--font-header);font-weight:700;font-size:1.02rem;padding:.85em 1.8em;border-radius:var(--r);text-decoration:none;}
+.final .btn-up:hover{background:#ffb63d;}
+.final .phone{display:block;margin-top:var(--s4);font-size:.9rem;color:#c4d6ee;}
+.final .phone a{color:var(--bnc-white);text-decoration:none;font-weight:700;}
+
+/* ---------- site footer (matches the live site shell) ---------- */
+.gfoot{position:relative;overflow:hidden;background:#0e2038;color:#9bb0cc;padding:22px 0 11px;font-size:.9rem;font-family:Arial,'Segoe UI',Helvetica,sans-serif;}
+.gfoot::before{content:"";position:absolute;left:50%;bottom:-150px;transform:translateX(-50%);width:600px;height:330px;background:radial-gradient(circle at 50% 50%,rgba(55,182,240,.20),rgba(63,208,196,.06) 46%,transparent 70%);pointer-events:none;}
+.gfoot .gwrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 28px;}
+.gfoot .gcols{display:grid;grid-template-columns:1.15fr 1.25fr 1fr;gap:30px;align-items:start;margin-bottom:10px;}
+.gfoot .gbrand .gbnc{height:56px;width:auto;display:block;margin-bottom:9px;}
+.gfoot .gbrand a.gbnc-link{display:inline-block;line-height:0;}
+.gfoot .gtagline{margin:0 0 12px;max-width:32ch;color:#aebfd4;font-size:.82rem;line-height:1.5;}
+.gfoot .gacad{display:flex;align-items:center;gap:11px;text-decoration:none;border-top:1px solid rgba(255,255,255,.1);padding-top:11px;max-width:34ch;}
+.gfoot .gacad img{height:58px;width:auto;flex:0 0 auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));}
+.gfoot .gacad a.gacad-logo{flex:0 0 auto;display:inline-flex;line-height:0;}
+.gfoot .gacad span{font-size:.72rem;line-height:1.4;color:#9bb0cc;}
+.gfoot .gacad b{color:#fff;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-size:.82rem;display:block;margin-bottom:1px;}
+.gfoot .gacad a{text-decoration:none;}
+.gfoot .gacad a:hover b{color:#5fd0ff;}
+.gfoot .gsocial{display:flex;gap:10px;margin-top:0;}
+.gfoot .gsocial a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(120,170,225,.3);border-radius:7px;color:#9bb0cc;transition:all .16s;}
+.gfoot .gsocial a[aria-label="YouTube"]{color:#ff0000;border-color:rgba(255,0,0,.45);}
+.gfoot .gsocial a[aria-label="LinkedIn"]{color:#0a66c2;border-color:rgba(10,102,194,.45);}
+.gfoot .gsocial a:hover{filter:brightness(1.18);background:rgba(255,255,255,.06);}
+.gfoot .gsocial-label{font-size:.68rem;color:#9bb0cc;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 4px;font-weight:600;}
+.gfoot .gsocial svg{width:16px;height:16px;fill:currentColor;}
+.gfoot .gmap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;}
+.gfoot .gmap-img{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 5px 16px rgba(55,182,240,.28));}
+.gfoot .gmap .gtag{margin:2px 0 0;font-size:1.2rem;line-height:1.35;color:#c4d6ee;}
+.gfoot .gmap .gtag a{color:#5fd0ff;font-weight:700;text-decoration:none;}
+.gfoot .gmap .gtag a:hover{color:#8fe2ff;text-decoration:underline;}
+.gfoot .gcompany h5{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;color:#fff;font-size:.78rem;margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;}
+.gfoot .gcompany ul{list-style:none;padding:0;margin:0;columns:2;column-gap:20px;}
+.gfoot .gcompany li{margin-bottom:5px;font-size:.79rem;break-inside:avoid;}
+.gfoot .gcompany a{color:#9bb0cc;text-decoration:none;}
+.gfoot .gcompany a:hover{color:#fff;text-decoration:underline;}
+.gfoot .gbooks{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:4px;font-size:.66rem;color:#7f97b5;line-height:1.6;white-space:nowrap;overflow-x:auto;}
+.gfoot .gbooks .gbooks-l{color:#9bb0cc;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.68rem;display:block;margin:0 0 4px;}
+.gfoot .gbooks a{color:#7f97b5;text-decoration:none;}
+.gfoot .gbooks a:hover{color:#5fd0ff;text-decoration:underline;}
+.gfoot .gbottom{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.12);padding-top:9px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font-size:.74rem;color:#8aa0bd;}
+.gfoot .gbottom span{white-space:nowrap;}
+.gfoot .gbottom a{color:inherit;text-decoration:none;}
+.gfoot .gbottom a:hover{color:#5fd0ff;}
+
+/* ---------- responsive ---------- */
+@media (max-width:1040px){
+  .hero .inner{grid-template-columns:1fr;gap:var(--s6);}
+  .formcard{position:static;max-width:560px;}
+  .hero .shot img{max-width:340px;}
+  .cards{grid-template-columns:1fr;}
+  .specgrid{grid-template-columns:repeat(2,1fr);}
+  .uses ul{grid-template-columns:repeat(2,1fr);}
+  .gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}
+  .gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}
+  .gfoot .gacad{text-align:left;}
+  .gfoot .gsocial{justify-content:center;}
+  .gfoot .gcompany ul{text-align:left;}
+  .gfoot .gbottom{justify-content:center;text-align:center;}
+  .gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}
+}
+@media (max-width:640px){
+  .hero{padding:var(--s6) var(--s4) var(--s8);}
+  .hero h1{font-size:2rem;}
+  .statbar{grid-template-columns:repeat(2,1fr);gap:var(--s4) var(--s3);}
+  main{padding:var(--s6) var(--s4);}
+  .specgrid,.uses ul{grid-template-columns:1fr;}
+  .bnc-header{padding:var(--s3) var(--s4);}
+  .bnc-header .callus{font-size:.85rem;}
+  .specs,.uses,.formcard{padding:var(--s5);}
+}
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header class="bnc-header">
+  <div class="inner">
+    <a class="logo-link" href="https://www.berkeleynucleonics.com/home.html" aria-label="Berkeley Nucleonics home">
+      <svg class="bnc-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics">
+        <g fill="#0655a3"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g>
+        <g fill="#0655a3" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g>
+      </svg>
+    </a>
+    <a class="callus" href="tel:+18002347858">800-234-7858</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="inner">
+    <div>
+      <p class="eyebrow">ICX-FieldHawk Real-Time Spectrum Analyzers</p>
+      <h1>See all the signals, all the time.</h1>
+      <p class="subhead">Real-time spectrum analysis from 9 kHz to 40 GHz. Handheld, IP68 field-ready, or pocket USB. One platform, one software, the full band in view.</p>
+      <div class="shot">
+        <img src="https://www.berkeleynucleonics.com/figures/product-handheld-cut.png" alt="Berkeley Nucleonics ICX-400 ICX-FieldHawk handheld real-time spectrum analyzer">
+      </div>
+      <ul class="statbar">
+        <li><span class="v">9 kHz&ndash;40 GHz</span><span class="k">Frequency</span></li>
+        <li><span class="v">100 MHz</span><span class="k">Real-time bandwidth</span></li>
+        <li><span class="v">&minus;159.9 dBm/Hz</span><span class="k">1 GHz DANL</span></li>
+        <li><span class="v">3.3 lb</span><span class="k">Handheld</span></li>
+      </ul>
+    </div>
+
+    <div class="formcard" id="request">
+      <div class="thanks" id="form-thanks">
+        <h2>Request received.</h2>
+        <p>Thanks. A Berkeley Nucleonics RF engineer will follow up shortly with the ICX-FieldHawk configuration you selected.</p>
+        <p>Need something sooner? Call <a href="tel:+18002347858">800-234-7858</a>.</p>
+      </div>
+
+      <form action="https://www.berkeleynucleonics.com/api/form?form=quote" method="post" id="icx-lp-form">
+        <h2>Pick your model, tell us what you need.</h2>
+        <p class="formlead">Three checkboxes and your email. That is the whole form.</p>
+
+        <input type="hidden" name="_subject" value="ICX-FieldHawk Demo/Quote Request (PPC landing page)">
+        <input type="hidden" name="_next" id="form-next" value="">
+        <input type="hidden" name="came_from_page" value="ICX-FieldHawk Google Ads Landing Page">
+        <input type="hidden" name="campaign_source" id="campaign_source" value="">
+        <input type="hidden" name="product_or_model" id="product_or_model" value="ICX-FieldHawk RTSA">
+        <input type="hidden" name="request_type" id="request_type" value="">
+        <input type="hidden" name="application" id="application" value="">
+        <label class="hp" aria-hidden="true">Leave this field empty
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+        </label>
+
+        <fieldset>
+          <legend><span class="num">1</span>Form factor</legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="ff_usb" value="Yes" data-group="ff" data-label="USB"><span>USB</span></label>
+            <label class="chip"><input type="checkbox" name="ff_tablet" value="Yes" data-group="ff" data-label="Tablet"><span>Tablet</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num">2</span>Top frequency</legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="freq_9ghz" value="Yes" data-group="freq" data-label="9 GHz"><span>9 GHz</span></label>
+            <label class="chip"><input type="checkbox" name="freq_20ghz" value="Yes" data-group="freq" data-label="20 GHz"><span>20 GHz</span></label>
+            <label class="chip"><input type="checkbox" name="freq_40ghz" value="Yes" data-group="freq" data-label="40 GHz"><span>40 GHz</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="num">3</span>What would help most</legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="want_demo" value="Yes" data-group="want" data-label="Demo"><span>Demo</span></label>
+            <label class="chip"><input type="checkbox" name="want_quote" value="Yes" data-group="want" data-label="Quote"><span>Quote</span></label>
+            <label class="chip"><input type="checkbox" name="want_engineer_chat" value="Yes" data-group="want" data-label="Engineer chat"><span>Engineer chat</span></label>
+          </div>
+        </fieldset>
+
+        <div class="emailrow">
+          <label class="fl" for="email"><span class="num">4</span>Your email</label>
+          <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required>
+        </div>
+
+        <div class="optbox">
+          <label class="chip"><input type="checkbox" name="sdr_use" value="Yes" data-group="sdr" data-label="SDR use"><span>For SDR use <small>(optional)</small></span></label>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Now</button>
+        <p class="fineprint">A real engineer replies, usually within one business day. No newsletter signup, no reseller handoff.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<main>
+  <h2 class="sec-title">Three form factors. One ICX platform.</h2>
+  <p class="sec-sub">Every ICX-FieldHawk runs the same SpectraCore firmware and the same measurement suite. Pick the form factor your mission needs.</p>
+
+  <div class="cards">
+    <article class="pcard">
+      <div class="pimg"><img src="https://www.berkeleynucleonics.com/figures/product-handheld-cut.png" alt="BNC ICX-400 ICX-FieldHawk handheld spectrum analyzer"></div>
+      <p class="tag">Tablet</p>
+      <h3>ICX-FieldHawk</h3>
+      <p>All-in-one 10.1-inch multi-touch handheld. 3.3 lb, up to 40 GHz, 100 MHz real-time bandwidth. Built to walk the site and read the air in real time.</p>
+      <p class="models"><b>Models</b>ICX-045 &middot; ICX-060 &middot; ICX-090 &middot; ICX-200 &middot; ICX-400</p>
+    </article>
+
+    <article class="pcard">
+      <div class="pimg"><img src="https://www.berkeleynucleonics.com/figures/product-rugged-cut.png" alt="BNC ICX-400R ICX-FieldHawk-R field-ready spectrum analyzer"></div>
+      <p class="tag">Tablet, IP68</p>
+      <h3>ICX-FieldHawk-R</h3>
+      <p>Sealed IP68 tablet with an onboard Nvidia Jetson Orin NX processor. AI-accelerated spectrum work in the harshest field conditions, up to 40 GHz.</p>
+      <p class="models"><b>Models</b>ICX-090R &middot; ICX-200R &middot; ICX-400R</p>
+    </article>
+
+    <article class="pcard">
+      <div class="pimg"><img src="https://www.berkeleynucleonics.com/figures/product-usb-cut.png" alt="BNC ICX-400U ICX-Series USB spectrum analyzer"></div>
+      <p class="tag">USB</p>
+      <h3>ICX-Series USB</h3>
+      <p>Pocket-size USB real-time receiver. Drone-deployable, open API, sweep speeds to 1.0 THz/s. Pairs with Windows, Linux, and embedded hosts.</p>
+      <p class="models"><b>Models</b>ICX-045U &middot; ICX-200U &middot; ICX-400U</p>
+    </article>
+  </div>
+
+  <section class="specs">
+    <h2>Lab-grade performance, fielded.</h2>
+    <ul class="specgrid">
+      <li><span class="k">Frequency range</span><span class="v">9 kHz&ndash;40 GHz</span><span class="d">Two published tiers: 9 kHz to 9.5 GHz and 9 kHz to 40 GHz.</span></li>
+      <li><span class="k">IF &amp; image rejection</span><span class="v">&gt; 90 dB</span><span class="d">Typical to 33 GHz, for clean measurements in dense RF environments.</span></li>
+      <li><span class="k">1 GHz DANL</span><span class="v">&minus;159.9 dBm/Hz</span><span class="d">At 1 GHz in a 1 kHz resolution bandwidth (&minus;167.5 dBm/Hz on the 9.5 GHz tier).</span></li>
+      <li><span class="k">1 GHz phase noise</span><span class="v">&minus;107.5 dBc/Hz</span><span class="d">At 10 kHz offset.</span></li>
+      <li><span class="k">Analysis bandwidth</span><span class="v">100 MHz</span><span class="d">Gap-free real-time capture of transient and agile signals.</span></li>
+      <li><span class="k">Battery time</span><span class="v">2.5 h</span><span class="d">Typical, enough for a full field session.</span></li>
+      <li><span class="k">Built-in measurements</span><span class="v">Standard</span><span class="d">Channel Power, ACPR, OBW, Phase Noise, and more, included.</span></li>
+      <li><span class="k">Field-ready</span><span class="v">IP68</span><span class="d">Sealed against rain, snow, dust, and submersion, on the -R models.</span></li>
+    </ul>
+  </section>
+
+  <section class="uses">
+    <h2>Where the ICX-FieldHawk goes to work.</h2>
+    <ul>
+      <li><b>RF geolocation and mapping</b>Tie spectrum to position with heat maps and triangulation.</li>
+      <li><b>5G and cellular coverage</b>Coverage optimization, network validation, deployment planning.</li>
+      <li><b>Spectrum monitoring</b>Interference investigation and enforcement, in the office or in the field.</li>
+      <li><b>EW and SIGINT</b>Real-time situational awareness, signal characterization, C-UAS development.</li>
+      <li><b>Drone spectrum monitoring</b>A sub-200 g core module and GNSS turn any UAV into a flying spectrum mapper.</li>
+      <li><b>SDR and research</b>Open API and SoapySDR integration on a calibrated real-time front end.</li>
+    </ul>
+  </section>
+</main>
+
+<section class="final">
+  <h2>See the whole spectrum, every time, for all time.</h2>
+  <p>Talk to a Berkeley Nucleonics RF engineer about the ICX-FieldHawk configuration for your mission.</p>
+  <a href="#request" class="btn-up">Request a Demo, Quote or Engineer Chat</a>
+  <span class="phone">Or call <a href="tel:+18002347858">800-234-7858</a></span>
+</section>
+
+<footer class="gfoot"><div class="gwrap">
+  <div class="gcols">
+    <div class="gbrand">
+      <a class="gbnc-link" href="https://www.berkeleynucleonics.com/home.html" aria-label="Berkeley Nucleonics home"><svg class="gbnc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
+      <p class="gtagline">Test, Measurement and Nuclear Instrumentation since 1963...</p>
+      <div class="gacad"><a class="gacad-logo" href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener"><img src="https://www.berkeleynucleonics.com/figures/home/bnc-academy-logo.png" alt="Berkeley Nucleonics Academy"></a><span><b><a href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener">Berkeley Nucleonics Academy</a></b>Accredited courses introducing terminology and technique for your products and applications.</span></div>
+    </div>
+    <div class="gmap">
+      <img class="gmap-img" src="https://www.berkeleynucleonics.com/figures/world-map.svg" alt="Berkeley Nucleonics representatives in over 60 countries">
+      <p class="gtag"><a href="https://www.berkeleynucleonics.com/contact.html" target="_blank" rel="noopener">Reach your local rep</a> in over 60 countries.</p>
+    </div>
+    <div class="gcompany"><h5>Company</h5><ul>
+      <li><a href="https://www.berkeleynucleonics.com/home.html">Homepage</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/rtsa-home.html">ICX-FieldHawk Home</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/docs/software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/faq.html">FAQs</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/rma-form.html" target="_blank" rel="noopener">RMA Request</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/get-quote.html" target="_blank" rel="noopener">Get a Quote</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/contact.html" target="_blank" rel="noopener">Contact Us</a></li>
+      <li><a href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener">BNC Academy</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/privacy.html">Privacy</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/accessibility.html">Accessibility</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/compliance-and-legal-notices.html">Compliance &amp; Legal</a></li>
+      <li><a href="https://www.berkeleynucleonics.com/docs/press-room.html">Press Archive</a></li>
+    </ul>
+      <div class="gsocial-label">Social Links</div><div class="gsocial">
+        <a href="https://www.youtube.com/@BerkeleyNucleonicsMedia" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
+        <a href="https://www.linkedin.com/companies/berkeley-nucleonics-corporation" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+      </div></div>
+  </div>
+  <div class="gbooks"><span class="gbooks-l">Free reference books</span><a href="https://www.berkeleynucleonics.com/books/rf-and-microwave/index.html" target="_blank" rel="noopener">RF &amp; Microwave</a> &middot; <a href="https://www.berkeleynucleonics.com/books/quantum-computing/index.html" target="_blank" rel="noopener">Quantum Computing</a> &middot; <a href="https://www.berkeleynucleonics.com/books/arbitrary-waveform/index.html" target="_blank" rel="noopener">Arbitrary Waveform</a> &middot; <a href="https://www.berkeleynucleonics.com/books/high-power-pulse/index.html" target="_blank" rel="noopener">High Power Pulse</a> &middot; <a href="https://www.berkeleynucleonics.com/books/precision-timing/index.html" target="_blank" rel="noopener">Precision Timing</a> &middot; <a href="https://www.berkeleynucleonics.com/books/radar/index.html" target="_blank" rel="noopener">Radar</a> &middot; <a href="https://www.berkeleynucleonics.com/books/realtime-spectrum-analyzers/index.html" target="_blank" rel="noopener">Real-Time Spectrum Analyzers</a> &middot; <a href="https://www.berkeleynucleonics.com/books/rf-power-measurements/index.html" target="_blank" rel="noopener">RF Power Measurements</a> &middot; <a href="https://www.berkeleynucleonics.com/books/riids-for-hazmat/index.html" target="_blank" rel="noopener">RIIDs for HazMat</a> &middot; <a href="https://www.berkeleynucleonics.com/books/scintillators/index.html" target="_blank" rel="noopener">Scintillators</a></div>
+  <div class="gbottom"><span>&copy; <span id="yr">2026</span> Berkeley Nucleonics Corporation</span><span>2955 Kerner Blvd, San Rafael, CA 94901 USA</span><span><a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a></span><span><a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener">berkeleynucleonics.com</a></span><span><a href="tel:+18002347858">800-234-7858</a></span></div>
+</div></footer>
+
+<script>
+(function(){
+  var yr = document.getElementById('yr');
+  if (yr) yr.textContent = new Date().getFullYear();
+
+  var params = new URLSearchParams(window.location.search);
+  var form = document.getElementById('icx-lp-form');
+
+  // Carry the ad click identifiers into the hidden campaign_source field, so the
+  // submission lands in the Nutshell note and Supabase log with its attribution.
+  var keep = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid'];
+  var qs = new URLSearchParams();
+  keep.forEach(function(k){ if (params.has(k)) qs.set(k, params.get(k)); });
+  var cs = document.getElementById('campaign_source');
+  if (cs) cs.value = qs.toString();
+
+  // _next points at this page wherever it is deployed, so success returns here.
+  var nextField = document.getElementById('form-next');
+  if (nextField) nextField.value = window.location.origin + window.location.pathname + '?submitted=true';
+
+  // Compose the reserved CRM fields from the checkbox selections. The individual
+  // ff_/freq_/want_/sdr_use inputs still post on their own, so a no-JS submission
+  // loses nothing. This only makes the Nutshell record read cleanly.
+  function picked(group){
+    var out = [];
+    Array.prototype.forEach.call(document.querySelectorAll('input[data-group="' + group + '"]'), function(el){
+      if (el.checked) out.push(el.getAttribute('data-label'));
+    });
+    return out;
+  }
+  if (form) {
+    form.addEventListener('submit', function(){
+      var ff = picked('ff'), freq = picked('freq'), want = picked('want'), sdr = picked('sdr');
+      var model = 'ICX-FieldHawk RTSA';
+      var bits = [];
+      if (ff.length) bits.push(ff.join(' / '));
+      if (freq.length) bits.push(freq.join(' / '));
+      if (bits.length) model += ' (' + bits.join(', ') + ')';
+      document.getElementById('product_or_model').value = model;
+      document.getElementById('request_type').value = want.length ? want.join(', ') : 'Not specified';
+
+      var summary = [];
+      summary.push('Form factor: ' + (ff.length ? ff.join(', ') : 'not specified'));
+      summary.push('Top frequency: ' + (freq.length ? freq.join(', ') : 'not specified'));
+      summary.push('Looking for: ' + (want.length ? want.join(', ') : 'not specified'));
+      summary.push('SDR use: ' + (sdr.length ? 'yes' : 'no'));
+      document.getElementById('application').value = summary.join('. ') + '.';
+    });
+  }
+
+  // On success /api/form redirects back here with ?submitted=true.
+  if (params.get('submitted') === 'true') {
+    document.getElementById('form-thanks').style.display = 'block';
+    if (form) form.style.display = 'none';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({event: 'generate_lead', lead_type: 'demo_quote_or_chat', product: 'ICX-FieldHawk'});
+    var card = document.getElementById('request');
+    if (card && card.scrollIntoView) card.scrollIntoView();
+  }
+})();
+</script>
+
+</body>
+</html>
