@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <!-- START BNC consent mode -->
 <script data-cookieconsent="ignore">
 /* Google Consent Mode v2 defaults. Must run before Cookiebot and before the GTM container.
@@ -233,116 +232,80 @@
 <!-- END Bing UET -->
 
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Neutron/Gamma Discrimination with CLYC &amp; CLLBC | BNC</title>
-<meta name="description" content="CLYC and CLLBC elpasolite crystals detect neutrons and gammas in one scintillator via pulse-shape discrimination, with no moderator or separate counter.">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICX-FieldHawk Spectrum Analyzer Docs &amp; Manuals | BNC</title>
 <style>
-:root{
- --blue:#0655a3;--blue-dark:#113163;--blue-600:#054a8c;
- --ink:#1b2330;--muted:#5b6677;--line:#e3e7ee;--bg:#f4f7fb;--bg-2:#eaf0f7;--bg-3:#e1e9f2;
- --font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
- --font-b:Arial,'Segoe UI',Helvetica,sans-serif;--font-mono:'Courier New',monospace;
- --r:5px;--wrap:1180px;
-}
-*{box-sizing:border-box;}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
-body{font-family:var(--font-b);color:var(--ink);background:var(--bg);margin:0;line-height:1.62;font-size:15px;}
-a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
-h1,h2,h3,h4{font-family:var(--font-h);color:var(--blue-dark);line-height:1.2;margin:0;}
-.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;}
-/* ---- site header (dark) ---- */
-.sitenav{position:sticky;top:0;z-index:200;background:#0a1626;border-bottom:1px solid rgba(120,170,225,.18);font-family:var(--font-h);}
-.sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:22px;}
+:root{--blue:#0655a3;--cyan:#37b6f0;--cyan-bright:#5fd0ff;--teal:#3fd0c4;--teal-soft:#7fe6db;--violet:#9b8cff;--violet-soft:#bcb0ff;
+--ink:#0a1626;--ink-2:#0e2038;--ink-card:#122a47;--line:rgba(120,170,225,.18);--soft:#d3e1f4;--soft-2:#93afd0;
+--font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;--font-cond:'Myriad Pro Condensed','Arial Narrow',sans-serif;--font-b:Arial,'Segoe UI',Helvetica,sans-serif;--r-lg:14px;}
+*{box-sizing:border-box;}body{font-family:var(--font-b);background:var(--ink);color:var(--soft);margin:0;line-height:1.65;}
+a{text-decoration:none;color:inherit;}.wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
+.hero{position:relative;background:radial-gradient(80% 90% at 80% 20%,rgba(55,182,240,.18),transparent 55%),radial-gradient(60% 60% at 12% 90%,rgba(155,140,255,.16),transparent 60%),linear-gradient(120deg,#0a1626,#0e2240 60%,#0a1c38);border-bottom:1px solid var(--line);}
+.hero .wrap{padding:54px 28px 46px;}
+.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;font-weight:700;color:var(--cyan-bright);margin-bottom:14px;}
+h1{font-family:var(--font-h);color:#fff;font-size:2.5rem;margin:0 0 12px;letter-spacing:-.01em;}
+.hero p{color:var(--soft);font-size:1.08rem;max-width:66ch;margin:0;}
+.reqpdf{position:absolute;top:22px;right:28px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-family:var(--font-h);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;padding:.6em 1.05em;border-radius:6px;text-decoration:none;}
+.reqpdf:hover{filter:brightness(1.09);}
+.sec{padding:40px 0 4px;}h2{font-family:var(--font-h);color:#fff;font-size:1.4rem;margin:0 0 6px;}
+.sec .sub{color:var(--soft-2);font-size:.9rem;margin:0 0 16px;}
+.list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.02);}
+.row{display:flex;align-items:center;gap:18px;padding:14px 20px;border-top:1px solid var(--line);transition:background .14s ease;}
+.row:first-child{border-top:none;}
+.row:hover{background:rgba(55,182,240,.07);}
+.row .type{flex:0 0 160px;font-family:var(--font-h);font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#5fa8ff;}
+.row.p .type{color:#c3b6ff;}.row.g .type{color:#56e0a8;}
+.row .ctext{flex:1;min-width:0;}
+.row h3{font-family:var(--font-h);color:#fff;font-size:1.02rem;margin:0 0 2px;font-weight:600;}
+.row p{margin:0;color:var(--soft-2);font-size:.84rem;}
+.row .open{flex:0 0 auto;font-family:var(--font-h);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:#5fa8ff;}.row.p .open{color:#c3b6ff;}.row.g .open{color:#56e0a8;}
+.note{margin:38px 0 0;background:rgba(55,182,240,.08);border:1px solid rgba(55,182,240,.25);border-radius:10px;padding:14px 18px;font-size:.82rem;color:var(--soft);}
+@media(max-width:640px){.row{flex-wrap:wrap;gap:5px;}.row .type{flex-basis:100%;}.reqpdf{position:static;display:inline-block;margin-bottom:16px;}h1{font-size:2rem;}}
+.sitenav{position:sticky;top:0;z-index:200;background:rgba(10,22,38,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(120,170,225,.18);font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;}
+.sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;gap:24px;}
 .sitenav-logo{display:flex;align-items:center;}.sitenav-logo svg{height:48px;width:auto;}
-.sitenav-menu{margin-left:auto;display:flex;gap:2px;align-items:stretch;height:62px;}
+.sitenav-menu{margin-left:auto;display:flex;gap:2px;align-items:stretch;height:66px;}
 .nav-item{position:relative;display:flex;align-items:center;}
-.nav-item>a{display:flex;align-items:center;height:62px;padding:0 12px;color:#c4d6ee;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;}
+.nav-item>a{display:flex;align-items:center;height:66px;padding:0 13px;color:#c4d6ee;font-weight:600;font-size:.84rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;}
 .nav-item:hover>a{color:#fff;}
-.nav-drop{position:absolute;top:58px;left:0;min-width:248px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.55);padding:8px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s,transform .15s,visibility .15s;}
+.nav-drop{position:absolute;top:62px;left:0;min-width:250px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s ease,transform .15s ease,visibility .15s;}
 .nav-item:hover .nav-drop,.nav-item:focus-within .nav-drop{opacity:1;visibility:visible;transform:translateY(0);}
-.nav-drop a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;text-transform:none;letter-spacing:0;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;}
-.nav-drop a:hover{background:rgba(55,182,240,.14);color:#fff;text-decoration:none;}
-.sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.84rem;padding:.58em 1.1em;border-radius:6px;text-decoration:none;white-space:nowrap;}
-.sitenav-cta:hover{filter:brightness(1.09);text-decoration:none;}
+.nav-drop a{display:block;padding:7.65px 12px;color:#c4d6ee;font-size:.85rem;text-transform:none;letter-spacing:0;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.nav-drop a:hover{background:rgba(55,182,240,.14);color:#fff;}
+.sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.86rem;padding:.6em 1.15em;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.sitenav-cta:hover{filter:brightness(1.09);}
 @media(max-width:1040px){.sitenav-menu{display:none;}}
-.doc-header{display:none;}
-/* ---- light hero ---- */
-.doc-hero{background:var(--bg-2);border-bottom:2px solid var(--blue);}
-.doc-hero .wrap{padding:28px 28px 24px;display:flex;gap:30px;align-items:center;flex-wrap:wrap;}
-.doc-hero .ht{flex:1;min-width:280px;}
-.doc-hero .kicker,.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--blue);margin-bottom:8px;}
-.doc-hero h1{font-size:1.85rem;margin:0 0 8px;}
-.doc-hero p{max-width:72ch;font-size:1rem;color:var(--muted);margin:0;}
-.doc-hero .ver{margin-top:10px;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);}
-.doc-hero .hero-img{flex:0 0 400px;max-width:420px;}
-.doc-hero .hero-img img{width:100%;height:auto;}
-/* ---- layout + toc ---- */
-.layout{display:grid;grid-template-columns:226px 1fr;gap:36px;max-width:var(--wrap);margin:0 auto;padding:32px 28px 64px;}
-.toc{position:sticky;top:80px;align-self:start;border-left:2px solid var(--line);padding-left:16px;font-size:.85rem;max-height:calc(100vh - 104px);overflow:auto;}
-.toc h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--muted);margin:0 0 10px;}
-.toc a{display:block;color:var(--muted);padding:4px 0;border-left:2px solid transparent;margin-left:-18px;padding-left:16px;}
-.toc a:hover{color:var(--blue);border-left-color:var(--blue);text-decoration:none;}
-.content,.article{min-width:0;}
-.article{max-width:840px;margin:0 auto;padding:34px 28px 64px;}
-.content section{padding:4px 0 16px;border-top:1px solid var(--line);margin-top:20px;}
-.content section:first-child,.article section:first-child{border-top:none;margin-top:0;}
-.article section{padding:6px 0 14px;}
-.content h2,.article h2{font-size:1.32rem;margin:.3em 0 .5em;}
-.content h2 .num{color:var(--blue);margin-right:.5em;}
-.content h3,.article h3{font-size:1.06rem;color:var(--blue);margin:1.2em 0 .3em;}
-.content h4,.article h4{font-size:.96rem;color:var(--ink);margin:1em 0 .2em;}
-.content p,.content li,.article p,.article li{font-size:.95rem;color:var(--ink);}
-.content strong,.article strong{color:var(--blue-dark);}
-code{font-family:var(--font-mono);font-size:.85em;background:var(--bg-3);border:1px solid var(--line);padding:.1em .35em;border-radius:3px;color:var(--blue-dark);}
-/* ---- spec tables ---- */
-table.spec,table.matrix{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;border:1px solid var(--line);}
-table.spec th,table.matrix th{background:var(--bg-3);color:var(--blue-dark);font-family:var(--font-h);font-weight:700;text-align:left;padding:8px 11px;border-bottom:2px solid var(--blue);}
-table.spec td,table.matrix td{border-top:1px solid var(--line);padding:7px 11px;color:var(--ink);vertical-align:top;}
-table.spec tr:nth-child(even) td,table.matrix tr:nth-child(even) td{background:var(--bg-2);}
-table.spec td:first-child,table.matrix td:first-child{font-weight:600;color:var(--ink);}
-table.matrix th:first-child{background:var(--bg-3);}
-.modelthumb{display:block;height:44px;width:auto;margin:0 auto 5px;}
-th .modelthumb{filter:none;}
-/* ---- figures ---- */
-.fig{margin:18px 0;}
-.fig-ph{border:1px dashed #b9c4d4;border-radius:var(--r);background:var(--bg-2);padding:18px;display:flex;flex-direction:column;gap:7px;min-height:84px;justify-content:center;}
-.fig-tag{align-self:flex-start;font-family:var(--font-h);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 9px;border-radius:999px;}
-.fig-tag.keep{background:#e6f4f0;color:#0a7d6b;border:1px solid #b8e0d6;}
-.fig-tag.rebrand{background:#eef0ff;color:#5b54c9;border:1px solid #cdd1f5;}
-.fig-desc{color:var(--muted);font-size:.88rem;}
-.fig img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r);display:block;}
-.fig img.plain{border:none;}
-.fig figcaption{margin-top:6px;font-size:.82rem;color:var(--muted);font-style:italic;}
-/* ---- callouts ---- */
-.note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
-.note.warn{border-left-color:#c77e00;background:#fff7e9;}
-.note b{color:var(--blue-dark);}
-/* ---- footer (dark, so white logo shows) ---- */
-.doc-footer{background:#0e2038;border-top:1px solid var(--line);padding:30px 0;color:#9bb0cc;font-size:.82rem;}
-.doc-footer .wrap{max-width:var(--wrap);}
-.doc-footer .disclaimer{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:11px 15px;margin-bottom:16px;color:#c4d6ee;}
-.doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
-.doc-footer a{color:#9bb0cc;}
-@media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
-/* ---- SVG diagram containers ---- */
-.svg-diagram{margin:24px 0;text-align:center;}
-.svg-diagram svg{max-width:100%;height:auto;}
-.svg-diagram figcaption{margin-top:8px;font-size:.82rem;color:var(--muted);font-style:italic;}
-/* ---- article meta ---- */
-.article-meta{font-size:.82rem;color:var(--muted);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--line);}
-.article-meta span{margin-right:18px;}
-/* ---- contact block ---- */
-.contact-block{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:20px 24px;margin:28px 0 0;}
-.contact-block h3{margin:0 0 8px;font-size:1rem;}
-.contact-block p{margin:4px 0;font-size:.92rem;color:var(--ink);}
-/* ---- kicker breadcrumbs v3 ---- */
+.gfoot{background:#0e2038;color:#9bb0cc;padding:50px 0 26px;font-size:.9rem;font-family:Arial,'Segoe UI',Helvetica,sans-serif;}
+.gfoot .gwrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+.gfoot .gcols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.1fr;gap:30px;margin-bottom:30px;}
+.gfoot .gbrand svg{height:34px;width:auto;display:block;margin-bottom:14px;}
+.gfoot .gbrand p{margin:0;max-width:32ch;color:#9bb0cc;font-size:.85rem;line-height:1.6;}
+.gfoot h5{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;color:#fff;font-size:.9rem;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em;}
+.gfoot ul{list-style:none;padding:0;margin:0;}.gfoot li{margin-bottom:8px;}
+.gfoot a{color:#9bb0cc;text-decoration:none;}.gfoot a:hover{color:#fff;text-decoration:underline;}
+.gfoot .gdisc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:11px 15px;margin-bottom:24px;font-size:.78rem;color:#c4d6ee;}
+.gfoot .gbottom{border-top:1px solid rgba(255,255,255,.12);padding-top:18px;font-size:.8rem;color:#8aa0bd;}
+@media(max-width:820px){.gfoot .gcols{grid-template-columns:1fr 1fr;}}  .navtoggle{display:none;width:42px;height:38px;background:transparent;border:1px solid rgba(120,170,225,.4);border-radius:6px;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:0;}
+  .navtoggle span{display:block;width:20px;height:2px;background:#c4d6ee;border-radius:2px;}
+  @media(max-width:1040px){
+    .navtoggle{display:flex;}
+    .sitenav-cta{margin-left:auto;}
+    .sitenav.open .sitenav-menu{display:flex;flex-direction:column;position:absolute;top:66px;left:0;right:0;background:#0e2038;border-bottom:1px solid rgba(120,170,225,.18);height:auto;max-height:78vh;overflow:auto;padding:6px 0;align-items:stretch;gap:0;margin:0;}
+    .sitenav.open .nav-item{flex-direction:column;align-items:stretch;height:auto;}
+    .sitenav.open .nav-item>a{height:auto;padding:13px 24px;border-top:1px solid rgba(120,170,225,.12);}
+    .sitenav.open .nav-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:rgba(255,255,255,.03);padding:4px 0 10px;min-width:0;border-radius:0;}
+    .sitenav.open .nav-drop a{padding:8px 38px;white-space:normal;}
+  }/* ---- kicker breadcrumbs v3 ---- */
 nav.kicker[aria-label="Breadcrumb"]{text-transform:none;letter-spacing:.05em;}
 nav.kicker[aria-label="Breadcrumb"] a{color:inherit;text-decoration:none;}
 nav.kicker[aria-label="Breadcrumb"] a:hover{color:var(--blue-dark);text-decoration:underline;}
 nav.kicker[aria-label="Breadcrumb"] .sep{margin:0 6px;opacity:.5;font-weight:400;}
 nav.kicker[aria-label="Breadcrumb"] .pfx{margin-right:6px;font-weight:400;color:var(--blue);}
 </style>
-<style id="nav-cascade-css">.nav-drop.nav-casc{min-width:206px;padding:7px;transition-delay:.20s;}.nav-item:hover .nav-drop.nav-casc,.nav-item:focus-within .nav-drop.nav-casc{transition-delay:0s;}.nav-grp2{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp2:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp2 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub{position:absolute;top:-7px;left:100%;min-width:238px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:6;}.nav-grp2:hover .nav-sub,.nav-grp2:focus-within .nav-sub{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub a:hover{background:rgba(55,182,240,.14);color:#fff;}.sitenav-menu .nav-item:last-child .nav-drop.nav-casc{left:auto;right:0;}.sitenav-menu .nav-item:last-child .nav-sub{left:auto;right:100%;transform:translateX(-8px);}.sitenav-menu .nav-item:last-child .nav-grp2:hover .nav-sub,.sitenav-menu .nav-item:last-child .nav-grp2:focus-within .nav-sub{transform:translateX(0);}@media(max-width:1040px){.sitenav.open .nav-drop.nav-casc{min-width:0;}.sitenav.open .nav-grp2{display:block;font-weight:700;color:#8fb4dd;text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:10px 24px 4px;}.sitenav.open .nav-grp2 .nc{display:none;}.sitenav.open .nav-sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub a{padding:8px 38px;white-space:normal;}}</style>
+
+
+
+<style id="nav-cascade-css">.nav-drop.nav-casc{min-width:206px;padding:7px;transition-delay:.20s;}.nav-item:hover .nav-drop.nav-casc,.nav-item:focus-within .nav-drop.nav-casc{transition-delay:0s;}.nav-grp2{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:7.65px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp2:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp2 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub{position:absolute;top:-7px;left:100%;min-width:238px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:6;}.nav-grp2:hover .nav-sub,.nav-grp2:focus-within .nav-sub{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub a{display:block;padding:7.65px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub a:hover{background:rgba(55,182,240,.14);color:#fff;}.sitenav-menu .nav-item:last-child .nav-drop.nav-casc{left:auto;right:0;}.sitenav-menu .nav-item:last-child .nav-sub{left:auto;right:100%;transform:translateX(-8px);}.sitenav-menu .nav-item:last-child .nav-grp2:hover .nav-sub,.sitenav-menu .nav-item:last-child .nav-grp2:focus-within .nav-sub{transform:translateX(0);}@media(max-width:1040px){.sitenav.open .nav-drop.nav-casc{min-width:0;}.sitenav.open .nav-grp2{display:block;font-weight:700;color:#8fb4dd;text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:10px 24px 4px;}.sitenav.open .nav-grp2 .nc{display:none;}.sitenav.open .nav-sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub a{padding:8px 38px;white-space:normal;}}</style>
 <style id="ss-css">.ss-wrap{position:relative;margin-left:10px;}.ss-input{width:150px;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,225,.35);color:#dce8f7;font:inherit;font-size:.82rem;padding:.5em .8em;border-radius:6px;outline:none;transition:width .18s,border-color .18s;}.ss-input::placeholder{color:#7f9bc0;}.ss-input:focus{width:220px;border-color:#37b6f0;}.ss-panel{position:absolute;top:42px;right:0;width:340px;max-width:84vw;background:#0e2038;border:1px solid rgba(120,170,225,.28);border-radius:10px;box-shadow:0 18px 44px -12px rgba(0,0,0,.7);padding:6px;display:none;max-height:70vh;overflow:auto;z-index:300;}.ss-panel.open{display:block;}.ss-item{display:block;padding:9px 11px;border-radius:7px;text-decoration:none;}.ss-item:hover,.ss-item.active{background:rgba(55,182,240,.14);}.ss-item .st{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:600;font-size:.9rem;color:#fff;display:block;}.ss-item .sc{font-size:.69rem;text-transform:uppercase;letter-spacing:.07em;color:#5f9fe0;}.ss-none{padding:12px;color:#8aa0bd;font-size:.85rem;}@media(max-width:1040px){.ss-wrap{order:6;width:100%;margin:8px 0 0;}.ss-input,.ss-input:focus{width:100%;}.ss-panel{width:100%;}}</style>
 <style id="gfoot-v3">
 .gfoot{position:relative;overflow:hidden;background:#0e2038;color:#9bb0cc;padding:22px 0 11px;font-size:.9rem;font-family:Arial,'Segoe UI',Helvetica,sans-serif;}
@@ -385,23 +348,31 @@ nav.kicker[aria-label="Breadcrumb"] .pfx{margin-right:6px;font-weight:400;color:
 @media(max-width:860px){.gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}.gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}.gfoot .gacad{text-align:left;}.gfoot .gsocial{justify-content:center;}.gfoot .gcompany ul{text-align:left;}.gfoot .gbottom{justify-content:center;text-align:center;}.gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}}
 </style>
 <style id="navgrplink">.sitenav .nav-grp-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer;display:contents;}.sitenav .nav-grp-link:hover{color:#5fd0ff;}</style><!--seo-meta-->
-<link rel="canonical" href="https://www.berkeleynucleonics.com/docs/article-scint-neutron-gamma-discrimination.html">
-<meta property="og:type" content="article">
+<meta name="description" content="Datasheets, manuals, application notes, and briefs for the Berkeley Nucleonics ICX-FieldHawk real-time spectrum analyzers: handheld, field-ready, and USB/LAN receivers, with the SDR option and the SpectraCore analysis software.">
+<link rel="canonical" href="https://www.berkeleynucleonics.com/docs/icx-index.html">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="Berkeley Nucleonics">
-<meta property="og:title" content="Neutron/Gamma Discrimination with CLYC &amp; CLLBC | BNC">
-<meta property="og:description" content="CLYC and CLLBC elpasolite crystals detect neutrons and gammas in one scintillator via pulse-shape discrimination, with no moderator or separate counter.">
-<meta property="og:url" content="https://www.berkeleynucleonics.com/docs/article-scint-neutron-gamma-discrimination.html">
+<meta property="og:title" content="ICX-FieldHawk Real-Time Spectrum Analyzer Documentation | BNC">
+<meta property="og:description" content="Datasheets, manuals, application notes, and briefs for the Berkeley Nucleonics ICX-FieldHawk real-time spectrum analyzers: handheld, field-ready, and USB/LAN receivers, with the SDR option and the SpectraCore analysis software.">
+<meta property="og:url" content="https://www.berkeleynucleonics.com/docs/icx-index.html">
 <meta property="og:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Neutron/Gamma Discrimination with CLYC &amp; CLLBC | BNC">
-<meta name="twitter:description" content="CLYC and CLLBC elpasolite crystals detect neutrons and gammas in one scintillator via pulse-shape discrimination, with no moderator or separate counter.">
+<meta name="twitter:title" content="ICX-FieldHawk Real-Time Spectrum Analyzer Documentation | BNC">
+<meta name="twitter:description" content="Datasheets, manuals, application notes, and briefs for the Berkeley Nucleonics ICX-FieldHawk real-time spectrum analyzers: handheld, field-ready, and USB/LAN receivers, with the SDR option and the SpectraCore analysis software.">
 <meta name="twitter:image" content="https://www.berkeleynucleonics.com/figures/home/hero.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "Neutron/Gamma Discrimination with CLYC and CLLBC | ScintIQ", "description": "Technical white paper on pulse-shape discrimination (PSD), figure of merit, and how CLYC and CLLBC enable single-crystal dual-mode neutron and gamma detection.", "url": "https://www.berkeleynucleonics.com/docs/article-scint-neutron-gamma-discrimination.html", "author": {"@type": "Organization", "name": "Berkeley Nucleonics"}, "publisher": {"@type": "Organization", "name": "Berkeley Nucleonics Corporation", "logo": {"@type": "ImageObject", "url": "https://www.berkeleynucleonics.com/figures/home/hero.png"}}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Isotope ID & Radiation Detection Documentation", "description": "HomeProducts &#9662;Pulse & Delay Generators&#8250;HomeDigital Delay/Pulse&#8250;Model 525Model 575Model 577Model 588Model 725High-Density Multi-Channel&#8250;Model 588BHigh-Curren", "url": "https://www.berkeleynucleonics.com/docs/riid-index.html", "isPartOf": {"@type": "WebSite", "name": "Berkeley Nucleonics", "url": "https://www.berkeleynucleonics.com"}}</script>
 <!--/seo-meta-->
+<style id="rowthumb-css">
+.row .type.thumb{display:flex;align-items:center;justify-content:center;}
+.rowthumb{max-height:46px;max-width:104px;width:auto;height:auto;object-fit:contain;display:block;opacity:0;will-change:transform;}
+.rowthumb.in{animation:thumbland .62s cubic-bezier(.5,1.55,.5,1) both;}
+@keyframes thumbland{0%{opacity:0;transform:translateY(-16px) scale(.88);}55%{opacity:1;transform:translateY(4px) scale(1.04);}74%{transform:translateY(-2px) scale(.99);}100%{opacity:1;transform:translateY(0) scale(1);}}
+@media(prefers-reduced-motion:reduce){.rowthumb{opacity:1;}.rowthumb.in{animation:none;}}
+</style>
 <!--bnc-auth-->
 <link rel="stylesheet" href="../_shared/bnc-auth.css">
 <script src="../_shared/bnc-auth-config.js"></script>
-<script defer src="../_shared/bnc-auth.js"></script><script defer src="../_shared/bnc-visit.js"></script><script defer src="../_shared/bnc-chat.js"></script>
+<script defer src="../_shared/bnc-auth.js"></script>
 <!--/bnc-auth-->
 <link rel="stylesheet" href="../_shared/bnc-emerald.css">
 <style id="bnc-mobile-nav-fix">
@@ -429,8 +400,42 @@ nav.kicker[aria-label="Breadcrumb"] .pfx{margin-right:6px;font-weight:400;color:
 }
 </style>
 <link rel="stylesheet" href="/_shared/bnc-a11y.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.berkeleynucleonics.com/home.html"},{"@type":"ListItem","position":2,"name":"Support","item":"https://www.berkeleynucleonics.com/support.html"},{"@type":"ListItem","position":3,"name":"Product Documentation","item":"https://www.berkeleynucleonics.com/docs/product-documentation.html"},{"@type":"ListItem","position":4,"name":"Scintillation Detectors (ScintIQ)","item":"https://www.berkeleynucleonics.com/scintiq-home.html"},{"@type":"ListItem","position":5,"name":"Library","item":"https://www.berkeleynucleonics.com/docs/scintiq-index.html"},{"@type":"ListItem","position":6,"name":"neutron/gamma discrimination with clyc & cllbc","item":"https://www.berkeleynucleonics.com/docs/article-scint-neutron-gamma-discrimination.html"}]}</script>
-<!-- internal notes hidden --><style>[data-webmaster]{display:none!important}</style>
+<style id="bioz-cited-css">
+.bioz-cited{background:linear-gradient(180deg,#0a1626 0%,#0e2038 100%);padding:18px 0 22px}
+.bioz-cited-inner{max-width:1180px;margin:0 auto;padding:0 22px}
+.bioz-cited-head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.bioz-cited-mark{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(115deg,#4c1d95 0%,#6d28d9 58%,#7c3aed 100%);color:#fff;font:700 10px/1 Arial,Helvetica,sans-serif;letter-spacing:.14em;padding:7px 10px;border-radius:5px;margin-top:1px;box-shadow:0 4px 14px -6px rgba(124,58,237,.6)}
+.bioz-cited-head h2{margin:0 0 2px;font:700 17px/1.25 "Myriad Pro",Arial,Helvetica,sans-serif;color:#fff}
+.bioz-cited-head p{margin:0;font:400 12px/1.45 Arial,Helvetica,sans-serif;color:#9fb3d0;max-width:78ch}
+.bioz-cited-ext{margin-left:auto;align-self:center;font:700 12px Arial,Helvetica,sans-serif;color:#7cc4ff;text-decoration:none;white-space:nowrap;border-bottom:1px solid rgba(124,196,255,.35)}
+.bioz-cited-ext:hover{border-bottom-color:#7cc4ff}
+.bioz-cited-frame{position:relative;height:400px;background:linear-gradient(180deg,#fbfcfe 0%,#eef3f9 100%);border:1px solid rgba(124,170,220,.28);border-radius:12px;box-shadow:0 14px 36px -16px rgba(2,8,20,.6);overflow:hidden;transition:height .45s ease}
+.bioz-cited-frame::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#7c3aed 0%,#37b6f0 100%);z-index:1}
+.bioz-cited-frame object{display:block;width:118%;height:474px;border:0;transform:scale(.847);transform-origin:0 0;transition:height .45s ease}
+.bioz-cited-fade{position:absolute;left:0;right:0;bottom:0;height:40px;background:linear-gradient(180deg,rgba(238,243,249,0) 0%,#eef3f9 88%);pointer-events:none;transition:opacity .3s ease}
+.bioz-cited.is-open .bioz-cited-frame{height:585px}
+.bioz-cited.is-open .bioz-cited-frame object{height:691px}
+.bioz-cited.is-open .bioz-cited-fade{opacity:0}
+.bioz-cited-ph{display:flex;align-items:center;justify-content:center;height:100%;color:#6b7480;font:400 13px Arial,Helvetica,sans-serif}
+.bioz-cited-foot{display:flex;justify-content:center;margin-top:10px}
+.bioz-cited-more{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid rgba(124,196,255,.4);border-radius:999px;color:#9fc7ef;font:700 10.5px/1 "Myriad Pro",Arial,Helvetica,sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease}
+.bioz-cited-more:hover{background:rgba(55,182,240,.12);border-color:#37b6f0;color:#fff}
+.bioz-cited-more svg{transition:transform .3s ease}
+.bioz-cited.is-open .bioz-cited-more svg{transform:rotate(180deg)}
+@media (max-width:720px){
+  .bioz-cited{padding:16px 0 20px}
+  .bioz-cited-head h2{font-size:16px}
+  .bioz-cited-ext{margin-left:0}
+  .bioz-cited-frame{height:540px}
+  .bioz-cited-frame object{width:100%;height:540px;transform:none}
+  .bioz-cited.is-open .bioz-cited-frame{height:1040px}
+  .bioz-cited.is-open .bioz-cited-frame object{height:1040px}
+}
+@media print{.bioz-cited{display:none}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.berkeleynucleonics.com/home.html"},{"@type":"ListItem","position":2,"name":"Support","item":"https://www.berkeleynucleonics.com/support.html"},{"@type":"ListItem","position":3,"name":"Product Documentation","item":"https://www.berkeleynucleonics.com/docs/product-documentation.html"},{"@type":"ListItem","position":4,"name":"Isotope ID & Radiation Detection","item":"https://www.berkeleynucleonics.com/riid-home.html"},{"@type":"ListItem","position":5,"name":"Library","item":"https://www.berkeleynucleonics.com/docs/riid-index.html"}]}</script>
+<style id="series-list-css">#by-series .series-cat{font-family:inherit;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:22px 0 10px;padding:5px 0 5px 12px;border-left:4px solid #0655a3;color:#5fd0ff}.series-list{list-style:none;margin:0 0 4px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px 18px}.series-list li{margin:0}.series-list a{display:block;padding:5px 0;color:#9bb0cc;text-decoration:none;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.06)}.series-list a:hover{color:#fff;text-decoration:underline}</style>
+<style id="series-list-css">#by-series .series-cat{font-family:inherit;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin:22px 0 10px;padding:5px 0 5px 12px;border-left:4px solid #0655a3;color:#5fd0ff}.series-list{list-style:none;margin:0 0 4px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px 18px}.series-list li{margin:0}.series-list a{display:block;padding:5px 0;color:#9bb0cc;text-decoration:none;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.06)}.series-list a:hover{color:#fff;text-decoration:underline}</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
@@ -438,313 +443,148 @@ nav.kicker[aria-label="Breadcrumb"] .pfx{margin-right:6px;font-weight:400;color:
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-
 <header class="sitenav"><div class="sitenav-inner">
   <a class="sitenav-logo" href="../home.html" aria-label="Berkeley Nucleonics home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
   <div class="ss-wrap"><span class="ss-field"><input class="ss-input" type="search" placeholder=" " aria-label="Search the site" autocomplete="off"><span class="ss-ph" aria-hidden="true">Search<span class="ss-dots"><i></i><i></i><i></i></span></span></span><div class="ss-panel" role="listbox"></div></div>
   <nav class="sitenav-menu"><div class="nav-item"><a href="../home.html">Home</a></div><div class="nav-item"><a class="nav-trigger">Products &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../pdg-home.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../pdg-home.html">Home</a><div class="nav-grp3">Digital Delay/Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-525-datasheet.html" target="_blank" rel="noopener">Model 525</a><a href="../docs/bnc-model-575-datasheet.html" target="_blank" rel="noopener">Model 575</a><a href="../docs/bnc-model-577-datasheet.html" target="_blank" rel="noopener">Model 577</a><a href="../docs/bnc-model-588-datasheet.html" target="_blank" rel="noopener">Model 588</a><a href="../docs/bnc-model-725-datasheet.html" target="_blank" rel="noopener">Model 725</a><a href="../docs/bnc-model-750-datasheet.html" target="_blank" rel="noopener">Model 750</a></div></div><div class="nav-grp3">High-Density Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-588b-datasheet.html" target="_blank" rel="noopener">Model 588B</a></div></div><div class="nav-grp3">High-Current Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-507-datasheet.html" target="_blank" rel="noopener">Model 507</a><a href="../docs/bnc-model-508-datasheet.html" target="_blank" rel="noopener">Model 508</a></div></div><div class="nav-grp3">Femtosecond Delay<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-745t-datasheet.html" target="_blank" rel="noopener">Model 745T</a></div></div><div class="nav-grp3">High-Performance Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-765-datasheet.html" target="_blank" rel="noopener">Model 765</a><a href="../docs/bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">Model 765-HV</a></div></div><div class="nav-grp3">NIM Pulse Generator<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-pb-5-datasheet.html" target="_blank" rel="noopener">Model PB-5</a><a href="../nim-home.html#db-2" target="_blank" rel="noopener">Model DB-2</a><a href="../nim-home.html#ap-3" target="_blank" rel="noopener">Model AP-3</a><a href="../nim-home.html#tb-4" target="_blank" rel="noopener">Model TB-4</a></div></div><a href="../docs/pdg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rfsg-home.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../rfsg-home.html">Home</a><div class="nav-grp3">Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-835-datasheet.html" target="_blank" rel="noopener">Model 835</a><a href="../docs/bnc-model-845-datasheet.html" target="_blank" rel="noopener">Model 845</a><a href="../docs/bnc-model-855b-datasheet.html" target="_blank" rel="noopener">Model 855B</a><a href="../docs/bnc-model-865b-datasheet.html" target="_blank" rel="noopener">Model 865B</a><a href="../docs/bnc-model-870a-datasheet.html" target="_blank" rel="noopener">Model 870A</a><a href="../docs/bnc-model-871-datasheet.html" target="_blank" rel="noopener">Model 871</a><a href="../docs/bnc-model-805sg-datasheet.html" target="_blank" rel="noopener">Model 805-SG</a><a href="../docs/bnc-model-845oem-datasheet.html" target="_blank" rel="noopener">Model 845-OEM</a><a href="../docs/bnc-rfs-1000-datasheet.html" target="_blank" rel="noopener">RFS-1000 Series</a></div></div><div class="nav-grp3">Synthesizers &amp; Sources<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-805m-datasheet.html" target="_blank" rel="noopener">Model 805-M</a><a href="../docs/bnc-model-825m-datasheet.html" target="_blank" rel="noopener">Model 825-M</a><a href="../docs/bnc-model-845m-datasheet.html" target="_blank" rel="noopener">Model 845-M</a><a href="../docs/bnc-model-866m-datasheet.html" target="_blank" rel="noopener">Model 866-M</a><a href="../docs/bnc-model-865bm-datasheet.html" target="_blank" rel="noopener">Model 865B-M</a><a href="../docs/bnc-model-865bm-40x-datasheet.html" target="_blank" rel="noopener">Model 865B-M-40-X</a></div></div><div class="nav-grp3">Vector Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-875-datasheet.html" target="_blank" rel="noopener">Model 875</a><a href="../docs/bnc-rfs-7060-u-datasheet.html" target="_blank" rel="noopener">RFS-7060-U</a><a href="../docs/bnc-rfs-7060-t-datasheet.html" target="_blank" rel="noopener">RFS-7060-T</a></div></div><div class="nav-grp3">RF USB Power Sensors<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-12100-power-sensor-datasheet.html" target="_blank" rel="noopener">Model 12100 Series Power Sensors</a></div></div><div class="nav-grp3">Phase Noise Analyzers<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-7000-series-phase-noise-datasheet.html" target="_blank" rel="noopener">7000 Series (7070 / 7300 / 7340)</a></div></div><a href="../docs/rfsg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../scintiq-home.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../scintiq-home.html">ScintIQ Home</a><a href="../docs/bnc-scintiq-naitl-datasheet.html" target="_blank" rel="noopener">NaI(Tl)</a><a href="../docs/bnc-scintiq-csitl-datasheet.html" target="_blank" rel="noopener">CsI(Tl)</a><a href="../docs/bnc-scintiq-labr3-datasheet.html" target="_blank" rel="noopener">LaBr3(Ce)</a><a href="../docs/bnc-scintiq-cebr3-datasheet.html" target="_blank" rel="noopener">CeBr3</a><a href="../docs/bnc-scintiq-lbc-datasheet.html" target="_blank" rel="noopener">LBC</a><a href="../docs/bnc-scintiq-sri2eu-datasheet.html" target="_blank" rel="noopener">SrI2(Eu)</a><a href="../docs/bnc-scintiq-cllbc-datasheet.html" target="_blank" rel="noopener">CLLBC</a><a href="../docs/bnc-scintiq-clyc-datasheet.html" target="_blank" rel="noopener">CLYC:Ce</a><a href="../docs/bnc-scintiq-baf2-datasheet.html" target="_blank" rel="noopener">BaF2</a><a href="../docs/bnc-scintiq-yapce-datasheet.html" target="_blank" rel="noopener">YAP:Ce</a><a href="../docs/bnc-scintiq-yag-datasheet.html" target="_blank" rel="noopener">YAG:Ce</a><a href="../docs/bnc-scintiq-gaggce-datasheet.html" target="_blank" rel="noopener">GAGG:Ce</a><a href="../docs/bnc-scintiq-lyso-datasheet.html" target="_blank" rel="noopener">LYSO</a><a href="../docs/bnc-scintiq-bgo-datasheet.html" target="_blank" rel="noopener">BGO</a><a href="../docs/scintiq-material-comparison.html" target="_blank" rel="noopener">Material Comparison Tool</a><a href="../docs/scintiq-selector.html" target="_blank" rel="noopener">Detector Selector</a><a href="../docs/scintiq-configurator.html" target="_blank" rel="noopener">Detector Configurator</a><a href="../docs/scintiq-index.html" target="_blank" rel="noopener">All ScintIQ Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../awg-home.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../awg-home.html">AWG Home</a><a href="../docs/bnc-awg-686-datasheet.html" target="_blank" rel="noopener">Model 686</a><a href="../docs/bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685</a><a href="../docs/bnc-awg-685c-datasheet.html" target="_blank" rel="noopener">Model 685C</a><a href="../docs/bnc-awg-675-datasheet.html" target="_blank" rel="noopener">Model 675</a><a href="../docs/bnc-awg-676-datasheet.html" target="_blank" rel="noopener">Model 676</a><a href="../docs/bnc-awg-670c-datasheet.html" target="_blank" rel="noopener">Model 670C</a><a href="../docs/bnc-awg-645-datasheet.html" target="_blank" rel="noopener">Model 645</a><a href="../docs/bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener">Model A2255</a><a href="../docs/bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener">Model A2085</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../riid-home.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../riid-home.html">Isotope ID Home</a><div class="nav-grp3">Handheld<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-sam-920-sprd-datasheet.html" target="_blank" rel="noopener">SAM 920+ SPRD</a><a href="../docs/bnc-sam-940-plus-datasheet.html" target="_blank" rel="noopener">SAM 940+</a><a href="../docs/bnc-sam-950-datasheet.html" target="_blank" rel="noopener">SAM 950</a><a href="../docs/bnc-model-907-datasheet.html" target="_blank" rel="noopener">Model 907</a><a href="../docs/bnc-model-951-datasheet.html" target="_blank" rel="noopener">Model 951</a><a href="../docs/bnc-pm1703gna-datasheet.html" target="_blank" rel="noopener">Model 1703</a><a href="../docs/bnc-metrad-1-datasheet.html" target="_blank" rel="noopener">MetRad 1</a></div></div><div class="nav-grp3">Backpack/Vehicle/Lab/Drone<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-medusa-ms-series-datasheet.html" target="_blank" rel="noopener">MS Series</a><a href="../docs/bnc-sampack-120-datasheet.html" target="_blank" rel="noopener">SAMpack 120</a><a href="../docs/bnc-sammobile-150-datasheet.html" target="_blank" rel="noopener">SAMmobile 150</a><a href="../docs/bnc-model-960-datasheet.html" target="_blank" rel="noopener">Model 960 Monitoring System</a><a href="../docs/bnc-model-970-mca-datasheet.html" target="_blank" rel="noopener">Model 970 MCA</a><a href="../docs/bnc-model-971-datasheet.html" target="_blank" rel="noopener">Model 971</a></div></div><a href="../docs/riid-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../dei-home.html">High Power/Current Pulsers &amp; Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../dei-home.html">DEI Pulsers Home</a><a href="../docs/bnc-dei-pvx-4151-datasheet.html" target="_blank" rel="noopener">PVX-4151 (&plusmn;1.5 kV)</a><a href="../docs/bnc-dei-pvx-4141-datasheet.html" target="_blank" rel="noopener">PVX-4141 Pulse Generator</a><a href="../docs/bnc-dei-pvx-4110-datasheet.html" target="_blank" rel="noopener">PVX-4110 (±10 kV)</a><a href="../docs/bnc-dei-pvx-4000-datasheet.html" target="_blank" rel="noopener">PVX-4000-2kV</a><a href="../docs/bnc-dei-pvx-4000-ex-datasheet.html" target="_blank" rel="noopener">PVX-4000-2kV-EX</a><a href="../docs/bnc-dei-pcx-7421-datasheet.html" target="_blank" rel="noopener">PCX-7421 Laser Diode Driver</a><a href="../docs/bnc-dei-pco-6131-datasheet.html" target="_blank" rel="noopener">PCO-6131 (125 A OEM)</a><a href="../docs/bnc-dei-pcm-7700-datasheet.html" target="_blank" rel="noopener">PCM-7700 (200 A)</a><a href="../docs/bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">765-HV (&plusmn;50 V, 1 A)</a><a href="../hvx-home.html">HVX High Voltage Power Supplies</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rtsa-home.html">Real-Time Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../rtsa-home.html">ICX Home</a><a href="../docs/bnc-icx-fieldhawk-handheld-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk</a><a href="../docs/bnc-icx-fieldhawk-rugged-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk-R</a><a href="../docs/bnc-icx-fieldhawk-usb-datasheet.html" target="_blank" rel="noopener">ICX-Series USB</a><a href="../docs/bnc-rfa-3100-n-directional-antenna-manual.html" target="_blank" rel="noopener">RFA-3100-N Antenna (accessory)</a><a href="../docs/bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener">Product Selection Guide</a><a href="../docs/icx-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../bnc-scientific.html">BNC Scientific</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../brightspec-home.html">BrightSpec MCAs</a><a href="../spectechniques-home.html">SpecTechniques Radiation Sources</a><a href="../megiq-home.html">MegIQ VNAs &amp; Antenna Measurement</a><a href="../medusa-home.html">MedUSA Environmental</a><a href="../heinzinger-home.html">Heinzinger High Voltage</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Applications &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../docs/pdg-technical-papers.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/pdg-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/pdg-technical-papers.html#fundamentals">Fundamentals: Delay, Pulse &amp; Jitter</a><a href="../docs/pdg-technical-papers.html#physics-quantum">Physics, Accelerators &amp; Quantum</a><a href="../docs/pdg-technical-papers.html#laser-lidar">Laser, Q-Switch &amp; LiDAR</a><a href="../docs/pdg-technical-papers.html#test-imaging">Automated Test, Production &amp; Imaging</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/rfsg-technical-papers.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/rfsg-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/rfsg-technical-papers.html#phase-noise">Phase Noise &amp; Signal Purity</a><a href="../docs/rfsg-technical-papers.html#radar-defense">Radar, EW &amp; Aerospace/Defense</a><a href="../docs/rfsg-technical-papers.html#satcom-wireless">SATCOM, Wireless &amp; Vector Modulation</a><a href="../docs/rfsg-technical-papers.html#ate">ATE, Multi-Channel &amp; Automated Test</a><a href="../docs/rfsg-technical-papers.html#quantum">Quantum, Phased-Array &amp; Clock Sources</a><a href="../docs/rfsg-technical-papers.html#antenna-power">Antenna, EMC &amp; Power Sensing</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/scintiq-technical-papers.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/scintiq-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/scintiq-technical-papers.html#security-physics">Security, Defense &amp; Physics</a><a href="../docs/scintiq-technical-papers.html#medical">Medical Imaging &amp; Life Sciences</a><a href="../docs/scintiq-technical-papers.html#environmental-industrial">Environmental &amp; Industrial Measurement</a><a href="../docs/scintiq-technical-papers.html#neutron">Neutron Detection &amp; Discrimination</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/awg-technical-papers.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/awg-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/awg-technical-papers.html#radar-ew">Radar, EW &amp; Fire-Control</a><a href="../docs/awg-technical-papers.html#laser-photonics">Laser, Photonics &amp; Medical</a><a href="../docs/awg-technical-papers.html#timing">HEL/ICF &amp; LiDAR Timing</a><a href="../docs/awg-technical-papers.html#quantum-digital">Quantum &amp; Serial/Digital Test</a><a href="../docs/awg-technical-papers.html#migration">Migrating from Legacy ARBs</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/riid-technical-papers.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/riid-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/riid-technical-papers.html#field-security">Field &amp; Security Applications</a><a href="../docs/riid-technical-papers.html#industrial">Industrial &amp; Facility Monitoring</a><a href="../docs/riid-technical-papers.html#choosing">Choosing &amp; Understanding Detectors</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/dei-technical-papers.html">High Voltage/Current Pulsers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/dei-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/dei-technical-papers.html#laser-driving">Laser Diode &amp; Pockels Cell Driving</a><a href="../docs/dei-technical-papers.html#ranging">Ranging &amp; Mass Spectrometry</a><a href="../docs/dei-technical-papers.html#directed-energy">Directed Energy, Accelerators &amp; Kickers</a><a href="../docs/dei-technical-papers.html#detector-gating">Detector Gating &amp; HV Test</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/icx-technical-papers.html">ICX-FieldHawk Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/icx-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/icx-technical-papers.html#monitoring">Spectrum Monitoring &amp; Geolocation</a><a href="../docs/icx-technical-papers.html#drones">Drones &amp; Airborne Measurement</a><a href="../docs/icx-technical-papers.html#defense">Aerospace, Defense &amp; SATCOM</a><a href="../docs/icx-technical-papers.html#wireless">Wireless &amp; 5G/6G</a><a href="../docs/icx-technical-papers.html#emc">EMC, EMI &amp; RF Safety</a><a href="../docs/icx-technical-papers.html#sdr">SDR, Research &amp; Integration</a></div></div><div class="nav-grp2">Software Defined Radios<span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/bnc-icx-sdr-option-datasheet.html">ICX -SDR Option Datasheet</a><a href="../docs/handbook-sdr-rtsa.html">SDR Integration Handbook (ICX-FieldHawk)</a><a href="../docs/handbook-sdr-products.html">SDR Product Handbook (Choosing a Receiver)</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/hvx-technical-papers.html">HVX High Voltage Power Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/hvx-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/hvx-technical-papers.html#semiconductor">Semiconductor &amp; Power Electronics Test</a><a href="../docs/hvx-technical-papers.html#production">Production, Calibration &amp; R&amp;D</a><a href="../docs/hvx-technical-papers.html#pulsed-power">Pulsed Power &amp; Capacitor Charging</a><a href="../docs/hvx-technical-papers.html#detectors">Detectors, Nuclear &amp; Industrial</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Technical Notes &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../docs/pdg-technical-papers.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/pdg-technical-papers.html">All Technical Papers</a><a href="../docs/pdg-index.html#s-500">500 Series</a><a href="../docs/pdg-index.html#s-700">700 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/rfsg-technical-papers.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/rfsg-technical-papers.html">All Technical Papers</a><a href="../docs/rfsg-index.html#s-800">800 Series</a><a href="../docs/rfsg-index.html#s-rfs">RFS Series</a><a href="../docs/rfsg-index.html#s-12100">12100 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/scintiq-technical-papers.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/scintiq-technical-papers.html">All Technical Papers</a><a href="../docs/scintiq-index.html">All Detector Materials</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/awg-technical-papers.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/awg-technical-papers.html">All Technical Papers</a><a href="../docs/awg-index.html#s-600">600 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/riid-technical-papers.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/riid-technical-papers.html">All Technical Papers</a><a href="../docs/riid-index.html#s-sam">SAM Series</a><a href="../docs/riid-index.html#s-900">900 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/dei-technical-papers.html">High Voltage/Current Pulsers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/dei-technical-papers.html">All Technical Papers</a><a href="../docs/dei-index.html#s-pvx">PVX Series</a><a href="../docs/dei-index.html#s-pvm">PVM Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/icx-technical-papers.html">ICX-FieldHawk Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/icx-technical-papers.html">All Technical Papers</a><a href="../docs/icx-index.html#s-icx">ICX Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/hvx-technical-papers.html">HVX High Voltage Power Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/hvx-technical-papers.html">All Technical Papers</a><a href="../docs/hvx-index.html#s-hvx">HVX Series</a></div></div></div></div><div class="nav-item"><a class="nav-trigger" href="../support.html">Support &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2" data-bnc-staff>Employee Portal<span class="nc">&#8250;</span><div class="nav-sub"><a href="/employee-portal.html#visitors" target="_blank" rel="noopener">Website Visitor Review</a><a href="/employee-portal.html#pending" target="_blank" rel="noopener">Website Pending Actions</a><a href="/employee-portal.html#docs" target="_blank" rel="noopener">Internal Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/product-documentation.html">Product Documentation</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/pdg-index.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators</a><a href="../docs/rfsg-index.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators &amp; Sensors</a><a href="../docs/scintiq-index.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ)</a><a href="../docs/awg-index.html" target="_blank" rel="noopener">Arbitrary Waveform Generators</a><a href="../docs/riid-index.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection</a><a href="../docs/dei-index.html" target="_blank" rel="noopener">High Power/Current Pulsers</a><a href="../docs/index.html" target="_blank" rel="noopener">ICX-FieldHawk Spectrum Analyzers</a><a href="../docs/hvx-index.html" target="_blank" rel="noopener">HVX High Voltage Power Supplies</a><a href="../docs/webinar-library.html" target="_blank" rel="noopener">Webinar Library</a></div></div><div class="nav-grp2">Service &amp; Resources<span class="nc">&#8250;</span><div class="nav-sub"><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a><a href="../pricing.html">Budgetary Pricing</a><a href="../contact.html" target="_blank" rel="noopener">Contact Regional Representative</a><a href="../docs/software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a><a href="../obsolete-products.html">Obsolete Product Support</a><a href="../academy-free-access.html">Free Academy Course Access</a></div></div><div class="nav-grp2">Frequently Asked Questions<span class="nc">&#8250;</span><div class="nav-sub"><a href="../faq.html">View all FAQs</a><a href="../faq.html#cat-pdg">Pulse &amp; Delay Generators</a><a href="../faq.html#cat-awg">Waveform Generators</a><a href="../faq.html#cat-rf">RF &amp; Microwave</a><a href="../faq.html#cat-pulsed-power">Pulsed Power</a><a href="../faq.html#cat-radiation">Radiation Detection &amp; Isotope Identification</a><a href="../faq.html#cat-scintillation">Scintillation Detectors</a><a href="../faq.html#cat-scientific">BNC Scientific</a><a href="../faq.html#cat-ordering">Ordering &amp; Contact</a></div></div><div class="nav-grp2">About Us<span class="nc">&#8250;</span><div class="nav-sub"><a href="../our-history.html">Our History</a><a href="../management.html">Management Team</a><a href="../docs/press-room.html">Historical Press Room</a></div></div></div></div></nav>
-  <a class="sitenav-cta" href="../get-quote.html">RFQ/Demo</a><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
+  <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">RFQ/Demo</a><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
 </div></header>
 <div id="main" tabindex="-1"></div>
+<section class="hero"><div class="wrap">
+ <nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../support.html">support</a><span class="sep">/</span><a href="product-documentation.html">product docs</a><span class="sep">/</span><a href="../rtsa-home.html">icx-fieldhawk</a><span class="sep">/</span><span aria-current="page">library</span></nav>
+ <h1>ICX-FieldHawk Spectrum Analyzer Library</h1>
+ <p>Product data sheets, user manuals, application notes, and briefs for the Berkeley Nucleonics ICX-FieldHawk real-time spectrum analyzers. One measurement platform in three form factors: a handheld instrument, a field-ready unit, and compact USB and networked receivers, all running the SpectraCore analysis software and sharing a common API.</p>
+</div></section>
 
-<!-- Hero -->
-<div class="doc-hero">
-  <div class="wrap">
-    <div class="ht">
-      <nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../support.html">support</a><span class="sep">/</span><a href="product-documentation.html">product docs</a><span class="sep">/</span><a href="../scintiq-home.html">scintiq</a><span class="sep">/</span><a href="scintiq-index.html">library</a><span class="sep">/</span><span aria-current="page">neutron/gamma discrimination with clyc &amp; cllbc</span></nav>
-      <h1>Neutron/Gamma Discrimination with CLYC and CLLBC</h1>
-      <p>Pulse-shape discrimination, figure of merit, and why elpasolite crystals deliver single-crystal dual-mode radiation detection without a moderator stack or separate neutron counter.</p>
-      <div class="ver">Berkeley Nucleonics ScintIQ&#8482; &nbsp;|&nbsp; Technical Note TN-SIQ-004 &nbsp;|&nbsp; June 2026</div>
-    </div>
-  </div>
+<div class="wrap">
+ <section class="sec" id="by-series">
+  <h2>Browse by Model Series</h2>
+  <p class="sub">Jump straight to the documentation for a model series.</p>
+  <h3 class="series-cat" id="s-icx">ICX Series</h3>
+  <ul class="series-list">
+   <li><a href="bnc-icx-fieldhawk-handheld-datasheet.html">ICX-FieldHawk Real-Time Spectrum Analyzer</a></li>
+   <li><a href="bnc-icx-fieldhawk-rugged-datasheet.html">ICX-FieldHawk-R Real-Time Spectrum Analyzer</a></li>
+   <li><a href="bnc-icx-fieldhawk-usb-datasheet.html">ICX-Series USB/LAN Real-Time Spectrum Analyzer</a></li>
+   <li><a href="bnc-icx-sdr-option-datasheet.html">ICX -SDR Software Defined Radio Option</a></li>
+   <li><a href="bnc-icx-fieldhawk-product-portfolio.html">ICX-FieldHawk Real-Time Spectrum Analyzer Lineup</a></li>
+   <li><a href="bnc-icx-fieldhawk-handheld-manual.html">ICX-FieldHawk Spectrum Analyzer Manual</a></li>
+   <li><a href="bnc-icx-fieldhawk-rugged-manual.html">ICX-FieldHawk-R Spectrum Analyzer Manual</a></li>
+   <li><a href="bnc-icx-series-usb-lan-manual.html">ICX-Series USB &amp; LAN Analyzer Manual</a></li>
+   <li><a href="bnc-icx-series-usb-lan-20ghz-manual.html">ICX-Series/N Spectrum Analyzer Manual, 20 GHz</a></li>
+  </ul>
+ </section>
 </div>
 
-<!-- Article body -->
-<div class="article">
-
-  <div class="article-meta">
-    <span>Classification: Technical White Paper</span>
-    <span>Reading time: ~12 min</span>
-    <span>Related materials: <a href="bnc-scintiq-clyc-datasheet.html">CLYC Data Sheet</a> &nbsp;|&nbsp; <a href="bnc-scintiq-cllbc-datasheet.html">CLLBC Data Sheet</a></span>
+<div class="wrap">
+ <section class="sec">
+  <h2>Product Data Sheets</h2>
+  <p class="sub">Specifications and operating overview for each form factor in the line.</p>
+  <div class="list">
+   <a class="row g" href="bnc-icx-fieldhawk-handheld-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/icx-handheld.png" alt="ICX-FieldHawk Real-Time Spectrum Analyzer" loading="lazy"></div><div class="ctext"><h3>ICX-FieldHawk Real-Time Spectrum Analyzer</h3><p>Handheld real-time spectrum analyzer, 9 kHz to 40 GHz, with 100 MHz of analysis bandwidth and an FPGA FFT engine.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row g" href="bnc-icx-fieldhawk-rugged-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/icx-rugged.png" alt="ICX-FieldHawk-R Real-Time Spectrum Analyzer" loading="lazy"></div><div class="ctext"><h3>ICX-FieldHawk-R Real-Time Spectrum Analyzer</h3><p>Field-ready analyzer for outdoor and vehicle work, 9 kHz to 40 GHz, with 100 MHz of analysis bandwidth.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row g" href="bnc-icx-fieldhawk-usb-datasheet.html" target="_blank" rel="noopener"><div class="type thumb"><img class="rowthumb" src="figures/thumbs/icx-usb.png" alt="ICX-Series USB/LAN Real-Time Spectrum Analyzer" loading="lazy"></div><div class="ctext"><h3>ICX-Series USB/LAN Real-Time Spectrum Analyzer</h3><p>Compact USB and networked receivers, 9 kHz to 40 GHz, driven from a host running SpectraCore.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-icx-sdr-option-datasheet.html" target="_blank" rel="noopener"><div class="type">Datasheet</div><div class="ctext"><h3>ICX -SDR Software Defined Radio Option</h3><p>The -SDR option turns any ICX analyzer into a calibrated software defined radio, with SoapySDR and GNU Radio support.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener"><div class="type">Datasheet</div><div class="ctext"><h3>ICX-FieldHawk Lineup and Comparison Matrix</h3><p>Compare the three form factors and frequency tiers side by side, with accessories and options.</p></div><div class="open">Open &rarr;</div></a>
   </div>
+ </section>
+</div>
 
-  <!-- 1. Introduction -->
-  <section id="introduction">
-    <h2>1. The Dual-Mode Detection Problem</h2>
-    <p>Radiation portal monitors, handheld radioisotope identifiers (RIIDs), and physics experiments share a common requirement: distinguishing neutrons from gamma rays in real time, with a single compact sensor. The challenge is that most scintillators respond to both radiation types. A NaI(Tl) crystal, for instance, records a gamma photon and a neutron interaction with nearly identical pulse shapes. Separating the two streams requires either a separate <sup>3</sup>He or <sup>6</sup>Li neutron counter operated alongside the gamma detector, or a dedicated moderator assembly to thermalize fast neutrons before they reach the sensing volume. Both approaches add weight, volume, and complexity.</p>
-    <p>Elpasolite crystals, specifically CLYC (Cs<sub>2</sub>LiYCl<sub>6</sub>:Ce) and CLLBC (Cs<sub>2</sub>LiLaBr<sub>4.8</sub>Cl<sub>1.2</sub>:Ce), solve this at the material level. A single crystal simultaneously captures thermal neutrons and gamma photons, and produces scintillation pulses whose time profiles are distinct enough that digital signal processing can assign each event to one category or the other. The result is a compact, single-readout detector capable of simultaneous gamma spectroscopy and neutron detection, no secondary counter required.</p>
-    <p>This paper explains the physical mechanism behind that discrimination, defines the figure of merit (FOM) used to quantify its quality, and describes the specific properties of CLYC and CLLBC that make them the preferred choice when dual-mode performance matters.</p>
-  </section>
+<div class="wrap">
+ <section class="sec">
+  <h2>User Manuals</h2>
+  <p class="sub">Operating, measurement, and remote-control reference for each model.</p>
+  <div class="list">
+   <a class="row p" href="bnc-icx-fieldhawk-handheld-manual.html" target="_blank" rel="noopener"><div class="type">User Manual</div><div class="ctext"><h3>ICX-FieldHawk User Manual</h3><p>Operating, measurement, and remote-control reference for the handheld models.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-icx-fieldhawk-rugged-manual.html" target="_blank" rel="noopener"><div class="type">User Manual</div><div class="ctext"><h3>ICX-FieldHawk-R User Manual</h3><p>Operating, measurement, and remote-control reference for the ICX-FieldHawk-R field-ready models.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-icx-series-usb-lan-manual.html" target="_blank" rel="noopener"><div class="type">User Manual</div><div class="ctext"><h3>ICX-Series USB &amp; LAN User Manual</h3><p>Operating reference for the USB and networked receivers, including the unified API.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-icx-series-usb-lan-20ghz-manual.html" target="_blank" rel="noopener"><div class="type">User Manual</div><div class="ctext"><h3>ICX-Series/N User Manual, 20 GHz</h3><p>Operating reference for the 9 kHz to 20 GHz USB and Ethernet models.</p></div><div class="open">Open &rarr;</div></a>
+  </div>
+ </section>
+</div>
 
-  <!-- 2. Physics of PSD -->
-  <section id="psd-physics">
-    <h2>2. How Pulse-Shape Discrimination Works</h2>
+<div class="wrap">
+ <section class="sec">
+  <h2>Application Notes</h2>
+  <p class="sub">The BNC-AN series: measurement technique and system design with ICX receivers.</p>
+  <div class="list">
+   <a class="row p" href="bnc-an-101-programmable-spectrum-analyzer.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-101: The Programmable Spectrum Analyzer</h3><p>What separates a measurement from a reading, and six requirements for a programmable analyzer.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-102-wide-area-spectrum-monitoring.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-102: Wide-Area Spectrum Monitoring</h3><p>Building wide-area monitoring on ICX receivers, with gap-free capture and automated emitter classification.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-103-detecting-uas-and-operators.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-103: Detecting UAS and Operators</h3><p>Detecting commercial drones and locating their operators, with antennas and field geolocation.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-104-satellite-earth-station-commissioning.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-104: Satellite Earth Station Commissioning</h3><p>Commissioning an earth station with a portable analyzer, from carrier checks to interference hunts.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-105-rf-record-and-playback.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-105: RF Record and Playback</h3><p>Capturing IQ in the field and replaying it on the bench with a vector signal generator.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-106-uav-borne-antenna-measurement.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-106: UAV-Borne Antenna Measurement</h3><p>Antenna pattern and airborne radio measurement with lightweight USB modules flown on drones.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-107-emf-safety-and-rf-exposure.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-107: EMF Safety and RF Exposure</h3><p>EMF safety and RF exposure work, from exposure limits to site survey practice and reporting.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-108-5g-wifi-bluetooth-analysis.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-108: 5G, Wi-Fi and Bluetooth Analysis</h3><p>Analyzing 5G NR, Wi-Fi, and Bluetooth in one instrument, with channel measurements and demodulation.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-109-emc-pre-compliance.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-109: EMC Pre-Compliance Testing</h3><p>Pre-compliance testing on your own bench, with limit lines, detectors, and emission scan practice.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="bnc-an-110-oem-module-integration.html" target="_blank" rel="noopener"><div class="type">Application Note</div><div class="ctext"><h3>BNC-AN-110: OEM Module Integration</h3><p>Designing an ICX module into your own product, with the unified API and system design practice.</p></div><div class="open">Open &rarr;</div></a>
+  </div>
+ </section>
+</div>
 
-    <h3>2.1 The Scintillation Pulse</h3>
-    <p>When an ionizing particle deposits energy in a scintillator, it excites the crystal lattice and the luminescent centers (usually Ce<sup>3+</sup> or Tl<sup>+</sup>) emit photons over a characteristic time profile. That profile is not a single exponential. In practice, it is a sum of components with different decay constants, each weighted according to how the excited state was populated. Gamma rays interact primarily via Compton scattering and photoelectric absorption, creating fast electrons. Those electrons deposit their energy in a way that preferentially populates fast-decaying singlet states. Neutrons, by contrast, produce recoil protons (fast neutrons) or lithium and alpha fragments (thermal neutrons via the <sup>6</sup>Li(n,t)&#945; reaction), and heavier charged particles are more densely ionizing. Dense ionization populates slower triplet and trap states at a higher rate. The tail of the pulse is therefore longer and brighter for neutron events than for gamma events at the same total deposited energy.</p>
-    <p>PSD exploits this difference. Two quantities are measured per pulse: the total integrated charge (Q<sub>total</sub>), which is proportional to the deposited energy, and the charge in a late time window (Q<sub>tail</sub>), which captures the slow component. The ratio Q<sub>tail</sub>/Q<sub>total</sub>, sometimes called the tail-fraction or PSD parameter, separates neutron events from gamma events when plotted against Q<sub>total</sub>. The result is a two-dimensional scatter plot with two distinct populations.</p>
+<div class="wrap">
+ <section class="sec">
+  <h2>Technical Notes</h2>
+  <p class="sub">Background on real-time spectrum analysis and where it changes the measurement.</p>
+  <div class="list">
+   <a class="row p" href="article-rtsa-practical-guide.html" target="_blank" rel="noopener"><div class="type">Technical Note</div><div class="ctext"><h3>A Practical Guide to Real-Time Spectrum Analysis</h3><p>Why gap-free capture catches the microsecond bursts a swept analyzer misses.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="article-ew-rtsa.html" target="_blank" rel="noopener"><div class="type">Technical Note</div><div class="ctext"><h3>Real-Time Spectrum Analysis for Electronic Warfare</h3><p>Catching brief, agile, low-probability-of-intercept signals with density displays and mask triggering.</p></div><div class="open">Open &rarr;</div></a>
+  </div>
+ </section>
+</div>
 
-    <h3>2.2 The Figure of Merit</h3>
-    <p>Quantifying how well separated those two populations are requires a single number. The standard definition is:</p>
-    <div class="note" style="font-family:var(--font-mono);font-size:.93rem;letter-spacing:.01em;">
-      FOM = S / (FWHM<sub>n</sub> + FWHM<sub>&#947;</sub>)
-    </div>
-    <p>where S is the separation between the centroids of the neutron and gamma bands in PSD-parameter space, and FWHM<sub>n</sub> and FWHM<sub>&#947;</sub> are the full-widths at half-maximum of each band. A FOM above 1.0 indicates that the two populations are resolved with less than roughly 0.1% overlap at their base. FOM values above 1.5 to 2.0 are generally considered excellent for practical instruments; misclassification rates fall into the parts-per-thousand range or better. Below FOM 0.8, discrimination becomes unreliable and coincidence methods or additional moderator shielding may be needed.</p>
-    <p>Several factors influence the FOM a given crystal achieves in practice. Light yield matters because higher photon output reduces photon-counting statistics, sharpening each band. The ratio of fast-to-slow decay components must differ enough between particle types; if the crystal has only one scintillation pathway, there is nothing to discriminate. Detector noise, photomultiplier transit-time spread, and digitizer sampling rate all broaden the bands and degrade the FOM. Crystal purity and the uniformity of Ce<sup>3+</sup> activation also affect how consistently a given particle type produces the same pulse shape.</p>
+<div class="wrap">
+ <section class="sec">
+  <h2>Application Briefs</h2>
+  <p class="sub">How the line is deployed, by mission and by industry.</p>
+  <div class="list">
+   <a class="row p" href="brief-spectrum-monitoring.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Spectrum Monitoring &amp; Enforcement</h3><p>Regulatory monitoring, interference enforcement, and occupancy analysis with recorded evidence.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-rf-geolocation-mapping.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>RF Geolocation &amp; Signal Mapping</h3><p>Pairing GNSS and a directional antenna to find, plot, and chase RF sources in the field.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-drone-spectrum-monitoring.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Drone Spectrum Monitoring Payload</h3><p>A sub-200 gram USB module that flies on a UAV, mapping position-tagged RF where the ground cannot reach.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-ew-sigint.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Receivers for EW &amp; SIGINT Field Teams</h3><p>Wide, gap-free capture and fast signal characterization for EW and SIGINT teams on battery power.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-aerospace-defense-radar.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Radar &amp; Defense Spectrum Testing</h3><p>Capturing pulsed radar, agile emitters, and buried signals for threat characterization.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-5g-cellular-coverage.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>5G &amp; Cellular Coverage Testing to 40 GHz</h3><p>Walk-test and drive-test coverage validation to 40 GHz, including the mmWave bands.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-wireless-5g6g-validation.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Wireless &amp; 5G/6G System Validation</h3><p>Debugging high-order modulation and intermittent errors across Wi-Fi 7, IoT, LTE, and 5G NR.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-emi-emc-precompliance.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>EMI &amp; EMC Pre-Compliance Testing</h3><p>Catching impulsive bursts and clock spurs during R&amp;D, before a failed compliance slot costs weeks.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-rd-university-kits.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>Test Kits for R&amp;D &amp; University Labs</h3><p>Portable receivers with an open API for teaching, prototypes, and published work.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="brief-physics-synthesizer.html" target="_blank" rel="noopener"><div class="type">Application Brief</div><div class="ctext"><h3>RTSA for Physics &amp; Synthesizer Test</h3><p>Measuring beam stability, phase noise, and frequency hopping for physics and synthesizer diagnostics.</p></div><div class="open">Open &rarr;</div></a>
+  </div>
+ </section>
+</div>
 
-    <!-- SVG 1: PSD scatter diagram -->
-    <div class="svg-diagram">
-      <figure>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 360" width="620" height="360" role="img" aria-label="Conceptual PSD scatter plot showing neutron and gamma bands">
-          <!-- Background -->
-          <rect width="620" height="360" fill="#f5f7fa" rx="6"/>
-          <!-- Plot area -->
-          <rect x="70" y="30" width="500" height="270" fill="#ffffff" stroke="#e3e7ee" stroke-width="1.5" rx="3"/>
-          <!-- Grid lines horizontal -->
-          <line x1="70" y1="96" x2="570" y2="96" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="70" y1="162" x2="570" y2="162" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="70" y1="228" x2="570" y2="228" stroke="#e3e7ee" stroke-width="1"/>
-          <!-- Grid lines vertical -->
-          <line x1="195" y1="30" x2="195" y2="300" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="320" y1="30" x2="320" y2="300" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="445" y1="30" x2="445" y2="300" stroke="#e3e7ee" stroke-width="1"/>
-          <!-- Axis labels -->
-          <text x="320" y="330" font-family="Arial,sans-serif" font-size="12" fill="#5b6677" text-anchor="middle">Q&#8209;total (deposited energy, keVee)</text>
-          <text x="22" y="165" font-family="Arial,sans-serif" font-size="12" fill="#5b6677" text-anchor="middle" transform="rotate(-90,22,165)">PSD parameter (Q&#8209;tail / Q&#8209;total)</text>
-          <!-- X axis ticks -->
-          <text x="195" y="316" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">100</text>
-          <text x="320" y="316" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">300</text>
-          <text x="445" y="316" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">500</text>
-          <!-- Y axis ticks -->
-          <text x="62" y="300" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="end">0.10</text>
-          <text x="62" y="228" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="end">0.25</text>
-          <text x="62" y="162" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="end">0.40</text>
-          <text x="62" y="96" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="end">0.55</text>
-          <!-- Gamma band: lower PSD values (Q_tail/Q_total ~0.12-0.22), spread horizontally -->
-          <!-- Ellipse representing gamma cluster -->
-          <ellipse cx="310" cy="270" rx="155" ry="22" fill="rgba(6,85,163,0.13)" stroke="#0655a3" stroke-width="1.5"/>
-          <!-- Gamma scatter dots -->
-          <g fill="#0655a3" opacity="0.55">
-            <circle cx="158" cy="272" r="3"/><circle cx="172" cy="268" r="2.5"/><circle cx="185" cy="275" r="3"/>
-            <circle cx="200" cy="266" r="2.5"/><circle cx="215" cy="270" r="3"/><circle cx="228" cy="273" r="2"/>
-            <circle cx="242" cy="264" r="3"/><circle cx="255" cy="271" r="2.5"/><circle cx="268" cy="267" r="3"/>
-            <circle cx="282" cy="274" r="2"/><circle cx="295" cy="269" r="3"/><circle cx="308" cy="272" r="2.5"/>
-            <circle cx="322" cy="265" r="3"/><circle cx="335" cy="270" r="2"/><circle cx="348" cy="273" r="3"/>
-            <circle cx="362" cy="267" r="2.5"/><circle cx="375" cy="271" r="3"/><circle cx="388" cy="268" r="2"/>
-            <circle cx="402" cy="275" r="3"/><circle cx="415" cy="263" r="2.5"/><circle cx="428" cy="270" r="3"/>
-            <circle cx="442" cy="272" r="2"/><circle cx="455" cy="266" r="3"/><circle cx="468" cy="273" r="2.5"/>
-            <circle cx="178" cy="281" r="2"/><circle cx="245" cy="279" r="2"/><circle cx="312" cy="280" r="2"/>
-            <circle cx="380" cy="278" r="2"/><circle cx="448" cy="282" r="2"/>
-            <circle cx="191" cy="260" r="2"/><circle cx="260" cy="258" r="2"/><circle cx="329" cy="261" r="2"/>
-            <circle cx="398" cy="259" r="2"/><circle cx="460" cy="262" r="2"/>
-          </g>
-          <!-- Label gamma band -->
-          <text x="310" y="255" font-family="Arial,sans-serif" font-size="11" fill="#113163" text-anchor="middle" font-weight="700">gamma (&#947;)</text>
+<div class="wrap">
+ <section class="sec">
+  <h2>Handbooks</h2>
+  <p class="sub">Longer-form references on SDR integration and receiver selection.</p>
+  <div class="list">
+   <a class="row p" href="handbook-sdr-rtsa.html" target="_blank" rel="noopener"><div class="type">Reference</div><div class="ctext"><h3>SDR Integration Handbook</h3><p>A 44-page reference on running open software against a calibrated analyzer, with six GNU Radio signal chains.</p></div><div class="open">Open &rarr;</div></a>
+   <a class="row p" href="handbook-sdr-products.html" target="_blank" rel="noopener"><div class="type">Reference</div><div class="ctext"><h3>SDR Product Handbook: Choosing a Receiver</h3><p>A 57-page reference on the SDR product landscape: architectures, dynamic range, phase noise, and the software stack.</p></div><div class="open">Open &rarr;</div></a>
+  </div>
+ </section>
+</div>
 
-          <!-- Neutron band: higher PSD values (Q_tail/Q_total ~0.40-0.52), narrower horizontal spread (thermal n) -->
-          <ellipse cx="300" cy="110" rx="105" ry="22" fill="rgba(6,168,80,0.12)" stroke="#15803d" stroke-width="1.5"/>
-          <!-- Neutron scatter dots -->
-          <g fill="#15803d" opacity="0.65">
-            <circle cx="210" cy="112" r="3"/><circle cx="225" cy="106" r="2.5"/><circle cx="240" cy="115" r="3"/>
-            <circle cx="255" cy="108" r="2"/><circle cx="268" cy="112" r="3"/><circle cx="282" cy="107" r="2.5"/>
-            <circle cx="295" cy="114" r="3"/><circle cx="308" cy="110" r="2"/><circle cx="322" cy="106" r="3"/>
-            <circle cx="335" cy="113" r="2.5"/><circle cx="348" cy="109" r="3"/><circle cx="362" cy="116" r="2"/>
-            <circle cx="375" cy="108" r="3"/><circle cx="388" cy="112" r="2.5"/>
-            <circle cx="230" cy="120" r="2"/><circle cx="300" cy="118" r="2"/><circle cx="370" cy="121" r="2"/>
-            <circle cx="220" cy="100" r="2"/><circle cx="290" cy="98" r="2"/><circle cx="360" cy="101" r="2"/>
-          </g>
-          <!-- Label neutron band -->
-          <text x="300" y="96" font-family="Arial,sans-serif" font-size="11" fill="#14532d" text-anchor="middle" font-weight="700">neutron (n)</text>
-
-          <!-- FOM separation arrow -->
-          <line x1="490" y1="112" x2="490" y2="268" stroke="#c77e00" stroke-width="1.8" marker-end="url(#arr-d)" marker-start="url(#arr-u)"/>
-          <defs>
-            <marker id="arr-d" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-              <path d="M0,0 L8,4 L0,8 Z" fill="#c77e00"/>
-            </marker>
-            <marker id="arr-u" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
-              <path d="M0,0 L8,4 L0,8 Z" fill="#c77e00"/>
-            </marker>
-          </defs>
-          <text x="500" y="194" font-family="Arial,sans-serif" font-size="11" fill="#b45309" font-weight="700">S</text>
-          <text x="496" y="207" font-family="Arial,sans-serif" font-size="10" fill="#b45309">(FOM</text>
-          <text x="496" y="219" font-family="Arial,sans-serif" font-size="10" fill="#b45309">sep.)</text>
-
-          <!-- Discrimination threshold line -->
-          <line x1="70" y1="190" x2="570" y2="190" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="6,4"/>
-          <text x="75" y="186" font-family="Arial,sans-serif" font-size="10" fill="#dc2626">PSD cut</text>
-
-          <!-- Title -->
-          <text x="320" y="18" font-family="Myriad Pro,Arial,sans-serif" font-size="12" fill="#113163" text-anchor="middle" font-weight="700">Conceptual PSD Scatter Plot (CLYC / CLLBC)</text>
-        </svg>
-        <figcaption>Figure 1. Conceptual two-dimensional PSD scatter plot. Each point represents one event. Gamma interactions (blue, lower PSD parameter) and thermal neutron interactions (green, higher PSD parameter) separate into distinct bands. The red dashed line marks a digital discrimination threshold. The amber arrow shows the centroid separation S used to compute the figure of merit.</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- 3. Why CLYC and CLLBC -->
-  <section id="elpasolite-advantage">
-    <h2>3. The Elpasolite Advantage</h2>
-
-    <h3>3.1 Crystal Structure and Neutron Sensitivity</h3>
-    <p>CLYC and CLLBC belong to the elpasolite family, characterized by a double-perovskite structure with the general formula A<sub>2</sub>BB'X<sub>6</sub>. In both materials, lithium occupies the B' site at high concentration. Lithium-6 has a thermal neutron capture cross section of approximately 940 barns via the reaction:</p>
-    <div class="note" style="font-family:var(--font-mono);font-size:.9rem;">
-      <sup>6</sup>Li + n&#8202;&#8594;&#8202;<sup>4</sup>He + <sup>3</sup>H &nbsp;&nbsp; (Q = 4.78 MeV)
-    </div>
-    <p>Both the alpha and triton fragments are densely ionizing. They deposit their combined 4.78 MeV energy over very short tracks inside the crystal, producing a high local ionization density. As described in Section 2.1, this dense excitation strongly populates the slow scintillation component, giving neutron events a distinctly longer tail. Gamma-induced Compton electrons are far less dense in ionization and produce a faster pulse. The contrast between the two regimes is large enough in elpasolites that FOM values well above 1.0 are achievable with standard photomultiplier readout and modest digital filtering.</p>
-    <p>CLYC achieves this with a composition of Cs<sub>2</sub>LiYCl<sub>6</sub>:Ce, where yttrium provides the crystal host lattice and chloride anions enable reasonable transparency at the Ce<sup>3+</sup> emission wavelength near 370 nm. The density is 3.31 g/cm<sup>3</sup>, the refractive index is 1.81, and the decay structure features three distinct components at roughly 1 ns, 50 ns, and 1,000 ns. The relative light yield is 30 to 40 (on the NaI(Tl) = 100 scale), which is modest compared to NaI(Tl) but sufficient for clear PSD at gamma energies above roughly 200 keVee. Hygroscopicity requires hermetic encapsulation, though standard aluminum or stainless housings are well established for this crystal family.</p>
-    <p>CLLBC extends the elpasolite concept by replacing yttrium with lanthanum and partially substituting bromine for chlorine: Cs<sub>2</sub>LiLaBr<sub>4.8</sub>Cl<sub>1.2</sub>:Ce. The result is a significantly brighter material (relative light yield 70 on the same scale) with better energy resolution. The density rises to 4.08 g/cm<sup>3</sup>, the emission shifts to about 420 nm, and the dominant decay components fall around 120 ns and 500 ns. The higher light yield sharpens both the PSD bands and the gamma energy resolution, making CLLBC particularly attractive when the instrument must perform simultaneous isotope identification and neutron detection at good resolution.</p>
-
-    <h3>3.2 Three Scintillation Channels in One Crystal</h3>
-    <p>What makes elpasolites unusual is that a single crystal volume supports three distinct detection modes. First, thermal neutrons are captured via the <sup>6</sup>Li reaction and produce the high-PSD-parameter events already described. Second, gamma rays scatter and photoabsorb, producing the low-PSD-parameter population. Third, fast neutrons above roughly 0.5 MeV interact with hydrogen-containing materials in the housing or via direct recoil in the crystal chlorine and cesium nuclei; these events appear at intermediate PSD values and require either moderation or coincidence gating to extract cleanly. In most fielded RIID instruments, a thin polyethylene moderator disk (a few centimeters) thermalizes fast neutrons before they reach the crystal, so the detector effectively sees a clean thermal neutron beam and a gamma field simultaneously.</p>
-    <p>This three-mode sensitivity, governed by a single photomultiplier or SiPM readout, is the fundamental reason elpasolites have displaced <sup>3</sup>He tubes in next-generation handheld identifiers. There is no high-pressure gas to handle, no separate preamplifier chain for the neutron counter, and no alignment requirement between two detector heads.</p>
-
-    <h3>3.3 Comparing CLYC and CLLBC for Practical Use</h3>
-    <table class="spec">
-      <thead>
-        <tr>
-          <th>Property</th>
-          <th>CLYC</th>
-          <th>CLLBC</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Density (g/cm&#179;)</td><td>3.31</td><td>4.08</td></tr>
-        <tr><td>Emission peak (nm)</td><td>~370</td><td>~420</td></tr>
-        <tr><td>Principal decay components</td><td>~1 ns / ~50 ns / ~1,000 ns</td><td>~120 ns / ~500 ns</td></tr>
-        <tr><td>Relative light yield (NaI=100)</td><td>30 to 40</td><td>~70</td></tr>
-        <tr><td>Refractive index</td><td>1.81</td><td>1.90</td></tr>
-        <tr><td>Hygroscopic</td><td>Yes (hermetic housing required)</td><td>Yes (hermetic housing required)</td></tr>
-        <tr><td>PSD capability</td><td>Excellent (&gt;1.5 FOM typical)</td><td>Excellent (&gt;1.5 FOM typical)</td></tr>
-        <tr><td>Gamma energy resolution</td><td>Moderate <span data-webmaster>(verify vs. configuration)</span></td><td>Better (&lt;4% at 662 keV, verify)</td></tr>
-        <tr><td>Primary driver to choose</td><td>Lowest cost, proven RIID heritage</td><td>Higher light output, better resolution</td></tr>
-        <tr><td>Primary applications</td><td>RIID, portal monitors, physics</td><td>RIID, high-resolution dual-mode</td></tr>
-      </tbody>
-    </table>
-    <p class="note"><b>Note:</b> Energy resolution values for CLLBC are based on general literature for this crystal class; confirm against specific crystal lot and readout configuration before citing in instrument specifications.</p>
-  </section>
-
-  <!-- 4. Signal Processing -->
-  <section id="signal-processing">
-    <h2>4. Digital PSD Implementation</h2>
-
-    <h3>4.1 Charge Integration Windows</h3>
-    <p>Modern multichannel analyzers such as the Berkeley Nucleonics bMCA implement PSD in firmware using programmable charge integration windows. When a pulse arrives, the digitizer captures the full waveform at a sampling rate typically between 125 MHz and 500 MHz. A short integration gate (commonly 50 to 80 ns wide) captures the prompt component of the pulse; a longer gate extending 500 ns to several microseconds captures the total charge including the slow tail. The ratio of late-window charge to total charge is computed per event and stored alongside the energy value, forming the two-dimensional scatter histogram shown in Figure 1.</p>
-    <p>Gate timing is the primary tunable parameter. If the short gate is too narrow it clips the gamma peak and reduces separation. If the long gate extends unnecessarily, dark current noise and pile-up at high count rates degrade both bands. For CLYC, where the slow component extends to 1 microsecond, a 1.2 microsecond total gate with a 60 ns prompt gate is a commonly cited starting point; for CLLBC with its shorter dominant components, a tighter total gate often delivers adequate separation with less sensitivity to pile-up. Both materials benefit from validated gate settings at the specific count rate and detector geometry of the application.</p>
-
-    <h3>4.2 Applying the PSD Cut</h3>
-    <p>Once the scatter plot is populated, a threshold is set in PSD-parameter space (the dashed red line in Figure 1). Events above the cut are classified as neutrons; those below are gamma. The threshold position involves a tradeoff: moving it upward reduces gamma misclassification into the neutron count but lowers neutron detection efficiency. In regulatory contexts such as ANSI N42.34 or IEC 62327, specific sensitivity and selectivity requirements constrain where the cut can sit. Instrument firmware typically offers a user-adjustable sensitivity setting that moves this threshold, with the default factory setting targeting the standard's minimum neutron sensitivity.</p>
-    <p>For high-count-rate environments (portal monitors processing tens of thousands of events per second), digital pile-up rejection is essential before the PSD algorithm runs. A pulse that represents two overlapping events will produce a spurious PSD value and appear in a region of the scatter plot between the two bands. Pile-up rejection circuitry, or software that flags pulses with anomalous rise times, keeps these events from polluting the classification.</p>
-
-    <!-- SVG 2: Pulse shape timing diagram -->
-    <div class="svg-diagram">
-      <figure>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 310" width="620" height="310" role="img" aria-label="Schematic pulse shape comparison between gamma and neutron events">
-          <!-- Background -->
-          <rect width="620" height="310" fill="#f5f7fa" rx="6"/>
-          <!-- Plot area -->
-          <rect x="70" y="28" width="510" height="230" fill="#ffffff" stroke="#e3e7ee" stroke-width="1.5" rx="3"/>
-          <!-- Grid -->
-          <line x1="70" y1="82" x2="580" y2="82" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="70" y1="143" x2="580" y2="143" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="70" y1="200" x2="580" y2="200" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="200" y1="28" x2="200" y2="258" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="330" y1="28" x2="330" y2="258" stroke="#e3e7ee" stroke-width="1"/>
-          <line x1="460" y1="28" x2="460" y2="258" stroke="#e3e7ee" stroke-width="1"/>
-          <!-- Axes labels -->
-          <text x="325" y="285" font-family="Arial,sans-serif" font-size="12" fill="#5b6677" text-anchor="middle">Time (ns)</text>
-          <text x="20" y="143" font-family="Arial,sans-serif" font-size="12" fill="#5b6677" text-anchor="middle" transform="rotate(-90,20,143)">Light output (a.u.)</text>
-          <!-- X ticks -->
-          <text x="70" y="272" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">0</text>
-          <text x="200" y="272" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">200</text>
-          <text x="330" y="272" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">500</text>
-          <text x="460" y="272" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">1000</text>
-          <text x="580" y="272" font-family="Arial,sans-serif" font-size="10" fill="#5b6677" text-anchor="middle">2000</text>
-          <!-- Gamma pulse (fast decay, blue) -->
-          <!-- Rising edge then fast decay -->
-          <polyline points="70,245 90,40 115,90 145,130 180,160 220,185 270,205 330,218 410,232 490,240 580,244"
-            fill="none" stroke="#0655a3" stroke-width="2.2"/>
-          <!-- Neutron pulse (same peak, slower tail, green) -->
-          <polyline points="70,245 90,40 115,88 145,118 180,140 220,155 270,165 330,172 410,180 490,188 580,196"
-            fill="none" stroke="#15803d" stroke-width="2.2"/>
-          <!-- Short gate marker (prompt gate) -->
-          <rect x="70" y="28" width="130" height="230" fill="rgba(6,85,163,0.06)" stroke="none"/>
-          <line x1="200" y1="28" x2="200" y2="258" stroke="#0655a3" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <text x="130" y="22" font-family="Arial,sans-serif" font-size="10" fill="#0655a3" text-anchor="middle">Prompt gate</text>
-          <!-- Long gate marker -->
-          <rect x="200" y="28" width="260" height="230" fill="rgba(200,126,0,0.05)" stroke="none"/>
-          <line x1="460" y1="28" x2="460" y2="258" stroke="#c77e00" stroke-width="1.5" stroke-dasharray="4,3"/>
-          <text x="330" y="22" font-family="Arial,sans-serif" font-size="10" fill="#b45309" text-anchor="middle">Tail gate</text>
-          <!-- Legend -->
-          <line x1="85" y1="250" x2="115" y2="250" stroke="#0655a3" stroke-width="2.2"/>
-          <text x="120" y="253" font-family="Arial,sans-serif" font-size="11" fill="#0655a3">Gamma event (fast tail)</text>
-          <line x1="85" y1="265" x2="115" y2="265" stroke="#15803d" stroke-width="2.2"/>
-          <text x="120" y="268" font-family="Arial,sans-serif" font-size="11" fill="#15803d">Neutron event (slow tail)</text>
-          <!-- Title -->
-          <text x="325" y="16" font-family="Myriad Pro,Arial,sans-serif" font-size="12" fill="#113163" text-anchor="middle" font-weight="700">Schematic Pulse Shapes: Gamma vs. Neutron (CLYC / CLLBC)</text>
-        </svg>
-        <figcaption>Figure 2. Schematic scintillation pulses for a gamma event (blue) and a neutron event (green) at similar deposited energy. Both pulses share a fast rising edge and a common prompt component. The neutron pulse carries significantly more charge in the slow tail beyond the prompt gate window. The ratio of tail-gate charge to total charge is the PSD parameter; the difference between the two curves in the tail region drives a high figure of merit.</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- 5. System Design -->
-  <section id="system-design">
-    <h2>5. System-Level Design Considerations</h2>
-
-    <h3>5.1 Readout Selection: PMT or SiPM</h3>
-    <p>Both photomultiplier tubes and silicon photomultipliers work with CLYC and CLLBC, but the choice affects PSD performance. PMTs with bialkali photocathodes have good quantum efficiency near the 370 nm emission of CLYC and good single-photon timing resolution. Transit-time spread in the 0.5 to 1.5 ns range is the main PMT contribution to pulse-shape blurring. For CLYC, where the short (1 ns) component is so fast that it is near the limit of standard PMT timing, that transit-time spread has some impact but the dominant PSD contrast comes from the 50 ns and 1,000 ns components, which are far more forgiving.</p>
-    <p>SiPMs offer compact geometry, low supply voltage, and ruggedness against magnetic fields. The primary concern for PSD applications is SiPM dark count rate: at room temperature, dark pulses occur at hundreds of kilocounts per second per square millimeter, and they pile onto the slow tail, increasing apparent Q<sub>tail</sub> for events occurring shortly after a dark pulse. Careful threshold setting and coincidence timing can mitigate this, and at low temperatures dark count rate drops rapidly. CLLBC, with its higher light yield and longer dominant decay components (120 and 500 ns), is generally more tolerant of SiPM dark noise than CLYC in the same geometry.</p>
-
-    <h3>5.2 Crystal Volume and Count Rate</h3>
-    <p>Larger crystals improve detection efficiency but increase the probability of multiple simultaneous interactions and make pulse pile-up more frequent at high gamma fluxes. RIID applications typically use 1-inch to 2-inch diameter crystals. Portal monitors may use arrays of 2-inch or 3-inch cylinders. At count rates above roughly 50,000 cps in a 2-inch CLYC crystal, pile-up begins to smear the PSD scatter plot and FOM degrades measurably. Digital pile-up rejection at the MCA level (as implemented in the bMCA) or external shaping cuts the effective duty cycle in exchange for cleaner separation at high flux.</p>
-
-    <h3>5.3 Moderator Geometry for Fast-Neutron Applications</h3>
-    <p>The <sup>6</sup>Li(n,t)&#945; reaction has its peak cross section for thermal neutrons. In most real-world neutron threat scenarios (special nuclear materials in shielded configurations, illicit trafficking), neutrons arriving at the detector have energy distributions extending from thermal up to several MeV. A few centimeters of polyethylene in front of the crystal converts a significant fraction of fast neutrons to thermal. The moderator thickness involves a tradeoff: very thick moderators thermalize more fast neutrons but attenuate the gamma flux of interest (high-energy gammas from SNM) and increase size and weight. A common compromise for handheld instruments is 1 to 2 cm of polyethylene.</p>
-    <p>CLLBC's higher density (4.08 vs. 3.31 g/cm<sup>3</sup> for CLYC) also gives it marginally higher gamma stopping power per unit volume, an advantage when the same crystal must deliver good gamma spectroscopy efficiency alongside neutron detection.</p>
-  </section>
-
-  <!-- 6. Performance Benchmarks -->
-  <section id="performance">
-    <h2>6. Performance in Context</h2>
-
-    <h3>6.1 How Elpasolites Compare to Alternative Approaches</h3>
-    <p>Before CLYC became commercially available, the standard dual-mode approach paired a NaI(Tl) or LaBr<sub>3</sub>(Ce) gamma detector with a separate <sup>3</sup>He proportional tube or a <sup>6</sup>Li-doped glass scintillator. Helium-3 tubes offer essentially zero gamma sensitivity (with appropriate discrimination electronics) and very high intrinsic neutron detection efficiency, but supply constraints, size, and the complexity of a two-detector module drove the industry to pursue single-crystal alternatives. <sup>6</sup>Li-glass, listed in the ScintIQ materials portfolio, is non-hygroscopic and fast (60 ns decay), but its relative light yield of 4 to 6 severely limits gamma spectroscopy quality. It is well-suited to purely neutron-counting applications where gamma rejection (rather than coincident gamma spectroscopy) is the goal.</p>
-    <p>CLYC and CLLBC uniquely occupy the space where good gamma spectroscopy and reliable PSD coexist in a single volume. LaBr<sub>3</sub>(Ce) offers better intrinsic gamma resolution (around 2.7% at 662 keV) than either elpasolite, but it has no useful neutron discrimination capability and contains La-138 (a natural radioactive isotope) that adds a background line to its own spectrum. CLLBC substitutes a fraction of the La<sup>3+</sup> with Li<sup>+</sup> and mixed halide, gaining neutron sensitivity while preserving much (though not all) of the high light yield that makes LaBr<sub>3</sub>(Ce) attractive for resolution. The resulting gamma resolution of CLLBC is better than CLYC and better than standard NaI(Tl), placing it between NaI(Tl) and LaBr<sub>3</sub>(Ce) in resolution but ahead of both in dual-mode capability.</p>
-
-    <h3>6.2 Regulatory and Standards Context</h3>
-    <p>Instruments destined for homeland security, border protection, and nuclear safeguards applications must typically satisfy ANSI N42.34 (handheld RIIDs) or ANSI N42.35 (portal monitors). These standards define minimum neutron sensitivity in counts per second per unit neutron emission rate from a Cf-252 source at a specified distance, alongside alarm false-positive rates at realistic gamma background levels. The minimum neutron sensitivity requirements in N42.34 are achievable with CLYC crystals in the 1-inch to 2-inch range when paired with a polyethylene moderator and a properly set PSD algorithm. CLLBC, with its higher light yield, can meet the same requirements with somewhat tighter FOM margins, providing additional headroom for maintaining performance as the crystal ages or at elevated temperatures. Specific sensitivity numbers depend on detector configuration and must be validated against the published standard for each instrument design.</p>
-  </section>
-
-  <!-- 7. ScintIQ configuration -->
-  <section id="scintiq-configuration">
-    <h2>7. ScintIQ Configuration for PSD Applications</h2>
-    <p>Berkeley Nucleonics offers CLYC and CLLBC as part of the ScintIQ custom detector program, configured with hermetic metal housings, ruggedized optical coupling, and matched readout electronics. Standard configurations pair the crystal with a PMT and voltage divider assembly, with SiPM-coupled variants available for applications where magnetic immunity or compact geometry is required. The bMCA Ethernet-connected multichannel analyzer includes hardware-accelerated PSD in its firmware, with user-programmable gate widths, threshold settings, and real-time two-dimensional histogram generation.</p>
-    <p>Key considerations when configuring a system for PSD work include crystal size (larger volumes improve efficiency but require careful pile-up management), enrichment level of the lithium (CLYC and CLLBC produced with 95% or higher <sup>6</sup>Li enrichment are standard for neutron applications), and housing window material (quartz UV windows are preferred over standard borosilicate for optimal transmission at the 370 nm CLYC emission peak). Hermetic epoxy-sealed assemblies are also available for lower-cost, non-field-service applications.</p>
-    <p>For applications that require both the best achievable gamma resolution and reliable dual-mode discrimination, CLLBC is the recommended starting point. For applications where cost and established supply chain take priority over marginal resolution improvement, CLYC remains the industry-standard choice with a longer track record in fielded RIID instruments.</p>
-    <div class="note"><b>Specify enrichment:</b> Standard natural lithium contains only 7.6% Li-6. Requesting 95% Li-6 enrichment is essential for effective neutron detection efficiency. Confirm enrichment level and available crystal sizes with the Berkeley Nucleonics engineering team before finalizing detector design.</div>
-  </section>
-
-  <!-- 8. Summary -->
-  <section id="summary">
-    <h2>8. Summary</h2>
-    <p>Pulse-shape discrimination in CLYC and CLLBC works because thermal neutrons captured via the <sup>6</sup>Li(n,t)&#945; reaction produce densely ionizing alpha and triton fragments that preferentially populate slow scintillation components. Gamma-induced Compton electrons are less dense, populating faster components. Integrating the charge in a prompt versus a delayed time window, then taking the ratio, separates the two event classes in a two-dimensional scatter plot. The figure of merit, defined as centroid separation divided by the sum of band widths, reaches values above 1.5 in well-configured elpasolite systems, placing misclassification rates well below practical concern.</p>
-    <p>CLYC provides a proven, cost-effective path to dual-mode detection with established RIID heritage. CLLBC extends that capability with higher light yield and better gamma resolution, making it the preferred material when simultaneous isotope identification and neutron detection at high spectroscopic quality are both required. ScintIQ configurations from Berkeley Nucleonics cover both materials with matched readout electronics, hermetic packaging, and support for integration into ANSI-compliant instrument designs.</p>
-  </section>
-
-  <!-- Contact + Book link -->
-  <section id="contact" style="border-top:1px solid var(--line);margin-top:24px;padding-top:18px;">
-    <div class="contact-block">
-      <h3>Contact the Berkeley Nucleonics Scintillation Team</h3>
-      <p>For detector configurations, enrichment options, PSD firmware support, or custom CLYC/CLLBC assemblies:</p>
-      <p><strong>Email:</strong> <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a></p>
-      <p><strong>Phone:</strong> 800-234-7858</p>
-      <p style="margin-top:12px;">For a broader treatment of scintillation physics, material selection, and detector design, see the Berkeley Nucleonics educational resource: <a href="/books/scintillators/index.html" target="_blank" rel="noopener"><em>Nuts &amp; Bolts of Scintillation Detectors</em></a> (opens in new window). <em>[URL subject to verification.]</em></p>
-    </div>
-  </section>
-
-</div><!-- /.article -->
-
+<section id="bioz-cited" class="bioz-cited" aria-labelledby="bioz-cited-h">
+ <div class="bioz-cited-inner">
+  <div class="bioz-cited-head">
+   <span class="bioz-cited-mark">BIOZ</span>
+   <div>
+    <h2 id="bioz-cited-h">Cited in peer-reviewed research</h2>
+    <p>Independent publications citing this instrument, indexed by Bioz. Citation
+    counts and Bioz Stars ratings are shown live and update as new papers are indexed.</p>
+   </div>
+   <a class="bioz-cited-ext" href="https://www.bioz.com/v_widget_6_0/13441/real_time_spectrum_analyzers" target="_blank" rel="noopener">Open on Bioz &rarr;</a>
+  </div>
+  <div class="bioz-cited-frame" data-bioz-src="https://www.bioz.com/v_widget_6_0/13441/real_time_spectrum_analyzers">
+   <div class="bioz-cited-ph">Loading peer-reviewed citations&hellip;</div>
+   <div class="bioz-cited-fade" aria-hidden="true"></div>
+  </div>
+  <div class="bioz-cited-foot">
+   <button class="bioz-cited-more" type="button" aria-expanded="false" aria-controls="bioz-cited">
+    <span data-more>Show full listings</span><span data-less hidden>Collapse</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+   </button>
+  </div>
+ </div>
+</section>
 <footer class="gfoot"><div class="gwrap">
   <div class="gcols">
     <div class="gbrand">
@@ -779,7 +619,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="gbottom"><span>&copy; 2026 Berkeley Nucleonics Corporation</span><span>2955 Kerner Blvd, San Rafael, CA 94901 USA</span><span><a href="mailto:info@berkeleynucleonics.com" style="color:inherit;text-decoration:none;">info@berkeleynucleonics.com</a></span><span><a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">berkeleynucleonics.com</a></span><span><a href="tel:+18002347858" style="color:inherit;text-decoration:none;">800-234-7858</a></span></div>
 </div></footer>
 
-<style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+
 <script id="ss-data">window.SS_BASE="../";</script><script src="../_shared/bnc-search-index.js"></script><script id="ss-js">/*ssx v4: word-boundary match + phrase/proximity + time interpolation + -5s preroll + IC-testing routing + FAQ answers section*/(function(){var idx=window.SITE_INDEX||[],base=window.SS_BASE||"";var FAQS=window.SS_FAQS||[];var wrap=document.querySelector(".ss-wrap");if(!wrap)return;
 /* half-strength dim behind the results overlay (sits under the sticky bar) */
 function ssDim(on){var d=document.getElementById("ss-dim");if(!d){d=document.createElement("div");d.id="ss-dim";d.className="ss-dim";document.body.appendChild(d);d.addEventListener("click",function(){ssClose();});}if(on){void d.offsetHeight;d.classList.add("open");}else{d.classList.remove("open");}}
@@ -823,7 +663,10 @@ function ssgBadge(c,kind){if(kind==="video")return "Video";if(kind==="faq")retur
 var SSG_ICONS={"Blog Post":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2z'/><path d='M17 8h1.5A1.5 1.5 0 0 1 20 9.5V18'/><path d='M7.5 8h6M7.5 11.5h6M7.5 15h3.5'/></svg>","Datasheet":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/><path d='M14 3v5h5'/><path d='M9 13h6M9 17h6M9 9h1'/></svg>","Application Note":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6'/><path d='M10 21h4'/><path d='M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.2 1 2.5h6c0-1.3.3-1.8 1-2.5A6 6 0 0 0 12 3z'/></svg>","Technical Brief":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5'/><path d='M14 3v5h5'/><circle cx='17.5' cy='16.5' r='2.2'/><path d='M17.5 13.6v-1M17.5 20.4v-1M20.4 16.5h-1M15.6 16.5h-1'/></svg>","Manual":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/></svg>","FAQ":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.5 9a2.5 2.5 0 0 1 4.8.9c0 1.7-2.3 2.1-2.3 3.6'/><path d='M12 17h.01'/></svg>","Book":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/><path d='M9 7.5h7M9 11h7'/></svg>","Product":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8l-9-5-9 5v8l9 5 9-5z'/><path d='M3 8l9 5 9-5'/><path d='M12 13v8'/></svg>"};
 window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function ssgGraphic(t){if(t.kind==="video"){return "<img src=\"https://img.youtube.com/vi/"+ssgEsc(t.id)+"/mqdefault.jpg\" alt=\"\" loading=\"lazy\">";}var im=window.SSIMG&&window.SSIMG[t.u];var src=im?(im.indexOf("http")===0?im:base+im):null;if(src){return "<img src=\""+ssgEsc(src)+"\" alt=\"\" loading=\"lazy\" onerror=\"this.onerror=null;var p=this.parentNode;if(p){p.innerHTML=window.ssgIconFor('"+t.badge+"');}\">";}return SSG_ICONS[t.badge]||SSG_ICONS.Product;}
 })();</script>
+<style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:7.65px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script>(function(){var imgs=[].slice.call(document.querySelectorAll(".rowthumb"));if(!imgs.length)return;if(!("IntersectionObserver"in window)){imgs.forEach(function(i){i.classList.add("in");});return;}var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var img=e.target;var list=img.closest(".list")||document;var sib=[].slice.call(list.querySelectorAll(".rowthumb"));var k=sib.indexOf(img);img.style.animationDelay=((k%6)*85)+"ms";img.classList.add("in");io.unobserve(img);}});},{threshold:.2,rootMargin:"0px 0px -30px 0px"});imgs.forEach(function(i){io.observe(i);});})();</script>
 <script defer src="../_shared/bnc-nutshell.js"></script>
+<script defer src="/_shared/bnc-chat.js"></script><script src="/_shared/bioz-cited.js" defer></script>
 <style id="bnc-nav-v2">/* header v3: search left, evenly spread bar, one control height */
 .sitenav-inner{position:relative;gap:16px;}
 .sitenav-logo{flex:0 0 auto;}
@@ -926,5 +769,4 @@ html{overflow-x:clip;}
   .sitenav-cta,.bnc-signin{min-height:44px;}
 }
 </style>
-</body>
-</html>
+</body></html>
