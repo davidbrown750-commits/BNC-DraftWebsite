@@ -124,22 +124,9 @@
 })();
 
 
-/* Nav label rename: High Power/Current Pulsers -> High Voltage/Current Pulsers (2026-07) */
-(function(){
-  var OLD='High Power/Current Pulsers', NEW='High Voltage/Current Pulsers';
-  function rename(){
-    if(!document.body) return 0;
-    try{
-      var tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return (n.parentElement&&/SCRIPT|STYLE/.test(n.parentElement.tagName))?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});
-      var n,c=0;
-      while(n=tw.nextNode()){ if(n.nodeValue.indexOf(OLD)>-1){ n.nodeValue=n.nodeValue.split(OLD).join(NEW); c++; } }
-      return c;
-    }catch(e){ return 0; }
-  }
-  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',rename); } else { rename(); }
-  var t=0, iv=setInterval(function(){ rename(); if(++t>=5) clearInterval(iv); },400);
-})();
-
+/* Nav label rename High Power/Current Pulsers -> High Voltage/Current Pulsers:
+   retired 2026-08-31. The rename is applied in the HTML source itself now, so the
+   runtime DOM patch is unnecessary and crawlers see the correct label. */
 
 /* RFS-7060-U search cover thumbnails: title on top, product photo on bottom; datasheet = navy, manual = lighter blue. Generated client-side and injected into the search cover map (SSIMG). */
 (function(){
