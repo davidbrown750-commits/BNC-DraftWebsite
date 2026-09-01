@@ -73,10 +73,45 @@
   addEventListener("pagehide", send);
   addEventListener("beforeunload", send);
 
+  // Attribution join key. The visit log knows the referrer that brought someone to the
+  // site; the submission log knows what they asked for. Nothing connected the two, so a
+  // lead could not be traced back to its source except by asking the person. Stamping
+  // this visitor id onto every /api/form submission closes that gap.
+  //
+  // `visitor_id` is a non-reserved field name, so api/form.js already funnels it into the
+  // Nutshell timeline note and the Supabase `fields` JSON. No backend change, no schema
+  // change. Exposed on window as well, for the fetch-based forms (QuickQuote, the PDF
+  // configurator, the book forms) that build their own payload instead of serialising
+  // the DOM.
+  window.BNC_VID = VID;
+
+  function stampVid(form) {
+    try {
+      if (!form || form.getAttribute("data-bnc-vid") === "1") return;
+      if (!/\/api\/form/.test(form.getAttribute("action") || "")) return;
+      form.setAttribute("data-bnc-vid", "1");
+      var el = document.createElement("input");
+      el.type = "hidden"; el.name = "visitor_id"; el.value = VID;
+      form.appendChild(el);
+    } catch (_) {}
+  }
+  function stampAll() {
+    try {
+      var f = document.getElementsByTagName("form");
+      for (var i = 0; i < f.length; i++) stampVid(f[i]);
+    } catch (_) {}
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stampAll);
+  else stampAll();
+
   // Progressive identification: when any form is submitted, remember the email so
   // prior + future anonymous visits for this visitor attribute to that person.
+  // The same listener stamps the visitor id, which covers any form added to the page
+  // after load. Capture phase runs before the browser serialises the form, so an input
+  // appended here is included in the submission.
   document.addEventListener("submit", function (e) {
     try {
+      stampVid(e.target);
       var em = e.target.querySelector('input[type=email],input[name=email]');
       if (em && em.value) localStorage.setItem("bnc_email", em.value.trim().toLowerCase());
     } catch (_) {}
