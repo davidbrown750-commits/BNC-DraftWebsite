@@ -496,6 +496,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     return 'uncat';
   }
   function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+  function catLabel(c){ return c==='Uncategorized' ? 'Product News' : c; }
 
   var PH_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="#5f9fe0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h13v14H6a2 2 0 0 1-2-2V5z"/><path d="M17 8h3v9a2 2 0 0 1-2 2"/><line x1="7" y1="9" x2="13" y2="9"/><line x1="7" y1="12" x2="13" y2="12"/><line x1="7" y1="15" x2="11" y2="15"/></svg>';
   var root = document.getElementById('prRoot');
@@ -518,7 +519,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     a.setAttribute('data-cats', (p.cats||[]).join('|'));
     a.setAttribute('data-title', (p.title||'').toLowerCase());
     var chips = (p.cats||[]).map(function(c){
-      return '<span class="pr-chip '+chipClass(c)+'">'+esc(c)+'</span>';
+      return '<span class="pr-chip '+chipClass(c)+'">'+esc(catLabel(c))+'</span>';
     }).join('');
     var thumb = p.img
       ? '<div class="pr-thumb"><img src="'+esc(p.img)+'" alt="" loading="lazy" onerror="this.parentNode.classList.add(\'ph\');this.parentNode.innerHTML=PH_ICON;"></div>'
@@ -570,6 +571,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     apply();
   });
   searchEl.addEventListener('input', function(){ query = this.value.trim().toLowerCase(); apply(); });
+
+  try {
+    var urlQ = new URLSearchParams(location.search).get('q') || '';
+    if (urlQ) { searchEl.value = urlQ; query = urlQ.trim().toLowerCase(); }
+  } catch(e) {}
 
   apply();
 })();
