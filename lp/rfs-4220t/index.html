@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFS-4220T Signal Generator | Get a Quote</title>
+<link rel="icon" href="https://www.berkeleynucleonics.com/favicon.ico">
+<meta name="description" content="Benchtop RF signal generator, calibrated to 20 GHz and settable to 22 GHz. Touchscreen, LAN/USB control, SCPI automation. Request a quote or demo.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="RFS-4220T RF Signal Generator | Berkeley Nucleonics">
+<meta property="og:description" content="Benchtop performance to 22 GHz, with touchscreen, front-panel, and remote control built in.">
+<meta property="og:image" content="https://www.berkeleynucleonics.com/docs/figures/rfs-4220-unit.png">
+<meta property="og:type" content="website">
+
+<!--
+  RFS-4220T ad-campaign landing page. Built with the bnc-design skill's tokens and
+  brand-shell.html as the base skeleton. Every spec/link below traces to the live
+  datasheet and user manual. Deployed 2026-08-24 at /lp/rfs-4220t/, per the /lp/<campaign>/
+  URL convention from the IMS 2026 Boston landing-page plan. noindex,nofollow: this page
+  is for campaign traffic only, not organic search.
+
+  QUOTE FORM: posts directly to the live /api/form?form=quote endpoint (verified
+  field names by inspecting get-quote.html's real form). product_or_model is locked
+  to "RFS-4220T" (a plain display value + hidden input, not an editable field, per
+  request). campaign_source and came_from_page are non-reserved fields; per
+  bnc-webpage-design they auto-flow into the Nutshell note/Supabase log with no
+  backend change needed. _next redirects back to this page with ?submitted=true,
+  which swaps the form for a thank-you message.
+-->
+
+<!-- Cookiebot consent (same data-cbid as the live site) -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
+
+<!-- Google Tag Manager (same container as the live site, so traffic lands in the existing GA4 property) -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
+<!-- End Google Tag Manager -->
+
+<style>
+  :root{
+    --bnc-blue:#0655a3;
+    --bnc-blue-dark:#113163;
+    --bnc-blue-600:#054a8c;
+    --bnc-blue-700:#043f75;
+    --bnc-black:#000000;
+    --bnc-white:#ffffff;
+    --g50:#f9fafb; --g100:#f3f4f6; --g200:#e5e7eb; --g300:#d1d5db;
+    --g500:#6b7280; --g700:#374151; --g900:#111827;
+    --font-header:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
+    --font-body:Arial,'Segoe UI',Helvetica,sans-serif;
+    --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+    --s6:2rem; --s8:3rem; --s10:4rem;
+    --r:4px;
+    --sh-sm:0 1px 2px 0 rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box;}
+  body{font-family:var(--font-body);color:var(--bnc-black);background:var(--g100);margin:0;line-height:1.625;}
+
+  .bnc-header{background:var(--bnc-white);border-bottom:3px solid var(--bnc-blue);padding:var(--s4) var(--s6);}
+  .bnc-header .inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:var(--s4);}
+  .bnc-logo{height:44px;width:auto;flex:0 0 auto;}
+  .bnc-header .logo-link{display:inline-flex;line-height:0;}
+  .bnc-header .wordmark{margin-left:auto;font-family:var(--font-header);font-weight:700;font-size:1.05rem;color:var(--bnc-black);border-bottom:3px solid var(--bnc-blue);padding-bottom:4px;letter-spacing:-.01em;}
+
+  .bnc-hero{background:linear-gradient(135deg,var(--bnc-blue-dark),var(--bnc-blue));color:var(--bnc-white);padding:var(--s10) var(--s6);}
+  .bnc-hero .inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:var(--s8);align-items:center;}
+  .bnc-hero .eyebrow{font-family:var(--font-header);text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:700;color:#bcd6f2;margin:0 0 var(--s2);}
+  .bnc-hero h1{font-family:var(--font-header);font-weight:700;font-size:2.6rem;line-height:1.12;margin:0 0 var(--s3);letter-spacing:-.02em;color:var(--bnc-white);}
+  .bnc-hero p.subhead{margin:0 0 var(--s6);max-width:520px;font-size:1.15rem;opacity:.95;}
+  .bnc-hero .photo{text-align:center;}
+  .bnc-hero .price-large{font-family:var(--font-header);font-weight:700;font-size:2.4rem;letter-spacing:-.01em;color:var(--bnc-white);margin:var(--s4) 0 0;}
+  .bnc-hero .photo img{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 28px rgba(0,0,0,.35));}
+
+  .btn{display:inline-block;font-family:var(--font-header);font-weight:600;font-size:1rem;padding:.85em 1.6em;border-radius:var(--r);border:none;cursor:pointer;transition:background .18s ease;text-decoration:none;}
+  .btn-primary{background:#f5a623;color:var(--bnc-blue-dark);}
+  .btn-primary:hover{background:#ffb63d;text-decoration:none;color:var(--bnc-blue-dark);}
+  .btn-ghost-inverse{background:transparent;color:var(--bnc-white);border:1px solid rgba(255,255,255,.6);margin-left:var(--s3);}
+  .btn-ghost-inverse:hover{background:rgba(255,255,255,.12);text-decoration:none;color:var(--bnc-white);}
+
+  main{max-width:1100px;margin:0 auto;padding:var(--s8) var(--s6) var(--s10);}
+  .card{background:var(--bnc-white);border:1px solid var(--g200);border-radius:var(--r);padding:var(--s6);margin:0 0 var(--s5);box-shadow:var(--sh-sm);}
+
+  h2{font-family:var(--font-header);color:var(--bnc-blue-dark);font-size:1.7rem;font-weight:700;margin:0 0 var(--s5);letter-spacing:-.01em;}
+  .points{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);}
+  .points li{padding-left:var(--s6);position:relative;}
+  .points li::before{content:"";position:absolute;left:0;top:.35em;width:12px;height:12px;border-radius:50%;background:var(--bnc-blue);}
+  .points strong{color:var(--bnc-blue-dark);font-family:var(--font-header);}
+
+  .applications{color:var(--g700);}
+  .applications strong{color:var(--bnc-blue-dark);}
+
+  .resources{display:flex;gap:var(--s5);flex-wrap:wrap;align-items:center;}
+  .resources a{font-family:var(--font-header);font-weight:600;color:var(--bnc-blue);text-decoration:none;padding:.6em 0;}
+  .resources a:hover{color:var(--bnc-blue-600);text-decoration:underline;}
+
+  .quote-form p.lead{color:var(--g700);margin:0 0 var(--s5);}
+  .quote-form .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4) var(--s5);}
+  .quote-form .field{display:flex;flex-direction:column;gap:.35em;}
+  .quote-form .field.full{grid-column:1 / -1;}
+  .quote-form label{font-family:var(--font-header);font-weight:600;font-size:.88rem;color:var(--bnc-blue-dark);}
+  .quote-form label .opt{font-family:var(--font-body);font-weight:400;color:var(--g500);}
+  .quote-form input[type=text],.quote-form input[type=email],.quote-form input[type=tel],.quote-form select,.quote-form textarea{
+    font-family:var(--font-body);font-size:.95rem;padding:.65em .75em;border:1px solid var(--g300);border-radius:var(--r);
+    background:var(--bnc-white);color:var(--bnc-black);
+  }
+  .quote-form input:focus,.quote-form select:focus,.quote-form textarea:focus{outline:2px solid var(--bnc-blue);outline-offset:1px;}
+  .quote-form .locked-value{
+    font-family:var(--font-body);font-size:.95rem;font-weight:700;color:var(--bnc-blue-dark);
+    background:var(--g50);border:1px solid var(--g200);border-radius:var(--r);padding:.65em .75em;
+  }
+  .quote-form textarea{resize:vertical;min-height:5em;}
+  .quote-form .hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
+  .quote-form .submit-row{margin-top:var(--s5);display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;}
+  .quote-form .btn-submit{background:var(--bnc-blue);color:var(--bnc-white);font-family:var(--font-header);font-weight:600;font-size:1rem;padding:.85em 1.8em;border:none;border-radius:var(--r);cursor:pointer;}
+  .quote-form .btn-submit:hover{background:var(--bnc-blue-600);}
+
+  @media (max-width:640px){ .quote-form .grid{grid-template-columns:1fr;} }
+
+  .trust{background:var(--bnc-white);border-top:1px solid var(--g200);border-bottom:1px solid var(--g200);padding:var(--s8) var(--s6);}
+  .trust .inner{max-width:900px;margin:0 auto;text-align:center;}
+  .trust p{color:var(--g700);font-size:1.02rem;margin:0;}
+  .trust .since{font-family:var(--font-header);color:var(--bnc-blue);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.85rem;margin:0 0 var(--s4);}
+
+  .final-cta{text-align:center;padding:var(--s8) var(--s6);}
+  .final-cta h2{margin-bottom:var(--s3);}
+  .final-cta p{color:var(--g700);margin:0 0 var(--s5);}
+
+  .bnc-footer{border-top:1px solid var(--g200);background:var(--bnc-white);padding:var(--s5) var(--s6);}
+  .bnc-footer .inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:var(--s4);flex-wrap:wrap;}
+  .bnc-footer .legal{font-size:.8rem;color:var(--g500);}
+  .bnc-footer .logo-sm{height:26px;width:auto;}
+
+  @media (max-width:760px){
+    .bnc-hero .inner{grid-template-columns:1fr;}
+    .bnc-hero h1{font-size:2rem;}
+    .points{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<header class="bnc-header">
+  <div class="inner">
+    <a href="https://www.berkeleynucleonics.com/home.html" class="logo-link" aria-label="Berkeley Nucleonics home">
+    <svg class="bnc-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics">
+      <g fill="#0655a3">
+        <path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/>
+        <polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/>
+      </g>
+      <g fill="#231f20" fill-rule="evenodd">
+        <path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/>
+        <polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/>
+        <path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/>
+      </g>
+    </svg>
+    </a>
+    <span class="wordmark">Berkeley Nucleonics</span>
+  </div>
+</header>
+
+<section class="bnc-hero">
+  <div class="inner">
+    <div>
+      <p class="eyebrow">RF &amp; Microwave Signal Generators</p>
+      <h1>RFS-4220T RF Signal Generator</h1>
+      <p class="subhead">Benchtop performance to 22 GHz, with the touchscreen, front-panel, and remote control built in.</p>
+      <a href="#quote-form" class="btn btn-primary" id="primary-cta">Get a Quote or Request a Demo</a>
+      <a href="#resources" class="btn btn-ghost-inverse">Datasheet &amp; manual</a>
+    </div>
+    <div class="photo">
+      <img src="https://www.berkeleynucleonics.com/docs/figures/rfs-4220-unit.png" alt="Berkeley Nucleonics RFS-4220T RF signal generator, front panel, touchscreen showing the CW screen at 20 GHz">
+      <p class="price-large">$6,950</p>
+    </div>
+  </div>
+</section>
+
+<main>
+  <article class="card">
+    <h2>Why the RFS-4220T</h2>
+    <ul class="points">
+      <li><strong>Wide, calibrated frequency coverage.</strong> 20 MHz to 20 GHz calibrated, settable up to 22 GHz, in one benchtop chassis, for lab, ATE, and field test work.</li>
+      <li><strong>Multiple users, one instrument.</strong> Automatic network device discovery and toggleable multi-session control let more than one computer work with the same RFS-4220T.</li>
+      <li><strong>Synchronized with the rest of the rack.</strong> An external 10 MHz reference input locks the RFS-4220T to a shared lab standard, and an external trigger input coordinates it with the rest of a test setup.</li>
+      <li><strong>Operate however the bench requires.</strong> Full control from the integrated touchscreen, the physical front-panel buttons and rotary knob, or a remote computer application over LAN or USB, all kept in sync.</li>
+    </ul>
+  </article>
+
+  <article class="card applications">
+    <h2>Where it's used</h2>
+    <p>General RF and microwave laboratory testing, automated test environments, production verification, RF component characterization, local oscillator sourcing, antenna development, EMC and pre-compliance testing, wireless infrastructure development, educational labs, and aerospace and defense research.</p>
+  </article>
+
+  <article class="card quote-form" id="quote-form">
+    <h2>Get a quote or request a demo</h2>
+    <div id="quote-form-thanks" style="display:none;">
+      <p class="lead">Thanks &mdash; your request for the RFS-4220T has been sent. A BNC engineer will follow up shortly.</p>
+    </div>
+    <form action="https://www.berkeleynucleonics.com/api/form?form=quote" method="post" id="rfs4220t-quote-form">
+      <input type="hidden" name="_subject" value="RFS-4220T Quote/Demo Request (landing page)">
+      <input type="hidden" name="_next" id="form-next" value="">
+      <input type="hidden" name="came_from_page" value="RFS-4220T Ad Campaign Landing Page">
+      <input type="hidden" name="campaign_source" id="campaign_source" value="">
+      <label class="hp" aria-hidden="true">Leave this field empty
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+      </label>
+
+      <div class="grid">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="company">Company <span class="opt">(optional)</span></label>
+          <input type="text" id="company" name="company">
+        </div>
+        <div class="field">
+          <label for="phone">Phone <span class="opt">(optional)</span></label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="field">
+          <label>Product or model of interest</label>
+          <div class="locked-value">RFS-4220T</div>
+          <input type="hidden" name="product_or_model" value="RFS-4220T">
+        </div>
+        <div class="field">
+          <label for="request_type">I'm looking for <span class="opt">(optional)</span></label>
+          <select id="request_type" name="request_type">
+            <option value="">Select one</option>
+            <option value="Quote">A quote</option>
+            <option value="Demo">A demo</option>
+            <option value="Either">Either works</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="application">Tell us about your application <span class="opt">(optional)</span></label>
+          <textarea id="application" name="application" placeholder="Frequency range, output power, control interface, or anything else that helps us size this to your test setup."></textarea>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn-submit">Send Request</button>
+      </div>
+    </form>
+  </article>
+
+  <article class="card" id="resources">
+    <h2>Specs and video</h2>
+    <div class="resources">
+      <a href="https://www.berkeleynucleonics.com/docs/bnc-rfs-4220-datasheet.html" target="_blank" rel="noopener" data-resource="datasheet">View the full datasheet (PDF) →</a>
+      <a href="https://www.berkeleynucleonics.com/docs/bnc-rfs-4220t-user-manual.html" target="_blank" rel="noopener" data-resource="manual">View the user manual →</a>
+      <a href="https://www.youtube.com/watch?v=jnTxmoOh_YU" target="_blank" rel="noopener" data-resource="video">Watch the product announcement →</a>
+    </div>
+  </article>
+</main>
+
+<section class="trust">
+  <div class="inner">
+    <p class="since">Since 1963</p>
+    <p>Berkeley Nucleonics Corporation (BNC) has been a trusted name in precision electronic instrumentation since 1963, serving defense, research, academic, and industrial customers with digital delay generators, arbitrary waveform generators, RF/microwave signal generators, pulsed power systems, and nuclear radiation detection equipment. With 60+ years of reliability and responsive technical support, BNC is flexible and listens to your application.</p>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>Talk to an engineer about your application</h2>
+  <p>Tell us the frequency range, output power, and control interface your test setup needs.</p>
+  <a href="#quote-form" class="btn btn-primary" data-resource="cta-final">Get a Quote or Request a Demo</a>
+</section>
+
+<footer class="bnc-footer">
+  <div class="inner">
+    <svg class="logo-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics">
+      <g fill="#0655a3">
+        <path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/>
+        <polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/>
+      </g>
+    </svg>
+    <p class="legal">Berkeley Nucleonics Corporation &middot; Test, Measurement and Nuclear Instrumentation since 1963.<br>2955 Kerner Blvd, San Rafael, CA 94901 USA &middot; 800-234-7858 &middot; info@berkeleynucleonics.com</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var keep = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid'];
+  var qs = new URLSearchParams();
+  keep.forEach(function(k){ if(params.has(k)) qs.set(k, params.get(k)); });
+  var utmSuffix = qs.toString();
+
+  // UTM string into the embedded form's hidden campaign_source field, so
+  // it lands in the Nutshell note / Supabase log for attribution.
+  var campaignSourceField = document.getElementById('campaign_source');
+  if (campaignSourceField) campaignSourceField.value = utmSuffix;
+
+  // On success, /api/form redirects back here via _next with ?submitted=true.
+  // Show a thank-you message instead of the form. Set _next dynamically so it
+  // always points at this page's own URL, wherever it ends up deployed.
+  var form = document.getElementById('rfs4220t-quote-form');
+  var nextField = document.getElementById('form-next');
+  if (form && nextField) {
+    var base = window.location.origin + window.location.pathname;
+    nextField.value = base + '?submitted=true';
+  }
+  if (params.get('submitted') === 'true') {
+    document.getElementById('quote-form-thanks').style.display = 'block';
+    if (form) form.style.display = 'none';
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({event: 'generate_lead', lead_type: 'quote_or_demo', product: 'RFS-4220T'});
+  }
+})();
+</script>
+
+</body>
+</html>

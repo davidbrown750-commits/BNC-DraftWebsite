@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Academy Course Distribution Board | Berkeley Nucleonics</title>
+<!--
+  Short, shareable entry point for the Academy course distribution board:
+  https://www.berkeleynucleonics.com/academydash
+
+  This page holds NO board content of its own. It signs the visitor in, then pulls the
+  board from /api/internal-doc?doc=academy-board with the Clerk bearer token and renders
+  it into a blob iframe. That is deliberate: the board must never exist as a static file
+  under the web root, because anyone who guessed the path could read the outlet register,
+  the scoring and the contacts. Keep it that way. If you ever find yourself tempted to
+  write the board out as academydash-board.html to "make it simpler", don't.
+-->
+<script src="_shared/bnc-auth-config.js"></script>
+<script defer src="_shared/bnc-auth.js"></script>
+<style>
+  :root{
+    --bnc-blue:#0655a3; --bnc-navy:#113163; --sky:#37b6f0;
+    --ink:#1f2937; --mut:#5b6b80; --line:#e2e8f0; --bg:#eef1f5; --white:#fff;
+    --fh:'Myriad Pro','Myriad Pro Regular',Arial,Helvetica,sans-serif;
+    --fb:Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 var(--fb);
+    display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
+  header{background:var(--bnc-navy);color:var(--white);padding:14px 24px;
+    border-bottom:4px solid var(--bnc-blue);flex:0 0 auto;
+    display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  header .kick{font-family:var(--fh);font-weight:bold;letter-spacing:.18em;
+    text-transform:uppercase;font-size:10px;color:var(--sky)}
+  header h1{font-family:var(--fh);font-size:17px;margin:0;font-weight:bold}
+  header .who{margin-left:auto;font-size:12px;color:#c7d6ea}
+  header a{color:#8ecbf5}
+  main{flex:1 1 auto;display:flex;min-height:0}
+  iframe{border:0;width:100%;height:100%;background:var(--white)}
+  .card{margin:auto;max-width:520px;background:var(--white);border:1px solid var(--line);
+    border-left:4px solid var(--bnc-blue);border-radius:4px;padding:28px 32px;
+    box-shadow:0 1px 3px rgba(17,49,99,.10)}
+  .card h2{font-family:var(--fh);font-size:18px;margin:0 0 10px;color:var(--bnc-navy)}
+  .card p{margin:0 0 16px;color:var(--mut)}
+  button{font:inherit;font-family:var(--fh);font-weight:bold;background:var(--bnc-blue);
+    color:var(--white);border:0;border-radius:4px;padding:10px 20px;cursor:pointer}
+  button:hover{background:var(--bnc-navy)}
+  .err{color:#b91c1c}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="kick">Berkeley Nucleonics</div>
+    <h1>Academy Course Distribution Board</h1>
+  </div>
+  <div class="who" id="who"></div>
+</header>
+<main id="main">
+  <div class="card" id="state">
+    <h2>Loading</h2>
+    <p>Checking your sign-in.</p>
+  </div>
+</main>
+
+<script>
+(function(){
+  var STAFF_DOMAIN = "@berkeleynucleonics.com";
+  var STAFF_EXTRA  = ["davidbrown750@gmail.com","jsaldi@regencyinteractive.com","rcabe@regencyinteractive.com"];
+
+  function bncEmail(){
+    var u = window.Clerk && window.Clerk.user;
+    var e = u && u.primaryEmailAddress && u.primaryEmailAddress.emailAddress;
+    return e ? e.toLowerCase() : null;
+  }
+  function isStaff(){
+    var e = bncEmail();
+    return !!(e && ((e.length > STAFF_DOMAIN.length &&
+      e.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN) || STAFF_EXTRA.indexOf(e) !== -1));
+  }
+  function waitForClerk(cb, tries){
+    tries = tries || 0;
+    if (window.Clerk && (window.Clerk.loaded || window.Clerk.user !== undefined)) { cb(); return; }
+    if (tries > 60) { cb(); return; }   // ~12s
+    setTimeout(function(){ waitForClerk(cb, tries+1); }, 200);
+  }
+
+  var main = document.getElementById("main");
+  function card(title, body, btnLabel, onClick, isErr){
+    main.innerHTML = "";
+    var d = document.createElement("div"); d.className = "card";
+    var h = document.createElement("h2"); h.textContent = title; d.appendChild(h);
+    var p = document.createElement("p"); p.textContent = body;
+    if (isErr) p.className = "err";
+    d.appendChild(p);
+    if (btnLabel){
+      var b = document.createElement("button"); b.textContent = btnLabel;
+      b.addEventListener("click", onClick); d.appendChild(b);
+    }
+    main.appendChild(d);
+  }
+
+  function signIn(){
+    if (window.Clerk && window.Clerk.openSignIn) window.Clerk.openSignIn({
+      afterSignInUrl: location.href, afterSignUpUrl: location.href,
+      signInForceRedirectUrl: location.href, signUpForceRedirectUrl: location.href
+    });
+    else location.href = "/home.html";
+  }
+
+  var loaded = false;
+  function load(){
+    if (loaded) return; loaded = true;
+    document.getElementById("who").textContent = "Signed in as " + bncEmail();
+    card("Loading the board", "Fetching the outlet register.");
+
+    function go(token){
+      if (!token){ loaded = false; card("Sign in required",
+        "Your session did not return a token. Sign in again and retry.", "Sign in", signIn, true); return; }
+      fetch("/api/internal-doc?doc=academy-board", { headers:{ Authorization: "Bearer " + token } })
+        .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.blob(); })
+        .then(function(blob){
+          var url = URL.createObjectURL(blob);
+          main.innerHTML = "";
+          var f = document.createElement("iframe");
+          f.title = "Academy course distribution board";
+          f.src = url;
+          main.appendChild(f);
+          // Keep the object URL alive while the frame is displayed; the browser reclaims
+          // it on navigation away from this page.
+        })
+        .catch(function(e){
+          loaded = false;
+          card("Could not load the board", "The server said " + e.message +
+            ". If that is a 401, sign in with your @berkeleynucleonics.com account.",
+            "Retry", function(){ load(); }, true);
+        });
+    }
+
+    try {
+      if (window.Clerk && window.Clerk.session && window.Clerk.session.getToken)
+        window.Clerk.session.getToken().then(go).catch(function(){ go(""); });
+      else go("");
+    } catch(_) { go(""); }
+  }
+
+  waitForClerk(function(){
+    if (isStaff()) load();
+    else if (bncEmail()) card("Not a staff account",
+      "Signed in as " + bncEmail() + ", which is not a @berkeleynucleonics.com address.",
+      "Switch account", signIn, true);
+    else card("Staff sign-in required",
+      "This board is limited to Berkeley Nucleonics staff. Sign in to continue.",
+      "Sign in", signIn);
+
+    if (window.Clerk && window.Clerk.addListener)
+      window.Clerk.addListener(function(){ if (isStaff()) load(); });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- START BNC consent mode -->
+<script data-cookieconsent="ignore">
+/* Google Consent Mode v2 defaults. Must run before Cookiebot and before the GTM container.
+
+   Everything is denied until the visitor agrees — nothing is stored and no ad identifier is
+   sent before then. Declaring the defaults is what lets the container load for everyone
+   without loading anything *into* storage: Google gets a "denied" signal it can model
+   against, instead of the silence it used to get from anyone who declined the banner.
+
+   url_passthrough keeps the gclid on internal navigation while ad_storage is denied, which
+   is what preserves attribution for a non-consenting click. ads_data_redaction strips ad
+   identifiers from those denied-state pings. */
+(function (w) {
+  w.dataLayer = w.dataLayer || [];
+  function gtag() { w.dataLayer.push(arguments); }
+  w.gtag = w.gtag || gtag;
+
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    functionality_storage: 'denied',
+    personalization_storage: 'denied',
+    security_storage: 'granted',
+    wait_for_update: 500
+  });
+  gtag('set', 'ads_data_redaction', true);
+  gtag('set', 'url_passthrough', true);
+
+  /* Bridge Cookiebot's answer into Consent Mode. Cookiebot's built-in integration has to be
+     enabled in the Cookiebot admin; this works whether or not it is, and running both is
+     harmless because consent updates are last-write-wins with identical values. */
+  function update() {
+    var c = w.Cookiebot && w.Cookiebot.consent;
+    if (!c) return;
+    gtag('consent', 'update', {
+      ad_storage: c.marketing ? 'granted' : 'denied',
+      ad_user_data: c.marketing ? 'granted' : 'denied',
+      ad_personalization: c.marketing ? 'granted' : 'denied',
+      analytics_storage: c.statistics ? 'granted' : 'denied',
+      functionality_storage: c.preferences ? 'granted' : 'denied',
+      personalization_storage: c.preferences ? 'granted' : 'denied'
+    });
+  }
+  w.addEventListener('CookiebotOnAccept', update);
+  w.addEventListener('CookiebotOnDecline', update);
+  w.addEventListener('CookiebotOnConsentReady', update);
+})(window);
+</script>
+<!-- END BNC consent mode -->
+<!-- START Cookiebot -->
+<script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="3e6dc43b-2534-4053-870c-9024a88cb3a8" data-blockingmode="manual" type="text/javascript"></script>
+<!-- END Cookiebot -->
+<!-- START BNC attribution -->
+<script data-cookieconsent="ignore">
+/* Paid-click attribution. Runs before the GTM container so `dataLayer` exists for every
+   page, and so a gclid is captured on the landing page even if the visitor converts three
+   pages later. `window.BNC_ATTR` is what the forms read on submit.
+
+   Storage is tiered on purpose. sessionStorage is always written, so an ad click that
+   converts in the same visit is attributable regardless of the cookie banner. The 90-day
+   first-party cookie — the only part that tracks across visits — is written only once
+   Cookiebot reports marketing consent. */
+(function (w, d) {
+  w.dataLayer = w.dataLayer || [];
+  var KEYS = ['gclid', 'wbraid', 'gbraid', 'msclkid',
+              'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  var CLICK_IDS = ['gclid', 'wbraid', 'gbraid', 'msclkid'];
+  var NAME = 'bnc_attr', MAX_AGE = 7776000; /* 90 days */
+
+  function readCookie() {
+    try {
+      var m = d.cookie.match(/(?:^|;\s*)bnc_attr=([^;]*)/);
+      return m ? JSON.parse(decodeURIComponent(m[1])) : null;
+    } catch (e) { return null; }
+  }
+  function writeCookie(o) {
+    try {
+      d.cookie = NAME + '=' + encodeURIComponent(JSON.stringify(o)) + ';path=/;max-age=' +
+        MAX_AGE + ';samesite=lax' + (location.protocol === 'https:' ? ';secure' : '');
+    } catch (e) {}
+  }
+  function readSession() {
+    try { return JSON.parse(sessionStorage.getItem(NAME) || 'null'); } catch (e) { return null; }
+  }
+  function writeSession(o) {
+    try { sessionStorage.setItem(NAME, JSON.stringify(o)); } catch (e) {}
+  }
+  function marketingOk() {
+    try { return !!(w.Cookiebot && w.Cookiebot.consent && w.Cookiebot.consent.marketing); }
+    catch (e) { return false; }
+  }
+
+  var q, fresh = {}, hasFresh = false, hasClickId = false;
+  try { q = new URLSearchParams(location.search); } catch (e) { q = null; }
+  if (q) {
+    for (var i = 0; i < KEYS.length; i++) {
+      var v = q.get(KEYS[i]);
+      if (v) {
+        fresh[KEYS[i]] = String(v).slice(0, 200);
+        hasFresh = true;
+        if (CLICK_IDS.indexOf(KEYS[i]) !== -1) hasClickId = true;
+      }
+    }
+  }
+
+  var attr = readSession() || readCookie();
+  /* A new click id always wins — it is a fresh paid visit. Campaign params without a click
+     id only fill in when nothing is stored yet, so an internal link carrying stale UTMs
+     cannot overwrite the real acquisition source. */
+  if (hasFresh && (hasClickId || !attr)) {
+    fresh.landing_page = String(location.pathname).slice(0, 300);
+    fresh.first_seen = new Date().toISOString();
+    attr = fresh;
+    writeSession(attr);
+    if (marketingOk()) writeCookie(attr);
+  }
+  w.BNC_ATTR = attr || {};
+
+  /* Cookiebot resolves after this script. Promote to the cross-visit cookie once, if and
+     when marketing consent lands. */
+  function promote() { if (w.BNC_ATTR && w.BNC_ATTR.first_seen && marketingOk()) writeCookie(w.BNC_ATTR); }
+  w.addEventListener('CookiebotOnAccept', promote);
+  w.addEventListener('CookiebotOnConsentReady', promote);
+
+  /* Native (non-fetch) forms post straight to /api/form, so the values have to ride along
+     as hidden inputs. Fetch-based forms read window.BNC_ATTR directly instead. */
+  function stamp() {
+    if (!w.BNC_ATTR || !w.BNC_ATTR.first_seen) return;
+    var forms = d.getElementsByTagName('form');
+    for (var i = 0; i < forms.length; i++) {
+      var f = forms[i];
+      if (f.getAttribute('data-bnc-attr') === '1') continue;
+      if (!/\/api\/form/.test(f.getAttribute('action') || '')) continue;
+      f.setAttribute('data-bnc-attr', '1');
+      for (var k in w.BNC_ATTR) {
+        if (!Object.prototype.hasOwnProperty.call(w.BNC_ATTR, k)) continue;
+        var el = d.createElement('input');
+        el.type = 'hidden'; el.name = k; el.value = w.BNC_ATTR[k];
+        f.appendChild(el);
+      }
+    }
+  }
+  if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', stamp);
+  else stamp();
+
+  /* Conversion event for forms that never navigate. The forms that post natively land on
+     thank-you.html, which fires this for them. The fetch-based ones — QuickQuote, the
+     datasheet PDF configurator, the line-card quote, the book resource forms and quizzes —
+     stay on the page and show an inline success, so they have to fire it themselves.
+     Between them they cover most of the site's form volume and none of it was measurable.
+     Call once, on confirmed success only. */
+  w.bncTrackFormSubmit = function (formType) {
+    try {
+      var ev = { event: 'form_submission_complete', form_type: String(formType || 'contact') };
+      var a = w.BNC_ATTR || {};
+      if (a.gclid) ev.gclid = a.gclid;
+      if (a.utm_source) ev.utm_source = a.utm_source;
+      if (a.utm_campaign) ev.utm_campaign = a.utm_campaign;
+      w.dataLayer.push(ev);
+    } catch (e) {}
+  };
+
+  /* A form carrying `_next` sends the visitor back where they came from instead of to
+     thank-you.html — the ScintIQ configurator does this — so the conversion has to travel
+     with them. /api/form appends `bnc_fs=<form type>` to that redirect and this fires it on
+     arrival. The param is then stripped from the address bar so a refresh or a shared link
+     cannot count a second time. */
+  if (q) {
+    var fs = q.get('bnc_fs');
+    if (fs) {
+      w.bncTrackFormSubmit(String(fs).toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 32));
+      try {
+        q.delete('bnc_fs');
+        var rest = q.toString();
+        history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+      } catch (e) {}
+    }
+  }
+})(window, document);
+</script>
+<!-- END BNC attribution -->
+<meta name="robots" content="index,follow"><!--draft-noindex-->
+<!-- Google Tag Manager -->
+<script data-cookieconsent="ignore">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TSQT232S');</script>
+<!-- End Google Tag Manager -->
+<!-- START Visual Visitor -->
+<script data-cookieconsent="ignore">
+/* Visual Visitor, loaded by hand rather than by Cookiebot's manual-mode activation.
+
+   Cookiebot runs here in manual blocking mode. Manual mode only flips a gated tag's `type`
+   from text/plain to text/javascript. Restoring `data-cookieblock-src` into `src` is the
+   automatic-mode mechanism and it never runs in manual mode, so the tag this replaces
+   turned into a script element with a type and no source. Visual Visitor loaded on no page
+   between 2026-07-28 and this change.
+
+   The consent gate is unchanged, only the mechanism is. Marketing consent granted, the
+   script is injected once. Not granted, nothing loads. US visitors resolve to implied
+   consent with marketing already granted, so they are tracked exactly as before, while
+   EU, EEA and UK visitors stay behind the dialog. If Cookiebot itself fails to load,
+   nothing fires, which is the safe direction to fail. */
+(function (w, d) {
+  var SRC = 'https://data.processwebsitedata.com/cscripts/yuZy3Z595d-ed010bae.js';
+  var done = false;
+
+  function granted() {
+    var c = w.Cookiebot && w.Cookiebot.consent;
+    return !!(c && c.marketing);
+  }
+
+  function load() {
+    if (done || !granted()) return;
+    done = true;
+    if (d.querySelector('script[src="' + SRC + '"]')) return;
+    var s = d.createElement('script');
+    s.src = SRC;
+    s.defer = true;
+    (d.head || d.documentElement).appendChild(s);
+  }
+
+  load();
+  w.addEventListener('CookiebotOnAccept', load);
+  w.addEventListener('CookiebotOnConsentReady', load);
+})(window, document);
+</script>
+<!-- END Visual Visitor -->
+<!-- START Bing UET -->
+<script type="text/plain" data-cookieconsent="marketing">(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"187080532", enableAutoSpaTracking: true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
+<!-- END Bing UET -->
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PVX-4000-2kV-EX Pulsed Voltage Source Manual | BNC</title>
+<style>
+:root{
+ --blue:#0655a3;--blue-dark:#113163;--blue-600:#054a8c;
+ --ink:#1b2330;--muted:#5b6677;--line:#e3e7ee;--bg:#f4f7fb;--bg-2:#eaf0f7;--bg-3:#e1e9f2;
+ --font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;
+ --font-b:Arial,'Segoe UI',Helvetica,sans-serif;--font-mono:'Courier New',monospace;
+ --r:5px;--wrap:1180px;
+}
+*{box-sizing:border-box;}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:var(--font-b);color:var(--ink);background:var(--bg);margin:0;line-height:1.62;font-size:15px;}
+a{color:var(--blue);text-decoration:none;}a:hover{text-decoration:underline;}
+h1,h2,h3,h4{font-family:var(--font-h);color:var(--blue-dark);line-height:1.2;margin:0;}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;}
+/* ---- site header (dark) ---- */
+.sitenav{position:sticky;top:0;z-index:200;background:#0a1626;border-bottom:1px solid rgba(120,170,225,.18);font-family:var(--font-h);}
+.sitenav-inner{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:22px;}
+.sitenav-logo{display:flex;align-items:center;}.sitenav-logo svg{height:48px;width:auto;}
+.sitenav-menu{margin-left:auto;display:flex;gap:2px;align-items:stretch;height:62px;}
+.nav-item{position:relative;display:flex;align-items:center;}
+.nav-item>a{display:flex;align-items:center;height:62px;padding:0 12px;color:#c4d6ee;font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;white-space:nowrap;}
+.nav-item:hover>a{color:#fff;}
+.nav-drop{position:absolute;top:58px;left:0;min-width:248px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.55);padding:8px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s,transform .15s,visibility .15s;}
+.nav-item:hover .nav-drop,.nav-item:focus-within .nav-drop{opacity:1;visibility:visible;transform:translateY(0);}
+.nav-drop a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;text-transform:none;letter-spacing:0;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.nav-drop a:hover{background:rgba(55,182,240,.14);color:#fff;text-decoration:none;}
+.sitenav-cta{margin-left:6px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-weight:700;font-size:.84rem;padding:.58em 1.1em;border-radius:6px;text-decoration:none;white-space:nowrap;}
+.sitenav-cta:hover{filter:brightness(1.09);text-decoration:none;}
+@media(max-width:1040px){.sitenav-menu{display:none;}}
+.doc-header{display:none;}
+/* ---- light hero ---- */
+.doc-hero{background:var(--bg-2);border-bottom:2px solid var(--blue);}
+.doc-hero .wrap{padding:28px 28px 24px;display:flex;gap:30px;align-items:center;flex-wrap:wrap;}
+.doc-hero .ht{flex:1;min-width:280px;}
+.doc-hero .kicker,.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:700;color:var(--blue);margin-bottom:8px;}
+.doc-hero h1{font-size:1.85rem;margin:0 0 8px;}
+.doc-hero p{max-width:72ch;font-size:1rem;color:var(--muted);margin:0;}
+.doc-hero .ver{margin-top:10px;font-family:var(--font-mono);font-size:.78rem;color:var(--muted);}
+.doc-hero .hero-img{flex:0 0 400px;max-width:420px;}
+.doc-hero .hero-img img{width:100%;height:auto;}
+/* ---- layout + toc ---- */
+.layout{display:grid;grid-template-columns:226px 1fr;gap:36px;max-width:var(--wrap);margin:0 auto;padding:32px 28px 64px;}
+.toc{position:sticky;top:80px;align-self:start;border-left:2px solid var(--line);padding-left:16px;font-size:.85rem;max-height:calc(100vh - 104px);overflow:auto;}
+.toc h4{text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--muted);margin:0 0 10px;}
+.toc a{display:block;color:var(--muted);padding:4px 0;border-left:2px solid transparent;margin-left:-18px;padding-left:16px;}
+.toc a:hover{color:var(--blue);border-left-color:var(--blue);text-decoration:none;}
+.content,.article{min-width:0;}
+.article{max-width:840px;margin:0 auto;padding:34px 28px 64px;}
+.content section{padding:4px 0 16px;border-top:1px solid var(--line);margin-top:20px;}
+.content section:first-child,.article section:first-child{border-top:none;margin-top:0;}
+.article section{padding:6px 0 14px;}
+.content h2,.article h2{font-size:1.32rem;margin:.3em 0 .5em;}
+.content h2 .num{color:var(--blue);margin-right:.5em;}
+.content h3,.article h3{font-size:1.06rem;color:var(--blue);margin:1.2em 0 .3em;}
+.content h4,.article h4{font-size:.96rem;color:var(--ink);margin:1em 0 .2em;}
+.content p,.content li,.article p,.article li{font-size:.95rem;color:var(--ink);}
+.content strong,.article strong{color:var(--blue-dark);}
+code{font-family:var(--font-mono);font-size:.85em;background:var(--bg-3);border:1px solid var(--line);padding:.1em .35em;border-radius:3px;color:var(--blue-dark);}
+/* ---- spec tables ---- */
+table.spec,table.matrix{width:100%;border-collapse:collapse;margin:14px 0;font-size:.85rem;border:1px solid var(--line);}
+table.spec th,table.matrix th{background:var(--bg-3);color:var(--blue-dark);font-family:var(--font-h);font-weight:700;text-align:left;padding:8px 11px;border-bottom:2px solid var(--blue);}
+table.spec td,table.matrix td{border-top:1px solid var(--line);padding:7px 11px;color:var(--ink);vertical-align:top;}
+table.spec tr:nth-child(even) td,table.matrix tr:nth-child(even) td{background:var(--bg-2);}
+table.spec td:first-child,table.matrix td:first-child{font-weight:600;color:var(--ink);}
+table.matrix th:first-child{background:var(--bg-3);}
+.modelthumb{display:block;height:44px;width:auto;margin:0 auto 5px;}
+th .modelthumb{filter:none;}
+/* ---- figures ---- */
+.fig{margin:18px 0;}
+.fig-ph{border:1px dashed #b9c4d4;border-radius:var(--r);background:var(--bg-2);padding:18px;display:flex;flex-direction:column;gap:7px;min-height:84px;justify-content:center;}
+.fig-tag{align-self:flex-start;font-family:var(--font-h);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 9px;border-radius:999px;}
+.fig-tag.keep{background:#e6f4f0;color:#0a7d6b;border:1px solid #b8e0d6;}
+.fig-tag.rebrand{background:#eef0ff;color:#5b54c9;border:1px solid #cdd1f5;}
+.fig-desc{color:var(--muted);font-size:.88rem;}
+.fig img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r);display:block;}
+.fig img.plain{border:none;}
+.fig figcaption{margin-top:6px;font-size:.82rem;color:var(--muted);font-style:italic;}
+/* ---- callouts ---- */
+.note{border-left:3px solid var(--blue);background:var(--bg-2);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:16px 0;color:var(--ink);font-size:.9rem;}
+.note.warn{border-left-color:#c77e00;background:#fff7e9;}
+.note b{color:var(--blue-dark);}
+/* ---- footer (dark, so white logo shows) ---- */
+.doc-footer{background:#0e2038;border-top:1px solid var(--line);padding:30px 0;color:#9bb0cc;font-size:.82rem;}
+.doc-footer .wrap{max-width:var(--wrap);}
+.doc-footer .disclaimer{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:var(--r);padding:11px 15px;margin-bottom:16px;color:#c4d6ee;}
+.doc-footer img,.doc-footer svg{height:26px;margin-bottom:8px;}
+.doc-footer a{color:#9bb0cc;}
+@media(max-width:900px){.layout{grid-template-columns:1fr;}.toc{display:none;}.doc-hero h1{font-size:1.5rem;}}
+
+/* ===== Manual layout ===== */
+.man-hero{background:linear-gradient(120deg,#0a1626,#0e2240 60%,#0a1c38);color:#fff;border-bottom:1px solid var(--line,#d6d3d1);}
+.man-hero .wrap{max-width:1180px;margin:0 auto;padding:46px 28px 38px;display:grid;grid-template-columns:1fr 280px;gap:30px;align-items:center;}
+.man-hero .kicker{font-family:'Myriad Pro',Arial,sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.74rem;font-weight:700;color:#5fd0ff;margin-bottom:12px;}
+.man-hero h1{font-family:'Myriad Pro',Arial,sans-serif;color:#fff;font-size:2.3rem;line-height:1.08;margin:0 0 12px;letter-spacing:-.01em;}
+.man-hero p{color:#c4d6ee;font-size:1.04rem;max-width:60ch;margin:0;}
+.man-hero .hprod{justify-self:center;}
+.man-hero .hprod img{width:100%;max-width:260px;filter:drop-shadow(0 18px 30px rgba(0,0,0,.5));}
+.man-draft{max-width:1180px;margin:0 auto;padding:14px 28px 0;}
+.man-draft .db{background:#fef3c7;border:1px solid #e6cf86;border-radius:8px;padding:11px 16px;font-size:.86rem;color:#5b4708;}
+.man-layout{max-width:1180px;margin:0 auto;padding:26px 28px 60px;display:grid;grid-template-columns:248px 1fr;gap:40px;align-items:start;}
+.man-toc{position:sticky;top:86px;max-height:calc(100vh - 110px);overflow:auto;border:1px solid var(--border,#d6d3d1);border-radius:10px;padding:14px 12px;background:#fafaf9;font-size:.86rem;}
+.man-toc h4{font-family:'Myriad Pro',Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:.7rem;color:#78716c;margin:0 0 10px;padding:0 6px;}
+.man-toc a{display:block;padding:6px 8px;border-radius:6px;color:#44403c;text-decoration:none;line-height:1.3;}
+.man-toc a:hover{background:#f0efed;color:#0655a3;}
+.man-toc a.sub{padding-left:18px;font-size:.82rem;color:#78716c;}
+.man-body{min-width:0;}
+.man-body .ch{padding-top:8px;margin-bottom:30px;scroll-margin-top:84px;}
+.man-body .ch h2{font-family:'Myriad Pro',Arial,sans-serif;color:#1c2c46;font-size:1.7rem;border-bottom:2px solid #0655a3;padding-bottom:8px;margin:18px 0 16px;}
+.man-body .ch h3{font-family:'Myriad Pro',Arial,sans-serif;color:#113163;font-size:1.18rem;margin:24px 0 8px;scroll-margin-top:84px;}
+.man-body .ch h4{font-family:'Myriad Pro',Arial,sans-serif;color:#1c2c46;font-size:1rem;margin:16px 0 6px;}
+.man-body .ch h4.grp{margin-top:28px;color:#0655a3;text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;border-bottom:1px solid #e2ded9;padding-bottom:6px;}
+.man-body p,.man-body li{font-size:.95rem;line-height:1.6;color:#292524;}
+table.tbl{border-collapse:collapse;width:100%;margin:12px 0 18px;font-size:.86rem;}
+table.tbl th,table.tbl td{border:1px solid #ddd8d2;padding:7px 10px;text-align:left;vertical-align:top;}
+table.tbl thead th{background:#113163;color:#fff;font-family:'Myriad Pro',Arial,sans-serif;font-weight:600;}
+table.tbl tbody th{background:#f4f2ef;color:#44403c;width:130px;font-weight:600;}
+table.tbl tr:nth-child(even) td{background:#faf9f7;}
+.warn{background:#fdeaea;border:1px solid #e6b3b3;border-left:4px solid #dc2626;border-radius:6px;padding:11px 15px;margin:14px 0;font-size:.9rem;color:#5b1414;}
+.note{background:#eef6fd;border:1px solid #b8d8f0;border-left:4px solid #0655a3;border-radius:6px;padding:11px 15px;margin:14px 0;font-size:.9rem;color:#11375e;}
+pre.code{background:#0e2038;color:#d7e6f7;border-radius:8px;padding:13px 15px;overflow:auto;font-size:.82rem;line-height:1.5;}
+.man-body code{background:#f0efed;color:#0a3a66;padding:.1em .4em;border-radius:4px;font-size:.86em;}
+pre.code code{background:none;color:inherit;padding:0;}
+.cmd{border:1px solid #e2ded9;border-radius:8px;padding:6px 14px 10px;margin:12px 0;background:#fcfbfa;}
+.cmd h4{font-size:.98rem;margin:10px 0 6px;}
+.cmd h4 code{background:#113163;color:#fff;}
+figure{margin:16px 0;text-align:center;}
+figure img{max-width:100%;border:1px solid #e2ded9;border-radius:8px;background:#fff;}
+figcaption{font-size:.8rem;color:#78716c;margin-top:6px;font-style:italic;}
+/* UI mockups */
+.disp{max-width:420px;margin:14px auto;background:#0b1f33;border:2px solid #1d3a59;border-radius:12px;padding:14px 16px;font-family:'Myriad Pro',Arial,sans-serif;box-shadow:0 10px 26px -10px rgba(0,0,0,.5);}
+.disp .dh{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1d3a59;padding-bottom:8px;margin-bottom:10px;}
+.disp .dmodel{color:#5fd0ff;font-weight:700;letter-spacing:.03em;}
+.disp .dhv{font-size:.72rem;font-weight:700;color:#fff;background:#b91c1c;border-radius:4px;padding:2px 8px;}
+.disp .drow{display:grid;grid-template-columns:54px 1fr 1fr;gap:8px;align-items:center;margin:7px 0;}
+.disp .dlab{font-size:.7rem;color:#7fa6cc;text-transform:uppercase;letter-spacing:.06em;}
+.disp .dcell{background:#06121f;border:1px solid #173049;border-radius:6px;padding:7px 10px;text-align:right;color:#eaf4ff;font-size:1.1rem;font-weight:700;}
+.disp .dcell.set{color:#5fd0ff;}
+.webui{max-width:560px;margin:14px auto;border:1px solid #d6d3d1;border-radius:10px;overflow:hidden;box-shadow:0 10px 26px -12px rgba(0,0,0,.3);}
+.webui .wbar{background:#113163;color:#fff;font-family:'Myriad Pro',Arial,sans-serif;font-size:.84rem;padding:8px 14px;display:flex;justify-content:space-between;}
+.webui .wbody{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#fff;}
+.webui .wcol{padding:12px 16px;}
+.webui .wcol+.wcol{border-left:1px solid #e2ded9;}
+.webui h5{font-family:'Myriad Pro',Arial,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:.7rem;color:#78716c;margin:0 0 8px;}
+.webui .wval{font-size:1.25rem;font-weight:700;color:#113163;margin:3px 0;}
+.webui .wval.act{color:#0655a3;}
+@media(max-width:920px){.man-layout{grid-template-columns:1fr;}.man-toc{position:static;max-height:none;}.man-hero .wrap{grid-template-columns:1fr;}.man-hero .hprod{display:none;}}
+/* ---- kicker breadcrumbs v3 ---- */
+nav.kicker[aria-label="Breadcrumb"]{text-transform:none;letter-spacing:.05em;}
+nav.kicker[aria-label="Breadcrumb"] a{color:inherit;text-decoration:none;}
+nav.kicker[aria-label="Breadcrumb"] a:hover{color:var(--blue-dark);text-decoration:underline;}
+nav.kicker[aria-label="Breadcrumb"] .sep{margin:0 6px;opacity:.5;font-weight:400;}
+nav.kicker[aria-label="Breadcrumb"] .pfx{margin-right:6px;font-weight:400;color:var(--blue);}
+</style>
+
+
+
+
+
+
+<style id="nav-cascade-css">.nav-drop.nav-casc{min-width:206px;padding:7px;transition-delay:.20s;}.nav-item:hover .nav-drop.nav-casc,.nav-item:focus-within .nav-drop.nav-casc{transition-delay:0s;}.nav-grp2{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp2:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp2 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub{position:absolute;top:-7px;left:100%;min-width:238px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:6;}.nav-grp2:hover .nav-sub,.nav-grp2:focus-within .nav-sub{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub a:hover{background:rgba(55,182,240,.14);color:#fff;}.sitenav-menu .nav-item:last-child .nav-drop.nav-casc{left:auto;right:0;}.sitenav-menu .nav-item:last-child .nav-sub{left:auto;right:100%;transform:translateX(-8px);}.sitenav-menu .nav-item:last-child .nav-grp2:hover .nav-sub,.sitenav-menu .nav-item:last-child .nav-grp2:focus-within .nav-sub{transform:translateX(0);}@media(max-width:1040px){.sitenav.open .nav-drop.nav-casc{min-width:0;}.sitenav.open .nav-grp2{display:block;font-weight:700;color:#8fb4dd;text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;padding:10px 24px 4px;}.sitenav.open .nav-grp2 .nc{display:none;}.sitenav.open .nav-sub{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub a{padding:8px 38px;white-space:normal;}}</style>
+<style id="ss-css">.ss-wrap{position:relative;margin-left:10px;}.ss-input{width:150px;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,225,.35);color:#dce8f7;font:inherit;font-size:.82rem;padding:.5em .8em;border-radius:6px;outline:none;transition:width .18s,border-color .18s;}.ss-input::placeholder{color:#7f9bc0;}.ss-input:focus{width:220px;border-color:#37b6f0;}.ss-panel{position:absolute;top:42px;right:0;width:340px;max-width:84vw;background:#0e2038;border:1px solid rgba(120,170,225,.28);border-radius:10px;box-shadow:0 18px 44px -12px rgba(0,0,0,.7);padding:6px;display:none;max-height:70vh;overflow:auto;z-index:300;}.ss-panel.open{display:block;}.ss-item{display:block;padding:9px 11px;border-radius:7px;text-decoration:none;}.ss-item:hover,.ss-item.active{background:rgba(55,182,240,.14);}.ss-item .st{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:600;font-size:.9rem;color:#fff;display:block;}.ss-item .sc{font-size:.69rem;text-transform:uppercase;letter-spacing:.07em;color:#5f9fe0;}.ss-none{padding:12px;color:#8aa0bd;font-size:.85rem;}@media(max-width:1040px){.ss-wrap{order:6;width:100%;margin:8px 0 0;}.ss-input,.ss-input:focus{width:100%;}.ss-panel{width:100%;}}</style>
+<style id="gfoot-v3">
+.gfoot{position:relative;overflow:hidden;background:#0e2038;color:#9bb0cc;padding:22px 0 11px;font-size:.9rem;font-family:Arial,'Segoe UI',Helvetica,sans-serif;}
+.gfoot::before{content:"";position:absolute;left:50%;bottom:-150px;transform:translateX(-50%);width:600px;height:330px;background:radial-gradient(circle at 50% 50%,rgba(55,182,240,.20),rgba(63,208,196,.06) 46%,transparent 70%);pointer-events:none;animation:gfglow 6s ease-in-out infinite;}
+@keyframes gfglow{0%,100%{opacity:.6}50%{opacity:.95}}
+.gfoot .gwrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 28px;}
+.gfoot .gcols{display:grid;grid-template-columns:1.15fr 1.25fr 1fr;gap:30px;align-items:start;margin-bottom:10px;}
+/* brand + academy + social */
+.gfoot .gbrand .gbnc{height:56px;width:auto;display:block;margin-bottom:9px;}
+.gfoot .gtagline{margin:0 0 12px;max-width:32ch;color:#aebfd4;font-size:.82rem;line-height:1.5;}
+.gfoot .gacad{display:flex;align-items:center;gap:11px;text-decoration:none;border-top:1px solid rgba(255,255,255,.1);padding-top:11px;max-width:34ch;}
+.gfoot .gacad img{height:58px;width:auto;flex:0 0 auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));}.gfoot .gbrand a.gbnc-link{display:inline-block;line-height:0;}.gfoot .gacad a.gacad-logo{flex:0 0 auto;display:inline-flex;line-height:0;}.gfoot .gbottom a:hover{color:#5fd0ff;}
+.gfoot .gacad span{font-size:.72rem;line-height:1.4;color:#9bb0cc;}
+.gfoot .gacad b{color:#fff;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-size:.82rem;display:block;margin-bottom:1px;}
+.gfoot .gacad a{text-decoration:none;}.gfoot .gacad a:hover b{color:#5fd0ff;}
+.gfoot .gsocial{display:flex;gap:10px;margin-top:0;}
+.gfoot .gsocial a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(120,170,225,.3);border-radius:7px;color:#9bb0cc;transition:all .16s;}
+.gfoot .gsocial a[aria-label="YouTube"]{color:#ff0000;border-color:rgba(255,0,0,.45);}.gfoot .gsocial a[aria-label="LinkedIn"]{color:#0a66c2;border-color:rgba(10,102,194,.45);}.gfoot .gsocial a:hover{filter:brightness(1.18);background:rgba(255,255,255,.06);}.gfoot .gsocial-label{font-size:.68rem;color:#9bb0cc;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 4px;font-weight:600;}
+.gfoot .gsocial svg{width:16px;height:16px;fill:currentColor;}
+/* map */
+.gfoot .gmap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;}
+.gfoot .gmap-img{width:100%;max-width:340px;height:auto;filter:drop-shadow(0 5px 16px rgba(55,182,240,.28));}
+.gfoot .gmap .gtag{margin:2px 0 0;font-size:1.2rem;line-height:1.35;color:#c4d6ee;}
+.gfoot .gmap .gtag a{color:#5fd0ff;font-weight:700;text-decoration:none;}
+.gfoot .gmap .gtag a:hover{color:#8fe2ff;text-decoration:underline;}
+/* company links */
+.gfoot .gcompany h5{font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;color:#fff;font-size:.78rem;margin:0 0 8px;text-transform:uppercase;letter-spacing:.06em;}
+.gfoot .gcompany ul{list-style:none;padding:0;margin:0;columns:2;column-gap:20px;}
+.gfoot .gcompany li{margin-bottom:5px;font-size:.79rem;break-inside:avoid;}
+.gfoot .gcompany a{color:#9bb0cc;text-decoration:none;}
+.gfoot .gcompany a:hover{color:#fff;text-decoration:underline;}
+/* books */
+.gfoot .gbooks{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:4px;font-size:.66rem;color:#7f97b5;line-height:1.6;white-space:nowrap;overflow-x:auto;}
+.gfoot .gbooks .gbooks-l{color:#9bb0cc;font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.68rem;display:block;margin:0 0 4px;}
+.gfoot .gbooks a{color:#7f97b5;text-decoration:none;}
+.gfoot .gbooks a:hover{color:#5fd0ff;text-decoration:underline;}
+/* bottom */
+.gfoot .gbottom{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.12);padding-top:9px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font-size:.74rem;color:#8aa0bd;}
+.gfoot .gbottom span{white-space:nowrap;}
+@media(max-width:860px){.gfoot .gcols{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}.gfoot .gtagline,.gfoot .gacad{margin-inline:auto;}.gfoot .gacad{text-align:left;}.gfoot .gsocial{justify-content:center;}.gfoot .gcompany ul{text-align:left;}.gfoot .gbottom{justify-content:center;text-align:center;}.gfoot .gbooks{text-align:center;white-space:normal;overflow-x:visible;}}
+</style>
+<style id="navgrplink">.sitenav .nav-grp-link{color:inherit;text-decoration:none;font:inherit;cursor:pointer;display:contents;}.sitenav .nav-grp-link:hover{color:#5fd0ff;}</style>
+<!--seo-meta-->
+<meta name="description" content="PVX-4000-2kV-EX pulsed voltage source manual from Berkeley Nucleonics. Runs from external HV supplies, ±2000 V, 40 Hz–30 kHz internal, single-shot to 600 kHz external. Covers setup, operation, and the command list.">
+<link rel="canonical" href="https://www.berkeleynucleonics.com/docs/bnc-dei-pvx-4000-ex-user-manual.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Berkeley Nucleonics">
+<meta property="og:title" content="PVX-4000-2kV-EX Pulsed Voltage Source Manual | BNC">
+<meta property="og:description" content="PVX-4000-2kV-EX pulsed voltage source manual from Berkeley Nucleonics. Runs from external HV supplies, ±2000 V, 40 Hz–30 kHz internal, single-shot to 600 kHz external. Covers setup, operation, and the command list.">
+<meta property="og:url" content="https://www.berkeleynucleonics.com/docs/bnc-dei-pvx-4000-ex-user-manual.html">
+<meta property="og:image" content="https://www.berkeleynucleonics.com/figures/dei/PVX-4000-2kV-EX/p1_x76.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PVX-4000-2kV-EX Pulsed Voltage Source Manual | BNC">
+<meta name="twitter:description" content="PVX-4000-2kV-EX pulsed voltage source manual from Berkeley Nucleonics. Runs from external HV supplies, ±2000 V, 40 Hz–30 kHz internal, single-shot to 600 kHz external. Covers setup, operation, and the command list.">
+<meta name="twitter:image" content="https://www.berkeleynucleonics.com/figures/dei/PVX-4000-2kV-EX/p1_x76.jpeg">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "PVX-4000-2kV-EX Pulsed Voltage Source", "description": "Operation manual for the Berkeley Nucleonics PVX-4000-2kV-EX, an air-cooled high-voltage pulse generator optimized for capacitive loads with a ±2000 V output that runs from customer-supplied external HV DC power supplies. Covers front and rear panel features, operating considerations, local and remote operation, the command list, fault codes, and warranty.", "url": "https://www.berkeleynucleonics.com/docs/bnc-dei-pvx-4000-ex-user-manual.html", "author": {"@type": "Organization", "name": "Berkeley Nucleonics"}, "publisher": {"@type": "Organization", "name": "Berkeley Nucleonics Corporation", "logo": {"@type": "ImageObject", "url": "https://www.berkeleynucleonics.com/figures/dei/PVX-4000-2kV-EX/p1_x76.jpeg"}}}</script>
+<!--/seo-meta-->
+<!--bnc-auth-->
+<link rel="stylesheet" href="../_shared/bnc-auth.css">
+<script src="../_shared/bnc-auth-config.js"></script>
+<script defer src="../_shared/bnc-auth.js"></script><script defer src="../_shared/bnc-visit.js"></script><script defer src="../_shared/bnc-chat.js"></script>
+<!--/bnc-auth-->
+<link rel="stylesheet" href="../_shared/bnc-emerald.css">
+<style id="bnc-mobile-nav-fix">
+@media(max-width:1040px){
+  .sitenav-inner{flex-wrap:wrap;height:auto;min-height:58px;gap:10px;padding:8px 16px;align-items:center;}
+  .sitenav-logo{margin-right:auto;}
+  .sitenav-logo svg{height:36px;}
+  .bnc-acct{order:4;display:flex;align-items:center;}
+  .bnc-welcome{display:none;}
+  .navtoggle{display:flex;order:5;margin:0;width:42px;height:38px;background:transparent;border:1px solid rgba(120,170,225,.4);border-radius:6px;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:4px;padding:0;}
+  .navtoggle span{display:block;width:20px;height:2px;background:#c4d6ee;border-radius:2px;}
+  .sitenav-cta{display:none;}
+  .ss-wrap{display:none;margin:0;}
+  .sitenav.open .ss-wrap{display:block;order:6;flex:0 0 100%;width:100%;margin:6px 0 0;}
+  .sitenav.open .ss-input,.sitenav.open .ss-input:focus{width:100%;box-sizing:border-box;}
+  .sitenav.open .ss-panel{width:100%;max-width:none;}
+  .sitenav.open .sitenav-cta{display:block;order:7;flex:0 0 100%;width:100%;box-sizing:border-box;margin:8px 0 0;text-align:center;}
+  .sitenav.open .sitenav-menu{display:flex;order:8;flex:0 0 100%;width:100%;flex-direction:column;position:static;top:auto;left:auto;right:auto;max-height:64vh;overflow:auto;border-radius:0;margin:8px 0 0;padding:6px 0;border-top:1px solid rgba(120,170,225,.18);background:#0e2038;align-items:stretch;gap:0;}
+  table.spec,table.matrix{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;}
+  img,figure,video,iframe{max-width:100%;height:auto;}
+  .doc-hero .wrap{flex-direction:column;align-items:stretch;}
+  .doc-hero .hero-img{flex:0 1 auto;width:100%;max-width:100%;}
+  #nutshell-boot-73885{display:none!important;}
+  html{overflow-x:clip;}
+}
+</style>
+<link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.berkeleynucleonics.com/home.html"},{"@type":"ListItem","position":2,"name":"Support","item":"https://www.berkeleynucleonics.com/support.html"},{"@type":"ListItem","position":3,"name":"Product Documentation","item":"https://www.berkeleynucleonics.com/docs/product-documentation.html"},{"@type":"ListItem","position":4,"name":"High Voltage/Current Pulsers & Supplies","item":"https://www.berkeleynucleonics.com/dei-home.html"},{"@type":"ListItem","position":5,"name":"Library","item":"https://www.berkeleynucleonics.com/docs/dei-index.html"},{"@type":"ListItem","position":6,"name":"pvx-4000-2kv-ex user manual","item":"https://www.berkeleynucleonics.com/docs/bnc-dei-pvx-4000-ex-user-manual.html"}]}</script>
+<!-- internal notes hidden --><style>[data-webmaster]{display:none!important}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a><div class="bnc-emerald-wave" aria-hidden="true"></div>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSQT232S"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header class="sitenav"><div class="sitenav-inner">
+  <a class="sitenav-logo" href="../home.html" aria-label="Berkeley Nucleonics home"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
+  <div class="ss-wrap"><span class="ss-field"><input class="ss-input" type="search" placeholder=" " aria-label="Search the site" autocomplete="off"><span class="ss-ph" aria-hidden="true">Search<span class="ss-dots"><i></i><i></i><i></i></span></span></span><div class="ss-panel" role="listbox"></div></div>
+  <nav class="sitenav-menu"><div class="nav-item"><a href="../home.html">Home</a></div><div class="nav-item"><a class="nav-trigger">Products &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../pdg-home.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../pdg-home.html">Home</a><div class="nav-grp3">Digital Delay/Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-525-datasheet.html" target="_blank" rel="noopener">Model 525</a><a href="../docs/bnc-model-575-datasheet.html" target="_blank" rel="noopener">Model 575</a><a href="../docs/bnc-model-577-datasheet.html" target="_blank" rel="noopener">Model 577</a><a href="../docs/bnc-model-588-datasheet.html" target="_blank" rel="noopener">Model 588</a><a href="../docs/bnc-model-725-datasheet.html" target="_blank" rel="noopener">Model 725</a><a href="../docs/bnc-model-750-datasheet.html" target="_blank" rel="noopener">Model 750</a></div></div><div class="nav-grp3">High-Density Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-588b-datasheet.html" target="_blank" rel="noopener">Model 588B</a></div></div><div class="nav-grp3">High-Current Multi-Channel<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-507-datasheet.html" target="_blank" rel="noopener">Model 507</a><a href="../docs/bnc-model-508-datasheet.html" target="_blank" rel="noopener">Model 508</a></div></div><div class="nav-grp3">Femtosecond Delay<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-745t-datasheet.html" target="_blank" rel="noopener">Model 745T</a></div></div><div class="nav-grp3">High-Performance Pulse<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-765-datasheet.html" target="_blank" rel="noopener">Model 765</a><a href="../docs/bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">Model 765-HV</a></div></div><div class="nav-grp3">NIM Pulse Generator<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-pb-5-datasheet.html" target="_blank" rel="noopener">Model PB-5</a><a href="../nim-home.html#db-2" target="_blank" rel="noopener">Model DB-2</a><a href="../nim-home.html#ap-3" target="_blank" rel="noopener">Model AP-3</a><a href="../nim-home.html#tb-4" target="_blank" rel="noopener">Model TB-4</a></div></div><a href="../docs/pdg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rfsg-home.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../rfsg-home.html">Home</a><div class="nav-grp3">Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-835-datasheet.html" target="_blank" rel="noopener">Model 835</a><a href="../docs/bnc-model-845-datasheet.html" target="_blank" rel="noopener">Model 845</a><a href="../docs/bnc-model-855b-datasheet.html" target="_blank" rel="noopener">Model 855B</a><a href="../docs/bnc-model-865b-datasheet.html" target="_blank" rel="noopener">Model 865B</a><a href="../docs/bnc-model-870a-datasheet.html" target="_blank" rel="noopener">Model 870A</a><a href="../docs/bnc-model-871-datasheet.html" target="_blank" rel="noopener">Model 871</a><a href="../docs/bnc-model-805sg-datasheet.html" target="_blank" rel="noopener">Model 805-SG</a><a href="../docs/bnc-model-845oem-datasheet.html" target="_blank" rel="noopener">Model 845-OEM</a><a href="../docs/bnc-rfs-1000-datasheet.html" target="_blank" rel="noopener">RFS-1000 Series</a></div></div><div class="nav-grp3">Synthesizers &amp; Sources<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-805m-datasheet.html" target="_blank" rel="noopener">Model 805-M</a><a href="../docs/bnc-model-825m-datasheet.html" target="_blank" rel="noopener">Model 825-M</a><a href="../docs/bnc-model-845m-datasheet.html" target="_blank" rel="noopener">Model 845-M</a><a href="../docs/bnc-model-866m-datasheet.html" target="_blank" rel="noopener">Model 866-M</a><a href="../docs/bnc-model-865bm-datasheet.html" target="_blank" rel="noopener">Model 865B-M</a><a href="../docs/bnc-model-865bm-40x-datasheet.html" target="_blank" rel="noopener">Model 865B-M-40-X</a></div></div><div class="nav-grp3">Vector Signal Generators<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-model-875-datasheet.html" target="_blank" rel="noopener">Model 875</a><a href="../docs/bnc-rfs-7060-u-datasheet.html" target="_blank" rel="noopener">RFS-7060-U</a><a href="../docs/bnc-rfs-7060-t-datasheet.html" target="_blank" rel="noopener">RFS-7060-T</a></div></div><div class="nav-grp3">RF USB Power Sensors<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-12100-power-sensor-datasheet.html" target="_blank" rel="noopener">Model 12100 Series Power Sensors</a></div></div><div class="nav-grp3">Phase Noise Analyzers<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-7000-series-phase-noise-datasheet.html" target="_blank" rel="noopener">7000 Series (7070 / 7300 / 7340)</a></div></div><a href="../docs/rfsg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../scintiq-home.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../scintiq-home.html">ScintIQ Home</a><a href="../docs/bnc-scintiq-naitl-datasheet.html" target="_blank" rel="noopener">NaI(Tl)</a><a href="../docs/bnc-scintiq-csitl-datasheet.html" target="_blank" rel="noopener">CsI(Tl)</a><a href="../docs/bnc-scintiq-labr3-datasheet.html" target="_blank" rel="noopener">LaBr3(Ce)</a><a href="../docs/bnc-scintiq-cebr3-datasheet.html" target="_blank" rel="noopener">CeBr3</a><a href="../docs/bnc-scintiq-lbc-datasheet.html" target="_blank" rel="noopener">LBC</a><a href="../docs/bnc-scintiq-sri2eu-datasheet.html" target="_blank" rel="noopener">SrI2(Eu)</a><a href="../docs/bnc-scintiq-cllbc-datasheet.html" target="_blank" rel="noopener">CLLBC</a><a href="../docs/bnc-scintiq-clyc-datasheet.html" target="_blank" rel="noopener">CLYC:Ce</a><a href="../docs/bnc-scintiq-baf2-datasheet.html" target="_blank" rel="noopener">BaF2</a><a href="../docs/bnc-scintiq-yapce-datasheet.html" target="_blank" rel="noopener">YAP:Ce</a><a href="../docs/bnc-scintiq-yag-datasheet.html" target="_blank" rel="noopener">YAG:Ce</a><a href="../docs/bnc-scintiq-gaggce-datasheet.html" target="_blank" rel="noopener">GAGG:Ce</a><a href="../docs/bnc-scintiq-lyso-datasheet.html" target="_blank" rel="noopener">LYSO</a><a href="../docs/bnc-scintiq-bgo-datasheet.html" target="_blank" rel="noopener">BGO</a><a href="../docs/scintiq-material-comparison.html" target="_blank" rel="noopener">Material Comparison Tool</a><a href="../docs/scintiq-selector.html" target="_blank" rel="noopener">Detector Selector</a><a href="../docs/scintiq-configurator.html" target="_blank" rel="noopener">Detector Configurator</a><a href="../docs/scintiq-index.html" target="_blank" rel="noopener">All ScintIQ Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../awg-home.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../awg-home.html">AWG Home</a><a href="../docs/bnc-awg-686-datasheet.html" target="_blank" rel="noopener">Model 686</a><a href="../docs/bnc-awg-685-datasheet.html" target="_blank" rel="noopener">Model 685</a><a href="../docs/bnc-awg-685c-datasheet.html" target="_blank" rel="noopener">Model 685C</a><a href="../docs/bnc-awg-675-datasheet.html" target="_blank" rel="noopener">Model 675</a><a href="../docs/bnc-awg-676-datasheet.html" target="_blank" rel="noopener">Model 676</a><a href="../docs/bnc-awg-670c-datasheet.html" target="_blank" rel="noopener">Model 670C</a><a href="../docs/bnc-awg-645-datasheet.html" target="_blank" rel="noopener">Model 645</a><a href="../docs/bnc-awg-a2255-datasheet.html" target="_blank" rel="noopener">Model A2255</a><a href="../docs/bnc-awg-a2085-datasheet.html" target="_blank" rel="noopener">Model A2085</a><a href="../docs/awg-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../riid-home.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub nav-sub-nest"><a href="../riid-home.html">Isotope ID Home</a><div class="nav-grp3">Handheld<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-sam-920-sprd-datasheet.html" target="_blank" rel="noopener">SAM 920+ SPRD</a><a href="../docs/bnc-sam-940-plus-datasheet.html" target="_blank" rel="noopener">SAM 940+</a><a href="../docs/bnc-sam-950-datasheet.html" target="_blank" rel="noopener">SAM 950</a><a href="../docs/bnc-model-907-datasheet.html" target="_blank" rel="noopener">Model 907</a><a href="../docs/bnc-model-951-datasheet.html" target="_blank" rel="noopener">Model 951</a><a href="../docs/bnc-pm1703gna-datasheet.html" target="_blank" rel="noopener">Model 1703</a><a href="../docs/bnc-metrad-1-datasheet.html" target="_blank" rel="noopener">MetRad 1</a></div></div><div class="nav-grp3">Backpack/Vehicle/Lab/Drone<span class="nc">&#8250;</span><div class="nav-sub3"><a href="../docs/bnc-medusa-ms-series-datasheet.html" target="_blank" rel="noopener">MS Series</a><a href="../docs/bnc-sampack-120-datasheet.html" target="_blank" rel="noopener">SAMpack 120</a><a href="../docs/bnc-sammobile-150-datasheet.html" target="_blank" rel="noopener">SAMmobile 150</a><a href="../docs/bnc-model-960-datasheet.html" target="_blank" rel="noopener">Model 960 Monitoring System</a><a href="../docs/bnc-model-970-mca-datasheet.html" target="_blank" rel="noopener">Model 970 MCA</a><a href="../docs/bnc-model-971-datasheet.html" target="_blank" rel="noopener">Model 971</a></div></div><a href="../docs/riid-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../dei-home.html">High Voltage/Current Pulsers &amp; Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../dei-home.html">DEI Pulsers Home</a><a href="../docs/bnc-dei-pvx-4151-datasheet.html" target="_blank" rel="noopener">PVX-4151 (&plusmn;1.5 kV)</a><a href="../docs/bnc-dei-pvx-4141-datasheet.html" target="_blank" rel="noopener">PVX-4141 Pulse Generator</a><a href="../docs/bnc-dei-pvx-4110-datasheet.html" target="_blank" rel="noopener">PVX-4110 (±10 kV)</a><a href="../docs/bnc-dei-pvx-4000-datasheet.html" target="_blank" rel="noopener">PVX-4000-2kV</a><a href="../docs/bnc-dei-pvx-4000-ex-datasheet.html" target="_blank" rel="noopener">PVX-4000-2kV-EX</a><a href="../docs/bnc-dei-pcx-7421-datasheet.html" target="_blank" rel="noopener">PCX-7421 Laser Diode Driver</a><a href="../docs/bnc-dei-pco-6131-datasheet.html" target="_blank" rel="noopener">PCO-6131 (125 A OEM)</a><a href="../docs/bnc-dei-pcm-7700-datasheet.html" target="_blank" rel="noopener">PCM-7700 (200 A)</a><a href="../docs/bnc-model-765hv-datasheet.html" target="_blank" rel="noopener">765-HV (&plusmn;50 V, 1 A)</a><a href="../hvx-home.html">HVX High Voltage Power Supplies</a><a href="../docs/dei-index.html" target="_blank" rel="noopener">DEI Pulser Documentation</a><a href="../docs/hvx-index.html" target="_blank" rel="noopener">HVX Supply Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../rtsa-home.html">Real-Time Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../rtsa-home.html">ICX Home</a><a href="../docs/bnc-icx-fieldhawk-handheld-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk</a><a href="../docs/bnc-icx-fieldhawk-rugged-datasheet.html" target="_blank" rel="noopener">ICX-FieldHawk-R</a><a href="../docs/bnc-icx-fieldhawk-usb-datasheet.html" target="_blank" rel="noopener">ICX-Series USB</a><a href="../docs/bnc-rfa-3100-n-directional-antenna-manual.html" target="_blank" rel="noopener">RFA-3100-N Antenna (accessory)</a><a href="../docs/bnc-icx-fieldhawk-product-portfolio.html" target="_blank" rel="noopener">Product Selection Guide</a><a href="../docs/icx-index.html" target="_blank" rel="noopener">Documentation &amp; Selection Guide</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../bnc-scientific.html">BNC Scientific</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../brightspec-home.html">BrightSpec MCAs</a><a href="../spectechniques-home.html">SpecTechniques Radiation Sources</a><a href="../megiq-home.html">MegIQ VNAs &amp; Antenna Measurement</a><a href="../medusa-home.html">MedUSA Environmental</a><a href="../heinzinger-home.html">Heinzinger High Voltage</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Applications &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../docs/pdg-technical-papers.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/pdg-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/pdg-technical-papers.html#fundamentals">Fundamentals: Delay, Pulse &amp; Jitter</a><a href="../docs/pdg-technical-papers.html#physics-quantum">Physics, Accelerators &amp; Quantum</a><a href="../docs/pdg-technical-papers.html#laser-lidar">Laser, Q-Switch &amp; LiDAR</a><a href="../docs/pdg-technical-papers.html#test-imaging">Automated Test, Production &amp; Imaging</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/rfsg-technical-papers.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/rfsg-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/rfsg-technical-papers.html#phase-noise">Phase Noise &amp; Signal Purity</a><a href="../docs/rfsg-technical-papers.html#radar-defense">Radar, EW &amp; Aerospace/Defense</a><a href="../docs/rfsg-technical-papers.html#satcom-wireless">SATCOM, Wireless &amp; Vector Modulation</a><a href="../docs/rfsg-technical-papers.html#ate">ATE, Multi-Channel &amp; Automated Test</a><a href="../docs/rfsg-technical-papers.html#quantum">Quantum, Phased-Array &amp; Clock Sources</a><a href="../docs/rfsg-technical-papers.html#antenna-power">Antenna, EMC &amp; Power Sensing</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/scintiq-technical-papers.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/scintiq-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/scintiq-technical-papers.html#security-physics">Security, Defense &amp; Physics</a><a href="../docs/scintiq-technical-papers.html#medical">Medical Imaging &amp; Life Sciences</a><a href="../docs/scintiq-technical-papers.html#environmental-industrial">Environmental &amp; Industrial Measurement</a><a href="../docs/scintiq-technical-papers.html#neutron">Neutron Detection &amp; Discrimination</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/awg-technical-papers.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/awg-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/awg-technical-papers.html#radar-ew">Radar, EW &amp; Fire-Control</a><a href="../docs/awg-technical-papers.html#laser-photonics">Laser, Photonics &amp; Medical</a><a href="../docs/awg-technical-papers.html#timing">HEL/ICF &amp; LiDAR Timing</a><a href="../docs/awg-technical-papers.html#quantum-digital">Quantum &amp; Serial/Digital Test</a><a href="../docs/awg-technical-papers.html#migration">Migrating from Legacy ARBs</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/riid-technical-papers.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/riid-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/riid-technical-papers.html#field-security">Field &amp; Security Applications</a><a href="../docs/riid-technical-papers.html#industrial">Industrial &amp; Facility Monitoring</a><a href="../docs/riid-technical-papers.html#choosing">Choosing &amp; Understanding Detectors</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/dei-technical-papers.html">High Voltage/Current Pulsers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/dei-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/dei-technical-papers.html#laser-driving">Laser Diode &amp; Pockels Cell Driving</a><a href="../docs/dei-technical-papers.html#ranging">Ranging &amp; Mass Spectrometry</a><a href="../docs/dei-technical-papers.html#directed-energy">Directed Energy, Accelerators &amp; Kickers</a><a href="../docs/dei-technical-papers.html#detector-gating">Detector Gating &amp; HV Test</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/icx-technical-papers.html">ICX-FieldHawk Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/icx-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/icx-technical-papers.html#monitoring">Spectrum Monitoring &amp; Geolocation</a><a href="../docs/icx-technical-papers.html#drones">Drones &amp; Airborne Measurement</a><a href="../docs/icx-technical-papers.html#defense">Aerospace, Defense &amp; SATCOM</a><a href="../docs/icx-technical-papers.html#wireless">Wireless &amp; 5G/6G</a><a href="../docs/icx-technical-papers.html#emc">EMC, EMI &amp; RF Safety</a><a href="../docs/icx-technical-papers.html#sdr">SDR, Research &amp; Integration</a></div></div><div class="nav-grp2">Software Defined Radios<span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/bnc-icx-sdr-option-datasheet.html">ICX -SDR Option Datasheet</a><a href="../docs/handbook-sdr-rtsa.html">SDR Integration Handbook (ICX-FieldHawk)</a><a href="../docs/handbook-sdr-products.html">SDR Product Handbook (Choosing a Receiver)</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/hvx-technical-papers.html">HVX High Voltage Power Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/hvx-technical-papers.html">All Papers &amp; Briefs</a><a href="../docs/hvx-technical-papers.html#semiconductor">Semiconductor &amp; Power Electronics Test</a><a href="../docs/hvx-technical-papers.html#production">Production, Calibration &amp; R&amp;D</a><a href="../docs/hvx-technical-papers.html#pulsed-power">Pulsed Power &amp; Capacitor Charging</a><a href="../docs/hvx-technical-papers.html#detectors">Detectors, Nuclear &amp; Industrial</a></div></div></div></div><div class="nav-item"><a class="nav-trigger">Technical Notes &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2"><a class="nav-grp-link" href="../docs/pdg-technical-papers.html">Pulse &amp; Delay Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/pdg-technical-papers.html">All Technical Papers</a><a href="../docs/pdg-index.html#s-500">500 Series</a><a href="../docs/pdg-index.html#s-700">700 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/rfsg-technical-papers.html">RF &amp; Microwave Signal Generators &amp; Sensors</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/rfsg-technical-papers.html">All Technical Papers</a><a href="../docs/rfsg-index.html#s-800">800 Series</a><a href="../docs/rfsg-index.html#s-rfs">RFS Series</a><a href="../docs/rfsg-index.html#s-12100">12100 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/scintiq-technical-papers.html">Scintillation Detectors (ScintIQ)</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/scintiq-technical-papers.html">All Technical Papers</a><a href="../docs/scintiq-index.html">All Detector Materials</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/awg-technical-papers.html">Arbitrary Waveform Generators</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/awg-technical-papers.html">All Technical Papers</a><a href="../docs/awg-index.html#s-600">600 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/riid-technical-papers.html">Isotope ID &amp; Radiation Detection</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/riid-technical-papers.html">All Technical Papers</a><a href="../docs/riid-index.html#s-sam">SAM Series</a><a href="../docs/riid-index.html#s-900">900 Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/dei-technical-papers.html">High Voltage/Current Pulsers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/dei-technical-papers.html">All Technical Papers</a><a href="../docs/dei-index.html#s-pvx">PVX Series</a><a href="../docs/dei-index.html#s-pvm">PVM Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/icx-technical-papers.html">ICX-FieldHawk Spectrum Analyzers</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/icx-technical-papers.html">All Technical Papers</a><a href="../docs/icx-index.html#s-icx">ICX Series</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/hvx-technical-papers.html">HVX High Voltage Power Supplies</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/hvx-technical-papers.html">All Technical Papers</a><a href="../docs/hvx-index.html#s-hvx">HVX Series</a></div></div></div></div><div class="nav-item"><a class="nav-trigger" href="../support.html">Support &#9662;</a><div class="nav-drop nav-casc"><div class="nav-grp2" data-bnc-staff>Employee Portal<span class="nc">&#8250;</span><div class="nav-sub"><a href="/employee-portal.html#visitors" target="_blank" rel="noopener">Website Visitor Review</a><a href="/employee-portal.html#pending" target="_blank" rel="noopener">Website Pending Actions</a><a href="/employee-portal.html#docs" target="_blank" rel="noopener">Internal Documentation</a></div></div><div class="nav-grp2"><a class="nav-grp-link" href="../docs/product-documentation.html">Product Documentation</a><span class="nc">&#8250;</span><div class="nav-sub"><a href="../docs/pdg-index.html" target="_blank" rel="noopener">Pulse &amp; Delay Generators</a><a href="../docs/rfsg-index.html" target="_blank" rel="noopener">RF &amp; Microwave Signal Generators &amp; Sensors</a><a href="../docs/scintiq-index.html" target="_blank" rel="noopener">Scintillation Detectors (ScintIQ)</a><a href="../docs/awg-index.html" target="_blank" rel="noopener">Arbitrary Waveform Generators</a><a href="../docs/riid-index.html" target="_blank" rel="noopener">Isotope ID &amp; Radiation Detection</a><a href="../docs/dei-index.html" target="_blank" rel="noopener">High Voltage/Current Pulsers</a><a href="../docs/index.html" target="_blank" rel="noopener">ICX-FieldHawk Spectrum Analyzers</a><a href="../docs/hvx-index.html" target="_blank" rel="noopener">HVX High Voltage Power Supplies</a><a href="../docs/webinar-library.html" target="_blank" rel="noopener">Webinar Library</a></div></div><div class="nav-grp2">Service &amp; Resources<span class="nc">&#8250;</span><div class="nav-sub"><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a><a href="../pricing.html">Budgetary Pricing</a><a href="../contact.html" target="_blank" rel="noopener">Contact Regional Representative</a><a href="../docs/software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a><a href="../obsolete-products.html">Obsolete Product Support</a><a href="../academy-free-access.html">Free Academy Course Access</a></div></div><div class="nav-grp2">Frequently Asked Questions<span class="nc">&#8250;</span><div class="nav-sub"><a href="../faq.html">View all FAQs</a><a href="../faq.html#cat-pdg">Pulse &amp; Delay Generators</a><a href="../faq.html#cat-awg">Waveform Generators</a><a href="../faq.html#cat-rf">RF &amp; Microwave</a><a href="../faq.html#cat-pulsed-power">Pulsed Power</a><a href="../faq.html#cat-radiation">Radiation Detection &amp; Isotope Identification</a><a href="../faq.html#cat-scintillation">Scintillation Detectors</a><a href="../faq.html#cat-scientific">BNC Scientific</a><a href="../faq.html#cat-ordering">Ordering &amp; Contact</a></div></div><div class="nav-grp2">About Us<span class="nc">&#8250;</span><div class="nav-sub"><a href="../our-history.html">Our History</a><a href="../management.html">Management Team</a><a href="../docs/press-room.html">Historical Press Room</a></div></div></div></div></nav>
+  <a class="sitenav-cta" href="../get-quote.html" target="_blank" rel="noopener">RFQ/Demo</a><button class="navtoggle" aria-label="Open menu" onclick="this.closest(&#39;.sitenav&#39;).classList.toggle(&#39;open&#39;)"><span></span><span></span><span></span></button>
+</div></header>
+<style>
+.man-body .figrow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:10px 0;}
+.man-body .figrow figure{margin:0;}
+.man-body p.footnote{font-size:.82rem;color:#6b6660;border-top:1px solid #e2ded9;padding-top:8px;margin-top:14px;}
+.man-body ol li{margin:5px 0;}
+.man-body ul.man-list,.man-body ol.man-list{margin:6px 0 4px;padding-left:22px;}
+.man-body ul.man-list li,.man-body ol.man-list li{margin:4px 0;}
+.man-body table.tbl td ul.man-list{margin:0;}
+.man-body figure img{max-width:100%;height:auto;}
+@media(max-width:680px){.man-body .figrow{grid-template-columns:1fr;}}
+</style>
+<section class="man-hero"><div class="wrap"><div>
+<nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../support.html">support</a><span class="sep">/</span><a href="product-documentation.html">product docs</a><span class="sep">/</span><a href="../dei-home.html">high power</a><span class="sep">/</span><a href="dei-index.html">library</a><span class="sep">/</span><span aria-current="page">pvx-4000-2kv-ex user manual</span></nav>
+<h1>PVX-4000-2kV-EX Pulsed Voltage Source</h1>
+<p>Air-cooled high-voltage pulse generator optimized for high-impedance capacitive loads — ±2000 V output using customer-supplied external HV DC power supplies, controlled from the front panel or a computer.</p>
+</div><div class="hprod" style="align-self:center;background:#fff;border-radius:12px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.28)"><img src="figures/dei/PVX-4000-2kV-EX/p1_x76.jpeg" alt="PVX-4000-2kV-EX" loading="lazy" style="width:100%;height:auto;display:block;border-radius:5px"></div></div></section>
+<div class="man-layout">
+<aside class="man-toc"><h4>Contents</h4>
+<a href="#ch1">1. Description</a>
+<a href="#ch2">2. Safety</a>
+<a href="#ch3">3. Front Panel Features</a>
+<a href="#ch4">4. Rear Panel Features</a>
+<a href="#ch5">5. Operating Considerations</a>
+<a href="#ch6">6. Local Operation</a>
+<a href="#ch7">7. Remote Operation</a>
+<a href="#ch8">8. Command List</a>
+<a href="#ch9">9. Fault Codes</a>
+<a href="#ch10">10. Warranty &amp; Service</a>
+</aside>
+<main id="main" class="man-body">
+<h2 id="ch1">1. Description</h2>
+<p>The PVX-4000-2kV-EX is an air-cooled pulse generator that produces high-voltage waveforms. Optimized for high-impedance capacitive loads, it is well suited for driving extraction grids and deflection plates for electrostatic modulation of particle beams in time-of-flight mass spectrometers and accelerators. Unlike the standard <a href="bnc-dei-pvx-4000-user-manual.html">PVX-4000-2kV</a>, it carries no internal HV power supplies of its own &mdash; the output voltage is set by customer-supplied external HV DC sources connected to the rear-panel + HV Input and &minus; HV Input connectors, from 0 V to &plusmn;2000 V. For example, a +1000 V supply on the positive input and a &minus;1000 V supply on the negative input gives a 2000 V total. The positive and negative inputs must not exceed 2000 V total: V<sub>positive</sub> + |V<sub>negative</sub>| ≤ 2000 V. It is the customer&rsquo;s responsibility to verify the external HV power supplies do not exceed this total.</p>
+<p>The system supports duty cycles from 2% to 98% and repetition rates from 40 Hz to 30,000 Hz using the internal trigger &mdash; the same range as the standard unit. Because it is not limited by an internal HV supply, the external trigger reaches a much higher ceiling: single-shot to 600 kHz, with a pulse width of 500 ns to 100% duty cycle. Front-panel BNC connectors allow the unit to be externally gated and synchronized (both 50 Ω); the sync output is synchronized to the leading edge of the output pulse and is active with either the internal or external trigger.</p>
+<p>The PVX-4000-2kV-EX has a pulse generator built in, providing a test system that can be programmed from the front-panel LCD controls or a computer interface (RS-232 and USB). When the frequency changes, the duty cycle is maintained and the displayed pulse width updates accordingly — change the frequency before the pulse width. Up to five user configurations are stored in nonvolatile memory (location 1 holds the power-up defaults), and analog voltage monitors are provided for observing the load voltage on an oscilloscope.</p>
+<p>See also the standard <a href="bnc-dei-pvx-4000-user-manual.html">PVX-4000-2kV</a>, which carries its own internal HV supplies for standalone bench use and covers external-gate rates to 100 kHz.</p>
+<h2 id="ch2">2. Safety</h2>
+<div style="border-left:4px solid #c0392b;background:#fdf0ee;padding:12px 16px;margin:16px 0;border-radius:6px"><strong>WARNING — Risk of lethal electric shock.</strong> Do not open the cabinet of this device. Do not touch the output or load while it is operating. This device produces LETHAL levels of electric current, both inside its cabinet and at its output. Do not operate this device unless another person capable of rendering first aid or resuscitation is present.</div>
+<p>Always refer to the Safe Operating Area (SOA) of the PVX-4000-2kV-EX, located in the datasheet. Do not open the cover — there are no user-serviceable parts inside and opening it exposes you to shock and voids the warranty. Do not install, handle, or remove the output cables or load while the unit is operating, and allow at least 10 minutes after power-down before handling the output cable or load. Allow sufficient space for air circulation, and do not use where liquids are present or in corrosive environments; clean by wiping with a dry or damp cloth.</p>
+<h2 id="ch3">3. Front Panel Features</h2>
+<table class="tbl"><tbody><tr><th>Power LED</th><td>Lit when support power is applied to the PVX-4000-2kV-EX.</td></tr><tr><th>Fault LED</th><td>Lit when a fault or error is sensed within the system.</td></tr><tr><th>Enable LED &amp; button</th><td>The output is enabled — and the Enable LED lit — when there are no faults, the Enable BNC connection is made, and the Enable button has been pressed. Press the button to enable or disable the output.</td></tr><tr><th>Home button</th><td>Returns to the main menu once parameters are set.</td></tr><tr><th>Encoder knob &amp; LCD</th><td>The encoder changes the values of displayed parameters; the display shows system information on the home screen.</td></tr><tr><th>Enable Input (BNC)</th><td>Accepts an external dry-contact closure or the factory-supplied shorting BNC plug (PCA-9410). Less than 1000 Ω enables the output; greater than 1 MΩ (open) disables it and creates a fault.</td></tr><tr><th>Voltage Monitor (VMON)</th><td>Monitors the output-cable voltage, scaled 10:1000 (1000 V output = 10 V on VMON). Set oscilloscope termination to 1 MΩ.</td></tr><tr><th>Gate Input</th><td>External-gate BNC, 50 Ω, driven with a 5 V logic level; single-shot to 600 kHz, pulse width 500 ns to DC.</td></tr><tr><th>Sync Output</th><td>50 Ω BNC providing sync pulses at the leading edge of the output pulse; 0 V for a −HV output pulse, &lt;+3.3 V for a +HV output pulse.</td></tr></tbody></table>
+<h2 id="ch4">4. Rear Panel Features</h2>
+<table class="tbl"><tbody><tr><th>Pulsed Output</th><td>Winchester Kings 10 kV (1065-2) plug — the output connection for generated voltage pulses. Do not touch the output or cable while the unit is powered up and enabled.</td></tr><tr><th>Positive HV Input</th><td>Winchester Kings 10 kV (1065-2) plug — input connection for the customer-provided positive high-voltage power supply. Do not touch while the unit is powered up and enabled.</td></tr><tr><th>Negative HV Input</th><td>Winchester Kings 10 kV (1065-2) plug — input connection for the customer-provided negative high-voltage power supply. Do not touch while the unit is powered up and enabled.</td></tr><tr><th>Power cord connector</th><td>Accepts a NEMA C14 grounding equipment power cord.</td></tr><tr><th>On/Off power switch</th><td>Turns the support power on and off.</td></tr><tr><th>Communication</th><td>USB or RS-232 for automated operation; both use 115,200 baud, 8 data bits, 1 stop bit, no parity, no flow control. Switching from RS-232 to USB needs no power cycle; switching from USB back to RS-232 requires a power cycle.</td></tr></tbody></table>
+<p>Accessories included: a NEMA C14 power cord, a 2-meter pulsed output cable, and 2-meter DC voltage input cables (all PCA-9400) connecting the unit to the customer-supplied HV power supplies. Each factory cable adds 1.57 pF per 1.0 cm to the total load — include this in load calculations. If only one HV polarity is used, short the unused input connector to chassis so it is not left floating.</p>
+<h2 id="ch5">5. Operating Considerations</h2>
+<p><strong>Output cabling.</strong> The PVX-4000-2kV-EX drives capacitive loads; because output current is limited, smaller load capacitance gives faster rise time. Use the shortest cable possible for the fastest rise times and best pulse fidelity. The unit was tested driving a 344 pF load at 2000 V (a 56 pF capacitor at the end of 2 m of coaxial cable with 1.57 pF/cm).</p>
+<p><strong>Pulse voltages.</strong> The unit is rated at a maximum output of ±2000 VDC; never exceed the ±2000 V DC maximum input voltage from the customer-supplied high-voltage power supplies. <strong>Trigger method.</strong> Use either the internal trigger source or an external gate to trigger the output pulse.</p>
+<h2 id="ch6">6. Local Operation</h2>
+<p>Local mode is selected automatically at power-up, allowing configuration through the front-panel display and encoder: set the trigger mode (internal or external), frequency, and pulse width; save or load configurations; enable/disable the output; reset faults; and view port settings and system status (temperature). Unlike the standard unit, output voltage is not set from the front panel &mdash; it is set directly on the customer-supplied external HV power supplies.</p>
+<p><strong>Setup.</strong> Press Enable to disable the output. With the unit off for at least ten minutes, connect the customer-supplied high-voltage power supplies to the positive and negative HV input connectors <span data-webmaster>(verify polarity — the center pin is high voltage, the housing is the return)</span>. If only one polarity is used, ground the other input connector so it is not left floating — for example, a positive-only supply at +1010 V still requires the negative input shorted to itself or to chassis. Connect the output to the load <span data-webmaster>(verify polarity)</span>, make any External Trigger, Sync, or VMON connections, connect the Enable shorting connector (or a connection under 1000 Ω), and connect AC support power.</p>
+<p><strong>Power up.</strong> Turn on the rear power switch; the Power LED lights and the Fault LED blinks while the unit boots (~3 seconds). If there are no faults, the Fault LED turns off; a steady Fault LED indicates an error.</p>
+<p><strong>Set output voltage.</strong> Set the positive high-voltage power supply for the load up to +2000 V, and the negative high-voltage power supply up to &minus;2000 V, keeping V<sub>positive</sub> + |V<sub>negative</sub>| ≤ 2000 V total &mdash; for example, a positive supply at +1990 V leaves only &minus;10 V of headroom on the negative side. <strong>Set trigger, frequency, and pulse width</strong> on their respective front-panel screens (internal frequency 40 Hz–30 kHz; pulse width 2%–98% duty). When the frequency changes the duty cycle is maintained, so set frequency before pulse width.</p>
+<p><strong>Enable and power down.</strong> With no faults and the Enable BNC shorted (&lt;1000 Ω), enable the external high-voltage power supplies, then press Enable on the front panel (hold up to 2 seconds) — the green LED lights and the unit sends high-voltage pulses. To power down, press Enable to disable, turn off any external trigger, disable and power off the external HV supplies, and switch off the rear power. Use the Save/Restore Settings screens to store or recall memory locations 1–5.</p>
+<h2 id="ch7">7. Remote Operation</h2>
+<p>A host PC can control the PVX-4000-2kV-EX through its RS-232 and USB interfaces. Any communication on the USB port disables the RS-232 port until the unit is power-cycled (RS-232 is active by default). Serial parameters are 115,200 baud, 8 data bits, no parity, 1 stop bit, no flow control, with the ASCII newline as the end-of-packet character. The command set is based on SCPI; commands and queries must be in all capital letters, with a space before any data. The unit returns a response for every command — wait for it before sending the next. Any change typically needs less than 200 ms.</p>
+<h2 id="ch8">8. Command List</h2>
+<p>Because output voltage is set directly on the external HV power supplies, this model has no <code>VOLT:POSITIVE</code> / <code>VOLT:NEGATIVE</code> commands.</p>
+<table class="tbl"><tbody><tr><th>Command / Query</th><th>Function</th></tr><tr><td><code>*IDN?</code></td><td>Returns manufacturer, model, serial number, firmware revision, and manufacture date.</td></tr><tr><td><code>OUTPUT?</code> / <code>OUTPUT:ENABLE</code> / <code>OUTPUT:DISABLE</code></td><td>Returns, enables, or disables the output.</td></tr><tr><td><code>OUTPUT:TRIGGER?</code> / <code>OUTPUT:TRIGGER:INTERNAL</code> / <code>OUTPUT:TRIGGER:EXTERNAL</code></td><td>Returns or sets the trigger source (internal or external).</td></tr><tr><td><code>PULSE:WIDTH?</code> / <code>PULSE:WIDTH nn</code></td><td>Returns or sets the output pulse width in nanoseconds.</td></tr><tr><td><code>PULSE:FREQ?</code> / <code>PULSE:FREQ n</code></td><td>Returns or sets the trigger frequency in Hz (n = 40 to 30000).</td></tr><tr><td><code>SAVE:n</code> / <code>RECALL:n</code></td><td>Saves or recalls a configuration; n = 1 to 5.</td></tr><tr><td><code>FAULT?</code> / <code>FAULT:CLEAR</code></td><td>Returns the fault code (0 if none) or clears faults.</td></tr></tbody></table>
+<h2 id="ch9">9. Fault Codes</h2>
+<table class="tbl"><tbody><tr><th>Code</th><th>Meaning</th></tr><tr><td>0</td><td>No fault — system ready to be enabled.</td></tr><tr><td>1</td><td>Enable fault — the BNC shorting plug is not present. Make the Enable BNC connection with less than 1000 Ω (shorted), or use the factory-supplied shorting plug.</td></tr><tr><td>2</td><td>Temperature fault — the system exceeded its allowed operating temperature. Let it cool and press Home to clear the fault.</td></tr></tbody></table>
+<h2 id="ch10">10. Warranty &amp; Service</h2>
+<p>Warranty is 1 Year standard, unless otherwise specified. Materials and workmanship, return to manufacturer included. The warranty does not apply to any product repaired or altered by unauthorized persons, subjected to misuse, neglect, or accident, or used other than in accordance with furnished instructions. Returns must be preauthorized and accompanied by a return-authorization number.</p>
+<p><strong>Factory service and support.</strong> Berkeley Nucleonics Corporation, 2955 Kerner Blvd., San Rafael, CA 94901. Phone: (415) 453-9955. Email: operations@berkeleynucleonics.com. Web: www.berkeleynucleonics.com.</p>
+</main></div>
+
+<footer class="gfoot"><div class="gwrap">
+  <div class="gcols">
+    <div class="gbrand">
+      <a class="gbnc-link" href="../home.html" aria-label="Berkeley Nucleonics home"><svg class="gbnc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics"><g fill="#ffffff"><path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/><polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/></g><g fill="#ffffff" fill-rule="evenodd"><path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/><polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/><path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/></g></svg></a>
+      <p class="gtagline">Test, Measurement and Nuclear Instrumentation since 1963...</p>
+      <div class="gacad"><a class="gacad-logo" href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener"><img src="../figures/home/bnc-academy-logo.png" alt="Berkeley Nucleonics Academy"></a><span><b><a href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener">Berkeley Nucleonics Academy</a></b>Accredited courses introducing terminology and technique for your products and applications.</span></div>
+      
+    </div>
+    <div class="gmap">
+      <img class="gmap-img" src="../figures/world-map.svg" alt="Berkeley Nucleonics representatives in over 60 countries">
+      <p class="gtag"><a href="../contact.html" target="_blank" rel="noopener">Reach your local rep</a> in over 60 countries.</p>
+    </div>
+    <div class="gcompany"><h5>Company</h5><ul>
+      <li><a href="../home.html">Homepage</a></li>
+      <li></li>
+      <li><a href="software-drivers.html" target="_blank" rel="noopener">Software &amp; Drivers</a></li>
+      <li><a href="../faq.html">FAQs</a></li>
+      <li><a href="../rma-form.html" target="_blank" rel="noopener">RMA Request</a></li>
+      <li></li>
+      <li><a href="../get-quote.html" target="_blank" rel="noopener">Get a Quote</a></li>
+      <li><a href="../contact.html" target="_blank" rel="noopener">Contact Us</a></li>
+      <li><a href="https://academy.berkeleynucleonics.com/" target="_blank" rel="noopener">BNC Academy</a></li>
+      <li><a href="../privacy.html">Privacy</a><a href="../accessibility.html">Accessibility</a></li>
+      <li><a href="../compliance-and-legal-notices.html">Compliance &amp; Legal</a></li>
+    </ul>
+      <div class="gsocial-label">Social Links</div><div class="gsocial">
+        <a href="https://www.youtube.com/@BerkeleyNucleonicsMedia" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.6 3.5 12 3.5 12 3.5s-7.6 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.8.6 9.4.6 9.4.6s7.6 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
+        <a href="https://www.linkedin.com/companies/berkeley-nucleonics-corporation" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+      </div></div>
+  </div>
+  <div class="gbooks"><span class="gbooks-l">Free reference books</span><a href="/books/rf-and-microwave/index.html" target="_blank" rel="noopener">RF &amp; Microwave</a> &middot; <a href="/books/quantum-computing/index.html" target="_blank" rel="noopener">Quantum Computing</a> &middot; <a href="/books/arbitrary-waveform/index.html" target="_blank" rel="noopener">Arbitrary Waveform</a> &middot; <a href="/books/high-power-pulse/index.html" target="_blank" rel="noopener">High Power Pulse</a> &middot; <a href="/books/precision-timing/index.html" target="_blank" rel="noopener">Precision Timing</a> &middot; <a href="/books/radar/index.html" target="_blank" rel="noopener">Radar</a> &middot; <a href="/books/realtime-spectrum-analyzers/index.html" target="_blank" rel="noopener">Real-Time Spectrum Analyzers</a> &middot; <a href="/books/rf-power-measurements/index.html" target="_blank" rel="noopener">RF Power Measurements</a> &middot; <a href="/books/riids-for-hazmat/index.html" target="_blank" rel="noopener">RIIDs for HazMat</a> &middot; <a href="/books/scintillators/index.html" target="_blank" rel="noopener">Scintillators</a></div>
+  <div class="gbottom"><span>&copy; 2026 Berkeley Nucleonics Corporation</span><span>2955 Kerner Blvd, San Rafael, CA 94901 USA</span><span><a href="mailto:info@berkeleynucleonics.com" style="color:inherit;text-decoration:none;">info@berkeleynucleonics.com</a></span><span><a href="https://www.berkeleynucleonics.com/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">berkeleynucleonics.com</a></span><span><a href="tel:+18002347858" style="color:inherit;text-decoration:none;">800-234-7858</a></span></div>
+</div></footer>
+
+
+
+
+<script id="ss-data">window.SS_BASE="../";</script><script src="../_shared/bnc-search-index.js"></script><script id="ss-js">/*ssx v4: word-boundary match + phrase/proximity + time interpolation + -5s preroll + IC-testing routing + FAQ answers section*/(function(){var idx=window.SITE_INDEX||[],base=window.SS_BASE||"";var FAQS=window.SS_FAQS||[];var wrap=document.querySelector(".ss-wrap");if(!wrap)return;
+/* half-strength dim behind the results overlay (sits under the sticky bar) */
+function ssDim(on){var d=document.getElementById("ss-dim");if(!d){d=document.createElement("div");d.id="ss-dim";d.className="ss-dim";document.body.appendChild(d);d.addEventListener("click",function(){ssClose();});}if(on){void d.offsetHeight;d.classList.add("open");}else{d.classList.remove("open");}}
+function ssClose(){panel.setAttribute("class","ss-panel");ssDim(false);}
+var inp=wrap.querySelector(".ss-input"),panel=wrap.querySelector(".ss-panel"),active=-1,results=[],vids=[],pins=[],faqs=[],VIDS=null,vidLoading=false,expanded=false;
+/* inject styles for sections, video rows, and modal player (once) */
+if(!document.getElementById("ssx-css")){var st=document.createElement("style");st.id="ssx-css";st.textContent=".ss-panel{width:380px;max-width:90vw;}.ss-sec{font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.11em;text-transform:uppercase;color:#5f9fe0;padding:8px 11px 3px;}.ss-div{height:1px;background:rgba(120,170,225,.22);margin:7px 9px;}.ss-vid{display:flex;gap:10px;align-items:center;}.ss-vid img{width:78px;height:44px;object-fit:cover;border-radius:4px;flex:0 0 auto;background:#06121f;}.ss-vid .stx{min-width:0;display:block;}.ss-vid .st{white-space:normal;}.ssx-modal{position:fixed;inset:0;background:rgba(4,10,20,.84);z-index:1000;display:none;align-items:center;justify-content:center;padding:26px;}.ssx-modal.open{display:flex;}.ssx-box{position:relative;width:min(900px,94vw);}.ssx-frame{position:relative;width:100%;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(0,0,0,.8);}.ssx-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}.ssx-cap{color:#c4d6ee;font:500 .82rem/'Myriad Pro',Arial,sans-serif;margin-top:10px;text-align:center;}.ssx-x{position:absolute;top:-42px;right:0;background:none;border:0;color:#fff;font-size:2rem;line-height:1;cursor:pointer;opacity:.85;}.ssx-x:hover{opacity:1;}.ss-panel.ss-grid{padding:14px 14px 16px;}.ss-gwrap{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;}@media(max-width:920px){.ss-gwrap{grid-template-columns:repeat(3,1fr);}}@media(max-width:560px){.ss-gwrap{grid-template-columns:repeat(2,1fr);}}.ss-gtile{position:relative;display:flex;flex-direction:column;background:#113163;border:1px solid rgba(120,170,225,.22);border-radius:10px;padding:10px;cursor:pointer;overflow:hidden;text-align:left;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease,background .15s ease;}.ss-gtile:hover{transform:translateY(-3px) scale(1.02);border-color:#37b6f0;background:#16407a;box-shadow:0 0 0 1px rgba(55,182,240,.55),0 14px 30px -10px rgba(55,182,240,.55);}.ss-gthumb{height:74px;border-radius:7px;background:#0a1626;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;flex:0 0 auto;}.ss-gthumb img{width:100%;height:100%;object-fit:cover;}.ss-gthumb svg{width:34px;height:34px;}.ss-gbadge{display:inline-block;align-self:flex-start;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.52rem;letter-spacing:.09em;text-transform:uppercase;color:#a78bfa;background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.4);padding:2px 7px;border-radius:20px;margin-bottom:5px;}.ss-gtitle{font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.76rem;line-height:1.2;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px;}.ss-gdesc{font-size:.67rem;line-height:1.3;color:#bcd2ec;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}.ss-ghint{grid-column:1/-1;text-align:center;font-family:'Myriad Pro',Arial,sans-serif;font-weight:700;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:#5f9fe0;margin-top:11px;}.ss-none{color:#9fb6d4;padding:18px;font-size:.85rem;text-align:center;}.ss-input{color:#fff !important;}.ss-input::placeholder{color:#aab8d0 !important;}.ss-input:focus{background:rgba(255,255,255,.10)!important;color:#fff!important;}.ss-input:-webkit-autofill,.ss-input:-webkit-autofill:focus{-webkit-text-fill-color:#fff!important;transition:background-color 9999s;}";document.head.appendChild(st);}
+var STOP={the:1,a:1,an:1,of:1,to:1,in:1,on:1,for:1,and:1,or:1,is:1,are:1,do:1,does:1,did:1,how:1,what:1,which:1,why:1,when:1,where:1,who:1,i:1,my:1,me:1,we:1,our:1,you:1,your:1,can:1,could:1,would:1,should:1,with:1,it:1,its:1,as:1,at:1,by:1,be:1,this:1,that:1,from:1,into:1,need:1,want:1,get:1,use:1,using:1,there:1,any:1,best:1};
+var SYN={laser:["laser","diode","driver","qswitch","pockels","lidar","photonics","optical"],lasers:["laser","diode","driver"],diode:["diode","laser","driver"],trigger:["trigger","delay","gate","sync","pulse","timing","strobe"],triggering:["trigger","delay","gate","sync"],gate:["gate","trigger","delay"],sync:["sync","trigger","delay","timing"],synchronize:["sync","trigger","delay","timing"],timing:["timing","delay","trigger","jitter","pulse"],delay:["delay","trigger","timing","ddg","jitter"],pulse:["pulse","trigger","delay","width","rise"],jitter:["jitter","timing","delay","phase"],qubit:["qubit","quantum","coherent","control"],quantum:["quantum","qubit","coherent","qkd"],radar:["radar","ew","pulse","chirp","pdw","sigint"],ew:["ew","radar","sigint","jamming"],neutron:["neutron","lif","clyc","cllbc","scintillator","snm"],gamma:["gamma","scintillator","spectroscopy","isotope","nai","labr","cebr","riid"],isotope:["isotope","riid","gamma","sam","identify","spectroscopy"],scintillator:["scintillator","crystal","nai","labr","cebr","clyc","sipm","pmt","scintiq"],crystal:["crystal","scintillator","nai","labr","cebr"],power:["power","sensor","supply","dbm","watt","measurement"],sensor:["sensor","power","measurement","dbm","usb"],phase:["phase","noise","coherent","jitter"],noise:["noise","phase","dbc"],switching:["switching","fast","agile","speed"],vector:["vector","modulation","vsg","pdw"],modulation:["modulation","vector","pulse"],sweep:["sweep","list","frequency","scan"],calibration:["calibration","calibrate","cal","metrology"],calibrate:["calibrate","calibration","cal"],warranty:["warranty","service","support","repair"],rma:["rma","repair","return","service"],voltage:["voltage","hv","pulser","supply"],current:["current","amp","pulser","driver"],microwave:["microwave","rf","signal","generator"],rf:["rf","microwave","signal","generator","power"],waveform:["waveform","awg","arbitrary","arb"],awg:["awg","waveform","arbitrary"],spectrum:["spectrum","analyzer","rtsa","icx"],analyzer:["analyzer","spectrum","rtsa","icx"],detector:["detector","scintillator","radiation","gamma","neutron"],radiation:["radiation","detector","gamma","neutron","dose","riid"],obsolete:["obsolete","discontinued","replacement","legacy"]};
+var PREROLL=5;/* seconds to start before the matched words are spoken */
+function toks(q){q=(q||"").toLowerCase().replace(/[^a-z0-9 .+-]/g," ");var p=q.split(/\s+/).filter(Boolean),T={};p.forEach(function(t){if(STOP[t]||t.length<2)return;T[t]=Math.max(T[t]||0,1);(SYN[t]||[]).forEach(function(s){T[s]=Math.max(T[s]||0,.55);});});return T;}
+function fmt(s){s=Math.max(0,s|0);var m=(s/60)|0,ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
+function loadVids(){if(VIDS||vidLoading)return;vidLoading=true;fetch(base+"video-search-index.json").then(function(r){return r.ok?r.json():null;}).then(function(d){VIDS=(d&&d.videos)||[];if(inp.value)run(inp.value);}).catch(function(){VIDS=[];});}
+/* word-start presence test: matches a whole word, or a prefix of one, but never
+   a substring that starts mid-word (no false hit for "ic" inside "electronics").
+   The prefix half is what lets a suffixed model number like ICX-060U-P answer
+   to the shorter ICX-060 a visitor actually types. */
+function wbHas(hay,t){if(!hay)return false;var i=hay.indexOf(t);while(i>=0){var a=i>0?hay.charAt(i-1):" ";if(!/[a-z0-9]/.test(a))return true;i=hay.indexOf(t,i+1);}return false;}
+/* split caption text into positioned words */
+function words(txt){var re=/[a-z0-9]+(?:[.+-][a-z0-9]+)*/g,m,a=[];while((m=re.exec(txt))){a.push(m[0]);}return a;}
+function scoreVideos(T,keys){if(!VIDS||!VIDS.length)return [];var lits=keys.filter(function(t){return T[t]>=1;});return VIDS.map(function(v){var ti=(v.title||"").toLowerCase(),kw=(v.kw||[]).join(" ").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(ti,t))g=3.2;else if(wbHas(kw,t))g=2;if(g){sc+=g*w;hit++;}});var segs=v.seg||[],best=null,si,li,wi;for(si=0;si<segs.length;si++){var txt=(segs[si][1]||"").toLowerCase(),ws=words(txt),pos={},first=1e9,cnt=0;for(li=0;li<lits.length;li++){var t=lits[li];for(wi=0;wi<ws.length;wi++){if(ws[wi]===t||(t.length>=5&&ws[wi].indexOf(t)===0)){pos[t]=wi;cnt++;if(wi<first)first=wi;break;}}}if(!cnt)continue;var order=[];for(var k in pos)order.push(pos[k]);order.sort(function(a,b){return a-b;});var span=order.length>1?order[order.length-1]-order[0]:0;var prox=order.length>1?(span<=order.length+1?1.6:(span<=7?0.7:0)):0.2;var segScore=cnt*1.5+prox*cnt+(cnt===lits.length?1.0:0);if(!best||segScore>best.ss){var start=segs[si][0],end=(si+1<segs.length?segs[si+1][0]:start+8),frac=ws.length?first/ws.length:0;best={ss:segScore,cnt:cnt,mt:start+frac*(end-start)};}}if(best){sc+=1.6+best.cnt*1.1+best.ss*0.25;hit++;}if(!hit)return null;var mt=best?Math.round(best.mt):0,seek=Math.max(0,mt-PREROLL);return {v:v,s:sc,t:seek,mt:mt,inText:!!best};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,4);}
+/* IC (integrated-circuit) testing intent -> steer to AWG 685/686 + 765 pulse generator */
+function icIntent(raw){raw=" "+(raw||"").toLowerCase()+" ";if(raw.indexOf("integrated circuit")>=0)return true;var act=/\b(test|testing|character|validat|bench|ate|probe|stimulus|stimuli)\b/;if(/\b(semiconductor|wafer|asic|fpga|soc|die|chip)\b/.test(raw)&&act.test(raw))return true;if(/\bic\b/.test(raw)&&act.test(raw))return true;return false;}
+var IC_DOCS=["bnc-awg-685-datasheet.html","bnc-awg-686-datasheet.html","bnc-model-765-datasheet.html"];
+function pinDocs(files,cat){var out=[];files.forEach(function(f){for(var i=0;i<idx.length;i++){var u=idx[i].u||"";if(u.indexOf(f)>=0){out.push({e:{t:idx[i].t,u:u,c:cat}});break;}}});return out;}
+function scoreFaqs(T,keys){if(!FAQS||!FAQS.length)return [];return FAQS.map(function(e){var q=(e.q||"").toLowerCase(),kw=(e.kw||"").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(q,t))g=3;else if(wbHas(kw,t))g=2;if(g){sc+=g*w;hit++;}});if(!hit)return null;sc+=hit*0.6;return{e:e,s:sc};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,6);}
+function run(q){var raw=q||"",T=toks(q),keys=Object.keys(T);pins=[];if(!keys.length){ssClose();panel.innerHTML="";return;}if(icIntent(raw)){T.awg=Math.max(T.awg||0,1.2);T["685"]=1.3;T["686"]=1.3;T["765"]=1.0;T.waveform=Math.max(T.waveform||0,1.0);T.arbitrary=Math.max(T.arbitrary||0,.8);keys=Object.keys(T);pins=pinDocs(IC_DOCS,"Recommended for IC testing");}results=idx.map(function(e){var ti=(e.t||"").toLowerCase(),kw=(e.k||"").toLowerCase(),ca=(e.c||"").toLowerCase(),sc=0,hit=0;keys.forEach(function(t){var w=T[t],g=0;if(wbHas(ti,t))g=3;else if(wbHas(kw,t))g=2;else if(wbHas(ca,t))g=1;if(g){sc+=g*w;hit++;}});if(!hit)return null;sc+=hit*0.6;return{e:e,s:sc};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,60);if(pins.length){var pu={};pins.forEach(function(p){pu[p.e.u]=1;});results=results.filter(function(r){return !pu[r.e.u];});}vids=scoreVideos(T,keys);faqs=scoreFaqs(T,keys);active=-1;draw();}
+function ssgDescOf(e){var u=e.u||"";return (window.SSDESC&&window.SSDESC[u])||ssgTypeText(e.c);}function tileDoc(e,sc){var u=e.u||"";return{kind:"doc",u:u,title:e.t||"",desc:ssgDescOf(e),badge:ssgBadge(e.c,"doc"),s:sc};}function buildTiles(cap){var docTiles=pins.map(function(p){return tileDoc(p.e,1e6);}).concat(results.filter(function(r){var c=(''+(r.e.c||'')).toLowerCase();if(c.indexOf('faq')<0)return true;var u=r.e.u||'';for(var i=0;i<faqs.length;i++){if(faqs[i].e.u===u)return false;}return true;}).map(function(r){return tileDoc(r.e,r.s);}));var vidTiles=vids.map(function(r){return{kind:"video",id:r.v.id,title:r.v.title||"BNC Video",desc:r.v.title||"BNC Video",badge:"Video",t:r.t,mt:r.mt,inText:r.inText,s:r.s};});var faqTiles=faqs.map(function(r){return{kind:"faq",u:r.e.u,title:r.e.q||"",desc:r.e.q||"",badge:"FAQ",s:r.s};});var tech=docTiles.filter(function(t){return t.badge==="Technical Brief";});var sheets=docTiles.filter(function(t){return t.badge==="Datasheet";});var blogs=docTiles.filter(function(t){return t.badge==="Blog Post";});var allRanked=docTiles.concat(vidTiles,faqTiles).sort(function(a,b){return b.s-a.s;});var picked=[],used={};function K(t){return t.kind==="video"?"v:"+t.id:(t.kind==="faq"?"f:"+t.u:"d:"+t.u);}function add(t){if(!t)return false;var k=K(t);if(used[k])return false;used[k]=1;picked.push(t);return true;}function take(pool,n){var c=0;for(var i=0;i<pool.length&&c<n&&picked.length<cap;i++){if(add(pool[i]))c++;}return c;}function fill(){for(var i=0;i<allRanked.length&&picked.length<cap;i++){add(allRanked[i]);}}take(sheets,1);take(vidTiles,1);take(tech,1);take(faqTiles,1);take(blogs,1);fill();return picked;}function tileHtml(t){var attrs=t.kind==="video"?("data-vid=\""+ssgEsc(t.id)+"\" data-t=\""+(t.t|0)+"\" data-title=\""+ssgEsc(t.title)+"\""):("data-u=\""+ssgEsc(t.u)+"\"");return "<div class=\"ss-gtile\" "+attrs+"><div class=\"ss-gthumb\">"+ssgGraphic(t)+"</div><span class=\"ss-gbadge ss-b-"+ssgSlug(t.badge)+"\">"+ssgEsc(t.badge)+((t.kind==="video"&&t.inText)?(" &middot; "+fmt(t.mt)):"")+"</span><div class=\"ss-gtitle\">"+ssgEsc(t.title)+"</div><div class=\"ss-gdesc\">"+ssgEsc(t.desc)+"</div></div>";}function draw(){if(!results.length&&!vids.length&&!faqs.length&&!pins.length){ssClose();panel.innerHTML="";return;}var cap=expanded?36:18;var tiles=buildTiles(cap);if(!tiles.length){ssClose();panel.innerHTML="";return;}var total=expanded?tiles.length:buildTiles(36).length;var html="<div class=\"ss-gwrap\">"+tiles.map(tileHtml).join("");if(!expanded&&total>tiles.length){html+="<div class=\"ss-ghint\">Press Enter for more results</div>";}html+="</div>";panel.innerHTML=html;panel.className="ss-panel ss-grid open";ssDim(true);Array.prototype.forEach.call(panel.querySelectorAll(".ss-gtile"),function(el){el.addEventListener("click",function(){var vid=el.getAttribute("data-vid");if(vid){openVideo(vid,parseInt(el.getAttribute("data-t"),10)||0,el.getAttribute("data-title"));}else{window.open(base+el.getAttribute("data-u"),"_blank","noopener");ssClose();}});});}
+function openVideo(id,t,title){var ov=document.getElementById("ssx-modal");if(!ov){ov=document.createElement("div");ov.id="ssx-modal";ov.className="ssx-modal";ov.innerHTML="<div class=\"ssx-box\"><button class=\"ssx-x\" aria-label=\"Close\">&times;</button><div class=\"ssx-frame\"></div><div class=\"ssx-cap\"></div></div>";document.body.appendChild(ov);ov.addEventListener("click",function(e){if(e.target===ov||e.target.className==="ssx-x")closeVideo();});document.addEventListener("keydown",function(e){if(e.key==="Escape")closeVideo();});}ov.querySelector(".ssx-frame").innerHTML="<iframe src=\"https://www.youtube.com/embed/"+id+"?start="+(t|0)+"&autoplay=1&rel=0\" title=\"Berkeley Nucleonics video\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";ov.querySelector(".ssx-cap").textContent=title||"";ov.classList.add("open");ssClose();}
+function closeVideo(){var ov=document.getElementById("ssx-modal");if(ov){ov.classList.remove("open");ov.querySelector(".ssx-frame").innerHTML="";}}
+inp.addEventListener("input",function(){expanded=false;loadVids();run(inp.value);});
+inp.addEventListener("focus",function(){loadVids();if(inp.value)run(inp.value);});
+inp.addEventListener("keydown",function(ev){if(ev.key==="Enter"){if(inp.value&&inp.value.trim()&&(results.length||vids.length||faqs.length||pins.length)){ev.preventDefault();expanded=true;draw();}}else if(ev.key==="Escape"){expanded=false;ssClose();inp.blur();}});
+
+document.addEventListener("click",function(e){if(!wrap.contains(e.target))ssClose();});
+/* ssx grid v1: curated graphical results overlay opened on Enter */
+function ssgSlug(s){return (""+(s==null?"":s)).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+function ssgEsc(s){return (s==null?"":(""+s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;");}
+function ssgTypeText(c){if(!c)return "Berkeley Nucleonics";var p=(""+c).split("·");return (p.length>1?p[p.length-1]:p[0]).trim();}
+function ssgBadge(c,kind){if(kind==="video")return "Video";if(kind==="faq")return "FAQ";var t=ssgTypeText(c).toLowerCase();if(t.indexOf("data sheet")>=0||t.indexOf("datasheet")>=0)return "Datasheet";if(t.indexOf("application brief")>=0||t.indexOf("application note")>=0)return "Application Note";if(t.indexOf("technical note")>=0||t.indexOf("technical brief")>=0)return "Technical Brief";if(t.indexOf("manual")>=0)return "Manual";if(t.indexOf("faq")>=0)return "FAQ";if(t.indexOf("blog")>=0)return "Blog Post";if(t.indexOf("book")>=0)return "E-Book";return "Product";}
+var SSG_ICONS={"Blog Post":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2z'/><path d='M17 8h1.5A1.5 1.5 0 0 1 20 9.5V18'/><path d='M7.5 8h6M7.5 11.5h6M7.5 15h3.5'/></svg>","Datasheet":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/><path d='M14 3v5h5'/><path d='M9 13h6M9 17h6M9 9h1'/></svg>","Application Note":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M9 18h6'/><path d='M10 21h4'/><path d='M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.2 1 2.5h6c0-1.3.3-1.8 1-2.5A6 6 0 0 0 12 3z'/></svg>","Technical Brief":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5'/><path d='M14 3v5h5'/><circle cx='17.5' cy='16.5' r='2.2'/><path d='M17.5 13.6v-1M17.5 20.4v-1M20.4 16.5h-1M15.6 16.5h-1'/></svg>","Manual":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/></svg>","FAQ":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M9.5 9a2.5 2.5 0 0 1 4.8.9c0 1.7-2.3 2.1-2.3 3.6'/><path d='M12 17h.01'/></svg>","Book":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/><path d='M9 7.5h7M9 11h7'/></svg>","Product":"<svg viewBox='0 0 24 24' fill='none' stroke='#37b6f0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><path d='M21 8l-9-5-9 5v8l9 5 9-5z'/><path d='M3 8l9 5 9-5'/><path d='M12 13v8'/></svg>"};
+window.ssgIconFor=function(b){return SSG_ICONS[b]||SSG_ICONS.Product;};function ssgGraphic(t){if(t.kind==="video"){return "<img src=\"https://img.youtube.com/vi/"+ssgEsc(t.id)+"/mqdefault.jpg\" alt=\"\" loading=\"lazy\">";}var im=window.SSIMG&&window.SSIMG[t.u];var src=im?(im.indexOf("http")===0?im:base+im):null;if(src){return "<img src=\""+ssgEsc(src)+"\" alt=\"\" loading=\"lazy\" onerror=\"this.onerror=null;var p=this.parentNode;if(p){p.innerHTML=window.ssgIconFor('"+t.badge+"');}\">";}return SSG_ICONS[t.badge]||SSG_ICONS.Product;}
+})();</script>
+<style id="nav-casc3">.nav-sub-nest{overflow:visible;}.nav-grp3{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 12px;border-radius:6px;color:#c4d6ee;font-size:.85rem;font-weight:500;white-space:nowrap;cursor:default;}.nav-grp3:hover{background:rgba(55,182,240,.14);color:#fff;}.nav-grp3 .nc{opacity:.55;font-size:1.1rem;line-height:1;}.nav-sub3{position:absolute;top:-7px;left:100%;min-width:214px;background:#0e2038;border:1px solid rgba(120,170,225,.22);border-radius:10px;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);padding:8px;opacity:0;visibility:hidden;transform:translateX(8px);transition:opacity .14s ease,transform .14s ease,visibility .14s;transition-delay:.22s;max-height:78vh;overflow:auto;z-index:8;}.nav-grp3:hover .nav-sub3,.nav-grp3:focus-within .nav-sub3{opacity:1;visibility:visible;transform:translateX(0);transition-delay:0s;}.nav-sub3 a{display:block;padding:9px 12px;color:#c4d6ee;font-size:.85rem;font-weight:500;border-radius:6px;text-decoration:none;white-space:nowrap;text-transform:none;letter-spacing:0;}.nav-sub3 a:hover{background:rgba(55,182,240,.14);color:#fff;}@media(max-width:1040px){.sitenav.open .nav-sub-nest{overflow:visible;}.sitenav.open .nav-grp3{display:block;font-weight:600;color:#8fb4dd;padding:8px 46px 2px;}.sitenav.open .nav-grp3 .nc{display:none;}.sitenav.open .nav-sub3{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;border:none;background:transparent;padding:0;max-height:none;min-width:0;}.sitenav.open .nav-sub3 a{padding:8px 58px;white-space:normal;}}</style>
+<script src="../_shared/pdf-configurator.js" data-doc="PVX-4000-2kV-EX Pulsed Voltage Source User Manual"></script>
+<script defer src="../_shared/bnc-nutshell.js"></script>
+<style id="bnc-nav-v2">/* header v3: search left, evenly spread bar, one control height */
+.sitenav-inner{position:relative;gap:16px;}
+.sitenav-logo{flex:0 0 auto;}
+/* min-width:max-content is what stops a long signed-in name from collapsing the
+   nav and pushing the RFQ button on top of the Support menu */
+.sitenav-menu{margin-left:0;flex:1 1 auto;min-width:max-content;justify-content:space-evenly;gap:0;}
+.nav-item>a{padding:0 12px;font-size:.8rem;}
+/* one height and one font size for search, RFQ/Demo and Sign up */
+.ss-input,.sitenav-cta,.bnc-signin{height:30px;box-sizing:border-box;padding:0 1em;border-radius:6px;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-size:.8rem;white-space:nowrap;}
+.sitenav-cta,.bnc-signin{display:inline-flex;align-items:center;justify-content:center;line-height:1;font-weight:700;}
+.sitenav-cta{margin-left:0;border:1px solid transparent;flex:0 0 auto;}
+.bnc-acct{margin-left:0;flex:0 0 auto;gap:10px;}
+.bnc-welcome{font-size:.8rem;}
+/* the search box is what yields width when the bar gets tight */
+.ss-wrap{position:static;margin-left:0;flex:0 1 auto;min-width:0;}
+.ss-field{position:relative;display:inline-flex;align-items:center;max-width:100%;}
+.ss-input{display:block;width:186px;max-width:100%;min-width:104px;line-height:28px;font-weight:600;color:#fff;transition:border-color .18s;}
+.ss-input:focus{width:186px;}
+.ss-input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;}
+/* resting state: bright white "Search" plus three waiting dots */
+.ss-ph{position:absolute;left:calc(1em + 1px);top:50%;transform:translateY(-50%);display:flex;align-items:center;pointer-events:none;font-family:'Myriad Pro','Segoe UI',Arial,sans-serif;font-weight:600;font-size:.8rem;letter-spacing:.01em;color:#fff;transition:opacity .15s ease;}
+.ss-input:not(:placeholder-shown)~.ss-ph{opacity:0;}
+.ss-dots{display:inline-flex;align-items:center;gap:3px;margin-left:4px;}
+.ss-dots i{display:block;width:3px;height:3px;border-radius:50%;background:#fff;animation:ss-dot 1.3s infinite ease-in-out;}
+.ss-dots i:nth-child(2){animation-delay:.17s;}
+.ss-dots i:nth-child(3){animation-delay:.34s;}
+@keyframes ss-dot{0%,58%,100%{opacity:.3;transform:translateY(0);}29%{opacity:1;transform:translateY(-3px);}}
+@media(prefers-reduced-motion:reduce){.ss-dots i{animation:none;opacity:.9;}}
+/* The mega-menu flyouts are laid out even while hidden, so the rightmost ones
+   stretch the document and raise a horizontal scrollbar. The site already
+   clipped this below 1040px; do it at every width. `clip` rather than `hidden`,
+   because `hidden` on the root would break the sticky header. */
+html{overflow-x:clip;}
+/* results overlay: pinned to the header container so it never runs off-screen */
+.ss-panel{left:28px;right:28px;width:auto;max-width:none;top:calc(100% - 6px);}
+.ss-panel.ss-grid{width:auto;max-width:none;}
+.ss-gwrap{grid-template-columns:repeat(6,1fr);}
+@media(max-width:1240px){.ss-gwrap{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:1080px){.ss-gwrap{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:920px){.ss-gwrap{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:560px){.ss-gwrap{grid-template-columns:repeat(2,1fr);}}
+/* one colour per result category, white text on a solid box. The old badge was
+   light purple on translucent purple for every type, which read as one blur. */
+.ss-gbadge{font-size:.58rem;letter-spacing:.08em;padding:3px 8px;border:0;color:#fff;background:#475569;}
+.ss-gbadge.ss-b-datasheet{background:#c2410c;}
+.ss-gbadge.ss-b-video{background:#7e22ce;}
+.ss-gbadge.ss-b-faq{background:#15803d;}
+.ss-gbadge.ss-b-manual{background:#0655a3;}
+.ss-gbadge.ss-b-application-note{background:#a16207;}
+.ss-gbadge.ss-b-technical-brief{background:#be123c;}
+.ss-gbadge.ss-b-e-book{background:#4338ca;}
+.ss-gbadge.ss-b-blog-post{background:#0f766e;}
+.ss-gbadge.ss-b-product{background:#475569;}
+/* half-strength dim over the page behind the overlay; the bar stays lit */
+.ss-dim{position:fixed;inset:0;background:rgba(4,10,20,.5);opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s;z-index:190;}
+.ss-dim.open{opacity:1;visibility:visible;}
+@media(max-width:1240px){
+  .sitenav-inner{gap:12px;}
+  .nav-item>a{padding:0 8px;font-size:.77rem;}
+  .ss-input,.ss-input:focus{width:150px;}
+}
+@media(max-width:1150px){
+  .sitenav-inner{gap:8px;}
+  .nav-item>a{padding:0 6px;font-size:.74rem;letter-spacing:.03em;}
+  .ss-input,.ss-input:focus{width:118px;}
+  .ss-input,.sitenav-cta,.bnc-signin,.ss-ph,.bnc-welcome{font-size:.75rem;}
+  .sitenav-cta,.bnc-signin{padding:0 .7em;}
+}
+@media(max-width:1040px){
+  .ss-wrap{position:relative;}
+  .ss-panel{left:0;right:auto;width:100%;top:calc(100% + 8px);}
+  .ss-panel.ss-grid{width:100%;}
+  .ss-field{width:100%;}
+  .ss-input,.ss-input:focus{width:100%;}
+}
+</style>
+
+<style id="bnc-nav-mobile-wrap">/* the drawer must fit the screen it opens on */
+@media(max-width:1040px){
+  /* These four keep nowrap on the desktop bar, where the labels sit side by side
+     and must not break. In the drawer they stack, so wrapping is what we want,
+     and without it the longest category sets the width of the whole panel. */
+  .sitenav.open .nav-item>a,
+  .sitenav.open .nav-trigger,
+  .sitenav.open .nav-grp2,
+  .sitenav.open .nav-grp3{white-space:normal;}
+  .sitenav.open .sitenav-menu,
+  .sitenav.open .nav-drop,
+  .sitenav.open .nav-drop.nav-casc,
+  .sitenav.open .nav-sub,
+  .sitenav.open .nav-sub3{max-width:100%;min-width:0;}
+  /* iOS Safari zooms the page in when a focused input is under 16px and never
+     zooms back out, which leaves the bar hanging half off the screen. */
+  .ss-input,.ss-ph{font-size:16px;}
+  .ss-input{height:44px;}
+  /* WCAG 2.5.5: 44x44 of hit area. The hamburger was 42x38 and the two buttons
+     were 30px tall, which is small for a thumb and is the control every mobile
+     visitor has to hit first. */
+  .navtoggle{width:44px;height:44px;}
+  .sitenav-cta,.bnc-signin{min-height:44px;}
+}
+</style>
+</body>
+</html>
