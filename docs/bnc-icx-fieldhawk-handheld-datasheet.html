@@ -567,7 +567,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 <section id="modes">
   <h2><span class="num">4</span>Operating Modes</h2>
-  <p>The ICX-FieldHawk offers main operating modes including Standard Spectrum Analysis, IQ Streaming, Power Detection, Real-Time Spectrum, Phase Noise Measurement, and Harmonics Analysis. Digital Demodulation is available as an option. On the ICX-045/060/090, Mapping mode (GPS-referenced heat maps for radio monitoring and interference analysis) is additionally standard, and EMI Pre-Compliance Measurement (opt. 74) is available as a software option.</p>
+  <p>The ICX-FieldHawk offers main operating modes including Standard Spectrum Analysis, IQ Streaming, Power Detection, Real-Time Spectrum, Phase Noise Measurement, and Harmonics Analysis. Digital Demodulation is available as an option. On the ICX-045/060/090, Mapping mode (GPS-referenced heat maps for radio monitoring and interference analysis) is additionally standard, and EMI Pre-Compliance Measurement (opt. 74, CISPR 16-1-1 detectors, bandwidths, and limit lines &mdash; see section 11) is available as a software option.</p>
   <h3>Standard Spectrum Analysis</h3>
   <p>This mode provides a wide range of measurement functions, including full-span spectrum sweep, channel power, OBW, ACPR, IM3, and SEM. It also supports spectrum recording and playback. Combined with auxiliary tools such as signal tracking, peak table, and amplitude correction, it delivers a one-stop platform for comprehensive spectrum check.</p>
   <figure class="fig figctr"><img src="figures/icx-fieldhawk-handheld-ds/standard-spectrum-analysis.jpeg" alt="Standard Spectrum Analysis"><figcaption>Standard Spectrum Analysis</figcaption></figure>
@@ -880,8 +880,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <tr><td>35</td><td>External active directional antenna, frequency range 0.5 to 10 GHz, gain &lt; 5 dBi (amp off); &lt; 25 dBi (amp on)</td><td>Accessory</td><td>All models</td></tr>
 <tr><td>71</td><td>Basic vector modulation / digital demodulation analysis</td><td>Software</td><td>All models</td></tr>
 <tr><td>72</td><td>Pulse detection and analysis</td><td>Software</td><td>All models</td></tr>
-<tr><td>74</td><td>EMI pre-compliance measurement (CISPR 16-1-1 compliant detectors)</td><td>Software</td><td class="nw">ICX-045 / ICX-060 / ICX-090</td></tr>
+<tr><td>74</td><td>EMI pre-compliance measurement: CISPR 16-1-1 compliant Peak, Quasi-Peak, Average and RMS detectors; CISPR-standard resolution bandwidths by band; a preloaded FCC Part 15 / CISPR 11, 22, 32 / IEC limit-line library; automated pass/fail margin analysis</td><td>Software</td><td class="nw">ICX-045 / ICX-060 / ICX-090</td></tr>
 </table>
+  <h3>EMI Pre-Compliance Measurement (opt. 74)</h3>
+  <p>Option 74 turns the ICX-045/060/090 into a CISPR-shaped pre-compliance bench without leaving the analyzer's own hardware. Detectors, bandwidths, and limit lines are matched to CISPR 16-1-1 so a bench scan tracks a chamber result rather than approximating it; SpectraCore automates the sweep sequence and flags any point that crosses the selected limit line.</p>
+<table class="spec">
+<tr><th>Parameter</th><th>Detail</th></tr>
+<tr><td>Detectors</td><td>Peak, Quasi-Peak, Average, RMS &mdash; run in parallel, no repeated scans per detector</td></tr>
+<tr><td>CISPR-standard resolution bandwidths</td><td>200 Hz (Band A, 9&ndash;150 kHz) &middot; 9 kHz (Band B, 150 kHz&ndash;30 MHz) &middot; 120 kHz (Bands C/D, 30 MHz&ndash;1 GHz) &middot; 1 MHz (Band E, 1&ndash;6 GHz)</td></tr>
+<tr><td>Limit-line library</td><td>Preloaded FCC Part 15 (Class A/B), CISPR 11, CISPR 22, CISPR 32, and IEC limit lines, with automated margin/pass-fail analysis against the selected line</td></tr>
+<tr><td>Sweep workflow</td><td>Smart segmented sweeps across configurable bands; one-touch automated sequence (initial peak scan, automatic peak finding, Quasi-Peak/Average final measurement)</td></tr>
+<tr><td>Export</td><td>Raw measurement and pass/fail data export (CSV)</td></tr>
+</table>
+  <div class="note">See <a href="bnc-an-109-emc-pre-compliance.html" target="_blank" rel="noopener">BNC-AN-109</a> for the CISPR 16-1-1 arithmetic behind these bands and detectors, and the <a href="brief-emi-emc-precompliance.html" target="_blank" rel="noopener">EMI/EMC Pre-Compliance application brief</a> for a recommended bench configuration.</div>
   <h3>Tracking Generator (opt. 60/61/62)</h3>
 <table class="spec">
 <tr><th>Parameter</th><th>ICX-045 (opt. 60)</th><th>ICX-060 (opt. 61)</th><th>ICX-090 (opt. 62)</th></tr>
