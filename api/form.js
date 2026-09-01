@@ -40,6 +40,10 @@ const TYPES = {
   // class, so the submission carries course_<CODE> keys rather than a single "course" field.
   "academy-access": "BNC Academy Complimentary Pass Request",
   "launch-list": "Launch List Signup",
+  // The Dispatch approval button. David taps it from his phone; the fortnightly
+  // sender polls for this row and mails the edition. Deliberately routed like any
+  // other submission so it is logged and auditable rather than a bespoke endpoint.
+  "dispatch-approve": "Partner Dispatch - approved to send",
   // The BNC Dispatch partner edition — one type per mail-in coupon, so each response
   // lands on the rep's own Nutshell record with a label that says which ask it answers.
   "partner-shows":       "Partner — Trade Show (next 12 months)",
@@ -61,6 +65,8 @@ const TYPE_NOTIFY = {
   "partner-comarketing": "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
   "partner-region":      "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
   "partner-website":     "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
+  // Approval confirmations go only to David: they are an instruction, not a lead.
+  "dispatch-approve":    "david.brown@berkeleynucleonics.com",
 };
 const RESERVED = { _gotcha: 1, _subject: 1, _next: 1, _redirect: 1, _replyto: 1, form: 1, token: 1, "cf-turnstile-response": 1, "g-recaptcha-response": 1 };
 

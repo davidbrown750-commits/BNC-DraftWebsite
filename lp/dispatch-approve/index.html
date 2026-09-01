@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approve the Partner Dispatch</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="https://www.berkeleynucleonics.com/favicon.ico">
+<!--
+  One-click approval for the fortnightly Partner Dispatch, built to be usable from a
+  phone. The fortnightly draft email links here with ?ed=<number>&k=<key>.
+
+  Approval is recorded through the ordinary /api/form endpoint rather than a bespoke
+  route, so it lands in bnc_form_submissions and is auditable alongside everything else.
+  The sender polls for the row.
+
+  This page approves; it does not send. The key in the URL cannot by itself mail anyone:
+  the sender only ever mails the edition that was already built and reviewed, and only
+  if that build is recent. Worst case for a leaked link is that an edition David has
+  already read goes out on time.
+-->
+<style>
+:root{--b:#0655a3;--d:#113163;--g2:#e5e7eb;--g5:#6b7280;--ok:#16a34a;
+--fh:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;--fb:Arial,'Segoe UI',Helvetica,sans-serif;}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f6;font-family:var(--fb);color:#111;line-height:1.6;
+  display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.card{background:#fff;border:1px solid var(--g2);border-radius:8px;max-width:460px;width:100%;
+  padding:28px 26px;text-align:center;box-shadow:0 10px 30px -12px rgba(0,0,0,.25);}
+h1{font-family:var(--fh);color:var(--d);font-size:1.35rem;margin:0 0 6px;font-weight:700;}
+p{margin:0 0 14px;color:#374151;font-size:.95rem;}
+.ed{font-family:var(--fh);font-weight:700;color:var(--d);font-size:1.05rem;
+  background:#eaf3fc;border-radius:5px;padding:9px 12px;margin:0 0 18px;}
+button{width:100%;background:var(--b);color:#fff;border:0;border-radius:6px;
+  font-family:var(--fh);font-weight:700;font-size:1.06rem;padding:16px;cursor:pointer;}
+button:hover{background:#054a8c}
+button:disabled{background:#9ca3af;cursor:default}
+*:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+.msg{margin-top:16px;font-size:.92rem;display:none}
+.ok{color:var(--ok);font-weight:700}
+.err{color:#dc2626;font-weight:700}
+.small{font-size:.8rem;color:var(--g5);margin-top:16px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Approve the Partner Dispatch</h1>
+  <p>This releases the edition you were sent for review to the rep roster.</p>
+  <div class="ed" id="ed">Loading&hellip;</div>
+  <button id="go">Approve and send</button>
+  <div class="msg" id="msg"></div>
+  <p class="small">Nothing is sent until you tap. The sender picks this up within the hour
+     and mails the edition exactly as you reviewed it.</p>
+</div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var ed = q.get('ed') || '', k = q.get('k') || '';
+  var edEl = document.getElementById('ed'), btn = document.getElementById('go'),
+      msg = document.getElementById('msg');
+
+  if (!ed || !k) {
+    edEl.textContent = 'Link is incomplete';
+    btn.disabled = true;
+    msg.style.display = 'block';
+    msg.className = 'msg err';
+    msg.textContent = 'Open the link from the draft email; it carries the edition and key.';
+    return;
+  }
+  edEl.textContent = 'The BNC Dispatch, No. ' + ed;
+
+  btn.addEventListener('click', function(){
+    btn.disabled = true;
+    btn.textContent = 'Approving…';
+    var body = new URLSearchParams();
+    body.set('email', 'david.brown@berkeleynucleonics.com');
+    body.set('name', 'David Brown');
+    body.set('edition', ed);
+    body.set('approval_key', k);
+    body.set('message', 'Approved to send: Partner Dispatch No. ' + ed);
+    fetch('/api/form?form=dispatch-approve', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'},
+      body: body.toString()
+    }).then(function(r){ return r.json().catch(function(){ return {ok: r.ok}; }); })
+      .then(function(j){
+        msg.style.display = 'block';
+        if (j && j.ok && !j.dropped) {
+          msg.className = 'msg ok';
+          msg.textContent = 'Approved. No. ' + ed + ' goes out within the hour.';
+          btn.textContent = 'Approved';
+        } else {
+          msg.className = 'msg err';
+          msg.textContent = 'Not recorded' + (j && j.dropped ? ' (' + j.dropped + ')' : '') +
+                            '. Approve in a session instead.';
+          btn.disabled = false;
+          btn.textContent = 'Try again';
+        }
+      }).catch(function(){
+        msg.style.display = 'block';
+        msg.className = 'msg err';
+        msg.textContent = 'Could not reach the server. Approve in a session instead.';
+        btn.disabled = false;
+        btn.textContent = 'Try again';
+      });
+  });
+})();
+</script>
+</body>
+</html>
