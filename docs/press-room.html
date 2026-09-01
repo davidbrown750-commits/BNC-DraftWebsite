@@ -236,19 +236,22 @@
 <title>Berkeley Nucleonics Press Room: News &amp; Announcements</title>
 <meta name="description" content="The Berkeley Nucleonics press room collects 205 articles: company news, product announcements, customer spotlights, and useful test and measurement reads.">
 <style>
-:root{--blue:#0655a3;--cyan:#37b6f0;--cyan-bright:#5fd0ff;--teal:#3fd0c4;--teal-soft:#7fe6db;--violet:#9b8cff;--violet-soft:#bcb0ff;
---ink:#0a1626;--ink-2:#0e2038;--ink-card:#122a47;--line:rgba(120,170,225,.18);--soft:#d3e1f4;--soft-2:#93afd0;
---font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;--font-cond:'Myriad Pro Condensed','Arial Narrow',sans-serif;--font-b:Arial,'Segoe UI',Helvetica,sans-serif;--r-lg:14px;}
-*{box-sizing:border-box;}body{font-family:var(--font-b);background:var(--ink);color:var(--soft);margin:0;line-height:1.65;}
+:root{--blue:#0655a3;--cyan:#37b6f0;--cyan-bright:#0e6ba8;--teal:#2f7d6e;--teal-soft:#3fd0c4;--violet:#5a5240;--violet-soft:#6e6152;
+--ink:#efe6d3;--ink-2:#e6d9bd;--ink-card:#faf5e7;--line:rgba(46,38,22,.22);--soft:#231d14;--soft-2:#6d6248;
+--olive:#54592f;--brass:#7c5a24;--news-rule:#2a2418;
+--font-h:'Myriad Pro','Segoe UI','Helvetica Neue',Arial,sans-serif;--font-cond:'Myriad Pro Condensed','Arial Narrow',sans-serif;--font-b:Arial,'Segoe UI',Helvetica,sans-serif;--font-serif:Georgia,'Times New Roman',Times,serif;--font-mono:'Courier New',Courier,monospace;--r-lg:14px;}
+*{box-sizing:border-box;}body{font-family:var(--font-b);background:var(--ink);color:var(--soft);margin:0;line-height:1.65;background-image:repeating-linear-gradient(0deg,rgba(46,38,22,.035) 0px,rgba(46,38,22,.035) 1px,transparent 1px,transparent 3px);}
 a{text-decoration:none;color:inherit;}.wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
-.hero{position:relative;background:radial-gradient(80% 90% at 80% 20%,rgba(55,182,240,.18),transparent 55%),radial-gradient(60% 60% at 12% 90%,rgba(155,140,255,.16),transparent 60%),linear-gradient(120deg,#0a1626,#0e2240 60%,#0a1c38);border-bottom:1px solid var(--line);}
-.hero .wrap{padding:54px 28px 46px;}
-.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;font-weight:700;color:var(--cyan-bright);margin-bottom:14px;}
-h1{font-family:var(--font-h);color:#fff;font-size:2.5rem;margin:0 0 12px;letter-spacing:-.01em;}
-.hero p{color:var(--soft);font-size:1.08rem;max-width:66ch;margin:0;}
+.hero{position:relative;background:repeating-linear-gradient(135deg,rgba(255,255,255,.025) 0 2px,transparent 2px 26px),linear-gradient(120deg,#171c16,#22281f 55%,#14180f);border-bottom:4px double #4a5240;}
+.hero .wrap{padding:34px 28px 30px;}
+.pr-edition{font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.22em;font-size:.68rem;font-weight:700;color:#b7c19a;margin-bottom:12px;}
+.kicker{font-family:var(--font-h);text-transform:uppercase;letter-spacing:.16em;font-size:.76rem;font-weight:700;color:#9fae82;margin-bottom:14px;}
+h1{font-family:var(--font-serif);color:#f2ede0;font-size:2.7rem;margin:0 0 10px;letter-spacing:.01em;font-weight:700;}
+.hero p{color:#c9cdb9;font-size:1.02rem;max-width:66ch;margin:0;font-style:italic;}
+.pr-dateline{font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.1em;font-size:.7rem;color:#8b9573;margin-top:16px;padding-top:14px;border-top:1px solid rgba(183,193,154,.28);}
 .reqpdf{position:absolute;top:22px;right:28px;background:linear-gradient(115deg,#0655a3,#37b6f0 58%,#3fd0c4);color:#fff;font-family:var(--font-h);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.04em;padding:.6em 1.05em;border-radius:6px;text-decoration:none;}
 .reqpdf:hover{filter:brightness(1.09);}
-.sec{padding:40px 0 4px;}h2{font-family:var(--font-h);color:#fff;font-size:1.4rem;margin:0 0 6px;}
+.sec{padding:40px 0 4px;}h2{font-family:var(--font-h);color:var(--soft);font-size:1.4rem;margin:0 0 6px;}
 .sec .sub{color:var(--soft-2);font-size:.9rem;margin:0 0 16px;}
 .list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.02);}
 .row{display:flex;align-items:center;gap:18px;padding:14px 20px;border-top:1px solid var(--line);transition:background .14s ease;}
@@ -379,32 +382,33 @@ nav.kicker[aria-label="Breadcrumb"] .pfx{margin-right:6px;font-weight:400;color:
 .pr-hero p{max-width:64ch;}
 .pr-tools{display:flex;flex-wrap:wrap;gap:14px 12px;align-items:center;margin:30px 0 8px;}
 .pr-filters{display:flex;flex-wrap:wrap;gap:8px;}
-.pr-fbtn{font-family:var(--font-h);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#c4d6ee;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:20px;padding:.5em 1.05em;cursor:pointer;transition:background .14s,border-color .14s,color .14s;}
-.pr-fbtn:hover{color:#fff;border-color:rgba(55,182,240,.5);}
-.pr-fbtn.active{background:linear-gradient(115deg,#0655a3,#37b6f0 70%);color:#fff;border-color:transparent;}
+.pr-fbtn{font-family:var(--font-mono);font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--soft);background:var(--ink-card);border:1px solid #55503f;border-radius:2px;padding:.5em 1.05em;cursor:pointer;transition:background .14s,border-color .14s,color .14s;}
+.pr-fbtn:hover{color:#fff;background:var(--olive);border-color:var(--olive);}
+.pr-fbtn.active{background:var(--olive);color:#fff;border-color:var(--olive);}
 .pr-search{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.pr-search input{width:240px;max-width:60vw;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,225,.35);color:#dce8f7;font:inherit;font-size:.86rem;padding:.55em .85em;border-radius:8px;outline:none;transition:border-color .16s,width .18s;}
-.pr-search input::placeholder{color:#7f9bc0;}
-.pr-search input:focus{border-color:#37b6f0;width:280px;}
-.pr-count{color:var(--soft-2);font-size:.82rem;white-space:nowrap;}
-.pr-count b{color:#5fd0ff;font-weight:700;}
-.pr-yearhead{font-family:var(--font-h);color:#fff;font-size:1.25rem;font-weight:700;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line);letter-spacing:.01em;}
+.pr-search input{width:240px;max-width:60vw;background:var(--ink-card);border:1px solid #55503f;color:var(--soft);font:inherit;font-size:.86rem;padding:.55em .85em;border-radius:2px;outline:none;transition:border-color .16s,width .18s;}
+.pr-search input::placeholder{color:#948968;}
+.pr-search input:focus{border-color:var(--olive);width:280px;}
+.pr-count{color:var(--soft-2);font-size:.82rem;white-space:nowrap;font-family:var(--font-mono);}
+.pr-count b{color:var(--brass);font-weight:700;}
+.pr-yearhead{font-family:var(--font-serif);color:var(--soft);font-size:1.5rem;font-weight:700;margin:38px 0 14px;padding-bottom:8px;border-bottom:3px double var(--news-rule);letter-spacing:.01em;}
 .pr-yearhead.hidden{display:none;}
-.pr-list{display:flex;flex-direction:column;gap:12px;}
-.pr-item{display:flex;gap:18px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);padding:14px 16px;margin-bottom:12px;transition:background .14s ease,border-color .14s ease;}.pr-thumb{flex:0 0 196px;width:196px;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#0a1626,#113163);display:flex;align-items:center;justify-content:center;}.pr-thumb img{width:100%;height:100%;object-fit:cover;display:block;}.pr-thumb.ph svg{width:38px;height:38px;opacity:.6;}.pr-body{flex:1 1 auto;min-width:0;}
-.pr-item:hover{background:rgba(55,182,240,.06);border-color:rgba(55,182,240,.32);}
+.pr-list{display:flex;flex-direction:column;}
+.pr-item{display:flex;gap:20px;align-items:flex-start;border:none;border-top:1px solid #ccc0a0;border-radius:0;background:transparent;padding:20px 4px;margin-bottom:0;transition:background .14s ease;}.pr-thumb{flex:0 0 196px;width:196px;aspect-ratio:16/10;border-radius:0;overflow:hidden;background:#ded2ac;border:1px solid #b9ac86;display:flex;align-items:center;justify-content:center;}.pr-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.35) sepia(.12) contrast(1.03);}.pr-thumb.ph svg{width:38px;height:38px;opacity:.45;}.pr-body{flex:1 1 auto;min-width:0;}
+.pr-item:hover{background:rgba(84,89,47,.06);}
+.pr-item:last-child{border-bottom:1px solid #ccc0a0;}
 .pr-item.hidden{display:none;}
-.pr-date{font-family:var(--font-h);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#5f9fe0;margin-bottom:6px;}
-.pr-title{font-family:var(--font-h);color:#fff;font-size:1.06rem;font-weight:600;line-height:1.4;margin:0 0 7px;}
-.pr-title a{color:#fff;}
-.pr-title a:hover{color:#5fd0ff;text-decoration:underline;}
+.pr-date{font-family:var(--font-mono);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--brass);margin-bottom:6px;}
+.pr-title{font-family:var(--font-h);color:var(--soft);font-size:1.12rem;font-weight:700;line-height:1.35;margin:0 0 7px;}
+.pr-title a{color:var(--soft);}
+.pr-title a:hover{color:var(--blue);text-decoration:underline;}
 .pr-excerpt{margin:0 0 10px;color:var(--soft-2);font-size:.88rem;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .pr-chips{display:flex;flex-wrap:wrap;gap:6px;}
-.pr-chip{font-family:var(--font-h);font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.32em .7em;border-radius:5px;border:1px solid rgba(120,170,225,.25);color:#9fc0e6;background:rgba(55,182,240,.07);}
-.pr-chip.company{color:#7fc8ff;border-color:rgba(55,182,240,.35);background:rgba(55,182,240,.10);}
-.pr-chip.industry{color:#c3b6ff;border-color:rgba(155,140,255,.35);background:rgba(155,140,255,.10);}
-.pr-chip.useful{color:#7fe6db;border-color:rgba(63,208,196,.35);background:rgba(63,208,196,.10);}
-.pr-chip.uncat{color:#9bb0cc;}
+.pr-chip{font-family:var(--font-mono);font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.3em .65em;border-radius:2px;border:1px solid #a89b74;color:var(--soft-2);background:var(--ink-card);}
+.pr-chip.company{color:#fff;border-color:var(--blue);background:var(--blue);}
+.pr-chip.industry{color:#fff;border-color:var(--olive);background:var(--olive);}
+.pr-chip.useful{color:#0a4038;border-color:var(--teal-soft);background:rgba(63,208,196,.28);}
+.pr-chip.uncat{color:#fff;border-color:var(--brass);background:var(--brass);}
 .pr-empty{display:none;text-align:center;color:var(--soft-2);padding:40px 0;font-size:.95rem;}
 .pr-empty.show{display:block;}
 @media(max-width:640px){.pr-item{flex-direction:column;}.pr-thumb{width:100%;flex-basis:auto;}.pr-search{margin-left:0;width:100%;}.pr-search input,.pr-search input:focus{width:100%;}}
@@ -454,9 +458,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <section class="hero pr-hero">
   <div class="wrap">
+    <div class="pr-edition">Official Bulletin &middot; Field &amp; Product Releases</div>
     <nav class="kicker" aria-label="Breadcrumb"><span class="pfx">Path:</span><a href="../home.html">home</a><span class="sep">/</span><a href="../support.html">support</a><span class="sep">/</span><span aria-current="page">press room</span></nav>
     <h1>Press Room</h1>
     <p>News, announcements, customer spotlights, and useful articles from Berkeley Nucleonics.</p>
+    <div class="pr-dateline">Berkeley Nucleonics Corporation &middot; San Rafael, California &middot; Test, Measurement &amp; Nuclear Instrumentation since 1963</div>
   </div>
 </section>
 
@@ -467,12 +473,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="pr-fbtn active" data-cat="all">All</button>
         <button class="pr-fbtn" data-cat="Company news">Company news</button>
         <button class="pr-fbtn" data-cat="Industry news">Industry news</button>
-        <button class="pr-fbtn" data-cat="Useful articles">Useful articles</button>
-        <button class="pr-fbtn" data-cat="Uncategorized">Uncategorized</button>
+        <button class="pr-fbtn" data-cat="Uncategorized">Product News</button>
       </div>
       <div class="pr-search">
         <input type="search" id="prSearch" placeholder="Search titles..." aria-label="Search press titles">
-        <span class="pr-count"><b id="prCount">0</b> of 206 articles</span>
+        <span class="pr-count"><b id="prCount">0</b> of 211 articles</span>
       </div>
     </div>
 
