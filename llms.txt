@@ -2,6 +2,25 @@
 
 > Precision test, measurement, and nuclear instrumentation, engineered and built in the United States since 1963. Eight instrument lines spanning timing, signal generation, waveform synthesis, radiation detection, isotope identification, high-power pulsing, spectrum analysis, and high-voltage power.
 
+## Fetching this site as markdown
+
+Any page here can be fetched as markdown instead of HTML. Send `Accept: text/markdown`
+and the server returns a clean rendering that keeps the page heading, the section
+structure, the body prose and every specification table, and drops the navigation and the
+inline search index. A datasheet typically shrinks from about 124 KB of HTML to about
+10 KB of markdown. This is the intended way to read specifications in bulk.
+
+    curl -H "Accept: text/markdown" https://www.berkeleynucleonics.com/docs/bnc-model-805m-datasheet.html
+
+It works on the home page and on every `.html` page except the web books under `/books/`,
+which are served as HTML only. The complete page list is at
+https://www.berkeleynucleonics.com/sitemap.xml.
+
+There is no `llms-full.txt` for this site, and that is deliberate rather than an
+oversight. The visible text of 736 pages runs to roughly 15 MB, which is past the point
+where a single file is read in one pass, and a static copy would drift out of step with
+pages that change most weeks. Fetch the page you need as markdown instead.
+
 ## Product lines
 - [Pulse & Delay Generators](https://www.berkeleynucleonics.com/pdg-home.html): Digital delay and pulse generators, femtosecond to multi-channel timing.
 - [RF & Microwave Signal Generators & Sensors](https://www.berkeleynucleonics.com/rfsg-home.html): Signal and vector sources plus USB RF power sensors.
