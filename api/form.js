@@ -18,7 +18,7 @@ const crypto = require("crypto");
 const N = require("../lib/nutshell");
 const { verifyClerkToken } = require("../lib/clerk");
 const { smtpConfigured, sendMail } = require("../lib/smtp");
-const { ackAcademy, academyAudience, academyCourses } = require("../lib/ack-academy");
+const { ackAcademy, academyAudience } = require("../lib/ack-academy");
 
 // `type` comes straight off the request, so every lookup keyed by it goes through has():
 // a plain `TYPES[type]` would happily return Object.prototype members for form=constructor.
@@ -94,22 +94,23 @@ const ACK_BCC = (process.env.FORM_ACK_BCC === undefined ? "bcc@nutshell.com" : p
 
 // Who each acknowledgement comes from. Per-type env overrides (FORM_ACK_FROM_QUOTE /
 // FORM_ACK_REPLY_TO_CONTACT, ...) win over these — including FORM_ACK_FROM_ACADEMY_ACCESS /
-// FORM_ACK_REPLY_TO_ACADEMY_ACCESS in Vercel, which must be unset or set to academy@
-// berkeleynucleonics.com: if either is still set to the old alec@berkeleynucleonicsacademy.com
-// identity from before 2026-09-03, it silently overrides the map below.
+// FORM_ACK_REPLY_TO_ACADEMY_ACCESS in Vercel. Confirm what's actually set there: this map
+// was briefly changed to academy@berkeleynucleonics.com on 2026-09-03, then reverted back to
+// alec@berkeleynucleonicsacademy.com (signed Alec Bakhshandeh, per Meraly) the same day, so a
+// stale Vercel override from either point in that history would now silently win.
 //
-// Every sender here is on berkeleynucleonics.com, already SendGrid domain-authenticated, so
-// no separate per-sender verification is needed. (The Academy sender previously lived on a
-// separate berkeleynucleonicsacademy.com domain with no MX record, so replies to it fell
-// through to a Bluehost apex A record instead of a real inbox — moved back onto the main
-// domain 2026-09-03 for that reason, confirmed working via a live SendGrid test send.)
+// KNOWN ISSUE, not fixed by this file: berkeleynucleonicsacademy.com has no MX record, so a
+// reply to alec@berkeleynucleonicsacademy.com currently falls through to a Bluehost apex A
+// record instead of a real inbox. That domain IS SendGrid-authenticated (David checked
+// 2026-08-27: SPF, DKIM, DMARC all present), so the SEND side works -- only inbound is broken.
+// If real replies need to reach Alec, this needs an actual MX record, not a code change.
 const ACK_IDENTITY = {
   rma:     { from: ACK_FROM, replyTo: ACK_REPLY_TO },
   quote:   { from: "Berkeley Nucleonics Sales <sales@berkeleynucleonics.com>", replyTo: "sales@berkeleynucleonics.com" },
   contact: { from: "Berkeley Nucleonics <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
   "academy-access": {
-    from: "Berkeley Nucleonics Academy <academy@berkeleynucleonics.com>",
-    replyTo: "academy@berkeleynucleonics.com",
+    from: "Berkeley Nucleonics Academy <alec@berkeleynucleonicsacademy.com>",
+    replyTo: "alec@berkeleynucleonicsacademy.com",
   },
 };
 
@@ -1075,10 +1076,16 @@ module.exports = async function handler(req, res) {
           country: lc["country"] || "",
         });
       } else if (type === "academy-access") {
+        // Course titles come from acadPicks (server-side ACADEMY_CATALOG lookup, computed
+        // above at line ~861), never from the request body directly -- this endpoint is
+        // unauthenticated and the result is echoed into a DKIM-signed email, so an arbitrary
+        // course_XXX value must never reach the customer's inbox verbatim. See the security
+        // comment above ACADEMY_CATALOG.
         ack = ackAcademy({
           hello, replyTo: id.replyTo,
           audience: academyAudience({ email, role: lc["role"], company }),
-          courses: academyCourses(body),
+          courses: acadPicks.map((p) => ({ code: p[0], title: p[1] })),
+          signName: "Alec Bakhshandeh",
         });
       } else if (type === "contact") {
         ack = ackContact({
