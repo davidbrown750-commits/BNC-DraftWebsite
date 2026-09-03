@@ -95,22 +95,23 @@ const ACK_BCC = (process.env.FORM_ACK_BCC === undefined ? "bcc@nutshell.com" : p
 // Who each acknowledgement comes from. Per-type env overrides (FORM_ACK_FROM_QUOTE /
 // FORM_ACK_REPLY_TO_CONTACT, ...) win over these — including FORM_ACK_FROM_ACADEMY_ACCESS /
 // FORM_ACK_REPLY_TO_ACADEMY_ACCESS in Vercel. Confirm what's actually set there: this map
-// was briefly changed to academy@berkeleynucleonics.com on 2026-09-03, then reverted back to
-// alec@berkeleynucleonicsacademy.com (signed Alec Bakhshandeh, per Meraly) the same day, so a
-// stale Vercel override from either point in that history would now silently win.
+// has changed twice already on 2026-09-03 (briefly academy@berkeleynucleonics.com/"Meraly
+// Rodas", then alec@berkeleynucleonicsacademy.com/"Alec Bakhshandeh" for both From and
+// Reply-To), so a stale Vercel override from any earlier point would now silently win.
 //
-// KNOWN ISSUE, not fixed by this file: berkeleynucleonicsacademy.com has no MX record, so a
-// reply to alec@berkeleynucleonicsacademy.com currently falls through to a Bluehost apex A
-// record instead of a real inbox. That domain IS SendGrid-authenticated (David checked
-// 2026-08-27: SPF, DKIM, DMARC all present), so the SEND side works -- only inbound is broken.
-// If real replies need to reach Alec, this needs an actual MX record, not a code change.
+// From stays the branded alec@berkeleynucleonicsacademy.com identity (SendGrid-authenticated,
+// David confirmed SPF/DKIM/DMARC 2026-08-27) -- Reply-To points at Alec's real, actively
+// monitored mailbox on the main domain instead, since berkeleynucleonicsacademy.com has no MX
+// record and can't receive mail at all (confirmed by DNS + a live port test against its A
+// record: no MX, ports 25/587 both refuse). Reply-To isn't part of DKIM/DMARC alignment, so
+// this costs nothing on deliverability.
 const ACK_IDENTITY = {
   rma:     { from: ACK_FROM, replyTo: ACK_REPLY_TO },
   quote:   { from: "Berkeley Nucleonics Sales <sales@berkeleynucleonics.com>", replyTo: "sales@berkeleynucleonics.com" },
   contact: { from: "Berkeley Nucleonics <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
   "academy-access": {
     from: "Berkeley Nucleonics Academy <alec@berkeleynucleonicsacademy.com>",
-    replyTo: "alec@berkeleynucleonicsacademy.com",
+    replyTo: "alec@berkeleynucleonics.com",
   },
 };
 
