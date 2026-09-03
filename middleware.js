@@ -9,11 +9,20 @@
 // Assets, PDFs, figures and the API are excluded. For any request whose Accept
 // header does not mention text/markdown, which is every browser request, it returns
 // immediately without doing any work.
+//
+// `books/` used to be excluded here, which meant the 190 web book pages in the
+// sitemap, roughly a third of the indexable site and the longest-form technical
+// writing on it, were the one body of content an agent could not read as
+// markdown. Those pages are also the heaviest: a chapter is about 100 KB of HTML
+// against 124 KB for a datasheet, so they had the most to gain from conversion
+// and were getting none of it. The added cost is invocations on pages that
+// already fall through in a few microseconds unless the request asks for
+// markdown, which no browser does.
 
 export const config = {
   matcher: [
     "/",
-    "/((?!api/|_shared/|lib/|figures/|books/|docs/pdfs/|software/).*\\.html)",
+    "/((?!api/|_shared/|lib/|figures/|docs/pdfs/|software/).*\\.html)",
   ],
 };
 
