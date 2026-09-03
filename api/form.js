@@ -18,6 +18,7 @@ const crypto = require("crypto");
 const N = require("../lib/nutshell");
 const { verifyClerkToken } = require("../lib/clerk");
 const { smtpConfigured, sendMail } = require("../lib/smtp");
+const { ackAcademy, academyAudience, academyCourses } = require("../lib/ack-academy");
 
 // `type` comes straight off the request, so every lookup keyed by it goes through has():
 // a plain `TYPES[type]` would happily return Object.prototype members for form=constructor.
@@ -92,25 +93,23 @@ const ACK_BCC = (process.env.FORM_ACK_BCC === undefined ? "bcc@nutshell.com" : p
   .split(",").map((s) => s.trim()).filter(Boolean);
 
 // Who each acknowledgement comes from. Per-type env overrides (FORM_ACK_FROM_QUOTE /
-// FORM_ACK_REPLY_TO_CONTACT, ...) win over these.
+// FORM_ACK_REPLY_TO_CONTACT, ...) win over these — including FORM_ACK_FROM_ACADEMY_ACCESS /
+// FORM_ACK_REPLY_TO_ACADEMY_ACCESS in Vercel, which must be unset or set to academy@
+// berkeleynucleonics.com: if either is still set to the old alec@berkeleynucleonicsacademy.com
+// identity from before 2026-09-03, it silently overrides the map below.
 //
-// All but one are berkeleynucleonics.com senders, and that domain is already authenticated
-// in SendGrid. The exception is the Academy sender, which is on the SEPARATE domain
-// berkeleynucleonicsacademy.com. That domain is already SendGrid domain-authenticated too
-// (checked 2026-08-27: SPF "v=spf1 include:sendgrid.net include:amazonses.com ~all",
-// DKIM s1/s2._domainkey CNAMEd to sendgrid.net, and a _dmarc record), so acknowledgements
-// from it sign and align without any new setup.
-//
-// It has no MX record, so inbound mail falls back to the apex A record on Bluehost. If a
-// reply to alec@berkeleynucleonicsacademy.com ever bounces, that mailbox is the reason, and
-// FORM_ACK_REPLY_TO_ACADEMY_ACCESS repoints replies without a deploy.
+// Every sender here is on berkeleynucleonics.com, already SendGrid domain-authenticated, so
+// no separate per-sender verification is needed. (The Academy sender previously lived on a
+// separate berkeleynucleonicsacademy.com domain with no MX record, so replies to it fell
+// through to a Bluehost apex A record instead of a real inbox — moved back onto the main
+// domain 2026-09-03 for that reason, confirmed working via a live SendGrid test send.)
 const ACK_IDENTITY = {
   rma:     { from: ACK_FROM, replyTo: ACK_REPLY_TO },
   quote:   { from: "Berkeley Nucleonics Sales <sales@berkeleynucleonics.com>", replyTo: "sales@berkeleynucleonics.com" },
   contact: { from: "Berkeley Nucleonics <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
   "academy-access": {
-    from: "Berkeley Nucleonics Academy <alec@berkeleynucleonicsacademy.com>",
-    replyTo: "alec@berkeleynucleonicsacademy.com",
+    from: "Berkeley Nucleonics Academy <academy@berkeleynucleonics.com>",
+    replyTo: "academy@berkeleynucleonics.com",
   },
 };
 
@@ -568,33 +567,11 @@ function ackQuote({ hello, replyTo, model, quantity, country, company }) {
   return Object.assign({ subject: "We have your quote request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics" }, shell);
 }
 
-// Academy complimentary pass: thank them, list the classes back so they can see we captured
-// the right ones, and set the expectation that a human sends the enrollment details. Class
-// titles come from ACADEMY_CATALOG, never from the request body.
-function ackAcademy({ hello, replyTo, picks, company }) {
-  const n = picks.length;
-  const shell = ackShell({
-    preheader: n
-      ? "We have your request for " + n + (n === 1 ? " complimentary class pass." : " complimentary class passes.")
-      : "We have your BNC Academy request.",
-    heading: "Thank you for your interest in BNC Academy",
-    hello,
-    intro: n
-      ? "Thank you for your interest in Berkeley Nucleonics Academy. We have your request for " +
-        (n === 1 ? "a complimentary pass to the class below" : "complimentary passes to the " + n + " classes below") +
-        ". Someone from the Academy team will send your enrollment details shortly. There is nothing to pay and nothing else you need to do."
-      : "Thank you for your interest in Berkeley Nucleonics Academy. We have your request and someone from the Academy team will follow up shortly.",
-    rows: picks.map((p) => [p[0], p[1]]).concat(company ? [["Company", company]] : []),
-    callout: "Our classes are written by the engineers who build and support the instruments, so if a question comes up while you are working through one, reply to this email and it will reach someone who can answer it properly.",
-    signName: "Berkeley Nucleonics Academy",
-    replyTo,
-  });
-  return Object.assign({
-    subject: n
-      ? "Thank you for your interest \u00b7 Your BNC Academy " + (n === 1 ? "class pass" : "class passes")
-      : "Thank you for your interest in BNC Academy",
-  }, shell);
-}
+// Academy complimentary pass acknowledgement (audience-classified, instant access code) now
+// lives in lib/ack-academy.js \u2014 see the require at the top of this file. Superseded 2026-09-03;
+// the prior catalog/picks-based version sent from alec@berkeleynucleonicsacademy.com and told
+// the requester a human would follow up. academyPicks()/ACADEMY_CATALOG just below are unrelated
+// and stay: they build the internal notification's "Classes requested" summary, not the ack.
 
 // Does a contact submission look like a real lead, or like the junk that lands on the
 // broadest, least-defended form on the site?
@@ -1098,7 +1075,11 @@ module.exports = async function handler(req, res) {
           country: lc["country"] || "",
         });
       } else if (type === "academy-access") {
-        ack = ackAcademy({ hello, replyTo: id.replyTo, picks: acadPicks, company });
+        ack = ackAcademy({
+          hello, replyTo: id.replyTo,
+          audience: academyAudience({ email, role: lc["role"], company }),
+          courses: academyCourses(body),
+        });
       } else if (type === "contact") {
         ack = ackContact({
           hello, replyTo: id.replyTo, company, phone,
