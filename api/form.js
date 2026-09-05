@@ -60,12 +60,13 @@ const TYPE_NOTIFY = {
   "academy-access": "info@berkeleynucleonics.com",
   "rma-status": "operations@berkeleynucleonics.com", // RMA status check
   // Partner-edition coupons: these are channel replies, not leads, so they go to David and
-  // sales rather than website@. The 2026 rep newsletter drew zero responses partly because
+  // info@ rather than website@. The 2026 rep newsletter drew zero responses partly because
   // its only reply path was partners@berkeleynucleonics.com, a mailbox that never existed.
-  "partner-shows":       "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
-  "partner-comarketing": "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
-  "partner-region":      "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
-  "partner-website":     "david.brown@berkeleynucleonics.com, sales@berkeleynucleonics.com",
+  // sales@berkeleynucleonics.com was retired on 2026-09-05; info@ is the only general mailbox.
+  "partner-shows":       "david.brown@berkeleynucleonics.com, info@berkeleynucleonics.com",
+  "partner-comarketing": "david.brown@berkeleynucleonics.com, info@berkeleynucleonics.com",
+  "partner-region":      "david.brown@berkeleynucleonics.com, info@berkeleynucleonics.com",
+  "partner-website":     "david.brown@berkeleynucleonics.com, info@berkeleynucleonics.com",
   // Approval confirmations go only to David: they are an instruction, not a lead.
   "dispatch-approve":    "david.brown@berkeleynucleonics.com",
 };
@@ -84,7 +85,7 @@ const ACK_TYPES = { rma: 1, quote: 1, contact: 1, "academy-access": 1 };
 const ACK_FROM = process.env.FORM_ACK_FROM || "BNC Service Department <operations@berkeleynucleonics.com>";
 const ACK_REPLY_TO = process.env.FORM_ACK_REPLY_TO || "operations@berkeleynucleonics.com";
 const ACK_SMS = "415-336-6074";  // after-hours / weekend emergency text line
-const ACK_PHONE = "+1 (800) 234-7858";
+const ACK_PHONE = "(800) 234-7858";  // shown without +1; the tel: link carries the country code
 
 // Blind copy on every acknowledgement so the outbound email files itself onto the contact's
 // Nutshell timeline (Nutshell's email drop-box address). Comma-separated; set FORM_ACK_BCC=""
@@ -107,7 +108,8 @@ const ACK_BCC = (process.env.FORM_ACK_BCC === undefined ? "bcc@nutshell.com" : p
 // this costs nothing on deliverability.
 const ACK_IDENTITY = {
   rma:     { from: ACK_FROM, replyTo: ACK_REPLY_TO },
-  quote:   { from: "Berkeley Nucleonics Sales <sales@berkeleynucleonics.com>", replyTo: "sales@berkeleynucleonics.com" },
+  // sales@berkeleynucleonics.com is retired (2026-09-05). Never use it; info@ is the only general mailbox.
+  quote:   { from: "Berkeley Nucleonics Sales <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
   contact: { from: "Berkeley Nucleonics <info@berkeleynucleonics.com>", replyTo: "info@berkeleynucleonics.com" },
   "academy-access": {
     from: "Berkeley Nucleonics Academy <alec@berkeleynucleonicsacademy.com>",
@@ -474,7 +476,9 @@ function academyPicks(body, consumed) {
 
 // headings with an Arial fallback), table layout so Outlook renders it, and the customer's own
 // details repeated back so they can see we captured the right thing. Returns { html, text }.
-function ackShell({ preheader, heading, hello, intro, rows, callout, signName, replyTo }) {
+function ackShell({ preheader, heading, hello, intro, rows, callout, signName, replyTo, firstName }) {
+  firstName = String(firstName == null ? "" : firstName).trim().slice(0, 40);
+  const thanks = "Thank you" + (firstName ? ", " + firstName : "") + ",";
   // Trim and cap every echoed value. A whitespace-only field would otherwise render an empty
   // bolded row, and an oversized one would let a scripted post stuff the email we send out.
   rows = (rows || []).map((r) => [r[0], String(r[1] == null ? "" : r[1]).trim().slice(0, 300)]).filter((r) => r[1]);
@@ -504,19 +508,24 @@ function ackShell({ preheader, heading, hello, intro, rows, callout, signName, r
         "</table>" +
       "</td></tr>" +
       '<tr><td style="padding:22px 32px 26px">' +
-        '<p style="margin:0;font-size:15px;line-height:1.6;color:#37475f">Thank you,<br>' +
+        '<p style="margin:0;font-size:15px;line-height:1.6;color:#37475f">' + esc(thanks) + "<br>" +
         '<span style="font-weight:bold;color:#113163">' + esc(signName) + "</span><br>" +
         '<a href="mailto:' + esc(replyTo) + '" style="color:#0655a3;text-decoration:none">' + esc(replyTo) + "</a></p>" +
       "</td></tr>" +
-      '<tr><td style="padding:16px 32px;background:#113163;border-radius:0 0 4px 4px;font-size:11.5px;line-height:1.7;color:#c7d5ea">' +
+      // Footer: everything white on the dark band. Never blue on blue. Gmail auto-links a street
+      // address and a phone number and paints them in its own link blue, which was unreadable on
+      // #113163, so both are wrapped in our own anchors (white, no underline) purely to keep
+      // control of the colour. They read as plain text.
+      '<tr><td style="padding:16px 32px;background:#113163;border-radius:0 0 4px 4px;font-size:11.5px;line-height:1.7;color:#ffffff">' +
         "Berkeley Nucleonics Corporation<br>Test, Measurement and Nuclear Instrumentation since 1963<br>" +
-        "2955 Kerner Blvd, San Rafael, CA 94901 &middot; " + ACK_PHONE +
+        '<a href="https://www.berkeleynucleonics.com/contact.html" style="color:#ffffff;text-decoration:none">2955 Kerner Blvd, San Rafael, CA 94901</a>' +
+        ' &middot; <a href="tel:+18002347858" style="color:#ffffff;text-decoration:none">' + ACK_PHONE + "</a>" +
       "</td></tr>" +
     "</table></td></tr></table></div>";
 
   const text = [hello, "", intro, ""]
     .concat(rows.map((r) => r[0] + ": " + r[1]))
-    .concat(["", callout, "", "Thank you,", signName, replyTo, "", sig])
+    .concat(["", callout, "", thanks, signName, replyTo, "", sig])
     .join("\n");
 
   return { html, text };
@@ -524,7 +533,7 @@ function ackShell({ preheader, heading, hello, intro, rows, callout, signName, r
 
 // RMA: repeat the model and serials back so the customer can see we captured the right
 // instruments, and give them the after-hours route for a detection emergency.
-function ackRma({ hello, replyTo, model, serials, reason, company }) {
+function ackRma({ hello, replyTo, model, serials, reason, company, firstName }) {
   model = String(model == null ? "" : model).trim();
   const shell = ackShell({
     preheader: "We have your RMA request. A service specialist replies within about two hours, 6am to 6pm Pacific, Monday through Friday.",
@@ -540,6 +549,7 @@ function ackRma({ hello, replyTo, model, serials, reason, company }) {
     callout: "If you have an emergency after hours or on the weekend, particularly with one of our nuclear detection instruments, please also send a text to " + ACK_SMS + " and we will try to have a spectroscopist follow up right away.",
     signName: "BNC Service Department",
     replyTo,
+    firstName,
   });
   return Object.assign({ subject: "We have your RMA request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics Service" }, shell);
 }
@@ -549,7 +559,9 @@ function ackRma({ hello, replyTo, model, serials, reason, company }) {
 // Only short structured fields are echoed. The free-text application is deliberately left out:
 // this endpoint is unauthenticated, so anything echoed here is text an attacker could have
 // delivered to a third party over a DKIM-signed berkeleynucleonics.com sender.
-function ackQuote({ hello, replyTo, model, quantity, country, company }) {
+// Only the model is echoed (2026-09-05): the company line added nothing the customer needs to
+// see, and quantity and country belong in the quote, not the receipt.
+function ackQuote({ hello, replyTo, model, firstName }) {
   model = String(model == null ? "" : model).trim();
   const shell = ackShell({
     preheader: "We have your quote request. An applications engineer follows up with pricing and lead time, usually within two hours.",
@@ -558,13 +570,11 @@ function ackQuote({ hello, replyTo, model, quantity, country, company }) {
     intro: "Thank you for your request. Your details are with our applications engineers, and one of them will send pricing and lead time, usually within two hours, Monday through Friday, 6am to 6pm Pacific. If the configuration needs a closer look, they will come back to you with a question or two first.",
     rows: [
       ["Model or product", model],
-      ["Quantity", quantity],
-      ["Country", country],
-      ["Company", company],
     ],
     callout: "If this has to meet a specific specification, contract vehicle, or delivery date, reply to this email and we will build that into the quote. We are flexible, and we listen to the application.",
     signName: "Berkeley Nucleonics Sales",
     replyTo,
+    firstName,
   });
   return Object.assign({ subject: "We have your quote request" + (model ? " · " + String(model).slice(0, 60) : "") + " · Berkeley Nucleonics" }, shell);
 }
@@ -633,7 +643,7 @@ function contactLeadScore({ email, name, company, phone, message, freeMbox, fore
 // Contact form: the broadest inbound, and the default type when none is given, so treat it as
 // the most exposed. Short structured fields only (see the note on ackQuote), then the phone
 // route for anything urgent so nobody waits on email when a bench is down.
-function ackContact({ hello, replyTo, company, phone, source }) {
+function ackContact({ hello, replyTo, company, phone, source, firstName }) {
   const shell = ackShell({
     preheader: "We have your message. The right specialist at Berkeley Nucleonics follows up, usually within two hours.",
     heading: "Thank you for contacting us",
@@ -647,6 +657,7 @@ function ackContact({ hello, replyTo, company, phone, source }) {
     callout: "If it is urgent, please call us at " + ACK_PHONE + ", 6am to 6pm Pacific, Monday through Friday. Our engineers are glad to talk an application through on the phone.",
     signName: "Berkeley Nucleonics",
     replyTo,
+    firstName,
   });
   return Object.assign({ subject: "Thank you for contacting Berkeley Nucleonics" }, shell);
 }
@@ -1058,10 +1069,8 @@ module.exports = async function handler(req, res) {
       email && email.indexOf("@") > 0 && !/@berkeleynucleonics\.com$/i.test(email)) {
     try {
       const id = ackIdentity(type);
-      const hello = (() => {
-        const f = displayName(name).split(/\s+/)[0] || "";
-        return f ? "Hello " + f + "," : "Hello,";
-      })();
+      const firstName = (displayName(name).split(/\s+/)[0] || "").slice(0, 40);
+      const hello = firstName ? "Hello " + firstName + "," : "Hello,";
       // Triage submissions (consumer mailbox / foreign script) are deliberately kept out of
       // Nutshell above until a human says otherwise, so filing their acknowledgement into the
       // drop box would put them in the CRM through a side door the claim table cannot see.
@@ -1071,10 +1080,8 @@ module.exports = async function handler(req, res) {
       let ack;
       if (type === "quote") {
         ack = ackQuote({
-          hello, replyTo: id.replyTo, company,
+          hello, firstName, replyTo: id.replyTo,
           model: modelField || lc["product_or_model"] || guessModel(modelField, req.headers.referer),
-          quantity: lc["quantity"] || "",
-          country: lc["country"] || "",
         });
       } else if (type === "academy-access") {
         // Course titles come from acadPicks (server-side ACADEMY_CATALOG lookup, computed
@@ -1090,12 +1097,12 @@ module.exports = async function handler(req, res) {
         });
       } else if (type === "contact") {
         ack = ackContact({
-          hello, replyTo: id.replyTo, company, phone,
+          hello, firstName, replyTo: id.replyTo, company, phone,
           source: lc["source"] || "",
         });
       } else {
         ack = ackRma({
-          hello, replyTo: id.replyTo, company,
+          hello, firstName, replyTo: id.replyTo, company,
           model: modelField || guessModel(modelField, req.headers.referer),
           serials: ackSerials(lc["serial_number"], lc["problem_description"] || body.message),
           reason: lc["return_reason"] || "",
