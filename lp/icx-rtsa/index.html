@@ -226,8 +226,8 @@ body{font-family:var(--font-body);color:var(--bnc-black);background:var(--g100);
 
 .formcard .emailrow{margin-bottom:var(--s3);}
 .formcard label.fl{display:block;font-family:var(--font-header);font-weight:700;font-size:.82rem;color:var(--bnc-blue-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--s2);}
-.formcard input[type=email]{width:100%;font-family:var(--font-body);font-size:1rem;padding:.7em .8em;border:1px solid var(--g300);border-radius:var(--r);background:var(--bnc-white);color:var(--bnc-black);}
-.formcard input[type=email]:focus{outline:2px solid var(--bnc-blue);outline-offset:1px;border-color:var(--bnc-blue);}
+.formcard input[type=email],.formcard input.txt{width:100%;font-family:var(--font-body);font-size:1rem;padding:.7em .8em;border:1px solid var(--g300);border-radius:var(--r);background:var(--bnc-white);color:var(--bnc-black);}
+.formcard input[type=email]:focus,.formcard input.txt:focus{outline:2px solid var(--bnc-blue);outline-offset:1px;border-color:var(--bnc-blue);}
 .optbox{margin:0 0 var(--s5);}
 .optbox .chip span{font-weight:400;font-family:var(--font-body);font-size:.86rem;border-style:dashed;}
 .optbox .chip input:checked + span{border-style:solid;}
@@ -394,7 +394,7 @@ main{max-width:1140px;margin:0 auto;padding:var(--s8) var(--s6);}
 
       <form action="https://www.berkeleynucleonics.com/api/form?form=quote" method="post" id="icx-lp-form">
         <h2>Pick your model, tell us what you need.</h2>
-        <p class="formlead">Three checkboxes and your email. That is the whole form.</p>
+        <p class="formlead">Three checkboxes, your name and your email. That is the whole form.</p>
 
         <input type="hidden" name="_subject" value="ICX-FieldHawk Demo/Quote Request (PPC landing page)">
         <input type="hidden" name="_next" id="form-next" value="">
@@ -434,7 +434,12 @@ main{max-width:1140px;margin:0 auto;padding:var(--s8) var(--s6);}
         </fieldset>
 
         <div class="emailrow">
-          <label class="fl" for="email"><span class="num">4</span>Your email</label>
+          <label class="fl" for="name"><span class="num">4</span>Your name</label>
+          <input type="text" class="txt" id="name" name="name" placeholder="First and last name" autocomplete="name" required>
+        </div>
+
+        <div class="emailrow">
+          <label class="fl" for="email"><span class="num">5</span>Your email</label>
           <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email" required>
         </div>
 

@@ -12,6 +12,7 @@ const SAMPLES = [
     form: "RMA Request form (rma.html)",
     build: () => F.ackRma({
       hello: "Hello Karen,",
+      firstName: "Karen",
       replyTo: F.ackIdentity("rma").replyTo,
       model: "SAM 950",
       serials: ["100200", "100201"],
@@ -25,11 +26,9 @@ const SAMPLES = [
     form: "Quote / Demo form (get-quote.html)",
     build: () => F.ackQuote({
       hello: "Hello Daniel,",
+      firstName: "Daniel",
       replyTo: F.ackIdentity("quote").replyTo,
       model: "Model 577 Pulse Generator",
-      quantity: "2",
-      country: "United States",
-      company: "Example National Laboratory",
     }),
     identity: F.ackIdentity("quote"),
   },
@@ -38,6 +37,7 @@ const SAMPLES = [
     form: "Contact Us form (contact.html)",
     build: () => F.ackContact({
       hello: "Hello Priya,",
+      firstName: "Priya",
       replyTo: F.ackIdentity("contact").replyTo,
       company: "Example Aerospace Systems",
       phone: "(555) 204-8817",
