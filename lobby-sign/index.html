@@ -45,7 +45,7 @@
   .p-head .c{font-family:var(--font-m);font-size:10px;color:var(--muted)}
 
   /* ---------- race strip ---------- */
-  .race{height:132px;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;padding:0}
+  .race{height:120px;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;padding:0}
   .race-side{width:236px;flex:0 0 auto;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;
     border-right:1px solid var(--panel-line);background:linear-gradient(90deg,rgba(9,15,38,.5),transparent)}
   .race-side .lab{font-family:var(--font-m);font-size:9.5px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;font-weight:700}
@@ -74,13 +74,35 @@
   .brand h2{font-size:23px;line-height:1;margin:0;font-weight:800}
   .brand h2 b{color:var(--blue);text-shadow:var(--glow-blue)}
   .hud{display:flex;align-items:center;gap:12px;font-family:var(--font-m)}
-  .wx{display:flex;gap:10px;align-items:center;padding:7px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-line)}
-  .wx .city{text-align:center}
-  .wx .city .n{font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-  .wx .city .tmp{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
-  .wx .ico{font-size:22px}
-  .season{padding:7px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-line);
-    font-size:12px;letter-spacing:.05em;display:flex;align-items:center;gap:7px}
+  /* Weather at double size, and the low/high are now the real forecast rather than
+     numbers from a hand-tuned curve. The curve still drives the "now" reading so it
+     drifts believably through the day, but it is anchored to the actual low and high. */
+  .wx{display:flex;gap:20px;align-items:center;padding:12px 20px;border-radius:14px;
+    background:var(--panel);border:1px solid var(--panel-line)}
+  .wx .city{text-align:center;min-width:92px}
+  .wx .city .n{font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .wx .city .tmp{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05}
+  .wx .city .hl{font-family:var(--font-m);font-size:11.5px;font-variant-numeric:tabular-nums;
+    margin-top:2px;letter-spacing:.02em}
+  .wx .city .hl .lo{color:#7FD4FF}
+  .wx .city .hl .hi{color:var(--amber)}
+  .wx .city .hl s{opacity:.35;text-decoration:none;margin:0 3px}
+  .wx .ico{font-size:40px;line-height:1}
+  /* Upcoming shows, beside the weather. Dates are baked daily and an event drops off
+     the board by itself the day after it ends. */
+  .events{padding:10px 16px;border-radius:14px;background:var(--panel);
+    border:1px solid var(--panel-line);min-width:352px;max-width:392px}
+  .ev-h{font-family:var(--font-m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--amber);font-weight:700;margin-bottom:7px}
+  .ev-h span{color:var(--muted);letter-spacing:.06em}
+  .ev-list{display:flex;flex-direction:column;gap:6px}
+  .ev{display:grid;grid-template-columns:74px 1fr;gap:11px;align-items:baseline}
+  .ev .d{font-family:var(--font-m);font-size:11px;font-weight:700;color:var(--signal);white-space:nowrap}
+  .ev.soon .d{color:var(--amber)}
+  .ev .nm{font-size:12.5px;color:var(--ink);font-weight:600;line-height:1.2;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ev .pl{display:block;font-size:10.5px;color:var(--muted);font-weight:400;margin-top:1px}
+  .ev-none{font-family:var(--font-m);font-size:11px;color:var(--muted)}
   .clock-box{text-align:right}
   .clock-box .k{font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
   .clock-box .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -105,8 +127,8 @@
   .cron .nx{font-family:var(--font-m);font-size:11px;color:var(--ink-dim);font-variant-numeric:tabular-nums;text-align:right}
   .cron .nx b{color:var(--signal);font-weight:700}
 
-  .console{height:252px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 12px 12px;text-align:center}
-  #robot{width:132px;height:132px;object-fit:contain;
+  .console{height:232px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 12px 12px;text-align:center}
+  #robot{width:120px;height:120px;object-fit:contain;
     filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));animation:float 4.6s ease-in-out infinite}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes cheerpop{0%{transform:translateY(0) scale(1)}35%{transform:translateY(-18px) scale(1.08)}
@@ -321,7 +343,10 @@
     </div>
     <div class="hud">
       <div class="wx" id="wx"><div class="ico" id="wxIco">☀️</div></div>
-      <div class="season" id="seasonBadge">☀️ Summer</div>
+      <div class="events" id="events">
+        <div class="ev-h">Upcoming <span id="evSeason"></span></div>
+        <div class="ev-list" id="evList"></div>
+      </div>
       <div class="clock-box"><div class="k">San Rafael · Local</div><div class="v" id="clock">--:--:--</div></div>
       <div class="live"><span class="dot"></span><span>LIVE</span></div>
     </div>
@@ -483,7 +508,6 @@
     fall:{name:"Autumn",ico:"🍂",sr:6.9,ss:18.4,hills:["#b06e2c","#caa23e"],sky:{day:[[86,140,210],[150,175,220],[210,214,232]]}}
   };
   var nowD=new Date(), season=SEASONS[seasonOf(nowD.getMonth())];
-  document.getElementById("seasonBadge").textContent=season.ico+" "+season.name;
 
   function hourNow(){var d=new Date();return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600;}
 
@@ -639,16 +663,46 @@
   tickClock(); setInterval(tickClock,1000);
 
   /* ============ WEATHER (ambient diurnal, Bay Area summer) ============ */
-  var CITIES=[{n:"San Rafael",mid:68,amp:13},{n:"San Francisco",mid:60,amp:6},{n:"Sonoma Co.",mid:70,amp:16},{n:"Fairfield",mid:77,amp:18}];
-  function tempFor(c){var h=hourNow();return Math.round(c.mid+c.amp*Math.cos((h-16)/24*2*Math.PI)+(Math.random()*1.4-0.7));}
+  /* Anchored to the real forecast: mid-point and swing come from today's actual low
+     and high, so the reading peaks mid-afternoon and bottoms before dawn like the
+     weather does, without inventing the range it moves through. */
+  function tempFor(z){
+    var mid=(z.lo+z.hi)/2, amp=(z.hi-z.lo)/2, h=hourNow();
+    return Math.round(mid+amp*Math.cos((h-16)/24*2*Math.PI));}
   function drawWx(){
     var h=hourNow(), day=h>season.sr&&h<season.ss;
     document.getElementById("wxIco").textContent=day?season.ico:"🌙";
-    var box=document.getElementById("wx"), old=box.querySelectorAll(".city"); for(var i=0;i<old.length;i++)old[i].remove();
-    CITIES.forEach(function(c){var d=document.createElement("div");d.className="city";
-      d.innerHTML='<div class="n">'+c.n+'</div><div class="tmp">'+tempFor(c)+'°</div>';box.appendChild(d);});
+    var box=document.getElementById("wx"), old=box.querySelectorAll(".city");
+    for(var i=0;i<old.length;i++)old[i].remove();
+    var zones=(WEATHERDATA&&WEATHERDATA.zones)||[];
+    if(!zones.length){
+      var e=document.createElement("div");e.className="city";
+      e.innerHTML='<div class="n">forecast</div><div class="tmp">\u2014</div>'
+        +'<div class="hl">unavailable</div>';box.appendChild(e);return;}
+    zones.forEach(function(z){var c=document.createElement("div");c.className="city";
+      c.innerHTML='<div class="n">'+z.n+'</div>'
+        +'<div class="tmp">'+tempFor(z)+'\u00b0</div>'
+        +'<div class="hl"><span class="lo">'+z.lo+'\u00b0</span><s>/</s>'
+        +'<span class="hi">'+z.hi+'\u00b0</span></div>';
+      box.appendChild(c);});
   }
-  drawWx(); setInterval(drawWx,45000);
+  setInterval(drawWx,45000);  /* first paint happens once the data blocks below exist */
+
+  /* ============ UPCOMING EVENTS ============
+     Baked daily from build_board_data.py, which drops anything already finished, so
+     the panel cannot sit showing a show that has been and gone. */
+  function renderEvents(){
+    var host=document.getElementById("evList"); if(!host)return;
+    var list=EVENTSDATA||[];
+    if(!list.length){host.innerHTML='<div class="ev-none">nothing scheduled</div>';return;}
+    host.innerHTML=list.slice(0,3).map(function(ev){
+      return '<div class="ev'+(ev.soon?' soon':'')+'">'
+        +'<span class="d">'+ev.when+'</span>'
+        +'<span class="nm">'+ev.name+'<span class="pl">'+ev.place+'</span></span></div>';
+    }).join("");
+    var s=document.getElementById("evSeason");
+    if(s)s.textContent=list.length>3?("\u00b7 "+list.length+" total"):"";
+  }
 
   /* ============ MONTHLY RACE ============ */
   var RACE_THEMES=[
@@ -667,14 +721,20 @@
   /* END SALES DATA */
   /* Live figures baked daily by build_board_data.py. Do not hand-edit between markers. */
   /* BEGIN EMAIL */
-  var EMAILDATA={"day": "2026-09-04", "dayLabel": "Friday September 4", "sent": 1314, "delivered": 1406, "opens": 562, "bounced": 30, "clicks": null, "openRate": 40, "topSenders": [["Jessica Gonzalez", 286], ["David Gil", 234], ["Amira Sekkouty", 231], ["Luis Valadez", 230], ["Gisell Urena", 218], ["David Brown", 32]]};
+  var EMAILDATA={"day": "2026-09-05", "dayLabel": "Saturday September 5", "sent": 0, "delivered": 0, "opens": 25, "bounced": 0, "clicks": null, "openRate": null, "topSenders": []};
   /* END EMAIL */
   /* BEGIN REPLIESBY */
   var REPLIESBY={"asOf": "2026-09-03", "dayLabel": "Thursday", "total": 137, "people": [{"n": "Gisell Urena", "v": 34}, {"n": "Alec Bakhshandeh", "v": 22}, {"n": "David Gil", "v": 17}, {"n": "Jassie Singh", "v": 17}, {"n": "Jessica Gonzalez", "v": 13}, {"n": "Amira Sekkouty", "v": 10}, {"n": "David Brown", "v": 5}, {"n": "Mark Slattery", "v": 5}, {"n": "Meraly Rodas", "v": 4}, {"n": "John Reynolds", "v": 4}], "allTimeTotal": 1433};
   /* END REPLIESBY */
   /* BEGIN ACTIVITY */
-  var ACTIVITYDATA=[{"e": "📨", "t": "3 opened", "tm": "22:00", "d": "2026-09-04"}, {"e": "📨", "t": "4 opened", "tm": "21:00", "d": "2026-09-04"}, {"e": "📨", "t": "2 opened", "tm": "20:00", "d": "2026-09-04"}, {"e": "📨", "t": "1 opened", "tm": "18:00", "d": "2026-09-04"}, {"e": "📨", "t": "1 opened", "tm": "17:00", "d": "2026-09-04"}, {"e": "📨", "t": "2 opened", "tm": "16:00", "d": "2026-09-04"}, {"e": "📨", "t": "7 opened", "tm": "15:00", "d": "2026-09-04"}, {"e": "📨", "t": "7 opened", "tm": "14:00", "d": "2026-09-04"}, {"e": "📨", "t": "29 opened", "tm": "13:00", "d": "2026-09-04"}, {"e": "📨", "t": "7 opened", "tm": "12:00", "d": "2026-09-04"}, {"e": "📨", "t": "20 opened", "tm": "11:00", "d": "2026-09-04"}, {"e": "📨", "t": "16 opened", "tm": "10:00", "d": "2026-09-04"}, {"e": "📨", "t": "119 opened", "tm": "09:00", "d": "2026-09-04"}, {"e": "📨", "t": "33 sent, 213 opened", "tm": "08:00", "d": "2026-09-04"}];
+  var ACTIVITYDATA=[{"e": "📨", "t": "1 opened", "tm": "23:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "19:00", "d": "2026-09-05"}, {"e": "📨", "t": "3 opened", "tm": "16:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "15:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "14:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "13:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "11:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "09:00", "d": "2026-09-05"}, {"e": "📨", "t": "4 opened", "tm": "08:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "07:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "05:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "04:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "02:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "01:00", "d": "2026-09-05"}];
   /* END ACTIVITY */
+  /* BEGIN WEATHER */
+  var WEATHERDATA={"asOf": "2026-09-06", "zones": [{"n": "San Rafael", "lo": 51, "hi": 77}, {"n": "San Francisco", "lo": 56, "hi": 69}, {"n": "Sonoma Co.", "lo": 47, "hi": 82}, {"n": "Fairfield", "lo": 54, "hi": 80}]};
+  /* END WEATHER */
+  /* BEGIN EVENTS */
+  var EVENTSDATA=[{"when": "Sep 8–11", "name": "The Continuing Challenge", "place": "37th Hazmat Workshop · Sacramento, CA", "start": "2026-09-08", "end": "2026-09-11", "days": 2, "soon": true}, {"when": "Sep 21–24", "name": "GNU Radio Conference", "place": "GRCon26 · NC State, Raleigh, NC", "start": "2026-09-21", "end": "2026-09-24", "days": 15, "soon": true}, {"when": "Dec 8–10", "name": "AOC Symposium", "place": "63rd Annual · National Harbor, MD", "start": "2026-12-08", "end": "2026-12-10", "days": 93, "soon": false}];
+  /* END EVENTS */
   var PRODUCTS=SALESDATA.horses;
   var rmonth=Math.max(0,parseInt((SALESDATA.month||"-01").split("-")[1],10)-1), rtheme=RACE_THEMES[rmonth];
   document.getElementById("raceMonth").textContent="🏁 "+SALESDATA.monthName+" · month to date";
@@ -754,6 +814,8 @@
   })();
   function updateBriefing(){}
   paintNumbers();
+  drawWx();
+  renderEvents();
 
   /* ============ NEWS (Bay positive + mixed World; original blurbs, ambient) ============ */
   /* ---- ANNOUNCEMENTS — EDIT THESE. They ride in the local column in amber.
@@ -845,13 +907,13 @@
   /* END CALSTATS DATA */
   /* BEGIN BENCH DATA */
   var BENCH=[
-    {"rma": "12415", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2241021", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 2},
-    {"rma": "12414", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2241019", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 2},
-    {"rma": "12413", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2241017", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 2},
-    {"rma": "12412", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2240159", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 2},
-    {"rma": "12411", "cust": "Blue Origin", "model": "507-2C", "sn": "37305", "svc": "As Found Measurement Data As Left Measurement Data…", "state": "received, awaiting triage", "din": "2026-09-01", "age": 4},
-    {"rma": "12410", "cust": "Blue Origin", "model": "507-2C", "sn": "37765", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-01", "age": 4},
-    {"rma": "12409", "cust": "TRESCAL", "model": "507-4C", "sn": "37305", "svc": "The calibration must include: As Found Measurement…", "state": "received, awaiting triage", "din": "2026-08-31", "age": 5}
+    {"rma": "12415", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2241021", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 3},
+    {"rma": "12414", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2241019", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 3},
+    {"rma": "12413", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2241017", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 3},
+    {"rma": "12412", "cust": "San Diego Fire Rescue Department", "model": "1703GNA - II MBT", "sn": "2240159", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-03", "age": 3},
+    {"rma": "12411", "cust": "Blue Origin", "model": "507-2C", "sn": "37305", "svc": "As Found Measurement Data As Left Measurement Data…", "state": "received, awaiting triage", "din": "2026-09-01", "age": 5},
+    {"rma": "12410", "cust": "Blue Origin", "model": "507-2C", "sn": "37765", "svc": "REPAIR and CALIBRATION", "state": "received, awaiting triage", "din": "2026-09-01", "age": 5},
+    {"rma": "12409", "cust": "TRESCAL", "model": "507-4C", "sn": "37305", "svc": "The calibration must include: As Found Measurement…", "state": "received, awaiting triage", "din": "2026-08-31", "age": 6}
   ];
   /* END BENCH DATA */
   /* BENCH now holds the seven most recently received units still in the shop,
@@ -877,142 +939,142 @@
      Full model and serial are shown by David's call (2026-07-31). */
   /* BEGIN PASTDUE DATA */
   var PASTDUE=[
-    {"rma": "10889", "cust": "Ohio Department of Health", "model": "SAM 940-2GN", "sn": "41070", "late": 1086},
-    {"rma": "11478", "cust": "Colorado Springs Fire Department", "model": "SAM940+G", "sn": "940011", "late": 674},
-    {"rma": "11614", "cust": "Microwave Dynamics LLC", "model": "7300", "sn": "523-035314800-0215", "late": 577},
-    {"rma": "11615", "cust": "WM Phoenix Resources Landfill", "model": "SAM-940", "sn": "41510", "late": 576},
-    {"rma": "11619", "cust": "TEKTRONIX, INC", "model": "7300", "sn": "523-036315910-0247", "late": 564},
-    {"rma": "11653", "cust": "Corwin Health Physics", "model": "DSM-500", "sn": "D500202", "late": 544},
-    {"rma": "11668", "cust": "Loryon", "model": "SAM 940plus GN", "sn": "940064", "late": 534},
-    {"rma": "11667", "cust": "Loryon", "model": "SAM 940plus GN", "sn": "940063", "late": 534},
-    {"rma": "11683", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "41567", "late": 523},
-    {"rma": "11682", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "40681", "late": 523},
-    {"rma": "11681", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "40257", "late": 523},
-    {"rma": "11688", "cust": "Dubai Police", "model": "SAM940", "sn": "41130", "late": 514},
-    {"rma": "11687", "cust": "Dubai Police", "model": "SAM940", "sn": "41129", "late": 514},
-    {"rma": "11698", "cust": "Keysight Technologies, Inc.", "model": "845", "sn": "421-33A6D170A-2071", "late": 508},
-    {"rma": "11697", "cust": "Keysight Technologies, Inc.", "model": "845", "sn": "421-33A6D170A-1937", "late": 508},
-    {"rma": "11699", "cust": "Raytheon", "model": "825-M-20-1", "sn": "D15-0N2000002-0300", "late": 507},
-    {"rma": "11715", "cust": "US Air Force 354 MDG", "model": "SAM 940", "sn": "41110", "late": 492},
-    {"rma": "11760", "cust": "Redding Fire", "model": "PM1703M01-1BT", "sn": "hh24g7-gn", "late": 478},
-    {"rma": "11766", "cust": "WVDEP", "model": "940-2GH", "sn": "40507/42187", "late": 473},
-    {"rma": "11774", "cust": "Spektrum Merestechnika Kft.", "model": "SAM 940", "sn": "40138/48102", "late": 470},
-    {"rma": "11777", "cust": "PseudolithIC, Inc", "model": "865-40", "sn": "4F1-3B4D00011-1538", "late": 465},
-    {"rma": "11805", "cust": "SI Scientific Instruments GmbH", "model": "PVX-4110", "sn": "106-787", "late": 443},
-    {"rma": "11804", "cust": "SI Scientific Instruments GmbH", "model": "PVX-4110", "sn": "9949009", "late": 443},
-    {"rma": "11815", "cust": "Indian Institute of Space Science and Techn…", "model": "577-8C", "sn": "36260", "late": 431},
-    {"rma": "11821", "cust": "Tektronix", "model": "765HV", "sn": "BNPR151003", "late": 428},
-    {"rma": "11827", "cust": "Lockheed Martin", "model": "106H21", "sn": "32021", "late": 423},
-    {"rma": "11826", "cust": "(customer not set)", "model": "907", "sn": "25627", "late": 423},
-    {"rma": "11852", "cust": "Tokyo metropolitan islands area", "model": "940", "sn": "40665", "late": 408},
-    {"rma": "11859", "cust": "Lawrence Livermore National Laboratory", "model": "745T-20", "sn": "54124", "late": 397},
-    {"rma": "11857", "cust": "MT View Reclamation - Waste Management", "model": "SAM940-2G", "sn": "41354/46675", "late": 388},
-    {"rma": "11879", "cust": "Canadian Nuclear Laboratories", "model": "SAM 950", "sn": "950174", "late": 381},
-    {"rma": "11902", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX3", "late": 367},
-    {"rma": "11901", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX2", "late": 367},
-    {"rma": "11900", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX1", "late": 367},
-    {"rma": "11899", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "HH2AEA-GN", "late": 367},
-    {"rma": "11927", "cust": "Thomas Gray & Associates, Inc", "model": "940-2L", "sn": "41590/39101", "late": 361},
-    {"rma": "11936", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "36261", "late": 359},
-    {"rma": "11935", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35856", "late": 359},
-    {"rma": "11934", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35704", "late": 359},
-    {"rma": "11933", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35703", "late": 359},
-    {"rma": "11966", "cust": "Citrus County Fire Rescue", "model": "SAM 940", "sn": "41317/46664", "late": 333},
-    {"rma": "11965", "cust": "Shanghai Hapstar M&E equipment Co.,Ltd.", "model": "SAM940+", "sn": "HH3AA02-G", "late": 333},
-    {"rma": "11963", "cust": "Brl Test Inc", "model": "PVX-4140", "sn": "03-0426", "late": 333},
-    {"rma": "11968", "cust": "Tata Institute of Fundamental Research", "model": "575-4C", "sn": "31501", "late": 327},
-    {"rma": "11986", "cust": "Fresno Fire", "model": "SAM 940-2-GN", "sn": "40162/46116", "late": 320},
-    {"rma": "11985", "cust": "Fresno Fire", "model": "SAM 940-2-GN", "sn": "40236/46105", "late": 320},
-    {"rma": "12030", "cust": "Harris County Sheriffs Office", "model": "950-GN", "sn": "950019", "late": 291},
-    {"rma": "12029", "cust": "Harris County Sheriffs Office", "model": "950-GN", "sn": "950015", "late": 291},
-    {"rma": "12048", "cust": "Hanford Mission Integration Solutions", "model": "SAM940-XX", "sn": "40307/xxxxx", "late": 278},
-    {"rma": "12050", "cust": "University of Bristol", "model": "SAM940-XX", "sn": "41336/XXXX", "late": 277},
-    {"rma": "12055", "cust": "QORVO Inc.", "model": "RFS1220", "sn": "03719", "late": 264},
-    {"rma": "12063", "cust": "Department of Science and Technology - Phil…", "model": "SAM 940", "sn": "41602", "late": 250},
-    {"rma": "12066", "cust": "Argonne National Laboratory", "model": "76B102/3.5M-CEBR-X-NEG", "sn": "S3AA1849", "late": 248},
-    {"rma": "12076", "cust": "Laboratoire Hubert Curien, UMR CNRS 5516", "model": "577-4C", "sn": "36448", "late": 235},
-    {"rma": "12077", "cust": "Fermionics Opto-Technology", "model": "130FC", "sn": "21543", "late": 229},
-    {"rma": "12088", "cust": "ETH Zurich", "model": "577-8C", "sn": "36207", "late": 213},
-    {"rma": "12099", "cust": "Ohio Department of Natural Resources", "model": "SAM RD120", "sn": "BPADD9-GN", "late": 208},
-    {"rma": "12083", "cust": "Denver Office of Emergency Management", "model": "SAM950", "sn": "950137", "late": 205},
-    {"rma": "12107", "cust": "Technology Service Corp", "model": "845-12", "sn": "471-33A6D0700-1621", "late": 199},
-    {"rma": "12106", "cust": "Garber Metrology", "model": "845-26", "sn": "481-43A6D0000-1359", "late": 199},
-    {"rma": "12111", "cust": "Alltest Equipment Ltd", "model": "BNC555", "sn": "25187", "late": 198},
-    {"rma": "12110", "cust": "Alltest Equipment Ltd", "model": "BNC745", "sn": "53918", "late": 198},
-    {"rma": "12123", "cust": "University of Maryland, College Park", "model": "RFS-1420", "sn": "3711", "late": 183},
-    {"rma": "12115", "cust": "RA Wood & Associates", "model": "855-20-4", "sn": "6C5-0B2D40017-0488", "late": 179},
-    {"rma": "12136", "cust": "Southwest Research Institute", "model": "555-4C-G-H", "sn": "25570", "late": 172},
-    {"rma": "12148", "cust": "Hoizy Tech Limited", "model": "PVX-4140", "sn": "4141-200088", "late": 163},
-    {"rma": "12144", "cust": "Microchip Technologies Inc.", "model": "PVM-1001-P", "sn": "1001-200103", "late": 163},
-    {"rma": "12170", "cust": "Giga-tronics, Inc.", "model": "7300", "sn": "523-039316C10-0320", "late": 149},
-    {"rma": "12178", "cust": "Micro Precision Calibration", "model": "907", "sn": "NA", "late": 145},
-    {"rma": "12181", "cust": "Ohio Department of Health", "model": "SAM 940Plus", "sn": "940059", "late": 144},
-    {"rma": "12180", "cust": "Ohio Department of Health", "model": "SAM 940Plus", "sn": "940056", "late": 144},
-    {"rma": "12103", "cust": "Georgia Institute of Technology", "model": "670C", "sn": "T0302I22352301", "late": 141},
-    {"rma": "12190", "cust": "Space Sciences Laboratory at University of…", "model": "V38B76/SIP-E3-X2", "sn": "S2AD3833", "late": 138},
-    {"rma": "12200", "cust": "Nucleonix systems private limited", "model": "PB-5", "sn": "28508", "late": 124},
-    {"rma": "12204", "cust": "NASA", "model": "685", "sn": "T0302122102701", "late": 120},
-    {"rma": "12224", "cust": "Bridgeport Fire Department", "model": "951", "sn": "800908", "late": 108},
-    {"rma": "12227", "cust": "Lockheed Martin", "model": "6040", "sn": "16243", "late": 103},
-    {"rma": "12226", "cust": "Lockheed Martin", "model": "6040", "sn": "33423", "late": 103},
-    {"rma": "12236", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3B4C00003-1718", "late": 95},
-    {"rma": "12235", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3C5G00003-2773", "late": 95},
-    {"rma": "12234", "cust": "ManTech International Corp.", "model": "865-26", "sn": "1145", "late": 95},
-    {"rma": "12233", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3A3B00903-1326", "late": 95},
-    {"rma": "12248", "cust": "Cal OES", "model": "SAM 950 GN", "sn": "950076", "late": 92},
-    {"rma": "12247", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201915", "late": 92},
-    {"rma": "12246", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201888", "late": 92},
-    {"rma": "12245", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201467", "late": 92},
-    {"rma": "12244", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201927", "late": 92},
-    {"rma": "12243", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201466", "late": 92},
-    {"rma": "12242", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201954", "late": 92},
-    {"rma": "12241", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201894", "late": 92},
-    {"rma": "12251", "cust": "General Fusion", "model": "V150A/5M-EJ301-X-NEG", "sn": "S2AA5962", "late": 89},
-    {"rma": "12250", "cust": "General Fusion", "model": "V150A150/5M-EJ309-X-NEG", "sn": "S2AA5182", "late": 89},
-    {"rma": "12253", "cust": "EMAG Technologies", "model": "845-26", "sn": "482-00385A0600-0511", "late": 87},
-    {"rma": "12255", "cust": "ucla physics and astronomy", "model": "555-8C", "sn": "27376", "late": 82},
-    {"rma": "12240", "cust": "L3Harris", "model": "866-M-40", "sn": "DB0-011000000-0121", "late": 80},
-    {"rma": "12257", "cust": "Sage Instruments", "model": "845", "sn": "471-4396D1702-1178", "late": 74},
-    {"rma": "12263", "cust": "John Hopkins Applied Physics lab", "model": "845-LO", "sn": "421-33B6D170A-2715", "late": 73},
-    {"rma": "12268", "cust": "Ccmed", "model": "SAM940", "sn": "940050", "late": 67},
-    {"rma": "12259", "cust": "Ccmed", "model": "SAM940", "sn": "940032", "late": 67},
-    {"rma": "12213", "cust": "Nisko Technologies", "model": "745T-8C", "sn": "54140", "late": 66},
-    {"rma": "12270", "cust": "USAF AFMEDCOM, CSDC Charleston", "model": "SAM940-2GN", "sn": "41558", "late": 65},
-    {"rma": "12261", "cust": "MINISTRY OF INTERIOR", "model": "950", "sn": "950152", "late": 64},
-    {"rma": "12275", "cust": "GANIL", "model": "575-8C-E", "sn": "31706", "late": 59},
-    {"rma": "12272", "cust": "Alltest Insturments", "model": "7000", "sn": "523-035314800-0216", "late": 53},
-    {"rma": "12284", "cust": "Boeing", "model": "577", "sn": "37851", "late": 50},
-    {"rma": "12287", "cust": "JF Taylor, Inc.", "model": "670C-4C-256M", "sn": "T0302I25202301", "late": 44},
-    {"rma": "12286", "cust": "Cornell University", "model": "PVM-4210", "sn": "101-028", "late": 44},
-    {"rma": "12290", "cust": "Universidad de Concepción", "model": "PVM-1001-P", "sn": "1001-200125", "late": 43},
-    {"rma": "12289", "cust": "Waste Managment", "model": "SAM940", "sn": "46898", "late": 43},
-    {"rma": "12288", "cust": "Acquitek", "model": "577-8C", "sn": "37187", "late": 43},
-    {"rma": "12300", "cust": "Lockheed Martin Co", "model": "106C", "sn": "32756", "late": 33},
-    {"rma": "12299", "cust": "Universidad Nacional de Colombia", "model": "51B51/SIP-E3-BGO-X2", "sn": "S3AB2062", "late": 33},
-    {"rma": "12308", "cust": "Lockheed Martin", "model": "6040", "sn": "33273", "late": 31},
-    {"rma": "12307", "cust": "Lockheed Martin", "model": "6040", "sn": "20285", "late": 31},
-    {"rma": "12305", "cust": "Ccmed", "model": "SAM940", "sn": "940048", "late": 31},
-    {"rma": "12304", "cust": "Ccmed", "model": "SAM940", "sn": "940033", "late": 31},
-    {"rma": "12309", "cust": "27th Special Operations Medgroup", "model": "940-2-GN", "sn": "41280", "late": 30},
-    {"rma": "12295", "cust": "NIWC Pacific", "model": "V23B75/SIP-CN-X2", "sn": "S1AB8062", "late": 29},
-    {"rma": "12249", "cust": "Colorado School of Mines", "model": "865", "sn": "4F1-3B4E00A10-1583", "late": 26},
-    {"rma": "12322", "cust": "Semtech", "model": "865", "sn": "4F1-3C5H00010-2844", "late": 24},
-    {"rma": "12319", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A 100000-1100", "late": 22},
-    {"rma": "11787", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A100000-1045", "late": 22},
-    {"rma": "11786", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A100000-1099", "late": 22},
-    {"rma": "12298", "cust": "Leasametric", "model": "575", "sn": "31355", "late": 19},
-    {"rma": "12335", "cust": "SCD-USA Infrared LLC", "model": "158H-F", "sn": "29850", "late": 18},
-    {"rma": "12306", "cust": "SCD-USA Infrared LLC", "model": "6040", "sn": "33450", "late": 18},
-    {"rma": "12293", "cust": "Defense Research Development Canada", "model": "577-4C-AT45-AT45-IA15-S…", "sn": "39556", "late": 18},
-    {"rma": "12337", "cust": "Essco Calibration LLC", "model": "865-40", "sn": "4F13A0000F1129", "late": 17},
-    {"rma": "12320", "cust": "Starbucks Manufacturing", "model": "907", "sn": "61481", "late": 15},
-    {"rma": "12347", "cust": "QinetiQ", "model": "577", "sn": "39539", "late": 9},
-    {"rma": "12350", "cust": "General Bussan Co., Ltd", "model": "PVM-4210-SII", "sn": "107-865", "late": 8},
-    {"rma": "12334", "cust": "Opton Laser International", "model": "577", "sn": "39589", "late": 8},
-    {"rma": "12354", "cust": "Lockheed Martin", "model": "155H", "sn": "28298", "late": 5},
-    {"rma": "12353", "cust": "Lockheed Martin", "model": "155", "sn": "27531", "late": 5},
-    {"rma": "12343", "cust": "Simco Electronics", "model": "575-8C-H-E", "sn": "31558", "late": 3},
-    {"rma": "12357", "cust": "BAE Systems Inc.", "model": "805-SG-1", "sn": "DDA-012000000-0366", "late": 1}
+    {"rma": "10889", "cust": "Ohio Department of Health", "model": "SAM 940-2GN", "sn": "41070", "late": 1087},
+    {"rma": "11478", "cust": "Colorado Springs Fire Department", "model": "SAM940+G", "sn": "940011", "late": 675},
+    {"rma": "11614", "cust": "Microwave Dynamics LLC", "model": "7300", "sn": "523-035314800-0215", "late": 578},
+    {"rma": "11615", "cust": "WM Phoenix Resources Landfill", "model": "SAM-940", "sn": "41510", "late": 577},
+    {"rma": "11619", "cust": "TEKTRONIX, INC", "model": "7300", "sn": "523-036315910-0247", "late": 565},
+    {"rma": "11653", "cust": "Corwin Health Physics", "model": "DSM-500", "sn": "D500202", "late": 545},
+    {"rma": "11668", "cust": "Loryon", "model": "SAM 940plus GN", "sn": "940064", "late": 535},
+    {"rma": "11667", "cust": "Loryon", "model": "SAM 940plus GN", "sn": "940063", "late": 535},
+    {"rma": "11683", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "41567", "late": 524},
+    {"rma": "11682", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "40681", "late": 524},
+    {"rma": "11681", "cust": "Lawrence Livermore National Laboratory", "model": "SAM 940", "sn": "40257", "late": 524},
+    {"rma": "11688", "cust": "Dubai Police", "model": "SAM940", "sn": "41130", "late": 515},
+    {"rma": "11687", "cust": "Dubai Police", "model": "SAM940", "sn": "41129", "late": 515},
+    {"rma": "11698", "cust": "Keysight Technologies, Inc.", "model": "845", "sn": "421-33A6D170A-2071", "late": 509},
+    {"rma": "11697", "cust": "Keysight Technologies, Inc.", "model": "845", "sn": "421-33A6D170A-1937", "late": 509},
+    {"rma": "11699", "cust": "Raytheon", "model": "825-M-20-1", "sn": "D15-0N2000002-0300", "late": 508},
+    {"rma": "11715", "cust": "US Air Force 354 MDG", "model": "SAM 940", "sn": "41110", "late": 493},
+    {"rma": "11760", "cust": "Redding Fire", "model": "PM1703M01-1BT", "sn": "hh24g7-gn", "late": 479},
+    {"rma": "11766", "cust": "WVDEP", "model": "940-2GH", "sn": "40507/42187", "late": 474},
+    {"rma": "11774", "cust": "Spektrum Merestechnika Kft.", "model": "SAM 940", "sn": "40138/48102", "late": 471},
+    {"rma": "11777", "cust": "PseudolithIC, Inc", "model": "865-40", "sn": "4F1-3B4D00011-1538", "late": 466},
+    {"rma": "11805", "cust": "SI Scientific Instruments GmbH", "model": "PVX-4110", "sn": "106-787", "late": 444},
+    {"rma": "11804", "cust": "SI Scientific Instruments GmbH", "model": "PVX-4110", "sn": "9949009", "late": 444},
+    {"rma": "11815", "cust": "Indian Institute of Space Science and Techn…", "model": "577-8C", "sn": "36260", "late": 432},
+    {"rma": "11821", "cust": "Tektronix", "model": "765HV", "sn": "BNPR151003", "late": 429},
+    {"rma": "11827", "cust": "Lockheed Martin", "model": "106H21", "sn": "32021", "late": 424},
+    {"rma": "11826", "cust": "(customer not set)", "model": "907", "sn": "25627", "late": 424},
+    {"rma": "11852", "cust": "Tokyo metropolitan islands area", "model": "940", "sn": "40665", "late": 409},
+    {"rma": "11859", "cust": "Lawrence Livermore National Laboratory", "model": "745T-20", "sn": "54124", "late": 398},
+    {"rma": "11857", "cust": "MT View Reclamation - Waste Management", "model": "SAM940-2G", "sn": "41354/46675", "late": 389},
+    {"rma": "11879", "cust": "Canadian Nuclear Laboratories", "model": "SAM 950", "sn": "950174", "late": 382},
+    {"rma": "11902", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX3", "late": 368},
+    {"rma": "11901", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX2", "late": 368},
+    {"rma": "11900", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "XXXX1", "late": 368},
+    {"rma": "11899", "cust": "LA County Fire Dept", "model": "SAM950-GN", "sn": "HH2AEA-GN", "late": 368},
+    {"rma": "11927", "cust": "Thomas Gray & Associates, Inc", "model": "940-2L", "sn": "41590/39101", "late": 362},
+    {"rma": "11936", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "36261", "late": 360},
+    {"rma": "11935", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35856", "late": 360},
+    {"rma": "11934", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35704", "late": 360},
+    {"rma": "11933", "cust": "BHARAT ELECTRONICS LTD", "model": "575-2C", "sn": "35703", "late": 360},
+    {"rma": "11966", "cust": "Citrus County Fire Rescue", "model": "SAM 940", "sn": "41317/46664", "late": 334},
+    {"rma": "11965", "cust": "Shanghai Hapstar M&E equipment Co.,Ltd.", "model": "SAM940+", "sn": "HH3AA02-G", "late": 334},
+    {"rma": "11963", "cust": "Brl Test Inc", "model": "PVX-4140", "sn": "03-0426", "late": 334},
+    {"rma": "11968", "cust": "Tata Institute of Fundamental Research", "model": "575-4C", "sn": "31501", "late": 328},
+    {"rma": "11986", "cust": "Fresno Fire", "model": "SAM 940-2-GN", "sn": "40162/46116", "late": 321},
+    {"rma": "11985", "cust": "Fresno Fire", "model": "SAM 940-2-GN", "sn": "40236/46105", "late": 321},
+    {"rma": "12030", "cust": "Harris County Sheriffs Office", "model": "950-GN", "sn": "950019", "late": 292},
+    {"rma": "12029", "cust": "Harris County Sheriffs Office", "model": "950-GN", "sn": "950015", "late": 292},
+    {"rma": "12048", "cust": "Hanford Mission Integration Solutions", "model": "SAM940-XX", "sn": "40307/xxxxx", "late": 279},
+    {"rma": "12050", "cust": "University of Bristol", "model": "SAM940-XX", "sn": "41336/XXXX", "late": 278},
+    {"rma": "12055", "cust": "QORVO Inc.", "model": "RFS1220", "sn": "03719", "late": 265},
+    {"rma": "12063", "cust": "Department of Science and Technology - Phil…", "model": "SAM 940", "sn": "41602", "late": 251},
+    {"rma": "12066", "cust": "Argonne National Laboratory", "model": "76B102/3.5M-CEBR-X-NEG", "sn": "S3AA1849", "late": 249},
+    {"rma": "12076", "cust": "Laboratoire Hubert Curien, UMR CNRS 5516", "model": "577-4C", "sn": "36448", "late": 236},
+    {"rma": "12077", "cust": "Fermionics Opto-Technology", "model": "130FC", "sn": "21543", "late": 230},
+    {"rma": "12088", "cust": "ETH Zurich", "model": "577-8C", "sn": "36207", "late": 214},
+    {"rma": "12099", "cust": "Ohio Department of Natural Resources", "model": "SAM RD120", "sn": "BPADD9-GN", "late": 209},
+    {"rma": "12083", "cust": "Denver Office of Emergency Management", "model": "SAM950", "sn": "950137", "late": 206},
+    {"rma": "12107", "cust": "Technology Service Corp", "model": "845-12", "sn": "471-33A6D0700-1621", "late": 200},
+    {"rma": "12106", "cust": "Garber Metrology", "model": "845-26", "sn": "481-43A6D0000-1359", "late": 200},
+    {"rma": "12111", "cust": "Alltest Equipment Ltd", "model": "BNC555", "sn": "25187", "late": 199},
+    {"rma": "12110", "cust": "Alltest Equipment Ltd", "model": "BNC745", "sn": "53918", "late": 199},
+    {"rma": "12123", "cust": "University of Maryland, College Park", "model": "RFS-1420", "sn": "3711", "late": 184},
+    {"rma": "12115", "cust": "RA Wood & Associates", "model": "855-20-4", "sn": "6C5-0B2D40017-0488", "late": 180},
+    {"rma": "12136", "cust": "Southwest Research Institute", "model": "555-4C-G-H", "sn": "25570", "late": 173},
+    {"rma": "12148", "cust": "Hoizy Tech Limited", "model": "PVX-4140", "sn": "4141-200088", "late": 164},
+    {"rma": "12144", "cust": "Microchip Technologies Inc.", "model": "PVM-1001-P", "sn": "1001-200103", "late": 164},
+    {"rma": "12170", "cust": "Giga-tronics, Inc.", "model": "7300", "sn": "523-039316C10-0320", "late": 150},
+    {"rma": "12178", "cust": "Micro Precision Calibration", "model": "907", "sn": "NA", "late": 146},
+    {"rma": "12181", "cust": "Ohio Department of Health", "model": "SAM 940Plus", "sn": "940059", "late": 145},
+    {"rma": "12180", "cust": "Ohio Department of Health", "model": "SAM 940Plus", "sn": "940056", "late": 145},
+    {"rma": "12103", "cust": "Georgia Institute of Technology", "model": "670C", "sn": "T0302I22352301", "late": 142},
+    {"rma": "12190", "cust": "Space Sciences Laboratory at University of…", "model": "V38B76/SIP-E3-X2", "sn": "S2AD3833", "late": 139},
+    {"rma": "12200", "cust": "Nucleonix systems private limited", "model": "PB-5", "sn": "28508", "late": 125},
+    {"rma": "12204", "cust": "NASA", "model": "685", "sn": "T0302122102701", "late": 121},
+    {"rma": "12224", "cust": "Bridgeport Fire Department", "model": "951", "sn": "800908", "late": 109},
+    {"rma": "12227", "cust": "Lockheed Martin", "model": "6040", "sn": "16243", "late": 104},
+    {"rma": "12226", "cust": "Lockheed Martin", "model": "6040", "sn": "33423", "late": 104},
+    {"rma": "12236", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3B4C00003-1718", "late": 96},
+    {"rma": "12235", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3C5G00003-2773", "late": 96},
+    {"rma": "12234", "cust": "ManTech International Corp.", "model": "865-26", "sn": "1145", "late": 96},
+    {"rma": "12233", "cust": "ManTech International Corp.", "model": "865-26", "sn": "4D1-3A3B00903-1326", "late": 96},
+    {"rma": "12248", "cust": "Cal OES", "model": "SAM 950 GN", "sn": "950076", "late": 93},
+    {"rma": "12247", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201915", "late": 93},
+    {"rma": "12246", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201888", "late": 93},
+    {"rma": "12245", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201467", "late": 93},
+    {"rma": "12244", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201927", "late": 93},
+    {"rma": "12243", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201466", "late": 93},
+    {"rma": "12242", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201954", "late": 93},
+    {"rma": "12241", "cust": "Cal OES", "model": "PM1703M01-1BT", "sn": "2201894", "late": 93},
+    {"rma": "12251", "cust": "General Fusion", "model": "V150A/5M-EJ301-X-NEG", "sn": "S2AA5962", "late": 90},
+    {"rma": "12250", "cust": "General Fusion", "model": "V150A150/5M-EJ309-X-NEG", "sn": "S2AA5182", "late": 90},
+    {"rma": "12253", "cust": "EMAG Technologies", "model": "845-26", "sn": "482-00385A0600-0511", "late": 88},
+    {"rma": "12255", "cust": "ucla physics and astronomy", "model": "555-8C", "sn": "27376", "late": 83},
+    {"rma": "12240", "cust": "L3Harris", "model": "866-M-40", "sn": "DB0-011000000-0121", "late": 81},
+    {"rma": "12257", "cust": "Sage Instruments", "model": "845", "sn": "471-4396D1702-1178", "late": 75},
+    {"rma": "12263", "cust": "John Hopkins Applied Physics lab", "model": "845-LO", "sn": "421-33B6D170A-2715", "late": 74},
+    {"rma": "12268", "cust": "Ccmed", "model": "SAM940", "sn": "940050", "late": 68},
+    {"rma": "12259", "cust": "Ccmed", "model": "SAM940", "sn": "940032", "late": 68},
+    {"rma": "12213", "cust": "Nisko Technologies", "model": "745T-8C", "sn": "54140", "late": 67},
+    {"rma": "12270", "cust": "USAF AFMEDCOM, CSDC Charleston", "model": "SAM940-2GN", "sn": "41558", "late": 66},
+    {"rma": "12261", "cust": "MINISTRY OF INTERIOR", "model": "950", "sn": "950152", "late": 65},
+    {"rma": "12275", "cust": "GANIL", "model": "575-8C-E", "sn": "31706", "late": 60},
+    {"rma": "12272", "cust": "Alltest Insturments", "model": "7000", "sn": "523-035314800-0216", "late": 54},
+    {"rma": "12284", "cust": "Boeing", "model": "577", "sn": "37851", "late": 51},
+    {"rma": "12287", "cust": "JF Taylor, Inc.", "model": "670C-4C-256M", "sn": "T0302I25202301", "late": 45},
+    {"rma": "12286", "cust": "Cornell University", "model": "PVM-4210", "sn": "101-028", "late": 45},
+    {"rma": "12290", "cust": "Universidad de Concepción", "model": "PVM-1001-P", "sn": "1001-200125", "late": 44},
+    {"rma": "12289", "cust": "Waste Managment", "model": "SAM940", "sn": "46898", "late": 44},
+    {"rma": "12288", "cust": "Acquitek", "model": "577-8C", "sn": "37187", "late": 44},
+    {"rma": "12300", "cust": "Lockheed Martin Co", "model": "106C", "sn": "32756", "late": 34},
+    {"rma": "12299", "cust": "Universidad Nacional de Colombia", "model": "51B51/SIP-E3-BGO-X2", "sn": "S3AB2062", "late": 34},
+    {"rma": "12308", "cust": "Lockheed Martin", "model": "6040", "sn": "33273", "late": 32},
+    {"rma": "12307", "cust": "Lockheed Martin", "model": "6040", "sn": "20285", "late": 32},
+    {"rma": "12305", "cust": "Ccmed", "model": "SAM940", "sn": "940048", "late": 32},
+    {"rma": "12304", "cust": "Ccmed", "model": "SAM940", "sn": "940033", "late": 32},
+    {"rma": "12309", "cust": "27th Special Operations Medgroup", "model": "940-2-GN", "sn": "41280", "late": 31},
+    {"rma": "12295", "cust": "NIWC Pacific", "model": "V23B75/SIP-CN-X2", "sn": "S1AB8062", "late": 30},
+    {"rma": "12249", "cust": "Colorado School of Mines", "model": "865", "sn": "4F1-3B4E00A10-1583", "late": 27},
+    {"rma": "12322", "cust": "Semtech", "model": "865", "sn": "4F1-3C5H00010-2844", "late": 25},
+    {"rma": "12319", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A 100000-1100", "late": 23},
+    {"rma": "11787", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A100000-1045", "late": 23},
+    {"rma": "11786", "cust": "NSI-MI Technologies", "model": "845-M-FS", "sn": "621-04A100000-1099", "late": 23},
+    {"rma": "12298", "cust": "Leasametric", "model": "575", "sn": "31355", "late": 20},
+    {"rma": "12335", "cust": "SCD-USA Infrared LLC", "model": "158H-F", "sn": "29850", "late": 19},
+    {"rma": "12306", "cust": "SCD-USA Infrared LLC", "model": "6040", "sn": "33450", "late": 19},
+    {"rma": "12293", "cust": "Defense Research Development Canada", "model": "577-4C-AT45-AT45-IA15-S…", "sn": "39556", "late": 19},
+    {"rma": "12337", "cust": "Essco Calibration LLC", "model": "865-40", "sn": "4F13A0000F1129", "late": 18},
+    {"rma": "12320", "cust": "Starbucks Manufacturing", "model": "907", "sn": "61481", "late": 16},
+    {"rma": "12347", "cust": "QinetiQ", "model": "577", "sn": "39539", "late": 10},
+    {"rma": "12350", "cust": "General Bussan Co., Ltd", "model": "PVM-4210-SII", "sn": "107-865", "late": 9},
+    {"rma": "12334", "cust": "Opton Laser International", "model": "577", "sn": "39589", "late": 9},
+    {"rma": "12354", "cust": "Lockheed Martin", "model": "155H", "sn": "28298", "late": 6},
+    {"rma": "12353", "cust": "Lockheed Martin", "model": "155", "sn": "27531", "late": 6},
+    {"rma": "12343", "cust": "Simco Electronics", "model": "575-8C-H-E", "sn": "31558", "late": 4},
+    {"rma": "12357", "cust": "BAE Systems Inc.", "model": "805-SG-1", "sn": "DDA-012000000-0366", "late": 2}
   ];
   /* END PASTDUE DATA */
   var pdList=document.getElementById("pdList"), pdN=document.getElementById("pdN"),
