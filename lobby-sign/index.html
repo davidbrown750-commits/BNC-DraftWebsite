@@ -45,7 +45,7 @@
   .p-head .c{font-family:var(--font-m);font-size:10px;color:var(--muted)}
 
   /* ---------- race strip ---------- */
-  .race{height:132px;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;padding:0}
+  .race{height:120px;flex:0 0 auto;display:flex;align-items:stretch;overflow:hidden;padding:0}
   .race-side{width:236px;flex:0 0 auto;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;
     border-right:1px solid var(--panel-line);background:linear-gradient(90deg,rgba(9,15,38,.5),transparent)}
   .race-side .lab{font-family:var(--font-m);font-size:9.5px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;font-weight:700}
@@ -74,13 +74,35 @@
   .brand h2{font-size:23px;line-height:1;margin:0;font-weight:800}
   .brand h2 b{color:var(--blue);text-shadow:var(--glow-blue)}
   .hud{display:flex;align-items:center;gap:12px;font-family:var(--font-m)}
-  .wx{display:flex;gap:10px;align-items:center;padding:7px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-line)}
-  .wx .city{text-align:center}
-  .wx .city .n{font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-  .wx .city .tmp{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
-  .wx .ico{font-size:22px}
-  .season{padding:7px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-line);
-    font-size:12px;letter-spacing:.05em;display:flex;align-items:center;gap:7px}
+  /* Weather at double size, and the low/high are now the real forecast rather than
+     numbers from a hand-tuned curve. The curve still drives the "now" reading so it
+     drifts believably through the day, but it is anchored to the actual low and high. */
+  .wx{display:flex;gap:20px;align-items:center;padding:12px 20px;border-radius:14px;
+    background:var(--panel);border:1px solid var(--panel-line)}
+  .wx .city{text-align:center;min-width:92px}
+  .wx .city .n{font-size:11px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .wx .city .tmp{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05}
+  .wx .city .hl{font-family:var(--font-m);font-size:11.5px;font-variant-numeric:tabular-nums;
+    margin-top:2px;letter-spacing:.02em}
+  .wx .city .hl .lo{color:#7FD4FF}
+  .wx .city .hl .hi{color:var(--amber)}
+  .wx .city .hl s{opacity:.35;text-decoration:none;margin:0 3px}
+  .wx .ico{font-size:40px;line-height:1}
+  /* Upcoming shows, beside the weather. Dates are baked daily and an event drops off
+     the board by itself the day after it ends. */
+  .events{padding:10px 16px;border-radius:14px;background:var(--panel);
+    border:1px solid var(--panel-line);min-width:352px;max-width:392px}
+  .ev-h{font-family:var(--font-m);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--amber);font-weight:700;margin-bottom:7px}
+  .ev-h span{color:var(--muted);letter-spacing:.06em}
+  .ev-list{display:flex;flex-direction:column;gap:6px}
+  .ev{display:grid;grid-template-columns:74px 1fr;gap:11px;align-items:baseline}
+  .ev .d{font-family:var(--font-m);font-size:11px;font-weight:700;color:var(--signal);white-space:nowrap}
+  .ev.soon .d{color:var(--amber)}
+  .ev .nm{font-size:12.5px;color:var(--ink);font-weight:600;line-height:1.2;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ev .pl{display:block;font-size:10.5px;color:var(--muted);font-weight:400;margin-top:1px}
+  .ev-none{font-family:var(--font-m);font-size:11px;color:var(--muted)}
   .clock-box{text-align:right}
   .clock-box .k{font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
   .clock-box .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -105,8 +127,8 @@
   .cron .nx{font-family:var(--font-m);font-size:11px;color:var(--ink-dim);font-variant-numeric:tabular-nums;text-align:right}
   .cron .nx b{color:var(--signal);font-weight:700}
 
-  .console{height:252px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 12px 12px;text-align:center}
-  #robot{width:132px;height:132px;object-fit:contain;
+  .console{height:232px;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 12px 12px;text-align:center}
+  #robot{width:120px;height:120px;object-fit:contain;
     filter:drop-shadow(0 6px 16px rgba(0,0,0,.45));animation:float 4.6s ease-in-out infinite}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes cheerpop{0%{transform:translateY(0) scale(1)}35%{transform:translateY(-18px) scale(1.08)}
@@ -321,7 +343,10 @@
     </div>
     <div class="hud">
       <div class="wx" id="wx"><div class="ico" id="wxIco">☀️</div></div>
-      <div class="season" id="seasonBadge">☀️ Summer</div>
+      <div class="events" id="events">
+        <div class="ev-h">Upcoming <span id="evSeason"></span></div>
+        <div class="ev-list" id="evList"></div>
+      </div>
       <div class="clock-box"><div class="k">San Rafael · Local</div><div class="v" id="clock">--:--:--</div></div>
       <div class="live"><span class="dot"></span><span>LIVE</span></div>
     </div>
@@ -483,7 +508,6 @@
     fall:{name:"Autumn",ico:"🍂",sr:6.9,ss:18.4,hills:["#b06e2c","#caa23e"],sky:{day:[[86,140,210],[150,175,220],[210,214,232]]}}
   };
   var nowD=new Date(), season=SEASONS[seasonOf(nowD.getMonth())];
-  document.getElementById("seasonBadge").textContent=season.ico+" "+season.name;
 
   function hourNow(){var d=new Date();return d.getHours()+d.getMinutes()/60+d.getSeconds()/3600;}
 
@@ -639,16 +663,46 @@
   tickClock(); setInterval(tickClock,1000);
 
   /* ============ WEATHER (ambient diurnal, Bay Area summer) ============ */
-  var CITIES=[{n:"San Rafael",mid:68,amp:13},{n:"San Francisco",mid:60,amp:6},{n:"Sonoma Co.",mid:70,amp:16},{n:"Fairfield",mid:77,amp:18}];
-  function tempFor(c){var h=hourNow();return Math.round(c.mid+c.amp*Math.cos((h-16)/24*2*Math.PI)+(Math.random()*1.4-0.7));}
+  /* Anchored to the real forecast: mid-point and swing come from today's actual low
+     and high, so the reading peaks mid-afternoon and bottoms before dawn like the
+     weather does, without inventing the range it moves through. */
+  function tempFor(z){
+    var mid=(z.lo+z.hi)/2, amp=(z.hi-z.lo)/2, h=hourNow();
+    return Math.round(mid+amp*Math.cos((h-16)/24*2*Math.PI));}
   function drawWx(){
     var h=hourNow(), day=h>season.sr&&h<season.ss;
     document.getElementById("wxIco").textContent=day?season.ico:"🌙";
-    var box=document.getElementById("wx"), old=box.querySelectorAll(".city"); for(var i=0;i<old.length;i++)old[i].remove();
-    CITIES.forEach(function(c){var d=document.createElement("div");d.className="city";
-      d.innerHTML='<div class="n">'+c.n+'</div><div class="tmp">'+tempFor(c)+'°</div>';box.appendChild(d);});
+    var box=document.getElementById("wx"), old=box.querySelectorAll(".city");
+    for(var i=0;i<old.length;i++)old[i].remove();
+    var zones=(WEATHERDATA&&WEATHERDATA.zones)||[];
+    if(!zones.length){
+      var e=document.createElement("div");e.className="city";
+      e.innerHTML='<div class="n">forecast</div><div class="tmp">\u2014</div>'
+        +'<div class="hl">unavailable</div>';box.appendChild(e);return;}
+    zones.forEach(function(z){var c=document.createElement("div");c.className="city";
+      c.innerHTML='<div class="n">'+z.n+'</div>'
+        +'<div class="tmp">'+tempFor(z)+'\u00b0</div>'
+        +'<div class="hl"><span class="lo">'+z.lo+'\u00b0</span><s>/</s>'
+        +'<span class="hi">'+z.hi+'\u00b0</span></div>';
+      box.appendChild(c);});
   }
-  drawWx(); setInterval(drawWx,45000);
+  setInterval(drawWx,45000);  /* first paint happens once the data blocks below exist */
+
+  /* ============ UPCOMING EVENTS ============
+     Baked daily from build_board_data.py, which drops anything already finished, so
+     the panel cannot sit showing a show that has been and gone. */
+  function renderEvents(){
+    var host=document.getElementById("evList"); if(!host)return;
+    var list=EVENTSDATA||[];
+    if(!list.length){host.innerHTML='<div class="ev-none">nothing scheduled</div>';return;}
+    host.innerHTML=list.slice(0,3).map(function(ev){
+      return '<div class="ev'+(ev.soon?' soon':'')+'">'
+        +'<span class="d">'+ev.when+'</span>'
+        +'<span class="nm">'+ev.name+'<span class="pl">'+ev.place+'</span></span></div>';
+    }).join("");
+    var s=document.getElementById("evSeason");
+    if(s)s.textContent=list.length>3?("\u00b7 "+list.length+" total"):"";
+  }
 
   /* ============ MONTHLY RACE ============ */
   var RACE_THEMES=[
@@ -667,14 +721,20 @@
   /* END SALES DATA */
   /* Live figures baked daily by build_board_data.py. Do not hand-edit between markers. */
   /* BEGIN EMAIL */
-  var EMAILDATA={"day": "2026-09-04", "dayLabel": "Friday September 4", "sent": 1314, "delivered": 1406, "opens": 562, "bounced": 30, "clicks": null, "openRate": 40, "topSenders": [["Jessica Gonzalez", 286], ["David Gil", 234], ["Amira Sekkouty", 231], ["Luis Valadez", 230], ["Gisell Urena", 218], ["David Brown", 32]]};
+  var EMAILDATA={"day": "2026-09-04", "dayLabel": "Friday September 4", "sent": 1314, "delivered": 1406, "opens": 563, "bounced": 30, "clicks": null, "openRate": 40, "topSenders": [["Jessica Gonzalez", 286], ["David Gil", 234], ["Amira Sekkouty", 231], ["Luis Valadez", 230], ["Gisell Urena", 218], ["David Brown", 32]]};
   /* END EMAIL */
   /* BEGIN REPLIESBY */
   var REPLIESBY={"asOf": "2026-09-03", "dayLabel": "Thursday", "total": 137, "people": [{"n": "Gisell Urena", "v": 34}, {"n": "Alec Bakhshandeh", "v": 22}, {"n": "David Gil", "v": 17}, {"n": "Jassie Singh", "v": 17}, {"n": "Jessica Gonzalez", "v": 13}, {"n": "Amira Sekkouty", "v": 10}, {"n": "David Brown", "v": 5}, {"n": "Mark Slattery", "v": 5}, {"n": "Meraly Rodas", "v": 4}, {"n": "John Reynolds", "v": 4}], "allTimeTotal": 1433};
   /* END REPLIESBY */
   /* BEGIN ACTIVITY */
-  var ACTIVITYDATA=[{"e": "📨", "t": "3 opened", "tm": "22:00", "d": "2026-09-04"}, {"e": "📨", "t": "4 opened", "tm": "21:00", "d": "2026-09-04"}, {"e": "📨", "t": "2 opened", "tm": "20:00", "d": "2026-09-04"}, {"e": "📨", "t": "1 opened", "tm": "18:00", "d": "2026-09-04"}, {"e": "📨", "t": "1 opened", "tm": "17:00", "d": "2026-09-04"}, {"e": "📨", "t": "2 opened", "tm": "16:00", "d": "2026-09-04"}, {"e": "📨", "t": "7 opened", "tm": "15:00", "d": "2026-09-04"}, {"e": "📨", "t": "7 opened", "tm": "14:00", "d": "2026-09-04"}, {"e": "📨", "t": "29 opened", "tm": "13:00", "d": "2026-09-04"}, {"e": "📨", "t": "7 opened", "tm": "12:00", "d": "2026-09-04"}, {"e": "📨", "t": "20 opened", "tm": "11:00", "d": "2026-09-04"}, {"e": "📨", "t": "16 opened", "tm": "10:00", "d": "2026-09-04"}, {"e": "📨", "t": "119 opened", "tm": "09:00", "d": "2026-09-04"}, {"e": "📨", "t": "33 sent, 213 opened", "tm": "08:00", "d": "2026-09-04"}];
+  var ACTIVITYDATA=[{"e": "📨", "t": "1 opened", "tm": "23:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "19:00", "d": "2026-09-05"}, {"e": "📨", "t": "3 opened", "tm": "16:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "15:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "14:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "13:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "11:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "09:00", "d": "2026-09-05"}, {"e": "📨", "t": "4 opened", "tm": "08:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "07:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "05:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "04:00", "d": "2026-09-05"}, {"e": "📨", "t": "1 opened", "tm": "02:00", "d": "2026-09-05"}, {"e": "📨", "t": "2 opened", "tm": "01:00", "d": "2026-09-05"}];
   /* END ACTIVITY */
+  /* BEGIN WEATHER */
+  var WEATHERDATA={"asOf": "2026-09-05", "zones": [{"n": "San Rafael", "lo": 52, "hi": 80}, {"n": "San Francisco", "lo": 54, "hi": 73}, {"n": "Sonoma Co.", "lo": 47, "hi": 78}, {"n": "Fairfield", "lo": 51, "hi": 81}]};
+  /* END WEATHER */
+  /* BEGIN EVENTS */
+  var EVENTSDATA=[{"when": "Sep 8–11", "name": "The Continuing Challenge", "place": "37th Hazmat Workshop · Sacramento, CA", "start": "2026-09-08", "end": "2026-09-11", "days": 3, "soon": true}, {"when": "Sep 21–24", "name": "GNU Radio Conference", "place": "GRCon26 · NC State, Raleigh, NC", "start": "2026-09-21", "end": "2026-09-24", "days": 16, "soon": true}, {"when": "Dec 8–10", "name": "AOC Symposium", "place": "63rd Annual · National Harbor, MD", "start": "2026-12-08", "end": "2026-12-10", "days": 94, "soon": false}];
+  /* END EVENTS */
   var PRODUCTS=SALESDATA.horses;
   var rmonth=Math.max(0,parseInt((SALESDATA.month||"-01").split("-")[1],10)-1), rtheme=RACE_THEMES[rmonth];
   document.getElementById("raceMonth").textContent="🏁 "+SALESDATA.monthName+" · month to date";
@@ -754,6 +814,8 @@
   })();
   function updateBriefing(){}
   paintNumbers();
+  drawWx();
+  renderEvents();
 
   /* ============ NEWS (Bay positive + mixed World; original blurbs, ambient) ============ */
   /* ---- ANNOUNCEMENTS — EDIT THESE. They ride in the local column in amber.
