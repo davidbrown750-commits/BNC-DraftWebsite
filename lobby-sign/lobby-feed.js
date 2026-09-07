@@ -1,103 +1,75 @@
-/* Live staff submissions for the lobby sign.
+/* Live content for the lobby sign.
  *
  * Only the HOSTED build loads this. The claude.ai artifact version does not, because
- * artifacts run under a strict CSP that blocks the request — so the artifact stays a
+ * artifacts run under a strict CSP that blocks the request, so the artifact stays a
  * static snapshot and the hosted copy is the live one.
  *
- * Reads https://www.berkeleynucleonics.com/api/lobby-feed?k=... every minute and folds
- * approved posts into the slots the board already has: announcements and shout-outs
- * join the amber highlight rotation, riddles join the hourly rotation, photos take the
- * reply-pile panel when there are any.
+ * Everything the sign shows that a person can edit comes from one record, written in
+ * /lobby-dashboard/ and read here: notices, riddles, photos and upcoming shows, as a
+ * flat list of typed blocks. The request is authorised by the bnc_sign cookie the
+ * password login sets, so nothing secret sits in this file and it is safe to commit.
  *
- * Everything here fails soft. If the feed is unreachable the board keeps running on
- * whatever was baked in, which is what a screen on a wall needs to do.
+ * This used to poll /api/lobby-feed against the bnc_lobby_posts table. That table was
+ * never created, so the endpoint answered 503 for its whole life; it and the /lobby
+ * submissions page have been retired in favour of the dashboard.
+ *
+ * Everything fails soft. If the feed is unreachable the sign keeps showing whatever
+ * was baked in, which is what a screen on a wall needs to do.
  */
 (function () {
   "use strict";
 
-  /* The key comes from the sign's own URL, not from this file. That way the built page
-     carries no secret and can sit in the repo: the key lives only in the bookmark on the
-     reception TV. Open the sign as  .../lobby-sign/?k=THEKEY  */
-  function feedURL() {
-    var m = /[?&]k=([^&]+)/.exec(location.search);
-    if (!m) return "";
-    return "/api/lobby-feed?k=" + m[1];
-  }
-  var FEED = feedURL();
+  var SOURCE = "/api/lobby-screens?id=lobby-sign";
   var POLL_MS = 60000;
 
-  /* Two sources feed the amber slot now, so neither may clobber the other:
-     the older approved-posts feed, and the notices typed in /lobby-dashboard/.
-     Each keeps its own list and the board is handed the union. */
-  var fromFeed = [], fromNotices = [];
-  function pushSubmitted(){
-    if (window.BOARD && typeof window.BOARD.setSubmitted === "function")
-      window.BOARD.setSubmitted(fromNotices.concat(fromFeed));
-  }
+  function apply(doc) {
+    if (!doc || doc.enabled === false) return;
+    var blocks = doc.blocks || [];
+    var B = window.BOARD;
+    if (!B) return;
 
-  function apply(data) {
-    if (!data || !data.ok) return;
+    var today = new Date();
+    var iso = today.getFullYear() + "-" +
+      String(today.getMonth() + 1).padStart(2, "0") + "-" +
+      String(today.getDate()).padStart(2, "0");
 
-    // ---- announcements + shout-outs -> the amber highlight slot ----
-    if (window.BOARD && typeof window.BOARD.setSubmitted === "function") {
-      var items = [];
-      (data.announcements || []).forEach(function (a) {
-        items.push({ e: "📣", t: a.t, d: a.d || "", until: a.until || null });
-      });
-      (data.shoutouts || []).forEach(function (s) {
-        items.push({
-          e: "👏",
-          t: s.t,
-          d: (s.d || "") + (s.by ? "  — posted by " + s.by : ""),
-          until: s.until || null
-        });
-      });
-      fromFeed = items; pushSubmitted();
+    function ofType(t) { return blocks.filter(function (b) { return b && b.type === t; }); }
+
+    // Notices ride the amber slot. A dated one drops off the day after it runs, so
+    // nobody has to remember to take it down.
+    if (typeof B.setSubmitted === "function") {
+      B.setSubmitted(ofType("notice")
+        .filter(function (b) { return !b.until || b.until >= iso; })
+        .map(function (b) {
+          return { e: "●", t: b.title, d: b.detail || "", until: b.until || null };
+        }));
     }
 
-    // ---- riddles -> the hourly rotation ----
-    if (window.BOARD && typeof window.BOARD.setRiddles === "function" && (data.riddles || []).length) {
-      window.BOARD.setRiddles((data.riddles || []).map(function (r) {
-        return { q: r.q, a: r.a };
+    if (typeof B.setRiddles === "function") {
+      var riddles = ofType("riddle").map(function (b) { return { q: b.q, a: b.a }; });
+      if (riddles.length) B.setRiddles(riddles);
+    }
+
+    if (typeof B.setPhotos === "function") {
+      B.setPhotos(ofType("photo").map(function (b) {
+        return { src: b.image, t: b.caption || "", by: "" };
       }));
     }
 
-    // ---- photos -> the panel that normally shows the reply pile ----
-    if (window.BOARD && typeof window.BOARD.setPhotos === "function") {
-      window.BOARD.setPhotos(data.photos || []);
+    if (typeof B.setEvents === "function") {
+      B.setEvents(ofType("event").map(function (b) {
+        return { name: b.name, place: b.place || "", start: b.start, end: b.end || b.start };
+      }));
     }
   }
 
-  /* Notices from the dashboard. Authorised by the bnc_sign cookie the password login
-     sets, so no key is needed in the URL. Fails soft like everything else here: a wall
-     screen keeps showing whatever it already had. */
-  function pollNotices() {
-    fetch("/api/lobby-screens?id=lobby-sign", { cache: "no-store", credentials: "same-origin" })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        if (!j || !j.ok || !j.screen || j.screen.enabled === false) { fromNotices = []; pushSubmitted(); return; }
-        var today = new Date();
-        var iso = today.getFullYear() + "-" +
-          String(today.getMonth() + 1).padStart(2, "0") + "-" +
-          String(today.getDate()).padStart(2, "0");
-        fromNotices = (j.screen.items || [])
-          .filter(function (it) { return !it.until || it.until >= iso; })
-          .map(function (it) { return { e: "●", t: it.title, d: it.detail || "", until: it.until || null }; });
-        pushSubmitted();
-      })
-      .catch(function () { /* keep what is on screen */ });
-  }
-
   function poll() {
-    if (!FEED) return;
-    fetch(FEED, { cache: "no-store" })
+    fetch(SOURCE, { cache: "no-store", credentials: "same-origin" })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(apply)
+      .then(function (j) { if (j && j.ok) apply(j.screen); })
       .catch(function () { /* offline or endpoint down: keep showing what we have */ });
   }
 
   poll();
-  pollNotices();
   setInterval(poll, POLL_MS);
-  setInterval(pollNotices, POLL_MS);
 })();

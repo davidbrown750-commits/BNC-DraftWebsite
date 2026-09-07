@@ -5,7 +5,7 @@
 // which is what the sign-in page uses to skip straight through on a returning screen.
 //
 // Fails closed: with no LOBBY_SIGN_PASSWORD configured nobody gets in, rather than
-// everybody. That matches api/lobby-feed.js, which 503s when its key is unset.
+// everybody.
 const { COOKIE, signToken, tokenMatches, signedIn } = require("../lib/lobby-gate");
 
 // A wall-mounted screen should not be asked again every week.
