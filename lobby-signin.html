@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Lobby Screen Sign In | Berkeley Nucleonics</title>
+<link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<style>
+  :root{
+    --blue:#0655a3; --ink:#113163; --navy:#0a1626;
+    --line:#d7dde6; --muted:#5b6b80; --bg:#f4f6f9;
+    --font-h:'Myriad Pro','Segoe UI',-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+    --font-b:Arial,'Helvetica Neue',Helvetica,sans-serif;
+    --r:4px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:var(--font-b);background:var(--bg);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:432px;background:#fff;border:1px solid var(--line);
+    border-radius:var(--r);box-shadow:0 2px 10px rgba(17,49,99,.08);overflow:hidden}
+  .top{background:var(--ink);padding:24px;text-align:center}
+  .top svg{width:184px;height:auto;display:inline-block}
+  .body{padding:32px 32px 24px}
+  h1{font-family:var(--font-h);font-size:20px;font-weight:700;margin:0 0 8px;color:var(--ink)}
+  p.sub{margin:0 0 24px;font-size:14px;line-height:1.5;color:var(--muted)}
+  label{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  input[type=password]{width:100%;padding:12px 14px;font-size:16px;font-family:var(--font-b);
+    border:1px solid var(--line);border-radius:var(--r);color:var(--ink);background:#fff}
+  input[type=password]:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:var(--blue)}
+  button{width:100%;margin-top:16px;padding:13px 16px;font-family:var(--font-h);font-size:15px;
+    font-weight:700;color:#fff;background:var(--blue);border:0;border-radius:var(--r);cursor:pointer}
+  button:hover{background:var(--ink)}
+  button[disabled]{opacity:.55;cursor:default}
+  .msg{margin-top:16px;font-size:13.5px;line-height:1.5;min-height:20px}
+  .msg.err{color:#b3261e}
+  .msg.ok{color:#1b5e20}
+  .foot{padding:16px 32px 24px;font-size:12px;color:var(--muted);line-height:1.5}
+</style>
+</head>
+<body>
+  <main class="card" id="main">
+    <div class="top">
+      <svg viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics">
+        <g fill="#ffffff">
+          <path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/>
+          <polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/>
+          <path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/>
+          <polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/>
+          <path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/>
+        </g>
+      </svg>
+    </div>
+    <div class="body">
+      <h1>Lobby screen</h1>
+      <p class="sub">This screen is for the reception display. Enter the screen password to unlock it on this device.</p>
+      <form id="f" autocomplete="off">
+        <label for="pw">Screen password</label>
+        <input id="pw" type="password" autocomplete="current-password" required autofocus>
+        <button id="go" type="submit">Unlock this screen</button>
+      </form>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </div>
+    <div class="foot">
+      Unlocking is remembered on this device for a year, so the reception TV only needs it once.
+      For access, contact <a href="mailto:info@berkeleynucleonics.com">info@berkeleynucleonics.com</a>.
+    </div>
+  </main>
+
+<script>
+(function(){
+  "use strict";
+  var f=document.getElementById("f"), pw=document.getElementById("pw"),
+      go=document.getElementById("go"), msg=document.getElementById("msg");
+
+  // Only ever send the viewer back to a path on this site. Without this the ?next=
+  // parameter would be an open redirect anyone could point at another host.
+  function nextPath(){
+    var m=/[?&]next=([^&]+)/.exec(location.search);
+    var raw=m?decodeURIComponent(m[1]):"/lobby-sign/";
+    if(raw.charAt(0)!=="/"||raw.charAt(1)==="/") return "/lobby-sign/";
+    return raw;
+  }
+
+  function say(t,cls){ msg.textContent=t; msg.className="msg"+(cls?" "+cls:""); }
+
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    var val=pw.value;
+    if(!val) return;
+    go.disabled=true; say("Checking…");
+    fetch("/api/lobby-login",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({password:val})
+    }).then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j}; }); })
+      .then(function(o){
+        if(o.j&&o.j.ok){ say("Unlocked. Opening the screen…","ok"); location.replace(nextPath()); return; }
+        go.disabled=false; pw.value=""; pw.focus();
+        if(o.s===503) say("The screen password has not been set up yet. Contact info@berkeleynucleonics.com.","err");
+        else say("That password was not recognised.","err");
+      })
+      .catch(function(){ go.disabled=false; say("Could not reach the server. Check the connection and try again.","err"); });
+  });
+})();
+</script>
+</body>
+</html>
