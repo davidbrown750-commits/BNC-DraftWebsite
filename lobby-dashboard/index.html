@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Lobby Screens | Berkeley Nucleonics</title>
+<link rel="stylesheet" href="/_shared/bnc-a11y.css">
+<script src="/_shared/bnc-auth-config.js"></script>
+<script defer src="/_shared/bnc-auth.js"></script>
+<style>
+  /* Deliberately the Fun Board palette rather than the site's white-and-blue: this is
+     an internal console, and the screens it publishes are the branded surface. */
+  :root{
+    --bg:#08122e; --panel:rgba(9,15,38,.72); --line:rgba(140,180,255,.22);
+    --ink:#EAF0FF; --dim:#C4D2F2; --muted:#8FA1D0;
+    --blue:#3B9BFF; --signal:#33E6B7; --amber:#FFC24D; --coral:#FF6E8E;
+    --font-h:'Myriad Pro','Segoe UI',-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+    --font-b:Arial,'Helvetica Neue',Helvetica,sans-serif;
+    --font-m:ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+    --r:4px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-b);
+    background-image:radial-gradient(120% 80% at 50% -10%,rgba(59,155,255,.18),transparent 60%)}
+  a{color:var(--blue)}
+  .top{display:flex;align-items:center;gap:16px;padding:16px 24px;
+    border-bottom:1px solid var(--line);background:rgba(8,18,46,.9);position:sticky;top:0;z-index:20}
+  .top svg{width:132px;height:auto}
+  .top h1{font-family:var(--font-h);font-size:16px;margin:0;font-weight:700;letter-spacing:.02em}
+  .top .who{margin-left:auto;font-family:var(--font-m);font-size:11.5px;color:var(--muted)}
+  .wrap{max-width:1120px;margin:0 auto;padding:24px}
+
+  .locked{max-width:560px;margin:12vh auto;text-align:center;padding:32px;
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+  .locked h2{font-family:var(--font-h);margin:0 0 10px;font-size:19px}
+  .locked p{color:var(--dim);font-size:14px;line-height:1.55;margin:0 0 20px}
+  .hide{display:none!important}
+
+  button{font-family:var(--font-h);font-size:13.5px;font-weight:700;border-radius:var(--r);
+    border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--ink);
+    padding:9px 15px;cursor:pointer}
+  button:hover{background:rgba(255,255,255,.13)}
+  button.primary{background:var(--blue);border-color:var(--blue);color:#04142c}
+  button.primary:hover{filter:brightness(1.1)}
+  button.danger{border-color:rgba(255,110,142,.5);color:var(--coral)}
+  button[disabled]{opacity:.5;cursor:default}
+
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .bar h2{font-family:var(--font-h);font-size:18px;margin:0;flex:1}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .card h3{font-family:var(--font-h);font-size:15.5px;margin:0 0 4px}
+  .card .meta{font-family:var(--font-m);font-size:11px;color:var(--muted);margin-bottom:12px;
+    word-break:break-word}
+  .card .row{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{display:inline-block;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;padding:3px 8px;border-radius:99px;font-weight:700}
+  .pill.on{background:rgba(51,230,183,.16);color:var(--signal)}
+  .pill.off{background:rgba(255,110,142,.16);color:var(--coral)}
+
+  .editor{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+  label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 6px}
+  input[type=text],textarea,select{width:100%;padding:10px 12px;font-size:14px;color:var(--ink);
+    font-family:var(--font-b);background:rgba(255,255,255,.06);border:1px solid var(--line);
+    border-radius:var(--r)}
+  textarea{min-height:190px;line-height:1.5;resize:vertical;font-size:15px}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px}
+  .field{margin-bottom:18px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .guestrow{display:grid;grid-template-columns:120px 1fr 1fr 150px;gap:12px;align-items:end;
+    padding:14px;border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;
+    background:rgba(255,255,255,.03)}
+  .thumb{display:flex;align-items:center;gap:8px}
+  .thumb img{width:52px;height:38px;object-fit:contain;background:#fff;border-radius:var(--r);padding:3px}
+  .arts{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .arts figure{margin:0;position:relative}
+  .arts img{width:104px;height:70px;object-fit:cover;border-radius:var(--r);border:1px solid var(--line)}
+  .arts button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:11px;
+    background:rgba(8,18,46,.85)}
+  .hint{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:6px}
+  .msg{margin-top:14px;font-size:13.5px;min-height:19px}
+  .msg.err{color:var(--coral)} .msg.ok{color:var(--signal)}
+  @media (max-width:820px){.cols,.guestrow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <svg viewBox="0 0 972.3 485.93" role="img" aria-label="Berkeley Nucleonics">
+    <g fill="#ffffff">
+      <path d="M326.86,400.29c-88.04,0-159.67-71.63-159.67-159.67s71.63-159.67,159.67-159.67,159.67,71.63,159.67,159.67-71.63,159.67-159.67,159.67ZM326.86,99.21c-77.97,0-141.4,63.43-141.4,141.41s63.43,141.4,141.4,141.4,141.4-63.43,141.4-141.4-63.43-141.41-141.4-141.41Z"/>
+      <polygon points="882.15 284.93 383 284.93 383 204.02 268.17 204.02 268.17 284.93 90.53 284.93 90.53 274.49 257.73 274.49 257.73 193.58 393.44 193.58 393.44 274.49 882.15 274.49 882.15 284.93"/>
+      <path d="M540.98,231.52l6.4-30.06h18.94c11.43,0,18.83,2.03,16.06,15.03-2.77,13-11.02,15.03-22.46,15.03h-18.95ZM551.37,182.66l5.66-26.62h18.94c10.18,0,14.92,4.23,12.99,13.31-1.93,9.08-8.47,13.31-18.64,13.31h-18.95ZM555.47,250.31c17.11,1.25,47.03-6.89,51.79-29.29,3.53-16.6-5.02-26.46-18.64-29.44l.07-.31c12.07-3.76,22.52-12.37,25.15-24.74,4.69-22.08-14.18-30.53-34.64-29.28h-42.43l-24.03,113.06h42.75Z"/>
+      <polygon points="720.52 250.31 744.56 137.25 721.85 137.25 703.01 225.88 702.63 226.19 678.48 137.25 642.46 137.25 618.43 250.31 641.13 250.31 661.04 156.67 661.42 156.35 686.07 250.31 720.52 250.31"/>
+      <path d="M847.93,173.89c4.93-28.34-13.17-38.99-39.16-38.99-32.73,0-52.94,25.84-59.96,58.87-7.02,33.04,2.2,58.88,34.93,58.88,25.99,0,48.61-10.65,55.74-38.99h-25.84c-2.37,11.9-11.61,21.45-26.17,21.45-17.23,0-16.18-25.52-12.82-41.34,3.36-15.81,13.18-41.34,30.4-41.34,14.56,0,19.73,9.55,17.05,21.45h25.84Z"/>
+    </g>
+  </svg>
+  <h1>Lobby Screens</h1>
+  <div class="who" id="who"></div>
+</div>
+
+<div id="locked" class="locked">
+  <h2>Staff sign-in required</h2>
+  <p id="lockwhy">Sign in with your @berkeleynucleonics.com account to manage the lobby screens.</p>
+  <button id="signin" class="primary" type="button">Sign in</button>
+</div>
+
+<main id="app" class="wrap hide">
+
+  <div id="listview">
+    <div class="bar">
+      <h2>Screens</h2>
+      <button id="newVisitor" type="button">New visitor screen</button>
+      <button id="newDyk" type="button">New "Did You Know" screen</button>
+      <button id="editNotices" type="button">Lobby sign notices</button>
+      <button id="refresh" type="button">Refresh</button>
+    </div>
+    <div class="grid" id="cards"></div>
+    <div class="msg" id="listmsg" role="status" aria-live="polite"></div>
+    <p class="hint">
+      Screens are shown on the reception TV at <code>/screen/?id=&lt;name&gt;</code>. That page asks
+      for the screen password once per device, then remembers it for a year.
+    </p>
+  </div>
+
+  <div id="editview" class="editor hide">
+    <div class="bar">
+      <h2 id="edTitle">Edit screen</h2>
+      <button id="back" type="button">Back to all screens</button>
+    </div>
+
+    <div class="cols">
+      <div class="field">
+        <label for="edId">Screen name (used in the link)</label>
+        <input id="edId" type="text" placeholder="visitor-1" maxlength="49">
+        <div class="hint">Lower-case letters, numbers and dashes. Cannot be changed later without creating a new screen.</div>
+      </div>
+      <div class="field">
+        <label for="edTitleField">Label for this list</label>
+        <input id="edTitleField" type="text" placeholder="Visitor 1" maxlength="60">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="edHeading">Heading shown on the screen</label>
+      <input id="edHeading" type="text" maxlength="60">
+    </div>
+
+    <!-- visitor fields -->
+    <div id="visitorFields" class="hide">
+      <label>Visitors (up to four)</label>
+      <div id="guests"></div>
+    </div>
+
+    <!-- lobby sign notices -->
+    <div id="annFields" class="hide">
+      <label>Notices shown on the lobby sign (up to twelve)</label>
+      <div id="items"></div>
+      <button id="addItem" type="button">Add a notice</button>
+      <div class="hint">Each notice rides in the amber slot on the sign, between the news items.
+        Give it an end date and it takes itself down the day after.</div>
+    </div>
+
+    <!-- did-you-know fields -->
+    <div id="dykFields" class="hide">
+      <div class="field">
+        <label for="edBody">Message</label>
+        <textarea id="edBody" maxlength="1200" placeholder="Type the message here. It is shown in large type on the lobby screen."></textarea>
+        <div class="hint">Line breaks are kept. Up to 1200 characters.</div>
+      </div>
+      <div class="field">
+        <label>Images shown alongside the message (up to four)</label>
+        <input id="imgFile" type="file" accept="image/png,image/jpeg,image/webp">
+        <div class="arts" id="arts"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Background wallpaper (optional)</label>
+      <input id="bgFile" type="file" accept="image/png,image/jpeg,image/webp">
+      <div class="arts" id="bgWrap"></div>
+      <div class="hint">Sits behind the message. The screen darkens it automatically so the white text stays readable.</div>
+    </div>
+
+    <div class="field">
+      <label for="edEnabled">Status</label>
+      <select id="edEnabled">
+        <option value="on">Showing on the screen</option>
+        <option value="off">Turned off</option>
+      </select>
+    </div>
+
+    <div class="bar">
+      <button id="save" class="primary" type="button">Save screen</button>
+      <button id="open" type="button">Open screen</button>
+      <span style="flex:1"></span>
+      <button id="del" class="danger" type="button">Delete screen</button>
+    </div>
+    <div class="msg" id="edmsg" role="status" aria-live="polite"></div>
+  </div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var STAFF_DOMAIN = "@berkeleynucleonics.com";
+  var STAFF_EXTRA = ["davidbrown750@gmail.com"];
+  var MAX_GUESTS = 4, MAX_IMAGES = 4;
+  var current = null;
+
+  function $(id){ return document.getElementById(id); }
+  function el(t,c){ var n=document.createElement(t); if(c)n.className=c; return n; }
+  function txt(n,s){ n.textContent = (s==null?"":String(s)); return n; }
+  function say(node,t,cls){ node.textContent=t; node.className="msg"+(cls?" "+cls:""); }
+
+  /* ---------------- auth ---------------- */
+  function bncEmail(){
+    var u = window.Clerk && window.Clerk.user;
+    var e = u && u.primaryEmailAddress && u.primaryEmailAddress.emailAddress;
+    return e ? e.toLowerCase() : null;
+  }
+  function isStaff(){
+    var e = bncEmail();
+    return !!(e && ((e.length > STAFF_DOMAIN.length &&
+      e.slice(-STAFF_DOMAIN.length) === STAFF_DOMAIN) || STAFF_EXTRA.indexOf(e) !== -1));
+  }
+  function waitForClerk(cb, tries){
+    tries = tries || 0;
+    if (window.Clerk && (window.Clerk.loaded || window.Clerk.user !== undefined)) { cb(); return; }
+    if (tries > 60) { cb(); return; }
+    setTimeout(function(){ waitForClerk(cb, tries+1); }, 200);
+  }
+  function reveal(){
+    $("locked").classList.add("hide");
+    $("app").classList.remove("hide");
+    $("who").textContent = bncEmail() || "";
+    loadList();
+  }
+  function lock(why){
+    $("app").classList.add("hide");
+    $("locked").classList.remove("hide");
+    if (why) $("lockwhy").textContent = why;
+  }
+  $("signin").addEventListener("click", function(){
+    if (window.Clerk && window.Clerk.openSignIn) window.Clerk.openSignIn({});
+  });
+  waitForClerk(function(){
+    if (isStaff()) reveal();
+    else if (bncEmail()) lock("Signed in as " + bncEmail() +
+      " — that account is not a @berkeleynucleonics.com address.");
+    if (window.Clerk && window.Clerk.addListener)
+      window.Clerk.addListener(function(){ if (isStaff()) reveal(); });
+  });
+
+  /* ---------------- api ---------------- */
+  function api(opts){
+    return window.Clerk.session.getToken().then(function(t){
+      return fetch("/api/lobby-screens" + (opts.query || ""), {
+        method: opts.method || "GET",
+        headers: { Authorization: "Bearer " + t, "Content-Type": "application/json" },
+        body: opts.body ? JSON.stringify(opts.body) : undefined
+      });
+    }).then(function(r){ return r.json(); });
+  }
+
+  // Browsers hand back a File; the API wants a bounded data URL. Downscaling here
+  // keeps a 12 MP phone photo from being rejected for size at the far end.
+  function fileToDataUrl(file, maxPx){
+    return new Promise(function(resolve, reject){
+      var fr = new FileReader();
+      fr.onerror = function(){ reject(new Error("could not read that file")); };
+      fr.onload = function(){
+        var img = new Image();
+        img.onerror = function(){ reject(new Error("that file is not an image")); };
+        img.onload = function(){
+          var scale = Math.min(1, maxPx / Math.max(img.width, img.height));
+          var w = Math.max(1, Math.round(img.width * scale));
+          var h = Math.max(1, Math.round(img.height * scale));
+          var c = document.createElement("canvas"); c.width = w; c.height = h;
+          c.getContext("2d").drawImage(img, 0, 0, w, h);
+          resolve(c.toDataURL("image/jpeg", 0.85));
+        };
+        img.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+
+  function upload(file, purpose, maxPx){
+    return fileToDataUrl(file, maxPx).then(function(dataUrl){
+      return api({ method:"POST", body:{ action:"upload", purpose:purpose,
+        image:dataUrl, name:file.name } });
+    }).then(function(j){
+      if (!j.ok) throw new Error(j.error || "upload failed");
+      return j.url;
+    });
+  }
+
+  /* ---------------- list ---------------- */
+  function loadList(){
+    say($("listmsg"), "Loading…");
+    api({}).then(function(j){
+      if (!j.ok) { say($("listmsg"), j.error || "Could not load screens.", "err"); return; }
+      var host = $("cards"); host.innerHTML = "";
+      if (!j.screens.length) say($("listmsg"), "No screens yet. Create one above.");
+      else say($("listmsg"), "");
+      j.screens.forEach(function(s){
+        var c = el("div","card");
+        var h = el("h3"); txt(h, s.title || s.id);
+        var pill = el("span","pill " + (s.enabled === false ? "off" : "on"));
+        txt(pill, s.enabled === false ? "off" : "live");
+        h.appendChild(document.createTextNode(" ")); h.appendChild(pill);
+        c.appendChild(h);
+        var meta = el("div","meta");
+        txt(meta, (s.kind === "announcements" ? "/lobby-sign/" : "/screen/?id=" + s.id) + "  ·  " +
+          (s.kind === "visitor" ? "visitors" : s.kind === "announcements" ? "sign notices" : "did you know") +
+          (s.updated_by ? ("  ·  " + s.updated_by) : ""));
+        c.appendChild(meta);
+        var row = el("div","row");
+        var edit = el("button"); txt(edit, "Edit");
+        edit.addEventListener("click", function(){ openEditor(s); });
+        var open = el("button"); txt(open, "Open");
+        open.addEventListener("click", function(){
+          window.open(s.kind === "announcements" ? "/lobby-sign/" : ("/screen/?id=" + s.id),
+            "_blank", "noopener"); });
+        row.appendChild(edit); row.appendChild(open);
+        c.appendChild(row);
+        host.appendChild(c);
+      });
+    }).catch(function(){ say($("listmsg"), "Could not reach the server.", "err"); });
+  }
+
+  /* ---------------- editor ---------------- */
+  function blank(kind){
+    if (kind === "announcements")
+      return { id:"lobby-sign", kind:"announcements", title:"Lobby sign notices",
+               heading:"Lobby sign notices", enabled:true, background:"", items:[] };
+    return kind === "visitor"
+      ? { id:"", kind:"visitor", title:"", heading:"Welcome", enabled:true, background:"", visitors:[] }
+      : { id:"", kind:"didyouknow", title:"", heading:"Did You Know?", enabled:true,
+          background:"", body:"", images:[] };
+  }
+
+  function guestRow(v, i){
+    var row = el("div","guestrow");
+    function field(labelText, value, key, ph){
+      var wrap = el("div");
+      var l = el("label"); txt(l, labelText); l.setAttribute("for","g"+i+key);
+      var inp = el("input"); inp.type="text"; inp.id="g"+i+key; inp.value=value||"";
+      inp.placeholder = ph || "";
+      inp.addEventListener("input", function(){ v[key] = inp.value; });
+      wrap.appendChild(l); wrap.appendChild(inp); return wrap;
+    }
+    row.appendChild(field("Time", v.time, "time", "10:00 AM"));
+    row.appendChild(field("Name", v.name, "name", "Jane Doe"));
+    row.appendChild(field("Company", v.company, "company", "Acme Corporation"));
+
+    var logo = el("div");
+    var ll = el("label"); txt(ll, "Company logo"); logo.appendChild(ll);
+    var t = el("div","thumb");
+    if (v.logo){ var im = el("img"); im.src = v.logo; im.alt=""; t.appendChild(im); }
+    var f = el("input"); f.type="file"; f.accept="image/png,image/jpeg,image/webp";
+    f.addEventListener("change", function(){
+      if (!f.files || !f.files[0]) return;
+      say($("edmsg"), "Uploading logo…");
+      upload(f.files[0], "logo", 600).then(function(url){
+        v.logo = url; say($("edmsg"), "Logo added. Remember to save.", "ok"); drawGuests();
+      }).catch(function(e){ say($("edmsg"), e.message, "err"); });
+    });
+    t.appendChild(f); logo.appendChild(t); row.appendChild(logo);
+    return row;
+  }
+
+  function drawGuests(){
+    var host = $("guests"); host.innerHTML = "";
+    while (current.visitors.length < MAX_GUESTS) current.visitors.push({time:"",name:"",company:"",logo:""});
+    current.visitors.slice(0, MAX_GUESTS).forEach(function(v,i){ host.appendChild(guestRow(v,i)); });
+  }
+
+  function drawItems(){
+    var host = $("items"); host.innerHTML = "";
+    (current.items || []).forEach(function(it, i){
+      var row = el("div","guestrow");
+      function field(labelText, key, ph, type){
+        var wrap = el("div");
+        var l = el("label"); txt(l, labelText); l.setAttribute("for","i"+i+key);
+        var inp = el("input"); inp.type = type || "text"; inp.id = "i"+i+key;
+        inp.value = it[key] || ""; inp.placeholder = ph || "";
+        inp.addEventListener("input", function(){ it[key] = inp.value; });
+        wrap.appendChild(l); wrap.appendChild(inp); return wrap;
+      }
+      row.appendChild(field("Notice", "title", "Golf competition on Thursday"));
+      row.appendChild(field("Detail (optional)", "detail", "Save the date. Details to follow."));
+      row.appendChild(field("Remove after", "until", "", "date"));
+      var rm = el("div");
+      var rl = el("label"); txt(rl, " "); rm.appendChild(rl);
+      var b = el("button","danger"); txt(b, "Remove");
+      b.addEventListener("click", function(){ current.items.splice(i,1); drawItems(); });
+      rm.appendChild(b); row.appendChild(rm);
+      host.appendChild(row);
+    });
+  }
+
+  function drawArts(){
+    var host = $("arts"); host.innerHTML = "";
+    (current.images||[]).forEach(function(u, i){
+      var fig = el("figure");
+      var im = el("img"); im.src = u; im.alt = "";
+      var x = el("button"); txt(x, "Remove");
+      x.addEventListener("click", function(){ current.images.splice(i,1); drawArts(); });
+      fig.appendChild(im); fig.appendChild(x); host.appendChild(fig);
+    });
+  }
+
+  function drawBg(){
+    var host = $("bgWrap"); host.innerHTML = "";
+    if (!current.background) return;
+    var fig = el("figure");
+    var im = el("img"); im.src = current.background; im.alt = "";
+    var x = el("button"); txt(x, "Remove");
+    x.addEventListener("click", function(){ current.background = ""; drawBg(); });
+    fig.appendChild(im); fig.appendChild(x); host.appendChild(fig);
+  }
+
+  function openEditor(s){
+    current = JSON.parse(JSON.stringify(s));
+    if (!current.visitors) current.visitors = [];
+    if (!current.images) current.images = [];
+    $("listview").classList.add("hide");
+    $("editview").classList.remove("hide");
+    txt($("edTitle"), current.id ? ("Edit — " + (current.title || current.id))
+                                 : "New screen");
+    $("edId").value = current.id || "";
+    $("edId").disabled = !!current.id;
+    $("edTitleField").value = current.title || "";
+    $("edHeading").value = current.heading || "";
+    $("edEnabled").value = current.enabled === false ? "off" : "on";
+    var kind = current.kind;
+    $("visitorFields").classList.toggle("hide", kind !== "visitor");
+    $("dykFields").classList.toggle("hide", kind !== "didyouknow");
+    $("annFields").classList.toggle("hide", kind !== "announcements");
+    $("edId").disabled = !!current.id;
+    if (kind === "visitor") drawGuests();
+    else if (kind === "announcements") { if(!current.items) current.items=[]; drawItems(); }
+    else { $("edBody").value = current.body || ""; drawArts(); }
+    drawBg();
+    say($("edmsg"), "");
+  }
+
+  $("back").addEventListener("click", function(){
+    $("editview").classList.add("hide"); $("listview").classList.remove("hide"); loadList();
+  });
+  $("newVisitor").addEventListener("click", function(){ openEditor(blank("visitor")); });
+  $("newDyk").addEventListener("click", function(){ openEditor(blank("didyouknow")); });
+  // The sign's notices are a single list, not one screen among many, so this opens the
+  // existing record if there is one and starts a fresh list if there is not.
+  $("editNotices").addEventListener("click", function(){
+    api({ query:"?action=get&id=lobby-sign" }).then(function(j){
+      openEditor(j && j.ok ? j.screen : blank("announcements"));
+    }).catch(function(){ openEditor(blank("announcements")); });
+  });
+  $("addItem").addEventListener("click", function(){
+    if (!current.items) current.items = [];
+    if (current.items.length >= 12){ say($("edmsg"), "Twelve notices is the maximum.", "err"); return; }
+    current.items.push({title:"",detail:"",until:""}); drawItems();
+  });
+  $("refresh").addEventListener("click", loadList);
+
+  $("imgFile").addEventListener("change", function(){
+    var f = this.files && this.files[0]; if (!f) return;
+    if ((current.images||[]).length >= MAX_IMAGES){
+      say($("edmsg"), "Four images is the maximum.", "err"); this.value=""; return; }
+    say($("edmsg"), "Uploading image…");
+    var self = this;
+    upload(f, "image", 1600).then(function(url){
+      current.images.push(url); drawArts(); self.value="";
+      say($("edmsg"), "Image added. Remember to save.", "ok");
+    }).catch(function(e){ say($("edmsg"), e.message, "err"); });
+  });
+
+  $("bgFile").addEventListener("change", function(){
+    var f = this.files && this.files[0]; if (!f) return;
+    say($("edmsg"), "Uploading background…");
+    var self = this;
+    upload(f, "background", 2200).then(function(url){
+      current.background = url; drawBg(); self.value="";
+      say($("edmsg"), "Background added. Remember to save.", "ok");
+    }).catch(function(e){ say($("edmsg"), e.message, "err"); });
+  });
+
+  $("open").addEventListener("click", function(){
+    if (!current || !current.id) { say($("edmsg"), "Save the screen first.", "err"); return; }
+    window.open(current.kind === "announcements" ? "/lobby-sign/"
+      : ("/screen/?id=" + current.id), "_blank", "noopener");
+  });
+
+  $("save").addEventListener("click", function(){
+    var id = ($("edId").value || "").trim().toLowerCase();
+    if (!/^[a-z0-9][a-z0-9-]{0,48}$/.test(id)){
+      say($("edmsg"), "Screen name must be lower-case letters, numbers and dashes.", "err"); return; }
+    current.id = id;
+    current.title = $("edTitleField").value.trim() || id;
+    current.heading = $("edHeading").value.trim();
+    current.enabled = $("edEnabled").value === "on";
+    if (current.kind === "didyouknow") current.body = $("edBody").value;
+    if (current.kind === "announcements")
+      current.items = (current.items||[]).filter(function(it){ return (it.title||"").trim(); });
+    if (current.kind === "visitor")
+      current.visitors = current.visitors.filter(function(v){ return (v.name||"").trim() || (v.company||"").trim(); });
+    say($("edmsg"), "Saving…");
+    api({ method:"POST", body:{ action:"save", screen:current } }).then(function(j){
+      if (!j.ok) { say($("edmsg"), j.error || "Could not save.", "err"); return; }
+      current = j.screen;
+      if (!current.visitors) current.visitors = [];
+      if (!current.images) current.images = [];
+      $("edId").disabled = true;
+      if (current.kind === "visitor") drawGuests();
+      if (current.kind === "announcements") drawItems();
+      say($("edmsg"), "Saved. The screen picks this up within thirty seconds.", "ok");
+    }).catch(function(){ say($("edmsg"), "Could not reach the server.", "err"); });
+  });
+
+  $("del").addEventListener("click", function(){
+    if (!current || !current.id) { say($("edmsg"), "Nothing to delete yet.", "err"); return; }
+    if (!window.confirm("Delete the screen \"" + (current.title || current.id) + "\"? This cannot be undone."))
+      return;
+    api({ method:"POST", body:{ action:"delete", id: current.id } }).then(function(j){
+      if (!j.ok) { say($("edmsg"), "Could not delete.", "err"); return; }
+      $("editview").classList.add("hide"); $("listview").classList.remove("hide"); loadList();
+    });
+  });
+})();
+</script>
+</body>
+</html>

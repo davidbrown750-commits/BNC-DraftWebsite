@@ -23,10 +23,79 @@ export const config = {
   matcher: [
     "/",
     "/((?!api/|_shared/|lib/|figures/|docs/pdfs/|software/).*\\.html)",
+    // The lobby display screens. These carry booked revenue, customer names and RMA
+    // numbers on a wall in a public room, so they are gated here rather than by a
+    // client-side reveal: middleware runs ahead of the filesystem, so an unauthenticated
+    // request never receives the HTML at all.
+    "/lobby-sign",
+    "/lobby-sign/:path*",
+    "/screen",
+    "/screen/:path*",
   ],
 };
 
+// --- lobby screen gate -------------------------------------------------------
+// Verifies the same HMAC that lib/lobby-gate.js issues. Keep PAYLOAD, the hex
+// encoding and the cookie name identical in both files.
+const SIGN_COOKIE = "bnc_sign";
+const SIGN_PAYLOAD = "lobby-sign-v1";
+
+function timingSafeEqualStr(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+function readCookie(header, name) {
+  for (const part of header.split(";")) {
+    const i = part.indexOf("=");
+    if (i < 0) continue;
+    if (part.slice(0, i).trim() === name) return decodeURIComponent(part.slice(i + 1).trim());
+  }
+  return "";
+}
+
+async function expectedSignToken(secret) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(SIGN_PAYLOAD));
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function lobbyGate(request, url) {
+  const secret = process.env.LOBBY_SIGN_SECRET;
+  // Fail closed. An unset secret must not silently reopen the screens.
+  if (!secret) return Response.redirect(new URL("/lobby-signin.html", url.origin), 302);
+
+  // An existing ?k= bookmark keeps working, so the reception TV does not break the
+  // moment this ships.
+  const key = url.searchParams.get("k") || url.searchParams.get("key") || "";
+  const feedKey = process.env.LOBBY_FEED_KEY || "";
+  if (key && feedKey && timingSafeEqualStr(key, feedKey)) return;
+
+  // Plain Vercel edge middleware receives a standard Request, which has no .cookies
+  // helper — that belongs to next/server. Parse the header instead.
+  const token = readCookie(request.headers.get("cookie") || "", SIGN_COOKIE);
+  if (token && timingSafeEqualStr(token, await expectedSignToken(secret))) return;
+
+  const to = new URL("/lobby-signin.html", url.origin);
+  to.searchParams.set("next", url.pathname + url.search);
+  return Response.redirect(to, 302);
+}
+
 export default async function middleware(request) {
+  {
+    const url = new URL(request.url);
+    if (url.pathname === "/lobby-sign" || url.pathname.startsWith("/lobby-sign/") ||
+        url.pathname === "/screen" || url.pathname.startsWith("/screen/")) {
+      const blocked = await lobbyGate(request, url);
+      if (blocked) return blocked;
+      return;
+    }
+  }
+
   // Legacy WordPress parameter URLs (?s= site search, ?replytocom= comment
   // replies) used to be robots-blocked, which left Google unable to crawl the
   // ones it had already indexed. 301 them to the clean path instead so search
