@@ -63,7 +63,21 @@
     }
   }
 
+  /* The lobby TV follows the dashboard. If someone has switched it to the visitor or
+     did-you-know sign, leave for the renderer; it sends the TV back here when the fun
+     board is chosen again. Skipped when the URL pins a sign explicitly. */
+  function followActive() {
+    if (/[?&]pin=/.test(location.search)) return;
+    fetch("/api/lobby-screens?action=active", { cache: "no-store", credentials: "same-origin" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (j && j.ok && j.active && j.active !== "fun") location.replace("/screen/");
+      })
+      .catch(function () { /* stay put */ });
+  }
+
   function poll() {
+    followActive();
     fetch(SOURCE, { cache: "no-store", credentials: "same-origin" })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) { if (j && j.ok) apply(j.screen); })

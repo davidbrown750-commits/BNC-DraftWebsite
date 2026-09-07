@@ -70,10 +70,14 @@
   .dyk.with-art{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
   .dyk .copy{font-size:clamp(21px,2.7vw,50px);line-height:1.34;white-space:pre-wrap;
     overflow-wrap:anywhere}
-  .art{display:grid;gap:clamp(10px,1.6vh,22px)}
-  .art img{width:100%;max-height:34vh;object-fit:cover;border-radius:var(--r);
-    border:1px solid var(--line);background:rgba(255,255,255,.08);
+  .art{display:grid;gap:clamp(10px,1.6vh,22px);align-content:center;min-height:0}
+  /* contain, not cover. Cover cropped the top and bottom off whatever was uploaded,
+     which is exactly what happened to the first picture anyone put on the sign. */
+  .art img{width:100%;height:auto;max-height:62vh;object-fit:contain;border-radius:var(--r);
     animation:pop .7s cubic-bezier(.2,1.3,.4,1) both}
+  .art.n2 img{max-height:29vh}
+  .art.n3 img{max-height:19vh}
+  .art.n4 img{max-height:14vh}
   .art img:nth-child(2){animation-delay:.22s}
   .art img:nth-child(3){animation-delay:.44s}
   .art img:nth-child(4){animation-delay:.66s}
@@ -181,7 +185,7 @@
     var grid = el("div","dyk" + (imgs.length ? " with-art" : ""));
     grid.appendChild(txt(el("div","copy"), s.body || ""));
     if (imgs.length){
-      var art = el("div","art");
+      var art = el("div","art n" + imgs.length);
       imgs.forEach(function(u){ var i = el("img"); i.src = u; i.alt = ""; art.appendChild(i); });
       grid.appendChild(art);
     }
@@ -209,23 +213,39 @@
     st.textContent = s.updated_by ? ("Updated by " + s.updated_by) : "";
   }
 
-  function load(){
-    var id = screenId();
-    if (!id){ render(null); return; }
-    // Forward only the shared key, if one is in the URL. Appending the whole query
-    // string would repeat id=, and a repeated parameter arrives server-side as an
-    // array, which fails the id pattern and 404s.
+  /* With no ?id= the page follows whichever sign the dashboard has selected, so the TV
+     is set up once and never touched again. The fun board is a separate page, so
+     selecting it sends the TV there; its own feed script sends it back. */
+  var pinned = screenId();
+  function goFun(){ location.replace("/lobby-sign/"); }
+
+  function loadPinned(id){
     var km = /[?&](k|key)=([^&]*)/.exec(location.search);
     var keyPart = km ? ("&" + km[1] + "=" + encodeURIComponent(decodeURIComponent(km[2]))) : "";
-    fetch("/api/lobby-screens?id=" + encodeURIComponent(id) + keyPart,
+    return fetch("/api/lobby-screens?id=" + encodeURIComponent(id) + keyPart,
           { cache: "no-store", credentials: "same-origin" })
       .then(function(r){
         if (r.status === 401){ location.replace("/lobby-signin.html?next=" +
           encodeURIComponent(location.pathname + location.search)); return null; }
         return r.json();
       })
-      .then(function(j){ if (j) render(j.ok ? j.screen : null); })
-      .catch(function(){ /* keep showing whatever is up; a wall screen must not go blank */ });
+      .then(function(j){ if (j) render(j.ok ? j.screen : null); });
+  }
+
+  function load(){
+    if (pinned) { loadPinned(pinned).catch(function(){}); return; }
+    fetch("/api/lobby-screens?action=active", { cache: "no-store", credentials: "same-origin" })
+      .then(function(r){
+        if (r.status === 401){ location.replace("/lobby-signin.html?next=" +
+          encodeURIComponent(location.pathname + location.search)); return null; }
+        return r.json();
+      })
+      .then(function(j){
+        if (!j || !j.ok) return;
+        if (j.active === "fun") { goFun(); return; }
+        return loadPinned(j.active);
+      })
+      .catch(function(){ /* a wall screen must not go blank */ });
   }
 
   tick(); setInterval(tick, 10000);

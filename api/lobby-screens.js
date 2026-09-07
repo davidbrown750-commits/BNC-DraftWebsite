@@ -18,6 +18,10 @@ const { signedIn } = require("../lib/lobby-gate");
 const SB = process.env.SUPABASE_URL;
 const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const DOC_BUCKET = "lobby-screens";
+// Which sign the lobby TV is on. Kept outside the screens/ prefix so it never shows up
+// as a screen. The TV follows this, so nobody has to walk over and retype a URL.
+const ACTIVE_PATH = "state/active.json";
+const ACTIVE_IDS = new Set(["visitor-1", "did-you-know-1", "fun"]);
 const MEDIA_BUCKET = "lobby-media";
 
 const STAFF_DOMAIN = "@berkeleynucleonics.com";
@@ -168,9 +172,34 @@ async function listScreens() {
   return out;
 }
 
+// Storage serves these through a CDN that will hand back a copy from before the last
+// save. On a sign that is the difference between "I saved it" and "it did not change",
+// so every read gets a cache-buster.
+function fresh(path) {
+  return path + (path.indexOf("?") === -1 ? "?" : "&") + "cb=" + Date.now();
+}
+
+async function readActive() {
+  const r = await sb(fresh("/storage/v1/object/" + DOC_BUCKET + "/" + ACTIVE_PATH));
+  if (!r.ok) return "visitor-1";
+  try {
+    const j = await r.json();
+    return ACTIVE_IDS.has(j && j.active) ? j.active : "visitor-1";
+  } catch { return "visitor-1"; }
+}
+
+async function writeActive(id, who) {
+  const r = await sb("/storage/v1/object/" + DOC_BUCKET + "/" + ACTIVE_PATH, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-upsert": "true" },
+    body: JSON.stringify({ active: id, updated_at: new Date().toISOString(), updated_by: who }),
+  });
+  return r.ok;
+}
+
 async function readScreen(id) {
   if (!ID_RE.test(id)) return null;
-  const r = await sb("/storage/v1/object/" + DOC_BUCKET + "/screens/" + id + ".json");
+  const r = await sb(fresh("/storage/v1/object/" + DOC_BUCKET + "/screens/" + id + ".json"));
   if (!r.ok) return null;
   try { return await r.json(); } catch { return null; }
 }
@@ -214,6 +243,13 @@ module.exports = async function handler(req, res) {
   if (!SB || !SB_KEY) { res.status(503).json({ ok: false, error: "storage not configured" }); return; }
 
   try {
+    // ---- which sign is live: read by the TV, so it needs the lobby password only ----
+    if (req.method === "GET" && req.query && req.query.action === "active") {
+      if (!signedIn(req)) { res.status(401).json({ ok: false, error: "locked" }); return; }
+      res.status(200).json({ ok: true, active: await readActive() });
+      return;
+    }
+
     // ---- display read: the screen itself, behind the lobby password ----
     if (req.method === "GET" && req.query && req.query.id && !req.query.action) {
       if (!signedIn(req)) { res.status(401).json({ ok: false, error: "locked" }); return; }
@@ -235,7 +271,7 @@ module.exports = async function handler(req, res) {
         res.status(200).json({ ok: true, screen: doc, you: who });
         return;
       }
-      res.status(200).json({ ok: true, screens: await listScreens(), you: who });
+      res.status(200).json({ ok: true, screens: await listScreens(), active: await readActive(), you: who });
       return;
     }
 
@@ -249,6 +285,14 @@ module.exports = async function handler(req, res) {
     if (action === "upload") {
       const url = await uploadMedia(body.purpose, body.image, body.name);
       res.status(200).json({ ok: true, url });
+      return;
+    }
+
+    if (action === "setActive") {
+      const id = String(body.active || "");
+      if (!ACTIVE_IDS.has(id)) { res.status(400).json({ ok: false, error: "unknown sign" }); return; }
+      if (!(await writeActive(id, who))) { res.status(502).json({ ok: false, error: "could not switch" }); return; }
+      res.status(200).json({ ok: true, active: id });
       return;
     }
 
