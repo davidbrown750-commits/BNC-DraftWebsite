@@ -212,7 +212,12 @@
   function load(){
     var id = screenId();
     if (!id){ render(null); return; }
-    fetch("/api/lobby-screens?id=" + encodeURIComponent(id) + location.search.replace(/^\?/, "&"),
+    // Forward only the shared key, if one is in the URL. Appending the whole query
+    // string would repeat id=, and a repeated parameter arrives server-side as an
+    // array, which fails the id pattern and 404s.
+    var km = /[?&](k|key)=([^&]*)/.exec(location.search);
+    var keyPart = km ? ("&" + km[1] + "=" + encodeURIComponent(decodeURIComponent(km[2]))) : "";
+    fetch("/api/lobby-screens?id=" + encodeURIComponent(id) + keyPart,
           { cache: "no-store", credentials: "same-origin" })
       .then(function(r){
         if (r.status === 401){ location.replace("/lobby-signin.html?next=" +
