@@ -1217,6 +1217,17 @@
      lobby-feed.js (hosted build only) calls these. Each one is written so a feed that
      arrives mid-hour cannot yank something the room is already looking at. */
   var BASE_RIDDLES=RIDDLES.slice(), pendingRiddles=null, adoptedSlot=riddleSlot();
+  var BASE_EVENTS=(EVENTSDATA||[]).slice();
+  var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function withWhen(e){
+    var s=new Date(e.start+"T00:00:00"), en=new Date((e.end||e.start)+"T00:00:00");
+    var when = s.getMonth()===en.getMonth()
+      ? MON[s.getMonth()]+" "+s.getDate()+"–"+en.getDate()
+      : MON[s.getMonth()]+" "+s.getDate()+" – "+MON[en.getMonth()]+" "+en.getDate();
+    var days=Math.round((s-new Date())/86400000);
+    return {when:when,name:e.name,place:e.place||"",start:e.start,end:e.end||e.start,
+            days:days,soon:days<=30};
+  }
   window.BOARD={
     setSubmitted:function(items){
       SUBMITTED=(items||[]).filter(function(a){return a&&a.t;});
@@ -1230,12 +1241,37 @@
       var host=document.getElementById("stackzone"), head=document.getElementById("pileCount");
       var photos=(list||[]).filter(function(p){return p&&p.src;});
       if(!host)return;
-      if(!photos.length){host.classList.remove("photos");return;}
+      if(!photos.length){host.classList.remove("photos");renderReplies();return;}
       host.classList.add("photos");
-      host.innerHTML=photos.slice(0,6).map(function(p){
-        return '<figure class="lp"><img src="'+p.src+'" alt=""><figcaption>'+
-          (p.t||"")+(p.by?" · "+p.by:"")+'</figcaption></figure>';}).join("");
+      // Built with DOM calls rather than innerHTML: the caption and the poster's name
+      // are typed by staff, and a stray angle bracket must stay a character.
+      host.innerHTML="";
+      photos.slice(0,6).forEach(function(p){
+        var fig=document.createElement("figure"); fig.className="lp";
+        var im=document.createElement("img"); im.src=p.src; im.alt="";
+        var cap=document.createElement("figcaption");
+        cap.textContent=(p.t||"")+(p.by?" · "+p.by:"");
+        fig.appendChild(im); fig.appendChild(cap); host.appendChild(fig);
+      });
       if(head)head.textContent=photos.length+" from the team";
+    },
+    setEvents:function(list){
+      /* Shows typed in the dashboard join the ones baked by build_board_data.py rather
+         than replacing them, so adding one by hand cannot silently hide the rest.
+         Matched on name and start date so the same show entered twice shows once. */
+      var extra=(list||[]).filter(function(e){return e&&e.name&&e.start;});
+      if(!extra.length)return;
+      var seen={}, all=[];
+      BASE_EVENTS.concat(extra).forEach(function(e){
+        var key=(e.name||"").toLowerCase()+"|"+(e.start||"");
+        if(seen[key])return; seen[key]=1; all.push(e);
+      });
+      var today=todayISO();
+      EVENTSDATA=all
+        .filter(function(e){return !e.end||e.end>=today;})
+        .map(function(e){ return e.when ? e : withWhen(e); })
+        .sort(function(a,b){return (a.start||"")<(b.start||"")?-1:1;});
+      renderEvents();
     }
   };
   setInterval(function(){

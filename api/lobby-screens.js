@@ -23,11 +23,11 @@ const MEDIA_BUCKET = "lobby-media";
 const STAFF_DOMAIN = "@berkeleynucleonics.com";
 const STAFF_EXTRA = ["davidbrown750@gmail.com"];
 
-const KINDS = new Set(["visitor", "didyouknow", "announcements"]);
+const KINDS = new Set(["visitor", "didyouknow", "signblocks"]);
 const ID_RE = /^[a-z0-9][a-z0-9-]{0,48}$/;
 const MAX_VISITORS = 4;
 const MAX_IMAGES = 4;
-const MAX_ITEMS = 12;
+const MAX_BLOCKS = 24;
 const MAX_BODY_CHARS = 1200;
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 const DATA_URL_RE = /^data:(image\/(png|jpeg|webp|svg\+xml));base64,([A-Za-z0-9+/=\s]+)$/;
@@ -77,6 +77,35 @@ function safeMediaUrl(v) {
   return s.startsWith(prefix) ? s : "";
 }
 
+function isoDate(v) {
+  const s = String(v || "").trim();
+  return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : "";
+}
+
+// One editable block on the lobby sign. Anything without its required fields is
+// dropped rather than half-saved, so the sign never renders an empty card.
+function blockOf(b) {
+  const t = String((b && b.type) || "").trim();
+  if (t === "notice") {
+    const o = { type: "notice", title: clean(b.title, 90), detail: clean(b.detail, 160), until: isoDate(b.until) };
+    return o.title ? o : null;
+  }
+  if (t === "riddle") {
+    const o = { type: "riddle", q: clean(b.q, 220), a: clean(b.a, 140) };
+    return o.q && o.a ? o : null;
+  }
+  if (t === "photo") {
+    const o = { type: "photo", image: safeMediaUrl(b.image), caption: clean(b.caption, 90) };
+    return o.image ? o : null;
+  }
+  if (t === "event") {
+    const o = { type: "event", name: clean(b.name, 70), place: clean(b.place, 80),
+                start: isoDate(b.start), end: isoDate(b.end) || isoDate(b.start) };
+    return o.name && o.start ? o : null;
+  }
+  return null;
+}
+
 function normalise(input, who) {
   const kind = String(input.kind || "").trim();
   if (!KINDS.has(kind)) throw new Error("unknown screen kind");
@@ -102,19 +131,16 @@ function normalise(input, who) {
         logo: safeMediaUrl(v && v.logo),
       }))
       .filter((v) => v.name || v.company);
-  } else if (kind === "announcements") {
-    // The notices that ride in the lobby sign's amber slot. A dated item drops off on
-    // its own the day after it runs, so nobody has to remember to take it down.
-    out.heading = clean(input.heading, 60) || "Lobby sign notices";
-    out.items = (Array.isArray(input.items) ? input.items : [])
-      .slice(0, MAX_ITEMS)
-      .map((it) => ({
-        title: clean(it && it.title, 90),
-        detail: clean(it && it.detail, 160),
-        until: /^\d{4}-\d{2}-\d{2}$/.test(String((it && it.until) || "")) ? String(it.until) : "",
-      }))
-      .filter((it) => it.title);
-  } else {
+  } else if (kind === "signblocks") {
+    // The lobby sign's editable content, as a flat list of typed blocks. Keeping them
+    // in one list rather than four is what lets the dashboard offer "add a block"
+    // without the API learning a new shape each time.
+    out.heading = clean(input.heading, 60) || "Lobby sign";
+    out.blocks = (Array.isArray(input.blocks) ? input.blocks : [])
+      .slice(0, MAX_BLOCKS)
+      .map(blockOf)
+      .filter(Boolean);
+    } else {
     out.heading = clean(input.heading, 60) || "Did You Know?";
     // Free text keeps its line breaks; only the length is capped. The screen renders
     // it as text, never as markup.

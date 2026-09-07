@@ -81,6 +81,25 @@
   .arts button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:11px;
     background:rgba(8,18,46,.85)}
   .hint{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:6px}
+  /* The lobby sign gets its own panel above the screens: it is the one display that
+     already existed, and reverting to it is a thing people will want to do quickly. */
+  .signpanel{background:linear-gradient(135deg,rgba(59,155,255,.16),rgba(9,15,38,.72));
+    border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:26px;
+    display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+  .signpanel h2{font-family:var(--font-h);font-size:17px;margin:0 0 5px}
+  .signpanel p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.5;max-width:62ch}
+  .signpanel .acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  .blk{border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;
+    background:rgba(255,255,255,.03)}
+  .blk .bhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .blk .btype{font-family:var(--font-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(59,155,255,.18);color:var(--blue)}
+  .blk .bhead .sp{flex:1}
+  .blk .fields{display:grid;gap:12px}
+  .blk .fields.two{grid-template-columns:1fr 1fr}
+  .blk .fields.three{grid-template-columns:2fr 2fr 1fr}
+  @media (max-width:820px){.signpanel{grid-template-columns:1fr}
+    .blk .fields.two,.blk .fields.three{grid-template-columns:1fr}}
   .msg{margin-top:14px;font-size:13.5px;min-height:19px}
   .msg.err{color:var(--coral)} .msg.ok{color:var(--signal)}
   @media (max-width:820px){.cols,.guestrow{grid-template-columns:1fr}}
@@ -111,11 +130,23 @@
 <main id="app" class="wrap hide">
 
   <div id="listview">
+    <div class="signpanel">
+      <div>
+        <h2>The lobby sign</h2>
+        <p>The original reception board: month-to-date sales, the Cal Lab queue, yesterday's
+           email figures, news, the weather and the engineer's riddle. Reception can switch
+           back to it at any time. Notices, riddles, photos and shows on it are edited here.</p>
+      </div>
+      <div class="acts">
+        <button id="openSign" class="primary" type="button">Open the lobby sign</button>
+        <button id="editBlocks" type="button">Edit its blocks</button>
+      </div>
+    </div>
+
     <div class="bar">
       <h2>Screens</h2>
       <button id="newVisitor" type="button">New visitor screen</button>
       <button id="newDyk" type="button">New "Did You Know" screen</button>
-      <button id="editNotices" type="button">Lobby sign notices</button>
       <button id="refresh" type="button">Refresh</button>
     </div>
     <div class="grid" id="cards"></div>
@@ -124,6 +155,31 @@
       Screens are shown on the reception TV at <code>/screen/?id=&lt;name&gt;</code>. That page asks
       for the screen password once per device, then remembers it for a year.
     </p>
+  </div>
+
+  <div id="blocksview" class="editor hide">
+    <div class="bar">
+      <h2>Lobby sign blocks</h2>
+      <button id="blocksBack" type="button">Back to all screens</button>
+    </div>
+    <p class="hint" style="margin-top:0">
+      Each block is one piece of content on the sign. Notices ride the amber slot between
+      the news items, riddles join the hourly rotation, photos take over the replies panel,
+      and shows appear in Upcoming. The sign picks changes up within a minute.
+    </p>
+    <div id="blocks"></div>
+    <div class="bar" style="margin-top:16px">
+      <select id="blockType" style="max-width:220px">
+        <option value="notice">Notice</option>
+        <option value="riddle">Riddle</option>
+        <option value="photo">Photo</option>
+        <option value="event">Upcoming show</option>
+      </select>
+      <button id="addBlock" type="button">Add block</button>
+      <span style="flex:1"></span>
+      <button id="saveBlocks" class="primary" type="button">Save blocks</button>
+    </div>
+    <div class="msg" id="blkmsg" role="status" aria-live="polite"></div>
   </div>
 
   <div id="editview" class="editor hide">
@@ -153,15 +209,6 @@
     <div id="visitorFields" class="hide">
       <label>Visitors (up to four)</label>
       <div id="guests"></div>
-    </div>
-
-    <!-- lobby sign notices -->
-    <div id="annFields" class="hide">
-      <label>Notices shown on the lobby sign (up to twelve)</label>
-      <div id="items"></div>
-      <button id="addItem" type="button">Add a notice</button>
-      <div class="hint">Each notice rides in the amber slot on the sign, between the news items.
-        Give it an end date and it takes itself down the day after.</div>
     </div>
 
     <!-- did-you-know fields -->
@@ -308,7 +355,7 @@
       var host = $("cards"); host.innerHTML = "";
       if (!j.screens.length) say($("listmsg"), "No screens yet. Create one above.");
       else say($("listmsg"), "");
-      j.screens.forEach(function(s){
+      j.screens.filter(function(s){ return s.kind !== "signblocks"; }).forEach(function(s){
         var c = el("div","card");
         var h = el("h3"); txt(h, s.title || s.id);
         var pill = el("span","pill " + (s.enabled === false ? "off" : "on"));
@@ -316,8 +363,8 @@
         h.appendChild(document.createTextNode(" ")); h.appendChild(pill);
         c.appendChild(h);
         var meta = el("div","meta");
-        txt(meta, (s.kind === "announcements" ? "/lobby-sign/" : "/screen/?id=" + s.id) + "  ·  " +
-          (s.kind === "visitor" ? "visitors" : s.kind === "announcements" ? "sign notices" : "did you know") +
+        txt(meta, "/screen/?id=" + s.id + "  ·  " +
+          (s.kind === "visitor" ? "visitors" : "did you know") +
           (s.updated_by ? ("  ·  " + s.updated_by) : ""));
         c.appendChild(meta);
         var row = el("div","row");
@@ -325,14 +372,116 @@
         edit.addEventListener("click", function(){ openEditor(s); });
         var open = el("button"); txt(open, "Open");
         open.addEventListener("click", function(){
-          window.open(s.kind === "announcements" ? "/lobby-sign/" : ("/screen/?id=" + s.id),
-            "_blank", "noopener"); });
+          window.open("/screen/?id=" + s.id, "_blank", "noopener"); });
         row.appendChild(edit); row.appendChild(open);
         c.appendChild(row);
         host.appendChild(c);
       });
     }).catch(function(){ say($("listmsg"), "Could not reach the server.", "err"); });
   }
+
+  /* ---------------- lobby sign blocks ---------------- */
+  var signDoc = null;
+  var BLOCK_FIELDS = {
+    notice: [["title","Notice","Golf competition on Thursday","text","two"],
+             ["detail","Detail (optional)","Save the date. Details to follow.","text",""],
+             ["until","Remove after","","date",""]],
+    riddle: [["q","Question","What has keys but no locks?","text",""],
+             ["a","Answer","A keyboard","text",""]],
+    photo:  [["caption","Caption (optional)","Team lunch, September","text",""]],
+    event:  [["name","Show","The Continuing Challenge","text",""],
+             ["place","Where","Sacramento, CA","text",""],
+             ["start","Starts","","date",""],
+             ["end","Ends","","date",""]]
+  };
+  var BLOCK_LABEL = { notice:"Notice", riddle:"Riddle", photo:"Photo", event:"Upcoming show" };
+
+  function drawBlocks(){
+    var host = $("blocks"); host.innerHTML = "";
+    var blocks = (signDoc && signDoc.blocks) || [];
+    if (!blocks.length){
+      host.appendChild(txt(el("div","hint"), "No blocks yet. Add one below."));
+      return;
+    }
+    blocks.forEach(function(b, i){
+      var card = el("div","blk");
+      var head = el("div","bhead");
+      head.appendChild(txt(el("span","btype"), BLOCK_LABEL[b.type] || b.type));
+      head.appendChild(el("span","sp"));
+      var rm = el("button","danger"); txt(rm, "Remove");
+      rm.addEventListener("click", function(){ signDoc.blocks.splice(i,1); drawBlocks(); });
+      head.appendChild(rm);
+      card.appendChild(head);
+
+      var cols = b.type === "event" ? "three" : (b.type === "notice" ? "two" : "");
+      var fields = el("div","fields" + (cols ? " " + cols : ""));
+      (BLOCK_FIELDS[b.type] || []).forEach(function(f){
+        var key = f[0], wrap = el("div");
+        var l = el("label"); txt(l, f[1]); l.setAttribute("for","b"+i+key);
+        var inp = el("input"); inp.type = f[3]; inp.id = "b"+i+key;
+        inp.value = b[key] || ""; inp.placeholder = f[2];
+        inp.addEventListener("input", function(){ b[key] = inp.value; });
+        wrap.appendChild(l); wrap.appendChild(inp); fields.appendChild(wrap);
+      });
+      if (b.type === "photo"){
+        var pw = el("div");
+        var pl = el("label"); txt(pl, "Image"); pw.appendChild(pl);
+        var t = el("div","thumb");
+        if (b.image){ var im = el("img"); im.src = b.image; im.alt=""; t.appendChild(im); }
+        var f2 = el("input"); f2.type="file"; f2.accept="image/png,image/jpeg,image/webp";
+        f2.addEventListener("change", function(){
+          if (!f2.files || !f2.files[0]) return;
+          say($("blkmsg"), "Uploading image…");
+          upload(f2.files[0], "image", 1600).then(function(url){
+            b.image = url; say($("blkmsg"), "Image added. Remember to save.", "ok"); drawBlocks();
+          }).catch(function(e){ say($("blkmsg"), e.message, "err"); });
+        });
+        t.appendChild(f2); pw.appendChild(t); fields.appendChild(pw);
+      }
+      card.appendChild(fields);
+      host.appendChild(card);
+    });
+  }
+
+  function openBlocks(){
+    $("listview").classList.add("hide");
+    $("editview").classList.add("hide");
+    $("blocksview").classList.remove("hide");
+    say($("blkmsg"), "Loading…");
+    api({ query:"?action=get&id=lobby-sign" }).then(function(j){
+      signDoc = (j && j.ok && j.screen) ? j.screen : null;
+      if (!signDoc || signDoc.kind !== "signblocks")
+        signDoc = { id:"lobby-sign", kind:"signblocks", title:"Lobby sign",
+                    heading:"Lobby sign", enabled:true, background:"", blocks:[] };
+      if (!signDoc.blocks) signDoc.blocks = [];
+      drawBlocks(); say($("blkmsg"), "");
+    }).catch(function(){ say($("blkmsg"), "Could not load the sign's blocks.", "err"); });
+  }
+
+  $("editBlocks").addEventListener("click", openBlocks);
+  $("blocksBack").addEventListener("click", function(){
+    $("blocksview").classList.add("hide"); $("listview").classList.remove("hide"); loadList();
+  });
+  $("addBlock").addEventListener("click", function(){
+    if (!signDoc) return;
+    if (signDoc.blocks.length >= 24){ say($("blkmsg"), "Twenty-four blocks is the maximum.", "err"); return; }
+    var t = $("blockType").value;
+    var b = { type: t };
+    (BLOCK_FIELDS[t] || []).forEach(function(f){ b[f[0]] = ""; });
+    if (t === "photo") b.image = "";
+    signDoc.blocks.push(b); drawBlocks();
+  });
+  $("saveBlocks").addEventListener("click", function(){
+    if (!signDoc) return;
+    say($("blkmsg"), "Saving…");
+    api({ method:"POST", body:{ action:"save", screen:signDoc } }).then(function(j){
+      if (!j.ok){ say($("blkmsg"), j.error || "Could not save.", "err"); return; }
+      signDoc = j.screen; if (!signDoc.blocks) signDoc.blocks = [];
+      drawBlocks();
+      say($("blkmsg"), "Saved. The sign picks this up within a minute. "
+        + "Anything incomplete was dropped.", "ok");
+    }).catch(function(){ say($("blkmsg"), "Could not reach the server.", "err"); });
+  });
 
   /* ---------------- editor ---------------- */
   function blank(kind){
@@ -381,30 +530,6 @@
     current.visitors.slice(0, MAX_GUESTS).forEach(function(v,i){ host.appendChild(guestRow(v,i)); });
   }
 
-  function drawItems(){
-    var host = $("items"); host.innerHTML = "";
-    (current.items || []).forEach(function(it, i){
-      var row = el("div","guestrow");
-      function field(labelText, key, ph, type){
-        var wrap = el("div");
-        var l = el("label"); txt(l, labelText); l.setAttribute("for","i"+i+key);
-        var inp = el("input"); inp.type = type || "text"; inp.id = "i"+i+key;
-        inp.value = it[key] || ""; inp.placeholder = ph || "";
-        inp.addEventListener("input", function(){ it[key] = inp.value; });
-        wrap.appendChild(l); wrap.appendChild(inp); return wrap;
-      }
-      row.appendChild(field("Notice", "title", "Golf competition on Thursday"));
-      row.appendChild(field("Detail (optional)", "detail", "Save the date. Details to follow."));
-      row.appendChild(field("Remove after", "until", "", "date"));
-      var rm = el("div");
-      var rl = el("label"); txt(rl, " "); rm.appendChild(rl);
-      var b = el("button","danger"); txt(b, "Remove");
-      b.addEventListener("click", function(){ current.items.splice(i,1); drawItems(); });
-      rm.appendChild(b); row.appendChild(rm);
-      host.appendChild(row);
-    });
-  }
-
   function drawArts(){
     var host = $("arts"); host.innerHTML = "";
     (current.images||[]).forEach(function(u, i){
@@ -442,10 +567,8 @@
     var kind = current.kind;
     $("visitorFields").classList.toggle("hide", kind !== "visitor");
     $("dykFields").classList.toggle("hide", kind !== "didyouknow");
-    $("annFields").classList.toggle("hide", kind !== "announcements");
     $("edId").disabled = !!current.id;
     if (kind === "visitor") drawGuests();
-    else if (kind === "announcements") { if(!current.items) current.items=[]; drawItems(); }
     else { $("edBody").value = current.body || ""; drawArts(); }
     drawBg();
     say($("edmsg"), "");
@@ -456,17 +579,8 @@
   });
   $("newVisitor").addEventListener("click", function(){ openEditor(blank("visitor")); });
   $("newDyk").addEventListener("click", function(){ openEditor(blank("didyouknow")); });
-  // The sign's notices are a single list, not one screen among many, so this opens the
-  // existing record if there is one and starts a fresh list if there is not.
-  $("editNotices").addEventListener("click", function(){
-    api({ query:"?action=get&id=lobby-sign" }).then(function(j){
-      openEditor(j && j.ok ? j.screen : blank("announcements"));
-    }).catch(function(){ openEditor(blank("announcements")); });
-  });
-  $("addItem").addEventListener("click", function(){
-    if (!current.items) current.items = [];
-    if (current.items.length >= 12){ say($("edmsg"), "Twelve notices is the maximum.", "err"); return; }
-    current.items.push({title:"",detail:"",until:""}); drawItems();
+  $("openSign").addEventListener("click", function(){
+    window.open("/lobby-sign/", "_blank", "noopener");
   });
   $("refresh").addEventListener("click", loadList);
 
@@ -494,8 +608,7 @@
 
   $("open").addEventListener("click", function(){
     if (!current || !current.id) { say($("edmsg"), "Save the screen first.", "err"); return; }
-    window.open(current.kind === "announcements" ? "/lobby-sign/"
-      : ("/screen/?id=" + current.id), "_blank", "noopener");
+    window.open("/screen/?id=" + current.id, "_blank", "noopener");
   });
 
   $("save").addEventListener("click", function(){
@@ -507,8 +620,6 @@
     current.heading = $("edHeading").value.trim();
     current.enabled = $("edEnabled").value === "on";
     if (current.kind === "didyouknow") current.body = $("edBody").value;
-    if (current.kind === "announcements")
-      current.items = (current.items||[]).filter(function(it){ return (it.title||"").trim(); });
     if (current.kind === "visitor")
       current.visitors = current.visitors.filter(function(v){ return (v.name||"").trim() || (v.company||"").trim(); });
     say($("edmsg"), "Saving…");
@@ -519,7 +630,6 @@
       if (!current.images) current.images = [];
       $("edId").disabled = true;
       if (current.kind === "visitor") drawGuests();
-      if (current.kind === "announcements") drawItems();
       say($("edmsg"), "Saved. The screen picks this up within thirty seconds.", "ok");
     }).catch(function(){ say($("edmsg"), "Could not reach the server.", "err"); });
   });
