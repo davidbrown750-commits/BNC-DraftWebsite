@@ -47,6 +47,15 @@ function timingSafeEqualStr(a, b) {
   return diff === 0;
 }
 
+function readCookie(header, name) {
+  for (const part of header.split(";")) {
+    const i = part.indexOf("=");
+    if (i < 0) continue;
+    if (part.slice(0, i).trim() === name) return decodeURIComponent(part.slice(i + 1).trim());
+  }
+  return "";
+}
+
 async function expectedSignToken(secret) {
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
@@ -66,8 +75,9 @@ async function lobbyGate(request, url) {
   const feedKey = process.env.LOBBY_FEED_KEY || "";
   if (key && feedKey && timingSafeEqualStr(key, feedKey)) return;
 
-  const cookie = request.cookies.get(SIGN_COOKIE);
-  const token = cookie && cookie.value ? cookie.value : "";
+  // Plain Vercel edge middleware receives a standard Request, which has no .cookies
+  // helper — that belongs to next/server. Parse the header instead.
+  const token = readCookie(request.headers.get("cookie") || "", SIGN_COOKIE);
   if (token && timingSafeEqualStr(token, await expectedSignToken(secret))) return;
 
   const to = new URL("/lobby-signin.html", url.origin);
