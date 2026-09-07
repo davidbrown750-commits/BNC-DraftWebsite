@@ -115,6 +115,7 @@
       <h2>Screens</h2>
       <button id="newVisitor" type="button">New visitor screen</button>
       <button id="newDyk" type="button">New "Did You Know" screen</button>
+      <button id="editNotices" type="button">Lobby sign notices</button>
       <button id="refresh" type="button">Refresh</button>
     </div>
     <div class="grid" id="cards"></div>
@@ -152,6 +153,15 @@
     <div id="visitorFields" class="hide">
       <label>Visitors (up to four)</label>
       <div id="guests"></div>
+    </div>
+
+    <!-- lobby sign notices -->
+    <div id="annFields" class="hide">
+      <label>Notices shown on the lobby sign (up to twelve)</label>
+      <div id="items"></div>
+      <button id="addItem" type="button">Add a notice</button>
+      <div class="hint">Each notice rides in the amber slot on the sign, between the news items.
+        Give it an end date and it takes itself down the day after.</div>
     </div>
 
     <!-- did-you-know fields -->
@@ -306,15 +316,17 @@
         h.appendChild(document.createTextNode(" ")); h.appendChild(pill);
         c.appendChild(h);
         var meta = el("div","meta");
-        txt(meta, "/screen/?id=" + s.id + "  ·  " +
-          (s.kind === "visitor" ? "visitors" : "did you know") +
+        txt(meta, (s.kind === "announcements" ? "/lobby-sign/" : "/screen/?id=" + s.id) + "  ·  " +
+          (s.kind === "visitor" ? "visitors" : s.kind === "announcements" ? "sign notices" : "did you know") +
           (s.updated_by ? ("  ·  " + s.updated_by) : ""));
         c.appendChild(meta);
         var row = el("div","row");
         var edit = el("button"); txt(edit, "Edit");
         edit.addEventListener("click", function(){ openEditor(s); });
         var open = el("button"); txt(open, "Open");
-        open.addEventListener("click", function(){ window.open("/screen/?id=" + s.id, "_blank", "noopener"); });
+        open.addEventListener("click", function(){
+          window.open(s.kind === "announcements" ? "/lobby-sign/" : ("/screen/?id=" + s.id),
+            "_blank", "noopener"); });
         row.appendChild(edit); row.appendChild(open);
         c.appendChild(row);
         host.appendChild(c);
@@ -324,6 +336,9 @@
 
   /* ---------------- editor ---------------- */
   function blank(kind){
+    if (kind === "announcements")
+      return { id:"lobby-sign", kind:"announcements", title:"Lobby sign notices",
+               heading:"Lobby sign notices", enabled:true, background:"", items:[] };
     return kind === "visitor"
       ? { id:"", kind:"visitor", title:"", heading:"Welcome", enabled:true, background:"", visitors:[] }
       : { id:"", kind:"didyouknow", title:"", heading:"Did You Know?", enabled:true,
@@ -366,6 +381,30 @@
     current.visitors.slice(0, MAX_GUESTS).forEach(function(v,i){ host.appendChild(guestRow(v,i)); });
   }
 
+  function drawItems(){
+    var host = $("items"); host.innerHTML = "";
+    (current.items || []).forEach(function(it, i){
+      var row = el("div","guestrow");
+      function field(labelText, key, ph, type){
+        var wrap = el("div");
+        var l = el("label"); txt(l, labelText); l.setAttribute("for","i"+i+key);
+        var inp = el("input"); inp.type = type || "text"; inp.id = "i"+i+key;
+        inp.value = it[key] || ""; inp.placeholder = ph || "";
+        inp.addEventListener("input", function(){ it[key] = inp.value; });
+        wrap.appendChild(l); wrap.appendChild(inp); return wrap;
+      }
+      row.appendChild(field("Notice", "title", "Golf competition on Thursday"));
+      row.appendChild(field("Detail (optional)", "detail", "Save the date. Details to follow."));
+      row.appendChild(field("Remove after", "until", "", "date"));
+      var rm = el("div");
+      var rl = el("label"); txt(rl, " "); rm.appendChild(rl);
+      var b = el("button","danger"); txt(b, "Remove");
+      b.addEventListener("click", function(){ current.items.splice(i,1); drawItems(); });
+      rm.appendChild(b); row.appendChild(rm);
+      host.appendChild(row);
+    });
+  }
+
   function drawArts(){
     var host = $("arts"); host.innerHTML = "";
     (current.images||[]).forEach(function(u, i){
@@ -400,10 +439,14 @@
     $("edTitleField").value = current.title || "";
     $("edHeading").value = current.heading || "";
     $("edEnabled").value = current.enabled === false ? "off" : "on";
-    var isVisitor = current.kind === "visitor";
-    $("visitorFields").classList.toggle("hide", !isVisitor);
-    $("dykFields").classList.toggle("hide", isVisitor);
-    if (isVisitor) drawGuests(); else { $("edBody").value = current.body || ""; drawArts(); }
+    var kind = current.kind;
+    $("visitorFields").classList.toggle("hide", kind !== "visitor");
+    $("dykFields").classList.toggle("hide", kind !== "didyouknow");
+    $("annFields").classList.toggle("hide", kind !== "announcements");
+    $("edId").disabled = !!current.id;
+    if (kind === "visitor") drawGuests();
+    else if (kind === "announcements") { if(!current.items) current.items=[]; drawItems(); }
+    else { $("edBody").value = current.body || ""; drawArts(); }
     drawBg();
     say($("edmsg"), "");
   }
@@ -413,6 +456,18 @@
   });
   $("newVisitor").addEventListener("click", function(){ openEditor(blank("visitor")); });
   $("newDyk").addEventListener("click", function(){ openEditor(blank("didyouknow")); });
+  // The sign's notices are a single list, not one screen among many, so this opens the
+  // existing record if there is one and starts a fresh list if there is not.
+  $("editNotices").addEventListener("click", function(){
+    api({ query:"?action=get&id=lobby-sign" }).then(function(j){
+      openEditor(j && j.ok ? j.screen : blank("announcements"));
+    }).catch(function(){ openEditor(blank("announcements")); });
+  });
+  $("addItem").addEventListener("click", function(){
+    if (!current.items) current.items = [];
+    if (current.items.length >= 12){ say($("edmsg"), "Twelve notices is the maximum.", "err"); return; }
+    current.items.push({title:"",detail:"",until:""}); drawItems();
+  });
   $("refresh").addEventListener("click", loadList);
 
   $("imgFile").addEventListener("change", function(){
@@ -439,7 +494,8 @@
 
   $("open").addEventListener("click", function(){
     if (!current || !current.id) { say($("edmsg"), "Save the screen first.", "err"); return; }
-    window.open("/screen/?id=" + current.id, "_blank", "noopener");
+    window.open(current.kind === "announcements" ? "/lobby-sign/"
+      : ("/screen/?id=" + current.id), "_blank", "noopener");
   });
 
   $("save").addEventListener("click", function(){
@@ -451,6 +507,8 @@
     current.heading = $("edHeading").value.trim();
     current.enabled = $("edEnabled").value === "on";
     if (current.kind === "didyouknow") current.body = $("edBody").value;
+    if (current.kind === "announcements")
+      current.items = (current.items||[]).filter(function(it){ return (it.title||"").trim(); });
     if (current.kind === "visitor")
       current.visitors = current.visitors.filter(function(v){ return (v.name||"").trim() || (v.company||"").trim(); });
     say($("edmsg"), "Saving…");
@@ -461,6 +519,7 @@
       if (!current.images) current.images = [];
       $("edId").disabled = true;
       if (current.kind === "visitor") drawGuests();
+      if (current.kind === "announcements") drawItems();
       say($("edmsg"), "Saved. The screen picks this up within thirty seconds.", "ok");
     }).catch(function(){ say($("edmsg"), "Could not reach the server.", "err"); });
   });
