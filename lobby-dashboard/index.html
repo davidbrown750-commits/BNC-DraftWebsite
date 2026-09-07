@@ -9,100 +9,97 @@
 <script src="/_shared/bnc-auth-config.js"></script>
 <script defer src="/_shared/bnc-auth.js"></script>
 <style>
-  /* Deliberately the Fun Board palette rather than the site's white-and-blue: this is
-     an internal console, and the screens it publishes are the branded surface. */
+  /* Light and high contrast. The first version was navy with muted blue labels, which
+     looked the part and was genuinely hard to read: small uppercase monospace at low
+     contrast is the worst combination for a form people fill in quickly. BNC tokens
+     throughout, white on blue wherever a blue surface carries text. */
   :root{
-    --bg:#08122e; --panel:rgba(9,15,38,.72); --line:rgba(140,180,255,.22);
-    --ink:#EAF0FF; --dim:#C4D2F2; --muted:#8FA1D0;
-    --blue:#3B9BFF; --signal:#33E6B7; --amber:#FFC24D; --coral:#FF6E8E;
+    --bg:#eef1f6; --surface:#ffffff; --sunken:#f7f9fc;
+    --ink:#113163; --text:#1f2937; --muted:#55637a;
+    --line:#d3dae5; --line-soft:#e6ebf2;
+    --blue:#0655a3; --blue-dark:#113163;
+    --good:#15803d; --good-bg:#e8f5ec; --bad:#b3261e;
     --font-h:'Myriad Pro','Segoe UI',-apple-system,BlinkMacSystemFont,Arial,sans-serif;
     --font-b:Arial,'Helvetica Neue',Helvetica,sans-serif;
-    --font-m:ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
     --r:4px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-b);
-    background-image:radial-gradient(120% 80% at 50% -10%,rgba(59,155,255,.18),transparent 60%)}
-  a{color:var(--blue)}
-  .top{display:flex;align-items:center;gap:16px;padding:16px 24px;
-    border-bottom:1px solid var(--line);background:rgba(8,18,46,.9);position:sticky;top:0;z-index:20}
-  .top svg{width:132px;height:auto}
-  .top h1{font-family:var(--font-h);font-size:16px;margin:0;font-weight:700;letter-spacing:.02em}
-  .top .who{margin-left:auto;font-family:var(--font-m);font-size:11.5px;color:var(--muted)}
-  .wrap{max-width:1120px;margin:0 auto;padding:24px}
-
-  .locked{max-width:560px;margin:12vh auto;text-align:center;padding:32px;
-    background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
-  .locked h2{font-family:var(--font-h);margin:0 0 10px;font-size:19px}
-  .locked p{color:var(--dim);font-size:14px;line-height:1.55;margin:0 0 20px}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:15px}
+  .top{display:flex;align-items:center;gap:16px;padding:14px 24px;background:var(--blue-dark);
+    position:sticky;top:0;z-index:20}
+  .top svg{width:112px;height:auto}
+  .top h1{font-family:var(--font-h);font-size:16px;margin:0;font-weight:700;color:#ffffff}
+  .top .who{margin-left:auto;font-size:13px;color:#ffffff;opacity:.85}
+  .wrap{max-width:1020px;margin:0 auto;padding:28px 24px 64px}
   .hide{display:none!important}
 
-  button{font-family:var(--font-h);font-size:13.5px;font-weight:700;border-radius:var(--r);
-    border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--ink);
-    padding:9px 15px;cursor:pointer}
-  button:hover{background:rgba(255,255,255,.13)}
-  button.primary{background:var(--blue);border-color:var(--blue);color:#04142c}
-  button.primary:hover{filter:brightness(1.1)}
-  button.danger{border-color:rgba(255,110,142,.5);color:var(--coral)}
-  button[disabled]{opacity:.5;cursor:default}
+  .locked{max-width:560px;margin:12vh auto;text-align:center;padding:34px;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 3px rgba(17,49,99,.07)}
+  .locked h2{font-family:var(--font-h);margin:0 0 10px;font-size:20px;color:var(--ink)}
+  .locked p{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 22px}
 
-  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-  .bar h2{font-family:var(--font-h);font-size:18px;margin:0;flex:1}
+  button{font-family:var(--font-h);font-size:14px;font-weight:700;border-radius:var(--r);
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);
+    padding:9px 16px;cursor:pointer}
+  button:hover{background:var(--sunken);border-color:#b9c4d4}
+  button.primary{background:var(--blue);border-color:var(--blue);color:#ffffff}
+  button.primary:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px}
-  .card h3{font-family:var(--font-h);font-size:15.5px;margin:0 0 4px}
-  .card .meta{font-family:var(--font-m);font-size:11px;color:var(--muted);margin-bottom:12px;
-    word-break:break-word}
-  .card .row{display:flex;gap:8px;flex-wrap:wrap}
-  .pill{display:inline-block;font-family:var(--font-m);font-size:10px;letter-spacing:.1em;
-    text-transform:uppercase;padding:3px 8px;border-radius:99px;font-weight:700}
-  .pill.on{background:rgba(51,230,183,.16);color:var(--signal)}
-  .pill.off{background:rgba(255,110,142,.16);color:var(--coral)}
+  h2.sec{font-family:var(--font-h);font-size:19px;margin:0 0 5px;color:var(--ink)}
+  p.lead{margin:0 0 20px;font-size:14.5px;color:var(--muted);line-height:1.6}
 
-  .editor{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px}
-  label{display:block;font-family:var(--font-m);font-size:10.5px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 6px}
-  input[type=text],textarea,select{width:100%;padding:10px 12px;font-size:14px;color:var(--ink);
-    font-family:var(--font-b);background:rgba(255,255,255,.06);border:1px solid var(--line);
-    border-radius:var(--r)}
-  textarea{min-height:190px;line-height:1.5;resize:vertical;font-size:15px}
-  input:focus,textarea:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px}
-  .field{margin-bottom:18px}
-  .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .guestrow{display:grid;grid-template-columns:120px 1fr 1fr 150px;gap:12px;align-items:end;
-    padding:14px;border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;
-    background:rgba(255,255,255,.03)}
-  .thumb{display:flex;align-items:center;gap:8px}
-  .thumb img{width:52px;height:38px;object-fit:contain;background:#fff;border-radius:var(--r);padding:3px}
-  .arts{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .signs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px}
+  .sign{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;
+    display:flex;flex-direction:column;gap:11px;box-shadow:0 1px 3px rgba(17,49,99,.06)}
+  .sign.live{border-color:var(--good);box-shadow:0 0 0 2px rgba(21,128,61,.16)}
+  .sign h3{font-family:var(--font-h);font-size:17px;margin:0;color:var(--ink);
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .sign .tag{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;
+    padding:3px 9px;border-radius:99px;background:var(--good-bg);color:var(--good)}
+  .sign p{margin:0;font-size:14px;color:var(--muted);line-height:1.55;flex:1}
+  .sign .acts{display:flex;gap:8px;flex-wrap:wrap}
+
+  .editor{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px;
+    box-shadow:0 1px 3px rgba(17,49,99,.06)}
+  .editor h2{font-family:var(--font-h);font-size:19px;margin:0 0 5px;color:var(--ink)}
+  /* Readable labels: sentence case, 13px, near-black. Not 10px uppercase monospace. */
+  label{display:block;font-family:var(--font-b);font-size:13px;font-weight:700;
+    color:var(--ink);margin:0 0 7px;letter-spacing:0;text-transform:none}
+  input[type=text],input[type=date],textarea,select{width:100%;padding:11px 13px;font-size:15px;
+    color:var(--text);font-family:var(--font-b);background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--r)}
+  input::placeholder,textarea::placeholder{color:#93a0b4}
+  textarea{min-height:160px;line-height:1.55;resize:vertical;font-size:16px}
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--blue);outline-offset:1px;
+    border-color:var(--blue)}
+  .field{margin-bottom:20px}
+  .row{display:grid;grid-template-columns:130px 1fr 1fr 170px;gap:14px;align-items:end;
+    padding:15px;border:1px solid var(--line-soft);border-radius:var(--r);margin-bottom:10px;
+    background:var(--sunken)}
+  .thumb{display:flex;align-items:center;gap:9px}
+  .thumb img{width:52px;height:38px;object-fit:contain;background:#fff;border:1px solid var(--line-soft);
+    border-radius:var(--r);padding:3px}
+  .arts{display:flex;gap:11px;flex-wrap:wrap;margin-top:11px}
   .arts figure{margin:0;position:relative}
-  .arts img{width:104px;height:70px;object-fit:cover;border-radius:var(--r);border:1px solid var(--line)}
-  .arts button{position:absolute;top:4px;right:4px;padding:2px 7px;font-size:11px;
-    background:rgba(8,18,46,.85)}
-  .hint{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:6px}
-  /* The lobby sign gets its own panel above the screens: it is the one display that
-     already existed, and reverting to it is a thing people will want to do quickly. */
-  .signpanel{background:linear-gradient(135deg,rgba(59,155,255,.16),rgba(9,15,38,.72));
-    border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;margin-bottom:26px;
-    display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
-  .signpanel h2{font-family:var(--font-h);font-size:17px;margin:0 0 5px}
-  .signpanel p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.5;max-width:62ch}
-  .signpanel .acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-  .blk{border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;
-    background:rgba(255,255,255,.03)}
-  .blk .bhead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-  .blk .btype{font-family:var(--font-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-    font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(59,155,255,.18);color:var(--blue)}
+  .arts img{width:116px;height:78px;object-fit:contain;background:var(--sunken);
+    border-radius:var(--r);border:1px solid var(--line)}
+  .arts button{position:absolute;top:5px;right:5px;padding:3px 8px;font-size:11.5px;
+    background:rgba(255,255,255,.94)}
+  .hint{font-size:13.5px;color:var(--muted);line-height:1.55;margin-top:7px}
+  .msg{margin-top:16px;font-size:14px;min-height:20px;font-weight:700}
+  .msg.err{color:var(--bad)} .msg.ok{color:var(--good)}
+  .bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px}
+  .blk{border:1px solid var(--line-soft);border-radius:var(--r);padding:15px;margin-bottom:10px;
+    background:var(--sunken)}
+  .blk .bhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .blk .btype{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;
+    padding:3px 10px;border-radius:99px;background:#e4edf8;color:var(--blue)}
   .blk .bhead .sp{flex:1}
-  .blk .fields{display:grid;gap:12px}
+  .blk .fields{display:grid;gap:13px}
   .blk .fields.two{grid-template-columns:1fr 1fr}
   .blk .fields.three{grid-template-columns:2fr 2fr 1fr}
-  @media (max-width:820px){.signpanel{grid-template-columns:1fr}
-    .blk .fields.two,.blk .fields.three{grid-template-columns:1fr}}
-  .msg{margin-top:14px;font-size:13.5px;min-height:19px}
-  .msg.err{color:var(--coral)} .msg.ok{color:var(--signal)}
-  @media (max-width:820px){.cols,.guestrow{grid-template-columns:1fr}}
+  @media (max-width:860px){.signs{grid-template-columns:1fr}
+    .row,.blk .fields.two,.blk .fields.three{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -128,127 +125,18 @@
 </div>
 
 <main id="app" class="wrap hide">
+  <h2 class="sec">On the lobby TV</h2>
+  <p class="lead">Pick one. The reception screen changes within a minute, so nobody has to
+    walk over and touch the TV.</p>
+  <div class="signs" id="signs"></div>
 
-  <div id="listview">
-    <div class="signpanel">
-      <div>
-        <h2>The lobby sign</h2>
-        <p>The original reception board: month-to-date sales, the Cal Lab queue, yesterday's
-           email figures, news, the weather and the engineer's riddle. Reception can switch
-           back to it at any time. Notices, riddles, photos and shows on it are edited here.</p>
-      </div>
-      <div class="acts">
-        <button id="openSign" class="primary" type="button">Open the lobby sign</button>
-        <button id="editBlocks" type="button">Edit its blocks</button>
-      </div>
-    </div>
-
-    <div class="bar">
-      <h2>Screens</h2>
-      <button id="newVisitor" type="button">New visitor screen</button>
-      <button id="newDyk" type="button">New "Did You Know" screen</button>
-      <button id="refresh" type="button">Refresh</button>
-    </div>
-    <div class="grid" id="cards"></div>
-    <div class="msg" id="listmsg" role="status" aria-live="polite"></div>
-    <p class="hint">
-      Screens are shown on the reception TV at <code>/screen/?id=&lt;name&gt;</code>. That page asks
-      for the screen password once per device, then remembers it for a year.
-    </p>
+  <div class="editor">
+    <h2 id="edTitle">Choose a sign to edit</h2>
+    <p class="lead" id="edLead">Use the Edit button on any of the three above.</p>
+    <div id="edBody"></div>
+    <div class="bar" id="edBar"></div>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
   </div>
-
-  <div id="blocksview" class="editor hide">
-    <div class="bar">
-      <h2>Lobby sign blocks</h2>
-      <button id="blocksBack" type="button">Back to all screens</button>
-    </div>
-    <p class="hint" style="margin-top:0">
-      Each block is one piece of content on the sign. Notices ride the amber slot between
-      the news items, riddles join the hourly rotation, photos take over the replies panel,
-      and shows appear in Upcoming. The sign picks changes up within a minute.
-    </p>
-    <div id="blocks"></div>
-    <div class="bar" style="margin-top:16px">
-      <select id="blockType" style="max-width:220px">
-        <option value="notice">Notice</option>
-        <option value="riddle">Riddle</option>
-        <option value="photo">Photo</option>
-        <option value="event">Upcoming show</option>
-      </select>
-      <button id="addBlock" type="button">Add block</button>
-      <span style="flex:1"></span>
-      <button id="saveBlocks" class="primary" type="button">Save blocks</button>
-    </div>
-    <div class="msg" id="blkmsg" role="status" aria-live="polite"></div>
-  </div>
-
-  <div id="editview" class="editor hide">
-    <div class="bar">
-      <h2 id="edTitle">Edit screen</h2>
-      <button id="back" type="button">Back to all screens</button>
-    </div>
-
-    <div class="cols">
-      <div class="field">
-        <label for="edId">Screen name (used in the link)</label>
-        <input id="edId" type="text" placeholder="visitor-1" maxlength="49">
-        <div class="hint">Lower-case letters, numbers and dashes. Cannot be changed later without creating a new screen.</div>
-      </div>
-      <div class="field">
-        <label for="edTitleField">Label for this list</label>
-        <input id="edTitleField" type="text" placeholder="Visitor 1" maxlength="60">
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="edHeading">Heading shown on the screen</label>
-      <input id="edHeading" type="text" maxlength="60">
-    </div>
-
-    <!-- visitor fields -->
-    <div id="visitorFields" class="hide">
-      <label>Visitors (up to four)</label>
-      <div id="guests"></div>
-    </div>
-
-    <!-- did-you-know fields -->
-    <div id="dykFields" class="hide">
-      <div class="field">
-        <label for="edBody">Message</label>
-        <textarea id="edBody" maxlength="1200" placeholder="Type the message here. It is shown in large type on the lobby screen."></textarea>
-        <div class="hint">Line breaks are kept. Up to 1200 characters.</div>
-      </div>
-      <div class="field">
-        <label>Images shown alongside the message (up to four)</label>
-        <input id="imgFile" type="file" accept="image/png,image/jpeg,image/webp">
-        <div class="arts" id="arts"></div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label>Background wallpaper (optional)</label>
-      <input id="bgFile" type="file" accept="image/png,image/jpeg,image/webp">
-      <div class="arts" id="bgWrap"></div>
-      <div class="hint">Sits behind the message. The screen darkens it automatically so the white text stays readable.</div>
-    </div>
-
-    <div class="field">
-      <label for="edEnabled">Status</label>
-      <select id="edEnabled">
-        <option value="on">Showing on the screen</option>
-        <option value="off">Turned off</option>
-      </select>
-    </div>
-
-    <div class="bar">
-      <button id="save" class="primary" type="button">Save screen</button>
-      <button id="open" type="button">Open screen</button>
-      <span style="flex:1"></span>
-      <button id="del" class="danger" type="button">Delete screen</button>
-    </div>
-    <div class="msg" id="edmsg" role="status" aria-live="polite"></div>
-  </div>
-
 </main>
 
 <script>
@@ -256,13 +144,28 @@
   "use strict";
   var STAFF_DOMAIN = "@berkeleynucleonics.com";
   var STAFF_EXTRA = ["davidbrown750@gmail.com"];
-  var MAX_GUESTS = 4, MAX_IMAGES = 4;
-  var current = null;
+  var VISITOR = "visitor-1", DYK = "did-you-know-1", FUN = "fun", FUNDOC = "lobby-sign";
+  var MAX_GUESTS = 4, MAX_IMAGES = 4, MAX_BLOCKS = 24;
+
+  var SIGNS = [
+    { id: VISITOR, name: "Visitor welcome",
+      blurb: "Up to four guests: time, name, company and their logo." },
+    { id: DYK, name: "Did You Know",
+      blurb: "A short message in large type, with pictures beside it." },
+    { id: FUN, name: "Fun board",
+      blurb: "The live board: sales, the Cal Lab, email figures, news, weather, riddle." }
+  ];
+
+  var active = null, doc = null, editing = null;
 
   function $(id){ return document.getElementById(id); }
   function el(t,c){ var n=document.createElement(t); if(c)n.className=c; return n; }
   function txt(n,s){ n.textContent = (s==null?"":String(s)); return n; }
-  function say(node,t,cls){ node.textContent=t; node.className="msg"+(cls?" "+cls:""); }
+  function say(t,cls){ var m=$("msg"); m.textContent=t; m.className="msg"+(cls?" "+cls:""); }
+  function nameOf(id){
+    for (var i=0;i<SIGNS.length;i++) if (SIGNS[i].id===id) return SIGNS[i].name;
+    return id;
+  }
 
   /* ---------------- auth ---------------- */
   function bncEmail(){
@@ -281,27 +184,23 @@
     if (tries > 60) { cb(); return; }
     setTimeout(function(){ waitForClerk(cb, tries+1); }, 200);
   }
-  function reveal(){
-    $("locked").classList.add("hide");
-    $("app").classList.remove("hide");
-    $("who").textContent = bncEmail() || "";
-    loadList();
-  }
-  function lock(why){
-    $("app").classList.add("hide");
-    $("locked").classList.remove("hide");
-    if (why) $("lockwhy").textContent = why;
-  }
   $("signin").addEventListener("click", function(){
     if (window.Clerk && window.Clerk.openSignIn) window.Clerk.openSignIn({});
   });
   waitForClerk(function(){
-    if (isStaff()) reveal();
-    else if (bncEmail()) lock("Signed in as " + bncEmail() +
-      " — that account is not a @berkeleynucleonics.com address.");
+    if (isStaff()) start();
+    else if (bncEmail())
+      $("lockwhy").textContent = "Signed in as " + bncEmail() +
+        " — that account is not a @berkeleynucleonics.com address.";
     if (window.Clerk && window.Clerk.addListener)
-      window.Clerk.addListener(function(){ if (isStaff()) reveal(); });
+      window.Clerk.addListener(function(){ if (isStaff()) start(); });
   });
+  function start(){
+    $("locked").classList.add("hide");
+    $("app").classList.remove("hide");
+    $("who").textContent = bncEmail() || "";
+    loadActive();
+  }
 
   /* ---------------- api ---------------- */
   function api(opts){
@@ -314,8 +213,7 @@
     }).then(function(r){ return r.json(); });
   }
 
-  // Browsers hand back a File; the API wants a bounded data URL. Downscaling here
-  // keeps a 12 MP phone photo from being rejected for size at the far end.
+  // Downscale in the browser so a phone photo is not rejected for size at the far end.
   function fileToDataUrl(file, maxPx){
     return new Promise(function(resolve, reject){
       var fr = new FileReader();
@@ -336,313 +234,307 @@
       fr.readAsDataURL(file);
     });
   }
-
   function upload(file, purpose, maxPx){
-    return fileToDataUrl(file, maxPx).then(function(dataUrl){
-      return api({ method:"POST", body:{ action:"upload", purpose:purpose,
-        image:dataUrl, name:file.name } });
-    }).then(function(j){
-      if (!j.ok) throw new Error(j.error || "upload failed");
-      return j.url;
-    });
+    return fileToDataUrl(file, maxPx).then(function(u){
+      return api({ method:"POST", body:{ action:"upload", purpose:purpose, image:u, name:file.name } });
+    }).then(function(j){ if (!j.ok) throw new Error(j.error || "upload failed"); return j.url; });
   }
 
-  /* ---------------- list ---------------- */
-  function loadList(){
-    say($("listmsg"), "Loading…");
+  /* ---------------- which sign is live ---------------- */
+  function loadActive(){
     api({}).then(function(j){
-      if (!j.ok) { say($("listmsg"), j.error || "Could not load screens.", "err"); return; }
-      var host = $("cards"); host.innerHTML = "";
-      if (!j.screens.length) say($("listmsg"), "No screens yet. Create one above.");
-      else say($("listmsg"), "");
-      j.screens.filter(function(s){ return s.kind !== "signblocks"; }).forEach(function(s){
-        var c = el("div","card");
-        var h = el("h3"); txt(h, s.title || s.id);
-        var pill = el("span","pill " + (s.enabled === false ? "off" : "on"));
-        txt(pill, s.enabled === false ? "off" : "live");
-        h.appendChild(document.createTextNode(" ")); h.appendChild(pill);
-        c.appendChild(h);
-        var meta = el("div","meta");
-        txt(meta, "/screen/?id=" + s.id + "  ·  " +
-          (s.kind === "visitor" ? "visitors" : "did you know") +
-          (s.updated_by ? ("  ·  " + s.updated_by) : ""));
-        c.appendChild(meta);
-        var row = el("div","row");
-        var edit = el("button"); txt(edit, "Edit");
-        edit.addEventListener("click", function(){ openEditor(s); });
-        var open = el("button"); txt(open, "Open");
-        open.addEventListener("click", function(){
-          window.open("/screen/?id=" + s.id, "_blank", "noopener"); });
-        row.appendChild(edit); row.appendChild(open);
-        c.appendChild(row);
-        host.appendChild(c);
-      });
-    }).catch(function(){ say($("listmsg"), "Could not reach the server.", "err"); });
+      active = (j && j.ok && j.active) || VISITOR;
+      drawSigns();
+    }).catch(function(){ active = VISITOR; drawSigns(); });
   }
 
-  /* ---------------- lobby sign blocks ---------------- */
-  var signDoc = null;
-  var BLOCK_FIELDS = {
-    notice: [["title","Notice","Golf competition on Thursday","text","two"],
-             ["detail","Detail (optional)","Save the date. Details to follow.","text",""],
-             ["until","Remove after","","date",""]],
-    riddle: [["q","Question","What has keys but no locks?","text",""],
-             ["a","Answer","A keyboard","text",""]],
-    photo:  [["caption","Caption (optional)","Team lunch, September","text",""]],
-    event:  [["name","Show","The Continuing Challenge","text",""],
-             ["place","Where","Sacramento, CA","text",""],
-             ["start","Starts","","date",""],
-             ["end","Ends","","date",""]]
-  };
-  var BLOCK_LABEL = { notice:"Notice", riddle:"Riddle", photo:"Photo", event:"Upcoming show" };
-
-  function drawBlocks(){
-    var host = $("blocks"); host.innerHTML = "";
-    var blocks = (signDoc && signDoc.blocks) || [];
-    if (!blocks.length){
-      host.appendChild(txt(el("div","hint"), "No blocks yet. Add one below."));
-      return;
-    }
-    blocks.forEach(function(b, i){
-      var card = el("div","blk");
-      var head = el("div","bhead");
-      head.appendChild(txt(el("span","btype"), BLOCK_LABEL[b.type] || b.type));
-      head.appendChild(el("span","sp"));
-      var rm = el("button","danger"); txt(rm, "Remove");
-      rm.addEventListener("click", function(){ signDoc.blocks.splice(i,1); drawBlocks(); });
-      head.appendChild(rm);
-      card.appendChild(head);
-
-      var cols = b.type === "event" ? "three" : (b.type === "notice" ? "two" : "");
-      var fields = el("div","fields" + (cols ? " " + cols : ""));
-      (BLOCK_FIELDS[b.type] || []).forEach(function(f){
-        var key = f[0], wrap = el("div");
-        var l = el("label"); txt(l, f[1]); l.setAttribute("for","b"+i+key);
-        var inp = el("input"); inp.type = f[3]; inp.id = "b"+i+key;
-        inp.value = b[key] || ""; inp.placeholder = f[2];
-        inp.addEventListener("input", function(){ b[key] = inp.value; });
-        wrap.appendChild(l); wrap.appendChild(inp); fields.appendChild(wrap);
-      });
-      if (b.type === "photo"){
-        var pw = el("div");
-        var pl = el("label"); txt(pl, "Image"); pw.appendChild(pl);
-        var t = el("div","thumb");
-        if (b.image){ var im = el("img"); im.src = b.image; im.alt=""; t.appendChild(im); }
-        var f2 = el("input"); f2.type="file"; f2.accept="image/png,image/jpeg,image/webp";
-        f2.addEventListener("change", function(){
-          if (!f2.files || !f2.files[0]) return;
-          say($("blkmsg"), "Uploading image…");
-          upload(f2.files[0], "image", 1600).then(function(url){
-            b.image = url; say($("blkmsg"), "Image added. Remember to save.", "ok"); drawBlocks();
-          }).catch(function(e){ say($("blkmsg"), e.message, "err"); });
-        });
-        t.appendChild(f2); pw.appendChild(t); fields.appendChild(pw);
+  function drawSigns(){
+    var host = $("signs"); host.innerHTML = "";
+    SIGNS.forEach(function(s){
+      var card = el("div","sign" + (active === s.id ? " live" : ""));
+      var h = el("h3"); txt(h, s.name);
+      if (active === s.id) h.appendChild(txt(el("span","tag"), "on the TV"));
+      card.appendChild(h);
+      card.appendChild(txt(el("p"), s.blurb));
+      var acts = el("div","acts");
+      if (active !== s.id){
+        var put = el("button","primary"); txt(put, "Put on the TV");
+        put.addEventListener("click", function(){ setActive(s.id); });
+        acts.appendChild(put);
       }
-      card.appendChild(fields);
+      var ed = el("button"); txt(ed, "Edit");
+      ed.addEventListener("click", function(){ openEditor(s); });
+      acts.appendChild(ed);
+      var pv = el("button"); txt(pv, "Preview");
+      pv.addEventListener("click", function(){
+        window.open(s.id === FUN ? "/lobby-sign/?pin=1" : "/screen/?id=" + s.id, "_blank", "noopener");
+      });
+      acts.appendChild(pv);
+      card.appendChild(acts);
       host.appendChild(card);
     });
   }
 
-  function openBlocks(){
-    $("listview").classList.add("hide");
-    $("editview").classList.add("hide");
-    $("blocksview").classList.remove("hide");
-    say($("blkmsg"), "Loading…");
-    api({ query:"?action=get&id=lobby-sign" }).then(function(j){
-      signDoc = (j && j.ok && j.screen) ? j.screen : null;
-      if (!signDoc || signDoc.kind !== "signblocks")
-        signDoc = { id:"lobby-sign", kind:"signblocks", title:"Lobby sign",
-                    heading:"Lobby sign", enabled:true, background:"", blocks:[] };
-      if (!signDoc.blocks) signDoc.blocks = [];
-      drawBlocks(); say($("blkmsg"), "");
-    }).catch(function(){ say($("blkmsg"), "Could not load the sign's blocks.", "err"); });
+  function setActive(id){
+    say("Switching the TV…");
+    api({ method:"POST", body:{ action:"setActive", active:id } }).then(function(j){
+      if (!j.ok){ say(j.error || "Could not switch the TV.", "err"); return; }
+      active = j.active; drawSigns();
+      say("The lobby TV is now showing " + nameOf(active) + ".", "ok");
+    }).catch(function(){ say("Could not reach the server.", "err"); });
   }
 
-  $("editBlocks").addEventListener("click", openBlocks);
-  $("blocksBack").addEventListener("click", function(){
-    $("blocksview").classList.add("hide"); $("listview").classList.remove("hide"); loadList();
-  });
-  $("addBlock").addEventListener("click", function(){
-    if (!signDoc) return;
-    if (signDoc.blocks.length >= 24){ say($("blkmsg"), "Twenty-four blocks is the maximum.", "err"); return; }
-    var t = $("blockType").value;
-    var b = { type: t };
-    (BLOCK_FIELDS[t] || []).forEach(function(f){ b[f[0]] = ""; });
-    if (t === "photo") b.image = "";
-    signDoc.blocks.push(b); drawBlocks();
-  });
-  $("saveBlocks").addEventListener("click", function(){
-    if (!signDoc) return;
-    say($("blkmsg"), "Saving…");
-    api({ method:"POST", body:{ action:"save", screen:signDoc } }).then(function(j){
-      if (!j.ok){ say($("blkmsg"), j.error || "Could not save.", "err"); return; }
-      signDoc = j.screen; if (!signDoc.blocks) signDoc.blocks = [];
-      drawBlocks();
-      say($("blkmsg"), "Saved. The sign picks this up within a minute. "
-        + "Anything incomplete was dropped.", "ok");
-    }).catch(function(){ say($("blkmsg"), "Could not reach the server.", "err"); });
-  });
-
-  /* ---------------- editor ---------------- */
-  function blank(kind){
-    if (kind === "announcements")
-      return { id:"lobby-sign", kind:"announcements", title:"Lobby sign notices",
-               heading:"Lobby sign notices", enabled:true, background:"", items:[] };
-    return kind === "visitor"
-      ? { id:"", kind:"visitor", title:"", heading:"Welcome", enabled:true, background:"", visitors:[] }
-      : { id:"", kind:"didyouknow", title:"", heading:"Did You Know?", enabled:true,
-          background:"", body:"", images:[] };
-  }
-
-  function guestRow(v, i){
-    var row = el("div","guestrow");
-    function field(labelText, value, key, ph){
-      var wrap = el("div");
-      var l = el("label"); txt(l, labelText); l.setAttribute("for","g"+i+key);
-      var inp = el("input"); inp.type="text"; inp.id="g"+i+key; inp.value=value||"";
-      inp.placeholder = ph || "";
-      inp.addEventListener("input", function(){ v[key] = inp.value; });
-      wrap.appendChild(l); wrap.appendChild(inp); return wrap;
-    }
-    row.appendChild(field("Time", v.time, "time", "10:00 AM"));
-    row.appendChild(field("Name", v.name, "name", "Jane Doe"));
-    row.appendChild(field("Company", v.company, "company", "Acme Corporation"));
-
-    var logo = el("div");
-    var ll = el("label"); txt(ll, "Company logo"); logo.appendChild(ll);
-    var t = el("div","thumb");
-    if (v.logo){ var im = el("img"); im.src = v.logo; im.alt=""; t.appendChild(im); }
-    var f = el("input"); f.type="file"; f.accept="image/png,image/jpeg,image/webp";
-    f.addEventListener("change", function(){
-      if (!f.files || !f.files[0]) return;
-      say($("edmsg"), "Uploading logo…");
-      upload(f.files[0], "logo", 600).then(function(url){
-        v.logo = url; say($("edmsg"), "Logo added. Remember to save.", "ok"); drawGuests();
-      }).catch(function(e){ say($("edmsg"), e.message, "err"); });
-    });
-    t.appendChild(f); logo.appendChild(t); row.appendChild(logo);
-    return row;
-  }
-
-  function drawGuests(){
-    var host = $("guests"); host.innerHTML = "";
-    while (current.visitors.length < MAX_GUESTS) current.visitors.push({time:"",name:"",company:"",logo:""});
-    current.visitors.slice(0, MAX_GUESTS).forEach(function(v,i){ host.appendChild(guestRow(v,i)); });
-  }
-
-  function drawArts(){
-    var host = $("arts"); host.innerHTML = "";
-    (current.images||[]).forEach(function(u, i){
-      var fig = el("figure");
-      var im = el("img"); im.src = u; im.alt = "";
-      var x = el("button"); txt(x, "Remove");
-      x.addEventListener("click", function(){ current.images.splice(i,1); drawArts(); });
-      fig.appendChild(im); fig.appendChild(x); host.appendChild(fig);
-    });
-  }
-
-  function drawBg(){
-    var host = $("bgWrap"); host.innerHTML = "";
-    if (!current.background) return;
-    var fig = el("figure");
-    var im = el("img"); im.src = current.background; im.alt = "";
-    var x = el("button"); txt(x, "Remove");
-    x.addEventListener("click", function(){ current.background = ""; drawBg(); });
-    fig.appendChild(im); fig.appendChild(x); host.appendChild(fig);
+  /* ---------------- editors ---------------- */
+  function defaultDoc(which){
+    if (which === VISITOR) return { id:VISITOR, kind:"visitor", title:"Visitor welcome",
+      heading:"Welcome", enabled:true, background:"", visitors:[] };
+    if (which === DYK) return { id:DYK, kind:"didyouknow", title:"Did You Know",
+      heading:"Did You Know?", enabled:true, background:"", body:"", images:[] };
+    return { id:FUNDOC, kind:"signblocks", title:"Lobby sign", heading:"Lobby sign",
+      enabled:true, background:"", blocks:[] };
   }
 
   function openEditor(s){
-    current = JSON.parse(JSON.stringify(s));
-    if (!current.visitors) current.visitors = [];
-    if (!current.images) current.images = [];
-    $("listview").classList.add("hide");
-    $("editview").classList.remove("hide");
-    txt($("edTitle"), current.id ? ("Edit — " + (current.title || current.id))
-                                 : "New screen");
-    $("edId").value = current.id || "";
-    $("edId").disabled = !!current.id;
-    $("edTitleField").value = current.title || "";
-    $("edHeading").value = current.heading || "";
-    $("edEnabled").value = current.enabled === false ? "off" : "on";
-    var kind = current.kind;
-    $("visitorFields").classList.toggle("hide", kind !== "visitor");
-    $("dykFields").classList.toggle("hide", kind !== "didyouknow");
-    $("edId").disabled = !!current.id;
-    if (kind === "visitor") drawGuests();
-    else { $("edBody").value = current.body || ""; drawArts(); }
-    drawBg();
-    say($("edmsg"), "");
+    editing = s;
+    txt($("edTitle"), "Edit — " + s.name);
+    txt($("edLead"), s.id === FUN
+      ? "Extras you can add to the fun board. Everything else on it updates itself."
+      : "There is only one of these signs, so saving overwrites what is on it.");
+    $("edBody").innerHTML = ""; $("edBar").innerHTML = ""; say("");
+    api({ query: "?action=get&id=" + (s.id === FUN ? FUNDOC : s.id) }).then(function(j){
+      doc = (j && j.ok && j.screen) ? j.screen : defaultDoc(s.id);
+      refresh();
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }).catch(function(){ say("Could not load that sign.", "err"); });
   }
 
-  $("back").addEventListener("click", function(){
-    $("editview").classList.add("hide"); $("listview").classList.remove("hide"); loadList();
-  });
-  $("newVisitor").addEventListener("click", function(){ openEditor(blank("visitor")); });
-  $("newDyk").addEventListener("click", function(){ openEditor(blank("didyouknow")); });
-  $("openSign").addEventListener("click", function(){
-    window.open("/lobby-sign/", "_blank", "noopener");
-  });
-  $("refresh").addEventListener("click", loadList);
+  function refresh(){
+    if (!editing) return;
+    if (editing.id === VISITOR) buildVisitor();
+    else if (editing.id === DYK) buildDyk();
+    else buildFun();
+  }
 
-  $("imgFile").addEventListener("change", function(){
-    var f = this.files && this.files[0]; if (!f) return;
-    if ((current.images||[]).length >= MAX_IMAGES){
-      say($("edmsg"), "Four images is the maximum.", "err"); this.value=""; return; }
-    say($("edmsg"), "Uploading image…");
-    var self = this;
-    upload(f, "image", 1600).then(function(url){
-      current.images.push(url); drawArts(); self.value="";
-      say($("edmsg"), "Image added. Remember to save.", "ok");
-    }).catch(function(e){ say($("edmsg"), e.message, "err"); });
-  });
+  function headingField(){
+    var f = el("div","field");
+    var l = el("label"); txt(l,"Heading on the screen"); l.setAttribute("for","hd");
+    var i = el("input"); i.type="text"; i.id="hd"; i.maxLength=60; i.value = doc.heading || "";
+    i.addEventListener("input", function(){ doc.heading = i.value; });
+    f.appendChild(l); f.appendChild(i); return f;
+  }
 
-  $("bgFile").addEventListener("change", function(){
-    var f = this.files && this.files[0]; if (!f) return;
-    say($("edmsg"), "Uploading background…");
-    var self = this;
-    upload(f, "background", 2200).then(function(url){
-      current.background = url; drawBg(); self.value="";
-      say($("edmsg"), "Background added. Remember to save.", "ok");
-    }).catch(function(e){ say($("edmsg"), e.message, "err"); });
-  });
-
-  $("open").addEventListener("click", function(){
-    if (!current || !current.id) { say($("edmsg"), "Save the screen first.", "err"); return; }
-    window.open("/screen/?id=" + current.id, "_blank", "noopener");
-  });
-
-  $("save").addEventListener("click", function(){
-    var id = ($("edId").value || "").trim().toLowerCase();
-    if (!/^[a-z0-9][a-z0-9-]{0,48}$/.test(id)){
-      say($("edmsg"), "Screen name must be lower-case letters, numbers and dashes.", "err"); return; }
-    current.id = id;
-    current.title = $("edTitleField").value.trim() || id;
-    current.heading = $("edHeading").value.trim();
-    current.enabled = $("edEnabled").value === "on";
-    if (current.kind === "didyouknow") current.body = $("edBody").value;
-    if (current.kind === "visitor")
-      current.visitors = current.visitors.filter(function(v){ return (v.name||"").trim() || (v.company||"").trim(); });
-    say($("edmsg"), "Saving…");
-    api({ method:"POST", body:{ action:"save", screen:current } }).then(function(j){
-      if (!j.ok) { say($("edmsg"), j.error || "Could not save.", "err"); return; }
-      current = j.screen;
-      if (!current.visitors) current.visitors = [];
-      if (!current.images) current.images = [];
-      $("edId").disabled = true;
-      if (current.kind === "visitor") drawGuests();
-      say($("edmsg"), "Saved. The screen picks this up within thirty seconds.", "ok");
-    }).catch(function(){ say($("edmsg"), "Could not reach the server.", "err"); });
-  });
-
-  $("del").addEventListener("click", function(){
-    if (!current || !current.id) { say($("edmsg"), "Nothing to delete yet.", "err"); return; }
-    if (!window.confirm("Delete the screen \"" + (current.title || current.id) + "\"? This cannot be undone."))
-      return;
-    api({ method:"POST", body:{ action:"delete", id: current.id } }).then(function(j){
-      if (!j.ok) { say($("edmsg"), "Could not delete.", "err"); return; }
-      $("editview").classList.add("hide"); $("listview").classList.remove("hide"); loadList();
+  function backgroundField(){
+    var f = el("div","field");
+    var l = el("label"); txt(l,"Background picture (optional)"); f.appendChild(l);
+    var inp = el("input"); inp.type="file"; inp.accept="image/png,image/jpeg,image/webp";
+    inp.addEventListener("change", function(){
+      if (!inp.files || !inp.files[0]) return;
+      say("Uploading background…");
+      upload(inp.files[0], "background", 2200).then(function(u){
+        doc.background = u; say("Background added. Remember to save.", "ok"); refresh();
+      }).catch(function(e){ say(e.message, "err"); });
     });
-  });
+    f.appendChild(inp);
+    var wrap = el("div","arts");
+    if (doc.background){
+      var fig = el("figure"); var im = el("img"); im.src = doc.background; im.alt="";
+      var x = el("button"); txt(x,"Remove");
+      x.addEventListener("click", function(){ doc.background=""; refresh(); });
+      fig.appendChild(im); fig.appendChild(x); wrap.appendChild(fig);
+    }
+    f.appendChild(wrap);
+    f.appendChild(txt(el("div","hint"),
+      "Sits behind the message. The screen darkens it so white text stays readable."));
+    return f;
+  }
+
+  function saveBar(){
+    var bar = $("edBar"); bar.innerHTML = "";
+    var save = el("button","primary"); txt(save, "Save");
+    save.addEventListener("click", saveDoc);
+    bar.appendChild(save);
+    var open = el("button"); txt(open, "Preview");
+    open.addEventListener("click", function(){
+      window.open(editing.id === FUN ? "/lobby-sign/?pin=1" : "/screen/?id=" + editing.id,
+        "_blank", "noopener");
+    });
+    bar.appendChild(open);
+  }
+
+  // ---- visitor ----
+  function buildVisitor(){
+    var host = $("edBody"); host.innerHTML = "";
+    host.appendChild(headingField());
+    host.appendChild(txt(el("label"), "Guests (leave a row blank to skip it)"));
+    if (!doc.visitors) doc.visitors = [];
+    while (doc.visitors.length < MAX_GUESTS) doc.visitors.push({time:"",name:"",company:"",logo:""});
+    doc.visitors.slice(0, MAX_GUESTS).forEach(function(v, i){
+      var row = el("div","row");
+      [["time","Time","10:00 AM"],["name","Name","Jane Doe"],["company","Company","Acme Corporation"]]
+        .forEach(function(f){
+          var w = el("div");
+          var l = el("label"); txt(l, f[1]); l.setAttribute("for","g"+i+f[0]);
+          var inp = el("input"); inp.type="text"; inp.id="g"+i+f[0];
+          inp.value = v[f[0]] || ""; inp.placeholder = f[2];
+          inp.addEventListener("input", function(){ v[f[0]] = inp.value; });
+          w.appendChild(l); w.appendChild(inp); row.appendChild(w);
+        });
+      var lw = el("div");
+      lw.appendChild(txt(el("label"), "Company logo"));
+      var t = el("div","thumb");
+      if (v.logo){ var im = el("img"); im.src = v.logo; im.alt=""; t.appendChild(im); }
+      var fi = el("input"); fi.type="file"; fi.accept="image/png,image/jpeg,image/webp";
+      fi.addEventListener("change", function(){
+        if (!fi.files || !fi.files[0]) return;
+        say("Uploading logo…");
+        upload(fi.files[0], "logo", 600).then(function(u){
+          v.logo = u; say("Logo added. Remember to save.", "ok"); refresh();
+        }).catch(function(e){ say(e.message, "err"); });
+      });
+      t.appendChild(fi); lw.appendChild(t); row.appendChild(lw);
+      host.appendChild(row);
+    });
+    host.appendChild(backgroundField());
+    saveBar();
+  }
+
+  // ---- did you know ----
+  function buildDyk(){
+    var host = $("edBody"); host.innerHTML = "";
+    host.appendChild(headingField());
+
+    var f = el("div","field");
+    var l = el("label"); txt(l,"Message"); l.setAttribute("for","bd");
+    var ta = el("textarea"); ta.id="bd"; ta.maxLength=1200; ta.value = doc.body || "";
+    ta.placeholder = "Type the message. It is shown in large type on the lobby screen.";
+    ta.addEventListener("input", function(){ doc.body = ta.value; });
+    f.appendChild(l); f.appendChild(ta);
+    f.appendChild(txt(el("div","hint"), "Line breaks are kept. Up to 1200 characters."));
+    host.appendChild(f);
+
+    var pf = el("div","field");
+    pf.appendChild(txt(el("label"), "Pictures beside the message (up to four)"));
+    var pi = el("input"); pi.type="file"; pi.accept="image/png,image/jpeg,image/webp";
+    pi.addEventListener("change", function(){
+      if (!pi.files || !pi.files[0]) return;
+      if (!doc.images) doc.images = [];
+      if (doc.images.length >= MAX_IMAGES){ say("Four pictures is the maximum.", "err"); return; }
+      say("Uploading picture…");
+      upload(pi.files[0], "image", 1600).then(function(u){
+        doc.images.push(u); say("Picture added. Remember to save.", "ok"); refresh();
+      }).catch(function(e){ say(e.message, "err"); });
+    });
+    pf.appendChild(pi);
+    var arts = el("div","arts");
+    (doc.images || []).forEach(function(u, i){
+      var fig = el("figure"); var im = el("img"); im.src = u; im.alt="";
+      var x = el("button"); txt(x,"Remove");
+      x.addEventListener("click", function(){ doc.images.splice(i,1); refresh(); });
+      fig.appendChild(im); fig.appendChild(x); arts.appendChild(fig);
+    });
+    pf.appendChild(arts);
+    pf.appendChild(txt(el("div","hint"),
+      "Shown whole rather than cropped, so tall and wide pictures both work."));
+    host.appendChild(pf);
+
+    host.appendChild(backgroundField());
+    saveBar();
+  }
+
+  // ---- fun board extras ----
+  var BLOCK_FIELDS = {
+    notice: [["title","Notice","Golf competition on Thursday","text"],
+             ["detail","Detail (optional)","Save the date.","text"],
+             ["until","Remove after","","date"]],
+    riddle: [["q","Question","What has keys but no locks?","text"],
+             ["a","Answer","A keyboard","text"]],
+    photo:  [["caption","Caption (optional)","Team lunch","text"]],
+    event:  [["name","Show","The Continuing Challenge","text"],
+             ["place","Where","Sacramento, CA","text"],
+             ["start","Starts","","date"],
+             ["end","Ends","","date"]]
+  };
+  var BLOCK_LABEL = { notice:"Notice", riddle:"Riddle", photo:"Photo", event:"Upcoming show" };
+
+  function buildFun(){
+    var host = $("edBody"); host.innerHTML = "";
+    if (!doc.blocks) doc.blocks = [];
+    if (!doc.blocks.length)
+      host.appendChild(txt(el("div","hint"),
+        "Nothing added yet. The board still shows sales, the Cal Lab, news and the rest on its own."));
+    doc.blocks.forEach(function(b, i){
+      var card = el("div","blk");
+      var head = el("div","bhead");
+      head.appendChild(txt(el("span","btype"), BLOCK_LABEL[b.type] || b.type));
+      head.appendChild(el("span","sp"));
+      var rm = el("button"); txt(rm, "Remove");
+      rm.addEventListener("click", function(){ doc.blocks.splice(i,1); refresh(); });
+      head.appendChild(rm); card.appendChild(head);
+      var cols = b.type === "event" ? "three" : (b.type === "notice" ? "two" : "");
+      var fields = el("div","fields" + (cols ? " " + cols : ""));
+      (BLOCK_FIELDS[b.type] || []).forEach(function(f){
+        var w = el("div");
+        var l = el("label"); txt(l, f[1]); l.setAttribute("for","b"+i+f[0]);
+        var inp = el("input"); inp.type = f[3]; inp.id = "b"+i+f[0];
+        inp.value = b[f[0]] || ""; inp.placeholder = f[2];
+        inp.addEventListener("input", function(){ b[f[0]] = inp.value; });
+        w.appendChild(l); w.appendChild(inp); fields.appendChild(w);
+      });
+      if (b.type === "photo"){
+        var pw = el("div");
+        pw.appendChild(txt(el("label"), "Image"));
+        var t = el("div","thumb");
+        if (b.image){ var im = el("img"); im.src = b.image; im.alt=""; t.appendChild(im); }
+        var fi = el("input"); fi.type="file"; fi.accept="image/png,image/jpeg,image/webp";
+        fi.addEventListener("change", function(){
+          if (!fi.files || !fi.files[0]) return;
+          say("Uploading image…");
+          upload(fi.files[0], "image", 1600).then(function(u){
+            b.image = u; say("Image added. Remember to save.", "ok"); refresh();
+          }).catch(function(e){ say(e.message, "err"); });
+        });
+        t.appendChild(fi); pw.appendChild(t); fields.appendChild(pw);
+      }
+      card.appendChild(fields); host.appendChild(card);
+    });
+
+    var add = el("div","bar");
+    var sel = el("select"); sel.style.maxWidth = "210px";
+    ["notice","riddle","photo","event"].forEach(function(k){
+      var o = el("option"); o.value = k; txt(o, BLOCK_LABEL[k]); sel.appendChild(o);
+    });
+    var ab = el("button"); txt(ab, "Add");
+    ab.addEventListener("click", function(){
+      if (doc.blocks.length >= MAX_BLOCKS){ say("Twenty-four is the maximum.", "err"); return; }
+      var t = sel.value, b = { type: t };
+      (BLOCK_FIELDS[t] || []).forEach(function(f){ b[f[0]] = ""; });
+      if (t === "photo") b.image = "";
+      doc.blocks.push(b); refresh();
+    });
+    add.appendChild(sel); add.appendChild(ab);
+    host.appendChild(add);
+    saveBar();
+  }
+
+  /* ---------------- save ---------------- */
+  function saveDoc(){
+    if (!doc || !editing) return;
+    if (editing.id === VISITOR)
+      doc.visitors = (doc.visitors || []).filter(function(v){
+        return (v.name||"").trim() || (v.company||"").trim(); });
+    say("Saving…");
+    api({ method:"POST", body:{ action:"save", screen:doc } }).then(function(j){
+      if (!j.ok){ say(j.error || "Could not save.", "err"); return; }
+      doc = j.screen;
+      if (!doc.visitors) doc.visitors = [];
+      if (!doc.images) doc.images = [];
+      if (!doc.blocks) doc.blocks = [];
+      refresh();
+      say(active === editing.id
+        ? "Saved. The lobby TV updates within a minute."
+        : "Saved. Use “Put on the TV” above when you want it shown.", "ok");
+    }).catch(function(){ say("Could not reach the server.", "err"); });
+  }
 })();
 </script>
 </body>
