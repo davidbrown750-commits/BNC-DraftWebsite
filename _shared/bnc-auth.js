@@ -24,6 +24,23 @@
 
   var Clerk = null, sb = null, sbPublic = null;
 
+  // Clerk loads asynchronously, but the gates and the Sign up button are painted
+  // immediately so the page is never blank. That leaves a window of a second or
+  // more where a visitor can click Sign up before Clerk exists. Track the load
+  // explicitly so a click in that window is queued rather than discarded, and so
+  // a genuinely failed load reports itself honestly instead of blaming the keys.
+  //   'unconfigured' - placeholder keys, local preview only
+  //   'loading'      - keys are good, Clerk script still in flight
+  //   'ready'        - Clerk.load() resolved, modals will open
+  //   'failed'       - script blocked or errored, sign-in is unavailable
+  var clerkState = configured ? 'loading' : 'unconfigured';
+  var pendingAuth = null;          // 'signIn' | 'signUp', queued during 'loading'
+  var watchdogTimer = null;
+  var watchdogFired = false;
+  var CLERK_LOAD_TIMEOUT_MS = 20000;
+  var AUTH_UNAVAILABLE_MSG =
+    'Sign-in could not load on this network. Please email info@berkeleynucleonics.com and we will send the file directly.';
+
   var LOCK_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
     '<path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5zm-3 8V6a3 3 0 0 1 6 0v3H9z"/></svg>';
 
@@ -119,35 +136,62 @@
   }
   function toast(msg) {
     var t = el('div', 'bnc-toast', msg);
+    // The toast now carries the only notice that sign-in is loading or has
+    // failed, so it has to be announced rather than just drawn.
+    t.setAttribute('role', 'status');
+    t.setAttribute('aria-live', 'polite');
     document.body.appendChild(t);
     requestAnimationFrame(function () { t.classList.add('show'); });
     setTimeout(function () { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 300); }, 3200);
   }
 
   /* ---------- sign-in trigger -------------------------------------------- */
-  // Remember where the user wanted to go, so we can resume after sign-in.
-  function triggerSignIn(resumeUrl) {
-    if (resumeUrl) { try { sessionStorage.setItem('bncResume', resumeUrl); } catch (e) {} }
-    if (configured && Clerk) {
-      Clerk.openSignIn({ afterSignInUrl: location.href, afterSignUpUrl: location.href,
-        signInForceRedirectUrl: location.href, signUpForceRedirectUrl: location.href,
-        fallbackRedirectUrl: location.href });
-    } else {
-      toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
-    }
+  function clerkOpts() {
+    return { afterSignInUrl: location.href, afterSignUpUrl: location.href,
+      signInForceRedirectUrl: location.href, signUpForceRedirectUrl: location.href,
+      fallbackRedirectUrl: location.href };
   }
+  function openClerk(mode) {
+    if (mode === 'signIn') Clerk.openSignIn(clerkOpts());
+    else Clerk.openSignUp(clerkOpts());
+  }
+  // Single entry point for both buttons. Remembers where the user wanted to go,
+  // then either opens Clerk, queues the click until Clerk is ready, or explains
+  // why sign-in is unavailable.
+  function requestAuth(mode, resumeUrl) {
+    if (resumeUrl) { try { sessionStorage.setItem('bncResume', resumeUrl); } catch (e) {} }
+
+    if (clerkState === 'ready' && Clerk) { openClerk(mode); return; }
+
+    if (clerkState === 'loading') {
+      // Do not drop the click. The boot chain opens this the moment Clerk lands.
+      pendingAuth = mode;
+      toast('One moment, secure sign-in is still loading.');
+      return;
+    }
+
+    // 'unconfigured' is a local preview with placeholder keys, and is the ONLY
+    // state that may show the developer text. Everything else, including any
+    // state we failed to anticipate, falls through to the honest message: a
+    // customer seeing the bnc-auth-config.js line is the bug being fixed here.
+    if (clerkState === 'unconfigured') {
+      toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
+      return;
+    }
+
+    toast(AUTH_UNAVAILABLE_MSG);
+  }
+  // Sign-in is not coming. Drop any resume URL we stashed, so a later successful
+  // session does not pop open a page the user abandoned minutes ago, and tell
+  // whoever was waiting. Silence here is what sent a customer to support.
+  function authUnavailable() {
+    try { sessionStorage.removeItem('bncResume'); } catch (e) {}
+    if (pendingAuth) { pendingAuth = null; toast(AUTH_UNAVAILABLE_MSG); }
+  }
+  function triggerSignIn(resumeUrl) { requestAuth('signIn', resumeUrl); }
   // New visitors hitting a gate (or the header button) should land on Sign Up
   // first; the Clerk modal still has a "Sign in" link for returning users.
-  function triggerSignUp(resumeUrl) {
-    if (resumeUrl) { try { sessionStorage.setItem('bncResume', resumeUrl); } catch (e) {} }
-    if (configured && Clerk) {
-      Clerk.openSignUp({ afterSignInUrl: location.href, afterSignUpUrl: location.href,
-        signInForceRedirectUrl: location.href, signUpForceRedirectUrl: location.href,
-        fallbackRedirectUrl: location.href });
-    } else {
-      toast('Sign-in activates once the Clerk and Supabase keys are added to bnc-auth-config.js.');
-    }
-  }
+  function triggerSignUp(resumeUrl) { requestAuth('signUp', resumeUrl); }
 
   /* ---------- header account control -------------------------------------- */
   function renderHeader() {
@@ -503,6 +547,8 @@
       return window.Clerk.load();
     }).then(function () {
       Clerk = window.Clerk;
+      clerkState = 'ready';
+      if (watchdogTimer) { clearTimeout(watchdogTimer); watchdogTimer = null; }
       sb = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey, {
         accessToken: function () {
           return (Clerk && Clerk.session) ? Clerk.session.getToken() : Promise.resolve(null);
@@ -538,10 +584,46 @@
         applyState();
         if (isSignedIn()) { recordVisit(); maybeShowContactModal(); }
       });
+
+      // Replay a click made while Clerk was still loading. Deliberately the LAST
+      // thing in the boot chain: a throw here must not skip the Supabase setup or
+      // the gate re-render above, and it is wrapped so it cannot fall into the
+      // .catch below, which would report a working sign-in as failed.
+      // Skipped when they turn out to be signed in already, because applyState()
+      // has just swapped the stale "Sign up" button for their name and unlocked
+      // the page. Opening a sign-up modal on a live session would be a new bug.
+      if (pendingAuth) {
+        var queued = pendingAuth;
+        pendingAuth = null;
+        if (!isSignedIn()) {
+          try { openClerk(queued); }
+          catch (e) { if (window.console) console.warn('[bnc-auth] replay failed', e && e.message); }
+        }
+      } else if (watchdogFired && !isSignedIn()) {
+        // We told them it had failed and then it recovered. Say so, otherwise
+        // the last thing they saw was a dead end.
+        toast('Sign-in is ready now. Please try again.');
+      }
     }).catch(function (err) {
-      // network / config error: stay in the safe logged-out state
+      // network / config error: stay in the safe logged-out state. Guard on
+      // 'ready' because this also catches throws from the success block above,
+      // where Clerk itself loaded fine and sign-in still works.
+      if (clerkState !== 'ready') clerkState = 'failed';
       if (window.console) console.warn('[bnc-auth]', err && err.message);
+      if (clerkState === 'failed') authUnavailable();
     });
+
+    // Clerk can hang rather than error on a restricted network (defence and
+    // government sites block it outright). Without this the state would sit on
+    // 'loading' for ever and every click would queue silently.
+    watchdogTimer = setTimeout(function () {
+      watchdogTimer = null;
+      if (clerkState !== 'loading') return;
+      clerkState = 'failed';
+      watchdogFired = true;
+      if (window.console) console.warn('[bnc-auth] Clerk did not load within ' + CLERK_LOAD_TIMEOUT_MS + 'ms');
+      authUnavailable();
+    }, CLERK_LOAD_TIMEOUT_MS);
   });
 })();
 
